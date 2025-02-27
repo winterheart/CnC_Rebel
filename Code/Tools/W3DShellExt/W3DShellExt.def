@@ -1,0 +1,9 @@
+; W3DShellExt.def : Declares the module parameters for the DLL.
+
+LIBRARY      "W3DShellExt"
+DESCRIPTION  'W3DShell Windows Dynamic Link Library'
+
+EXPORTS
+	DllCanUnloadNow PRIVATE
+	DllGetClassObject PRIVATE
+;	DllRegisterServer PRIVATE

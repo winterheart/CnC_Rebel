@@ -1,0 +1,130 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CLIPBOARD_PANEL DIALOG DISCARDABLE  0, 0, 108, 150
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Close",ID_CLOSE,58,132,46,13
+    LTEXT           "Animation:",IDC_ANIMATION,4,2,101,8
+    COMBOBOX        IDC_POSE_LIST,4,12,101,61,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Objects in animation:",IDC_STATIC,4,27,101,8
+    LISTBOX         IDC_OBJECT_LIST,3,38,101,44,LBS_SORT | LBS_NOSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Create...",ID_CREATE,4,84,100,13
+    PUSHBUTTON      "Paste",ID_PASTE,4,100,100,13
+    PUSHBUTTON      "Delete",ID_DELETE,4,116,100,13
+    LTEXT           "James McNeill",IDC_STATIC,4,134,49,8
+END
+
+IDD_POSE_NAME DIALOG DISCARDABLE  0, 0, 186, 63
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Pose Name"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Name:",IDC_STATIC,7,7,23,10
+    EDITTEXT        IDC_NAME,31,7,148,12,ES_AUTOHSCROLL
+    LTEXT           "First frame:",IDC_STATIC,7,26,37,10
+    CONTROL         "",IDC_FIRST_FRAME_EDIT,"CustEdit",WS_TABSTOP,47,25,28,
+                    10
+    CONTROL         "",IDC_FIRST_FRAME_SPIN,"SpinnerControl",0x0,75,25,10,10
+    LTEXT           "Last frame:",IDC_STATIC,99,25,37,10
+    CONTROL         "",IDC_LAST_FRAME_EDIT,"CustEdit",WS_TABSTOP,141,25,28,
+                    10
+    CONTROL         "",IDC_LAST_FRAME_SPIN,"SpinnerControl",0x0,169,25,10,10
+    PUSHBUTTON      "Cancel",IDCANCEL,74,42,50,14
+    DEFPUSHBUTTON   "OK",IDOK,129,42,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_POSE_NAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

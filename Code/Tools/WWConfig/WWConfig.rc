@@ -1,0 +1,472 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Japanese resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_japanese.loc"
+#endif    // Japanese resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Korean resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+#ifdef _WIN32
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_korean.loc"
+#endif    // Korean resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Taiwan) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
+#pragma code_page(950)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_chinese.loc"
+#endif    // Chinese (Taiwan) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_german.loc"
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_english.loc"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\WWConfig.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\WWConfig.ico"
+IDI_ADAPTER             ICON    DISCARDABLE     "res\\icon1.ico"
+IDI_MONITOR             ICON    DISCARDABLE     "res\\ico00001.ico"
+IDI_AUDIO_DRIVER        ICON    DISCARDABLE     "res\\ico00002.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WWCONFIG_DIALOG DIALOGEX 0, 0, 291, 271
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "",IDOK,171,250,50,14
+    PUSHBUTTON      "",IDCANCEL,234,250,50,14
+    CONTROL         130,IDC_STATIC,"Static",SS_BITMAP | SS_CENTERIMAGE | 
+                    SS_REALSIZEIMAGE | SS_SUNKEN,7,7,277,29
+    CONTROL         "Tab1",IDC_TAB_CTRL,"SysTabControl32",0x0,7,43,277,200
+END
+
+IDD_AUDIO_CONFIG DIALOGEX 0, 0, 272, 182
+STYLE DS_CONTROL | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_AUDIO_DRIVER,IDC_STATIC,7,19,20,20
+    LTEXT           "Driver:",IDC_DRIVER,7,7,38,8
+    CONTROL         "List1",IDC_DRIVER_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_AUTOARRANGE | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,47,7,218,36
+    GROUPBOX        "Volume",IDC_VOLUME,7,52,258,75
+    CONTROL         "Sound Effects:",IDC_SOUND_EFFECTS_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,66,94,10
+    CONTROL         "Slider1",IDC_SOUND_EFFECTS_SLIDER,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,117,66,140,10
+    CONTROL         "Music:",IDC_MUSIC_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,80,94,10
+    CONTROL         "Slider1",IDC_MUSIC_SLIDER,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,117,80,140,10
+    LTEXT           "Quality:",IDC_QUALITY,7,136,74,8
+    COMBOBOX        IDC_QUALITY_COMBO,7,145,74,56,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Playback Rate:",IDC_PLAYBACK_RATE,98,136,74,8
+    COMBOBOX        IDC_RATE_COMBO,98,145,74,68,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Stereo",IDC_STEREO_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,167,258,8
+    CONTROL         "Dialog:",IDC_DIALOG_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,94,94,10
+    CONTROL         "Slider1",IDC_CINEMATIC_SLIDER,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,117,108,140,10
+    CONTROL         "Cinematic:",IDC_CINEMATIC_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,108,94,10
+    CONTROL         "Slider1",IDC_DIALOG_SLIDER,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,117,94,140,10
+    COMBOBOX        IDC_SPEAKER_COMBO,191,145,74,68,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Speaker Setup:",IDC_SPEAKER_SETUP,191,136,74,8
+END
+
+IDD_VIDEO_CONFIG DIALOGEX 0, 0, 272, 182
+STYLE DS_CONTROL | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Driver:",IDC_DRIVER,7,7,38,8
+    CONTROL         "List1",IDC_DRIVER_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_AUTOARRANGE | LVS_NOCOLUMNHEADER | WS_BORDER | 
+                    WS_TABSTOP,47,7,218,64
+    GROUPBOX        "",IDC_STATIC2,7,81,258,86
+    LTEXT           "Color Depth:",IDC_BIT_DEPTH,15,125,70,8
+    COMBOBOX        IDC_BITDEPTH_COMBO,92,125,51,83,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    ICON            IDI_ADAPTER,IDC_STATIC,7,18,20,20
+    CONTROL         "Slider1",IDC_RESOLUTION_SLIDER,"msctls_trackbar32",
+                    WS_TABSTOP,92,103,82,12
+    LTEXT           "640 x 480",IDC_RESOLUTION_STATIC,181,103,72,8
+    CONTROL         "Windowed Mode",IDC_WINDOWED_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,147,243,10
+    ICON            IDI_ADAPTER,IDC_STATIC,7,18,20,20
+    LTEXT           "Resolution:",IDC_RESOLUTION,15,103,70,8
+END
+
+IDD_PERFORMANCE_CONFIG DIALOGEX 0, 0, 272, 182
+STYLE DS_CONTROL | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Detail",IDC_DETAIL,7,7,258,25
+    LTEXT           "Low (fastest)",IDC_LOW_DESC,13,16,68,8,0,WS_EX_RIGHT
+    CONTROL         "Slider1",IDC_PERFORMANCE_SLIDER,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,90,16,92,12
+    LTEXT           "High (slowest)",IDC_HIGH_DESC,190,16,68,8
+    CONTROL         "Expert Mode",IDC_EXPERT_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,39,152,10
+    GROUPBOX        "Expert Settings",IDC_EXPERT_SETTINGS,7,56,258,119
+    LTEXT           "Geometry Detail:",IDC_GEOMETRY_DETAIL,13,70,77,8
+    CONTROL         "Slider1",IDC_GEOMETRY_DETAIL_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,137,70,88,10
+    LTEXT           "Character Shadows:",IDC_CHARACTER_SHADOWS,13,82,77,8
+    CONTROL         "Slider1",IDC_CHAR_SHADOWS_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,137,82,88,10
+    LTEXT           "Texture Detail:",IDC_TEXTURE_DETAIL,13,94,77,8
+    CONTROL         "Slider1",IDC_TEXTURE_DETAIL_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,137,94,88,10
+    LTEXT           "Particle Detail:",IDC_PARTICLE_DETAIL,13,106,77,8
+    CONTROL         "Slider1",IDC_PARTICLE_DETAIL_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,137,106,88,10
+    LTEXT           "Surface Effect Detail:",IDC_SURFACE_EFFECT_DETAIL,13,
+                    118,77,8
+    CONTROL         "Slider1",IDC_SURFACE_DETAIL_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,137,118,88,10
+    LTEXT           "Lighting Mode:",IDC_LIGHTING_MODE,13,135,114,8
+    COMBOBOX        IDC_LIGHTING_MODE_COMBO,13,144,114,69,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Terrain Casts Shadows",IDC_TERRAIN_SHADOW_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,161,225,8
+    PUSHBUTTON      "Auto Config",IDC_AUTO_CONFIG_BUTTON,168,39,97,14
+    LTEXT           "Texture Filter:",IDC_TEXTURE_FILTER,147,135,111,8
+    COMBOBOX        IDC_TEXTURE_FILTER_COMBO,147,144,111,69,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Low",IDC_LOW1,108,70,24,8
+    RTEXT           "Low",IDC_LOW2,108,82,24,8
+    RTEXT           "Low",IDC_LOW3,108,94,24,8
+    RTEXT           "Low",IDC_LOW4,108,106,24,8
+    RTEXT           "Low",IDC_LOW5,108,118,24,8
+    LTEXT           "High",IDC_HIGH1,231,70,26,8
+    LTEXT           "High",IDC_HIGH2,231,82,24,8
+    LTEXT           "High",IDC_HIGH3,231,94,24,8
+    LTEXT           "High",IDC_HIGH4,231,106,24,8
+    LTEXT           "High",IDC_HIGH5,231,118,24,8
+END
+
+IDD_DRIVER_VERSION_WARNING DIALOG DISCARDABLE  0, 0, 186, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "",IDOK,65,138,50,14
+    PUSHBUTTON      "",IDCANCEL,125,138,50,14
+    CONTROL         "",IDC_DISABLE_DRIVER_VERSION_DIALOG_CHECKBOX,"Button",
+                    BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,11,116,163,
+                    18
+    LTEXT           "Static",IDC_DRIVER_VERSION_WARNING_TEXT,11,6,163,106
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,8,0,0
+ PRODUCTVERSION 1,8,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Westwood Studios\0"
+            VALUE "FileDescription", "\0"
+            VALUE "FileVersion", "1, 8, 0, 0\0"
+            VALUE "InternalName", "WWConfig\0"
+            VALUE "LegalCopyright", "Copyright © 2002 Electronic Arts\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "WWConfig.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Renegade Config\0"
+            VALUE "ProductVersion", "1, 8, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_WWCONFIG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 284
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_AUDIO_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_VIDEO_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_PERFORMANCE_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_DRIVER_VERSION_WARNING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 152
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LOGO                BITMAP  DISCARDABLE     "res\\logo.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_AUDIO_CONFIG DLGINIT
+BEGIN
+    IDC_QUALITY_COMBO, 0x403, 6, 0
+0x2038, 0x6942, 0x0074, 
+    IDC_QUALITY_COMBO, 0x403, 7, 0
+0x3631, 0x4220, 0x7469, "\000" 
+    IDC_RATE_COMBO, 0x403, 7, 0
+0x3131, 0x6b20, 0x7a48, "\000" 
+    IDC_RATE_COMBO, 0x403, 7, 0
+0x3232, 0x6b20, 0x7a48, "\000" 
+    IDC_RATE_COMBO, 0x403, 7, 0
+0x3434, 0x6b20, 0x7a48, "\000" 
+    0
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+STRINGS                 RCDATA  DISCARDABLE     "res\\idl_french.loc"
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\WWConfig.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

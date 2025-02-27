@@ -1,0 +1,754 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\PhysTest.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\PhysTest.ico"
+IDR_PHYSTETYPE          ICON    DISCARDABLE     "res\\PhysTestDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINTOOLBAR         BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDR_IMPULSE_TOOLBAR     BITMAP  DISCARDABLE     "res\\toolbar1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINTOOLBAR TOOLBAR DISCARDABLE  24, 24
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    SEPARATOR
+    BUTTON      ID_OPTIONS_RUN_SIMULATION
+    SEPARATOR
+    BUTTON      ID_OPTIONS_DISPLAY_BOXES
+    BUTTON      ID_OPTIONS_PHYSICS_CONSTANTS
+    SEPARATOR
+    BUTTON      ID_OPTIONS_FILLED
+    BUTTON      ID_OPTIONS_WIREFRAME
+    BUTTON      ID_OPTIONS_POINTS
+    SEPARATOR
+    BUTTON      ID_CAMERA_FLY
+    BUTTON      ID_CAMERA_FOLLOW
+    BUTTON      ID_CAMERA_TETHER
+    BUTTON      ID_CAMERA_RIGID_TETHER
+    SEPARATOR
+    BUTTON      ID_CREATE_RIGID_BODY
+    BUTTON      ID_CREATE_WHEELED_VEHICLE
+    BUTTON      ID_CREATE_MOTORCYCLE
+    BUTTON      ID_BUTTON32834
+END
+
+IDR_IMPULSE_TOOLBAR TOOLBAR DISCARDABLE  24, 24
+BEGIN
+    BUTTON      ID_COUPLE_POSX
+    BUTTON      ID_COUPLE_NEGX
+    BUTTON      ID_COUPLE_POSY
+    BUTTON      ID_COUPLE_NEGY
+    BUTTON      ID_COUPLE_POSZ
+    BUTTON      ID_COUPLE_NEGZ
+    SEPARATOR
+    BUTTON      ID_IMPULSE_POSX
+    BUTTON      ID_IMPULSE_NEGX
+    BUTTON      ID_IMPULSE_POSY
+    BUTTON      ID_IMPULSE_NEGY
+    BUTTON      ID_IMPULSE_POSZ
+    BUTTON      ID_IMPULSE_NEGZ
+    SEPARATOR
+    BUTTON      ID_FREEZE_OBJECT
+    BUTTON      ID_DEBUG_OBJECT
+    SEPARATOR
+    BUTTON      ID_INERTIA
+    BUTTON      ID_PROPERTIES
+    BUTTON      ID_MOTOR_PROPERTIES
+    BUTTON      ID_WHEEL_PROPERTIES
+    BUTTON      ID_MOTORCYCLE_PROPERTIES
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE, GRAYED
+        MENUITEM "Save &As...           ",      ID_FILE_SAVE_AS, GRAYED
+        MENUITEM "Import Model",                ID_FILE_IMPORT_MODEL
+        MENUITEM "Import LEV",                  ID_FILE_IMPORT_LEV
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Create"
+    BEGIN
+        MENUITEM "Rigid Body",                  ID_CREATE_RIGID_BODY
+        MENUITEM "Wheeled Vehicle",             ID_CREATE_WHEELED_VEHICLE
+        MENUITEM "Motorcycle",                  ID_CREATE_MOTORCYCLE
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "Run Simulation",              ID_OPTIONS_RUN_SIMULATION
+        MENUITEM "Display Collision Boxes",     ID_OPTIONS_DISPLAY_BOXES
+        MENUITEM "Change Physics Constants",    ID_OPTIONS_PHYSICS_CONSTANTS
+        MENUITEM SEPARATOR
+        MENUITEM "Render Fill",                 ID_OPTIONS_FILLED
+        MENUITEM "Render Wireframe",            ID_OPTIONS_WIREFRAME
+        MENUITEM "Render Points",               ID_OPTIONS_POINTS
+        MENUITEM SEPARATOR
+        MENUITEM "Change Render Device",        ID_OPTIONS_RENDER_DEVICE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Impulse Toolbar",             ID_VIEW_IMPULSETOOLBAR
+        MENUITEM "Virtual Joystick",            ID_VIEW_VIRTUALJOYSTICK
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About PhysTest...",          ID_APP_ABOUT
+    END
+    POPUP "Camera"
+    BEGIN
+        MENUITEM "Fly",                         ID_CAMERA_FLY
+        MENUITEM "Follow",                      ID_CAMERA_FOLLOW
+        MENUITEM "Tether",                      ID_CAMERA_TETHER
+        MENUITEM "Rigid Tether",                ID_CAMERA_RIGID_TETHER
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About PhysTest"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "PhysTest Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 1999",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_RBODY_PROPERTIES_DIALOG DIALOG DISCARDABLE  0, 0, 217, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Rigid Body Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Mass:",IDC_STATIC,7,13,20,8
+    EDITTEXT        IDC_MASS_EDIT,49,7,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_MASS_SPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,89,7,10,14
+    LTEXT           "Elasticity:",IDC_STATIC,7,28,30,8
+    EDITTEXT        IDC_ELASTICITY_EDIT,49,22,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin2",IDC_ELASTICITY_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,89,22,10,
+                    14
+    LTEXT           "Gravity:",IDC_STATIC,7,44,25,8
+    EDITTEXT        IDC_GRAVITY_EDIT,49,38,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_GRAVITY_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,89,38,10,
+                    14
+    LTEXT           "Position:",IDC_STATIC,7,62,28,8
+    EDITTEXT        IDC_POSITIONX_EDIT,49,58,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_POSITIONX_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,89,58,11,
+                    14
+    EDITTEXT        IDC_POSITIONY_EDIT,103,58,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_POSITIONY_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,143,58,11,
+                    14
+    EDITTEXT        IDC_POSITIONZ_EDIT,157,58,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_POSITIONZ_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,197,58,11,
+                    14
+    DEFPUSHBUTTON   "OK",IDOK,160,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,24,50,14
+    EDITTEXT        IDC_STIFFNESS_EDIT,79,84,40,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    CONTROL         "Spin1",IDC_STIFFNESS_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,119,84,11,
+                    14
+    LTEXT           "Contact Stiffness:",IDC_STATIC,14,88,56,8
+    EDITTEXT        IDC_DAMPING_EDIT,80,102,40,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    CONTROL         "Spin1",IDC_DAMPING_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,120,102,
+                    11,14
+    LTEXT           "Contact Damping:",IDC_STATIC,15,106,58,8
+    EDITTEXT        IDC_LENGTH_EDIT,79,121,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_LENGTH_SPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,119,121,11,14
+    LTEXT           "Contact Thickness:",IDC_STATIC,14,125,62,8
+END
+
+IDD_INERTIA_DIALOG DIALOG DISCARDABLE  0, 0, 186, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Inertia Tensor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,35,73,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,89,73,50,14
+    EDITTEXT        IDC_IBODYX_EDIT,13,20,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_IBODYX_SPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,53,20,11,14
+    EDITTEXT        IDC_IBODYY_EDIT,66,36,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_IBODYY_SPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,106,36,11,14
+    EDITTEXT        IDC_IBODYZ_EDIT,120,52,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_IBODYZ_SPIN,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,160,52,11,14
+    LTEXT           "IBody:",IDC_STATIC,75,7,21,8
+    LTEXT           "0.0",IDC_STATIC,85,23,11,8
+    LTEXT           "0.0",IDC_STATIC,134,23,11,8
+    LTEXT           "0.0",IDC_STATIC,134,40,11,8
+    LTEXT           "0.0",IDC_STATIC,85,56,11,8
+    LTEXT           "0.0",IDC_STATIC,26,56,11,8
+    LTEXT           "0.0",IDC_STATIC,26,41,11,8
+END
+
+IDD_PHYSICS_CONSTANTS_DIALOG DIALOG DISCARDABLE  0, 0, 211, 78
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Physics Constants"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,154,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,154,24,50,14
+    LTEXT           "Acceleration of Gravity:",IDC_STATIC,14,21,74,8
+    LTEXT           "Linear Damping:",IDC_STATIC,36,35,52,8
+    LTEXT           "Angular Damping:",IDC_STATIC,31,49,57,8
+    EDITTEXT        IDC_GRAVITYACCEL_EDIT,94,18,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_GRAVITYACCEL_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,134,18,11,
+                    14
+    EDITTEXT        IDC_LDAMPING_EDIT,94,32,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_LDAMPING_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,134,32,11,
+                    14
+    EDITTEXT        IDC_ADAMPING_EDIT,94,46,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_ADAMPING_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,134,46,11,
+                    14
+END
+
+IDD_VJOY_DIALOG DIALOG DISCARDABLE  0, 0, 212, 119
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION
+CAPTION "Virtual Joystick"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_MOVEXY_STATIC,"Static",SS_BLACKFRAME,13,34,63,58
+    CONTROL         "Slider1",IDC_MOVEZ_SLIDER,"msctls_trackbar32",TBS_VERT | 
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,81,35,16,53
+    CONTROL         "",IDC_TURNXY_STATIC,"Static",SS_BLACKFRAME,104,33,63,58
+    CONTROL         "Slider1",IDC_TURNZ_SLIDER,"msctls_trackbar32",TBS_VERT | 
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,176,35,16,53
+END
+
+IDD_MOTORVEHICLE_DIALOG DIALOG DISCARDABLE  0, 0, 206, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Motor Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,47,40,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,108,40,50,14
+    EDITTEXT        IDC_MVEHICLE_TORQUE_EDIT,79,8,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_MVEHICLE_TORQUE_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,120,8,11,
+                    14
+    LTEXT           "Max Engine Torque:",IDC_STATIC,7,11,65,8
+    LTEXT           "Newton-Meters",IDC_STATIC,137,11,49,8
+END
+
+IDD_WHEELEDVEHICLE_DIALOG DIALOG DISCARDABLE  0, 0, 163, 103
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Wheeled Vehicle Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,27,80,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,85,80,50,14
+    EDITTEXT        IDC_WVEHICLE_KS_EDIT,79,7,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_WVEHICLE_KS_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,119,7,11,
+                    14
+    EDITTEXT        IDC_WVEHICLE_KD_EDIT,79,25,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_WVEHICLE_KD_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,119,25,11,
+                    14
+    LTEXT           "Spring Constant:",IDC_STATIC,7,11,53,8
+    LTEXT           "Damping Coefficient:",IDC_STATIC,7,29,66,8
+    LTEXT           "N/m",IDC_STATIC,135,11,15,8
+    LTEXT           "N*s/m",IDC_STATIC,135,29,21,8
+    EDITTEXT        IDC_WVEHICLE_LENGTH_EDIT,79,45,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_WVEHICLE_LENGTH_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,119,45,11,
+                    14
+    LTEXT           "Spring Length:",IDC_STATIC,7,48,47,8
+    LTEXT           "m",IDC_STATIC,135,49,8,8
+END
+
+IDD_MOTORCYCLE_DIALOG DIALOG DISCARDABLE  0, 0, 137, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Motorcycle Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Lean k0",IDC_STATIC,18,11,27,8
+    EDITTEXT        IDC_LEAN_K0_EDIT,61,7,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_LEAN_K0_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,101,7,11,
+                    14
+    LTEXT           "Lean k1",IDC_STATIC,18,29,27,8
+    EDITTEXT        IDC_LEAN_K1_EDIT,61,25,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_LEAN_K1_SPIN,"msctls_updown32",
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,101,25,11,
+                    14
+    DEFPUSHBUTTON   "OK",IDOK,12,49,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,74,49,50,14
+END
+
+IDD_RENDER_DEVICE_DIALOG DIALOG DISCARDABLE  0, 0, 185, 47
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select A Render Device"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,128,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,128,24,50,14
+    COMBOBOX        IDC_RENDER_DEVICE_COMBO,7,17,111,159,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "PhysTest MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "PhysTest\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "PhysTest.EXE\0"
+            VALUE "ProductName", "PhysTest Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_RBODY_PROPERTIES_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+
+    IDD_INERTIA_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PHYSICS_CONSTANTS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 71
+    END
+
+    IDD_VJOY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_MOTORVEHICLE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 199
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 54
+    END
+
+    IDD_WHEELEDVEHICLE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 156
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_MOTORCYCLE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 130
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_RENDER_DEVICE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 40
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// FILE
+//
+
+AXES.W3D                FILE    DISCARDABLE     "res\\Axes.w3d"
+POINT.W3D               FILE    DISCARDABLE     "res\\Point.w3d"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Physics Test App\nScene\nScene\nPhysics Test App Scenes (*.phy)\n.phy\nPhysTest.Document\nPhysTest Scene"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "PhysTest"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_CREATE_RIGID_BODY    "Create a new Rigid Body object."
+    ID_OPTIONS_RUN_SIMULATION "Run or stop the simulation"
+    ID_OPTIONS_DISPLAY_BOXES "Toggle rendering of collision boxes"
+    ID_IMPULSE              "Apply an impulse to the currently selected object"
+    ID_COUPLE               "Apply a couple to the currently selected object"
+    ID_COUPLE_POSY          "Apply a +Y couple to the object"
+    ID_COUPLE_NEGY          "Apply a -Y couple to the object"
+    ID_COUPLE_POSZ          "Apply a +Z couple to the object"
+    ID_COUPLE_NEGZ          "Apply a -Z couple to the object"
+    ID_COUPLE_POSX          "Apply a +X couple to the object"
+    ID_COUPLE_NEGX          "Apply a negative X couple to the object"
+    ID_IMPULSE_POSX         "Apply a +X impulse to the object"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_IMPULSE_NEGX         "Apply a -X impulse to the object"
+    ID_IMPULSE_POSY         "Apply a +Y impulse to the object"
+    ID_IMPULSE_NEGY         "Apply a -Y impulse to the object"
+    ID_IMPULSE_POSZ         "Apply a +Z impulse to the object"
+    ID_IMPULSE_NEGZ         "Apply a -Z impulse to the object"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_PROPERTIES           "Edit Rigid-Body properties of the currently selected object"
+    ID_INERTIA              "Edit the Inertia Tensor for the currently selected object"
+    ID_OPTIONS_PHYSICS_CONSTANTS "Change the physics simulation constants."
+    ID_FREEZE_OBJECT        "Freeze object.  Zeros the momentum of the object"
+    ID_OPTIONS_PHYSICS_DEBUG_DISPLAY "Enable physics debugging."
+    ID_DEBUG_OBJECT         "Enable/Disable debugging on the currently selected object"
+    ID_OPTIONS_FILLED       "Use filled polygon rendering"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_OPTIONS_WIREFRAME    "Use Wireframe rendering"
+    ID_OPTIONS_POINT        "Use point rendering"
+    ID_OPTIONS_POINTS       "Render Points"
+    ID_MOTOR_PROPERTIES     "Edit the Motor properties of the currently selected object"
+    ID_WHEEL_PROPERTIES     "Edit the Wheeled Vehicle properties of the currently selected object"
+    ID_OPTIONS_FOLLOW_OBJECT "Camera follows selected object"
+    ID_CAMERA_FOLLOW        "Camera looks at the current object"
+    ID_CAMERA_FLY           "Camera is free to fly around"
+    ID_CAMERA_TETHER        "Tether the camera to the selected object"
+    ID_CAMERA_RIGID_TETHER  "Camera is rigidly tether to the selected object"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_CREATE_WHEELED_VEHICLE "Create a new wheeled vehicle object"
+    ID_CREATE_PHYS4         "Create a new Phys4 object"
+    ID_CREATE_MOTORCYCLE    "Create a new motorcycle object"
+    ID_MOTORCYCLE_PROPERTIES "Motorcycle properties"
+    ID_OPTIONS_RENDER_DEVICE "Select a render device"
+    ID_IMPORT_MODEL         "Import a W3D model"
+    ID_IMPORT_LEV           "Import an LEV file"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\PhysTest.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

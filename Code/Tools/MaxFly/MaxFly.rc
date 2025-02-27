@@ -1,0 +1,163 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MAXFLY_PANEL DIALOG DISCARDABLE  0, 0, 108, 152
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Max Fly",IDC_STATIC,7,7,94,10
+    CONTROL         "",IDC_SPEED_EDIT,"CustEdit",WS_TABSTOP,47,127,35,10
+    CONTROL         "",IDC_SPEED_SPIN,"SpinnerControl",0x0,83,127,7,10
+    LTEXT           "Speed:",IDC_STATIC,13,128,24,8
+    PUSHBUTTON      "Pitch Up",IDC_PITCH_UP_BUTTON,32,50,44,14
+    PUSHBUTTON      "Pitch Down",IDC_PITCH_DOWN_BUTTON,32,84,44,14
+    PUSHBUTTON      "Yaw Left",IDC_YAW_LEFT_BUTTON,7,67,44,14
+    PUSHBUTTON      "Yaw Right",IDC_YAW_RIGHT_BUTTON,57,67,44,14
+    PUSHBUTTON      "Fly Forward",IDC_FLY_FORWARD_BUTTON,7,106,46,14
+    PUSHBUTTON      "Fly Backward",IDC_FLY_BACKWARD_BUTTON,55,105,46,14
+    PUSHBUTTON      "Select Camera",IDC_SELECT_CAMERA_BUTTON,7,20,94,12
+    GROUPBOX        "Controls",IDC_STATIC,7,38,94,107
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_MAXFLY_PANEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 101
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 145
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileVersion", "3.0.0.0\0"
+            VALUE "InternalName", "MaxFly\0"
+            VALUE "LegalCopyright", "\0"
+            VALUE "OriginalFilename", "MaxFly.dlu\0"
+            VALUE "ProductName", "3D Studio MAX\0"
+            VALUE "ProductVersion", "3.0.0.0\0"
+            VALUE "FileDescription", "Max Fly\0"
+            VALUE "Comments", "TECH: \0"
+            VALUE "LegalTrademarks", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LIBDESCRIPTION      "Max Fly"
+    IDS_CATEGORY            "Westwood Tools"
+    IDS_CLASS_NAME          "MaxFly"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

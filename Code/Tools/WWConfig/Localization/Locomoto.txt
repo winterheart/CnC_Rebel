@@ -1,0 +1,46 @@
+locomoto v1.22 (Hide and Seek) Jun 23 1999 by Gerry Shaw, EAC
+USAGE:   locomoto [-options] <sourcefile>
+
+VERSION: WIN NT v1.22 (Hide and Seek), Spit v2.89
+SUMMARY: locomoto string compiler tool
+         SPIT environment variable is LOCOMOTO_OPTS
+
+     @<file>  response file, containing a list of options and files
+    -v#       verboseness 0=nothing,1=errors,2=default,3=extra,4=debug
+    -cpp      C++ style header files (const int vs default #define)
+    -header#  0=does not create .h file,1=creates .h file (default)
+    -id#      specifies what column id values in (default 1, -1 for none)
+    -index#   create an index, # specifies what column index (-1 for none)
+    -define#  specifies what column the conditionals are in (default -1)
+    -D...     specifies conditional
+    -strings#..# range of columns containing string values
+    -check    check for duplicate strings (default off - this is O(n^2))
+    -ascii    source file is ASCII encoded (default)
+    -unicode  source file is Unicode encoded, must be tab delimited
+    -csv      source file is a DataTableIndex, comma seperated file (default)
+    -tab      source file is tab delimited
+    -multifile languages are stored in multiple files (default is off)
+    -lc<char> character to indicate left side of a comment (default none)
+    -rc<char> character to indicate right side of a comment (default none)
+
+Notes: * Column values are 0 based.  Column 'A' in Excel is column 0.
+       * Use -1 to specify a column does not exist
+       * Range syntax for strings is 3..6 for 4 columns of strings
+       * If no string range is given than all left over columns with
+         a column header are considered to have strings.
+       * Conditionals are good when you want to share strings among
+         different platforms.  Put a pc or psx to limit the string
+         to a specific platform.  Use -Dpc to get only pc strings.
+       * If using Unicode you must use tab delimited files
+       * In general tab delimited is better than comma delimited
+       * In order to use the new LOCALE_getstr API you must use the
+         -multifile option to get each language in it's own .loc file.
+       * Pathnames are taking from the top row of each column when
+         using the multifiles.
+       * Use -lc and -rc to allow for comments in the strings
+         ie, "[winning team name] defeat [losing team name]."
+         Use these options to handle the above example -lc[ -rc]
+
+
+locomoto -h    # for this help
+locomoto -help # for web page

@@ -1,0 +1,347 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "BandTest"=.\BandTest\BandTest.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BinkMovie"=.\BinkMovie\BinkMovie.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Combat"=.\combat\Combat.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "GameSpy"=.\GameSpy\GameSpy.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LevelEdit"=.\Tools\LevelEdit\LevelEdit.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SControl"=.\SControl\SControl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Scripts"=.\Scripts\Scripts.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WWAudio"=.\WWAudio\WWAudio.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WWConfig"=.\Tools\WWConfig\WWConfig.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WWCtrl"=.\Tools\WWCtrl\WWCtrl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "commando"=.\Commando\commando.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name Scripts
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwdebug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwlib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwmath
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwnet
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwphys
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwutil
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name WWAudio
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwsaveload
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Combat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwtranslatedb
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwbitpack
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ww3d2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwui
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BinkMovie
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name BandTest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SControl
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name GameSpy
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "max2w3d"=.\Tools\max2w3d\max2w3d.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ww3d2"=.\ww3d2\ww3d2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwbitpack"=.\wwbitpack\wwbitpack.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwdebug"=.\wwdebug\wwdebug.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwlib"=.\wwlib\wwlib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwmath"=.\WWMath\wwmath.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwnet"=.\wwnet\wwnet.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwphys"=.\wwphys\wwphys.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwsaveload"=.\wwsaveload\wwsaveload.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwtranslatedb"=.\wwtranslatedb\wwtranslatedb.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwui"=.\wwui\wwui.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwutil"=.\wwutil\wwutil.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

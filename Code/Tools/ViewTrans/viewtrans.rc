@@ -1,0 +1,139 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_VIEWTRANS DIALOG DISCARDABLE  0, 0, 108, 323
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Node Transform",IDC_STATIC,1,101,103,89
+    LTEXT           "00.000",IDC_NODETM_0,11,124,23,8
+    LTEXT           "00.000",IDC_NODETM_1,40,124,23,8
+    LTEXT           "00.000",IDC_NODETM_2,71,124,23,8
+    LTEXT           "00.000",IDC_NODETM_3,11,135,23,8
+    LTEXT           "00.000",IDC_NODETM_4,40,135,23,8
+    LTEXT           "00.000",IDC_NODETM_5,71,135,23,8
+    LTEXT           "00.000",IDC_NODETM_6,11,146,23,8
+    LTEXT           "00.000",IDC_NODETM_7,40,146,23,8
+    LTEXT           "00.000",IDC_NODETM_8,71,146,23,8
+    LTEXT           "3x3 Sub-Matrix",IDC_STATIC,8,111,48,8
+    LTEXT           "Translation:",IDC_STATIC,8,161,38,8
+    LTEXT           "00.000",IDC_NODETM_9,11,172,23,8
+    LTEXT           "00.000",IDC_NODETM_10,40,172,23,8
+    LTEXT           "00.000",IDC_NODETM_11,71,172,23,8
+    GROUPBOX        "Object Transform",IDC_STATIC,1,5,103,89
+    LTEXT           "00.000",IDC_OBJTM_0,11,31,23,8
+    LTEXT           "00.000",IDC_OBJTM_1,40,31,23,8
+    LTEXT           "00.000",IDC_OBJTM_2,72,31,23,8
+    LTEXT           "00.000",IDC_OBJTM_3,11,42,23,8
+    LTEXT           "00.000",IDC_OBJTM_4,40,42,23,8
+    LTEXT           "00.000",IDC_OBJTM_5,72,42,23,8
+    LTEXT           "00.000",IDC_OBJTM_6,11,53,23,8
+    LTEXT           "00.000",IDC_OBJTM_7,40,53,23,8
+    LTEXT           "00.000",IDC_OBJTM_8,72,53,23,8
+    LTEXT           "3x3 Sub-Matrix",IDC_STATIC,9,18,48,8
+    LTEXT           "Translation:",IDC_STATIC,9,68,38,8
+    LTEXT           "00.000",IDC_OBJTM_9,12,79,23,8
+    LTEXT           "00.000",IDC_OBJTM_10,41,79,23,8
+    LTEXT           "00.000",IDC_OBJTM_11,72,79,23,8
+    GROUPBOX        "Object Offset",IDC_STATIC,1,195,103,123
+    LTEXT           "Rotation Quaternion:",IDC_STATIC,5,257,69,8
+    LTEXT           "00.000",IDC_OBJOFF_ROT_X,38,267,23,8
+    LTEXT           "00.000",IDC_OBJOFF_ROT_Y,38,279,23,8
+    LTEXT           "00.000",IDC_OBJOFF_ROT_Z,38,291,23,8
+    LTEXT           "Translation:",IDC_STATIC,5,208,38,8
+    LTEXT           "00.000",IDC_OBJOFF_TRANS_X,8,219,23,8
+    LTEXT           "00.000",IDC_OBJOFF_TRANS_Y,37,219,23,8
+    LTEXT           "00.000",IDC_OBJOFF_TRANS_Z,68,219,23,8
+    LTEXT           "Scaling:",IDC_STATIC,5,233,38,8
+    LTEXT           "00.000",IDC_OBJOFF_SCALE_X,8,244,23,8
+    LTEXT           "00.000",IDC_OBJOFF_SCALE_Y,37,244,23,8
+    LTEXT           "00.000",IDC_OBJOFF_SCALE_Z,68,244,23,8
+    LTEXT           "00.000",IDC_OBJOFF_ROT_W,38,304,23,8
+    LTEXT           "x:",IDC_STATIC,18,267,8,8
+    LTEXT           "y:",IDC_STATIC,18,279,8,8
+    LTEXT           "z:",IDC_STATIC,18,291,8,8
+    LTEXT           "w:",IDC_STATIC,18,304,8,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_VIEWTRANS, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 134
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

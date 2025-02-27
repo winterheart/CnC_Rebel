@@ -1,0 +1,147 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "asf_resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_IMPORTOPTIONS DIALOG DISCARDABLE  0, 0, 123, 266
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Import DXF File"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,67,231,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,67,247,50,14
+    GROUPBOX        "Derive Objects From:",IDC_STATIC,6,4,112,50
+    CONTROL         "&Layer",IDC_OBJ_LAYER,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,44,17,29,10
+    CONTROL         "&Color",IDC_OBJ_COLOR,"Button",BS_AUTORADIOBUTTON,44,28,
+                    28,10
+    CONTROL         "&Entity",IDC_OBJ_ENTITY,"Button",BS_AUTORADIOBUTTON,44,
+                    38,30,10
+    GROUPBOX        "Weld Vertices:",IDC_STATIC,6,57,112,41
+    RTEXT           "Weld Threshold:",IDC_STATIC,13,72,55,8
+    CONTROL         "",IDC_WELDENTRY,"CustEdit",WS_TABSTOP,69,71,36,10
+    CONTROL         "",IDC_WELDSPINNER,"SpinnerControl",0x0,106,71,7,10
+    CONTROL         "&Weld",IDC_WELD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    47,83,30,10
+    GROUPBOX        "Auto-Smooth:",IDC_STATIC,6,102,112,40
+    RTEXT           "Smooth Angle:",IDC_STATIC,16,117,48,8
+    CONTROL         "",IDC_SMOOTHENTRY,"CustEdit",WS_TABSTOP,65,117,36,10
+    CONTROL         "",IDC_SMOOTHSPINNER,"SpinnerControl",0x0,102,117,7,10
+    CONTROL         "&Auto-Smooth",IDC_AUTOSMOOTH,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,34,128,53,10
+    GROUPBOX        "Arc Degrees:",IDC_STATIC,6,146,112,30
+    RTEXT           "&Degrees:",IDC_STATIC,23,161,31,8
+    CONTROL         "00",IDC_ARCENTRY,"CustEdit",WS_TABSTOP,56,160,36,10
+    CONTROL         "",IDC_ARCSPINNER,"SpinnerControl",0x0,93,160,7,10
+    GROUPBOX        "Miscellaneous:",IDC_STATIC,6,180,112,46
+    CONTROL         "&Remove Double Faces",IDC_REMOVEDOUBLES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,193,85,10
+    CONTROL         "&Fill Polylines",IDC_FILLPOLYLINES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,203,52,10
+    CONTROL         "&Unify Normals",IDC_UNIFYNORMALS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,213,56,10
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "asf_resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LIB_SHORT_DESC      "ASF Import"
+    IDS_LIB_LONG_DESC       "Acclaim Skeleton Format Import DLL"
+    IDS_IMPORTING_ASF       "Importing ASF"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERR_OPENING_FILE    "Error opening file"
+    IDS_TH_OUTOFMEMORY      "Out of memory"
+    IDS_SHORT_DESC          "ASF File"
+    IDS_LONG_DESC           "Acclaim Skeleton Format File"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CATEGORY            "Scene Import"
+    IDS_AUTHOR_NAME         "James McNeill"
+    IDS_COPYRIGHT           "Copyright 1996 Westwood Studios"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BAD_HEADER          "Bad header in CME file."
+    IDS_UNEXPECTED_EOF      "Unexpected end of file in CME file."
+    IDS_NODE_CREATION_ERROR "Node creation error."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

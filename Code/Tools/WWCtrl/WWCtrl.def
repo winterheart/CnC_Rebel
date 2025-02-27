@@ -1,0 +1,13 @@
+; WWCtrl.def : Declares the module parameters for the DLL.
+
+
+DESCRIPTION  'WWCtrl Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+
+	Show_Color_Picker			@2
+	Get_Form_Color				@3
+	Create_Color_Picker_Form	@4
+	Set_Form_Color				@5
+

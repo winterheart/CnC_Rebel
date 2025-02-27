@@ -1,0 +1,230 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Programmer: Moumine Ballo\0"
+            VALUE "CompanyName", "Westwood Studios\0"
+            VALUE "FileDescription", "Shell Extension DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "W3DShellExt\0"
+            VALUE "LegalCopyright", "Copyright © Westwwod Studios 1985-2001\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "W3DShellExt\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "W3DShellExt Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PREVIEW DIALOG DISCARDABLE  0, 0, 238, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            IDI_W3D,IDC_STATIC,6,7,20,20
+    PUSHBUTTON      "Convert to P3D",IDC_TOP3D,175,13,59,14
+    PUSHBUTTON      "Coming soon",IDC_PREVIEW,5,32,229,175,BS_FLAT
+END
+
+IDD_ANIMPAGE DIALOG DISCARDABLE  0, 0, 238, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 8, "MS Shell Dlg"
+BEGIN
+    RTEXT           "Number of Frames : ",IDC_NUMFRAMES_STATIC,51,66,59,8
+    LTEXT           "",IDC_NUMFRAMES,117,66,35,9
+    RTEXT           "Frame Rate : ",IDC_FRAMERATE_STATIC,51,78,59,8
+    LTEXT           "",IDC_FRAMERATE,117,78,35,9
+    RTEXT           "Hierarchy Name : ",IDC_HNAME_STATIC,51,54,59,8
+    LTEXT           "",IDC_HNAME,117,54,70,9
+    ICON            IDI_W3D,IDC_STATIC,6,7,20,20
+    PUSHBUTTON      "Convert to P3D",IDC_TOP3D,174,201,59,14
+    RTEXT           "Animationn Name : ",IDC_ANIMNAME_STATIC,51,42,59,8
+    LTEXT           "",IDC_ANIMNAME,117,42,70,9
+    LTEXT           "NO DATA TO DISPLAY",IDC_NODATA,88,99,84,9
+    GROUPBOX        "Animation :",IDC_STATIC,33,29,173,78
+    RTEXT           "Version :",IDC_FRAMERATE_STATIC2,52,90,59,8
+    LTEXT           "",IDC_ANIMVERSION,118,90,35,9
+    RTEXT           "Number of Pivots : ",IDC_NUMPIVOTRS_STATIC,50,141,59,8
+    LTEXT           "",IDC_NUMPIVOTS,116,141,35,9
+    RTEXT           "Center : ",IDC_CENTER_STATIC,50,154,59,8
+    LTEXT           "",IDC_HCENTER,116,154,86,9
+    RTEXT           "Hierarchy Name :",IDC_HNAME_STATIC2,50,128,59,8
+    LTEXT           "",IDC_HIERARCHYNAME,116,128,70,9
+    GROUPBOX        "Hierarchy",IDC_STATIC,33,111,173,78
+    RTEXT           "Version :",IDC_HVERSION_STATIC,51,167,59,8
+    LTEXT           "",IDC_HIERARCHYVERSION,117,167,35,9
+END
+
+IDD_MESH DIALOGEX 0, 0, 238, 218
+STYLE WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 8, "MS Shell Dlg"
+BEGIN
+    RTEXT           "Mesh Number :",IDC_STATIC,13,55,62,8
+    CTEXT           "",IDC_MESHNUMBER,84,55,9,9
+    CONTROL         "Spin1",IDC_MESHSPIN,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,96,54,11,10
+    RTEXT           "Number of Polygons :",IDC_STATIC,10,94,65,8
+    LTEXT           "",IDC_NUM_POLYS,98,94,125,9
+    RTEXT           "Number of Vertices :",IDC_STATIC,13,106,62,8
+    RTEXT           "Number of Meshes",IDC_STATIC,32,24,60,8
+    RTEXT           "Number of Materials :",IDC_STATIC,13,118,75,8
+    LTEXT           "",IDC_NUM_VERTICES,98,106,125,9
+    LTEXT           "",IDC_NUM_MESHES,99,23,11,9
+    LTEXT           "",IDC_NUM_MATERIALS,98,118,125,9
+    RTEXT           "Dimensions Min.:",IDC_STATIC,13,166,62,8
+    RTEXT           "Dimensions Max :",IDC_STATIC,13,154,62,8
+    LTEXT           "",IDC_MINDIM,98,166,125,9
+    LTEXT           "",IDC_MAXDIM,98,154,125,9
+    RTEXT           "Sphere Center :",IDC_STATIC,13,142,62,8
+    RTEXT           "Sphere Radius :",IDC_STATIC,13,130,62,8
+    LTEXT           "",IDC_SPHERECENTER,98,142,125,9
+    LTEXT           "",IDC_SPHERERADIUS,98,130,125,9
+    ICON            IDI_W3D,IDC_STATIC,5,7,20,20
+    PUSHBUTTON      "Convert to P3D",IDC_TOP3D,174,201,59,14
+    RTEXT           "Container Name",IDC_STATIC,13,82,62,8
+    LTEXT           "",IDC_CONTAINER,98,82,125,9
+    RTEXT           "Mesh Name :",IDC_STATIC,13,70,62,8
+    LTEXT           "",IDC_MESHNAME,98,70,125,9
+    RTEXT           "Version Number :",IDC_STATIC,13,178,62,8
+    LTEXT           "",IDC_VERSION,98,178,125,9
+    GROUPBOX        "Mesh Description",IDC_STATIC,9,39,225,159
+    RTEXT           "Textures :",IDC_STATIC,132,8,30,8
+    LISTBOX         IDC_TEXTURELIST,132,16,89,25,NOT LBS_NOTIFY | LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
+    LTEXT           "NO DATA TO DISPLAY",IDC_NODATA,77,105,84,9
+END
+
+IDD_ANIMPAGE1 DIALOG DISCARDABLE  0, 0, 238, 211
+STYLE WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 8, "MS Shell Dlg"
+BEGIN
+    RTEXT           "Number of Frames",IDC_NUMFRAMES_STATIC,5,58,94,8
+    LTEXT           "",IDC_NUMFRAMES,106,58,35,9
+    RTEXT           "Frame Rate",IDC_FRAMERATE_STATIC,5,71,94,8
+    RTEXT           "Animation Channels",IDC_NUM_MESHES_STATIC,5,84,94,8
+    LTEXT           "",IDC_FRAMERATE,106,71,35,9
+    LTEXT           "",IDC_ANIMATIONCHANNELS,106,84,35,9
+    LTEXT           "",IDC_NUM_MATERIALS,108,97,35,9
+    RTEXT           "Number of Bit Channels",IDC_NUMBITCHANNELS_STATIC,5,123,
+                    94,8
+    RTEXT           "ZMotion",IDC_ZMOTION_STATIC,5,136,94,8
+    LTEXT           "",IDC_NUMBITCHANNELS,106,123,70,9
+    LTEXT           "",IDC_ZMOTION,106,136,70,9
+    RTEXT           "Hierarchy Name",IDC_HNAME_STATIC,5,43,94,8
+    RTEXT           "Number of Animation Channels",
+                    IDC_ANIMATIONCHANNELS_STATIC,5,110,94,8
+    LTEXT           "",IDC_HNAME,106,43,70,9
+    LTEXT           "",IDC_NUMANIMCHANNELS,106,110,35,9
+    ICON            IDI_W3D,IDC_STATIC,6,7,20,20
+    PUSHBUTTON      "Convert to P3D",IDC_TOP3D,174,190,50,14
+    RTEXT           "Animationn Name",IDC_ANIMNAME_STATIC,5,31,94,8
+    LTEXT           "",IDC_ANIMNAME,106,31,70,9
+    LTEXT           "NO DATA TO DISPLAY",IDC_NODATA,77,101,84,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_W3D                 ICON    DISCARDABLE     "W3DView.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

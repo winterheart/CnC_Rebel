@@ -1,0 +1,125 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by PhysTest.rc
+//
+#define IDD_ABOUTBOX                    100
+#define IDR_MAINFRAME                   128
+#define IDR_MAINTOOLBAR                 128
+#define IDR_PHYSTETYPE                  129
+#define IDR_IMPULSE_TOOLBAR             134
+#define IDD_RBODY_PROPERTIES_DIALOG     136
+#define IDD_INERTIA_DIALOG              138
+#define IDD_PHYSICS_CONSTANTS_DIALOG    139
+#define IDD_VJOY_DIALOG                 143
+#define IDD_MOTORVEHICLE_DIALOG         144
+#define IDD_WHEELEDVEHICLE_DIALOG       145
+#define IDD_MOTORCYCLE_DIALOG           149
+#define IDD_RENDER_DEVICE_DIALOG        150
+#define IDC_CURSOR1                     151
+#define IDC_MASS_EDIT                   1000
+#define IDC_ELASTICITY_EDIT             1001
+#define IDC_LDAMPING_EDIT               1001
+#define IDC_GRAVITY_EDIT                1002
+#define IDC_ADAMPING_EDIT               1002
+#define IDC_MASS_SPIN                   1003
+#define IDC_ELASTICITY_SPIN             1004
+#define IDC_LDAMPING_SPIN               1004
+#define IDC_GRAVITY_SPIN                1005
+#define IDC_ADAMPING_SPIN               1005
+#define IDC_IBODYX_EDIT                 1006
+#define IDC_POSITIONX_EDIT              1006
+#define IDC_IBODYX_SPIN                 1007
+#define IDC_POSITIONX_SPIN              1007
+#define IDC_IBODYY_EDIT                 1008
+#define IDC_POSITIONY_EDIT              1008
+#define IDC_WVEHICLE_KD_EDIT            1008
+#define IDC_IBODYY_SPIN                 1009
+#define IDC_POSITIONY_SPIN              1009
+#define IDC_WVEHICLE_KD_SPIN            1009
+#define IDC_IBODYZ_EDIT                 1010
+#define IDC_POSITIONZ_EDIT              1010
+#define IDC_WVEHICLE_LENGTH_EDIT        1010
+#define IDC_IBODYZ_SPIN                 1011
+#define IDC_POSITIONZ_SPIN              1011
+#define IDC_WVEHICLE_LENGTH_SPIN        1011
+#define IDC_STIFFNESS_EDIT              1012
+#define IDC_STIFFNESS_SPIN              1013
+#define IDC_DAMPING_EDIT                1014
+#define IDC_GRAVITYACCEL_EDIT           1015
+#define IDC_DAMPING_SPIN                1015
+#define IDC_GRAVITYACCEL_SPIN           1016
+#define IDC_LENGTH_EDIT                 1016
+#define IDC_MOVEZ_SLIDER                1017
+#define IDC_LENGTH_SPIN                 1017
+#define IDC_MOVEXY_STATIC               1018
+#define IDC_TURNXY_STATIC               1019
+#define IDC_WVEHICLE_KS_EDIT            1019
+#define IDC_TURNZ_SLIDER                1020
+#define IDC_WVEHICLE_KS_SPIN            1020
+#define IDC_MVEHICLE_TORQUE_EDIT        1021
+#define IDC_MVEHICLE_TORQUE_SPIN        1022
+#define IDC_LEAN_K0_EDIT                1023
+#define IDC_LEAN_K0_SPIN                1024
+#define IDC_LEAN_K1_EDIT                1025
+#define IDC_LEAN_K1_SPIN                1026
+#define IDC_BALANCE_K0_EDIT             1027
+#define IDC_BALANCE_K0_SPIN             1028
+#define IDC_RENDER_DEVICE_COMBO         1029
+#define ID_CREATE_RIGID_BODY            32771
+#define ID_OPTIONS_RUN_SIMULATION       32772
+#define ID_OPTIONS_DISPLAY_BOXES        32773
+#define ID_IMPULSE                      32775
+#define ID_COUPLE                       32776
+#define ID_COUPLE_POSY                  32777
+#define ID_COUPLE_NEGY                  32778
+#define ID_COUPLE_POSZ                  32779
+#define ID_COUPLE_NEGZ                  32780
+#define ID_COUPLE_POSX                  32781
+#define ID_COUPLE_NEGX                  32782
+#define ID_IMPULSE_POSX                 32783
+#define ID_IMPULSE_NEGX                 32784
+#define ID_IMPULSE_POSY                 32785
+#define ID_IMPULSE_NEGY                 32786
+#define ID_IMPULSE_POSZ                 32787
+#define ID_IMPULSE_NEGZ                 32788
+#define ID_VIEW_IMPULSETOOLBAR          32802
+#define ID_PROPERTIES                   32804
+#define ID_INERTIA                      32805
+#define ID_OPTIONS_PHYSICS_CONSTANTS    32806
+#define ID_FREEZE_OBJECT                32807
+#define ID_OPTIONS_PHYSICS_DEBUG_DISPLAY 32810
+#define ID_DEBUG_OBJECT                 32812
+#define ID_VIEW_VIRTUALJOYSTICK         32813
+#define ID_OPTIONS_FILLED               32815
+#define ID_OPTIONS_WIREFRAME            32816
+#define ID_OPTIONS_POINT                32817
+#define ID_OPTIONS_POINTS               32819
+#define ID_MOTOR_PROPERTIES             32821
+#define ID_WHEEL_PROPERTIES             32822
+#define ID_OPTIONS_FOLLOW_OBJECT        32823
+#define ID_CAMERA_FOLLOW                32826
+#define ID_CAMERA_FLY                   32827
+#define ID_CAMERA_TETHER                32829
+#define ID_CAMERA_RIGID_TETHER          32830
+#define ID_CREATE_WHEELED_VEHICLE       32833
+#define ID_BUTTON32834                  32834
+#define ID_CREATE_PHYS4                 32835
+#define ID_CREATE_MOTORCYCLE            32836
+#define ID_MOTORCYCLE_PROPERTIES        32838
+#define ID_OPTIONS_RENDER_DEVICE        32839
+#define ID_IMPORT_MODEL                 32840
+#define ID_IMPORT_LEV                   32841
+#define ID_FILE_IMPORT_MODEL            32842
+#define ID_FILE_IMPORT_LEV              32843
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_3D_CONTROLS                     1
+#define _APS_NEXT_RESOURCE_VALUE        152
+#define _APS_NEXT_COMMAND_VALUE         32844
+#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

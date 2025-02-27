@@ -1,0 +1,90 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "skeleton"=.\hueshift.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/VSS_Sync/ww3d2/skeleton", PQCEAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ww3d2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwmath
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwlib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ww3d2"=..\ww3d2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Commando/Code/ww3d2", QFBEAAAA
+    ..
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwlib"=..\..\wwlib\wwlib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Commando/Code/wwlib", KOGAAAAA
+    ..\..\wwlib
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wwmath"=..\..\wwmath\wwmath.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Commando/Code/wwmath", UEFAAAAA
+    ..\..\wwmath
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

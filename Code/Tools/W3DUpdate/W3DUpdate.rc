@@ -1,0 +1,294 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\W3DUpdate.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\W3DUpdate.ico"
+IDI_COPY                ICON    DISCARDABLE     "res\\icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_W3DUPDATE_DIALOG DIALOGEX 0, 0, 306, 213
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "W3D Update"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_COPY,IDC_STATIC,7,7,20,20
+    LTEXT           "Select the W3D applications you wish to update on your machine.  Note:  If you select 'Clean' all files in the application directory WILL BE DELETED.",
+                    IDC_STATIC,42,7,246,26
+    GROUPBOX        "&Applications",IDC_STATIC,7,39,292,143
+    CONTROL         "W3D&Viewer",IDC_VIEWER_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,16,57,52,10
+    CONTROL         "Clean",IDC_VIEWER_CLEAN_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,71,57,34,10
+    PUSHBUTTON      "<directory>",IDC_VIEWER_DIR_BUTTON,111,55,179,14
+    CONTROL         "&Max3 Plugin",IDC_PLUGIN_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,73,52,10
+    CONTROL         "Clean",IDC_PLUGIN_CLEAN_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,71,73,34,10
+    PUSHBUTTON      "<directory>",IDC_PLUGIN_DIR_BUTTON,111,71,179,14
+    CONTROL         "&WDump",IDC_WDUMP_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,90,41,10
+    CONTROL         "Clean",IDC_WDUMP_CLEAN_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,71,90,34,10
+    PUSHBUTTON      "<directory>",IDC_WDUMP_DIR_BUTTON,111,88,179,14
+    CONTROL         "&Renegade Dazzles",IDC_RENEGDAZZLE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,165,90,10
+    DEFPUSHBUTTON   "OK",IDOK,56,192,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,122,192,50,14
+    PUSHBUTTON      "Defaults",IDC_DEFAULTS,188,192,50,14
+    CONTROL         "&Max4 Plugin",IDC_MAX4_PLUGIN_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,108,52,10
+    CONTROL         "Clean",IDC_MAX4_PLUGIN_CLEAN_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,71,108,34,10
+    PUSHBUTTON      "<directory>",IDC_MAX4_PLUGIN_DIR_BUTTON,111,106,179,14
+    CONTROL         "&W3D Shell Extension",IDC_W3DSHELLEXT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,140,78,10
+    CONTROL         "&GMax",IDC_GMAX_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,124,52,10
+    CONTROL         "Clean",IDC_GMAX_CLEAN_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,71,123,34,10
+END
+
+IDD_FILE_COPY DIALOGEX 0, 0, 210, 79
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Updating Application..."
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Animate1",IDC_ANIMATE_CTRL,"SysAnimate32",ACS_CENTER | 
+                    ACS_TRANSPARENT | ACS_AUTOPLAY | WS_TABSTOP,7,23,196,34
+    LTEXT           "Building file list...",IDC_FILENAME_TEXT,7,60,196,8
+    LTEXT           "Application:",IDC_CURRENT_APP,7,7,196,8
+END
+
+IDD_DIR_SELECT_DIALOG DIALOG DISCARDABLE  36, 24, 268, 134
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Open"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "&Folder Name:",1090,6,6,76,9
+    EDITTEXT        1152,6,16,90,12,ES_AUTOHSCROLL | ES_OEMCONVERT
+    LTEXT           "",1088,110,16,96,9,SS_NOPREFIX
+    LISTBOX         1121,110,32,96,68,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Dri&ves:",1091,110,104,96,9
+    COMBOBOX        1137,110,114,96,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,212,6,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,212,24,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,212,46,50,14,WS_GROUP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "W3DUpdate MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "W3DUpdate\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "W3DUpdate.EXE\0"
+            VALUE "ProductName", "W3DUpdate Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_W3DUPDATE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 299
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 206
+    END
+
+    IDD_FILE_COPY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_FILECOPY_AVI        AVI     DISCARDABLE     "res\\Filecopy.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COPYFAIL            "Cannot copy %s to %s.  Please make sure no applications are running before running the update."
+    IDS_SYSTEMDLL           "The changes will take effect after you reboot the computer."
+    IDS_SHELLEXT_CLSID      "CLSID\\{556F8779-49C4-4e88-9CEF-0AC2CFD6B763}"
+    IDS_SHELLEXT_NAME       "W3D Shell Extension"
+    IDS_SHELLEXT_DLLNAME    "W3Dshellext.dll"
+    IDS_W3DSHELLEXT_THMODEL "ThreadingModel"
+    IDS_W3DSHELLEXT_APARTMENT "Apartment"
+    IDS_W3DFILEEXT          ".w3d"
+    IDS_W3DFILETEXT         "W3DFile"
+    IDS_W3DFILEKEY          "HKEY_CLASSES_ROOT\\W3DFile"
+    IDS_CTXMENUHANDLERS     "W3DFile\\shellex\\ContextMenuHandlers"
+    IDS_W3DMENU_TEXT        "W3DCtxMenu"
+    IDS_W3DCTXMENU_KEY      "W3DFile\\shellex\\ContextMenuHandlers\\W3DCtxMenu"
+    IDS_W3DSHELLEXT_GUID    "{556F8779-49C4-4e88-9CEF-0AC2CFD6B763}"
+    IDS_W3DPROPSHEETHANDLERS "W3DFile\\shellex\\PropertySheetHandlers"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_W3DPROPPAGE_TEXT    "W3DPropertyPage"
+    IDS_W3DPROPPAGE_KEY     "W3DFile\\shellex\\PropertySheetHandlers\\W3DPropertyPage"
+    IDS_MSEXTENSIONS_KEY    "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Approved"
+    IDS_W3DSHELLEXT_TEXT    "W3D Shell Extension"
+    IDS_W3DDEFAULTICON_TEXT "%SystemRoot%\\system32\\W3DShellExt.dll,0"
+    IDS_W3DDEFAULTICON_KEY  "W3DFile\\DefaultIcon"
+    IDS_OPENWITH            "W3DFile\\Shell\\Open\\Command"
+    IDS_VIEWERCOMMAND       "\\W3DVIEW.EXE %1"
+    IDS_GMAXRENX_PATH       "Gamepacks\\Westwood\\RenX"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\W3DUpdate.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
