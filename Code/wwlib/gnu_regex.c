@@ -102,7 +102,7 @@
 #  define gettext_noop(msgid) msgid
 # else
 /* This is for other GNU distributions with internationalized messages.  */
-#  include "gettext.h"
+//#  include "gettext.h"
 # endif
 
 /* Support for bounded pointers.  */
@@ -193,7 +193,7 @@ char *realloc ();
 # endif
 
 /* Get the interface, including the syntax bits.  */
-# include <regex.h>
+# include "gnu_regex.h"
 
 /* isalpha etc. are used for the character classes.  */
 # include <ctype.h>
@@ -627,12 +627,12 @@ typedef enum
 #  ifdef MBS_SUPPORT
 #   define WCHAR
 #   define INSIDE_RECURSION
-#   include "regex.c"
+#   include "gnu_regex.c"
 #   undef INSIDE_RECURSION
 #  endif
 #  define BYTE
 #  define INSIDE_RECURSION
-#  include "regex.c"
+#  include "gnu_regex.c"
 #  undef INSIDE_RECURSION
 # endif
 #endif
@@ -1356,6 +1356,7 @@ weak_alias (__re_set_syntax, re_set_syntax)
    POSIX doesn't require that we do anything for REG_NOERROR,
    but why not be nice?  */
 
+#if 0
 static const char re_error_msgid[] =
   {
 # define REG_NOERROR_IDX	0
@@ -1430,6 +1431,8 @@ static const size_t re_error_msgid_idx[] =
     REG_ESIZE_IDX,
     REG_ERPAREN_IDX
   };
+#endif
+
 
 #endif /* INSIDE_RECURSION */
 
@@ -7997,7 +8000,8 @@ re_compile_pattern (pattern, length, bufp)
 
   if (!ret)
     return NULL;
-  return gettext (re_error_msgid + re_error_msgid_idx[(int) ret]);
+  return "SOME ERROR HAPPEN";
+  //return gettext (re_error_msgid + re_error_msgid_idx[(int) ret]);
 }
 #ifdef _LIBC
 weak_alias (__re_compile_pattern, re_compile_pattern)
@@ -8292,16 +8296,21 @@ regerror (errcode, preg, errbuf, errbuf_size)
   size_t msg_size;
 
   if (errcode < 0
+#if 0
       || errcode >= (int) (sizeof (re_error_msgid_idx)
 			   / sizeof (re_error_msgid_idx[0])))
+#endif
+  )
     /* Only error codes returned by the rest of the code should be passed
        to this routine.  If we are given anything else, or if other regex
        code generates an invalid error code, then the program has a bug.
        Dump core so we can fix it.  */
     abort ();
-
+#if 0
   msg = gettext (re_error_msgid + re_error_msgid_idx[errcode]);
+#endif
 
+  msg = "SOME MESSAGE";
   msg_size = strlen (msg) + 1; /* Includes the null.  */
 
   if (errbuf_size != 0)
