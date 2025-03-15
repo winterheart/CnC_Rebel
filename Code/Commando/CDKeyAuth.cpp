@@ -36,10 +36,13 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#ifdef ENABLE_GAMESPY
 #include <GameSpy\gcdkeyserver.h>
 #include <GameSpy\gcdkeyclient.h>
 #include <GameSpy\nonport.h>
 #include <GameSpy\gs_md5.h>
+#endif
+
 #include <stdlib.h>
 #include "wwdebug.h"
 #include "CDKeyAuth.h"
@@ -107,23 +110,26 @@ void CCDKeyAuth::auth_callback(int localid, int authenticated, char *errmsg, voi
 }
 
 void CCDKeyAuth::DisconnectUser(int localid) {
+#ifdef ENABLE_GAMESPY
 	gcd_disconnect_user(localid);
+#endif
 
 }
 
 void CCDKeyAuth::AuthenticateUser(int localid, ULONG ip, char *challenge, char *authstring) {
-
+#ifdef ENABLE_GAMESPY
 	// Customize this with our playerdata struct
 	// Take the response from our challenge that we sent to the client
 	// and send it off to the Authserver along with the original challenge
 
 	gcd_authenticate_user(localid, ip, challenge, authstring, CCDKeyAuth::auth_callback, NULL);
+#endif
 
 }
 
-
 void CCDKeyAuth::AuthSerial(const char *challenge, StringClass &resp) {
 
+#ifdef ENABLE_GAMESPY
 	char response[RESPONSE_SIZE];
 	StringClass sserial;
 
@@ -154,6 +160,7 @@ void CCDKeyAuth::AuthSerial(const char *challenge, StringClass &resp) {
 
 	delete [] cdkey;
 	resp = response;
+#endif
 }
 
 void CCDKeyAuth::GetSerialNum(StringClass &serial) {

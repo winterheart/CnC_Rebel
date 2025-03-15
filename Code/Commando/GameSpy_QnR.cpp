@@ -34,8 +34,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#ifdef ENABLE_GAMESPY
 #include <Gamespy\gs_patch_usage.h>
 #include <Gamespy\gcdkeyserver.h>
+#endif
+
 #include "specialbuilds.h"
 #include "dlgcncteaminfo.h"
 #include "resource.h"
@@ -224,7 +227,7 @@ void CGameSpyQnR::LaunchArcade(void) {
 }
 void CGameSpyQnR::Shutdown(void) {
 
-#ifndef BETACLIENT
+#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
 	if (m_GSInit) {
 		/*
 		We don't really need to set the mode to exiting here, since we immediately
@@ -251,14 +254,16 @@ void CGameSpyQnR::TrackUsage(void) {
 	b.Format("%s %s V%d.%3.3d(%s-%d)", "Win-X86", bname, (ver&0xffff0000)>>16, ver&0xffff, 
 		BuildInfoClass::Get_Builder_Initials(), BuildInfoClass::Get_Build_Number());
 
+#ifdef ENABLE_GAMESPY
 	// Send off usage Tracking info to GameSpy
 	ptTrackUsage(0, prodid, b.Peek_Buffer(), (cUserOptions::Sku.Get()&0xff)+438, false); 
+#endif
 #endif // WWDEBUG
 }
 
 void CGameSpyQnR::Init(void) {
 
-#ifndef BETACLIENT
+#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
 
 	if (m_GSEnabled && !m_GSInit && The_Game() && The_Game()->Get_Game_Type() == cGameData::GAME_TYPE_CNC) {
 	
@@ -325,7 +330,7 @@ void CGameSpyQnR::Think()
 		ttime = TIMEGETTIME();
 	}
 	
-#ifndef BETACLIENT
+#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
 //	DoGameStuff();
 	if (m_GSInit && m_GSEnabled && GameInitMgrClass::Is_LAN_Initialized() &&
 			!CombatManager::Is_Loading_Level()) {
@@ -562,7 +567,9 @@ BOOL CGameSpyQnR::Parse_HeartBeat_List(const char *list) {
 
 	char *t = str;
 
+#ifdef ENABLE_GAMESPY
 	clear_master_list();
+#endif
 
 	while (t) {
 		WORD port = 27900;
@@ -580,11 +587,13 @@ BOOL CGameSpyQnR::Parse_HeartBeat_List(const char *list) {
 		}
 		// skip white space
 		while (*t == ' ' || *t == '\t') t++;
+#ifdef ENABLE_GAMESPY
 		// process the address
 		if (*t && get_sockaddrin(t, port, &taddr, NULL)) {
 			add_master(&taddr);
 			master_added = true;
 		}
+#endif
 		t = q;
 	}
 

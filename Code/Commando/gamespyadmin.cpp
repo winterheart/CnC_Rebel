@@ -32,7 +32,9 @@
 #include "cnetwork.h"
 #include "dlgmpconnect.h"
 #include "gamespy_qnr.h"
+#ifdef ENABLE_GAMESPY
 #include <Gamespy\ghttp.h>
+#endif
 #include "useroptions.h"
 #include "renegadedialogmgr.h"
 #include "dialogtests.h"
@@ -84,9 +86,9 @@ cGameSpyAdmin::Think
 			}
 		}
 	}
-
+#ifdef ENABLE_GAMESPY
 	ghttpThink();
-
+#endif
 
 #ifndef MULTIPLAYERDEMO
 	if (cNetwork::I_Am_Server()) 
