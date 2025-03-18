@@ -39,7 +39,7 @@
 #include "debug.h"
 #include "timemgr.h"
 
-
+#define INITGUID
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
@@ -161,9 +161,15 @@ void DirectInput::Init( void )
 		hr = DIKeyboardDevice->Acquire();
 		if ( FAILED(hr) ) {
 			Debug_Say(( "DirectInput Keyboard Failed to Aquire\n" ));
-			if (hr == DIERR_INVALIDPARAM) WWDEBUG_SAY(("DIERR_INVALIDPARAM\n"));
-			if (hr == DIERR_NOTINITIALIZED) WWDEBUG_SAY(("DIERR_NOTINITIALIZED\n"));
-			if (hr == DIERR_OTHERAPPHASPRIO) WWDEBUG_SAY(("DIERR_OTHERAPPHASPRIO\n"));
+			if (hr == DIERR_INVALIDPARAM) {
+				WWDEBUG_SAY(("DIERR_INVALIDPARAM\n"));
+			}
+			if (hr == DIERR_NOTINITIALIZED) {
+				WWDEBUG_SAY(("DIERR_NOTINITIALIZED\n"));
+			}
+			if (hr == DIERR_OTHERAPPHASPRIO) {
+				WWDEBUG_SAY(("DIERR_OTHERAPPHASPRIO\n"));
+			}
 		}
 
 //		Debug_Say(( "DirectInput Keyboard Ready\n" ));
@@ -200,9 +206,15 @@ void DirectInput::Init( void )
 		hr = DIMouseDevice->Acquire();
 		if ( FAILED(hr) ) {
 			Debug_Say(( "DirectInput Mouse Failed to Aquire\n" ));
-			if (hr == DIERR_INVALIDPARAM) WWDEBUG_SAY(("DIERR_INVALIDPARAM\n"));
-			if (hr == DIERR_NOTINITIALIZED) WWDEBUG_SAY(("DIERR_NOTINITIALIZED\n"));
-			if (hr == DIERR_OTHERAPPHASPRIO) WWDEBUG_SAY(("DIERR_OTHERAPPHASPRIO\n"));
+			if (hr == DIERR_INVALIDPARAM) {
+				WWDEBUG_SAY(("DIERR_INVALIDPARAM\n"));
+			}
+			if (hr == DIERR_NOTINITIALIZED) {
+				WWDEBUG_SAY(("DIERR_NOTINITIALIZED\n"));
+			}
+			if (hr == DIERR_OTHERAPPHASPRIO) {
+				WWDEBUG_SAY(("DIERR_OTHERAPPHASPRIO\n"));
+			}
 		}
 
 //		Debug_Say(( "DirectInput Mouse Ready\n" ));
