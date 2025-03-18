@@ -45,7 +45,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /I "..\directx" /I "..\sr\h" /I "..\sr\devs.h" /I "..\sr\sr.h" /I "..\wwmath" /I "..\ww3d" /I "..\library" /I "..\glide" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "OBSIDIAN" /YX /FD /c
-# ADD CPP /nologo /MTd /W4 /Gi /ZI /Od /I "..\DirectX\include" /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
+# ADD CPP /nologo /MTd /W4 /Gi /ZI /Od /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo /o"Debug/renegade.bsc"
 LINK32=link.exe
 # ADD BASE LINK32 ddraw.lib wwmathd.lib ww3dd.lib libraryd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib msdsrast.lib srvc4db.lib glide2x.lib /nologo /subsystem:windows /debug /machine:I386
-# ADD LINK32 ..\directx\lib\d3dx8.lib dinput.lib wwui.lib wwaudio.lib ..\miles6\lib\win\mss32.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\RenegadeD.pdb" /map:"..\..\Run\RenegadeD.map" /debug /machine:I386 /out:"..\..\Run\RenegadeD.exe" /libpath:"../libs/debug" /libpath:"../srsdk1x/msvc6\lib\debug" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\BinkMovie"
+# ADD LINK32 d3dx8.lib dxguid.lib dinput8.lib wwui.lib wwaudio.lib mss32.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\RenegadeD.pdb" /map:"..\..\Run\RenegadeD.map" /debug /machine:I386 /out:"..\..\Run\RenegadeD.exe" /libpath:"../libs/debug" /libpath:"../srsdk1x/msvc6\lib\debug" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\third_party\miles6\lib\win" /libpath:"..\third_party\bink\lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "commando - Win32 Release"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /I "..\sr\h" /I "..\sr\devs.h" /I "..\sr\sr.h" /I "..\wwmath" /I "..\ww3d" /I "..\library" /I "..\glide" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "OBSIDIAN" /YX /FD /c
-# ADD CPP /nologo /MT /W4 /Zi /O2 /Ob2 /I "..\wol" /I "..\network" /I "..\wwsound" /I "..\shell" /I "..\modes" /I "..\lan" /I "..\DirectX\include" /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
+# ADD CPP /nologo /MT /W4 /Zi /O2 /Ob2 /I "..\wol" /I "..\network" /I "..\wwsound" /I "..\shell" /I "..\modes" /I "..\lan" /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib ddraw.lib msdsrast.lib srvc4.lib library.lib wwmath.lib ww3d.lib glide2x.lib /nologo /subsystem:windows /machine:I386 /out:"..\..\run\commando_fx.exe"
-# ADD LINK32 ..\DirectX\lib\d3dx8.lib dinput.lib wwui.lib wwaudio.lib ..\miles6\lib\win\mss32.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\Renegade.pdb" /map:"..\..\Run\Renegade.map" /debug /machine:I386 /out:"..\..\Run\Renegade.exe" /libpath:"../libs/release" /libpath:"../srsdk1x/msvc6\lib\release" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\BinkMovie"
+# ADD LINK32 d3dx8.lib dxguid.lib dinput8.lib wwui.lib wwaudio.lib mss32.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\Renegade.pdb" /map:"..\..\Run\Renegade.map" /debug /machine:I386 /out:"..\..\Run\Renegade.exe" /libpath:"../libs/release" /libpath:"../srsdk1x/msvc6\lib\release" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\third_party\miles6\lib\win" /libpath:"..\third_party\bink\lib"
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
@@ -105,7 +105,7 @@ PostBuild_Cmds=rebase -v -x ..\..\Run\. -a -b 400000 ..\..\Run\Renegade.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /I "..\sr\h" /I "..\sr\devs.h" /I "..\sr\sr.h" /I "..\glide" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\library" /I "..\wwdebug" /I "..\directx\inc" /I "..\sr130\sr.h" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "DIRECTX" /YX /FD /c
-# ADD CPP /nologo /MT /W4 /Zi /O2 /Op /Ob2 /I "..\wol" /I "..\network" /I "..\wwsound" /I "..\shell" /I "..\modes" /I "..\lan" /I "..\DirectX\include" /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
+# ADD CPP /nologo /MT /W4 /Zi /O2 /Op /Ob2 /I "..\wol" /I "..\network" /I "..\wwsound" /I "..\shell" /I "..\modes" /I "..\lan" /I "..\\" /I "..\wwui" /I "..\wwbitpack" /I "..\combat" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /I "..\BinkMovie" /I "..\scontrol" /I "..\GameSpy" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "DIRECTX" /D "WIN32" /Fr /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o /win32 "NUL"
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -115,7 +115,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 sr.lib wwmath.lib kernel32.lib wwphys.lib ww3d.lib library.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib ddraw.lib dinput.lib dxguid.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"LIBC" /out:"..\..\run\cmdo_r.exe" /libpath:"../libs/release" /libpath:"../sr130/release" /libpath:"../directx\lib"
-# ADD LINK32 ..\DirectX\lib\d3dx8.lib dinput.lib wwui.lib ..\miles6\lib\mss32.lib wwaudio.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\RenegadeP.pdb" /map:"..\..\Run\RenegadeP.map" /debug /machine:I386 /out:"..\..\Run\RenegadeP.exe" /libpath:"../libs/profile" /libpath:"../srsdk1x/msvc6/lib/release" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\BinkMovie"
+# ADD LINK32 d3dx8.lib dxguid.lib dinput8.lib wwui.lib mss32.lib wwaudio.lib wwsaveload.lib ww3d2.lib wwdebug.lib wwlib.lib wwmath.lib wwnet.lib wwphys.lib wwutil.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib dxguid.lib dsound.lib vfw32.lib wsock32.lib kernel32.lib shell32.lib combat.lib wwtranslatedb.lib version.lib binkmovie.lib binkw32.lib bandtest.lib scontrol.lib /nologo /subsystem:windows /pdb:"..\..\Run\RenegadeP.pdb" /map:"..\..\Run\RenegadeP.map" /debug /machine:I386 /out:"..\..\Run\RenegadeP.exe" /libpath:"../libs/profile" /libpath:"../srsdk1x/msvc6/lib/release" /libpath:"../directx\lib" /libpath:"../umbra/lib/win32-x86" /libpath:"..\third_party\miles6\lib\win" /libpath:"..\third_party\bink\lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

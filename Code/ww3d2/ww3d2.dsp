@@ -45,7 +45,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /FD /c
+# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
@@ -69,7 +69,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /Fr /YX /FD /c
+# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /Fr /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -92,7 +92,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Profile"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /I "..\srsdk\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /FD /c
+# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
@@ -116,7 +116,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "ProfileE"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /Gm /Gi /GX /Zi /O2 /I "..\srsdk1x\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Gm /Gi /Zi /O2 /I "..\srsdk1x\include" /I "..\DirectX\Inc" /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /Gm /Gi /Zi /O2 /I "..\srsdk1x\include" /I "..\DirectX\Inc" /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "NDEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "PARAM_EDITING_ON" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -139,7 +139,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "DebugE"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W4 /Gm /Gi /GX /ZI /Od /I "..\srsdk1x\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /Fr /YX /FD /c
-# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\srsdk1x\include" /I "..\DirectX\Inc" /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "PARAM_EDITING_ON" /Fr /YX /FD /c
+# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\srsdk1x\include" /I "..\DirectX\Inc" /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "PARAM_EDITING_ON" /Fr /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -161,8 +161,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Debug_Compressed"
 # PROP Intermediate_Dir "Debug_Compressed"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W4 /Gm /Gi /GR /GX /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /Fr /YX /FD /c
-# ADD CPP /nologo /MTd /W4 /Gm /Gi /GR /GX /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "VIEW_COMPRESSED" /Fr /YX /FD /c
+# ADD BASE CPP /nologo /MDd /W4 /Gm /Gi /GR /GX /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /Fr /YX /FD /c
+# ADD CPP /nologo /MTd /W4 /Gm /Gi /GR /GX /ZI /Od /I "..\DirectX\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\wwcpuid" /I "..\wwsaveload" /I "..\wwaudio" /I "..\third_party\miles6\include" /D "_DEBUG" /D "WWDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WIN32" /D "VIEW_COMPRESSED" /Fr /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
