@@ -107,7 +107,9 @@
 #include "dazzle.h"
 #include "skinpackagemgr.h"
 #include "modpackagemgr.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
+#endif
 #include "gamespyadmin.h"
 #include "shutdown.h"
 #include "specialbuilds.h"
@@ -1081,7 +1083,9 @@ bool Game_Init(void)
 	//
 	// Send our Spy Usage Info off to Gamespy
 	//
+#ifdef ENABLE_GAMESPY
 	GameSpyQnR.TrackUsage();
+#endif
 
 	return true;
 }

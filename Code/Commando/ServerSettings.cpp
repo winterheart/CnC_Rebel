@@ -54,7 +54,9 @@
 #include "servercontrol.h"
 #include "gamesideservercontrol.h"
 #include "autostart.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
+#endif
 #include "bandwidthcheck.h"
 
 
@@ -197,7 +199,9 @@ bool ServerSettingsClass::Parse(bool apply)
 		} else if (stricmp(game_type, "GameSpy") == 0) {
 			wol = false;
 			cGameSpyAdmin::Set_Is_Server_Gamespy_Listed(true);
+#ifdef ENABLE_GAMESPY
 			GameSpyQnR.Enable_Reporting(true);
+#endif
 			GameMode = MODE_GAMESPY;
 		} else {
 			WWDEBUG_SAY(("Bad game type specified in server.ini\n"));
@@ -210,11 +214,12 @@ bool ServerSettingsClass::Parse(bool apply)
 		** Parse the list of GameSpy Style Master servers from the HeartBeat List
 		*/
 		heartbeat_list[sizeof(heartbeat_list)-1] = 0;
+#ifdef ENABLE_GAMESPY
 		ini.Get_String(MasterServerSection, "HeartBeatServers", GameSpyQnR.Get_Default_HeartBeat_List(), heartbeat_list, sizeof(heartbeat_list)-1);
 		if (!GameSpyQnR.Parse_HeartBeat_List(heartbeat_list)) {
 			GameSpyQnR.Parse_HeartBeat_List(GameSpyQnR.Get_Default_HeartBeat_List());
 		}
-
+#endif
 		/*
 		** Make sure the master server settings file is there.
 		*/

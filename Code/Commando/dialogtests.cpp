@@ -88,7 +88,9 @@
 #include "gamespyadmin.h"
 #include "dlgmpwolmain.h"
 #include "specialbuilds.h"
+#ifdef ENABLE_GAMESPY
 #include "gamespy_qnr.h"
+#endif
 #include <WWUI\ImageCtrl.h>
 #include "bandwidthcheck.h"
 
@@ -462,7 +464,9 @@ GameSpyMainDialogClass::On_Command (int ctrl_id, int mesage_id, DWORD param)
 	{
 		case IDC_MENU_GAMESPY_JOIN:
 		{
+#ifdef ENABLE_GAMESPY
 			GameSpyQnR.LaunchArcade();
+#endif
 			extern void Stop_Main_Loop (int);
 			Stop_Main_Loop(EXIT_SUCCESS);
 			break;
@@ -511,7 +515,9 @@ void GameSpyMainDialogClass::Host_Game(void) {
 	//  Enable GameSpy Code
 	//
 	cGameSpyAdmin::Set_Is_Server_Gamespy_Listed(true);
+#ifdef ENABLE_GAMESPY
 	GameSpyQnR.Enable_Reporting(TRUE);
+#endif
 	
 	//
 	//	Create the new game data

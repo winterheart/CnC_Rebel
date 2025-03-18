@@ -64,8 +64,9 @@
 #include "consolemode.h"
 #include "gamespyadmin.h"
 #include "demosupport.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
-
+#endif
 
 /*
 **
@@ -113,7 +114,9 @@ void _Game_Main_Loop_Loop(void)
 }
 
 {	WWPROFILE("GameSpy_QnR");
+#ifdef ENABLE_GAMESPY
 	GameSpyQnR.Think();
+#endif
 }
 
 	if (cGameSpyAdmin::Is_Gamespy_Game()) {

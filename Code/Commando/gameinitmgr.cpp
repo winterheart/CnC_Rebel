@@ -75,7 +75,9 @@
 #include "hud.h"
 #include "gamespyadmin.h"
 #include "serversettings.h"
+#ifdef ENABLE_GAMESPY
 #include "gamespy_qnr.h"
+#endif
 #include "specialbuilds.h"
 #include "modpackagemgr.h"
 
@@ -307,10 +309,12 @@ GameInitMgrClass::End_Game (void)
 	}
 #endif // !MULTIPLAYERDEMO
 
+#ifdef ENABLE_GAMESPY
 	// Stop reporting to Gamespy.
 	if (Mode == MODE_LAN && GameSpyQnR.IsEnabled()) {
 		GameSpyQnR.Shutdown();
 	}
+#endif
 
 	//
 	// A dedicated server will disable sfx & music. Restore them here.
@@ -480,7 +484,9 @@ GameInitMgrClass::Display_End_Game_Menu (void)
 		case MODE_LAN:
 			//GAMESPY
 			if (cGameSpyAdmin::Is_Gamespy_Game()) {
+#ifdef ENABLE_GAMESPY
 				RenegadeDialogMgrClass::Goto_Location (RenegadeDialogMgrClass::LOC_GAMESPY_MAIN);
+#endif
 			} else {
 				RenegadeDialogMgrClass::Goto_Location (RenegadeDialogMgrClass::LOC_LAN_MAIN);
 			}

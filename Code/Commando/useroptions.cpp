@@ -43,7 +43,9 @@
 #include "serversettings.h"
 #include "autostart.h"
 #include "consolemode.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
+#endif
 #include "gamespyadmin.h"
 #include "specialbuilds.h"
 #include "useroptions.h"
@@ -177,7 +179,9 @@ bool cUserOptions::Parse_Command_Line(LPCSTR command)
 					registry.Set_Int(AutoRestartClass::REG_VALUE_AUTO_RESTART_TYPE, 0);
 				}
 				cGameSpyAdmin::Set_Is_Server_Gamespy_Listed(true);
+#ifdef ENABLE_GAMESPY
 				GameSpyQnR.Enable_Reporting(true);
+#endif
 			}
 			continue;
 		}
