@@ -2,6 +2,10 @@
 # Ignore RUNable folder
 [Rr]un
 
+# Third party libraries
+third_party/miles6
+third_party/bink
+
 # Dependencies
 [Ll]ibs/
 Miles6/
