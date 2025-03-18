@@ -43,10 +43,9 @@ RSC=rc.exe
 # PROP Intermediate_Dir "DebugE"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\wwctrl" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\wwctrl" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
 # SUBTRACT BASE CPP /Gf /Fr
-# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\NvDXTLib\Inc" /I "..\..\directX\include" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /Yu"stdafx.h" /FD /c
-# SUBTRACT CPP /Gf /Fr
+# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\third_party\NvDXTLib\Inc" /I "..\..\directX\include" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
@@ -55,10 +54,10 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 wwctrld.lib srdb.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib combat.lib wwaudio.lib ..\..\miles6\lib\win\mss32.lib wwdebug.lib wwmath.lib ww3d.lib wwphys.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveload.lib "..\..\Graphics APIs\directx\lib\dinput.lib" "..\..\Graphics APIs\directx\lib\dxguid.lib" /nologo /subsystem:windows /map /debug /debugtype:both /machine:I386 /nodefaultlib:"libcd" /out:"Run\LevelEditD.exe"  /libpath:"..\..\Libs\debug" /libpath:"..\..\srsdk1x\msvc6\lib\debug"
+# ADD BASE LINK32 wwctrld.lib srdb.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib combat.lib wwaudio.lib mss32.lib wwdebug.lib wwmath.lib ww3d.lib wwphys.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveload.lib "..\..\Graphics APIs\directx\lib\dinput.lib" "..\..\Graphics APIs\directx\lib\dxguid.lib" /nologo /subsystem:windows /map /debug /debugtype:both /machine:I386 /nodefaultlib:"libcd" /out:"Run\LevelEditD.exe" /libpath:"..\..\Libs\debug" /libpath:"..\..\srsdk1x\msvc6\lib\debug"
 # SUBTRACT BASE LINK32 /incremental:no /nodefaultlib
-# ADD LINK32 combate.lib ww3d2e.lib wwbitpack.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib wwaudioe.lib ..\..\miles6\lib\win\mss32.lib wwdebuge.lib wwmath.lib wwphyse.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveloade.lib d3dx8.lib d3d8.lib dxguid.lib dinput8.lib NvDXTLib.lib version.lib wwui.lib shlwapi.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\LevelEditD.pdb" /map:"..\..\..\Run\LevelEditD.map" /debug /debugtype:cv /machine:I386 /out:"..\..\..\Run\LevelEditD.exe"  /libpath:"..\..\Libs\debug" /libpath:"..\..\Libs\profile" /libpath:"..\..\NvDXTLib\Lib" /libpath:"..\..\directX\lib"
-# SUBTRACT LINK32 /incremental:no /nodefaultlib
+# ADD LINK32 combate.lib ww3d2e.lib wwbitpack.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib wwaudioe.lib mss32.lib wwdebuge.lib wwmath.lib wwphyse.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveloade.lib d3dx8.lib d3d8.lib dxguid.lib dinput8.lib NvDXTLib.lib version.lib wwui.lib shlwapi.lib /nologo /subsystem:windows /pdb:"..\..\..\Run\LevelEditD.pdb" /map:"..\..\..\Run\LevelEditD.map" /debug /machine:I386 /out:"..\..\..\Run\LevelEditD.exe" /libpath:"..\..\Libs\debug" /libpath:"..\..\Libs\profile" /libpath:"..\..\NvDXTLib\Lib" /libpath:"..\..\directX\lib" /libpath:"..\..\third_party\miles6\lib" /libpath:"..\..\third_party\nvDXTLib\lib"
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "LevelEdit - Win32 ProfileE"
 
@@ -74,9 +73,9 @@ LINK32=link.exe
 # PROP Intermediate_Dir "ProfileE"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GX /Zi /O2 /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\wwctrl" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Zi /O2 /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\wwctrl" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /MT /W3 /GX /Zi /O2 /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\NvDXTLib\Inc" /I "..\..\directX\include" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /Zi /O2 /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\third_party\NvDXTLib\Inc" /I "..\..\directX\include" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /Yu"stdafx.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -86,9 +85,9 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 wwctrl.lib sr.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib combat.lib wwaudio.lib ..\..\miles6\lib\win\mss32.lib wwdebug.lib wwmath.lib ww3d.lib wwphys.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveload.lib "..\..\Graphics APIs\directx\lib\dinput.lib" "..\..\Graphics APIs\directx\lib\dxguid.lib" /nologo /subsystem:windows /profile /map:"Run/LevelEdit.map" /debug /machine:I386 /nodefaultlib:"libcd" /out:"Run\LevelEdit.exe" /libpath:"..\..\Libs\profile" /libpath:"..\..\srsdk1x\msvc6\lib\release"
+# ADD BASE LINK32 wwctrl.lib sr.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib combat.lib wwaudio.lib mss32.lib wwdebug.lib wwmath.lib ww3d.lib wwphys.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveload.lib "..\..\Graphics APIs\directx\lib\dinput.lib" "..\..\Graphics APIs\directx\lib\dxguid.lib" /nologo /subsystem:windows /profile /map:"Run/LevelEdit.map" /debug /machine:I386 /nodefaultlib:"libcd" /out:"Run\LevelEdit.exe" /libpath:"..\..\Libs\profile" /libpath:"..\..\srsdk1x\msvc6\lib\release"
 # SUBTRACT BASE LINK32 /nodefaultlib
-# ADD LINK32 combate.lib ww3d2e.lib wwbitpack.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib wwaudioe.lib ..\..\miles6\lib\win\mss32.lib wwdebuge.lib wwmath.lib wwphyse.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveloade.lib d3dx8.lib d3d8.lib dxguid.lib dinput8.lib NvDXTLib.lib version.lib wwui.lib shlwapi.lib /nologo /subsystem:windows /profile /map:"..\..\..\Run\LevelEdit.map" /debug /machine:I386 /out:"..\..\..\Run\LevelEdit.exe" /libpath:"..\..\Libs\profile" /libpath:"..\..\directX\lib" /libpath:"..\..\NvDXTLib\Lib"
+# ADD LINK32 combate.lib ww3d2e.lib wwbitpack.lib imagehlp.lib wwtranslatedb.lib wwnet.lib ws2_32.lib wwaudioe.lib mss32.lib wwdebuge.lib wwmath.lib wwphyse.lib wwlib.lib winmm.lib vfw32.lib wwutil.lib wwsaveloade.lib d3dx8.lib d3d8.lib dxguid.lib dinput8.lib NvDXTLib.lib version.lib wwui.lib shlwapi.lib /nologo /subsystem:windows /profile /map:"..\..\..\Run\LevelEdit.map" /debug /machine:I386 /out:"..\..\..\Run\LevelEdit.exe" /libpath:"..\..\Libs\profile" /libpath:"..\..\directX\lib" /libpath:"..\..\third_party\miles6\lib" /libpath:"..\..\third_party\nvDXTLib\lib"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
