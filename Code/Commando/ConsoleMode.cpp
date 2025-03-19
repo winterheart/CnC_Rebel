@@ -192,7 +192,7 @@ void ConsoleModeClass::Init(void)
 			*/
 			DWORD version_major = 1;
 			DWORD version_minor = 0;
-			Get_Version_Number(&version_major, &version_minor);
+			Get_Version_Number(version_major, version_minor);
 #ifdef FREEDEDICATEDSERVER
 			Print("Renegade Free Dedicated Server ");
 #else  //FREEDEDICATEDSERVER

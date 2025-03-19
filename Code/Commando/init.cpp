@@ -614,12 +614,12 @@ bool RestartNeeded = true;
  * HISTORY:                                                                                    *
  *   12/3/2001 11:26PM ST : Created                                                            *
  *=============================================================================================*/
-void Get_Version_Number(unsigned long *major, unsigned long *minor)
+void Get_Version_Number(unsigned long &major, unsigned long &minor)
 {
-	// Version info removed per Legal review requirements. LFeenanEA - 8th February 2025
-	
-	unsigned long version_major = 0;
+	unsigned long version_major = 0x00010025;
 	unsigned long version_minor = 0;
+	major = version_major;
+	minor = version_minor;
 }
 
 
@@ -722,7 +722,7 @@ bool Game_Init(void)
 
 //CRC_Check();
 
-	Get_Version_Number(NULL, NULL);
+	// Get_Version_Number(NULL, NULL);
 
 	// setup Writing Factory
 	RenegadeWritingFileFactory.Set_Sub_Directory( DATA_SUBDIRECTORY );

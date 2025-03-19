@@ -902,7 +902,7 @@ void MPWolGameListMenuClass::On_ListCtrl_Sel_Change(ListCtrlClass* list, int id,
 #else
 					unsigned long verMajor = 0;
 					unsigned long verMinor = 0;
-					Get_Version_Number(&verMajor,&verMinor);
+					Get_Version_Number(verMajor, verMinor);
 
 					text.Format(TRANSLATE(IDS_MENU_HOST_INFO_FORMAT), (const WCHAR*)channel->GetName(),
 							mSelectedGame.Title(), HIWORD(verMajor), LOWORD(verMajor));
