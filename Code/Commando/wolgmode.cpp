@@ -1741,7 +1741,7 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage& message)
 					datastring+="\t";
 
 					unsigned long versionminor,versionmajor;
-					Get_Version_Number(&versionmajor,&versionminor);
+					Get_Version_Number(versionmajor, versionminor);
 
 					SYSTEMTIME time;
 					GetSystemTime(&time);

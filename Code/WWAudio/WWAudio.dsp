@@ -44,8 +44,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /FD /c
-# SUBTRACT CPP /YX
+# ADD CPP /nologo /MT /W3 /Zi /O2 /Ob2 /I "..\DirectX\include" /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -68,7 +67,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\DirectX\include" /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\DirectX\include" /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -90,9 +89,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Profile"
 # PROP Intermediate_Dir "Profile"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /I "..\miles" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwphys" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Zi /O2 /Op /Ob2 /I "..\DirectX\include" /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /FD /c
-# SUBTRACT CPP /YX
+# ADD BASE CPP /nologo /W3 /GX /O2 /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwphys" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /Zi /O2 /Op /Ob2 /I "..\DirectX\include" /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -114,8 +112,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "DebugE"
 # PROP Intermediate_Dir "DebugE"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W4 /Gm /Gi /GX /ZI /Od /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwsaveload" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W4 /Gm /Gi /GX /ZI /Od /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwsaveload" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W4 /Gm /Gi /ZI /Od /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "_WINDOWS" /D "_DEBUG" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /D "PARAM_EDITING_ON" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -137,8 +135,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "ProfileE"
 # PROP Intermediate_Dir "ProfileE"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /Gm /Gi /GX /Zi /O2 /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /Gm /Gi /Zi /O2 /I "..\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /D "PARAM_EDITING_ON" /YX /FD /c
+# ADD BASE CPP /nologo /MD /W3 /Gm /Gi /GX /Zi /O2 /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /Gm /Gi /Zi /O2 /I "..\third_party\miles6\include" /I "..\wwlib" /I "..\wwmath" /I "..\wwdebug" /I "..\ww3d2" /I "..\wwsaveload" /D "NDEBUG" /D WINVER=0x400 /D "_WINDOWS" /D "WIN32_LEAN_AND_MEAN" /D "WWDEBUG" /D "_MBCS" /D "_LIB" /D "WIN32" /D "G_CODE_BASE" /D "PARAM_EDITING_ON" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe

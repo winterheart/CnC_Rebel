@@ -484,7 +484,7 @@ MainMenuDialogClass::Update_Version_Number (void)
 	//
 	DWORD version_major = 1;
 	DWORD version_minor = 0;
-	Get_Version_Number(&version_major, &version_minor);
+	Get_Version_Number(version_major, version_minor);
 
 	//
 	// Put the version string into the dialog

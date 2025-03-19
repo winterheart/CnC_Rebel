@@ -31,7 +31,9 @@
 #include "wwdebug.h"
 #include "netutil.h"
 #include "useroptions.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
+#endif
 
 //
 // Class statics

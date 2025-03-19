@@ -2,15 +2,16 @@
 # Ignore RUNable folder
 [Rr]un
 
+# Third party libraries
+Code/third_party/miles6
+Code/third_party/bink
+Code/third_party/NvDXTLib
+
 # Dependencies
 [Ll]ibs/
-Miles6/
-Bink/
 Lightscape/
-NvDXTLib/
 Umbra/
 GameSpy/
-DirectX/
 
 # Output build folders
 [Rr]elease*

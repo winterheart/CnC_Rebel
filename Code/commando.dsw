@@ -59,6 +59,45 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name Combat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ww3d2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name WWAudio
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwdebug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwphys
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwsaveload
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwbitpack
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwtranslatedb
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwnet
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwmath
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwlib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwutil
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wwui
+    End Project Dependency
 }}}
 
 ###############################################################################

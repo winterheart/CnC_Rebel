@@ -112,8 +112,9 @@
 #include "gamespyadmin.h"
 #include "dialogtests.h"
 #include "dialogmgr.h"
+#ifdef ENABLE_GAMESPY
 #include "GameSpy_QnR.h"
-
+#endif
 /*
 **
 */
@@ -824,7 +825,9 @@ void CombatGameModeClass::Load_Level( void )
 	ConsoleBox.Print("Load %d%% complete\n", 100);
 	ConsoleBox.Print("Level loaded OK\n");
 
+#ifdef ENABLE_GAMESPY
 	GameSpyQnR.Init();
+#endif
 
 	//
 	// Re-enable packet processing.

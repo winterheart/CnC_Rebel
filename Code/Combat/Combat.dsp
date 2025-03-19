@@ -44,8 +44,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W4 /O2 /Ob2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "NDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MT /W4 /O2 /Ob2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /D "NDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -68,8 +67,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W4 /Gm /ZI /Od /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /GZ /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MTd /W4 /Gm /ZI /Od /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -91,9 +89,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Profile"
 # PROP Intermediate_Dir "Profile"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /I "..\wwaudio" /I "..\miles" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W4 /Zi /O2 /Op /Ob2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /FD /c
-# SUBTRACT CPP /Fr /YX
+# ADD BASE CPP /nologo /W3 /GX /O2 /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wolapi" /I "..\wwutil" /I "..\wwlzhl" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W4 /Zi /O2 /Op /Ob2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -115,8 +112,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "DebugE"
 # PROP Intermediate_Dir "DebugE"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /FR /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W4 /Gm /ZI /Od /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "PARAM_EDITING_ON" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W4 /Gm /ZI /Od /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "_DEBUG" /D "WWDEBUG" /D "PARAM_EDITING_ON" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -139,8 +136,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "ProfileE"
 # PROP Intermediate_Dir "ProfileE"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W4 /GX /Zi /O2 /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W4 /Zi /O2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "PARAM_EDITING_ON" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MD /W4 /GX /Zi /O2 /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\directx\inc" /I "..\srsdk1x\include" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W4 /Zi /O2 /I "..\wwui" /I "..\wwutil" /I "..\wwbitpack" /I "..\wwaudio" /I "..\third_party\miles6\include" /I "..\wwnet" /I "..\wwmath" /I "..\ww3d2" /I "..\wwphys" /I "..\wwlib" /I "..\wwdebug" /I "..\wwsaveload" /I "..\DirectX\include" /I "..\wwtranslatedb" /D "NDEBUG" /D "WWDEBUG" /D _WIN32_WINNT=0x400 /D "PARAM_EDITING_ON" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_WINDOWS" /YX /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
