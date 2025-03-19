@@ -75,7 +75,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /Zi /O2 /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\wwctrl" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /MT /W3 /GX /Zi /O2 /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\third_party\NvDXTLib\Inc" /I "..\..\directX\include" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /Zi /O2 /I "..\..\wwui" /I "..\..\combat" /I "..\..\wwdebug" /I "..\..\wwmath" /I "..\..\ww3d2" /I "..\..\wwphys" /I "..\..\wwlib" /I "..\..\srsdk1x\include" /I "..\..\wwaudio" /I "..\..\third_party\miles6\include" /I "..\..\wwsaveload" /I "..\..\wwnet" /I "..\..\wwtranslatedb" /I "..\..\wwbitpack" /I "..\..\wwutil" /I "..\..\third_party\NvDXTLib\Inc" /I "..\..\directX\include" /D "NDEBUG" /D "WWDEBUG" /D "WIN32" /D "_WINDOWS" /D "PARAM_EDITING_ON" /D "PUBLIC_EDITOR_VER" /Yu"stdafx.h" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
