@@ -111,8 +111,6 @@
     <ClInclude Include="MissionX0.h">
       <Filter>Missions</Filter>
     </ClInclude>
-    <ClInclude Include="actionparams.h" />
-    <ClInclude Include="scriptcommands.h" />
     <ClInclude Include="scripts.h" />
     <ClInclude Include="string_ids.h" />
   </ItemGroup>

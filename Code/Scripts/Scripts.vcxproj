@@ -90,6 +90,7 @@
       <PrecompiledHeaderOutputFile>.\Profile\Scripts.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Profile\</ObjectFileName>
       <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>..\Combat</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Profile\Scripts.lib ..\libs\Profile\Scripts.lib</Command>
@@ -137,6 +138,7 @@
       <PrecompiledHeaderOutputFile>.\Debug\Scripts.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>..\Combat</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Debug\Scripts.lib ..\libs\Debug\Scripts.lib</Command>
@@ -184,6 +186,7 @@
       <PrecompiledHeaderOutputFile>.\Release\Scripts.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>..\Combat</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>copy Release\Scripts.lib ..\libs\Release\Scripts.lib</Command>
@@ -213,6 +216,11 @@
       <ImportLibrary>.\Release\Scripts.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\Combat</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="always.h" />
@@ -247,8 +255,6 @@
     <ClInclude Include="Mission8.h" />
     <ClInclude Include="Mission9.h" />
     <ClInclude Include="MissionX0.h" />
-    <ClInclude Include="actionparams.h" />
-    <ClInclude Include="scriptcommands.h" />
     <ClInclude Include="scripts.h" />
     <ClInclude Include="string_ids.h" />
   </ItemGroup>
