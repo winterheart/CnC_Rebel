@@ -512,7 +512,7 @@ class DynamicVectorClass : public VectorClass<T>
 		bool Insert(int index,T const & object);
 
 		// Delete object just like this from vector.
-		bool Delete(T const & object);
+		bool Delete_Object(T const & object);
 
 		// Delete object at this vector index.
 		bool Delete(int index);
@@ -800,7 +800,7 @@ bool DynamicVectorClass<T>::Insert(int index,T const & object)
 
 
 /***********************************************************************************************
- * DynamicVectorClass<T>::Delete -- Remove the specified object from the vector.               *
+ * DynamicVectorClass<T>::Delete_Object -- Remove the specified object from the vector.        *
  *                                                                                             *
  *    This routine will delete the object referenced from the vector. All objects in the       *
  *    vector that follow the one deleted will be moved "down" to fill the hole.                *
@@ -816,7 +816,7 @@ bool DynamicVectorClass<T>::Insert(int index,T const & object)
  *   03/10/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
 template<class T>
-bool DynamicVectorClass<T>::Delete(T const & object)
+bool DynamicVectorClass<T>::Delete_Object(T const & object)
 {
 	int id = ID(object);
 	if (id != -1) {

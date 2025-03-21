@@ -1525,8 +1525,8 @@ FontCharsClass::Grow_Unicode_Array (WCHAR ch)
 	}
 
 	uint16 first_index	= min( FirstUnicodeChar, ch );
-	uint16 last_index		= max( LastUnicodeChar, ch );
-	uint16 count			= (last_index - first_index) + 1;
+	uint16 last_index	= max( LastUnicodeChar, ch );
+	uint16 count		= (last_index - first_index) + 1;
 
 	//
 	//	Allocate enough memory to hold the new cells

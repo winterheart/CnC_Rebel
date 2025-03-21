@@ -129,7 +129,7 @@ void	PersistentGameObjObserverManager::Add( PersistentGameObjObserverClass * obs
 
 void	PersistentGameObjObserverManager::Remove( PersistentGameObjObserverClass * observer )
 {
-	ObserverList.Delete( observer );
+	ObserverList.Delete_Object( observer );
 }
 
 /*

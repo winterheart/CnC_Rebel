@@ -102,7 +102,7 @@ bool TextTextureClass::Build_Texture(FontClass &font, const char *str, int fore,
 	// the best size should be found by finding the  rectangular surface 
 	// area of the text, and creating a Power of Two sized square which 
 	// can hold the data in the ractangular surface area.
-   float fsize = sqrt(fw * fh);
+	float fsize = sqrt((float)(fw * fh));
 	TextureSize = Find_POT(ceil(fsize));
 	// If this is still not enough, quadruple area:
 	if ((TextureSize / fh) * TextureSize < fw) {

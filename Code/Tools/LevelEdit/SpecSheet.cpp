@@ -76,7 +76,7 @@ SpecSheetClass::~SpecSheetClass (void)
 	//	Unlock all the parameters in this definition
 	//
 	int count = m_Definition->Get_Parameter_Count ();
-	for (index = 0; index < count; index ++) {
+	for (int index = 0; index < count; index ++) {
 		m_Definition->Unlock_Parameter (index);
 	}
 
@@ -317,7 +317,7 @@ SpecSheetClass::OnCreate (LPCREATESTRUCT lpCreateStruct)
 	//
 	//	Ask each control to create its UI
 	//
-	for (index = 0; index < m_CtrlList.Count (); index ++) {
+	for (int index = 0; index < m_CtrlList.Count (); index ++) {
 		ParameterCtrlClass *parameter_ctrl = m_CtrlList[index];
 		
 		parameter_ctrl->Set_Read_Only (m_IsReadOnly);
@@ -393,7 +393,7 @@ SpecSheetClass::Get_Parameter (int index)
 // OnNcHitTest
 //
 /////////////////////////////////////////////////////////////////////////////
-UINT
+LRESULT
 SpecSheetClass::OnNcHitTest (CPoint point) 
 {
 	return HTCLIENT;
@@ -689,7 +689,7 @@ SpecSheetClass::Scroll_Controls (int amount)
 	HDWP defer_struct = ::BeginDeferWindowPos (count);
 
 	for (int index = 0; index < count; index ++) {		
-		child_wnd = child_wnd_list[index];
+		HWND child_wnd = child_wnd_list[index];
 		
 		//
 		//	Get the current position of the child window

@@ -263,7 +263,7 @@ void SendGameResults(unsigned long gameID, cGameData* theGame, SList<cPlayer>* p
 	int winnerID = theGame->Get_Winner_ID();
 	playerNode = playerList->Head();
 
-	for (index = 0; index < playerList->Get_Count(); index++)
+	for (int index = 0; index < playerList->Get_Count(); index++)
 		{
 		cPlayer* player = playerNode->Data();
 

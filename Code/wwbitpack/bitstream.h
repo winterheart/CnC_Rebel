@@ -117,21 +117,23 @@ class BitStreamClass : public cBitPacker
 		//
 		enum {NO_ENCODER = -1};
 
-		void		Add(BYTE val,int type = NO_ENCODER)							{ Internal_Add(val,type); }
-		void		Add(USHORT val,int type = NO_ENCODER)						{ Internal_Add(val,type); }
-		void		Add(UINT val,int type = NO_ENCODER)							{ Internal_Add(val,type); }
-		void		Add(ULONG val,int type = NO_ENCODER)						{ Internal_Add(val,type); }
-		void		Add(char val,int type = NO_ENCODER)							{ Internal_Add(val,type); }
-		void		Add(int val,int type = NO_ENCODER)							{ Internal_Add(val,type); }
-		void		Add(float val,int type = NO_ENCODER)						{ Internal_Add(val,type); }
+		void		Add(BYTE val,int type = NO_ENCODER)				{ Internal_Add(val,type); }
+		void		Add(USHORT val,int type = NO_ENCODER)			{ Internal_Add(val,type); }
+		void		Add(UINT val,int type = NO_ENCODER)				{ Internal_Add(val,type); }
+		void		Add(ULONG val,int type = NO_ENCODER)			{ Internal_Add(val,type); }
+		void		Add(char val,int type = NO_ENCODER)				{ Internal_Add(val,type); }
+		void		Add(int val,int type = NO_ENCODER)				{ Internal_Add(val,type); }
+		void		Add(float val,int type = NO_ENCODER)			{ Internal_Add(val,type); }
+		void		Add(wchar_t val,int type = NO_ENCODER)			{ Internal_Add(val,type); }
 
-		BYTE		Get(BYTE & set_val,int type = NO_ENCODER)					{ return Internal_Get(set_val,type); }
-		USHORT	Get(USHORT & set_val,int type = NO_ENCODER)				{ return Internal_Get(set_val,type); }
-		ULONG		Get(ULONG & set_val,int type = NO_ENCODER)				{ return Internal_Get(set_val,type); }
-		UINT		Get(UINT & set_val,int type = NO_ENCODER)					{ return Internal_Get(set_val,type); }
-		char		Get(char & set_val,int type = NO_ENCODER)					{ return Internal_Get(set_val,type); }
-		int		Get(int & set_val,int type = NO_ENCODER)					{ return Internal_Get(set_val,type); }
-		float		Get(float & set_val,int type = NO_ENCODER)				{ return Internal_Get(set_val,type); }
+		BYTE		Get(BYTE & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		USHORT		Get(USHORT & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		ULONG		Get(ULONG & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		UINT		Get(UINT & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		char		Get(char & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		int			Get(int & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		float		Get(float & set_val,int type = NO_ENCODER)		{ return Internal_Get(set_val,type); }
+		wchar_t		Get(wchar_t & set_val,int type = NO_ENCODER)	{ return Internal_Get(set_val,type); }
 
 	private:
 		

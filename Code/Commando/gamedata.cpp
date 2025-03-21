@@ -1883,7 +1883,7 @@ void cGameData::Show_Game_Settings_Limits(void)
 	PTextRenderer->Build_Sentence(renderer_time_text);
 	PTextRenderer->Draw_Sentence();
 
-	for (j=0;j<OldBottomText.Count();++j) {
+	for (int j=0;j<OldBottomText.Count();++j) {
 		y -= 1.2 * charHeight;
 		loc[1]=cMathUtil::Round(y);
 		PTextRenderer->Set_Location(loc);

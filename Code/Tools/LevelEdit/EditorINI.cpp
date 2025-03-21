@@ -130,8 +130,9 @@ EditorINIClass::Get_Matrix3D
 ) const
 {
 	// check input parameters
+	// TODO: WH: deal with return value
 	if ( section == NULL || entry == NULL ) {
-		return false;
+		return Matrix3D();
 	}
 
 	// read UU string

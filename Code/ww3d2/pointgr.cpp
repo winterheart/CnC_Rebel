@@ -976,7 +976,7 @@ void PointGroupClass::Update_Arrays(
 		VertexDiffuse.Resize(total_vnum * 2, false);
 	}
 
-	int vert, i, j;
+	int vert, j;
 
 	/*
 	** Generate the vertex locations from the point locations (note that both are in camera space).
@@ -1017,7 +1017,7 @@ void PointGroupClass::Update_Arrays(
 				scaled_offset[2] = _TriVertexLocationOrientationTable[DefaultPointOrientation][2] * DefaultPointSize;
 
 				// Add vertex offsets to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] + scaled_offset[0];
 					vertex_loc[vert + 1] = point_loc[i] + scaled_offset[1];
 					vertex_loc[vert + 2] = point_loc[i] + scaled_offset[2];
@@ -1029,7 +1029,7 @@ void PointGroupClass::Update_Arrays(
 		case TRIS_SIZE_NOORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_TriVertexLocationOrientationTable[DefaultPointOrientation][0] * point_size[i];
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1044,7 +1044,7 @@ void PointGroupClass::Update_Arrays(
 		case TRIS_NOSIZE_ORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_TriVertexLocationOrientationTable[point_orientation[i]][0] * DefaultPointSize;
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1059,7 +1059,7 @@ void PointGroupClass::Update_Arrays(
 		case TRIS_SIZE_ORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_TriVertexLocationOrientationTable[point_orientation[i]][0] * point_size[i];
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1081,7 +1081,7 @@ void PointGroupClass::Update_Arrays(
 				scaled_offset[3] = _QuadVertexLocationOrientationTable[DefaultPointOrientation][3] * DefaultPointSize;
 
 				// Add vertex offsets to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] + scaled_offset[0];
 					vertex_loc[vert + 1] = point_loc[i] + scaled_offset[1];
 					vertex_loc[vert + 2] = point_loc[i] + scaled_offset[2];
@@ -1094,7 +1094,7 @@ void PointGroupClass::Update_Arrays(
 		case QUADS_SIZE_NOORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_QuadVertexLocationOrientationTable[DefaultPointOrientation][0] * point_size[i];
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1111,7 +1111,7 @@ void PointGroupClass::Update_Arrays(
 		case QUADS_NOSIZE_ORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_QuadVertexLocationOrientationTable[point_orientation[i]][0] * DefaultPointSize;
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1128,7 +1128,7 @@ void PointGroupClass::Update_Arrays(
 		case QUADS_SIZE_ORIENT:
 			{
 				// Scale vertex offsets and add them to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] +
 						_QuadVertexLocationOrientationTable[point_orientation[i]][0] * point_size[i];
 					vertex_loc[vert + 1] = point_loc[i] +
@@ -1168,7 +1168,7 @@ void PointGroupClass::Update_Arrays(
 
 				// Add vertex offsets to point locations to get vertex locations
 				int size_idx = (DefaultPointSize <= 1.0f) ? 0 : 1;
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					vertex_loc[vert + 0] = point_loc[i] + scaled_locs[size_idx][0];
 					vertex_loc[vert + 1] = point_loc[i] + scaled_locs[size_idx][1];
 					vertex_loc[vert + 2] = point_loc[i] + scaled_locs[size_idx][2];
@@ -1201,7 +1201,7 @@ void PointGroupClass::Update_Arrays(
 				}
 
 				// Add vertex offsets to point locations to get vertex locations
-				for (i = 0; i < active_points; i++) {
+				for (int i = 0; i < active_points; i++) {
 					int size_idx = (point_size[i] <= 1.0f) ? 0 : 1;
 					vertex_loc[vert + 0] = point_loc[i] + scaled_locs[size_idx][0];
 					vertex_loc[vert + 1] = point_loc[i] + scaled_locs[size_idx][1];
@@ -1282,7 +1282,7 @@ void PointGroupClass::Update_Arrays(
 	vert = 0;	
 	if (point_diffuse) {
 		Vector4* vertex_color = &VertexDiffuse[0];
-		for (i = 0; i < active_points; i++) {
+		for (int i = 0; i < active_points; i++) {
 			for (j = 0; j < verts_per_point; j++) {
 				vertex_color[vert + j] = point_diffuse[i];
 			}

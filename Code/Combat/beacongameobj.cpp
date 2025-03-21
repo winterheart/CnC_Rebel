@@ -1264,7 +1264,7 @@ BeaconGameObj::Was_Owner_Interrupted (void)
 		//	Check each "boolean" control (jumping, etc)
 		//
 		if (retval == false) {
-			for (	index = ControlClass::BOOLEAN_ONE_TIME_FIRST;
+			for (int index = ControlClass::BOOLEAN_ONE_TIME_FIRST;
 					index <= ControlClass::BOOLEAN_DROP_FLAG;
 					index ++)
 			{

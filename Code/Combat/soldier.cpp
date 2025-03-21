@@ -3713,7 +3713,7 @@ void	SoldierGameObj::Apply_Damage_Extended( const OffenseObjectClass & damager, 
 	float armor_before = Get_Defense_Object()->Get_Shield_Strength();
 
 	if ( collision_box_name != NULL ) {
-		char * start = ::strchr( collision_box_name, '.' );
+		char * start = (char *)::strchr( collision_box_name, '.' );
 		if ( start != NULL ) {
 			start++;
 			float bone_scale = BonesManager::Get_Bone_Damage_Scale( start );

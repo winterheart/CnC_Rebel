@@ -2334,49 +2334,49 @@ void cConnection::Service_Send(bool is_urgent)
 
 		if (p_rhost != NULL) {
 
-         p_rhost->Compute_List_Max(UNRELIABLE_SEND_LIST);
+        p_rhost->Compute_List_Max(UNRELIABLE_SEND_LIST);
 
-         /*
-			//
-         // Send any unreliable combined-packet
-         //
-         cPacket * & p_packet_u = p_rhost->Get_P_Comb_Unrel_Packet();
-         if (p_packet_u != NULL) {
+        /*
+		//
+        // Send any unreliable combined-packet
+        //
+        cPacket * & p_packet_u = p_rhost->Get_P_Comb_Unrel_Packet();
+        if (p_packet_u != NULL) {
             Internal_Send_Packet_To_Individual(*p_packet_u, rhost_id, PACKETTYPE_UNRELIABLE);
             p_packet_u->Flush();
             delete p_packet_u;
             p_packet_u = NULL;
-         }
+        }
 			*/
 
-         //
-         // Send any appropriate queued packets
-         //
-	      for (SLNode<cPacket> * objnode = p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Head();
+        //
+        // Send any appropriate queued packets
+        //
+	    for (SLNode<cPacket> * objnode = p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Head();
             objnode != NULL; objnode = objnode->Next()) {
 
             cPacket * p_packet = objnode->Data();
             WWASSERT(p_packet != NULL);
 
             p_rhost->Get_Stats().StatSample[STAT_UPktSent]++;
-				p_rhost->Get_Stats().StatSample[STAT_UByteSent] += p_packet->Get_Compressed_Size_Bytes();
+			p_rhost->Get_Stats().StatSample[STAT_UByteSent] += p_packet->Get_Compressed_Size_Bytes();
 
             //
-				// Send!
-				//
-				Send_Packet_To_Address(*p_packet, &(p_rhost->Get_Address()));
-         }
+			// Send!
+			//
+			Send_Packet_To_Address(*p_packet, &(p_rhost->Get_Address()));
+        }
 
-	      // destroy all
-			for (objnode = p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Head();
-            objnode != NULL; objnode = objnode->Next()) {
-
-            cPacket * p_packet = objnode->Data();
-            WWASSERT(p_packet != NULL);
-				p_packet->Flush();
-				delete p_packet;
-         }
-			p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Remove_All();
+			// destroy all
+		for (SLNode<cPacket> * objnode = p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Head();
+			objnode != NULL; objnode = objnode->Next()) {
+				
+			cPacket * p_packet = objnode->Data();
+			WWASSERT(p_packet != NULL);
+			p_packet->Flush();
+			delete p_packet;
+        }
+		p_rhost->Get_Packet_List(UNRELIABLE_SEND_LIST).Remove_All();
       }
    }
 

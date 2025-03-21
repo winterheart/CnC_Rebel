@@ -3450,7 +3450,7 @@ WWAudioClass::Set_Active_Sound_Page (SOUND_PAGE page)
 	//
 	//	Resume any sounds that are playing in the new page
 	//
-	for (index = 0; index < m_Playlist[page].Count ();index ++) {
+	for (int index = 0; index < m_Playlist[page].Count ();index ++) {
 		m_Playlist[page][index]->Resume ();
 	}
 

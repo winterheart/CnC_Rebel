@@ -161,6 +161,21 @@ class SoundSceneClass
 		//////////////////////////////////////////////////////////////////////		
 		bool						Is_Sound_In_Scene (AudibleSoundClass *sound_obj, bool all = true);
 
+		class AudibleInfoClass : public MultiListObjectClass, public AutoPoolClass<AudibleInfoClass, 64>
+		{
+		public:
+			AudibleInfoClass (void)
+				:	sound_obj (NULL),
+					distance2 (0) { }
+
+			AudibleInfoClass (AudibleSoundClass *obj, float dist2)
+				:	sound_obj (obj),
+					distance2 (dist2) { }
+
+			AudibleSoundClass *	sound_obj;
+			float						distance2;
+		};
+
 	protected:
 		
 		//////////////////////////////////////////////////////////////////////
@@ -178,20 +193,6 @@ class SoundSceneClass
 		//////////////////////////////////////////////////////////////////////
 		//	Collection methods
 		//////////////////////////////////////////////////////////////////////		
-		class AudibleInfoClass : public MultiListObjectClass, public AutoPoolClass<AudibleInfoClass, 64>
-		{
-		public:
-			AudibleInfoClass (void)
-				:	sound_obj (NULL),
-					distance2 (0) { }
-
-			AudibleInfoClass (AudibleSoundClass *obj, float dist2)
-				:	sound_obj (obj),
-					distance2 (dist2) { }
-
-			AudibleSoundClass *	sound_obj;
-			float						distance2;
-		};
 
 		typedef MultiListClass<AudibleInfoClass>	COLLECTED_SOUNDS;
 

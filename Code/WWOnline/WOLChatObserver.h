@@ -141,15 +141,15 @@ class ChatObserver :
         
 		STDMETHOD(OnBuddyDelete)(HRESULT hr, WOL::User* buddyDeleted);
 
-		STDMETHOD(OnPublicUnicodeMessage)(HRESULT hr, WOL::Channel* channel, WOL::User* user, const unsigned short* message);
+		STDMETHOD(OnPublicUnicodeMessage)(HRESULT hr, WOL::Channel* channel, WOL::User* user, const wchar_t* message);
         
-		STDMETHOD(OnPrivateUnicodeMessage)(HRESULT hr, WOL::User* user, const unsigned short* message);
+		STDMETHOD(OnPrivateUnicodeMessage)(HRESULT hr, WOL::User* user, const wchar_t* message);
         
-		STDMETHOD(OnPrivateUnicodeAction)(HRESULT hr, WOL::User* user, const unsigned short* action);
+		STDMETHOD(OnPrivateUnicodeAction)(HRESULT hr, WOL::User* user, const wchar_t* action);
         
-		STDMETHOD(OnPublicUnicodeAction)(HRESULT hr, WOL::Channel* channel, WOL::User* user, const unsigned short* action);
+		STDMETHOD(OnPublicUnicodeAction)(HRESULT hr, WOL::Channel* channel, WOL::User* user, const wchar_t* action);
         
-		STDMETHOD(OnPagedUnicode)(HRESULT hr, WOL::User* user, const unsigned short* message);
+		STDMETHOD(OnPagedUnicode)(HRESULT hr, WOL::User* user, const wchar_t* message);
         
 		STDMETHOD(OnServerTime)(HRESULT hr, WOL::time_t stime);
         
