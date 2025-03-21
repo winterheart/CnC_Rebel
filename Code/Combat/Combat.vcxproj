@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugE|Win32">
+      <Configuration>DebugE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ProfileE|Win32">
+      <Configuration>ProfileE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|Win32">
+      <Configuration>Profile</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <OutDir>.\ProfileE\</OutDir>
+    <IntDir>.\ProfileE\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <OutDir>.\Profile\</OutDir>
+    <IntDir>.\Profile\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <OutDir>.\DebugE\</OutDir>
+    <IntDir>.\DebugE\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\ProfileE\Combat.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\ProfileE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\ProfileE\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\ProfileE\Combat.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Profile\Combate.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Profile\Combat.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Profile\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Profile\Combat.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Profile\Combat.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\DebugE\Combat.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\DebugE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\DebugE\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\DebugE\Combat.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Debug\Combate.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Debug\Combat.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\Combat.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Debug\Combat.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\Combat.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\Combat.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Release\Combat.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="action.cpp" />
+    <ClCompile Include="activeconversation.cpp" />
+    <ClCompile Include="airstripgameobj.cpp" />
+    <ClCompile Include="animcontrol.cpp" />
+    <ClCompile Include="armedgameobj.cpp" />
+    <ClCompile Include="assetdep.cpp" />
+    <ClCompile Include="backgroundmgr.cpp" />
+    <ClCompile Include="basecontroller.cpp" />
+    <ClCompile Include="basegameobj.cpp" />
+    <ClCompile Include="beacongameobj.cpp" />
+    <ClCompile Include="bones.cpp" />
+    <ClCompile Include="building.cpp" />
+    <ClCompile Include="buildingaggregate.cpp" />
+    <ClCompile Include="buildingmonitor.cpp" />
+    <ClCompile Include="buildingstate.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="c4.cpp" />
+    <ClCompile Include="ccamera.cpp" />
+    <ClCompile Include="characterclasssettings.cpp" />
+    <ClCompile Include="cheatmgr.cpp" />
+    <ClCompile Include="cinematicgameobj.cpp" />
+    <ClCompile Include="clientcontrol.cpp" />
+    <ClCompile Include="CNCModeSettings.cpp" />
+    <ClCompile Include="colors.cpp" />
+    <ClCompile Include="combat.cpp" />
+    <ClCompile Include="combatdazzle.cpp" />
+    <ClCompile Include="combatmaterialeffectmanager.cpp" />
+    <ClCompile Include="combatsaveload.cpp" />
+    <ClCompile Include="combatsound.cpp" />
+    <ClCompile Include="comcentergameobj.cpp" />
+    <ClCompile Include="control.cpp" />
+    <ClCompile Include="conversation.cpp" />
+    <ClCompile Include="conversationmgr.cpp" />
+    <ClCompile Include="conversationremark.cpp" />
+    <ClCompile Include="cover.cpp" />
+    <ClCompile Include="csdamageevent.cpp" />
+    <ClCompile Include="damage.cpp" />
+    <ClCompile Include="damageablegameobj.cpp" />
+    <ClCompile Include="damageablestaticphys.cpp" />
+    <ClCompile Include="damagezone.cpp" />
+    <ClCompile Include="diaglog.cpp" />
+    <ClCompile Include="dialogue.cpp" />
+    <ClCompile Include="doors.cpp" />
+    <ClCompile Include="dynamicspeechanim.cpp" />
+    <ClCompile Include="effectrecycler.cpp" />
+    <ClCompile Include="elevator.cpp" />
+    <ClCompile Include="encyclopediamgr.cpp" />
+    <ClCompile Include="evasettings.cpp" />
+    <ClCompile Include="explosion.cpp" />
+    <ClCompile Include="ffactorylist.cpp" />
+    <ClCompile Include="gameobjmanager.cpp" />
+    <ClCompile Include="gameobjobserver.cpp" />
+    <ClCompile Include="gametype.cpp" />
+    <ClCompile Include="globalsettings.cpp" />
+    <ClCompile Include="harvester.cpp" />
+    <ClCompile Include="hud.cpp" />
+    <ClCompile Include="hudinfo.cpp" />
+    <ClCompile Include="humanrecoil.cpp" />
+    <ClCompile Include="humanstate.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="inventory.cpp" />
+    <ClCompile Include="mapmgr.cpp" />
+    <ClCompile Include="mendozabossgameobj.cpp" />
+    <ClCompile Include="messagewindow.cpp" />
+    <ClCompile Include="muzzlerecoil.cpp" />
+    <ClCompile Include="objectives.cpp" />
+    <ClCompile Include="objectivesviewer.cpp" />
+    <ClCompile Include="objlibrary.cpp" />
+    <ClCompile Include="orator.cpp" />
+    <ClCompile Include="oratortypes.cpp" />
+    <ClCompile Include="pathaction.cpp" />
+    <ClCompile Include="persistentgameobjobserver.cpp" />
+    <ClCompile Include="physicalgameobj.cpp" />
+    <ClCompile Include="pilot.cpp" />
+    <ClCompile Include="playerdata.cpp" />
+    <ClCompile Include="playerterminal.cpp" />
+    <ClCompile Include="playertype.cpp" />
+    <ClCompile Include="powerplantgameobj.cpp" />
+    <ClCompile Include="powerup.cpp" />
+    <ClCompile Include="purchasesettings.cpp" />
+    <ClCompile Include="radar.cpp" />
+    <ClCompile Include="raveshawbossgameobj.cpp" />
+    <ClCompile Include="refinerygameobj.cpp" />
+    <ClCompile Include="reflist.cpp" />
+    <ClCompile Include="repairbaygameobj.cpp" />
+    <ClCompile Include="sakurabossgameobj.cpp" />
+    <ClCompile Include="samsite.cpp" />
+    <ClCompile Include="savegame.cpp" />
+    <ClCompile Include="scexplosionevent.cpp" />
+    <ClCompile Include="scobeliskevent.cpp" />
+    <ClCompile Include="screenfademanager.cpp" />
+    <ClCompile Include="scriptablegameobj.cpp" />
+    <ClCompile Include="scriptcommands.cpp" />
+    <ClCompile Include="scripts.cpp" />
+    <ClCompile Include="scriptzone.cpp" />
+    <ClCompile Include="simplegameobj.cpp" />
+    <ClCompile Include="smartgameobj.cpp" />
+    <ClCompile Include="sniper.cpp" />
+    <ClCompile Include="soldier.cpp" />
+    <ClCompile Include="soldierfactorygameobj.cpp" />
+    <ClCompile Include="soldierobserver.cpp" />
+    <ClCompile Include="SoundEnvironment.cpp" />
+    <ClCompile Include="spawn.cpp" />
+    <ClCompile Include="specialeffectsgameobj.cpp" />
+    <ClCompile Include="statemachine.cpp" />
+    <ClCompile Include="staticnetworkobject.cpp" />
+    <ClCompile Include="surfaceeffects.cpp" />
+    <ClCompile Include="systeminfolog.cpp" />
+    <ClCompile Include="teampurchasesettings.cpp" />
+    <ClCompile Include="textwindow.cpp" />
+    <ClCompile Include="transition.cpp" />
+    <ClCompile Include="transitiongameobj.cpp" />
+    <ClCompile Include="unitcoordinationzonemgr.cpp" />
+    <ClCompile Include="vehicle.cpp" />
+    <ClCompile Include="vehicledriver.cpp" />
+    <ClCompile Include="vehiclefactorygameobj.cpp" />
+    <ClCompile Include="viseme.cpp" />
+    <ClCompile Include="warfactorygameobj.cpp" />
+    <ClCompile Include="weaponbag.cpp" />
+    <ClCompile Include="weaponmanager.cpp" />
+    <ClCompile Include="weapons.cpp" />
+    <ClCompile Include="weaponview.cpp" />
+    <ClCompile Include="WeatherMgr.cpp" />
+    <ClCompile Include="assets.cpp" />
+    <ClCompile Include="crandom.cpp" />
+    <ClCompile Include="debug.cpp" />
+    <ClCompile Include="directinput.cpp" />
+    <ClCompile Include="timemgr.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="action.h" />
+    <ClInclude Include="actionparams.h" />
+    <ClInclude Include="activeconversation.h" />
+    <ClInclude Include="airstripgameobj.h" />
+    <ClInclude Include="animcontrol.h" />
+    <ClInclude Include="apppackettypes.h" />
+    <ClInclude Include="armedgameobj.h" />
+    <ClInclude Include="assetdep.h" />
+    <ClInclude Include="backgroundmgr.h" />
+    <ClInclude Include="basecontroller.h" />
+    <ClInclude Include="basegameobj.h" />
+    <ClInclude Include="beacongameobj.h" />
+    <ClInclude Include="bones.h" />
+    <ClInclude Include="building.h" />
+    <ClInclude Include="buildingaggregate.h" />
+    <ClInclude Include="buildingmonitor.h" />
+    <ClInclude Include="buildingstate.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="c4.h" />
+    <ClInclude Include="ccamera.h" />
+    <ClInclude Include="characterclasssettings.h" />
+    <ClInclude Include="cheatmgr.h" />
+    <ClInclude Include="cinematicgameobj.h" />
+    <ClInclude Include="clientcontrol.h" />
+    <ClInclude Include="CNCModeSettings.h" />
+    <ClInclude Include="colors.h" />
+    <ClInclude Include="combat.h" />
+    <ClInclude Include="combatchunkid.h" />
+    <ClInclude Include="combatdazzle.h" />
+    <ClInclude Include="combatmaterialeffectmanager.h" />
+    <ClInclude Include="combatphysobserver.h" />
+    <ClInclude Include="combatsaveload.h" />
+    <ClInclude Include="combatsound.h" />
+    <ClInclude Include="comcentergameobj.h" />
+    <ClInclude Include="control.h" />
+    <ClInclude Include="conversation.h" />
+    <ClInclude Include="conversationmgr.h" />
+    <ClInclude Include="conversationremark.h" />
+    <ClInclude Include="cover.h" />
+    <ClInclude Include="csdamageevent.h" />
+    <ClInclude Include="damage.h" />
+    <ClInclude Include="damageablegameobj.h" />
+    <ClInclude Include="damageablestaticphys.h" />
+    <ClInclude Include="damagezone.h" />
+    <ClInclude Include="diaglog.h" />
+    <ClInclude Include="dialogue.h" />
+    <ClInclude Include="doors.h" />
+    <ClInclude Include="dynamicspeechanim.h" />
+    <ClInclude Include="effectrecycler.h" />
+    <ClInclude Include="elevator.h" />
+    <ClInclude Include="encyclopediamgr.h" />
+    <ClInclude Include="evasettings.h" />
+    <ClInclude Include="explosion.h" />
+    <ClInclude Include="ffactorylist.h" />
+    <ClInclude Include="gameobjmanager.h" />
+    <ClInclude Include="gameobjobserver.h" />
+    <ClInclude Include="gameobjref.h" />
+    <ClInclude Include="gametype.h" />
+    <ClInclude Include="globalsettings.h" />
+    <ClInclude Include="harvester.h" />
+    <ClInclude Include="hud.h" />
+    <ClInclude Include="hudinfo.h" />
+    <ClInclude Include="humanrecoil.h" />
+    <ClInclude Include="humanstate.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="inventory.h" />
+    <ClInclude Include="mapmgr.h" />
+    <ClInclude Include="mendozabossgameobj.h" />
+    <ClInclude Include="messagewindow.h" />
+    <ClInclude Include="muzzlerecoil.h" />
+    <ClInclude Include="netclassids.h" />
+    <ClInclude Include="objectives.h" />
+    <ClInclude Include="objectivesviewer.h" />
+    <ClInclude Include="objlibrary.h" />
+    <ClInclude Include="orator.h" />
+    <ClInclude Include="oratortypes.h" />
+    <ClInclude Include="pathaction.h" />
+    <ClInclude Include="persistentgameobjobserver.h" />
+    <ClInclude Include="physicalgameobj.h" />
+    <ClInclude Include="pilot.h" />
+    <ClInclude Include="playerdata.h" />
+    <ClInclude Include="playerterminal.h" />
+    <ClInclude Include="playertype.h" />
+    <ClInclude Include="powerplantgameobj.h" />
+    <ClInclude Include="powerup.h" />
+    <ClInclude Include="purchasesettings.h" />
+    <ClInclude Include="radar.h" />
+    <ClInclude Include="raveshawbossgameobj.h" />
+    <ClInclude Include="refinerygameobj.h" />
+    <ClInclude Include="repairbaygameobj.h" />
+    <ClInclude Include="sakurabossgameobj.h" />
+    <ClInclude Include="samsite.h" />
+    <ClInclude Include="savegame.h" />
+    <ClInclude Include="scexplosionevent.h" />
+    <ClInclude Include="scobeliskevent.h" />
+    <ClInclude Include="screenfademanager.h" />
+    <ClInclude Include="scriptablegameobj.h" />
+    <ClInclude Include="scriptcommands.h" />
+    <ClInclude Include="scriptevents.h" />
+    <ClInclude Include="scripts.h" />
+    <ClInclude Include="scriptzone.h" />
+    <ClInclude Include="simplegameobj.h" />
+    <ClInclude Include="smartgameobj.h" />
+    <ClInclude Include="sniper.h" />
+    <ClInclude Include="soldier.h" />
+    <ClInclude Include="soldierfactorygameobj.h" />
+    <ClInclude Include="soldierobserver.h" />
+    <ClInclude Include="SoundEnvironment.h" />
+    <ClInclude Include="spawn.h" />
+    <ClInclude Include="specialbuilds.h" />
+    <ClInclude Include="specialeffectsgameobj.h" />
+    <ClInclude Include="statemachine.h" />
+    <ClInclude Include="staticnetworkobject.h" />
+    <ClInclude Include="surfaceeffects.h" />
+    <ClInclude Include="systeminfolog.h" />
+    <ClInclude Include="teampurchasesettings.h" />
+    <ClInclude Include="textwindow.h" />
+    <ClInclude Include="transition.h" />
+    <ClInclude Include="transitiongameobj.h" />
+    <ClInclude Include="unitcoordinationzonemgr.h" />
+    <ClInclude Include="vehicle.h" />
+    <ClInclude Include="vehicledriver.h" />
+    <ClInclude Include="vehiclefactorygameobj.h" />
+    <ClInclude Include="viseme.h" />
+    <ClInclude Include="warfactorygameobj.h" />
+    <ClInclude Include="weaponbag.h" />
+    <ClInclude Include="weaponmanager.h" />
+    <ClInclude Include="weapons.h" />
+    <ClInclude Include="weaponview.h" />
+    <ClInclude Include="WeatherMgr.h" />
+    <ClInclude Include="assets.h" />
+    <ClInclude Include="crandom.h" />
+    <ClInclude Include="debug.h" />
+    <ClInclude Include="directinput.h" />
+    <ClInclude Include="reflist.h" />
+    <ClInclude Include="string_ids.h" />
+    <ClInclude Include="timemgr.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

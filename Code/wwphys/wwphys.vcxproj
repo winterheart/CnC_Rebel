@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugE|Win32">
+      <Configuration>DebugE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ProfileE|Win32">
+      <Configuration>ProfileE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|Win32">
+      <Configuration>Profile</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <OutDir>.\DebugE\</OutDir>
+    <IntDir>.\DebugE\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <OutDir>.\ProfileE\</OutDir>
+    <IntDir>.\ProfileE\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <OutDir>.\Profile\</OutDir>
+    <IntDir>.\Profile\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;WIN32;PARAM_EDITING_ON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\DebugE\wwphys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\DebugE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\DebugE\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\DebugE\wwphys.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\Libs\debug\wwphyse.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\wwphys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\wwphys.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\Libs\debug\wwphys.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WINVER=0x400;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\wwphys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\wwphys.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\Libs\release\wwphys.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <MinimalRebuild>true</MinimalRebuild>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;WIN32;PARAM_EDITING_ON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\ProfileE\wwphys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\ProfileE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\ProfileE\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\ProfileE\wwphys.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\Libs\profile\wwphyse.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Profile\wwphys.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Profile\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Profile\wwphys.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\Libs\profile\wwphys.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\wwsaveload;..\wwlib;..\wwmath;..\ww3d2;..\wwdebug;..\wwlzhl;..\wwbitpack;..\wwutil;..\umbra\interface;$(IncludePath);C:\\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="accessiblephys.cpp" />
+    <ClCompile Include="animcollisionmanager.cpp" />
+    <ClCompile Include="bpt.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">Disabled</Optimization>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">Speed</FavorSizeOrSpeed>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Disabled</Optimization>
+      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <ClCompile Include="camerashakesystem.cpp" />
+    <ClCompile Include="decophys.cpp" />
+    <ClCompile Include="dynamicaabtreecull.cpp" />
+    <ClCompile Include="dynamicanimphys.cpp" />
+    <ClCompile Include="dynamicphys.cpp" />
+    <ClCompile Include="dynamicshadowmanager.cpp" />
+    <ClCompile Include="dyntexproject.cpp" />
+    <ClCompile Include="floodfillbox.cpp" />
+    <ClCompile Include="floodfillgrid.cpp" />
+    <ClCompile Include="grideffect.cpp" />
+    <ClCompile Include="heightdb.cpp" />
+    <ClCompile Include="humanphys.cpp" />
+    <ClCompile Include="lightcull.cpp" />
+    <ClCompile Include="lightphys.cpp" />
+    <ClCompile Include="lightsolve.cpp" />
+    <ClCompile Include="lightsolvecontext.cpp" />
+    <ClCompile Include="materialeffect.cpp" />
+    <ClCompile Include="motorcycle.cpp" />
+    <ClCompile Include="motorvehicle.cpp" />
+    <ClCompile Include="movephys.cpp" />
+    <ClCompile Include="octbox.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PathDebugPlotter.cpp" />
+    <ClCompile Include="Pathfind.cpp" />
+    <ClCompile Include="pathfindbox.cpp" />
+    <ClCompile Include="PathfindPortal.cpp" />
+    <ClCompile Include="PathfindSector.cpp" />
+    <ClCompile Include="pathmgr.cpp" />
+    <ClCompile Include="pathnode.cpp" />
+    <ClCompile Include="PathObject.cpp" />
+    <ClCompile Include="pathsolve.cpp" />
+    <ClCompile Include="phys.cpp" />
+    <ClCompile Include="phys3.cpp" />
+    <ClCompile Include="physaabtreecull.cpp" />
+    <ClCompile Include="physcon.cpp" />
+    <ClCompile Include="physcontrol.cpp" />
+    <ClCompile Include="physdecalsys.cpp" />
+    <ClCompile Include="physdynamicsavesystem.cpp" />
+    <ClCompile Include="physgridcull.cpp" />
+    <ClCompile Include="physresourcemgr.cpp" />
+    <ClCompile Include="physstaticsavesystem.cpp" />
+    <ClCompile Include="phystexproject.cpp" />
+    <ClCompile Include="progcall.cpp" />
+    <ClCompile Include="projectile.cpp" />
+    <ClCompile Include="projectormanager.cpp" />
+    <ClCompile Include="pscene.cpp" />
+    <ClCompile Include="pscene_collision.cpp" />
+    <ClCompile Include="pscene_decal.cpp" />
+    <ClCompile Include="pscene_lighting.cpp" />
+    <ClCompile Include="pscene_projectors.cpp" />
+    <ClCompile Include="pscene_saveload.cpp" />
+    <ClCompile Include="pscene_vis.cpp" />
+    <ClCompile Include="rbody.cpp" />
+    <ClCompile Include="rbody_obsolete.cpp" />
+    <ClCompile Include="renderobjphys.cpp" />
+    <ClCompile Include="renegadeterrainmaterialpass.cpp" />
+    <ClCompile Include="renegadeterrainpatch.cpp" />
+    <ClCompile Include="ridermanager.cpp" />
+    <ClCompile Include="shakeablestaticphys.cpp" />
+    <ClCompile Include="staticaabtreecull.cpp" />
+    <ClCompile Include="staticanimphys.cpp" />
+    <ClCompile Include="staticphys.cpp" />
+    <ClCompile Include="stealtheffect.cpp" />
+    <ClCompile Include="terrainmaterial.cpp" />
+    <ClCompile Include="timeddecophys.cpp" />
+    <ClCompile Include="trackedvehicle.cpp" />
+    <ClCompile Include="transitioneffect.cpp" />
+    <ClCompile Include="umbrasupport.cpp" />
+    <ClCompile Include="vehicledazzle.cpp" />
+    <ClCompile Include="vehiclephys.cpp" />
+    <ClCompile Include="visoptimizationcontext.cpp" />
+    <ClCompile Include="visoptprogress.cpp" />
+    <ClCompile Include="visrendercontext.cpp" />
+    <ClCompile Include="vissample.cpp" />
+    <ClCompile Include="vissectorstats.cpp" />
+    <ClCompile Include="vistable.cpp" />
+    <ClCompile Include="vistablemgr.cpp" />
+    <ClCompile Include="vtolvehicle.cpp" />
+    <ClCompile Include="waypath.cpp" />
+    <ClCompile Include="waypoint.cpp" />
+    <ClCompile Include="wheel.cpp" />
+    <ClCompile Include="wheelvehicle.cpp" />
+    <ClCompile Include="wwphys.cpp" />
+    <ClCompile Include="bin_aabox.cpp" />
+    <ClCompile Include="bin_axes.cpp" />
+    <ClCompile Include="bin_obbox.cpp" />
+    <ClCompile Include="bin_point.cpp" />
+    <ClCompile Include="bin_vector.cpp" />
+    <ClCompile Include="widgets.cpp" />
+    <ClCompile Include="widgetuser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="accessiblephys.h" />
+    <ClInclude Include="animcollisionmanager.h" />
+    <ClInclude Include="bpt.h" />
+    <ClInclude Include="camerashakesystem.h" />
+    <ClInclude Include="cloud.h" />
+    <ClInclude Include="decophys.h" />
+    <ClInclude Include="dynamicaabtreecull.h" />
+    <ClInclude Include="dynamicanimphys.h" />
+    <ClInclude Include="dynamicphys.h" />
+    <ClInclude Include="dynamicshadowmanager.h" />
+    <ClInclude Include="dyntexproject.h" />
+    <ClInclude Include="floodfillbox.h" />
+    <ClInclude Include="floodfillgrid.h" />
+    <ClInclude Include="grideffect.h" />
+    <ClInclude Include="heightdb.h" />
+    <ClInclude Include="humanphys.h" />
+    <ClInclude Include="lightcull.h" />
+    <ClInclude Include="lightexclude.h" />
+    <ClInclude Include="lightphys.h" />
+    <ClInclude Include="lightsolve.h" />
+    <ClInclude Include="lightsolvecontext.h" />
+    <ClInclude Include="lightsolveprogress.h" />
+    <ClInclude Include="materialeffect.h" />
+    <ClInclude Include="materialeffectlist.h" />
+    <ClInclude Include="motorcycle.h" />
+    <ClInclude Include="motorvehicle.h" />
+    <ClInclude Include="movephys.h" />
+    <ClInclude Include="octbox.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="PathDebugPlotter.h" />
+    <ClInclude Include="Pathfind.h" />
+    <ClInclude Include="pathfindbox.h" />
+    <ClInclude Include="PathfindPortal.h" />
+    <ClInclude Include="PathfindSector.h" />
+    <ClInclude Include="pathmgr.h" />
+    <ClInclude Include="PathNode.h" />
+    <ClInclude Include="PathObject.h" />
+    <ClInclude Include="pathsolve.h" />
+    <ClInclude Include="phunits.h" />
+    <ClInclude Include="phys.h" />
+    <ClInclude Include="phys3.h" />
+    <ClInclude Include="physaabtreecull.h" />
+    <ClInclude Include="physcoltest.h" />
+    <ClInclude Include="physcon.h" />
+    <ClInclude Include="physcontrol.h" />
+    <ClInclude Include="physdecalsys.h" />
+    <ClInclude Include="physdynamicsavesystem.h" />
+    <ClInclude Include="physgridcull.h" />
+    <ClInclude Include="physinttest.h" />
+    <ClInclude Include="physlist.h" />
+    <ClInclude Include="physobserver.h" />
+    <ClInclude Include="physresourcemgr.h" />
+    <ClInclude Include="physstaticsavesystem.h" />
+    <ClInclude Include="phystexproject.h" />
+    <ClInclude Include="progcall.h" />
+    <ClInclude Include="projectile.h" />
+    <ClInclude Include="projectormanager.h" />
+    <ClInclude Include="pscene.h" />
+    <ClInclude Include="rbody.h" />
+    <ClInclude Include="renderobjphys.h" />
+    <ClInclude Include="renegadeterrainmaterialpass.h" />
+    <ClInclude Include="renegadeterrainpatch.h" />
+    <ClInclude Include="ridermanager.h" />
+    <ClInclude Include="shakeablestaticphys.h" />
+    <ClInclude Include="staticaabtreecull.h" />
+    <ClInclude Include="staticanimphys.h" />
+    <ClInclude Include="staticphys.h" />
+    <ClInclude Include="stealtheffect.h" />
+    <ClInclude Include="terrainmaterial.h" />
+    <ClInclude Include="timeddecophys.h" />
+    <ClInclude Include="trackedvehicle.h" />
+    <ClInclude Include="transitioneffect.h" />
+    <ClInclude Include="umbrasupport.h" />
+    <ClInclude Include="vehicledazzle.h" />
+    <ClInclude Include="vehiclephys.h" />
+    <ClInclude Include="visenum.h" />
+    <ClInclude Include="visoptimizationcontext.h" />
+    <ClInclude Include="visoptprogress.h" />
+    <ClInclude Include="visrendercontext.h" />
+    <ClInclude Include="vissample.h" />
+    <ClInclude Include="vissectorstats.h" />
+    <ClInclude Include="vistable.h" />
+    <ClInclude Include="vistablemgr.h" />
+    <ClInclude Include="vtolvehicle.h" />
+    <ClInclude Include="waypath.h" />
+    <ClInclude Include="waypathposition.h" />
+    <ClInclude Include="waypoint.h" />
+    <ClInclude Include="wheel.h" />
+    <ClInclude Include="wheelvehicle.h" />
+    <ClInclude Include="wwphys.h" />
+    <ClInclude Include="wwphysids.h" />
+    <ClInclude Include="wwphystrig.h" />
+    <ClInclude Include="zone.h" />
+    <ClInclude Include="bin_aabox.h" />
+    <ClInclude Include="bin_axes.h" />
+    <ClInclude Include="bin_obbox.h" />
+    <ClInclude Include="bin_point.h" />
+    <ClInclude Include="bin_vector.h" />
+    <ClInclude Include="widgets.h" />
+    <ClInclude Include="widgetuser.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1191,7 +1191,7 @@ void Ping_Profile(SOCKADDR_IN *router_addr, unsigned long my_ip)
 	/*
 	** Draw the pings onto the graph.
 	*/
-	for (i=0 ; i<ping_number ; i++) {
+	for (int i=0 ; i<ping_number ; i++) {
 		float ping = ping_averages[i];
 		int position = (int)((ping - min_ping) * scale);
 
@@ -1202,7 +1202,7 @@ void Ping_Profile(SOCKADDR_IN *router_addr, unsigned long my_ip)
 	/*
 	** Dump it out.
 	*/
-	for (i=0 ; i<30 ; i++) {
+	for (int i=0 ; i<30 ; i++) {
 		DebugString(temp_graph[i]);
 		cprintf(temp_graph[i]);
 	}
