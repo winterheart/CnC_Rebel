@@ -97,8 +97,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\LevelEditD.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\..\Libs\debug;..\..\Libs\profile;..\..\NvDXTLib\Lib;..\..\directX\lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Libs\debug;..\..\Libs\profile;..\..\NvDXTLib\Lib;C:\DXSDK\Lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>combate.lib;ww3d2e.lib;wwbitpack.lib;imagehlp.lib;wwtranslatedb.lib;wwnet.lib;ws2_32.lib;wwaudioe.lib;mss32.lib;wwdebuge.lib;wwmath.lib;wwphyse.lib;wwlib.lib;winmm.lib;vfw32.lib;wwutil.lib;wwsaveloade.lib;d3dx8.lib;d3d8.lib;dxguid.lib;dinput8.lib;NvDXTLib.lib;version.lib;wwui.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
@@ -141,8 +142,9 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <OutputFile>..\..\..\Run\LevelEdit.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\..\Libs\profile;..\..\directX\lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\Libs\profile;C:\DXSDK\Lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>combate.lib;ww3d2e.lib;wwbitpack.lib;imagehlp.lib;wwtranslatedb.lib;wwnet.lib;ws2_32.lib;wwaudioe.lib;mss32.lib;wwdebuge.lib;wwmath.lib;wwphyse.lib;wwlib.lib;winmm.lib;vfw32.lib;wwutil.lib;wwsaveloade.lib;d3dx8.lib;d3d8.lib;dxguid.lib;dinput8.lib;NvDXTLib.lib;version.lib;wwui.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
