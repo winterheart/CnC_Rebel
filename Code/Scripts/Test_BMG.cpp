@@ -61,7 +61,7 @@ DECLARE_SCRIPT(BMG_Test_Script, "" )
 		GameObject * star = Commands->Get_The_Star();
 		if ( star ) {
 			Commands->Clear_Weapons( star );
-			Commands->Give_PowerUp(star, "POW_LaserRifle_Player");
+			Commands->Give_PowerUp(star, "POW_LaserRifle_Player", false);
 			Commands->Select_Weapon(star, "Weapon_LaserRifle_Player" );
 		}
 	}
@@ -151,12 +151,12 @@ DECLARE_SCRIPT(BMG_Test_Pogs, "" )
 
 		switch( timer_id ) {
 			case 0:
-					Commands->Add_Objective( 100, OBJECTIVE_TYPE_SECONDARY, OBJECTIVE_STATUS_PENDING, IDS_BYON, NULL );
+					Commands->Add_Objective( 100, OBJECTIVE_TYPE_SECONDARY, OBJECTIVE_STATUS_PENDING, IDS_BYON, NULL, 0 );
 					Commands->Set_Objective_Radar_Blip( 100, Vector3( 10, 10, 0 ) );
 					Commands->Set_Objective_HUD_Info( 100, 100, "HUD_OBJE_ARROW.TGA", IDS_BYON );
 					break;
 			case 1:
-					Commands->Add_Objective( 101, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, IDS_BYON, NULL );
+					Commands->Add_Objective( 101, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, IDS_BYON, NULL, 0 );
 					Commands->Set_Objective_Radar_Blip( 101, Vector3( 10, -10, 0 ) );
 					Commands->Set_Objective_HUD_Info( 101, 101, "HUD_OBJECTIVE.TGA", IDS_BYON );
 					break;
@@ -196,7 +196,7 @@ DECLARE_SCRIPT(BMG_Test_Misc_Script, "" )
 //		Action_Complete( obj, 1, (ActionCompleteReason)0 );
 
 /*		Commands->Debug_Message("Objective Created\n");
-		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000 );
+		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000, NULL, 0 );
 		Commands->Set_Objective_Radar_Blip_Object( 300, obj );*/
 	}
 
@@ -266,7 +266,7 @@ DECLARE_SCRIPT(BMG_Spray_Shooter, "" )
 //		Action_Complete( obj, 1, (ActionCompleteReason)0 );
 
 /*		Commands->Debug_Message("Objective Created\n");
-		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000 );
+		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000, NULL, 0 );
 		Commands->Set_Objective_Radar_Blip_Object( 300, obj );*/
 	}
 
@@ -424,7 +424,7 @@ DECLARE_SCRIPT(BMG_Test_Objective, "" )
 	void Created(GameObject* obj)
 	{
 		Commands->Debug_Message("Objective Created\n");
-		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000 );
+		Commands->Add_Objective( 300, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, 1000, NULL, 0 );
 		Commands->Set_Objective_Radar_Blip_Object( 300, obj );
 		Commands->Start_Timer( obj, this, 6, 0);
 	}
@@ -524,7 +524,7 @@ DECLARE_SCRIPT( BMG_Test_Radar, "" )
 				break;
 			case 3:
 				Commands->Debug_Message("BMG Test Radar : Create Objective\n");
-				Commands->Add_Objective( 6, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, IDS_M04_RescuePrisoners );
+				Commands->Add_Objective( 6, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, IDS_M04_RescuePrisoners, NULL, 0 );
 				break;
 			case 4:
 				Commands->Debug_Message("BMG Test Radar : Make Objective Blip\n");
@@ -567,7 +567,7 @@ DECLARE_SCRIPT( BMG_Test_Animation, "" )
 		params.Set_Basic( this, 190, 0 );
 		params.Set_Animation( "S_A_HUMAN.H_A_611A", false );
 //		Commands->Action_Play_Animation( obj, params );
-		Commands->Set_Animation( obj, "S_A_HUMAN.H_A_611A", true );
+		Commands->Set_Animation( obj, "S_A_HUMAN.H_A_611A", true, NULL, 0.0f, -1.0f, false );
 	}
 };
 
@@ -597,7 +597,7 @@ DECLARE_SCRIPT( BMG_Test_Damage, "" )
 	{
 		Commands->Start_Timer( obj, this,  3, 0 );
 		Commands->Debug_Message( "BMG_Test_Damage\n" );
-		Commands->Apply_Damage( obj, 2, "STEEL" );
+		Commands->Apply_Damage( obj, 2, "STEEL", NULL );
 	}
 };
 
@@ -873,7 +873,7 @@ DECLARE_SCRIPT(BMG_Test_Objectives, "")
 	void Timer_Expired (GameObject* obj, int Timer_ID)
 	{
 		switch ( Timer_ID ) {
-			case 0:	Commands->Add_Objective( 100, OBJECTIVE_TYPE_PRIMARY, "Eat Your Vegetables" );
+			case 0:	Commands->Add_Objective( 100, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_STATUS_PENDING, "Eat Your Vegetables", NULL, 0 );
 						break;
 			case 1:	Commands->Set_Objective_Radar_Blip( 100, Vector3( 10,10,10 ) );
 						break;
@@ -981,7 +981,7 @@ DECLARE_SCRIPT(BMG_Test_Cinematic, "ScriptName=:string")
 	void Created(GameObject* obj)
 	{
 		Commands->Debug_Message("BMG Cinematic\n");
-		Commands->Set_Animation (obj, Get_Parameter("ScriptName"), 1);
+		Commands->Set_Animation (obj, Get_Parameter("ScriptName"), 1, NULL, 0.0f, -1.0f, false);
 
 		Commands->Start_Timer( obj, 5, 0 );
 
@@ -1003,7 +1003,7 @@ DECLARE_SCRIPT(BMG_Test_C130_DropOff_Cinematic, "ObjToCreate=:string")
 	void Created(GameObject* obj)
 	{
 		Commands->Debug_Message("BMG_Test_C130_DropOff_Cinematic\n");
-		Commands->Set_Animation (obj, "v_nod_c-130e3.m_cargo-drop", 0);
+		Commands->Set_Animation (obj, "v_nod_c-130e3.m_cargo-drop", 0, NULL, 0.0f, -1.0f, false);
 		float drop_frame = 446;
 		float drop_time = drop_frame / 30;	// find the time assumeing 30fps
 		Commands->Start_Timer( obj, drop_time, 0 );
@@ -1023,7 +1023,7 @@ DECLARE_SCRIPT(BMG_Test_C130_DropOff_Cinematic, "ObjToCreate=:string")
 	void Killed(GameObject* obj, GameObject* killer)
 	{
 		Vector3 pos = Commands->Get_Bone_Position( obj, "CARGO" );
-		Commands->Create_Explosion( "Rocket Explosion", pos, killer );
+		Commands->Create_Explosion( "Rocket Explosion", pos, killer, NULL );
 	}
 
 
@@ -1049,10 +1049,10 @@ DECLARE_SCRIPT(BMG_Test_Orca_Attack_Cinematic, "")
 	void Timer_Expired (GameObject* obj, int timer_id)
 	{
 		if ( timer_id == SHOOT ) {
-			Commands->Trigger_Weapon( obj, true, Vector3(0,0,0) );
+			Commands->Trigger_Weapon( obj, true, Vector3(0,0,0), true );
 		}
 		if ( timer_id == STOP ) {
-			Commands->Trigger_Weapon( obj, false, Vector3(0,0,0) );
+			Commands->Trigger_Weapon( obj, false, Vector3(0,0,0), true );
 		}
 	}
 
@@ -1149,7 +1149,7 @@ DECLARE_SCRIPT(BMG_Test_Anim, "")
 	void Timer_Expired (GameObject* obj, int timer_id)
 	{
 		Commands->Start_Timer( obj, 0.001f, 0 );
-		Commands->Set_Animation( obj, "S_A_HUMAN.H_A_J99C", true );
+		Commands->Set_Animation( obj, "S_A_HUMAN.H_A_J99C", true, NULL, 0.0f, -1.0f, false );
 	}
 };
 
