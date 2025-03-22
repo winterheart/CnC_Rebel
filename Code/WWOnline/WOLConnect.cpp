@@ -1759,7 +1759,7 @@ void GetUserWait::WaitBeginning(void)
 		}
 	else
 		{
-		Add(UserListWait::Create(mSession));
+		Add((const RefPtr<WaitCondition>)UserListWait::Create(mSession));
 		}
 	}
 
