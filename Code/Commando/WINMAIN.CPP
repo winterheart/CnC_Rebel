@@ -121,6 +121,10 @@ void Set_Working_Directory(char *old_path, char *new_path);
 int Start_Application( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow );
 void Set_Working_Directory(HINSTANCE hInstance);
 
+#ifdef _MSC_VER
+int Game_Main_Loop_Try();
+#endif
+
 #ifndef _MSC_VER
 long Top_Level_Exception_Filter(EXCEPTION_POINTERS *e_info)
 {
@@ -135,14 +139,14 @@ long Top_Level_Exception_Filter(EXCEPTION_POINTERS *e_info)
  * WinMain -- Win32 Program Entry Point!                                                       *
  *                                                                                             *
  * INPUT:                                                                                      *
- *  																														  *
- * 	Standard WinMain inputs :-)																				  *
- * 																														  *
- * OUTPUT:																												  *
- *  																														  *
- * 	Standard WinMain output																						  *
- * 																														  *
- * WARNINGS:																											  *
+ *                                                                                             *
+ * 	Standard WinMain inputs :-)                                                                *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * 	Standard WinMain output                                                                    *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   07/18/1997 GH  : Created.                                                                 *
@@ -398,19 +402,35 @@ static bool Video_Card_Driver_Check()
 	return !exit_code;
 }
 
+#ifdef _MSC_VER
+int Game_Main_Loop_Try() {
+	/*
+	** The __try/__except construct is part of the WIN32 interface. This is not the same
+	** as C++ exception handling. There is no additional code overhead required
+	** with this interface and the compilers exception handling options should be disabled
+	** to prevent the compiler generating additional stack unwinding code.
+	*/
+	__try {
+		return Game_Main_Loop();
+	} __except(Exception_Handler(GetExceptionCode(), GetExceptionInformation())) {
+		return EXIT_SUCCESS;
+	};
+}
+#endif _MSC_VER
+
 
 /***********************************************************************************************
- * Start_Application -- Handles WinMain execution.															  *
+ * Start_Application -- Handles WinMain execution.                                             *
  *                                                                                             *
  * INPUT:                                                                                      *
- *  																														  *
- * 	Standard WinMain inputs :-)																				  *
- * 																														  *
- * OUTPUT:																												  *
- *  																														  *
- * 	Standard WinMain output																						  *
- * 																														  *
- * WARNINGS:																											  *
+ *                                                                                             *
+ * 	Standard WinMain inputs :-)                                                                *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * 	Standard WinMain output                                                                    *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   09/19/2001 PDS  : Created.                                                                *
@@ -469,28 +489,17 @@ int Start_Application( HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /
 		Register_Application_Version_Callback(&BuildInfoClass::Composite_Build_Info);
 
 #ifdef _MSC_VER
-		/*
-		** The __try/__except construct is part of the WIN32 interface. This is not the same
-		** as C++ exception handling. There is no additional code overhead required
-		** with this interface and the compilers exception handling options should be disabled
-		** to prevent the compiler generating additional stack unwinding code.
-		*/
-		__try {
+		WWDEBUG_SAY(("Game_Main_Loop_Try\n"));
+		exitCode = Game_Main_Loop_Try();
 #else
 		SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER) &Top_Level_Exception_Filter);
-#endif
-			WWDEBUG_SAY(("Game_Main_Loop\n"));
-			exitCode = Game_Main_Loop();
 
-#ifdef _MSC_VER
-		} __except(Exception_Handler(GetExceptionCode(), GetExceptionInformation())) {};
+		WWDEBUG_SAY(("Game_Main_Loop\n"));
+		exitCode = Game_Main_Loop();
 
-		/*
-		** Set the exception filter to use on shutdown.
-		*/
-#else
 		SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER) &Top_Level_Exception_Filter);
-#endif
+#endif // _MSC_VER
+
 #ifdef WWDEBUG
 	}
 #endif //WWDEBUG
@@ -506,14 +515,14 @@ int Start_Application( HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /
  * Main_Window_Proc -- Windows Proc for the main game window                                   *
  *                                                                                             *
  * INPUT:                                                                                      *
- * 																														  *
- * 	Standard Windows Proc inputs																				  *
- * 																														  *
- * OUTPUT:																												  *
- * 																														  *
- * 	Standard Windows Proc output																				  *
- * 																														  *
- * WARNINGS:																											  *
+ *                                                                                             *
+ * 	Standard Windows Proc inputs                                                               *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * 	Standard Windows Proc output                                                               *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   07/18/1997 GH  : Created.                                                                 *
@@ -682,15 +691,15 @@ long FAR PASCAL Main_Window_Proc( HWND hwnd, UINT message, WPARAM wParam, LPARAM
  * Create_Main_Window -- Creates the main game window                                          *
  *                                                                                             *
  * INPUT:                                                                                      *
- *  																														  *
- * 	hInstance -- Instance handle of the application														  *
- * 	nCmdShow -- how the window is to be shown																  *
- * 																														  *
- * OUTPUT:																												  *
- * 																														  *
- * 	TRUE = success, FALSE = failure																			  *
- * 																														  *
- * WARNINGS:																											  *
+ *                                                                                             *
+ * 	hInstance -- Instance handle of the application                                            *
+ * 	nCmdShow -- how the window is to be shown                                                  *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * 	TRUE = success, FALSE = failure                                                            *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   07/18/1997 GH  : Created.                                                                 *
@@ -736,12 +745,12 @@ static BOOL Create_Main_Window(HANDLE hInstance, int nCmdShow)
 /***********************************************************************************************
  * On_Focus_Loss -- this function is called when the application loses focus                   *
  *                                                                                             *
- * INPUT:		Nothing																								  *
- * 																														  *
- * OUTPUT:		Nothing																								  *
- * 																														  *
- * WARNINGS:	None																									  *
- * 																														  *
+ * INPUT:		Nothing                                                                        *
+ *                                                                                             *
+ * OUTPUT:		Nothing                                                                        *
+ *                                                                                             *
+ * WARNINGS:	None                                                                           *
+ *                                                                                             *
  * HISTORY:                                                                                    *
  *   07/18/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
@@ -754,12 +763,12 @@ void On_Focus_Loss(void)
 /***********************************************************************************************
  * On_Focus_Restore -- This function is called when the application gets focus                 *
  *                                                                                             *
- * INPUT:		Nothing																								  *
- * 																														  *
- * OUTPUT:		Nothing																								  *
- * 																														  *
- * WARNINGS:	None																									  *
- * 																														  *
+ * INPUT:		Nothing                                                                        *
+ *                                                                                             *
+ * OUTPUT:		Nothing                                                                        *
+ *                                                                                             *
+ * WARNINGS:	None                                                                           *
+ *                                                                                             *
  * HISTORY:                                                                                    *
  *   07/18/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
