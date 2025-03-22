@@ -321,18 +321,19 @@ void MPWolBuddiesMenuClass::Update_Buddy_Ranking(int index, const RefPtr<WWOnlin
 		RefPtr<WWOnline::LadderData> ladder = user->GetLadderFromType(ladderType);
 
 		if (ladder.IsValid()) {
-			wchar_t text[64];
+			const int text_size = 64;
+			wchar_t text[text_size];
 
-			swprintf(text, L"%d", ladder->GetWins());
+			swprintf(text, text_size, L"%d", ladder->GetWins());
 			list->Set_Entry_Text(index, COL_WINS, text);
 
-			swprintf(text, L"%d / %d", ladder->GetReserved1(), ladder->GetKills());
+			swprintf(text, text_size, L"%d / %d", ladder->GetReserved1(), ladder->GetKills());
 			list->Set_Entry_Text(index, COL_DEATHS, text);
 
-			swprintf(text, L"%d", ladder->GetPoints());
+			swprintf(text, text_size, L"%d", ladder->GetPoints());
 			list->Set_Entry_Text(index, COL_POINTS, text);
 
-			swprintf(text, L"%d", ladder->GetRung());
+			swprintf(text, text_size, L"%d", ladder->GetRung());
 			list->Set_Entry_Text(index, COL_RANK, text);
 		} else {
 			list->Set_Entry_Text(index, COL_WINS, L"-");
