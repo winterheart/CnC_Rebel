@@ -72,8 +72,6 @@ public:
 	void		Timestep(float dt);
 	void		Update_Camera(CameraClass & camera);
 
-protected:
-
 	/**
 	** CameraShakerClass 
 	** This class encapsulates the current state of a camera shaker.  It is a multi-list object
@@ -100,6 +98,8 @@ protected:
 		Vector3				Omega;
 		Vector3				Phi;
 	};
+
+protected:
 
 	MultiListClass<CameraShakerClass>	CameraShakerList;
 

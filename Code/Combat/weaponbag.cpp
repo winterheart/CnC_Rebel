@@ -392,7 +392,8 @@ void WeaponBagClass::Import_Weapon_List(BitStreamClass & packet)
 {
 	int weapon_count = packet.Get(weapon_count);
 	int weapon_id;
-	for (int weapon = 0; weapon < weapon_count; weapon++) {
+	// TODO: WH: 'weapon_index' was 'weapon'. Recheck this part.
+	for (int weapon_index = 0; weapon_index < weapon_count; weapon_index++) {
 		weapon_id = packet.Get(weapon_id);
 		int total_rounds = packet.Get(total_rounds);
 		Add_Weapon(weapon_id, 0);

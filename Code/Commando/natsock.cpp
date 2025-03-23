@@ -108,7 +108,7 @@ SocketHandlerClass::SocketHandlerClass(void)
 SocketHandlerClass::~SocketHandlerClass(void)
 {
 	Close();
-	AllSocketHandlers.Delete(this);
+	AllSocketHandlers.Delete_Object(this);
 }
 
 

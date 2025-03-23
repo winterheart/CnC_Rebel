@@ -232,7 +232,7 @@ StyleMgrClass::Initialize_From_INI (const char *filename)
 		//
 		//	Read information about each font and load it into the system
 		//
-		for (index = 0; index < FONT_MAX; index ++) {
+		for (int index = 0; index < FONT_MAX; index ++) {
 			
 			//
 			//	Read information about this font
@@ -315,7 +315,7 @@ StyleMgrClass::Shutdown (void)
 	//
 	//	Unregister this font with windows
 	//
-	for (index = 0; index < FontFileList.Count (); index ++) {
+	for (int index = 0; index < FontFileList.Count (); index ++) {
 		::RemoveFontResource (FontFileList[index]);
 	}
 

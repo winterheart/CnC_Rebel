@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|Win32">
+      <Configuration>Profile</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <OutDir>.\Profile\</OutDir>
+    <IntDir>.\Profile\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;_WIN32_WINNT=0x400;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\wwui.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\wwui.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Debug\wwui.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\wwui.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\wwui.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Release\wwui.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Profile\wwui.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Profile\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Profile\wwui.bsc</OutputFile>
+    </Bscmake>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>..\libs\Profile\wwui.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="buttonctrl.cpp" />
+    <ClCompile Include="checkboxctrl.cpp" />
+    <ClCompile Include="childdialog.cpp" />
+    <ClCompile Include="comboboxctrl.cpp" />
+    <ClCompile Include="dialogbase.cpp" />
+    <ClCompile Include="dialogcontrol.cpp" />
+    <ClCompile Include="dialogmgr.cpp" />
+    <ClCompile Include="dialogparser.cpp" />
+    <ClCompile Include="dialogtext.cpp" />
+    <ClCompile Include="dialogtransition.cpp" />
+    <ClCompile Include="dropdownctrl.cpp" />
+    <ClCompile Include="editctrl.cpp" />
+    <ClCompile Include="healthbarctrl.cpp" />
+    <ClCompile Include="imagectrl.cpp" />
+    <ClCompile Include="IMECandidate.cpp" />
+    <ClCompile Include="IMECandidateCtrl.cpp" />
+    <ClCompile Include="IMEManager.cpp" />
+    <ClCompile Include="inputctrl.cpp" />
+    <ClCompile Include="listctrl.cpp" />
+    <ClCompile Include="listiconmgr.cpp" />
+    <ClCompile Include="mapctrl.cpp" />
+    <ClCompile Include="menubackdrop.cpp" />
+    <ClCompile Include="menudialog.cpp" />
+    <ClCompile Include="menuentryctrl.cpp" />
+    <ClCompile Include="merchandisectrl.cpp" />
+    <ClCompile Include="mousemgr.cpp" />
+    <ClCompile Include="multilinetextctrl.cpp" />
+    <ClCompile Include="popupdialog.cpp" />
+    <ClCompile Include="ProgressCtrl.cpp" />
+    <ClCompile Include="screencursor.cpp" />
+    <ClCompile Include="scrollbarctrl.cpp" />
+    <ClCompile Include="shortcutbarctrl.cpp" />
+    <ClCompile Include="sliderctrl.cpp" />
+    <ClCompile Include="stylemgr.cpp" />
+    <ClCompile Include="tabctrl.cpp" />
+    <ClCompile Include="textmarqueectrl.cpp" />
+    <ClCompile Include="tooltip.cpp" />
+    <ClCompile Include="tooltipmgr.cpp" />
+    <ClCompile Include="treectrl.cpp" />
+    <ClCompile Include="viewerctrl.cpp" />
+    <ClCompile Include="wwuiinput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="buttonctrl.h" />
+    <ClInclude Include="checkboxctrl.h" />
+    <ClInclude Include="childdialog.h" />
+    <ClInclude Include="comboboxctrl.h" />
+    <ClInclude Include="controladvisesink.h" />
+    <ClInclude Include="dialogbase.h" />
+    <ClInclude Include="dialogcontrol.h" />
+    <ClInclude Include="dialogfactory.h" />
+    <ClInclude Include="dialogmgr.h" />
+    <ClInclude Include="dialogparser.h" />
+    <ClInclude Include="dialogtext.h" />
+    <ClInclude Include="dialogtransition.h" />
+    <ClInclude Include="dropdownctrl.h" />
+    <ClInclude Include="editctrl.h" />
+    <ClInclude Include="healthbarctrl.h" />
+    <ClInclude Include="imagectrl.h" />
+    <ClInclude Include="IMECandidate.h" />
+    <ClInclude Include="IMECandidateCtrl.h" />
+    <ClInclude Include="IMEManager.h" />
+    <ClInclude Include="inputctrl.h" />
+    <ClInclude Include="listctrl.h" />
+    <ClInclude Include="listiconmgr.h" />
+    <ClInclude Include="mapctrl.h" />
+    <ClInclude Include="menubackdrop.h" />
+    <ClInclude Include="menudialog.h" />
+    <ClInclude Include="menuentryctrl.h" />
+    <ClInclude Include="merchandisectrl.h" />
+    <ClInclude Include="mousemgr.h" />
+    <ClInclude Include="multilinetextctrl.h" />
+    <ClInclude Include="popupdialog.h" />
+    <ClInclude Include="ProgressCtrl.h" />
+    <ClInclude Include="screencursor.h" />
+    <ClInclude Include="scrollbarctrl.h" />
+    <ClInclude Include="shortcutbarctrl.h" />
+    <ClInclude Include="sliderctrl.h" />
+    <ClInclude Include="stylemgr.h" />
+    <ClInclude Include="tabctrl.h" />
+    <ClInclude Include="textmarqueectrl.h" />
+    <ClInclude Include="tooltip.h" />
+    <ClInclude Include="tooltipmgr.h" />
+    <ClInclude Include="treectrl.h" />
+    <ClInclude Include="viewerctrl.h" />
+    <ClInclude Include="wwuiinput.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

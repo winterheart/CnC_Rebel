@@ -615,9 +615,13 @@ private:
 		_CACHE_ENTRY_STRUCT (void)
 			: string_id (0), buffer (NULL) {}
 
-		_CACHE_ENTRY_STRUCT &operator= (const _CACHE_ENTRY_STRUCT &src) { string_id = ::strdup (src.string_id); REF_PTR_SET (buffer, src.buffer); return *this; }
-		operator== (const _CACHE_ENTRY_STRUCT &src) { return false; }
-		operator!= (const _CACHE_ENTRY_STRUCT &src) { return true; }
+		_CACHE_ENTRY_STRUCT &operator= (const _CACHE_ENTRY_STRUCT &src) {
+			string_id = ::strdup (src.string_id);
+			REF_PTR_SET (buffer, src.buffer);
+			return *this;
+		}
+		bool operator== (const _CACHE_ENTRY_STRUCT &src) { return false; }
+		bool operator!= (const _CACHE_ENTRY_STRUCT &src) { return true; }
 	} CACHE_ENTRY_STRUCT;
 
 
@@ -632,8 +636,8 @@ private:
 		_LOGICAL_TYPE_STRUCT (int _id, LPCTSTR name)
 			:	display_name (name), id (_id) {}
 
-		operator== (const _LOGICAL_TYPE_STRUCT &src) { return false; }
-		operator!= (const _LOGICAL_TYPE_STRUCT &src) { return true; }
+		bool operator== (const _LOGICAL_TYPE_STRUCT &src) { return false; }
+		bool operator!= (const _LOGICAL_TYPE_STRUCT &src) { return true; }
 	} LOGICAL_TYPE_STRUCT;
 
 	//////////////////////////////////////////////////////////////////////

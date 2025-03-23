@@ -2932,7 +2932,7 @@ public:
 			//
 			// C & S can both use id=xxxxxx format
 			//
-			char * p_id = ::strstr(input, "id=");
+			char * p_id = (char *)::strstr(input, "id=");
 			if (p_id != NULL) {
 				int id = -1;
 				::sscanf(p_id, "id=%d", &id);
@@ -2955,7 +2955,7 @@ public:
 			// Remaining functionality only for server.
 			//
 
-			char * p_pc = strstr(input, "percent=");
+			char * p_pc = (char *)strstr(input, "percent=");
 			int percent = 100;
 			if (p_pc != NULL) {
 				sscanf(p_pc, "percent=%d", &percent);
@@ -3585,7 +3585,8 @@ public:
 		WW3D::Get_Device_Resolution(w,h,bits,windowed);
 		const RenderDeviceDescClass& desc=WW3D::Get_Render_Device_Desc();
 		const DynamicVectorClass<ResolutionDescClass> & resos=desc.Enumerate_Resolutions();
-		for (int i=0;i<resos.Count();++i) {
+		int i;
+		for (i=0;i<resos.Count();++i) {
 			if (resos[i].Width==w && resos[i].Height==h && resos[i].BitDepth==bits) {
 				break;
 			}
@@ -3594,8 +3595,11 @@ public:
 		unsigned char sign;
 		if (sscanf (input, "%c", &sign) == 1 && (sign=='+' || sign=='-')) {
 
-			if (sign=='+') i++;
-			else i--;
+			if (sign=='+') {
+				i++;
+			} else {
+				i--;
+			}
 
 			if (i>=resos.Count()) i=0;
 			else if (i<0) i=resos.Count()-1;
@@ -4148,7 +4152,8 @@ public:
 			if (!input || !(*input)) return;
 			cPlayer *player = NULL;
 
-			for (SLNode<cPlayer> *player_node = cPlayerManager::Get_Player_Object_List ()->Head ()
+			SLNode<cPlayer> *player_node;
+			for (player_node = cPlayerManager::Get_Player_Object_List ()->Head ()
 				; player_node != NULL; player_node = player_node->Next ()) {
 
 				player = player_node->Data ();
@@ -5313,7 +5318,7 @@ void ConsoleFunctionManager::Next_Verbose_Help_Screen(void)
 		for (	int index = 0; index < FunctionList.Count(); index++) {
 			command_number++;
 			int per_page = 57;
-			if (floor(command_number / per_page) == page_number) {
+			if (floor((float)(command_number / per_page)) == page_number) {
 				ConsoleFunctionClass * function = FunctionList[index];
 				WWASSERT(function != NULL);
 				strcat( buffer, function->Get_Help() );

@@ -1,3 +1,9 @@
+# MSVC files
+*.vcxproj.user
+*.opensdf
+*.sdf
+*.suo
+
 
 # Ignore RUNable folder
 [Rr]un

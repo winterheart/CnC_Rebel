@@ -144,14 +144,6 @@ class WeatherSystemClass : public RenderObjClass
 
 		virtual bool Update (WindClass *wind, const Vector3 &cameraposition);
 
-	protected:
-
-		enum {
-			VERTICES_PER_TRIANGLE = 3,
-			MAX_IB_PARTICLE_COUNT = 2048,
-			MAX_AGE					 = 1000000
-		};
-
 		struct RayStruct : public AutoPoolClass <RayStruct, GROWTH_STEP>
 		{
 			public:
@@ -184,6 +176,14 @@ class WeatherSystemClass : public RenderObjClass
 				unsigned char	 Page;					// Texture page for this particle.
 				unsigned char	 RenderMode;
 				unsigned char	 Pad [2];				// Pad structure to 4-byte multiple.
+		};
+
+	protected:
+
+		enum {
+			VERTICES_PER_TRIANGLE = 3,
+			MAX_IB_PARTICLE_COUNT = 2048,
+			MAX_AGE					 = 1000000
 		};
 
 		// Utility functions.

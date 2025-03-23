@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|Win32">
+      <Configuration>Profile</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <OutDir>.\Profile\</OutDir>
+    <IntDir>.\Profile\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\;..\wwui;..\wwbitpack;..\combat;..\wwaudio;..\third_party\miles6\include;..\wolapi;..\wwutil;..\wwlzhl;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;..\BinkMovie;..\scontrol;..\GameSpy;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WINVER=0x400;_WINDOWS;DIRECTX;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release\commando.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>rebase -v -x ..\..\Run\. -a -b 400000 ..\..\Run\Renegade.exe</Command>
+    </PostBuildEvent>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\commando.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\commando.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\Run\Renegade.exe</OutputFile>
+      <AdditionalLibraryDirectories>../libs/release;../srsdk1x/msvc6\lib\release;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\;..\wwui;..\wwbitpack;..\combat;..\wwaudio;..\third_party\miles6\include;..\wolapi;..\wwutil;..\wwlzhl;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;..\BinkMovie;..\scontrol;..\GameSpy;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;DIRECTX;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\commando.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\commando.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>Debug/renegade.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\Run\RenegadeD.exe</OutputFile>
+      <AdditionalLibraryDirectories>../libs/debug;../srsdk1x/msvc6\lib\debug;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>..\;..\wwui;..\wwbitpack;..\combat;..\wwaudio;..\third_party\miles6\include;..\wolapi;..\wwutil;..\wwlzhl;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;..\BinkMovie;..\scontrol;..\GameSpy;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;DIRECTX;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Profile\commando.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Profile\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Profile\commando.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Profile\commando.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\Run\RenegadeP.exe</OutputFile>
+      <AdditionalLibraryDirectories>../libs/profile;../srsdk1x/msvc6/lib/release;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;mss32.lib;wwaudio.lib;wwbitpack.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\;..\wwui;..\wwbitpack;..\combat;..\wwaudio;..\third_party\miles6\include;..\wolapi;..\wwutil;..\wwlzhl;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;..\BinkMovie;..\scontrol;..\GameSpy;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="boolean.h" />
+    <ClInclude Include="combatgmode.h" />
+    <ClInclude Include="commandochunkids.h" />
+    <ClInclude Include="commandoids.h" />
+    <ClInclude Include="commandosaveload.h" />
+    <ClInclude Include="comnetrcvinst.h" />
+    <ClInclude Include="gameinitmgr.h" />
+    <ClInclude Include="god.h" />
+    <ClInclude Include="inputconfig.h" />
+    <ClInclude Include="inputconfigmgr.h" />
+    <ClInclude Include="lev_file.h" />
+    <ClInclude Include="level.h" />
+    <ClInclude Include="nethandler.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="playermanager.h" />
+    <ClInclude Include="regbool.h" />
+    <ClInclude Include="regfloat.h" />
+    <ClInclude Include="regint.h" />
+    <ClInclude Include="regstring.h" />
+    <ClInclude Include="renegadeplayerterminal.h" />
+    <ClInclude Include="systemsettings.h" />
+    <ClInclude Include="team.h" />
+    <ClInclude Include="teammanager.h" />
+    <ClInclude Include="campaign.h" />
+    <ClInclude Include="console.h" />
+    <ClInclude Include="consolefunction.h" />
+    <ClInclude Include="gamemenu.h" />
+    <ClInclude Include="langmode.h" />
+    <ClInclude Include="movie.h" />
+    <ClInclude Include="overlay.h" />
+    <ClInclude Include="scorescreen.h" />
+    <ClInclude Include="textdisplay.h" />
+    <ClInclude Include="wolgmode.h" />
+    <ClInclude Include="_globals.h" />
+    <ClInclude Include="afxres.h" />
+    <ClInclude Include="AutoStart.h" />
+    <ClInclude Include="buildnum.h" />
+    <ClInclude Include="cdverify.h" />
+    <ClInclude Include="cominit.h" />
+    <ClInclude Include="ConsoleMode.h" />
+    <ClInclude Include="gamemode.h" />
+    <ClInclude Include="init.h" />
+    <ClInclude Include="mainloop.h" />
+    <ClInclude Include="shutdown.h" />
+    <ClInclude Include="singletoninstancekeeper.h" />
+    <ClInclude Include="WINMAIN.H" />
+    <ClInclude Include="bandwidthcheck.h" />
+    <ClInclude Include="FirewallWait.h" />
+    <ClInclude Include="GameResSend.h" />
+    <ClInclude Include="mpsettingsmgr.h" />
+    <ClInclude Include="WOLBuddyMgr.h" />
+    <ClInclude Include="WOLChatMgr.h" />
+    <ClInclude Include="WOLDiags.h" />
+    <ClInclude Include="WOLGameInfo.h" />
+    <ClInclude Include="WOLJoinGame.h" />
+    <ClInclude Include="wollocalemgr.h" />
+    <ClInclude Include="WOLLoginProfile.h" />
+    <ClInclude Include="WOLLogonMgr.h" />
+    <ClInclude Include="WOLQuickMatch.h" />
+    <ClInclude Include="chatshre.h" />
+    <ClInclude Include="gamechanlist.h" />
+    <ClInclude Include="gamechannel.h" />
+    <ClInclude Include="gamesideservercontrol.h" />
+    <ClInclude Include="netinterface.h" />
+    <ClInclude Include="ServerSettings.h" />
+    <ClInclude Include="slavemaster.h" />
+    <ClInclude Include="apppacketstats.h" />
+    <ClInclude Include="bandwidth.h" />
+    <ClInclude Include="bandwidthgraph.h" />
+    <ClInclude Include="clienthintmanager.h" />
+    <ClInclude Include="clientpingmanager.h" />
+    <ClInclude Include="cnetwork.h" />
+    <ClInclude Include="comnetrcv.h" />
+    <ClInclude Include="datasafe.h" />
+    <ClInclude Include="demosupport.h" />
+    <ClInclude Include="devoptions.h" />
+    <ClInclude Include="diagnostics.h" />
+    <ClInclude Include="multihud.h" />
+    <ClInclude Include="nicenum.h" />
+    <ClInclude Include="priority.h" />
+    <ClInclude Include="sbbomanager.h" />
+    <ClInclude Include="useroptions.h" />
+    <ClInclude Include="vendor.h" />
+    <ClInclude Include="..\wolapi\chatdefs.h" />
+    <ClInclude Include="..\wolapi\downloaddefs.h" />
+    <ClInclude Include="..\wolapi\ftpdefs.h" />
+    <ClInclude Include="..\wolapi\netutildefs.h" />
+    <ClInclude Include="..\wolapi\WOLAPI.h" />
+    <ClInclude Include="gamedata.h" />
+    <ClInclude Include="gdcnc.h" />
+    <ClInclude Include="gdsingleplayer.h" />
+    <ClInclude Include="gdskirmish.h" />
+    <ClInclude Include="lanchat.h" />
+    <ClInclude Include="dialogresource.h" />
+    <ClInclude Include="dialogtests.h" />
+    <ClInclude Include="dlgcharacteroptions.h" />
+    <ClInclude Include="dlgcheatoptions.h" />
+    <ClInclude Include="dlgcncbattleinfo.h" />
+    <ClInclude Include="dlgcncpurchasemainmenu.h" />
+    <ClInclude Include="dlgcncpurchasemenu.h" />
+    <ClInclude Include="dlgcncreference.h" />
+    <ClInclude Include="dlgcncserverinfo.h" />
+    <ClInclude Include="dlgcncteaminfo.h" />
+    <ClInclude Include="dlgcncwinscreen.h" />
+    <ClInclude Include="dlgconfigaudiotab.h" />
+    <ClInclude Include="dlgconfigperformancetab.h" />
+    <ClInclude Include="dlgconfigvideotab.h" />
+    <ClInclude Include="dlgcontrols.h" />
+    <ClInclude Include="dlgcontrolsaveload.h" />
+    <ClInclude Include="dlgcontrolslisttab.h" />
+    <ClInclude Include="dlgcontroltabs.h" />
+    <ClInclude Include="dlgcredits.h" />
+    <ClInclude Include="DlgDownload.h" />
+    <ClInclude Include="dlgevabuildingstab.h" />
+    <ClInclude Include="dlgevacharacterstab.h" />
+    <ClInclude Include="dlgevadatatab.h" />
+    <ClInclude Include="dlgevaencyclopedia.h" />
+    <ClInclude Include="dlgevamaptab.h" />
+    <ClInclude Include="dlgevaobjectivestab.h" />
+    <ClInclude Include="dlgevavehiclestab.h" />
+    <ClInclude Include="dlgevaviewertab.h" />
+    <ClInclude Include="dlgevaweaponstab.h" />
+    <ClInclude Include="dlghelpscreen.h" />
+    <ClInclude Include="dlgloadspgame.h" />
+    <ClInclude Include="dlgmainmenu.h" />
+    <ClInclude Include="DlgMessageBox.h" />
+    <ClInclude Include="dlgmovieoptions.h" />
+    <ClInclude Include="dlgmpchangelannickname.h" />
+    <ClInclude Include="DlgMPConnect.h" />
+    <ClInclude Include="DlgMPConnectionRefused.h" />
+    <ClInclude Include="dlgmpingamechat.h" />
+    <ClInclude Include="dlgmpingameteamchat.h" />
+    <ClInclude Include="dlgmplangamelist.h" />
+    <ClInclude Include="dlgmplanhostoptions.h" />
+    <ClInclude Include="DlgMPTeamSelect.h" />
+    <ClInclude Include="dlgmpwoladdbuddy.h" />
+    <ClInclude Include="dlgmpwoladdignoreentry.h" />
+    <ClInclude Include="dlgmpwolautologinprompt.h" />
+    <ClInclude Include="dlgmpwolbuddies.h" />
+    <ClInclude Include="dlgmpwolbuddylistpopup.h" />
+    <ClInclude Include="dlgmpwolchat.h" />
+    <ClInclude Include="dlgmpwoldeletebuddy.h" />
+    <ClInclude Include="dlgmpwoldeleteignoreentry.h" />
+    <ClInclude Include="dlgmpwolgamelist.h" />
+    <ClInclude Include="dlgmpwolgoodies.h" />
+    <ClInclude Include="dlgmpwolignorelist.h" />
+    <ClInclude Include="dlgmpwolinvitation.h" />
+    <ClInclude Include="dlgmpwollocalenag.h" />
+    <ClInclude Include="dlgmpwolmain.h" />
+    <ClInclude Include="dlgmpwolmotd.h" />
+    <ClInclude Include="dlgmpwolpagebuddy.h" />
+    <ClInclude Include="dlgmpwolpagereply.h" />
+    <ClInclude Include="dlgmpwolquickmatchoptions.h" />
+    <ClInclude Include="dlgmultiplayoptions.h" />
+    <ClInclude Include="DlgPasswordPrompt.h" />
+    <ClInclude Include="dlgpreviewoptions.h" />
+    <ClInclude Include="DlgQuickmatch.h" />
+    <ClInclude Include="DlgRestart.h" />
+    <ClInclude Include="dlgsavegame.h" />
+    <ClInclude Include="dlgserversaveload.h" />
+    <ClInclude Include="dlgsidebarhelp.h" />
+    <ClInclude Include="dlgtechoptions.h" />
+    <ClInclude Include="DlgWebPage.h" />
+    <ClInclude Include="DlgWOLAutoStart.h" />
+    <ClInclude Include="DlgWOLLogon.h" />
+    <ClInclude Include="DlgWOLSettings.h" />
+    <ClInclude Include="DlgWOLWait.h" />
+    <ClInclude Include="mainmenutransition.h" />
+    <ClInclude Include="radiocommanddisplay.h" />
+    <ClInclude Include="renegadedialogmgr.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="skinpackage.h" />
+    <ClInclude Include="skinpackagemgr.h" />
+    <ClInclude Include="WebBrowser.h" />
+    <ClInclude Include="AnnounceEvent.h" />
+    <ClInclude Include="bioevent.h" />
+    <ClInclude Include="changeteamevent.h" />
+    <ClInclude Include="clientbboevent.h" />
+    <ClInclude Include="clientgoodbyeevent.h" />
+    <ClInclude Include="consolecommandevent.h" />
+    <ClInclude Include="csconsolecommandevent.h" />
+    <ClInclude Include="cshint.h" />
+    <ClInclude Include="cspingrequestevent.h" />
+    <ClInclude Include="cstextobj.h" />
+    <ClInclude Include="donateevent.h" />
+    <ClInclude Include="evictionevent.h" />
+    <ClInclude Include="gamedataupdateevent.h" />
+    <ClInclude Include="gameoptionsevent.h" />
+    <ClInclude Include="gamespycschallengeresponseevent.h" />
+    <ClInclude Include="gamespyscchallengeevent.h" />
+    <ClInclude Include="godmodeevent.h" />
+    <ClInclude Include="loadingevent.h" />
+    <ClInclude Include="moneyevent.h" />
+    <ClInclude Include="netevent.h" />
+    <ClInclude Include="playerkill.h" />
+    <ClInclude Include="purchaserequestevent.h" />
+    <ClInclude Include="purchaseresponseevent.h" />
+    <ClInclude Include="requestkillevent.h" />
+    <ClInclude Include="scoreevent.h" />
+    <ClInclude Include="scpingresponseevent.h" />
+    <ClInclude Include="sctextobj.h" />
+    <ClInclude Include="suicideevent.h" />
+    <ClInclude Include="svrgoodbyeevent.h" />
+    <ClInclude Include="vipmodeevent.h" />
+    <ClInclude Include="warpevent.h" />
+    <ClInclude Include="winevent.h" />
+    <ClInclude Include="..\WOLBrowser\WOLBrowser.h" />
+    <ClInclude Include="..\WWOnline\GameResField.h" />
+    <ClInclude Include="..\WWOnline\GameResPacket.h" />
+    <ClInclude Include="..\WWOnline\PingProfile.h" />
+    <ClInclude Include="..\WWOnline\RefCounted.h" />
+    <ClInclude Include="..\WWOnline\RefPtr.h" />
+    <ClInclude Include="..\WWOnline\WaitCondition.h" />
+    <ClInclude Include="..\WWOnline\WOLAgeCheck.h" />
+    <ClInclude Include="..\WWOnline\WOLChannel.h" />
+    <ClInclude Include="..\WWOnline\WOLChatMsg.h" />
+    <ClInclude Include="..\WWOnline\WOLChatObserver.h" />
+    <ClInclude Include="..\WWOnline\WOLConnect.h" />
+    <ClInclude Include="..\WWOnline\WOLDownload.h" />
+    <ClInclude Include="..\WWOnline\WOLErrorUtil.h" />
+    <ClInclude Include="..\WWOnline\WOLGame.h" />
+    <ClInclude Include="..\WWOnline\WOLGameOptions.h" />
+    <ClInclude Include="..\WWOnline\WOLLadder.h" />
+    <ClInclude Include="..\WWOnline\WOLLangCodes.h" />
+    <ClInclude Include="..\WWOnline\WOLLoginInfo.h" />
+    <ClInclude Include="..\WWOnline\WOLNetUtilObserver.h" />
+    <ClInclude Include="..\WWOnline\WOLPageMsg.h" />
+    <ClInclude Include="..\WWOnline\WOLPing.h" />
+    <ClInclude Include="..\WWOnline\WOLProduct.h" />
+    <ClInclude Include="..\WWOnline\WOLServer.h" />
+    <ClInclude Include="..\WWOnline\WOLSession.h" />
+    <ClInclude Include="..\WWOnline\WOLSquad.h" />
+    <ClInclude Include="..\WWOnline\WOLString.h" />
+    <ClInclude Include="..\WWOnline\WOLUser.h" />
+    <ClInclude Include="clientfps.h" />
+    <ClInclude Include="serverfps.h" />
+    <ClInclude Include="renegadecheatmgr.h" />
+    <ClInclude Include="CDKeyAuth.h" />
+    <ClInclude Include="GameSpy_QnR.h" />
+    <ClInclude Include="gamespyadmin.h" />
+    <ClInclude Include="gamespyauthmgr.h" />
+    <ClInclude Include="GameSpyBanList.h" />
+    <ClInclude Include="floodprotectionmgr.h" />
+    <ClInclude Include="modpackage.h" />
+    <ClInclude Include="modpackagemgr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="combatgmode.cpp" />
+    <ClCompile Include="commandosaveload.cpp" />
+    <ClCompile Include="comnetrcvinst.cpp" />
+    <ClCompile Include="gameinitmgr.cpp" />
+    <ClCompile Include="god.cpp" />
+    <ClCompile Include="inputconfig.cpp" />
+    <ClCompile Include="inputconfigmgr.cpp" />
+    <ClCompile Include="level.cpp" />
+    <ClCompile Include="nethandler.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="playermanager.cpp" />
+    <ClCompile Include="regbool.cpp" />
+    <ClCompile Include="regfloat.cpp" />
+    <ClCompile Include="regint.cpp" />
+    <ClCompile Include="regstring.cpp" />
+    <ClCompile Include="renegadeplayerterminal.cpp" />
+    <ClCompile Include="systemsettings.cpp" />
+    <ClCompile Include="team.cpp" />
+    <ClCompile Include="teammanager.cpp" />
+    <ClCompile Include="campaign.cpp" />
+    <ClCompile Include="console.cpp" />
+    <ClCompile Include="consolefunction.cpp" />
+    <ClCompile Include="gamemenu.cpp" />
+    <ClCompile Include="langmode.cpp" />
+    <ClCompile Include="movie.cpp" />
+    <ClCompile Include="overlay.cpp" />
+    <ClCompile Include="scorescreen.cpp" />
+    <ClCompile Include="textdisplay.cpp" />
+    <ClCompile Include="wolgmode.cpp" />
+    <ClCompile Include="AutoStart.cpp" />
+    <ClCompile Include="buildnum.cpp" />
+    <ClCompile Include="cdverify.cpp" />
+    <ClCompile Include="cominit.cpp" />
+    <ClCompile Include="ConsoleMode.cpp" />
+    <ClCompile Include="gamemode.cpp" />
+    <ClCompile Include="init.cpp" />
+    <ClCompile Include="mainloop.cpp" />
+    <ClCompile Include="shutdown.cpp" />
+    <ClCompile Include="singletoninstancekeeper.cpp" />
+    <ClCompile Include="WINMAIN.CPP" />
+    <ClCompile Include="BandwidthCheck.cpp" />
+    <ClCompile Include="FirewallWait.cpp" />
+    <ClCompile Include="GameResSend.cpp" />
+    <ClCompile Include="mpsettingsmgr.cpp" />
+    <ClCompile Include="WOLBuddyMgr.cpp" />
+    <ClCompile Include="WOLChatMgr.cpp" />
+    <ClCompile Include="WOLDiags.cpp" />
+    <ClCompile Include="WOLGameInfo.cpp" />
+    <ClCompile Include="WOLJoinGame.cpp" />
+    <ClCompile Include="WOLLocaleMgr.cpp" />
+    <ClCompile Include="WOLLoginProfile.cpp" />
+    <ClCompile Include="WOLLogonMgr.cpp" />
+    <ClCompile Include="WOLQuickMatch.cpp" />
+    <ClCompile Include="chatshre.cpp" />
+    <ClCompile Include="gamechanlist.cpp" />
+    <ClCompile Include="gamechannel.cpp" />
+    <ClCompile Include="gamesideservercontrol.cpp">
+      <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</BrowseInformation>
+    </ClCompile>
+    <ClCompile Include="netinterface.cpp" />
+    <ClCompile Include="ServerSettings.cpp" />
+    <ClCompile Include="slavemaster.cpp" />
+    <ClCompile Include="apppacketstats.cpp" />
+    <ClCompile Include="bandwidth.cpp" />
+    <ClCompile Include="bandwidthgraph.cpp" />
+    <ClCompile Include="clienthintmanager.cpp" />
+    <ClCompile Include="clientpingmanager.cpp" />
+    <ClCompile Include="cnetwork.cpp" />
+    <ClCompile Include="datasafe.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">All</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="devoptions.cpp" />
+    <ClCompile Include="diagnostics.cpp" />
+    <ClCompile Include="messages.cpp" />
+    <ClCompile Include="multihud.cpp" />
+    <ClCompile Include="NAT.cpp" />
+    <ClCompile Include="nataddr.cpp" />
+    <ClCompile Include="natsock.cpp" />
+    <ClCompile Include="natter.cpp" />
+    <ClCompile Include="netgraphs.cpp" />
+    <ClCompile Include="nicenum.cpp" />
+    <ClCompile Include="pkthandlers.cpp" />
+    <ClCompile Include="priority.cpp" />
+    <ClCompile Include="sbbomanager.cpp" />
+    <ClCompile Include="useroptions.cpp" />
+    <ClCompile Include="vendor.cpp" />
+    <ClCompile Include="..\wolapi\WOLAPI_i.c" />
+    <ClCompile Include="gamedata.cpp" />
+    <ClCompile Include="gdcnc.cpp" />
+    <ClCompile Include="gdsingleplayer.cpp" />
+    <ClCompile Include="gdskirmish.cpp" />
+    <ClCompile Include="lanchat.cpp" />
+    <ClCompile Include="dialogtests.cpp" />
+    <ClCompile Include="dlgcharacteroptions.cpp" />
+    <ClCompile Include="dlgcheatoptions.cpp" />
+    <ClCompile Include="dlgcncbattleinfo.cpp" />
+    <ClCompile Include="dlgcncpurchasemainmenu.cpp" />
+    <ClCompile Include="dlgcncpurchasemenu.cpp" />
+    <ClCompile Include="dlgcncreference.cpp" />
+    <ClCompile Include="dlgcncserverinfo.cpp" />
+    <ClCompile Include="dlgcncteaminfo.cpp" />
+    <ClCompile Include="dlgcncwinscreen.cpp" />
+    <ClCompile Include="dlgconfigaudiotab.cpp" />
+    <ClCompile Include="dlgconfigperformancetab.cpp" />
+    <ClCompile Include="dlgconfigvideotab.cpp" />
+    <ClCompile Include="dlgcontrols.cpp" />
+    <ClCompile Include="dlgcontrolsaveload.cpp" />
+    <ClCompile Include="dlgcontrolslisttab.cpp" />
+    <ClCompile Include="dlgcontroltabs.cpp" />
+    <ClCompile Include="dlgcredits.cpp" />
+    <ClCompile Include="DlgDownload.cpp" />
+    <ClCompile Include="dlgevabuildingstab.cpp" />
+    <ClCompile Include="dlgevacharacterstab.cpp" />
+    <ClCompile Include="dlgevadatatab.cpp" />
+    <ClCompile Include="dlgevaencyclopedia.cpp" />
+    <ClCompile Include="dlgevamaptab.cpp" />
+    <ClCompile Include="dlgevaobjectivestab.cpp" />
+    <ClCompile Include="dlgevavehiclestab.cpp" />
+    <ClCompile Include="dlgevaviewertab.cpp" />
+    <ClCompile Include="dlgevaweaponstab.cpp" />
+    <ClCompile Include="dlghelpscreen.cpp" />
+    <ClCompile Include="dlgloadspgame.cpp" />
+    <ClCompile Include="dlgmainmenu.cpp" />
+    <ClCompile Include="DlgMessageBox.cpp" />
+    <ClCompile Include="dlgmovieoptions.cpp" />
+    <ClCompile Include="dlgmpchangelannickname.cpp" />
+    <ClCompile Include="DlgMPConnect.cpp" />
+    <ClCompile Include="DlgMPConnectionRefused.cpp" />
+    <ClCompile Include="dlgmpingamechat.cpp" />
+    <ClCompile Include="dlgmpingameteamchat.cpp" />
+    <ClCompile Include="dlgmplangamelist.cpp" />
+    <ClCompile Include="dlgmplanhostoptions.cpp" />
+    <ClCompile Include="dlgmpslaveservers.cpp" />
+    <ClCompile Include="DlgMPTeamSelect.cpp" />
+    <ClCompile Include="dlgmpwoladdbuddy.cpp" />
+    <ClCompile Include="dlgmpwoladdignoreentry.cpp" />
+    <ClCompile Include="dlgmpwolautologinprompt.cpp" />
+    <ClCompile Include="dlgmpwolbuddies.cpp" />
+    <ClCompile Include="dlgmpwolbuddylistpopup.cpp" />
+    <ClCompile Include="dlgmpwolchat.cpp" />
+    <ClCompile Include="dlgmpwoldeletebuddy.cpp" />
+    <ClCompile Include="dlgmpwoldeleteignoreentry.cpp" />
+    <ClCompile Include="dlgmpwolgamelist.cpp" />
+    <ClCompile Include="dlgmpwolgoodies.cpp" />
+    <ClCompile Include="dlgmpwolignorelist.cpp" />
+    <ClCompile Include="dlgmpwolinvitation.cpp" />
+    <ClCompile Include="dlgmpwollocalenag.cpp" />
+    <ClCompile Include="dlgmpwolmain.cpp" />
+    <ClCompile Include="dlgmpwolmotd.cpp" />
+    <ClCompile Include="dlgmpwolpagebuddy.cpp" />
+    <ClCompile Include="dlgmpwolpagereply.cpp" />
+    <ClCompile Include="dlgmpwolquickmatchoptions.cpp" />
+    <ClCompile Include="dlgmultiplayoptions.cpp" />
+    <ClCompile Include="DlgPasswordPrompt.cpp" />
+    <ClCompile Include="dlgpreviewoptions.cpp" />
+    <ClCompile Include="DlgQuickmatch.cpp" />
+    <ClCompile Include="DlgRestart.cpp" />
+    <ClCompile Include="dlgsavegame.cpp" />
+    <ClCompile Include="dlgserversaveload.cpp" />
+    <ClCompile Include="dlgsidebarhelp.cpp" />
+    <ClCompile Include="dlgtechoptions.cpp" />
+    <ClCompile Include="DlgWebPage.cpp" />
+    <ClCompile Include="DlgWOLAutoStart.cpp" />
+    <ClCompile Include="DlgWOLLogon.cpp" />
+    <ClCompile Include="DlgWOLSettings.cpp" />
+    <ClCompile Include="DlgWOLWait.cpp" />
+    <ClCompile Include="mainmenutransition.cpp" />
+    <ClCompile Include="radiocommanddisplay.cpp" />
+    <ClCompile Include="renegadedialogmgr.cpp" />
+    <ClCompile Include="skinpackage.cpp" />
+    <ClCompile Include="skinpackagemgr.cpp" />
+    <ClCompile Include="WebBrowser.cpp" />
+    <ClCompile Include="AnnounceEvent.cpp" />
+    <ClCompile Include="bioevent.cpp" />
+    <ClCompile Include="changeteamevent.cpp" />
+    <ClCompile Include="clientbboevent.cpp" />
+    <ClCompile Include="clientgoodbyeevent.cpp" />
+    <ClCompile Include="consolecommandevent.cpp" />
+    <ClCompile Include="csconsolecommandevent.cpp" />
+    <ClCompile Include="cshint.cpp" />
+    <ClCompile Include="cspingrequestevent.cpp" />
+    <ClCompile Include="cstextobj.cpp" />
+    <ClCompile Include="donateevent.cpp" />
+    <ClCompile Include="evictionevent.cpp" />
+    <ClCompile Include="gamedataupdateevent.cpp" />
+    <ClCompile Include="gameoptionsevent.cpp" />
+    <ClCompile Include="gamespycschallengeresponseevent.cpp" />
+    <ClCompile Include="gamespyscchallengeevent.cpp" />
+    <ClCompile Include="godmodeevent.cpp" />
+    <ClCompile Include="loadingevent.cpp" />
+    <ClCompile Include="moneyevent.cpp" />
+    <ClCompile Include="netevent.cpp" />
+    <ClCompile Include="playerkill.cpp" />
+    <ClCompile Include="purchaserequestevent.cpp" />
+    <ClCompile Include="purchaseresponseevent.cpp" />
+    <ClCompile Include="requestkillevent.cpp" />
+    <ClCompile Include="scoreevent.cpp" />
+    <ClCompile Include="scpingresponseevent.cpp" />
+    <ClCompile Include="sctextobj.cpp" />
+    <ClCompile Include="suicideevent.cpp" />
+    <ClCompile Include="svrgoodbyeevent.cpp" />
+    <ClCompile Include="vipmodeevent.cpp" />
+    <ClCompile Include="warpevent.cpp" />
+    <ClCompile Include="winevent.cpp" />
+    <ClCompile Include="..\WOLBrowser\WOLBrowser_i.c" />
+    <ClCompile Include="..\WWOnline\GameResField.cpp" />
+    <ClCompile Include="..\WWOnline\GameResPacket.cpp" />
+    <ClCompile Include="..\WWOnline\PingProfile.cpp" />
+    <ClCompile Include="..\WWOnline\WaitCondition.cpp" />
+    <ClCompile Include="..\WWOnline\WOLChannel.cpp" />
+    <ClCompile Include="..\WWOnline\WOLChatMsg.cpp" />
+    <ClCompile Include="..\WWOnline\WOLChatObserver.cpp" />
+    <ClCompile Include="..\WWOnline\WOLConnect.cpp" />
+    <ClCompile Include="..\WWOnline\WOLDownload.cpp" />
+    <ClCompile Include="..\WWOnline\WOLErrorUtil.cpp" />
+    <ClCompile Include="..\WWOnline\WOLGame.cpp" />
+    <ClCompile Include="..\WWOnline\WOLGameOptions.cpp" />
+    <ClCompile Include="..\WWOnline\WOLLadder.cpp" />
+    <ClCompile Include="..\WWOnline\WOLLoginInfo.cpp" />
+    <ClCompile Include="..\WWOnline\WOLNetUtilObserver.cpp" />
+    <ClCompile Include="..\WWOnline\WOLPageMsg.cpp" />
+    <ClCompile Include="..\WWOnline\WOLProduct.cpp" />
+    <ClCompile Include="..\WWOnline\WOLServer.cpp" />
+    <ClCompile Include="..\WWOnline\WOLSession.cpp" />
+    <ClCompile Include="..\WWOnline\WOLSquad.cpp" />
+    <ClCompile Include="..\WWOnline\WOLString.cpp" />
+    <ClCompile Include="..\WWOnline\WOLUser.cpp" />
+    <ClCompile Include="clientfps.cpp" />
+    <ClCompile Include="serverfps.cpp" />
+    <ClCompile Include="renegadecheatmgr.cpp" />
+    <ClCompile Include="CDKeyAuth.cpp" />
+    <ClCompile Include="GameSpy_QnR.cpp" />
+    <ClCompile Include="gamespyadmin.cpp" />
+    <ClCompile Include="gamespyauthmgr.cpp" />
+    <ClCompile Include="GameSpyBanList.cpp" />
+    <ClCompile Include="floodprotectionmgr.cpp" />
+    <ClCompile Include="modpackage.cpp" />
+    <ClCompile Include="modpackagemgr.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\Run\_asserts.txt" />
+    <CustomBuild Include="..\..\Run\_except.txt" />
+    <CustomBuild Include="..\..\run\_logfile.txt" />
+    <CustomBuild Include="..\..\..\RenegadeMe\Doc\cncwishlist.txt" />
+    <CustomBuild Include="..\..\..\RenegadeMe\Doc\currentbugs.txt" />
+    <CustomBuild Include="..\..\..\RenegadeMe\Doc\joinprocess.txt" />
+    <CustomBuild Include="junkcode.txt" />
+    <CustomBuild Include="..\..\..\RenegadeMe\Doc\priorities.txt" />
+    <CustomBuild Include="..\..\Run\results.txt" />
+    <CustomBuild Include="..\..\..\RenegadeMe\Doc\todo.txt" />
+    <CustomBuild Include="Renegade.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="chat.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

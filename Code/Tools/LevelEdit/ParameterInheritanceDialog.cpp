@@ -58,7 +58,7 @@ static const int ICON_PHYS_SETTING		= 1;
 //	Local prototypes
 /////////////////////////////////////////////////////////////////////////////
 static LRESULT CALLBACK CheckBoxSubclassProc (HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
-static BOOL TreeView_SetCheckState (HWND hwndTreeView, HTREEITEM hItem, BOOL fCheck);
+static BOOL TreeView_SetCheckStateLevelEdit (HWND hwndTreeView, HTREEITEM hItem, BOOL fCheck);
 static bool Find_Parameter_In_List (DynamicVectorClass<DefinitionParameterClass *> &parameter_list, ParameterClass *parameter);
 
 
@@ -519,7 +519,7 @@ ParameterInheritanceDialogClass::Update_Tree_Entry_Check (HTREEITEM parent_item,
 	//
 	//	Update this entry's check-state
 	//
-	TreeView_SetCheckState (m_TreeCtrl, parent_item, checked);
+	TreeView_SetCheckStateLevelEdit (m_TreeCtrl, parent_item, checked);
 
 	//
 	//	Recurse through all the children
@@ -574,7 +574,7 @@ ParameterInheritanceDialogClass::Update_List_Entry_Check (int index, bool checke
 //
 /////////////////////////////////////////////////////////////////////////////
 BOOL
-TreeView_SetCheckState (HWND hwndTreeView, HTREEITEM hItem, BOOL fCheck)
+TreeView_SetCheckStateLevelEdit (HWND hwndTreeView, HTREEITEM hItem, BOOL fCheck)
 {
     TVITEM tvItem;
 

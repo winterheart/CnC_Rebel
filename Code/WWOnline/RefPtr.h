@@ -216,7 +216,7 @@ template<typename Type> class RefPtr :
 		// Template function for implicit conversion ops
 		template<typename NewType>
 		inline operator RefPtr<NewType>()
-			{return RefPtr<NewType>(GetRefObject());}
+			{return RefPtr<NewType>(static_cast<NewType*>(GetRefObject()));}
 
 		// These are public mostly because I can't seem to declare rc_ptr<Other> as a friend
 		inline Type* const ReferencedObject(void)
@@ -238,9 +238,9 @@ template<typename Type> class RefPtr :
 			}
 
 	private:
-		friend RefPtr<Type> Dynamic_Cast(RefPtrBase&);
-		friend RefPtr<Type> Reinterpret_Cast(RefPtrBase&);
-		friend RefPtr<Type> Const_Cast(RefPtrConst<Type>&);
+		template<typename Other> friend RefPtr<Other> Dynamic_Cast(RefPtrBase&);
+		template<typename Other> friend RefPtr<Other> Reinterpret_Cast(RefPtrBase&);
+		template<typename Other> friend RefPtr<Other> Const_Cast(RefPtrConst<Type>&);
 	};
 
 

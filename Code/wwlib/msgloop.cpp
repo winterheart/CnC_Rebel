@@ -197,7 +197,7 @@ void Add_Modeless_Dialog(HWND dialog)
  *=============================================================================================*/
 void Remove_Modeless_Dialog(HWND dialog)
 {
-	_ModelessDialogs.Delete(dialog);
+	_ModelessDialogs.Delete_Object(dialog);
 }
 
 

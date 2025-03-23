@@ -610,7 +610,7 @@ PresetClass::Copy_Properties (const PresetClass &preset)
 			//
 			//	Now copy each of the transitions from the source list
 			//
-			for (index = 0; index < src_list->Count (); index ++) {
+			for (int index = 0; index < src_list->Count (); index ++) {
 				const TransitionDataClass *data = (*src_list)[index];
 				
 				//

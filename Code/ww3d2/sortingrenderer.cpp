@@ -539,7 +539,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			indices+=state->start_index;
 			indices+=state->sorting_state.iba_offset;
 
-			for (i=0;i<state->polygon_count;++i) {
+			for (int i=0;i<state->polygon_count;++i) {
 				unsigned short idx1=indices[i*3]-state->min_vertex_index;
 				unsigned short idx2=indices[i*3+1]-state->min_vertex_index;
 				unsigned short idx3=indices[i*3+2]-state->min_vertex_index;
@@ -579,7 +579,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 		DynamicIBAccessClass::WriteLockClass lock(&dyn_ib_access);
 		ShortVectorIStruct* sorted_polygon_index_array=(ShortVectorIStruct*)lock.Get_Index_Array();
 
-		for (a=0;a<overlapping_polygon_count;++a) {
+		for (unsigned a=0;a<overlapping_polygon_count;++a) {
 			sorted_polygon_index_array[a]=tis[a].tri;
 		}
 	}

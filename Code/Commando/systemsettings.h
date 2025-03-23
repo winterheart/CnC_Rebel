@@ -65,7 +65,7 @@ public:
 
 	// List maintenance
 	static	void		Add_Setting( SystemSettingEntry * entry )			{ SettingList.Add( entry ); }
-	static	void		Remove_Setting( SystemSettingEntry * entry )		{ SettingList.Delete( entry ); }
+	static	void		Remove_Setting( SystemSettingEntry * entry )		{ SettingList.Delete_Object( entry ); }
 
 	static	void		Apply_All( void );
 

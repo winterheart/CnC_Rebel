@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugE|Win32">
+      <Configuration>DebugE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ProfileE|Win32">
+      <Configuration>ProfileE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <OutDir>.\DebugE\</OutDir>
+    <IntDir>.\DebugE\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <OutDir>.\ProfileE\</OutDir>
+    <IntDir>.\ProfileE\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <AdditionalIncludeDirectories>..\..\wwui;..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\srsdk1x\include;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;..\..\third_party\NvDXTLib\Inc;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WIN32;_WINDOWS;PARAM_EDITING_ON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\DebugE\LevelEdit.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\DebugE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\DebugE\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\DebugE\LevelEdit.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <RedirectOutputAndErrors>NUL</RedirectOutputAndErrors>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\DebugE\LevelEdit.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\..\Run\LevelEditD.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Libs\debug;..\..\Libs\profile;..\..\NvDXTLib\Lib;C:\DXSDK\Lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>combate.lib;ww3d2e.lib;wwbitpack.lib;imagehlp.lib;wwtranslatedb.lib;wwnet.lib;ws2_32.lib;wwaudioe.lib;mss32.lib;wwdebuge.lib;wwmath.lib;wwphyse.lib;wwlib.lib;winmm.lib;vfw32.lib;wwutil.lib;wwsaveloade.lib;d3dx8.lib;d3d8.lib;dxguid.lib;dinput8.lib;NvDXTLib.lib;version.lib;wwui.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\wwui;..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\srsdk1x\include;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;..\..\third_party\NvDXTLib\Inc;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;WIN32;_WINDOWS;PARAM_EDITING_ON;PUBLIC_EDITOR_VER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\ProfileE\LevelEdit.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\ProfileE\</ObjectFileName>
+      <ProgramDataBaseFileName>.\ProfileE\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\ProfileE\LevelEdit.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <RedirectOutputAndErrors>NUL</RedirectOutputAndErrors>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\ProfileE\LevelEdit.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <OutputFile>..\..\..\Run\LevelEdit.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Libs\profile;C:\DXSDK\Lib;..\..\third_party\miles6\lib;..\..\third_party\nvDXTLib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>combate.lib;ww3d2e.lib;wwbitpack.lib;imagehlp.lib;wwtranslatedb.lib;wwnet.lib;ws2_32.lib;wwaudioe.lib;mss32.lib;wwdebuge.lib;wwmath.lib;wwphyse.lib;wwlib.lib;winmm.lib;vfw32.lib;wwutil.lib;wwsaveloade.lib;d3dx8.lib;d3d8.lib;dxguid.lib;dinput8.lib;NvDXTLib.lib;version.lib;wwui.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\wwui;..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\srsdk1x\include;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;..\..\third_party\NvDXTLib\Inc$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="_assetmgr.cpp" />
+    <ClCompile Include="_wwaudio.cpp" />
+    <ClCompile Include="assetdatabase.cpp" />
+    <ClCompile Include="assetpackagemgr.cpp" />
+    <ClCompile Include="AttenuationSphere.cpp" />
+    <ClCompile Include="Box3D.cpp" />
+    <ClCompile Include="buildingchildnode.cpp" />
+    <ClCompile Include="BuildingNode.cpp" />
+    <ClCompile Include="CameraMgr.cpp" />
+    <ClCompile Include="CameraSettingsForm.cpp" />
+    <ClCompile Include="CheckingOutDialog.cpp" />
+    <ClCompile Include="CheckinStyleDialog.cpp" />
+    <ClCompile Include="ChooseModPackageDialog.cpp" />
+    <ClCompile Include="ColorBar.cpp" />
+    <ClCompile Include="ColorPicker.cpp" />
+    <ClCompile Include="ColorPickerDialogClass.cpp" />
+    <ClCompile Include="ColorUtils.cpp" />
+    <ClCompile Include="ConversationEditorMgr.cpp" />
+    <ClCompile Include="ConversationPage.cpp" />
+    <ClCompile Include="ConversationPickerDialog.cpp" />
+    <ClCompile Include="CoverAttackPointNode.cpp" />
+    <ClCompile Include="CoverSpotDefinition.cpp" />
+    <ClCompile Include="CoverSpotInfoPage.cpp" />
+    <ClCompile Include="CoverSpotNode.cpp" />
+    <ClCompile Include="DamageZoneNode.cpp" />
+    <ClCompile Include="DefinitionUtils.cpp" />
+    <ClCompile Include="DeviceSelectionDialog.cpp" />
+    <ClCompile Include="DialogToolbar.cpp" />
+    <ClCompile Include="DockableForm.cpp" />
+    <ClCompile Include="DummyObjectDefinition.cpp" />
+    <ClCompile Include="DummyObjectNode.cpp" />
+    <ClCompile Include="editableheightfield.cpp" />
+    <ClCompile Include="EditConversationDialog.cpp" />
+    <ClCompile Include="EditConversationListDialog.cpp" />
+    <ClCompile Include="EditConversationRemarkDialog.cpp" />
+    <ClCompile Include="EditDialogueDialog.cpp" />
+    <ClCompile Include="EditFilenameListDialog.cpp" />
+    <ClCompile Include="EditorAssetMgr.cpp" />
+    <ClCompile Include="EditorINI.cpp" />
+    <ClCompile Include="editormixfile.cpp" />
+    <ClCompile Include="editoronlydefinition.cpp" />
+    <ClCompile Include="editoronlyobjectnode.cpp" />
+    <ClCompile Include="EditorPhys.cpp" />
+    <ClCompile Include="EditorPropSheet.cpp" />
+    <ClCompile Include="EditorSaveLoad.cpp" />
+    <ClCompile Include="EditRemarkDialog.cpp" />
+    <ClCompile Include="EditScript.cpp" />
+    <ClCompile Include="EditStringDialog.cpp" />
+    <ClCompile Include="EditStringTwiddlerDialog.cpp" />
+    <ClCompile Include="excel.cpp" />
+    <ClCompile Include="excel8.cpp" />
+    <ClCompile Include="Export.cpp" />
+    <ClCompile Include="ExportPresetsDialog.cpp" />
+    <ClCompile Include="FileMgr.cpp" />
+    <ClCompile Include="FilePicker.cpp" />
+    <ClCompile Include="FormToolbar.cpp" />
+    <ClCompile Include="GenerateBaseDialog.cpp" />
+    <ClCompile Include="GenerateVisDialog.cpp" />
+    <ClCompile Include="GeneratingEdgeSampledVisDialog.cpp" />
+    <ClCompile Include="GeneratingLightVisDialog.cpp" />
+    <ClCompile Include="GeneratingManualVisDialog.cpp" />
+    <ClCompile Include="GeneratingPathfindDialog.cpp" />
+    <ClCompile Include="GeneratingVisDialog.cpp" />
+    <ClCompile Include="GenericTextDialog.cpp" />
+    <ClCompile Include="GotoGroupDialog.cpp" />
+    <ClCompile Include="GotoLocationDialog.cpp" />
+    <ClCompile Include="GotoObjectByIDDialog.cpp" />
+    <ClCompile Include="GotoObjectDialog.cpp" />
+    <ClCompile Include="GrabHandles.cpp" />
+    <ClCompile Include="GroupMgr.cpp" />
+    <ClCompile Include="heightfieldeditor.cpp" />
+    <ClCompile Include="HeightfieldMaterialSettingsDialog.cpp" />
+    <ClCompile Include="heightfieldmgr.cpp" />
+    <ClCompile Include="heightfieldpage.cpp" />
+    <ClCompile Include="HistogramCtl.cpp" />
+    <ClCompile Include="Icons.cpp" />
+    <ClCompile Include="ImportTranslationDialog.cpp" />
+    <ClCompile Include="IncludeFilesDialog.cpp" />
+    <ClCompile Include="InstancesPage.cpp" />
+    <ClCompile Include="LevelEdit.cpp" />
+    <ClCompile Include="LevelEditDoc.cpp" />
+    <ClCompile Include="LevelEditView.cpp" />
+    <ClCompile Include="LevelSettingsDialog.cpp" />
+    <ClCompile Include="LightAmbientForm.cpp" />
+    <ClCompile Include="LightDefinition.cpp" />
+    <ClCompile Include="LightNode.cpp" />
+    <ClCompile Include="LightSolveOptionsDialog.cpp" />
+    <ClCompile Include="LightSolveProgressDialog.cpp" />
+    <ClCompile Include="lightsolvesavesystem.cpp" />
+    <ClCompile Include="LODSettingsDialog.cpp" />
+    <ClCompile Include="MainDialogBar.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MemLogDialog.cpp" />
+    <ClCompile Include="MissingTranslationReportDialog.cpp" />
+    <ClCompile Include="mixfiledatabase.cpp" />
+    <ClCompile Include="ModelUtils.cpp" />
+    <ClCompile Include="MouseMgr.cpp" />
+    <ClCompile Include="Mover.cpp" />
+    <ClCompile Include="MusicPropPage.cpp" />
+    <ClCompile Include="NewAssetPackageDialog.cpp" />
+    <ClCompile Include="NewHeightfieldDialog.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeIDStartDialog.cpp" />
+    <ClCompile Include="NodeInfoPage.cpp" />
+    <ClCompile Include="NodeMgr.cpp" />
+    <ClCompile Include="NodeScriptsPropPage.cpp" />
+    <ClCompile Include="ObjectNode.cpp" />
+    <ClCompile Include="OptimizingVisDialog.cpp" />
+    <ClCompile Include="OutputForm.cpp" />
+    <ClCompile Include="OverlapPage.cpp" />
+    <ClCompile Include="ParameterCtrls.cpp" />
+    <ClCompile Include="ParameterInheritanceDialog.cpp" />
+    <ClCompile Include="PathfindSectorBuilder.cpp" />
+    <ClCompile Include="PathfindStartDefinition.cpp" />
+    <ClCompile Include="PathfindStartNode.cpp" />
+    <ClCompile Include="PhysObjectEditDialog.cpp" />
+    <ClCompile Include="PhysObjEditTab.cpp" />
+    <ClCompile Include="Picker.cpp" />
+    <ClCompile Include="PlaySoundDialog.cpp" />
+    <ClCompile Include="PositionPage.cpp" />
+    <ClCompile Include="Preset.cpp" />
+    <ClCompile Include="PresetDependencyTab.cpp" />
+    <ClCompile Include="PresetDialogueTab.cpp" />
+    <ClCompile Include="PresetExport.cpp" />
+    <ClCompile Include="PresetGeneralTab.cpp" />
+    <ClCompile Include="PresetListDialog.cpp" />
+    <ClCompile Include="PresetLogger.cpp" />
+    <ClCompile Include="PresetMgr.cpp" />
+    <ClCompile Include="PresetPicker.cpp" />
+    <ClCompile Include="PresetPropSheet.cpp" />
+    <ClCompile Include="PresetRemapDialog.cpp" />
+    <ClCompile Include="PresetSettingsTab.cpp" />
+    <ClCompile Include="PresetsLibForm.cpp" />
+    <ClCompile Include="PresetTransitionTab.cpp" />
+    <ClCompile Include="PresetZoneTab.cpp" />
+    <ClCompile Include="ProfileSection.cpp" />
+    <ClCompile Include="ProgressUI.cpp" />
+    <ClCompile Include="rcstringextractor.cpp" />
+    <ClCompile Include="reportmgr.cpp" />
+    <ClCompile Include="SceneEditor.cpp" />
+    <ClCompile Include="ScriptEditDialog.cpp" />
+    <ClCompile Include="ScriptMgr.cpp" />
+    <ClCompile Include="SelectionBox.cpp" />
+    <ClCompile Include="SelectPresetDialog.cpp" />
+    <ClCompile Include="SkyPropPage.cpp" />
+    <ClCompile Include="SoundNode.cpp" />
+    <ClCompile Include="SoundSettingsPage.cpp" />
+    <ClCompile Include="SpawnerNode.cpp" />
+    <ClCompile Include="SpawnPointNode.cpp" />
+    <ClCompile Include="SpecSheet.cpp" />
+    <ClCompile Include="Splash.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="StringLibraryDialog.cpp" />
+    <ClCompile Include="StringPicker.cpp" />
+    <ClCompile Include="StringPickerDialog.cpp" />
+    <ClCompile Include="StringPickerMainDialog.cpp" />
+    <ClCompile Include="StringsCategoryNameDialog.cpp" />
+    <ClCompile Include="StringsCategoryViewDialog.cpp" />
+    <ClCompile Include="stringsmgr.cpp" />
+    <ClCompile Include="SunlightDialog.cpp" />
+    <ClCompile Include="TerrainDefinition.cpp" />
+    <ClCompile Include="TerrainLODPage.cpp" />
+    <ClCompile Include="TerrainNode.cpp" />
+    <ClCompile Include="TerrainSectionPersist.cpp" />
+    <ClCompile Include="test.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TGAToDXT.cpp" />
+    <ClCompile Include="TileDefinition.cpp" />
+    <ClCompile Include="TileNode.cpp" />
+    <ClCompile Include="TransitionEditDialog.cpp" />
+    <ClCompile Include="TransitionNode.cpp" />
+    <ClCompile Include="TranslationExportDialog.cpp" />
+    <ClCompile Include="UIThread.cpp" />
+    <ClCompile Include="UndoMgr.cpp" />
+    <ClCompile Include="UniqueList.cpp" />
+    <ClCompile Include="UpdateAssetsDialog.cpp" />
+    <ClCompile Include="UpdatePresetDialog.cpp" />
+    <ClCompile Include="UpdatingDBDialog.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="ValueListDialog.cpp" />
+    <ClCompile Include="Vector3Dialog.cpp" />
+    <ClCompile Include="VisErrorReportDialog.cpp" />
+    <ClCompile Include="VisLog.cpp" />
+    <ClCompile Include="VisMgr.cpp" />
+    <ClCompile Include="VisPointDefinition.cpp" />
+    <ClCompile Include="VisPointGenerator.cpp" />
+    <ClCompile Include="VisPointNode.cpp" />
+    <ClCompile Include="VisSectorSampler.cpp" />
+    <ClCompile Include="VisStatsDialog.cpp" />
+    <ClCompile Include="VisualOptionsDialog.cpp" />
+    <ClCompile Include="VisWindowDialog.cpp" />
+    <ClCompile Include="vss_i.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="VSSClass.cpp" />
+    <ClCompile Include="WaypathDefinition.cpp" />
+    <ClCompile Include="WaypathInfoPage.cpp" />
+    <ClCompile Include="WaypathNode.cpp" />
+    <ClCompile Include="WaypointNode.cpp" />
+    <ClCompile Include="WeatherPropPage.cpp" />
+    <ClCompile Include="WelcomeDialog.cpp" />
+    <ClCompile Include="ZoneEditDialog.cpp" />
+    <ClCompile Include="ZoneInfoPage.cpp" />
+    <ClCompile Include="ZoneNode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LevelEdit.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">$(OUTDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">$(OUTDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="VSS.IDL">
+      <SuppressStartupBanner Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">false</SuppressStartupBanner>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">./vss.h</HeaderFileName>
+      <MkTypLibCompatible Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">false</MkTypLibCompatible>
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">Win32</TargetEnvironment>
+      <SuppressStartupBanner Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">false</SuppressStartupBanner>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">./vss.h</HeaderFileName>
+      <MkTypLibCompatible Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">false</MkTypLibCompatible>
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">Win32</TargetEnvironment>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="_assetmgr.h" />
+    <ClInclude Include="_wwaudio.h" />
+    <ClInclude Include="assetdatabase.h" />
+    <ClInclude Include="assetpackagemgr.h" />
+    <ClInclude Include="AttenuationSphere.h" />
+    <ClInclude Include="Box3D.h" />
+    <ClInclude Include="buildingchildnode.h" />
+    <ClInclude Include="BuildingNode.h" />
+    <ClInclude Include="CameraMgr.h" />
+    <ClInclude Include="camerasettingsform.h" />
+    <ClInclude Include="CheckingOutDialog.h" />
+    <ClInclude Include="CheckinStyleDialog.h" />
+    <ClInclude Include="ChooseModPackageDialog.h" />
+    <ClInclude Include="CollisionGroups.h" />
+    <ClInclude Include="ColorBar.h" />
+    <ClInclude Include="ColorPicker.h" />
+    <ClInclude Include="ColorPickerDialogClass.h" />
+    <ClInclude Include="ColorUtils.h" />
+    <ClInclude Include="ConversationEditorMgr.h" />
+    <ClInclude Include="ConversationPage.h" />
+    <ClInclude Include="ConversationPickerDialog.h" />
+    <ClInclude Include="CoverAttackPointNode.h" />
+    <ClInclude Include="CoverSpotDefinition.h" />
+    <ClInclude Include="CoverSpotInfoPage.h" />
+    <ClInclude Include="CoverSpotNode.h" />
+    <ClInclude Include="DamageZoneNode.h" />
+    <ClInclude Include="DefinitionParameter.h" />
+    <ClInclude Include="DefinitionUtils.h" />
+    <ClInclude Include="DeviceSelectionDialog.h" />
+    <ClInclude Include="DialogToolbar.h" />
+    <ClInclude Include="DockableForm.h" />
+    <ClInclude Include="DummyObject.h" />
+    <ClInclude Include="DummyObjectDefinition.h" />
+    <ClInclude Include="DummyObjectNode.h" />
+    <ClInclude Include="editableheightfield.h" />
+    <ClInclude Include="EditConversationDialog.h" />
+    <ClInclude Include="EditConversationListDialog.h" />
+    <ClInclude Include="EditConversationRemarkDialog.h" />
+    <ClInclude Include="EditDialogueDialog.h" />
+    <ClInclude Include="EditFilenameListDialog.h" />
+    <ClInclude Include="EditorAssetMgr.h" />
+    <ClInclude Include="editorbuild.h" />
+    <ClInclude Include="EditorChunkIDs.h" />
+    <ClInclude Include="EditorINI.h" />
+    <ClInclude Include="EditorLine.h" />
+    <ClInclude Include="editormixfile.h" />
+    <ClInclude Include="editoronlydefinition.h" />
+    <ClInclude Include="editoronlyobjectnode.h" />
+    <ClInclude Include="EditorPhys.h" />
+    <ClInclude Include="EditorPropSheet.h" />
+    <ClInclude Include="EditorSaveLoad.h" />
+    <ClInclude Include="EditRemarkDialog.h" />
+    <ClInclude Include="EditScript.h" />
+    <ClInclude Include="EditStringDialog.h" />
+    <ClInclude Include="excel.h" />
+    <ClInclude Include="excel8.h" />
+    <ClInclude Include="Export.h" />
+    <ClInclude Include="ExportPresetsDialog.h" />
+    <ClInclude Include="FileLocations.h" />
+    <ClInclude Include="FileMgr.h" />
+    <ClInclude Include="FilePicker.h" />
+    <ClInclude Include="FormToolbar.h" />
+    <ClInclude Include="GenerateBaseDialog.h" />
+    <ClInclude Include="GenerateVisDialog.h" />
+    <ClInclude Include="GeneratingEdgeSampledVisDialog.h" />
+    <ClInclude Include="GeneratingLightVisDialog.h" />
+    <ClInclude Include="GeneratingManualVisDialog.h" />
+    <ClInclude Include="GeneratingPathfindDialog.h" />
+    <ClInclude Include="GeneratingVisDialog.h" />
+    <ClInclude Include="GenericTextDialog.h" />
+    <ClInclude Include="GotoGroupDialog.h" />
+    <ClInclude Include="GotoLocationDialog.h" />
+    <ClInclude Include="GotoObjectByIDDialog.h" />
+    <ClInclude Include="GotoObjectDialog.h" />
+    <ClInclude Include="GrabHandles.h" />
+    <ClInclude Include="Grid3D.h" />
+    <ClInclude Include="GroupMgr.h" />
+    <ClInclude Include="heightfieldeditor.h" />
+    <ClInclude Include="HeightfieldMaterialSettingsDialog.h" />
+    <ClInclude Include="heightfieldmgr.h" />
+    <ClInclude Include="heightfieldpage.h" />
+    <ClInclude Include="HistogramCtl.h" />
+    <ClInclude Include="HitTestInfo.h" />
+    <ClInclude Include="Icons.h" />
+    <ClInclude Include="ImportTranslationDialog.h" />
+    <ClInclude Include="IncludeFilesDialog.h" />
+    <ClInclude Include="INISections.h" />
+    <ClInclude Include="InstancesPage.h" />
+    <ClInclude Include="LevelEdit.h" />
+    <ClInclude Include="LevelEditDoc.h" />
+    <ClInclude Include="LevelEditView.h" />
+    <ClInclude Include="LevelFeature.h" />
+    <ClInclude Include="LevelSettingsDialog.h" />
+    <ClInclude Include="LightAmbientForm.h" />
+    <ClInclude Include="LightDefinition.h" />
+    <ClInclude Include="LightNode.h" />
+    <ClInclude Include="LightSolveOptionsDialog.h" />
+    <ClInclude Include="LightSolveProgressDialog.h" />
+    <ClInclude Include="lightsolvesavesystem.h" />
+    <ClInclude Include="ListTypes.h" />
+    <ClInclude Include="LODSettingsDialog.h" />
+    <ClInclude Include="MainDialogBar.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MemLogDialog.h" />
+    <ClInclude Include="MissingTranslationReportDialog.h" />
+    <ClInclude Include="mixfiledatabase.h" />
+    <ClInclude Include="ModelUtils.h" />
+    <ClInclude Include="MouseMgr.h" />
+    <ClInclude Include="Mover.h" />
+    <ClInclude Include="MusicPropPage.h" />
+    <ClInclude Include="NewAssetPackageDialog.h" />
+    <ClInclude Include="NewHeightfieldDialog.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeCategories.h" />
+    <ClInclude Include="NodeFunction.h" />
+    <ClInclude Include="NodeIDStartDialog.h" />
+    <ClInclude Include="NodeInfoPage.h" />
+    <ClInclude Include="NodeMgr.H" />
+    <ClInclude Include="NodeScriptsPropPage.h" />
+    <ClInclude Include="nodetemplate.h" />
+    <ClInclude Include="NodeTypes.h" />
+    <ClInclude Include="ObjectNode.h" />
+    <ClInclude Include="OptimizingVisDialog.h" />
+    <ClInclude Include="OutputForm.h" />
+    <ClInclude Include="OverlapPage.h" />
+    <ClInclude Include="ParameterCtrls.h" />
+    <ClInclude Include="ParameterInheritanceDialog.h" />
+    <ClInclude Include="PathfindSectorBuilder.h" />
+    <ClInclude Include="PathfindStartDefinition.h" />
+    <ClInclude Include="PathfindStartNode.h" />
+    <ClInclude Include="PhysObjectEditDialog.h" />
+    <ClInclude Include="PhysObjEditTab.h" />
+    <ClInclude Include="Picker.h" />
+    <ClInclude Include="PlaySoundDialog.h" />
+    <ClInclude Include="PositionPage.h" />
+    <ClInclude Include="Preset.h" />
+    <ClInclude Include="PresetDependencyTab.h" />
+    <ClInclude Include="PresetDialogueTab.h" />
+    <ClInclude Include="PresetExport.h" />
+    <ClInclude Include="PresetGeneralTab.h" />
+    <ClInclude Include="PresetListDialog.h" />
+    <ClInclude Include="PresetLogger.h" />
+    <ClInclude Include="PresetMgr.h" />
+    <ClInclude Include="PresetPicker.h" />
+    <ClInclude Include="PresetPropSheet.h" />
+    <ClInclude Include="PresetRemapDialog.h" />
+    <ClInclude Include="PresetSettingsTab.h" />
+    <ClInclude Include="PresetsLibForm.h" />
+    <ClInclude Include="PresetTransitionTab.h" />
+    <ClInclude Include="PresetZoneTab.h" />
+    <ClInclude Include="ProfileSection.h" />
+    <ClInclude Include="ProgressUI.h" />
+    <ClInclude Include="rcstringextractor.h" />
+    <ClInclude Include="RegKeys.h" />
+    <ClInclude Include="reportmgr.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SceneEditor.h" />
+    <ClInclude Include="ScriptEditDialog.h" />
+    <ClInclude Include="ScriptMgr.h" />
+    <ClInclude Include="SelectionBox.h" />
+    <ClInclude Include="SelectPresetDialog.h" />
+    <ClInclude Include="SkyPropPage.h" />
+    <ClInclude Include="SoundNode.h" />
+    <ClInclude Include="SoundSettingsPage.h" />
+    <ClInclude Include="SpawnerNode.h" />
+    <ClInclude Include="SpawnPointNode.h" />
+    <ClInclude Include="SpecSheet.h" />
+    <ClInclude Include="Splash.h" />
+    <ClInclude Include="SplashScreen.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StringLibraryDialog.h" />
+    <ClInclude Include="StringPicker.h" />
+    <ClInclude Include="StringPickerDialog.h" />
+    <ClInclude Include="StringPickerMainDialog.h" />
+    <ClInclude Include="StringsCategoryNameDialog.h" />
+    <ClInclude Include="StringsCategoryViewDialog.h" />
+    <ClInclude Include="stringsmgr.h" />
+    <ClInclude Include="SunlightDialog.h" />
+    <ClInclude Include="TerrainDefinition.h" />
+    <ClInclude Include="TerrainLODPage.h" />
+    <ClInclude Include="TerrainNode.h" />
+    <ClInclude Include="TerrainSectionPersist.h" />
+    <ClInclude Include="TGAToDXT.h" />
+    <ClInclude Include="TileDefinition.h" />
+    <ClInclude Include="TileNode.h" />
+    <ClInclude Include="TransitionEditDialog.h" />
+    <ClInclude Include="TransitionNode.h" />
+    <ClInclude Include="TranslationExportDialog.h" />
+    <ClInclude Include="UIThread.h" />
+    <ClInclude Include="UndoMgr.h" />
+    <ClInclude Include="UniqueList.h" />
+    <ClInclude Include="UpdateAssetsDialog.h" />
+    <ClInclude Include="UpdatePresetDialog.h" />
+    <ClInclude Include="UpdatingDBDialog.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="ValueListDialog.h" />
+    <ClInclude Include="Vector3Dialog.h" />
+    <ClInclude Include="VisErrorReportDialog.h" />
+    <ClInclude Include="VisGenProgress.h" />
+    <ClInclude Include="VisLog.h" />
+    <ClInclude Include="VisMgr.h" />
+    <ClInclude Include="VisPointDefinition.h" />
+    <ClInclude Include="VisPointGenerator.h" />
+    <ClInclude Include="VisPointNode.h" />
+    <ClInclude Include="VisSectorSampler.h" />
+    <ClInclude Include="VisStatsDialog.h" />
+    <ClInclude Include="VisualOptionsDialog.h" />
+    <ClInclude Include="VisWindowDialog.h" />
+    <ClInclude Include="vss.h" />
+    <ClInclude Include="VSSClass.h" />
+    <ClInclude Include="WaypathDefinition.h" />
+    <ClInclude Include="WaypathInfoPage.h" />
+    <ClInclude Include="WaypathNode.h" />
+    <ClInclude Include="WaypointLine.h" />
+    <ClInclude Include="WaypointNode.h" />
+    <ClInclude Include="WeatherPropPage.h" />
+    <ClInclude Include="WelcomeDialog.h" />
+    <ClInclude Include="..\..\wwlib\wwstring.h" />
+    <ClInclude Include="ZoneEditDialog.h" />
+    <ClInclude Include="ZoneInfoPage.h" />
+    <ClInclude Include="ZoneNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\ani_tool.bmp" />
+    <CustomBuild Include="arrowcop.cur" />
+    <CustomBuild Include="res\axis1.bmp" />
+    <CustomBuild Include="res\axis2.bmp" />
+    <CustomBuild Include="bitmap1.bmp" />
+    <CustomBuild Include="res\bitmap1.bmp" />
+    <CustomBuild Include="res\bmp00001.bmp" />
+    <CustomBuild Include="res\bmp00002.bmp" />
+    <CustomBuild Include="res\bmp00003.bmp" />
+    <CustomBuild Include="res\bottom_t.bmp" />
+    <CustomBuild Include="res\check1.ico" />
+    <CustomBuild Include="res\checkbox.bmp" />
+    <CustomBuild Include="res\conversa.bmp" />
+    <CustomBuild Include="res\convert1.ico" />
+    <CustomBuild Include="res\cur00001.cur" />
+    <CustomBuild Include="res\cursor1.cur" />
+    <CustomBuild Include="res\Filecopy.avi">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\folder1.ico" />
+    <CustomBuild Include="res\folder_t.ico" />
+    <CustomBuild Include="res\hand_poi.cur" />
+    <CustomBuild Include="res\ico00001.ico" />
+    <CustomBuild Include="res\ico00002.ico" />
+    <CustomBuild Include="res\ico00003.ico" />
+    <CustomBuild Include="res\ico00004.ico" />
+    <CustomBuild Include="res\ico00005.ico" />
+    <CustomBuild Include="res\ico00006.ico" />
+    <CustomBuild Include="res\ico00007.ico" />
+    <CustomBuild Include="res\ico00008.ico" />
+    <CustomBuild Include="res\ico00009.ico" />
+    <CustomBuild Include="res\ico00010.ico" />
+    <CustomBuild Include="res\ico00011.ico" />
+    <CustomBuild Include="res\ico00012.ico" />
+    <CustomBuild Include="res\ico00013.ico" />
+    <CustomBuild Include="res\ico00014.ico" />
+    <CustomBuild Include="res\ico00015.ico" />
+    <CustomBuild Include="res\ico00016.ico" />
+    <CustomBuild Include="res\ico00017.ico" />
+    <CustomBuild Include="res\ico00018.ico" />
+    <CustomBuild Include="res\ico00019.ico" />
+    <CustomBuild Include="res\ico00020.ico" />
+    <CustomBuild Include="res\ico00021.ico" />
+    <CustomBuild Include="res\ico00022.ico" />
+    <CustomBuild Include="res\ico00023.ico" />
+    <CustomBuild Include="res\ico00024.ico" />
+    <CustomBuild Include="res\ico00025.ico" />
+    <CustomBuild Include="res\ico00026.ico" />
+    <CustomBuild Include="res\ico00027.ico" />
+    <CustomBuild Include="res\ico00069.ico" />
+    <CustomBuild Include="res\ico3dfil.ico" />
+    <CustomBuild Include="res\icon1.ico" />
+    <CustomBuild Include="res\icon2.ico" />
+    <CustomBuild Include="res\idi_.ico" />
+    <CustomBuild Include="res\idr_main.ico" />
+    <CustomBuild Include="res\instance.bmp" />
+    <CustomBuild Include="keyframe.bmp" />
+    <CustomBuild Include="res\LevelEdit.ico" />
+    <CustomBuild Include="res\LevelEdit.rc2">
+      <FileType>RC</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\LevelEditDoc.ico" />
+    <CustomBuild Include="res\link.cur" />
+    <CustomBuild Include="res\ltarrow.bmp" />
+    <CustomBuild Include="res\ltarrowd.bmp" />
+    <CustomBuild Include="res\mainfram.bmp" />
+    <CustomBuild Include="marker.bmp" />
+    <CustomBuild Include="res\openfold.ico" />
+    <CustomBuild Include="res\orator2.ico" />
+    <CustomBuild Include="res\orator3.ico" />
+    <CustomBuild Include="res\orator4.ico" />
+    <CustomBuild Include="res\orator5.ico" />
+    <CustomBuild Include="res\orator6.ico" />
+    <CustomBuild Include="res\orator7.ico" />
+    <CustomBuild Include="res\pathfind.ico" />
+    <CustomBuild Include="res\PhysTest.ico" />
+    <CustomBuild Include="res\pointer_.cur" />
+    <CustomBuild Include="res\preset_t.bmp" />
+    <CustomBuild Include="res\pri_high.ico" />
+    <CustomBuild Include="res\pri_low.ico" />
+    <CustomBuild Include="res\pri_low1.ico" />
+    <CustomBuild Include="res\rtarrow.bmp" />
+    <CustomBuild Include="res\rtarrowd.bmp" />
+    <CustomBuild Include="res\script.ico" />
+    <CustomBuild Include="res\sound.ico" />
+    <CustomBuild Include="res\splash.bmp" />
+    <CustomBuild Include="res\sunlight.ico" />
+    <CustomBuild Include="res\terrain.ico" />
+    <CustomBuild Include="res\tile.ico" />
+    <CustomBuild Include="res\Toolbar.bmp" />
+    <CustomBuild Include="res\toolbar1.bmp" />
+    <CustomBuild Include="res\transiti.ico" />
+    <CustomBuild Include="res\vol_low1.ico" />
+    <CustomBuild Include="res\vss.ico" />
+    <CustomBuild Include="res\vss_user.ico" />
+    <CustomBuild Include="res\WayMid.W3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\waypath.ico" />
+    <CustomBuild Include="res\WayStart.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\WayStop.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\welcome.bmp" />
+    <CustomBuild Include="res\zone.ico" />
+    <CustomBuild Include="res\bodybox.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\buildingicon.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\Camera.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\carmarker.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\coverspot.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\dummy.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\grid.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="LevelEdit.reg">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\Light.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\Meter.tga">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\PointLight.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="ReadMe.txt" />
+    <CustomBuild Include="res\Speaker.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\Speaker2.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\ta_cement.tga">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\ta_dummy.tga">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\ta_front.tga">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\transbox.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\way_b.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\way_g.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="res\way_r.w3d">
+      <FileType>Document</FileType>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -138,16 +138,15 @@ void RDTSC(void)
 int Get_RDTSC_CPU_Speed(void)
 {
 	LARGE_INTEGER t0,t1;
-	DWORD	freq=0;						// Most current freq. calc.
-	DWORD	freq2=0;						// 2nd most current freq. calc.
-	DWORD	freq3=0;						// 3rd most current freq. calc.
-	DWORD	total;						// Sum of previous three freq. calc.
-	int	tries=0;						// Number of times a calculation has been
+	int	freq=0;						// Most current freq. calc.
+	int	freq2=0;					// 2nd most current freq. calc.
+	int	freq3=0;					// 3rd most current freq. calc.
+	int	total;						// Sum of previous three freq. calc.
+	int	tries=0;					// Number of times a calculation has been
 												// made on this call
-	DWORD	total_cycles=0, cycles;	// Clock cycles elapsed during test
-	DWORD	stamp0, stamp1;			// Time Stamp for beginning and end of test
-	DWORD	total_ticks=0, ticks;	// Microseconds elapsed during test
-// DWORD	current = 0;				// Elapsed time during loop
+	int	total_cycles=0, cycles;		// Clock cycles elapsed during test
+	int	stamp0, stamp1;				// Time Stamp for beginning and end of test
+	int	total_ticks=0, ticks;		// Microseconds elapsed during test
 	LARGE_INTEGER count_freq;			// Hi-Res Performance Counter frequency
 
 

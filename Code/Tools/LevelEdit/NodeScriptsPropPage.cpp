@@ -374,7 +374,7 @@ NodeScriptsPropPage::Apply_Changes (void)
 	// Loop through all the entries in the list contrl and add them 
 	// to the script list
 	//
-	index = -1;
+	int index = -1;
 	while ((index = m_ListCtrl.GetNextItem (index, LVNI_ALL)) != -1) {
 		EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData (index);
 		if (script != NULL) {

@@ -611,13 +611,13 @@ RefPtr<WaitCondition> Session::LoginServer(const RefPtr<IRCServerData>& server,
 		{
 		WWDEBUG_SAY(("WOL: LoginServer wait for disconnect to finish.\n"));
 		RefPtr< EventValueWait<ConnectionStatus> > finish = EventValueWait<ConnectionStatus>::CreateAndObserve(*this, ConnectionDisconnected, WOLSTRING("WOL_DISCONNECTING"));
-		serverWait->Add(finish);
+		serverWait->Add((const RefPtr<WaitCondition>)finish);
 		}
 	else if (ConnectionConnecting == mCurrentConnectionStatus)
 		{
 		WWDEBUG_SAY(("WOL: LoginServer wait for connect to finish.\n"));
 		RefPtr< EventValueWait<ConnectionStatus> > finish = EventValueWait<ConnectionStatus>::CreateAndObserve(*this, ConnectionConnected, WOLSTRING("WOL_DISCONNECTING"));
-		serverWait->Add(finish);
+		serverWait->Add((const RefPtr<WaitCondition>)finish);
 		}
 
 	// If connected or connecting to another server then disconnect from that server
@@ -630,7 +630,7 @@ RefPtr<WaitCondition> Session::LoginServer(const RefPtr<IRCServerData>& server,
 			{
 			WWDEBUG_SAY(("WOL: LoginServer disconnect from current server.\n"));
 			RefPtr<DisconnectWait> disconnect = DisconnectWait::Create(this);
-			serverWait->Add(disconnect);
+			serverWait->Add((const RefPtr<WaitCondition>)disconnect);
 			}
 		}
 
@@ -653,7 +653,7 @@ RefPtr<WaitCondition> Session::LoginServer(const RefPtr<IRCServerData>& server,
 	WWDEBUG_SAY(("WOL: LoginServer connect to new server.\n"));
 
 	RefPtr<ConnectWait> connect = ConnectWait::Create(this, server, login);
-	serverWait->Add(connect);
+	serverWait->Add((const RefPtr<WaitCondition>)connect);
 
 	return serverWait;
 	}
@@ -2081,7 +2081,8 @@ void Session::MakeSquadRequests(void)
 		unsigned int count = min<unsigned int>(10, mSquadRequests.size());
 
 		// Send each request in turn,
-		for (unsigned int index = 0; index < count; ++index)
+		unsigned int index;
+		for (index = 0; index < count; ++index)
 			{
 			const WideStringClass& request = mSquadRequests[index];
 
@@ -2334,7 +2335,7 @@ void Session::MakeLadderRequests(void)
 					}
 
 				// The request name follows the type
-				WCHAR* widename = wcschr(*request, L':');
+				WCHAR* widename = (WCHAR *)wcschr(*request, L':');
 				WWASSERT(widename != NULL && "Invalid Ladder Request");
 				widename++;
 

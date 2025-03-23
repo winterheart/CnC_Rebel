@@ -462,7 +462,7 @@ void HAnimComboClass::Append_Anim_Combo_Data(HAnimComboDataClass * Data)
 
 void HAnimComboClass::Remove_Anim_Combo_Data(HAnimComboDataClass * Data)
 {
-	HAnimComboData.Delete(Data);
+	HAnimComboData.Delete_Object(Data);
 }
 
 

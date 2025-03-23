@@ -357,7 +357,7 @@ bool	SpawnerClass::Save( ChunkSaveClass & csave )
 		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_SPAWN_TM, SpawnTM );
 
 		WWASSERT( ScriptNameList.Count() == ScriptParameterList.Count() );
-		for ( i = 0; i < ScriptNameList.Count(); i++ ) {
+		for (int i = 0; i < ScriptNameList.Count(); i++ ) {
 			WRITE_MICRO_CHUNK_WWSTRING( csave, MICROCHUNKID_SCRIPT_NAME, ScriptNameList[i] );
 			WRITE_MICRO_CHUNK_WWSTRING( csave, MICROCHUNKID_SCRIPT_PARAMETERS, ScriptParameterList[i] );
 		}
@@ -753,7 +753,7 @@ void	SpawnManager::Add_Spawner( SpawnerClass * spawner )
 
 void	SpawnManager::Remove_Spawner( SpawnerClass * spawner )
 {
-	SpawnerList.Delete( spawner );
+	SpawnerList.Delete_Object( spawner );
 }
 
 void	SpawnManager::Remove_All_Spawners( void )

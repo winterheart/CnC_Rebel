@@ -668,7 +668,8 @@ void DazzleRenderObjClass::Init_Type(const DazzleInitClass& i)
 	if (i.type>=type_count) {
 		unsigned new_count=i.type+1;
 		DazzleTypeClass** new_types=new DazzleTypeClass*[new_count];
-		for (unsigned a=0;a<type_count;++a) {
+		unsigned a;
+		for (a=0;a<type_count;++a) {
 			new_types[a]=types[a];
 		}
 		for (;a<new_count;++a) {
@@ -691,7 +692,8 @@ void DazzleRenderObjClass::Init_Lensflare(const LensflareInitClass& i)
 	if (i.type>=lensflare_count) {
 		unsigned new_count=i.type+1;
 		LensflareTypeClass** new_lensflares=new LensflareTypeClass*[new_count];
-		for (unsigned a=0;a<lensflare_count;++a) {
+		unsigned a;
+		for (a=0;a<lensflare_count;++a) {
 			new_lensflares[a]=lensflares[a];
 		}
 		for (;a<new_count;++a) {
@@ -954,7 +956,7 @@ void DazzleRenderObjClass::Render(RenderInfoClass & rinfo)
 
 			unsigned time_ms=WW3D::Get_Frame_Time();
 			if (time_ms==0) time_ms=1;
-			float weight=pow(params->ic.history_weight,time_ms);
+			float weight=pow(params->ic.history_weight, (int)time_ms);
 
 			if (dazzle_intensity>0.0f) {
 				visibility = _VisibilityHandler->Compute_Dazzle_Visibility(rinfo,this,loc);
