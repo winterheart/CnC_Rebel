@@ -82,6 +82,7 @@
 #include "bwrender.h"
 #include "assetmgr.h"
 #include "dx8wrapper.h"
+#include "dxdefs.h"
 
 
 // DEBUG DEBUG
@@ -1139,7 +1140,7 @@ bool TexProjectClass::Compute_Texture(RenderObjClass * model,SpecialRenderInfoCl
 		WW3D::Render(*model,*context);
 		WW3D::End_Render(false);
 
-		DX8Wrapper::Set_Render_Target((IDirect3DSurface8 *)NULL);
+		DX8Wrapper::Set_Render_Target((DX_IDirect3DSurface *)NULL);
 
 	}
 

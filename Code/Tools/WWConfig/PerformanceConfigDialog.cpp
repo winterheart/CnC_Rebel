@@ -29,9 +29,11 @@
 #include "phys.h"
 #include "videoconfigdialog.h"
 #include "dx8caps.h"
+#include "dxdefs.h"
 #include "cpudetect.h"
 #include "formconv.h"
 
+#include "dxdefs.h"
 #include "dx8wrapper.h"
 #include "locale_api.h"
 #include "wwconfig_ids.h"
@@ -763,11 +765,11 @@ void AutoConfigSettings()
 		return;
 	}
 
-	IDirect3D8* d3d=NULL;
-	D3DCAPS8 tmp_caps;
-	const D3DCAPS8* d3dcaps=NULL;
-	D3DADAPTER_IDENTIFIER8 adapter_id;
-	D3DFORMAT display_format;
+	DX_IDirect3DX* d3d=NULL;
+	DX_D3DCAPS tmp_caps;
+	const DX_D3DCAPS* d3dcaps=NULL;
+	DX_D3DADAPTER_IDENTIFIER adapter_id;
+	DX_D3DFORMAT display_format;
 
 	VideoConfigDialogClass* video=VideoConfigDialogClass::Get_Instance();
 	if (video) {
@@ -804,8 +806,8 @@ void AutoConfigSettings()
 
 		int adapter_count = d3d->GetAdapterCount();
 		for (int adapter_index=0; adapter_index<adapter_count; adapter_index++) {
-			D3DADAPTER_IDENTIFIER8 id;
-			::ZeroMemory(&id, sizeof(D3DADAPTER_IDENTIFIER8));
+			DX_D3DADAPTER_IDENTIFIER id;
+			::ZeroMemory(&id, sizeof(DX_D3DADAPTER_IDENTIFIER));
 			HRESULT res = d3d->GetAdapterIdentifier(adapter_index,D3DENUM_NO_WHQL_LEVEL,&id);
 			// If device ok, check if it matches the currently set adapter name
 			if (res == D3D_OK) {
@@ -825,7 +827,7 @@ void AutoConfigSettings()
 			return;
 		}
 
-		::ZeroMemory(&adapter_id, sizeof(D3DADAPTER_IDENTIFIER8));
+		::ZeroMemory(&adapter_id, sizeof(DX_D3DADAPTER_IDENTIFIER));
 		if (FAILED( d3d->GetAdapterIdentifier(
 			current_adapter_index,
 			D3DENUM_NO_WHQL_LEVEL,
@@ -1111,11 +1113,11 @@ PerformanceConfigDialogClass::OnShowWindow(BOOL bShow, UINT nStatus)
 		VideoConfigDialogClass* video=VideoConfigDialogClass::Get_Instance();
 		if (video) {
 
-			IDirect3D8* d3d=DX8Wrapper::_Get_D3D8();
+			DX_IDirect3DX* d3d=DX8Wrapper::_Get_D3D8();
 			d3d->AddRef();
-			D3DADAPTER_IDENTIFIER8 adapter_id=video->Get_Current_Adapter_Identifier();
+			DX_D3DADAPTER_IDENTIFIER adapter_id=video->Get_Current_Adapter_Identifier();
 
-			D3DFORMAT display_format;
+			DX_D3DFORMAT display_format;
 			if (video->Get_Current_Bit_Depth()==32) {
 				display_format=D3DFMT_X8R8G8B8;
 			}

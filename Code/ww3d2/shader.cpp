@@ -43,9 +43,9 @@
 #include "shader.h"
 #include "w3d_file.h"
 #include "wwdebug.h"
-#include "Dx8Wrapper.h"
+#include "dx8wrapper.h"
 #include "dx8caps.h"
-
+#include "dxdefs.h"
 
 bool ShaderClass::ShaderDirty=true;
 unsigned long ShaderClass::CurrentShader=0;
@@ -495,7 +495,7 @@ void ShaderClass::Apply()
 		if (DX8Wrapper::Get_Current_Caps()->Is_Fog_Allowed() && DX8Wrapper::Get_Fog_Enable()) {
 
 			BOOL fm = FALSE;
-			D3DCOLOR fogColor = DX8Wrapper::Get_Fog_Color();
+			DX_D3DCOLOR fogColor = DX8Wrapper::Get_Fog_Color();
 			
 			switch(Get_Fog_Func())
 			{

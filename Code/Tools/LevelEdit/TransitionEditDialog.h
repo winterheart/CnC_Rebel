@@ -141,7 +141,7 @@ private:
 	UINT						m_TimerID;
 	SimpleSceneClass *	m_Scene;
 	CameraClass *			m_Camera;
-	IDirect3DSwapChain8 *m_SwapChain;
+	DX_IDirect3DSwapChain *m_SwapChain;
 
 	RenderObjClass *		m_RenderObj;
 	RenderObjClass *		m_CharacterObj;

@@ -441,6 +441,7 @@
     <ClInclude Include="dx8texman.h" />
     <ClInclude Include="dx8vertexbuffer.h" />
     <ClInclude Include="dx8wrapper.h" />
+    <ClInclude Include="dxdefs.h" />
     <ClInclude Include="dynamesh.h" />
     <ClInclude Include="font3d.h" />
     <ClInclude Include="formconv.h" />

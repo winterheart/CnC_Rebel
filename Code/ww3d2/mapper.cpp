@@ -39,6 +39,7 @@
 #include "w3derr.h"
 #include "meshmatdesc.h"
 #include "dx8wrapper.h"
+#include "dxdefs.h"
 #include "wwdebug.h"
 #include "matinfo.h"
 #include "rendobj.h"
@@ -113,7 +114,7 @@ void LinearOffsetTextureMapperClass::Apply(int uv_array_index)
 	m[0].X=Scale.X;
 	m[1].Z=offset_v;
 	m[1].Y=Scale.Y;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -161,7 +162,7 @@ void ScaleTextureMapperClass::Apply(int uv_array_index)
 	
 	m[0].X=Scale.U;
 	m[1].Y=Scale.V;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -213,7 +214,7 @@ void GridTextureMapperClass::Apply(int uv_array_index)
 	// otherwise change to translate
 	m[0].Z = u_offset;
 	m[1].Z = v_offset;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage), m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage), m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -341,7 +342,7 @@ void RotateTextureMapperClass::Apply(int uv_array_index)
 	m[0].Set(Scale.X*c,-Scale.X*s,-Scale.X*(c*Center.U-s*Center.V-Center.U),0.0f);
 	m[1].Set(Scale.Y*s,Scale.Y*c,-Scale.Y*(s*Center.U+c*Center.V-Center.V),0.0f);	
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -408,7 +409,7 @@ void SineLinearOffsetTextureMapperClass::Apply(int uv_array_index)
 	// otherwise change to translate
 	m[0].Z=offset_u;
 	m[1].Z=offset_v;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -477,7 +478,7 @@ void StepLinearOffsetTextureMapperClass::Apply(int uv_array_index)
 	// otherwise change to translate
 	m[0].Z=CurrentStep.U;
 	m[1].Z=CurrentStep.V;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -567,7 +568,7 @@ void ZigZagLinearOffsetTextureMapperClass::Apply(int uv_array_index)
 	// otherwise change to translate
 	m[0].Z=offset_u;
 	m[1].Z=offset_v;
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	
@@ -599,7 +600,7 @@ void ClassicEnvironmentMapperClass::Apply(int uv_array_index)
 							0.0f, 0.5f, 0.0f, 0.5f,
 							0.0f, 0.0f, 1.0f, 0.0f );
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
 
 	// Get camera normals
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);
@@ -619,7 +620,7 @@ void EnvironmentMapperClass::Apply(int uv_array_index)
 							0.0f, 0.25f, 0.0f, 0.5f,
 							0.0f, 0.0f, 1.0f, 0.0f );	
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
 
 	// Get camera reflection vector
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEREFLECTIONVECTOR);
@@ -675,7 +676,7 @@ void EdgeMapperClass::Apply(int uv_array_index)
 							0.0f, 0.0f, 0.0f, VOffset,
 							0.0f, 0.0f, 1.0f, 0.0f );	
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
 
 	// Get camera reflection vector
 	if (UseReflect)
@@ -711,7 +712,7 @@ void WSClassicEnvironmentMapperClass::Apply(int uv_array_index)
 					  mat[0].Z,mat[1].Z,mat[2].Z,0.0f);		
 	matenv=matenv*mat2;	
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);
 
 	// Get camera normals
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);
@@ -739,7 +740,7 @@ void WSEnvironmentMapperClass::Apply(int uv_array_index)
 					  mat[0].Z,mat[1].Z,mat[2].Z,0.0f);						  	
 	matenv=matenv*mat2;	
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);	
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),matenv);	
 
 	// Get camera reflection
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEREFLECTIONVECTOR);
@@ -773,7 +774,7 @@ void ScreenMapperClass::Apply(int uv_array_index)
 	last*=offset_v;
 	mat[1]+=last;
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),mat);	
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),mat);	
 
 	// Get camera space position
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);
@@ -801,7 +802,7 @@ void GridClassicEnvironmentMapperClass::Apply(int uv_array_index)
 							0.0f,	del,	0.0f,	v_offset + del,
 							0.0f,	0.0f,	1.0f,	0.0f				);		
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),tform);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),tform);
 
 	// Get camera normals
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);
@@ -831,7 +832,7 @@ void GridEnvironmentMapperClass::Apply(int uv_array_index)
 							0.0f,	del,	0.0f,	v_offset + del,
 							0.0f,	0.0f,	1.0f,	0.0f				);		
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),tform);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),tform);
 
 	// Get camera space reflection
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEREFLECTIONVECTOR);
@@ -906,7 +907,7 @@ void RandomTextureMapperClass::Apply(int uv_array_index)
 	m[0].Z=uoff;
 	m[1].Z=voff;
 
-	DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
+	DX8Wrapper::Set_Transform((DX_D3DTRANSFORMSTATETYPE) (D3DTS_TEXTURE0+Stage),m);
 
 	// Disable Texgen
 	DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_PASSTHRU | uv_array_index);	

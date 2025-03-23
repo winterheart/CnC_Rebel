@@ -44,7 +44,6 @@
 #include "dx8caps.h"
 #include "thread.h"
 #include "wwmemlog.h"
-#include <D3dx8core.h>
 
 #define DEFAULT_VB_SIZE 5000
 

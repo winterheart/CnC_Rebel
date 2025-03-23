@@ -44,8 +44,7 @@
 
 #include "vector.h"
 #include "wwstring.h"
-#include <d3d8types.h>
-#include <d3d8caps.h>
+#include "dxdefs.h"
 
 class ResolutionDescClass
 {
@@ -110,8 +109,8 @@ public:
 	const char *		Get_Hardware_Chipset() const	{ return HardwareChipset; }
 
 	const DynamicVectorClass<ResolutionDescClass> & Enumerate_Resolutions(void) const	{ return ResArray; }
-	const D3DCAPS8& 	Get_Caps() const { return Caps; }
-	const D3DADAPTER_IDENTIFIER8& Get_Adapter_Identifier() const { return AdapterIdentifier; }
+	const DX_D3DCAPS& 	Get_Caps() const { return Caps; }
+	const DX_D3DADAPTER_IDENTIFIER& Get_Adapter_Identifier() const { return AdapterIdentifier; }
 
 private:
 
@@ -140,8 +139,8 @@ private:
 	StringClass			HardwareVendor;
 	StringClass			HardwareChipset;
 
-	D3DCAPS8				Caps;
-	D3DADAPTER_IDENTIFIER8 AdapterIdentifier;
+	DX_D3DCAPS				Caps;
+	DX_D3DADAPTER_IDENTIFIER AdapterIdentifier;
 	
 	DynamicVectorClass<ResolutionDescClass>	ResArray;
 

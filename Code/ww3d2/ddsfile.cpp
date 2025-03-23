@@ -17,6 +17,7 @@
 */
 
 #include "ddsfile.h"
+#include "dxdefs.h"
 #include "ffactory.h"
 #include "bufffile.h"
 #include "formconv.h"
@@ -66,7 +67,7 @@ DDSFileClass::DDSFileClass(const char* name,unsigned reduction_factor)
 		return;
 	}
 
-	Format=D3DFormat_To_WW3DFormat((D3DFORMAT)SurfaceDesc.PixelFormat.FourCC);
+	Format=D3DFormat_To_WW3DFormat((DX_D3DFORMAT)SurfaceDesc.PixelFormat.FourCC);
 	WWASSERT(
 		Format==WW3D_FORMAT_DXT1 ||
 		Format==WW3D_FORMAT_DXT2 ||
@@ -216,7 +217,7 @@ bool DDSFileClass::Load()
 //
 // ----------------------------------------------------------------------------
 
-void DDSFileClass::Copy_Level_To_Surface(unsigned level,IDirect3DSurface8* d3d_surface)
+void DDSFileClass::Copy_Level_To_Surface(unsigned level,DX_IDirect3DSurface* d3d_surface)
 {
 	WWASSERT(d3d_surface);
 	// Verify that the destination surface size matches the source surface size

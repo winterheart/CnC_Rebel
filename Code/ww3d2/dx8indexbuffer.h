@@ -44,13 +44,13 @@
 #define DX8INDEXBUFFER_H
 
 #include "always.h"
+#include "dxdefs.h"
 #include "wwdebug.h"
 #include "refcount.h"
 #include "sphere.h"
 
 class DX8Wrapper;
 class SortingRendererClass;
-struct IDirect3DIndexBuffer8;
 class DX8IndexBufferClass;
 class SortingIndexBufferClass;
 
@@ -172,10 +172,10 @@ public:
 	void Copy(unsigned int* indices,unsigned start_index,unsigned index_count);
 	void Copy(unsigned short* indices,unsigned start_index,unsigned index_count);
 
-	inline IDirect3DIndexBuffer8* Get_DX8_Index_Buffer()	{ return index_buffer; }
+	inline DX_IDirect3DIndexBuffer* Get_DX8_Index_Buffer()	{ return index_buffer; }
 	
 private:
-	IDirect3DIndexBuffer8*	index_buffer;		// actual dx8 index buffer
+	DX_IDirect3DIndexBuffer*	index_buffer;		// actual dx8 index buffer
 };
 
 

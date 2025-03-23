@@ -43,6 +43,7 @@
 #define TEXTURE_H
 
 #include "always.h"
+#include "dxdefs.h"
 #include "refcount.h"
 #include "chunkio.h"
 #include "surfaceclass.h"
@@ -50,7 +51,6 @@
 #include "wwstring.h"
 
 class DX8Wrapper;
-struct IDirect3DTexture8;
 class TextureLoader;
 class LoaderThreadClass;
 class DX8TextureManagerClass;
@@ -138,7 +138,7 @@ class TextureClass : public RefCountClass
 			SurfaceClass *surface, 
 			MipCountType mip_level_count=MIP_LEVELS_ALL);		
 
-		TextureClass(IDirect3DTexture8* d3d_texture);
+		TextureClass(DX_IDirect3DTexture* d3d_texture);
 
 		virtual ~TextureClass(void);
 
@@ -172,7 +172,7 @@ class TextureClass : public RefCountClass
 
 		// Get the surface of one of the mipmap levels (defaults to highest-resolution one)
 		SurfaceClass *Get_Surface_Level(unsigned int level = 0);
-		IDirect3DSurface8 *Get_D3D_Surface_Level(unsigned int level = 0);
+		DX_IDirect3DSurface *Get_D3D_Surface_Level(unsigned int level = 0);
 
 		// Texture priority affects texture management and caching.
 		unsigned int Get_Priority(void);
@@ -217,7 +217,7 @@ class TextureClass : public RefCountClass
 		// This utility function processes the texture reduction (used during rendering)
 		void Invalidate();
 
-		IDirect3DTexture8 *Peek_DX8_Texture()
+		DX_IDirect3DTexture *Peek_DX8_Texture()
 		{
 			return D3DTexture;
 		}
@@ -254,7 +254,7 @@ class TextureClass : public RefCountClass
 		TxtAddrMode VAddressMode;
 
 		// Direct3D texture object
-		IDirect3DTexture8 *D3DTexture;
+		DX_IDirect3DTexture *D3DTexture;
 		bool Initialized;
 
 		// Name
@@ -301,7 +301,7 @@ private:
 public:
 
 		// Background texture loader will call this when texture has been loaded
-		void Apply_New_Surface(IDirect3DTexture8* tex, bool initialized);	// If the parameter is true, the texture will be flagged as initialised
+		void Apply_New_Surface(DX_IDirect3DTexture* tex, bool initialized);	// If the parameter is true, the texture will be flagged as initialised
 
 };
 

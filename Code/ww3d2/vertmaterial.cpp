@@ -75,8 +75,8 @@ VertexMaterialClass::VertexMaterialClass(void):
 		UVSource[i] = i;
 	}	
 
-	Material=new D3DMATERIAL8;
-	memset(Material,0,sizeof(D3DMATERIAL8));
+	Material=new DX_D3DMATERIAL;
+	memset(Material,0,sizeof(DX_D3DMATERIAL));
 	Set_Ambient(1.0f,1.0f,1.0f);
 	Set_Diffuse(1.0f,1.0f,1.0f);
 
@@ -108,8 +108,8 @@ VertexMaterialClass::VertexMaterialClass(const VertexMaterialClass & src) :
 		UVSource[i] = src.UVSource[i];
 	}	
 
-	Material=new D3DMATERIAL8;
-	memcpy(Material,src.Material,sizeof(D3DMATERIAL8));
+	Material=new DX_D3DMATERIAL;
+	memcpy(Material,src.Material,sizeof(DX_D3DMATERIAL));
 }
 
 void VertexMaterialClass::Make_Unique()
@@ -175,7 +175,7 @@ unsigned long VertexMaterialClass::Compute_CRC(void) const
 // don't include the name when determining whether two vertex materials match
 //	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(Name.Peek_Buffer()),sizeof(char)*strlen(Name),crc);
 
-	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(Material),sizeof(D3DMATERIAL8),crc);
+	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(Material),sizeof(DX_D3DMATERIAL),crc);
 	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(&Flags),sizeof(Flags),crc);
 	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(&DiffuseColorSource),sizeof(DiffuseColorSource),crc);
 	crc = CRC_Memory(reinterpret_cast<const unsigned char *>(&AmbientColorSource),sizeof(AmbientColorSource),crc);
@@ -889,7 +889,7 @@ void VertexMaterialClass::Apply(void) const
 void VertexMaterialClass::Apply_Null(void)
 {
 	int i;
-	static D3DMATERIAL8 default_settings = 
+	static DX_D3DMATERIAL default_settings = 
 	{
 		{ 1.0f, 1.0f, 1.0f, 1.0f },	// diffuse
 		{ 1.0f, 1.0f, 1.0f, 1.0f },	// ambient
