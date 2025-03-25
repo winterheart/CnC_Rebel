@@ -19,13 +19,18 @@
 #pragma once
 
 #include <d3d8.h>
+
+// Defining some aliases to make transition between DirectX versions easer
+
+#if(DIRECT3D_VERSION < 0x0900)
+
 #include <d3d8types.h>
 #include <d3dx8core.h>
 #include <d3dx8math.h>
 #include <d3dx8tex.h>
 #include <d3d8caps.h>
 
-// Defining some aliases to make transition between DirectX versions easer
+#define DX_D3D_DLL "D3D8.DLL"
 
 typedef IDirect3DBaseTexture8 DX_IDirect3DBaseTexture;
 typedef IDirect3DDevice8 DX_IDirect3DDevice;
@@ -51,3 +56,40 @@ typedef D3DVIEWPORT8 DX_D3DVIEWPORT;
 typedef D3DXMATRIX DX_D3DXMATRIX;
 typedef D3DXVECTOR3 DX_D3DXVECTOR3;
 typedef D3DXVECTOR4 DX_D3DXVECTOR4;
+
+#else
+
+#include <d3d9types.h>
+#include <d3dx9core.h>
+#include <d3dx9math.h>
+#include <d3dx9tex.h>
+#include <d3d9caps.h>
+
+#define DX_D3D_DLL "D3D9.DLL"
+
+typedef IDirect3DBaseTexture9 DX_IDirect3DBaseTexture;
+typedef IDirect3DDevice9 DX_IDirect3DDevice;
+typedef IDirect3DIndexBuffer9 DX_IDirect3DIndexBuffer;
+typedef IDirect3DSurface9 DX_IDirect3DSurface;
+typedef IDirect3DSwapChain9 DX_IDirect3DSwapChain;
+typedef IDirect3DTexture9 DX_IDirect3DTexture;
+typedef IDirect3DVertexBuffer9 DX_IDirect3DVertexBuffer;
+typedef IDirect3D9 DX_IDirect3DX;
+
+typedef LPDIRECT3DSURFACE9 DX_LPDIRECT3DSURFACE;
+
+typedef D3DCOLOR DX_D3DCOLOR;
+typedef D3DFORMAT DX_D3DFORMAT;
+typedef D3DADAPTER_IDENTIFIER9 DX_D3DADAPTER_IDENTIFIER;
+typedef D3DCAPS9 DX_D3DCAPS;
+typedef D3DLIGHT9 DX_D3DLIGHT;
+typedef D3DMATERIAL9 DX_D3DMATERIAL;
+typedef D3DRENDERSTATETYPE DX_D3DRENDERSTATETYPE;
+typedef D3DTEXTURESTAGESTATETYPE DX_D3DTEXTURESTAGESTATETYPE;
+typedef D3DTRANSFORMSTATETYPE DX_D3DTRANSFORMSTATETYPE;
+typedef D3DVIEWPORT9 DX_D3DVIEWPORT;
+typedef D3DXMATRIX DX_D3DXMATRIX;
+typedef D3DXVECTOR3 DX_D3DXVECTOR3;
+typedef D3DXVECTOR4 DX_D3DXVECTOR4;
+
+#endif

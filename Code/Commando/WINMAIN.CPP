@@ -288,7 +288,7 @@ static bool Video_Card_Driver_Check()
 	// Init D3D
 	Init_D3D_To_WW3_Conversion();
 
-	D3D8Lib = LoadLibrary("D3D8.DLL");
+	D3D8Lib = LoadLibrary(DX_D3D_DLL);
 
 	if (D3D8Lib != NULL) {
 		Direct3DCreate8Ptr = (Direct3DCreate8Type) GetProcAddress(D3D8Lib, "Direct3DCreate8");
