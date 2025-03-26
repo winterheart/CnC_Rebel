@@ -861,8 +861,14 @@ void ShaderClass::Apply()
 	// NPATCHES
 	if (diff&ShaderClass::MASK_NPATCHENABLE) {
 		float level=1.0f;
-		if (Get_NPatch_Enable()) level=float(WW3D::Get_NPatches_Level());
+		if (Get_NPatch_Enable()) {
+			level=float(WW3D::Get_NPatches_Level());
+		}
+#if (DIRECT3D_VERSION < 0x0900)
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_PATCHSEGMENTS,*((DWORD*)&level));
+#else
+		DX8Wrapper::Set_DX8_Set_NPatch_Mode(level);
+#endif
 	}
 
 	// Enable/disable alpha test

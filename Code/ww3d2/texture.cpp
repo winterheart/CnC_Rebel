@@ -77,7 +77,7 @@ static int Calculate_Texture_Memory_Usage(const TextureClass* texture,int red_fa
 	for (unsigned i=red_factor;i<d3d_texture->GetLevelCount();++i) {
 		D3DSURFACE_DESC desc;
 		DX8_ErrorCode(d3d_texture->GetLevelDesc(i,&desc));
-		size+=desc.Size;
+		size += desc.Width * desc.Height * DX_Get_Bytes_Per_Pixel(desc.Format);
 	}
 	return size;
 }
@@ -605,18 +605,32 @@ void TextureClass::Apply(unsigned int stage)
 		DX8Wrapper::Set_DX8_Texture(stage, NULL);
 	}
 
+#if(DIRECT3D_VERSION < 0x0900)
 	DX8Wrapper::Set_DX8_Texture_Stage_State(stage,D3DTSS_MINFILTER,_MinTextureFilters[stage][TextureMinFilter]);
 	DX8Wrapper::Set_DX8_Texture_Stage_State(stage,D3DTSS_MAGFILTER,_MagTextureFilters[stage][TextureMagFilter]);
 	DX8Wrapper::Set_DX8_Texture_Stage_State(stage,D3DTSS_MIPFILTER,_MipMapFilters[stage][MipMapFilter]);
+#else
+	DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_MINFILTER, _MinTextureFilters[stage][TextureMinFilter]);
+	DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_MAGFILTER, _MagTextureFilters[stage][TextureMagFilter]);
+	DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_MIPFILTER, _MipMapFilters[stage][MipMapFilter]);
+#endif
 
 	switch (Get_U_Addr_Mode()) {
 
 		case TEXTURE_ADDRESS_REPEAT:
+#if(DIRECT3D_VERSION < 0x0900)
 			DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
+#else
+			DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+#endif
 			break;
 
 		case TEXTURE_ADDRESS_CLAMP:
+#if(DIRECT3D_VERSION < 0x0900)
 			DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
+#else
+			DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+#endif
 			break;
 
 	}
@@ -624,11 +638,19 @@ void TextureClass::Apply(unsigned int stage)
 	switch (Get_V_Addr_Mode()) {
 
 		case TEXTURE_ADDRESS_REPEAT:
+#if(DIRECT3D_VERSION < 0x0900)
 			DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
+#else
+			DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+#endif
 			break;
 
 		case TEXTURE_ADDRESS_CLAMP:
+#if(DIRECT3D_VERSION < 0x0900)
 			DX8Wrapper::Set_DX8_Texture_Stage_State(stage, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
+#else
+			DX8Wrapper::Set_DX8_Sampler_State(stage, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+#endif
 			break;
 
 	}
@@ -888,7 +910,11 @@ void TextureClass::_Init_Filters(TextureClass::TextureFilterMode filter_type)
 		_MagTextureFilters[i][FILTER_TYPE_DEFAULT]=_MagTextureFilters[i][FILTER_TYPE_BEST];
 		_MipMapFilters[i][FILTER_TYPE_DEFAULT]=_MipMapFilters[i][FILTER_TYPE_BEST];
 
+#if (DIRECT3D_VERSION < 0x0900)
 		DX8Wrapper::Set_DX8_Texture_Stage_State(i,D3DTSS_MAXANISOTROPY,2);
+#else
+		DX8Wrapper::Set_DX8_Sampler_State(i, D3DSAMP_MAXANISOTROPY, 2);
+#endif
 	}
 
 }
