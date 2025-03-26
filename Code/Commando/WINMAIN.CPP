@@ -320,7 +320,11 @@ static bool Video_Card_Driver_Check()
 	for (int adapter_index=0; adapter_index<adapter_count; adapter_index++) {
 		DX_D3DADAPTER_IDENTIFIER id;
 		::ZeroMemory(&id, sizeof(DX_D3DADAPTER_IDENTIFIER));
+#if (DIRECT3D_VERSION < 0x0900)
 		HRESULT res = d3d->GetAdapterIdentifier(adapter_index,D3DENUM_NO_WHQL_LEVEL,&id);
+#else
+		HRESULT res = d3d->GetAdapterIdentifier(adapter_index, 0, &id);
+#endif
 		// If device ok, check if it matches the currently set adapter name
 		if (res == D3D_OK) {
 			StringClass name(id.Description,true);
@@ -341,12 +345,15 @@ static bool Video_Card_Driver_Check()
 	}
 
 	::ZeroMemory(&adapter_id, sizeof(DX_D3DADAPTER_IDENTIFIER));
-	if (FAILED( d3d->GetAdapterIdentifier(
-		current_adapter_index,
-		D3DENUM_NO_WHQL_LEVEL,
-		&adapter_id))) {
+#if (DIRECT3D_VERSION < 0x0900)
+	if (FAILED(d3d->GetAdapterIdentifier(current_adapter_index, D3DENUM_NO_WHQL_LEVEL, &adapter_id)))
+#else
+	if (FAILED(d3d->GetAdapterIdentifier(current_adapter_index, 0, &adapter_id)))
+#endif
+	{
 		d3d->Release();
 		FreeLibrary(D3D8Lib);
+
 		return true;
 	}
 
