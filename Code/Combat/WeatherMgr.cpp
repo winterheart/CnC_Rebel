@@ -1049,10 +1049,15 @@ void WeatherSystemClass::Render (RenderInfoClass &rinfo)
 
 		DX8Wrapper::Set_Index_Buffer (IndexBuffer, 0);
 
-		#if WEATHER_PARTICLE_SORT
-		#else
+#if WEATHER_PARTICLE_SORT
+#else
+#if (DIRECT3D_VERSION < 0x0900)
 		DX8Wrapper::Set_DX8_Render_State (D3DRS_ZBIAS, 12);
-		#endif
+#else
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_DEPTHBIAS, 12);
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_SLOPESCALEDEPTHBIAS, 12);
+#endif
+#endif
 
  		camerafocus = rinfo.Camera.Get_Transform().Get_Z_Vector();
 		particleptr = ParticleHead;
@@ -1215,10 +1220,15 @@ void WeatherSystemClass::Render (RenderInfoClass &rinfo)
 
 		WWASSERT (particleptr == NULL);
 
-		#if WEATHER_PARTICLE_SORT
-		#else
+#if WEATHER_PARTICLE_SORT
+#else
+#if (DIRECT3D_VERSION < 0x0900)
 		DX8Wrapper::Set_DX8_Render_State (D3DRS_ZBIAS, 0);
-		#endif
+#else
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_DEPTHBIAS, 0);
+		DX8Wrapper::Set_DX8_Render_State(D3DRS_SLOPESCALEDEPTHBIAS, 0);
+#endif
+#endif
 	}
 }
 

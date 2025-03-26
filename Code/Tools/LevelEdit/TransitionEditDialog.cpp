@@ -395,12 +395,20 @@ TransitionEditDialogClass::Render_View (void)
 		//
 		//	Blit the frame to the client area of the window
 		//
+#if (DIRECT3D_VERSION < 0x0900)
 		m_SwapChain->Present (NULL, NULL, NULL, NULL);
-		
+#else
+		m_SwapChain->Present (NULL, NULL, NULL, NULL, 0);
+#endif
+
 		//
 		//	Restore the render target
 		//
+#if (DIRECT3D_VERSION < 0x0900)
 		DX8Wrapper::Set_Render_Target ((LPDIRECT3DSURFACE8)NULL);
+#else
+		DX8Wrapper::Set_Render_Target ((LPDIRECT3DSURFACE9)NULL);
+#endif
 
 		//
 		//	Cleanup

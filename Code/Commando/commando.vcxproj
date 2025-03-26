@@ -115,7 +115,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\Renegade.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/release;../srsdk1x/msvc6\lib\release;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxerr9.lib;dxguid.lib;dinput.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -157,7 +157,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\RenegadeD.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/debug;../srsdk1x/msvc6\lib\debug;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxerr9.lib;dxguid.lib;dinput.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -199,7 +199,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\RenegadeP.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/profile;../srsdk1x/msvc6/lib/release;C:\DXSDK\Lib;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx8.lib;dxguid.lib;dinput8.lib;wwui.lib;mss32.lib;wwaudio.lib;wwbitpack.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxerr9.lib;dxguid.lib;dinput.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -209,6 +209,7 @@
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>d3dx9.lib;dxerr9.lib;dxguid.lib;dinput.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
