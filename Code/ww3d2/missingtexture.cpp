@@ -46,13 +46,16 @@ DX_IDirect3DSurface* MissingTexture::_Create_Missing_Surface()
 	::ZeroMemory(&texture_surface_desc, sizeof(D3DSURFACE_DESC));
 	DX8_ErrorCode(texture_surface->GetDesc(&texture_surface_desc));
 	
-	DX_IDirect3DSurface *surface = NULL;	
-	DX8CALL(CreateImageSurface(
-		texture_surface_desc.Width, 
-		texture_surface_desc.Height, 
-		texture_surface_desc.Format, 
-		&surface));
+	DX_IDirect3DSurface *surface = NULL;
+
+#if(DIRECT3D_VERSION < 0x0900)
+	DX8CALL(CreateImageSurface(texture_surface_desc.Width, texture_surface_desc.Height, texture_surface_desc.Format, &surface));
 	DX8CALL(CopyRects(texture_surface, NULL, 0, surface, NULL));
+#else
+	DX8CALL(CreateOffscreenPlainSurface(texture_surface_desc.Width, texture_surface_desc.Height, texture_surface_desc.Format, D3DPOOL_DEFAULT, &surface, NULL));
+	DX8CALL(StretchRect(texture_surface, NULL, surface, NULL, D3DTEXF_NONE));
+#endif
+
 	texture_surface->Release();
 	return surface;
 }

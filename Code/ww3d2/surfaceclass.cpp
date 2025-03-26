@@ -482,15 +482,26 @@ void SurfaceClass::Copy(
 	src.top=srcy;
 	src.bottom=srcy+height;
 
-	if (src.right>int(osd.Width)) src.right=int(osd.Width);
-	if (src.bottom>int(osd.Height)) src.bottom=int(osd.Height);	
+	if (src.right>int(osd.Width))
+		src.right=int(osd.Width);
+	if (src.bottom>int(osd.Height))
+		src.bottom=int(osd.Height);
 
 	if (sd.Format==osd.Format && sd.Width==osd.Width && sd.Height==osd.Height)
 	{
-		POINT dst;
-		dst.x=dstx;
-		dst.y=dsty;	
-		DX8Wrapper::_Copy_DX8_Rects(other->D3DSurface,&src,1,D3DSurface,&dst);
+#if(DIRECT3D_VERSION < 0x0900)
+		POINT dest;
+		dest.x=dstx;
+		dest.y=dsty;
+#else
+		RECT dest;
+		dest.left=dstx;
+		dest.right=dstx+width;
+		dest.top=dsty;
+		dest.bottom=dsty+height;
+#endif
+		//DX8Wrapper::_Copy_DX8_Rects(other->D3DSurface, &src, 1, D3DSurface, &dest);
+		DX8_ErrorCode(D3DXLoadSurfaceFromSurface(D3DSurface,NULL,&dest,other->D3DSurface,NULL,&src,D3DX_FILTER_NONE,0));
 	}
 	else
 	{
@@ -500,8 +511,10 @@ void SurfaceClass::Copy(
 		dest.top=dsty;
 		dest.bottom=dsty+height;
 
-		if (dest.right>int(sd.Width)) dest.right=int(sd.Width);
-		if (dest.bottom>int(sd.Height)) dest.bottom=int(sd.Height);
+		if (dest.right>int(sd.Width))
+			dest.right=int(sd.Width);
+		if (dest.bottom>int(sd.Height))
+			dest.bottom=int(sd.Height);
 
 		DX8_ErrorCode(D3DXLoadSurfaceFromSurface(D3DSurface,NULL,&dest,other->D3DSurface,NULL,&src,D3DX_FILTER_NONE,0));
 	}

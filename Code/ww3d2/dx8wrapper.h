@@ -150,6 +150,34 @@ struct RenderStateStruct
 	RenderStateStruct& operator= (const RenderStateStruct& src);
 };
 
+// Returns BPP of format
+WWINLINE unsigned DX_Get_Bytes_Per_Pixel(DX_D3DFORMAT format) {
+	switch (format) {
+	case D3DFMT_X8R8G8B8:
+	case D3DFMT_X8L8V8U8:
+	case D3DFMT_A8R8G8B8:
+		return 4;
+	case D3DFMT_R8G8B8:
+		return 3;
+	case D3DFMT_A1R5G5B5:
+	case D3DFMT_A4R4G4B4:
+	case D3DFMT_V8U8:
+	case D3DFMT_L6V5U5:
+	case D3DFMT_R5G6B5:
+		return 2;
+	case D3DFMT_R3G3B2:
+	case D3DFMT_L8:
+	case D3DFMT_A8:
+	case D3DFMT_P8:
+		return 1;
+
+	default:
+		WWASSERT(0);
+		break;
+	}
+	return 0;
+}
+
 /**
 ** DX8Wrapper
 **
@@ -263,6 +291,10 @@ public:
 	static void Set_DX8_Light(int index,DX_D3DLIGHT* light);
 	static void Set_DX8_Render_State(DX_D3DRENDERSTATETYPE state, unsigned value);
 	static void Set_DX8_Texture_Stage_State(unsigned stage, DX_D3DTEXTURESTAGESTATETYPE state, unsigned value);
+#if(DIRECT3D_VERSION >= 0x0900)
+	static void Set_DX8_Sampler_State(unsigned stage, DX_D3DSAMPLERSTATETYPE state, unsigned value);
+	static void Set_DX8_Set_NPatch_Mode(float value);
+#endif
 	static void Set_DX8_Texture(unsigned int stage, DX_IDirect3DBaseTexture* texture);
 	static void Set_Light_Environment(LightEnvironmentClass* light_env);
 	static void Set_Fog(bool enable, const Vector3 &color, float start, float end);
@@ -316,6 +348,7 @@ public:
 	static DX_IDirect3DSurface * _Get_DX8_Front_Buffer();
 	static SurfaceClass * _Get_DX8_Back_Buffer(unsigned int num=0);
 
+#if(DIRECT3D_VERSION < 0x0900)
 	static void _Copy_DX8_Rects(
 			DX_IDirect3DSurface* pSourceSurface,
 			CONST RECT* pSourceRectsArray,
@@ -323,6 +356,15 @@ public:
 			DX_IDirect3DSurface* pDestinationSurface,
 			CONST POINT* pDestPointsArray
 	);
+#else
+	static void _Copy_DX8_Rects(
+			DX_IDirect3DSurface* pSourceSurface,
+			CONST RECT* pSourceRectsArray,
+			UINT cRects,
+			DX_IDirect3DSurface* pDestinationSurface,
+			CONST RECT* pDestPointsArray
+	);
+#endif
 
 	static void _Update_Texture(TextureClass *system, TextureClass *video);
 	static void Flush_DX8_Resource_Manager(unsigned int bytes=0);
@@ -681,6 +723,18 @@ WWINLINE void DX8Wrapper::Set_DX8_Texture_Stage_State(unsigned stage, DX_D3DTEXT
 	DX8_RECORD_TEXTURE_STAGE_STATE_CHANGE();
 }
 
+#if(DIRECT3D_VERSION >= 0x0900)
+WWINLINE void DX8Wrapper::Set_DX8_Sampler_State(unsigned stage, DX_D3DSAMPLERSTATETYPE state, unsigned value) {
+	DX8CALL(SetSamplerState( stage, state, value ));
+	DX8_RECORD_TEXTURE_STAGE_STATE_CHANGE();
+}
+
+WWINLINE void DX8Wrapper::Set_DX8_Set_NPatch_Mode(float value) {
+	DX8CALL(SetNPatchMode(value));
+	DX8_RECORD_RENDER_STATE_CHANGE();
+};
+#endif
+
 WWINLINE void DX8Wrapper::Set_DX8_Texture(unsigned int stage, DX_IDirect3DBaseTexture* texture)
 {
 	if (Textures[stage]==texture) return;
@@ -694,6 +748,7 @@ WWINLINE void DX8Wrapper::Set_DX8_Texture(unsigned int stage, DX_IDirect3DBaseTe
 	DX8_RECORD_TEXTURE_CHANGE();
 }
 
+#if(DIRECT3D_VERSION < 0x0900)
 WWINLINE void DX8Wrapper::_Copy_DX8_Rects(
   DX_IDirect3DSurface* pSourceSurface,
   CONST RECT* pSourceRectsArray,
@@ -702,13 +757,20 @@ WWINLINE void DX8Wrapper::_Copy_DX8_Rects(
   CONST POINT* pDestPointsArray
 )
 {
-	DX8CALL(CopyRects(
-  pSourceSurface,
-  pSourceRectsArray,
-  cRects,
-  pDestinationSurface,
-  pDestPointsArray));
+	DX8CALL(CopyRects(pSourceSurface, pSourceRectsArray, cRects, pDestinationSurface, pDestPointsArray));
 }
+#else
+WWINLINE void DX8Wrapper::_Copy_DX8_Rects(
+	DX_IDirect3DSurface* pSourceSurface,
+	CONST RECT* pSourceRectsArray,
+	UINT cRects,
+	DX_IDirect3DSurface* pDestinationSurface,
+	CONST RECT* pDestPointsArray
+)
+{
+	DX8_ErrorCode(D3DXLoadSurfaceFromSurface(pDestinationSurface, NULL, pDestPointsArray, pSourceSurface, NULL, pSourceRectsArray, D3DX_FILTER_NONE, 0));
+}
+#endif
 
 WWINLINE Vector4 DX8Wrapper::Convert_Color(unsigned color)
 {
@@ -999,7 +1061,12 @@ WWINLINE void DX8Wrapper::Set_DX8_ZBias(int zbias)
 		DX8CALL(SetTransform(D3DTS_PROJECTION,(D3DMATRIX*)&tmp));
 	}
 	else {
+#if (DIRECT3D_VERSION < 0x0900)
 		Set_DX8_Render_State (D3DRS_ZBIAS, ZBias);
+#else
+		Set_DX8_Render_State(D3DRS_DEPTHBIAS, ZBias);
+		Set_DX8_Render_State(D3DRS_SLOPESCALEDEPTHBIAS, ZBias);
+#endif
 	}
 }
 

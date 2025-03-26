@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <d3d8.h>
+#include <d3d9.h>
 
 // Defining some aliases to make transition between DirectX versions easer
 
@@ -31,6 +31,7 @@
 #include <d3d8caps.h>
 
 #define DX_D3D_DLL "D3D8.DLL"
+#define DX_D3D_CREATE_FUNC "Direct3DCreate8"
 
 typedef IDirect3DBaseTexture8 DX_IDirect3DBaseTexture;
 typedef IDirect3DDevice8 DX_IDirect3DDevice;
@@ -64,8 +65,10 @@ typedef D3DXVECTOR4 DX_D3DXVECTOR4;
 #include <d3dx9math.h>
 #include <d3dx9tex.h>
 #include <d3d9caps.h>
+#include <dxerr9.h>
 
 #define DX_D3D_DLL "D3D9.DLL"
+#define DX_D3D_CREATE_FUNC "Direct3DCreate9"
 
 typedef IDirect3DBaseTexture9 DX_IDirect3DBaseTexture;
 typedef IDirect3DDevice9 DX_IDirect3DDevice;
@@ -85,6 +88,7 @@ typedef D3DCAPS9 DX_D3DCAPS;
 typedef D3DLIGHT9 DX_D3DLIGHT;
 typedef D3DMATERIAL9 DX_D3DMATERIAL;
 typedef D3DRENDERSTATETYPE DX_D3DRENDERSTATETYPE;
+typedef D3DSAMPLERSTATETYPE DX_D3DSAMPLERSTATETYPE;
 typedef D3DTEXTURESTAGESTATETYPE DX_D3DTEXTURESTAGESTATETYPE;
 typedef D3DTRANSFORMSTATETYPE DX_D3DTRANSFORMSTATETYPE;
 typedef D3DVIEWPORT9 DX_D3DVIEWPORT;

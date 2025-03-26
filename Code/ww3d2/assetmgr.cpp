@@ -327,7 +327,9 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 		case D3DFMT_X8L8V8U8: tex_format="D3DFMT_X8L8V8U8"; break;
 		case D3DFMT_Q8W8V8U8: tex_format="D3DFMT_Q8W8V8U8"; break;
 		case D3DFMT_V16U16: tex_format="D3DFMT_V16U16"; break;
+#if(DIRECT3D_VERSION < 0x0900)
 		case D3DFMT_W11V11U10: tex_format="D3DFMT_W11V11U10"; break;
+#endif
 		case D3DFMT_UYVY: tex_format="D3DFMT_UYVY"; break;
 		case D3DFMT_YUY2: tex_format="D3DFMT_YUY2"; break;
 		case D3DFMT_DXT1: tex_format="D3DFMT_DXT1"; break;

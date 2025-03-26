@@ -291,7 +291,7 @@ static bool Video_Card_Driver_Check()
 	D3D8Lib = LoadLibrary(DX_D3D_DLL);
 
 	if (D3D8Lib != NULL) {
-		Direct3DCreate8Ptr = (Direct3DCreate8Type) GetProcAddress(D3D8Lib, "Direct3DCreate8");
+		Direct3DCreate8Ptr = (Direct3DCreate8Type) GetProcAddress(D3D8Lib, DX_D3D_CREATE_FUNC);
 		if (Direct3DCreate8Ptr) {
 			d3d=Direct3DCreate8Ptr(D3D_SDK_VERSION);		// TODO: handle failure cases...
 			if (!d3d) {

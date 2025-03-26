@@ -499,13 +499,20 @@ DX8Caps::DX8Caps(
 
 void DX8Caps::Init_Caps(DX_IDirect3DDevice* D3DDevice)
 {
+#if (DIRECT3D_VERSION < 0x0900)
 	D3DDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING,TRUE);
+#else
+	DX8CALL(SetSoftwareVertexProcessing(TRUE));
+#endif
 	DX8CALL(GetDeviceCaps(&Caps));
 
 	if ((Caps.DevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT)==D3DDEVCAPS_HWTRANSFORMANDLIGHT) {
 		SupportTnL=true;
-
+#if (DIRECT3D_VERSION < 0x0900)
 		D3DDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING,FALSE);
+#else
+		DX8CALL(SetSoftwareVertexProcessing(FALSE));
+#endif
 		DX8CALL(GetDeviceCaps(&Caps));	
 	} else {
 		SupportTnL=false;			
@@ -618,7 +625,11 @@ void DX8Caps::Compute_Caps(WW3DFormat display_format, const DX_D3DADAPTER_IDENTI
 
 
 	SupportNPatches = ((Caps.DevCaps&D3DDEVCAPS_NPATCHES)==D3DDEVCAPS_NPATCHES);
+#if (DIRECT3D_VERSION < 0x0900)
 	SupportZBias = ((Caps.RasterCaps&D3DPRASTERCAPS_ZBIAS)==D3DPRASTERCAPS_ZBIAS);
+#else
+	SupportZBias = ((Caps.RasterCaps & D3DPRASTERCAPS_DEPTHBIAS) == D3DPRASTERCAPS_DEPTHBIAS);
+#endif
 	supportGamma=((Caps.Caps2&D3DCAPS2_FULLSCREENGAMMA)==D3DCAPS2_FULLSCREENGAMMA);
 
 	SupportAnisotropicFiltering=
