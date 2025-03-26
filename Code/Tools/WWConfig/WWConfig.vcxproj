@@ -99,7 +99,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\WWConfig.exe</OutputFile>
       <AdditionalLibraryDirectories>C:\DXSDK\Lib;../../libs/release;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx8.lib;d3d8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -146,7 +146,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\WWConfigD.exe</OutputFile>
       <AdditionalLibraryDirectories>C:\DXSDK\Lib;../../libs/debug;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx8.lib;d3d8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -156,7 +156,7 @@
     </ClCompile>
     <Link>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx8.lib;d3d8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;ddraw.lib;dinput.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
