@@ -35,9 +35,10 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+#include "dxdefs.h"
 #include "formconv.h"
 
-D3DFORMAT WW3DFormatToD3DFormatConversionArray[WW3D_FORMAT_COUNT] = {
+DX_D3DFORMAT WW3DFormatToD3DFormatConversionArray[WW3D_FORMAT_COUNT] = {
 	D3DFMT_UNKNOWN,
 	D3DFMT_R8G8B8,
 	D3DFMT_A8R8G8B8,
@@ -101,7 +102,7 @@ WW3DFormat D3DFormatToWW3DFormatConversionArray[HIGHEST_SUPPORTED_D3DFORMAT + 1]
 #define HIGHEST_SUPPORTED_D3DFORMAT D3DFMT_X8L8V8U8
 WW3DFormat D3DFormatToWW3DFormatConversionArray[HIGHEST_SUPPORTED_D3DFORMAT + 1];
 
-D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format) {
+DX_D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format) {
 	if (ww3d_format >= WW3D_FORMAT_COUNT) {
 		return D3DFMT_UNKNOWN;
 	} else {
@@ -109,7 +110,7 @@ D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format) {
 	}
 }
 
-WW3DFormat D3DFormat_To_WW3DFormat(D3DFORMAT d3d_format)
+WW3DFormat D3DFormat_To_WW3DFormat(DX_D3DFORMAT d3d_format)
 {
 	switch (d3d_format) {
 	// The DXT-codes are created with FOURCC macro and thus can't be placed in the conversion table

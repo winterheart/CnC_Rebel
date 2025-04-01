@@ -47,8 +47,8 @@
 #include "terrainmaterial.h"
 #include "heightfieldpage.h"
 #include "textureloader.h"
-#include "d3d8types.h"
 #include "dx8wrapper.h"
+#include "dxdefs.h"
 #include "bitmaphandler.h"
 
 
@@ -280,7 +280,7 @@ HeightfieldEditorClass::Create_Texture_Thumbnail (const char *filename, int widt
 	//
 	//	Load the d3d surface for this texture
 	//	
-	IDirect3DSurface8 *d3d_surface = TextureLoader::Load_Surface_Immediate (filename, WW3D_FORMAT_R8G8B8, false);
+	DX_IDirect3DSurface *d3d_surface = TextureLoader::Load_Surface_Immediate (filename, WW3D_FORMAT_R8G8B8, false);
 
 	//
 	//	Get information about the texture

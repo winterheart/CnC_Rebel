@@ -674,6 +674,9 @@
     <ClInclude Include="ww3dtrig.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="dxdefs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="intersec.inl">

@@ -36,6 +36,7 @@
 #include "GameData.h"
 #include "Player.h"
 #include "consolemode.h"
+#include "dx8wrapper.h"
 #include <Combat\PlayerType.h>
 #include <WWOnline\GameResPacket.h>
 #include <WWOnline\WOLSession.h>
@@ -46,7 +47,6 @@
 #include <WWLib\CPUDetect.h>
 #include <WWLib\global.h>
 #include <WWLib\md5.h>
-#include <WW3D2\DX8Wrapper.h>
 #include <windows.h>
 
 using namespace WWOnline;
@@ -128,7 +128,7 @@ void SendGameResults(unsigned long gameID, cGameData* theGame, SList<cPlayer>* p
 	if (ConsoleBox.Is_Exclusive()) {
 		strcpy((char*)&cardInfo[0], "ConsoleMode");
 	} else {
-		const D3DADAPTER_IDENTIFIER8& adapter = DX8Wrapper::Get_Current_Adapter_Identifier();
+		const DX_D3DADAPTER_IDENTIFIER& adapter = DX8Wrapper::Get_Current_Adapter_Identifier();
 		cardInfo[0] = adapter.VendorId;
 		cardInfo[1] = adapter.DeviceId;
 		cardInfo[2] = adapter.SubSysId;

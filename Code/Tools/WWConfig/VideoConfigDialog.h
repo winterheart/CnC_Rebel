@@ -23,6 +23,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "dxdefs.h"
 #include "resource.h"
 #include "vector.h"
 #include "rddesc.h"
@@ -98,8 +99,8 @@ public:
 
 	int Get_Current_Bit_Depth() const { return CurrentBitDepth; }
 	int Get_Current_Driver_Index() const { return CurrentDriverIndex; }
-	const D3DADAPTER_IDENTIFIER8& Get_Current_Adapter_Identifier() const { return CurrentAdapterIdentifier; }
-	const D3DCAPS8& Get_Current_Caps() const { return CurrentCaps; }
+	const DX_D3DADAPTER_IDENTIFIER& Get_Current_Adapter_Identifier() const { return CurrentAdapterIdentifier; }
+	const DX_D3DCAPS& Get_Current_Caps() const { return CurrentCaps; }
 
 private:
 	
@@ -122,8 +123,8 @@ private:
 	int													CurrentBitDepth;
 	bool													CurrentIsWindowed;
 	int													CurrentDriverIndex;
-	D3DCAPS8												CurrentCaps;
-	D3DADAPTER_IDENTIFIER8							CurrentAdapterIdentifier;
+	DX_D3DCAPS												CurrentCaps;
+	DX_D3DADAPTER_IDENTIFIER							CurrentAdapterIdentifier;
 
 };
 

@@ -24,6 +24,7 @@
 #include "videoconfigdialog.h"
 #include "DriverVersionWarning.h"
 #include "dx8caps.h"
+#include "dxdefs.h"
 #include "cpudetect.h"
 #include "dx8wrapper.h"
 #include "registry.h"
@@ -153,10 +154,10 @@ void CheckDriverVersion()
 	int disabled=render_registry.Get_Int( "DriverVersionCheckDisabled" );
 	if (disabled>=87) return;
 
-	IDirect3D8* d3d=NULL;
-	D3DCAPS8 tmp_caps;
-	const D3DCAPS8* d3dcaps=NULL;
-	D3DADAPTER_IDENTIFIER8 adapter_id;
+	DX_IDirect3DX* d3d=NULL;
+	DX_D3DCAPS tmp_caps;
+	const DX_D3DCAPS* d3dcaps=NULL;
+	DX_D3DADAPTER_IDENTIFIER adapter_id;
 
 	VideoConfigDialogClass* video=VideoConfigDialogClass::Get_Instance();
 	if (video) {
@@ -168,7 +169,11 @@ void CheckDriverVersion()
 	else {
 		// Init D3D
 		Init_D3D_To_WW3_Conversion();
+#if (DIRECT3D_VERSION < 0x0900)
 		d3d=Direct3DCreate8(D3D_SDK_VERSION);		// TODO: handle failure cases...
+#else
+		d3d=Direct3DCreate9(D3D_SDK_VERSION);		// TODO: handle failure cases...
+#endif
 		if (!d3d) {
 			return;
 		}
@@ -185,9 +190,14 @@ void CheckDriverVersion()
 
 		int adapter_count = d3d->GetAdapterCount();
 		for (int adapter_index=0; adapter_index<adapter_count; adapter_index++) {
-			D3DADAPTER_IDENTIFIER8 id;
-			::ZeroMemory(&id, sizeof(D3DADAPTER_IDENTIFIER8));
+			DX_D3DADAPTER_IDENTIFIER id;
+			::ZeroMemory(&id, sizeof(DX_D3DADAPTER_IDENTIFIER));
+#if (DIRECT3D_VERSION < 0x0900)
 			HRESULT res = d3d->GetAdapterIdentifier(adapter_index,D3DENUM_NO_WHQL_LEVEL,&id);
+#else
+			HRESULT res = d3d->GetAdapterIdentifier(adapter_index, 0, &id);
+#endif
+
 			// If device ok, check if it matches the currently set adapter name
 			if (res == D3D_OK) {
 				StringClass name(id.Description,true);
@@ -206,11 +216,13 @@ void CheckDriverVersion()
 			return;
 		}
 
-		::ZeroMemory(&adapter_id, sizeof(D3DADAPTER_IDENTIFIER8));
-		if (FAILED( d3d->GetAdapterIdentifier(
-			current_adapter_index,
-			D3DENUM_NO_WHQL_LEVEL,
-			&adapter_id))) {
+		::ZeroMemory(&adapter_id, sizeof(DX_D3DADAPTER_IDENTIFIER));
+#if (DIRECT3D_VERSION < 0x0900)
+		if (FAILED( d3d->GetAdapterIdentifier(current_adapter_index, D3DENUM_NO_WHQL_LEVEL, &adapter_id)))
+#else
+		if (FAILED( d3d->GetAdapterIdentifier(current_adapter_index, 0, &adapter_id)))
+#endif
+		{
 			d3d->Release();
 			return;
 		}

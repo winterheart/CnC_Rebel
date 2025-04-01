@@ -50,6 +50,7 @@
 #include "wwprofile.h"
 #include "wwmemlog.h"
 #include "assetmgr.h"
+#include "dxdefs.h"
 
 RectClass							Render2DClass::ScreenResolution( 0,0,0,0 );
 
@@ -556,7 +557,7 @@ void Render2DClass::Render(void)
 	int width, height, bits;
 	bool windowed;
 	WW3D::Get_Device_Resolution( width, height, bits, windowed );
-	D3DVIEWPORT8 vp = { 0 };
+	DX_D3DVIEWPORT vp = { 0 };
 	vp.X			= 0;
 	vp.Y			= 0;
 	vp.Width		= width;

@@ -54,7 +54,7 @@
 #include "vector2i.h"
 #include "colorspace.h"
 #include "bound.h"
-#include <d3dx8.h>
+#include "dxdefs.h"
 
 /***********************************************************************************************
  * PixelSize -- Helper Function to find the size in bytes of a pixel                           *
@@ -230,7 +230,7 @@ SurfaceClass::SurfaceClass(const char *filename):
 	SurfaceFormat=desc.Format;
 }
 
-SurfaceClass::SurfaceClass(IDirect3DSurface8 *d3d_surface)	:
+SurfaceClass::SurfaceClass(DX_IDirect3DSurface *d3d_surface)	:
 	D3DSurface (NULL)
 {
 	Attach (d3d_surface);
@@ -482,15 +482,26 @@ void SurfaceClass::Copy(
 	src.top=srcy;
 	src.bottom=srcy+height;
 
-	if (src.right>int(osd.Width)) src.right=int(osd.Width);
-	if (src.bottom>int(osd.Height)) src.bottom=int(osd.Height);	
+	if (src.right>int(osd.Width))
+		src.right=int(osd.Width);
+	if (src.bottom>int(osd.Height))
+		src.bottom=int(osd.Height);
 
 	if (sd.Format==osd.Format && sd.Width==osd.Width && sd.Height==osd.Height)
 	{
-		POINT dst;
-		dst.x=dstx;
-		dst.y=dsty;	
-		DX8Wrapper::_Copy_DX8_Rects(other->D3DSurface,&src,1,D3DSurface,&dst);
+#if(DIRECT3D_VERSION < 0x0900)
+		POINT dest;
+		dest.x=dstx;
+		dest.y=dsty;
+#else
+		RECT dest;
+		dest.left=dstx;
+		dest.right=dstx+width;
+		dest.top=dsty;
+		dest.bottom=dsty+height;
+#endif
+		//DX8Wrapper::_Copy_DX8_Rects(other->D3DSurface, &src, 1, D3DSurface, &dest);
+		DX8_ErrorCode(D3DXLoadSurfaceFromSurface(D3DSurface,NULL,&dest,other->D3DSurface,NULL,&src,D3DX_FILTER_NONE,0));
 	}
 	else
 	{
@@ -500,8 +511,10 @@ void SurfaceClass::Copy(
 		dest.top=dsty;
 		dest.bottom=dsty+height;
 
-		if (dest.right>int(sd.Width)) dest.right=int(sd.Width);
-		if (dest.bottom>int(sd.Height)) dest.bottom=int(sd.Height);
+		if (dest.right>int(sd.Width))
+			dest.right=int(sd.Width);
+		if (dest.bottom>int(sd.Height))
+			dest.bottom=int(sd.Height);
 
 		DX8_ErrorCode(D3DXLoadSurfaceFromSurface(D3DSurface,NULL,&dest,other->D3DSurface,NULL,&src,D3DX_FILTER_NONE,0));
 	}
@@ -744,7 +757,7 @@ void SurfaceClass::Get_Pixel(Vector3 &rgb, int x,int y)
  * HISTORY:                                                                                    *
  *   3/27/2001  pds : Created.                                                                 *
  *=============================================================================================*/
-void SurfaceClass::Attach (IDirect3DSurface8 *surface)
+void SurfaceClass::Attach (DX_IDirect3DSurface *surface)
 {
 	Detach ();
 	D3DSurface = surface;

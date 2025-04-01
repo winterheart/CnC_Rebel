@@ -24,6 +24,7 @@
 #include "rect.h"
 #include "subtitlemanager.h"
 #include "dx8caps.h"
+#include "dxdefs.h"
 
 class BINKMovieClass
 {
@@ -138,7 +139,7 @@ BINKMovieClass::BINKMovieClass(const char* filename, const char* subtitlename, F
 
 	TempBuffer = new unsigned char[Bink->Width * Bink->Height*2];
 
-	const D3DCAPS8& dx8caps = DX8Wrapper::Get_Current_Caps()->Get_DX8_Caps();
+	const DX_D3DCAPS& dx8caps = DX8Wrapper::Get_Current_Caps()->Get_DX8_Caps();
 	unsigned poweroftwowidth = 1;
 
 	while (poweroftwowidth < Bink->Width) {
@@ -289,7 +290,7 @@ void BINKMovieClass::Render()
 		BinkCopyToBuffer(Bink, TempBuffer, Bink->Width * 2, Bink->Height, 0, 0, BINKSURFACE565|BINKCOPYNOSCALING);
 
 		for (unsigned t = 0; t < TextureCount; ++t) {
-			IDirect3DTexture8* d3d_texture = TextureInfos[t].Texture->Peek_DX8_Texture();
+			DX_IDirect3DTexture* d3d_texture = TextureInfos[t].Texture->Peek_DX8_Texture();
 
 			if (d3d_texture) {
 				unsigned char* cur_tex_ptr = Get_Tex_Address(TempBuffer, TextureInfos[t].TextureLocX,

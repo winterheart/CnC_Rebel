@@ -20,10 +20,10 @@
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "dx8wrapper.h"
+#include "dxdefs.h"
 #include "vertmaterial.h"
 #include "texture.h"
-#include "d3d8.h"
-#include "D3dx8math.h"
+
 #include "statistics.h"
 #include <wwprofile.h>
 
@@ -329,9 +329,9 @@ void SortingRendererClass::Insert_Triangles(
 
 	// Transform the center point to view space for sorting
 
-	D3DXMATRIX mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
-	D3DXVECTOR3 vec=(D3DXVECTOR3&)state->bounding_sphere.Center;
-	D3DXVECTOR4 transformed_vec;
+	DX_D3DXMATRIX mtx=(DX_D3DXMATRIX&)state->sorting_state.world*(DX_D3DXMATRIX&)state->sorting_state.view;
+	DX_D3DXVECTOR3 vec=(DX_D3DXVECTOR3&)state->bounding_sphere.Center;
+	DX_D3DXVECTOR4 transformed_vec;
 	D3DXVec3Transform(
 		&transformed_vec,
 		&vec,
@@ -517,7 +517,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			src_verts+=state->sorting_state.index_base_offset;
 			src_verts+=state->min_vertex_index;
 
-			D3DXMATRIX d3d_mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
+			DX_D3DXMATRIX d3d_mtx=(DX_D3DXMATRIX&)state->sorting_state.world*(DX_D3DXMATRIX&)state->sorting_state.view;
 			D3DXMatrixTranspose(&d3d_mtx,&d3d_mtx);
 			const Matrix4& mtx=(const Matrix4&)d3d_mtx;
 			for (unsigned i=0;i<state->vertex_count;++i,++src_verts) {
