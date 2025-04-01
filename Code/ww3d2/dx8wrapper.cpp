@@ -185,7 +185,7 @@ void Log_DX8_ErrorCode(unsigned res)
 	}
 #else
 	// We forced to use "A" variant because of WWDEBUG_SAY
-	const char *tmp = DXGetErrorString9A(res);
+	const char *tmp = DXGetErrorStringA(res);
 	WWDEBUG_SAY((tmp));
 #endif
 
@@ -204,7 +204,7 @@ void Non_Fatal_Log_DX8_ErrorCode(unsigned res,const char * file,int line)
 	}
 #else
 	// We forced to use "A" variant because of WWDEBUG_SAY
-	const char *tmp = DXGetErrorString9A(res);
+	const char *tmp = DXGetErrorStringA(res);
 	WWDEBUG_SAY(("DX Error: %s, File: %s, Line: %d\r\n", tmp, file, line));
 #endif
 }

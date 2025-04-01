@@ -84,7 +84,7 @@
       <WarningLevel>Level4</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;_WIN32_WINNT=0x400;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -115,7 +115,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\wwui.pch</PrecompiledHeaderOutputFile>
@@ -144,7 +144,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Profile\wwui.pch</PrecompiledHeaderOutputFile>
@@ -166,7 +166,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwtranslatedb;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;..\wwmath;..\ww3d2;..\wwlib;..\wwdebug;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

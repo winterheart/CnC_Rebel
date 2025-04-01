@@ -165,6 +165,11 @@
       <OutputFile>..\libs\Release\SControl.lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwdebug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="servercontrol.cpp" />
     <ClCompile Include="servercontrolsocket.cpp" />

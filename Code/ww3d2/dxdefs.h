@@ -65,7 +65,7 @@ typedef D3DXVECTOR4 DX_D3DXVECTOR4;
 #include <d3dx9math.h>
 #include <d3dx9tex.h>
 #include <d3d9caps.h>
-#include <dxerr9.h>
+#include <dxerr.h>
 
 #define DX_D3D_DLL "D3D9.DLL"
 #define DX_D3D_CREATE_FUNC "Direct3DCreate9"

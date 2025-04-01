@@ -117,7 +117,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\ProfileE\Combat.pch</PrecompiledHeaderOutputFile>
@@ -146,7 +146,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;WWDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Profile\Combat.pch</PrecompiledHeaderOutputFile>
@@ -176,7 +176,7 @@
       <WarningLevel>Level4</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\DebugE\Combat.pch</PrecompiledHeaderOutputFile>
@@ -207,7 +207,7 @@
       <WarningLevel>Level4</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Debug\Combat.pch</PrecompiledHeaderOutputFile>
@@ -237,7 +237,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_WIN32_WINNT=0x400;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\Combat.pch</PrecompiledHeaderOutputFile>
@@ -259,7 +259,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(IncludePath);C:\DXSDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
