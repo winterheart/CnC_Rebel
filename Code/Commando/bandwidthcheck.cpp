@@ -698,8 +698,9 @@ wchar_t *BandwidthCheckerClass::Get_Bandwidth_As_String(void)
 {
 
 	if (cUserOptions::Get_Bandwidth_Type() == BANDWIDTH_AUTO) {
-		static wchar_t _build_string[256];
-		swprintf(_build_string, L"%s,%s", DownstreamBandwidthString, UpstreamBandwidthString);
+		const size_t array_size = 256;
+		static wchar_t _build_string[array_size];
+		swprintf(_build_string, array_size, L"%s,%s", DownstreamBandwidthString, UpstreamBandwidthString);
 		return(_build_string);
 	} else {
 		return (wchar_t *)cBandwidth::Get_Bandwidth_String_From_Type((BANDWIDTH_TYPE_ENUM)cUserOptions::Get_Bandwidth_Type());
@@ -723,12 +724,13 @@ wchar_t *BandwidthCheckerClass::Get_Bandwidth_As_String(void)
  *=============================================================================================*/
 wchar_t *BandwidthCheckerClass::Get_Bandwidth_As_String(PackedBandwidthType bandwidth)
 {
-	static wchar_t _build_string[256];
+	const size_t array_size = 256;
+	static wchar_t _build_string[array_size];
 
 	assert(bandwidth.Bandwidth.Up < NUM_BANDS + 1);
 	assert(bandwidth.Bandwidth.Down < NUM_BANDS + 1);
 
-	swprintf(_build_string, L"%s,%s", BandwidthNames[bandwidth.Bandwidth.Down], BandwidthNames[bandwidth.Bandwidth.Up]);
+	swprintf(_build_string, array_size, L"%s,%s", BandwidthNames[bandwidth.Bandwidth.Down], BandwidthNames[bandwidth.Bandwidth.Up]);
 	return(_build_string);
 }
 
