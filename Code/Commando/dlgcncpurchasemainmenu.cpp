@@ -34,6 +34,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
 #include "dlgcncpurchasemainmenu.h"
 #include "dlgcncpurchasemenu.h"
 #include "resource.h"
@@ -64,7 +67,6 @@
 #include "weaponbag.h"
 #include "powerup.h"
 #include "input.h"
-#include "dinput.h"
 #include "hud.h"
 #include "gamedata.h"
 #include "specialbuilds.h"

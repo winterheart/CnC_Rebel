@@ -34,6 +34,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
 #include "radiocommanddisplay.h"
 #include "assetmgr.h"
 #include "texture.h"
@@ -48,7 +51,6 @@
 #include "string_ids.h"
 #include "rendobj.h"
 #include "input.h"
-#include "dinput.h"
 #include "timemgr.h"
 #include "gametype.h"
 
