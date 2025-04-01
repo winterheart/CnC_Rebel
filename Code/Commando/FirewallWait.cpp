@@ -243,8 +243,9 @@ WaitCondition::WaitResult FirewallConnectWait::GetResult(void)
 				// Maybe change the wait text if there are players queued in front of us.
 				if (mQueueCount != mLastQueueCount)
 					{
-					wchar_t temp[256];
-					swprintf(temp, TRANSLATION(IDS_FIREWALL_QUEUE_NOTIFICATION), mQueueCount);
+					const size_t array_size = 256;
+					wchar_t temp[array_size];
+					swprintf(temp, array_size, TRANSLATION(IDS_FIREWALL_QUEUE_NOTIFICATION), mQueueCount);
 					WideStringClass text(temp, true);
 					SetWaitText(text);
 					mLastQueueCount = mQueueCount;

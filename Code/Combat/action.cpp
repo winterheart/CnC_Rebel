@@ -73,7 +73,8 @@
 #include "gameobjmanager.h"
 
 #include "colmathaabox.h"
-#include "dinput.h"
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
 
 int _ActionActCalls = 0;
 int _ActionCodeChanges = 0;
