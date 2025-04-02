@@ -130,8 +130,11 @@ extern const char *VALUE_NAME_TEXTURE_FILTER_MODE;
 #define IMMEDIATE_LOAD_LEVELNAME			"MDD_0803.mix"
 #endif
 
-
-
+// Update on each release
+// TODO: WH: Move to configurable part of project
+const char *version_codename = "MIRAGE TANK";
+const unsigned long version_major = 0x00010025;
+const unsigned long version_minor = 1;
 
 /*
 ** This defines the subdirectory where the game will load all data from
@@ -616,10 +619,12 @@ bool RestartNeeded = true;
  *=============================================================================================*/
 void Get_Version_Number(unsigned long &major, unsigned long &minor)
 {
-	unsigned long version_major = 0x00010025;
-	unsigned long version_minor = 0;
 	major = version_major;
 	minor = version_minor;
+}
+
+const char *Get_Version_Codename() {
+	return version_codename;
 }
 
 
