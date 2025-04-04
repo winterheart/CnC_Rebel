@@ -45,6 +45,8 @@
 class cUserOptions
 {
 	public:
+		// Initialize all static variables. Use it before actual game launch.
+		static void Init();
 
 		static bool Parse_Command_Line(LPCSTR command);
 

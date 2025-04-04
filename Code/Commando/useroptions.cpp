@@ -55,33 +55,63 @@ extern char DefaultRegistryModifier[1024];
 //
 // Class statics
 //
-cRegistryBool cUserOptions::ShowNamesOnSoldier(					APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ShowNamesOnSoldier",           true);
-cRegistryBool cUserOptions::SkipQuitConfirmDialog(				APPLICATION_SUB_KEY_NAME_OPTIONS,	"SkipQuitConfirmDialog",			false);
-cRegistryBool cUserOptions::SkipIngameQuitConfirmDialog(		APPLICATION_SUB_KEY_NAME_OPTIONS,	"SkipIngameQuitConfirmDialog",	false);
-cRegistryBool cUserOptions::CameraLockedToTurret(				APPLICATION_SUB_KEY_NAME_OPTIONS,	"CameraLockedToTurret",				false);
-cRegistryBool cUserOptions::PermitDiagLogging(					APPLICATION_SUB_KEY_NAME_OPTIONS,	"PermitDiagLogging",					true);
+cRegistryBool cUserOptions::ShowNamesOnSoldier;
+cRegistryBool cUserOptions::SkipQuitConfirmDialog;
+cRegistryBool cUserOptions::SkipIngameQuitConfirmDialog;
+cRegistryBool cUserOptions::CameraLockedToTurret;
+cRegistryBool cUserOptions::PermitDiagLogging;
 
-cRegistryInt cUserOptions::Sku(										APPLICATION_SUB_KEY_NAME,				 "SKU",									RENEGADE_BASE_SKU);
+cRegistryInt cUserOptions::Sku;
 
-cRegistryInt cUserOptions::BandwidthType(							APPLICATION_SUB_KEY_NAME_NETOPTIONS, "BandwidthType",						BANDWIDTH_AUTO);
-cRegistryInt cUserOptions::BandwidthBps(							APPLICATION_SUB_KEY_NAME_NETOPTIONS, "BandwidthBps",						33600);
+cRegistryInt cUserOptions::BandwidthType;
+cRegistryInt cUserOptions::BandwidthBps;
 
-cRegistryInt		cUserOptions::GameSpyBandwidthType(			APPLICATION_SUB_KEY_NAME_GAMESPY,	 "GameSpyBandwidthType",			BANDWIDTH_AUTO);
-cRegistryInt		cUserOptions::PreferredGameSpyNic(			APPLICATION_SUB_KEY_NAME_GAMESPY,    "PreferredGameSpyNic",				0);
-cRegistryString	cUserOptions::GameSpyNickname(				APPLICATION_SUB_KEY_NAME_GAMESPY,	 "GameSpyNickname",					"");
-cRegistryInt		cUserOptions::GameSpyQueryPort(			APPLICATION_SUB_KEY_NAME_GAMESPY,    "GameSpyQueryPort",				25300);
-cRegistryInt		cUserOptions::GameSpyGamePort(			APPLICATION_SUB_KEY_NAME_GAMESPY,    "GameSpyGamePort",				4848);
-cRegistryInt		cUserOptions::SplashCount(			APPLICATION_SUB_KEY_NAME_GAMESPY,    "SplashCount",				0);
-cRegistryBool		cUserOptions::DoneClientBandwidthTest(			APPLICATION_SUB_KEY_NAME_GAMESPY,    "DoneClientBandwidthTest",				false);
+cRegistryInt cUserOptions::GameSpyBandwidthType;
+cRegistryInt cUserOptions::PreferredGameSpyNic;
+cRegistryString	cUserOptions::GameSpyNickname;
+cRegistryInt cUserOptions::GameSpyQueryPort;
+cRegistryInt cUserOptions::GameSpyGamePort;
+cRegistryInt cUserOptions::SplashCount;
+cRegistryBool cUserOptions::DoneClientBandwidthTest;
+
+cRegistryInt cUserOptions::PreferredLanNic;
+cRegistryInt cUserOptions::NetUpdateRate;
+cRegistryFloat cUserOptions::ClientHintFactor;
+cRegistryFloat cUserOptions::MaxFacingPenalty;
+cRegistryFloat cUserOptions::IrrelevancePenalty;
+
+cRegistryInt cUserOptions::ResultsLogNumber;
 
 
-cRegistryInt cUserOptions::PreferredLanNic(						APPLICATION_SUB_KEY_NAME_NETOPTIONS, "PreferredLanNic",					0);
-cRegistryInt cUserOptions::NetUpdateRate(							APPLICATION_SUB_KEY_NAME_NETOPTIONS, "NetUpdateRate",						10);
-cRegistryFloat cUserOptions::ClientHintFactor(					APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ClientHintFactor",					10.0f);
-cRegistryFloat cUserOptions::MaxFacingPenalty(					APPLICATION_SUB_KEY_NAME_NETOPTIONS, "MaxFacingPenalty",					0.3f);
-cRegistryFloat cUserOptions::IrrelevancePenalty(				APPLICATION_SUB_KEY_NAME_NETOPTIONS, "IrrelevancePenalty",				0.2f);
+void cUserOptions::Init() {
+	ShowNamesOnSoldier = cRegistryBool(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ShowNamesOnSoldier",  true);
+	SkipQuitConfirmDialog = cRegistryBool(APPLICATION_SUB_KEY_NAME_OPTIONS,	"SkipQuitConfirmDialog", false);
+	SkipIngameQuitConfirmDialog = cRegistryBool(APPLICATION_SUB_KEY_NAME_OPTIONS, "SkipIngameQuitConfirmDialog", false);
+	CameraLockedToTurret = cRegistryBool(APPLICATION_SUB_KEY_NAME_OPTIONS, "CameraLockedToTurret", false);
+	PermitDiagLogging = cRegistryBool(APPLICATION_SUB_KEY_NAME_OPTIONS, "PermitDiagLogging", true);
 
-cRegistryInt cUserOptions::ResultsLogNumber(						APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ResultsLogNumber",					1);
+	Sku = cRegistryInt(APPLICATION_SUB_KEY_NAME, "SKU", RENEGADE_BASE_SKU);
+
+	BandwidthType = cRegistryInt(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "BandwidthType", BANDWIDTH_AUTO);
+	BandwidthBps = cRegistryInt(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "BandwidthBps", 33600);
+
+	GameSpyBandwidthType = cRegistryInt(APPLICATION_SUB_KEY_NAME_GAMESPY, "GameSpyBandwidthType", BANDWIDTH_AUTO);
+	PreferredGameSpyNic = cRegistryInt(APPLICATION_SUB_KEY_NAME_GAMESPY, "PreferredGameSpyNic", 0);
+	GameSpyNickname = cRegistryString(APPLICATION_SUB_KEY_NAME_GAMESPY, "GameSpyNickname", "");
+	GameSpyQueryPort = cRegistryInt(APPLICATION_SUB_KEY_NAME_GAMESPY, "GameSpyQueryPort", 25300);
+	GameSpyGamePort = cRegistryInt(APPLICATION_SUB_KEY_NAME_GAMESPY, "GameSpyGamePort", 4848);
+	SplashCount = cRegistryInt(APPLICATION_SUB_KEY_NAME_GAMESPY, "SplashCount", 0);
+	DoneClientBandwidthTest = cRegistryBool(APPLICATION_SUB_KEY_NAME_GAMESPY, "DoneClientBandwidthTest", false);
+
+	PreferredLanNic = cRegistryInt(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "PreferredLanNic", 0);
+	NetUpdateRate = cRegistryInt(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "NetUpdateRate", 10);
+	ClientHintFactor = cRegistryFloat(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ClientHintFactor", 10.0f);
+	MaxFacingPenalty = cRegistryFloat(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "MaxFacingPenalty", 0.3f);
+	IrrelevancePenalty = cRegistryFloat(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "IrrelevancePenalty", 0.2f);
+
+	ResultsLogNumber = cRegistryInt(APPLICATION_SUB_KEY_NAME_NETOPTIONS, "ResultsLogNumber", 1);
+}
+
 
 //-----------------------------------------------------------------------------
 bool cUserOptions::Parse_Command_Line(LPCSTR command)

@@ -34,6 +34,8 @@
 // Class statics
 //
 
+cRegistryInt::cRegistryInt() {};
+
 //-----------------------------------------------------------------------------
 cRegistryInt::cRegistryInt(LPCSTR registry_location, LPCSTR key_name, int default_value)
 {

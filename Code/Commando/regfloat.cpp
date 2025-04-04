@@ -34,6 +34,8 @@
 // Class statics
 //
 
+cRegistryFloat::cRegistryFloat() {}
+
 //-----------------------------------------------------------------------------
 cRegistryFloat::cRegistryFloat(LPCSTR registry_location, LPCSTR key_name, float default_value)
 {

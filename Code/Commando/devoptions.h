@@ -41,6 +41,8 @@
 class cDevOptions
 {
 	public:
+		// Initialize all static variables. Use it before actual game launch.
+		static void Init();
 
 #ifdef WWDEBUG
    static cRegistryBool ShowGodStatus;

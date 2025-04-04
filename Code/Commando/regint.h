@@ -36,6 +36,7 @@
 class cRegistryInt
 {
 	public:
+      cRegistryInt();
       cRegistryInt(LPCSTR registry_location, LPCSTR key_name, int initial_value);
 
       void Set(int value);

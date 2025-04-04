@@ -34,6 +34,8 @@
 // Class statics
 //
 
+cRegistryBool::cRegistryBool() {}
+
 //-----------------------------------------------------------------------------
 cRegistryBool::cRegistryBool(LPCSTR registry_location, LPCSTR key_name, bool default_value)
 {
