@@ -608,7 +608,7 @@ WWINLINE float WWMath::Inv_Sqrt(float val)
 	i  = 0x5f3759df - (i >> 1);
 	std::memcpy(&y, &i, sizeof(float));
 	y  = y * (threehalfs - (x2 * y * y));		// 1st iteration
-	// y  = y * (threehalfs - (x2 * y * y));	// 2nd iteration, this can be removed
+	y  = y * (threehalfs - (x2 * y * y));		// 2nd iteration
 	return y;
 }
 
