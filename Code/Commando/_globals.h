@@ -54,15 +54,20 @@
 */
 
 #if	defined(FREEDEDICATEDSERVER)
-#define APP_SUB_KEY "Software\\Westwood\\RenegadeFDS"
+#define OLD_APP_SUB_KEY "Software\\Westwood\\RenegadeFDS"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\RebelFDS"
 #elif defined(MULTIPLAYERDEMO)
-#define APP_SUB_KEY "Software\\Westwood\\RenegadeMPDemo"
+#define OLD_APP_SUB_KEY "Software\\Westwood\\RenegadeMPDemo"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\RebelMPDemo"
 #elif defined(BETACLIENT)
-#define APP_SUB_KEY "Software\\Westwood\\RenegadeBeta"
+#define OLD_APP_SUB_KEY "Software\\Westwood\\RenegadeBeta"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\RebelBeta"
 #elif defined(BETASERVER)
-#define APP_SUB_KEY "Software\\Westwood\\RenegadeBeta"
+#define OLD_APP_SUB_KEY "Software\\Westwood\\RenegadeBeta"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\RebelBeta"
 #else
-#define APP_SUB_KEY "Software\\Westwood\\Renegade"
+#define OLD_APP_SUB_KEY "Software\\Westwood\\Renegade"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\Rebel"
 #endif
 
 

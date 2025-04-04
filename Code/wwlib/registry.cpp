@@ -44,11 +44,9 @@
 
 bool RegistryClass::IsLocked = false;
 
-
-bool RegistryClass::Exists(const char* sub_key)
-{
+bool RegistryClass::Exists(const HKEY root, const char* sub_key) {
 	HKEY hKey;
-	LONG result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, sub_key, 0, KEY_READ, &hKey);
+	LONG result = RegOpenKeyEx(root, sub_key, 0, KEY_READ, &hKey);
 
 	if (ERROR_SUCCESS == result) {
 		RegCloseKey(hKey);
@@ -58,12 +56,12 @@ bool RegistryClass::Exists(const char* sub_key)
 	return false;
 }
 
-/*
-**
-*/
-RegistryClass::RegistryClass( const char * sub_key, bool create ) :
-	IsValid( false )
+bool RegistryClass::Exists(const char* sub_key)
 {
+	return RegistryClass::Exists(HKEY_CURRENT_USER, sub_key);
+}
+
+RegistryClass::RegistryClass(const HKEY root, const char * sub_key, bool create) : IsValid(false) {
 	HKEY key;
 	assert( sizeof(HKEY) == sizeof(int) );
 
@@ -71,10 +69,32 @@ RegistryClass::RegistryClass( const char * sub_key, bool create ) :
 
 	if (create && !IsLocked) {
 		DWORD disposition;
-		result = RegCreateKeyEx(HKEY_LOCAL_MACHINE, sub_key, 0, NULL, 0,
-			KEY_ALL_ACCESS, NULL, &key, &disposition);
+		result = RegCreateKeyEx(root, sub_key, 0, NULL, 0, KEY_ALL_ACCESS, NULL, &key, &disposition);
 	} else {
-		result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, sub_key, 0, IsLocked ? KEY_READ : KEY_ALL_ACCESS, &key);
+		result = RegOpenKeyEx(root, sub_key, 0, IsLocked ? KEY_READ : KEY_ALL_ACCESS, &key);
+	}
+
+	if (ERROR_SUCCESS == result) {
+		IsValid = true;
+		Key = (int)key;
+	}
+}
+
+/*
+**
+*/
+// TODO: WH: Rewrite with C++11
+RegistryClass::RegistryClass( const char * sub_key, bool create ) {
+	HKEY key;
+	assert( sizeof(HKEY) == sizeof(int) );
+
+	LONG result = -1;
+
+	if (create && !IsLocked) {
+		DWORD disposition;
+		result = RegCreateKeyEx(HKEY_CURRENT_USER, sub_key, 0, NULL, 0, KEY_ALL_ACCESS, NULL, &key, &disposition);
+	} else {
+		result = RegOpenKeyEx(HKEY_CURRENT_USER, sub_key, 0, IsLocked ? KEY_READ : KEY_ALL_ACCESS, &key);
 	}
 
 	if (ERROR_SUCCESS == result) {
@@ -439,7 +459,7 @@ void RegistryClass::Save_Registry_Values(HKEY key, char *path, INIClass *ini)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:33PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Save_Registry_Tree(char *path, INIClass *ini)
+void RegistryClass::Save_Registry_Tree(HKEY root, char *path, INIClass *ini)
 {
 	HKEY base_key;
 	HKEY sub_key;
@@ -452,7 +472,7 @@ void RegistryClass::Save_Registry_Tree(char *path, INIClass *ini)
 	memset(&file_time, 0, sizeof(file_time));
 
 
-	long result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, path, 0, KEY_ALL_ACCESS, &base_key);
+	long result = RegOpenKeyEx(root, path, 0, KEY_ALL_ACCESS, &base_key);
 
 	WWASSERT(result == ERROR_SUCCESS);
 
@@ -477,7 +497,7 @@ void RegistryClass::Save_Registry_Tree(char *path, INIClass *ini)
 				unsigned long num_subs = 0;
 				unsigned long num_values = 0;
 
-				long new_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, new_key_path, 0, KEY_ALL_ACCESS, &sub_key);
+				long new_result = RegOpenKeyEx(root, new_key_path, 0, KEY_ALL_ACCESS, &sub_key);
 				if (new_result == ERROR_SUCCESS) {
 					new_result = RegQueryInfoKey(sub_key, NULL, NULL, 0, &num_subs, NULL, NULL, &num_values, NULL, NULL, NULL, NULL);
 
@@ -485,7 +505,7 @@ void RegistryClass::Save_Registry_Tree(char *path, INIClass *ini)
 					** If there are sun keys then enumerate those.
 					*/
 					if (num_subs > 0) {
-						Save_Registry_Tree(new_key_path, ini);
+						Save_Registry_Tree(root, new_key_path, ini);
 					}
 
 					if (num_values > 0) {
@@ -519,14 +539,17 @@ void RegistryClass::Save_Registry_Tree(char *path, INIClass *ini)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:36PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Save_Registry(const char *filename, char *path)
+void RegistryClass::Save_Registry(const char *filename, HKEY root, char *path)
 {
 	RawFileClass file(filename);
 	INIClass ini;
-	Save_Registry_Tree(path, &ini);
+	Save_Registry_Tree(root, path, &ini);
 	ini.Save(file);
 }
 
+void RegistryClass::Save_Registry(const char *filename, char *path) {
+	RegistryClass::Save_Registry(filename, HKEY_CURRENT_USER, path);
+}
 
 
 /***********************************************************************************************
@@ -543,7 +566,7 @@ void RegistryClass::Save_Registry(const char *filename, char *path)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:35PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Load_Registry(const char *filename, char *old_path, char *new_path)
+void RegistryClass::Load_Registry(const char *filename, HKEY root, char *old_path, char *new_path)
 {
 	if (!IsLocked) {
 		RawFileClass file(filename);
@@ -573,7 +596,7 @@ void RegistryClass::Load_Registry(const char *filename, char *old_path, char *ne
 			/*
 			** Create the registry key.
 			*/
-			RegistryClass reg(path);
+			RegistryClass reg(root, path);
 			if (reg.Is_Valid()) {
 
 				char *entry = (char*)1;
@@ -606,7 +629,9 @@ void RegistryClass::Load_Registry(const char *filename, char *old_path, char *ne
 	}
 }
 
-
+void RegistryClass::Load_Registry(const char *filename, char *old_path, char *new_path) {
+	RegistryClass::Load_Registry(filename, HKEY_CURRENT_USER, old_path, new_path);
+}
 
 
 
@@ -662,8 +687,7 @@ void RegistryClass::Delete_Registry_Values(HKEY key)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:38PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Delete_Registry_Tree(char *path)
-{
+void RegistryClass::Delete_Registry_Tree(HKEY root, char *path) {
 	if (!IsLocked) {
 		HKEY base_key;
 		HKEY sub_key;
@@ -677,7 +701,7 @@ void RegistryClass::Delete_Registry_Tree(char *path)
 		int max_times = 1000;
 
 
-		long result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, path, 0, KEY_ALL_ACCESS, &base_key);
+		long result = RegOpenKeyEx(root, path, 0, KEY_ALL_ACCESS, &base_key);
 
 		if (result == ERROR_SUCCESS) {
 			Delete_Registry_Values(base_key);
@@ -700,7 +724,7 @@ void RegistryClass::Delete_Registry_Tree(char *path)
 					unsigned long num_subs = 0;
 					unsigned long num_values = 0;
 
-					long new_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE, new_key_path, 0, KEY_ALL_ACCESS, &sub_key);
+					long new_result = RegOpenKeyEx(root, new_key_path, 0, KEY_ALL_ACCESS, &sub_key);
 					if (new_result == ERROR_SUCCESS) {
 						new_result = RegQueryInfoKey(sub_key, NULL, NULL, 0, &num_subs, NULL, NULL, &num_values, NULL, NULL, NULL, NULL);
 
@@ -727,20 +751,29 @@ void RegistryClass::Delete_Registry_Tree(char *path)
 			}
 			RegCloseKey(base_key);
 
-			RegDeleteKey(HKEY_LOCAL_MACHINE, path);
+			RegDeleteKey(root, path);
 		}
 	}
 }
 
 
+void RegistryClass::Delete_Registry_Tree(char *path)
+{
+	RegistryClass::Delete_Registry_Tree(HKEY_CURRENT_USER, path);
+}
 
+bool RegistryClass::Migrate_Registry(HKEY src_root, char *src_path, HKEY dst_root, char *dst_path) {
+	if(RegistryClass::Exists(dst_root, dst_path)) {
+		// Path already exists, job well done!
+		return false;
+	}
+	if (!RegistryClass::Exists(src_root, src_path)) {
+		// Original path does not exist, nothing to do.
+		return false;
+	}
 
+	RegistryClass::Save_Registry("out.ini", src_root, src_path);
+	RegistryClass::Load_Registry("out.ini", dst_root, src_path, dst_path);
 
-
-
-
-
-
-
-
-
+	return true;
+}
