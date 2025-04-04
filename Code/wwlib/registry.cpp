@@ -772,8 +772,16 @@ bool RegistryClass::Migrate_Registry(HKEY src_root, char *src_path, HKEY dst_roo
 		return false;
 	}
 
-	RegistryClass::Save_Registry("out.ini", src_root, src_path);
-	RegistryClass::Load_Registry("out.ini", dst_root, src_path, dst_path);
+	TCHAR tmp_path[MAX_PATH];
+	if (GetTempPath(MAX_PATH, tmp_path) == 0) {
+		return false;
+	}
+
+	strcat(tmp_path, "\\registry.ini");
+	RegistryClass::Save_Registry(tmp_path, src_root, src_path);
+	RegistryClass::Load_Registry(tmp_path, dst_root, src_path, dst_path);
+
+	DeleteFile(tmp_path);
 
 	return true;
 }
