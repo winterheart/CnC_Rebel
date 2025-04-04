@@ -135,17 +135,17 @@ const char *KEY_NAME_OPTIONS				= "Software\\Westwood\\Renegade\\Options";
 */
 
 #if	defined(FREEDEDICATEDSERVER)
-const char *KEY_NAME_SETTINGS				= "Software\\Westwood\\RenegadeFDS\\System Settings";
-const char *KEY_NAME_OPTIONS				= "Software\\Westwood\\RenegadeFDS\\Options";
+const char *KEY_NAME_SETTINGS				= "Software\\CnC_Rebel\\RebelFDS\\System Settings";
+const char *KEY_NAME_OPTIONS				= "Software\\CnC_Rebel\\RebelFDS\\Options";
 #elif defined(MULTIPLAYERDEMO)
-const char *KEY_NAME_SETTINGS				= "Software\\Westwood\\RenegadeMPDemo\\System Settings";
-const char *KEY_NAME_OPTIONS				= "Software\\Westwood\\RenegadeMPDemo\\Options";
+const char *KEY_NAME_SETTINGS				= "Software\\CnC_Rebel\\RebelMPDemo\\System Settings";
+const char *KEY_NAME_OPTIONS				= "Software\\CnC_Rebel\\RebelMPDemo\\Options";
 #elif defined(BETACLIENT)
-const char *KEY_NAME_SETTINGS				= "Software\\Westwood\\RenegadeBeta\\System Settings";
-const char *KEY_NAME_OPTIONS				= "Software\\Westwood\\RenegadeBeta\\Options";
+const char *KEY_NAME_SETTINGS				= "Software\\CnC_Rebel\\RebelBeta\\System Settings";
+const char *KEY_NAME_OPTIONS				= "Software\\CnC_Rebel\\RebelBeta\\Options";
 #else
-const char *KEY_NAME_SETTINGS				= "Software\\Westwood\\Renegade\\System Settings";
-const char *KEY_NAME_OPTIONS				= "Software\\Westwood\\Renegade\\Options";
+const char *KEY_NAME_SETTINGS				= "Software\\CnC_Rebel\\Rebel\\System Settings";
+const char *KEY_NAME_OPTIONS				= "Software\\CnC_Rebel\\Rebel\\Options";
 #endif
 
 const char *VALUE_NAME_DYN_LOD			= "Dynamic_LOD_Budget";

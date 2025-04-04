@@ -2391,7 +2391,7 @@ WWAudioClass::Is_Disabled (void) const
 		//
 		//	Read the disabled key from the registry
 		//
-		RegistryClass registry ("Software\\CnC_Rebel\\WWAudio", false);
+		RegistryClass registry ("Software\\CnC_Rebel\\WWAudio");
 		if (registry.Is_Valid ()) {
 			if (registry.Get_Int ("Disabled", 0) == 1) {
 				_disabled = true;

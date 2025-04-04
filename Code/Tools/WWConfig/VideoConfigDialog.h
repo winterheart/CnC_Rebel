@@ -38,13 +38,13 @@
 */
 
 #if	defined(FREEDEDICATEDSERVER)
-#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\Westwood\\RenegadeFDS\\Render"
+#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\RebelFDS\\Render"
 #elif defined(MULTIPLAYERDEMO)
-#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\Westwood\\RenegadeMPDemo\\Render"
+#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\RebelMPDemo\\Render"
 #elif defined(BETACLIENT)
-#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\Westwood\\RenegadeBeta\\Render"
+#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\RebelBeta\\Render"
 #else
-#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\Westwood\\Renegade\\Render"
+#define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\Rebel\\Render"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
