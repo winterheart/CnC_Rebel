@@ -24,7 +24,8 @@ on [Steam](https://store.steampowered.com/app/2229890/Command__Conquer_Renegade/
 
 Minimal requirements for system:
 
-* Windows XP SP3 with DirectX 9 Redistributable (June 2010)
+* Windows XP SP3
+* [DirectX End-User Runtimes (June 2010)](https://www.microsoft.com/en-us/download/details.aspx?id=8109)
 * A DirectX 9 compliant video card
 
 ## Licensing
