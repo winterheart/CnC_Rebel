@@ -36,15 +36,15 @@ const unsigned NUM_GAMES_LOGGED=10;
 //#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\Renegade\\Debug"
 
 #if	defined(FREEDEDICATEDSERVER)
-#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\RenegadeFDS\\Debug"
+#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\CnC_Rebel\\RebelFDS\\Debug"
 #elif defined(MULTIPLAYERDEMO)
-#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\RenegadeMPDemo\\Debug"
+#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\CnC_Rebel\\RebelMPDemo\\Debug"
 #elif defined(BETACLIENT)
-#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\RenegadeBeta\\Debug"
+#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\CnC_Rebel\\RebelBeta\\Debug"
 #elif defined(BETASERVER)
-#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\RenegadeBeta\\Debug"
+#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\CnC_Rebel\\RebelBeta\\Debug"
 #else
-#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\Westwood\\Renegade\\Debug"
+#define	COMBAT_SUB_KEY_NAME_DEBUG				"Software\\CnC_Rebel\\Rebel\\Debug"
 #endif
 
 

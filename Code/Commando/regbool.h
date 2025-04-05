@@ -36,6 +36,7 @@
 class cRegistryBool
 {
 	public:
+      cRegistryBool();
       cRegistryBool(LPCSTR registry_location, LPCSTR key_name, 
 			bool initial_value = false);
 

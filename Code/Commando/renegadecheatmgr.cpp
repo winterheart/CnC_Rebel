@@ -65,7 +65,7 @@ RenegadeCheatMgrClass::RenegadeCheatMgrClass (void)
 	//
 	//	Attempt to open the registry key
 	//
-	RegistryClass registry (APPLICATION_SUB_KEY_NAME_OPTIONS);
+	RegistryClass registry (APPLICATION_SUB_KEY_NAME_OPTIONS, false);
 	if (registry.Is_Valid ()) {
 
 		//

@@ -24,9 +24,11 @@
 #include "WWConfigDlg.h"
 #include "argv.h"
 #include "locale_api.h"
+#include "registry.h"
 #include "wwconfig_ids.h"
 
-
+#define OLD_APP_SUB_KEY "Software\\Westwood\\Renegade"
+#define APP_SUB_KEY "Software\\CnC_Rebel\\Rebel"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -80,11 +82,8 @@ BOOL CWWConfigApp::InitInstance()
 	//	the specific initialization routines you do not need.
 	//-------------------------------------------------------------------------
 
-#ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
+	// Migrate old registry data to new location
+	RegistryClass::Migrate_Registry(HKEY_LOCAL_MACHINE, OLD_APP_SUB_KEY, HKEY_CURRENT_USER, APP_SUB_KEY);
 
 	//-------------------------------------------------------------------------
 	// Get the Command line parameters.

@@ -36,6 +36,7 @@
 class cRegistryFloat
 {
 	public:
+      cRegistryFloat();
       cRegistryFloat(LPCSTR registry_location, LPCSTR key_name, float initial_value);
 
       void Set(float value);

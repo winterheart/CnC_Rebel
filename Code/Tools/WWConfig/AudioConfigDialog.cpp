@@ -53,13 +53,13 @@ const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\Westwood\\Renegade\\Sound";
 */
 
 #if	defined(FREEDEDICATEDSERVER)
-const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\Westwood\\RenegadeFDS\\Sound";
+const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\CnC_Rebel\\RebelFDS\\Sound";
 #elif defined(MULTIPLAYERDEMO)
-const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\Westwood\\RenegadeMPDemo\\Sound";
+const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\CnC_Rebel\\RebelMPDemo\\Sound";
 #elif defined(BETACLIENT)
-const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\Westwood\\RenegadeBeta\\Sound";
+const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\CnC_Rebel\\RebelBeta\\Sound";
 #else
-const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\Westwood\\Renegade\\Sound";
+const char *RENEGADE_SUB_KEY_NAME_AUDIO = "Software\\CnC_Rebel\\Rebel\\Sound";
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

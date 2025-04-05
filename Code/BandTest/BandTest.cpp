@@ -152,13 +152,13 @@ static HKEY RegistryKey;
 //static char BandTestRegistryLocation[64] = {"Software\\Westwood\\Renegade\\BandTest\\"};
 
 #if	defined(FREEDEDICATEDSERVER)
-static char BandTestRegistryLocation[64] = {"Software\\Westwood\\RenegadeFDS\\BandTest\\"};
+static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelFDS\\BandTest\\"};
 #elif defined(MULTIPLAYERDEMO)
-static char BandTestRegistryLocation[64] = {"Software\\Westwood\\RenegadeMPDemo\\BandTest\\"};
+static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelMPDemo\\BandTest\\"};
 #elif defined(BETACLIENT)
-static char BandTestRegistryLocation[64] = {"Software\\Westwood\\RenegadeBeta\\BandTest\\"};
+static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelBeta\\BandTest\\"};
 #else
-static char BandTestRegistryLocation[64] = {"Software\\Westwood\\Renegade\\BandTest\\"};
+static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\Rebel\\BandTest\\"};
 #endif
 
 

@@ -36,6 +36,7 @@
 class cRegistryString
 {
 	public:
+      cRegistryString();
       cRegistryString(LPCSTR registry_location, LPCSTR key_name, LPCSTR initial_value);
 
       void Set(LPCSTR value);

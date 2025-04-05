@@ -33,6 +33,8 @@
 // Class statics
 //
 
+cRegistryString::cRegistryString() {}
+
 //-----------------------------------------------------------------------------
 cRegistryString::cRegistryString(LPCSTR registry_location, LPCSTR key_name, 
 	LPCSTR default_value)

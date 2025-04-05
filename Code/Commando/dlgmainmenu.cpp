@@ -491,10 +491,11 @@ MainMenuDialogClass::Update_Version_Number (void)
 	//
 	WideStringClass version_string;
 	// Add build number temporarily. Will probably be removed for shipping.
-	WideStringClass build_number(BuildInfoClass::Get_Build_Number_String(), true);
-	WideStringClass build_initials(BuildInfoClass::Get_Builder_Initials(), true);
-	WideStringClass build_date(BuildInfoClass::Get_Build_Date_String(), true);
-	version_string.Format (L"v%d.%.3d %s-%s %s", (version_major >> 16), (version_major & 0xFFFF), build_initials, build_number, build_date);
+	// WideStringClass build_number(BuildInfoClass::Get_Build_Number_String(), true);
+	// WideStringClass build_initials(BuildInfoClass::Get_Builder_Initials(), true);
+	// WideStringClass build_date(BuildInfoClass::Get_Build_Date_String(), true);
+	WideStringClass build_codename(Get_Version_Codename(), true);
+	version_string.Format (L"v%d.%.3d.%d \"%s\" UNKNOWN", (version_major >> 16), (version_major & 0xFFFF), version_minor, build_codename);
 	Set_Dlg_Item_Text (IDC_VERSION_STATIC, version_string);
 }
 

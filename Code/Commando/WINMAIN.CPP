@@ -181,6 +181,14 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//flibble3 = flibble3;
 #endif //_DEBUG
 
+	// Migrate old registry data to new location
+	if (RegistryClass::Migrate_Registry(HKEY_LOCAL_MACHINE, OLD_APP_SUB_KEY, HKEY_CURRENT_USER, APP_SUB_KEY)) {
+		WWDEBUG_SAY(("Migrated old registry settings.\r\n"));
+	}
+
+	cDevOptions::Init();
+	cUserOptions::Init();
+
 #ifdef WWDEBUG
 	//
 	// If necessary, disable packet optimizations
