@@ -3,6 +3,7 @@
 *.opensdf
 *.sdf
 *.suo
+.vs
 
 
 # Ignore RUNable folder
