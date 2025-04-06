@@ -10,8 +10,8 @@ See [CHANGES.md](CHANGES.md) for full changelog.
 
 ## Development and Dependencies
 
-* Microsoft Visual C++ 2010
-* Microsoft Platform SDK v100 (comes with MSVC2010)
+* Microsoft Visual C++ 2022
+* Microsoft Platform SDK 10.0
 * DirectX 9 SDK (June 2010)
 * RAD Miles Sound System 6 SDK (`Code/third_party/miles6`)
 * RAD Bink SDK (`Code/third_party/bink`)
@@ -24,7 +24,7 @@ on [Steam](https://store.steampowered.com/app/2229890/Command__Conquer_Renegade/
 
 Minimal requirements for system:
 
-* Windows XP SP3
+* Windows 10
 * [DirectX End-User Runtimes (June 2010)](https://www.microsoft.com/en-us/download/details.aspx?id=8109)
 * A DirectX 9 compliant video card
 
