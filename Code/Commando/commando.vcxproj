@@ -109,7 +109,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\Renegade.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/release;../srsdk1x/msvc6\lib\release;$(DXSDK_DIR)/Lib/x86;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx9.lib;dxerr.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -150,7 +150,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\RenegadeD.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/debug;../srsdk1x/msvc6\lib\debug;$(DXSDK_DIR)/Lib/x86;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx9.lib;dxerr.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -192,7 +192,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\Run\RenegadeP.exe</OutputFile>
       <AdditionalLibraryDirectories>../libs/profile;../srsdk1x/msvc6/lib/release;$(DXSDK_DIR)/Lib/x86;../umbra/lib/win32-x86;..\third_party\miles6\lib\win;..\third_party\bink\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3dx9.lib;dxerr.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;dxguid.lib;dinput8.lib;wwui.lib;wwaudio.lib;wwbitpack.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwnet.lib;wwphys.lib;wwutil.lib;winmm.lib;dsound.lib;vfw32.lib;wsock32.lib;combat.lib;wwtranslatedb.lib;version.lib;binkmovie.lib;binkw32.lib;bandtest.lib;scontrol.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>

@@ -106,7 +106,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\WWConfig.exe</OutputFile>
       <AdditionalLibraryDirectories>../../libs/release;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(IncludePath);$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -148,7 +148,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\WWConfig.exe</OutputFile>
       <AdditionalLibraryDirectories>../../libs/release;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(IncludePath);$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -192,7 +192,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>..\..\..\Run\WWConfigD.exe</OutputFile>
       <AdditionalLibraryDirectories>../../libs/Debug;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>

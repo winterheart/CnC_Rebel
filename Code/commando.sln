@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.35826.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BandTest", "BandTest\BandTest.vcxproj", "{695401B4-D13E-2DC5-E5A1-9E5C39428691}"
 EndProject
@@ -203,8 +203,8 @@ Global
 		{DA852D56-235A-E429-4F3E-5CD34D93C197}.ProfileE|Win32.Build.0 = Profile|Win32
 		{DA852D56-235A-E429-4F3E-5CD34D93C197}.Release|Win32.ActiveCfg = Release|Win32
 		{DA852D56-235A-E429-4F3E-5CD34D93C197}.Release|Win32.Build.0 = Release|Win32
-		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.Debug|Win32.ActiveCfg = DebugE|Win32
-		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.Debug|Win32.Build.0 = DebugE|Win32
+		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.Debug|Win32.Build.0 = Debug|Win32
 		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.DebugE|Win32.ActiveCfg = DebugE|Win32
 		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.DebugE|Win32.Build.0 = DebugE|Win32
 		{DE619ECC-53DB-61E8-F6B9-0561E84BA898}.Profile|Win32.ActiveCfg = Profile|Win32
