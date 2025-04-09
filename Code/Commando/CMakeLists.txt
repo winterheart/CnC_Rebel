@@ -1,0 +1,313 @@
+set(Combat_SOURCES
+    combatgmode.cpp
+    commandosaveload.cpp
+    comnetrcvinst.cpp
+    gameinitmgr.cpp
+    god.cpp
+    inputconfig.cpp
+    inputconfigmgr.cpp
+    level.cpp
+    nethandler.cpp
+    player.cpp
+    playermanager.cpp
+    regbool.cpp
+    regfloat.cpp
+    regint.cpp
+    regstring.cpp
+    renegadeplayerterminal.cpp
+    systemsettings.cpp
+    team.cpp
+    teammanager.cpp
+)
+set(GameModes_SOURCES
+    gamedata.cpp
+    gdcnc.cpp
+    gdsingleplayer.cpp
+    gdskirmish.cpp
+)
+set(GameSpy_SOURCES
+    CDKeyAuth.cpp
+    GameSpy_QnR.cpp
+    GameSpyBanList.cpp
+    gamespyadmin.cpp
+    gamespyauthmgr.cpp
+)
+set(GUI_SOURCES
+    DlgDownload.cpp
+    DlgMPConnect.cpp
+    DlgMPConnectionRefused.cpp
+    DlgMPTeamSelect.cpp
+    DlgMessageBox.cpp
+    DlgPasswordPrompt.cpp
+    DlgQuickmatch.cpp
+    DlgRestart.cpp
+    DlgWOLAutoStart.cpp
+    DlgWOLLogon.cpp
+    DlgWOLSettings.cpp
+    DlgWOLWait.cpp
+    DlgWebPage.cpp
+    dialogtests.cpp
+    dlgcharacteroptions.cpp
+    dlgcheatoptions.cpp
+    dlgcncbattleinfo.cpp
+    dlgcncpurchasemainmenu.cpp
+    dlgcncpurchasemenu.cpp
+    dlgcncreference.cpp
+    dlgcncserverinfo.cpp
+    dlgcncteaminfo.cpp
+    dlgcncwinscreen.cpp
+    dlgconfigaudiotab.cpp
+    dlgconfigperformancetab.cpp
+    dlgconfigvideotab.cpp
+    dlgcontrols.cpp
+    dlgcontrolsaveload.cpp
+    dlgcontrolslisttab.cpp
+    dlgcontroltabs.cpp
+    dlgcredits.cpp
+    dlgevabuildingstab.cpp
+    dlgevacharacterstab.cpp
+    dlgevadatatab.cpp
+    dlgevaencyclopedia.cpp
+    dlgevamaptab.cpp
+    dlgevaobjectivestab.cpp
+    dlgevavehiclestab.cpp
+    dlgevaviewertab.cpp
+    dlgevaweaponstab.cpp
+    dlghelpscreen.cpp
+    # dlginternetoptions.cpp
+    dlgloadspgame.cpp
+    dlgmainmenu.cpp
+    dlgmovieoptions.cpp
+    dlgmpchangelannickname.cpp
+    dlgmpingamechat.cpp
+    dlgmpingameteamchat.cpp
+    dlgmplangamelist.cpp
+    dlgmplanhostoptions.cpp
+    dlgmpslaveservers.cpp
+    dlgmpwoladdbuddy.cpp
+    dlgmpwoladdignoreentry.cpp
+    dlgmpwolautologinprompt.cpp
+    dlgmpwolbuddies.cpp
+    dlgmpwolbuddylistpopup.cpp
+    dlgmpwolchat.cpp
+    dlgmpwoldeletebuddy.cpp
+    dlgmpwoldeleteignoreentry.cpp
+    dlgmpwolgamelist.cpp
+    dlgmpwolgoodies.cpp
+    dlgmpwolhostchatlobby.cpp
+    dlgmpwolignorelist.cpp
+    dlgmpwolinvitation.cpp
+    dlgmpwollocalenag.cpp
+    dlgmpwolmain.cpp
+    dlgmpwolmotd.cpp
+    dlgmpwolpagebuddy.cpp
+    dlgmpwolpagereply.cpp
+    # dlgmpwolquickmatch.cpp
+    dlgmpwolquickmatchoptions.cpp
+    dlgmultiplayoptions.cpp
+    dlgpreviewoptions.cpp
+    dlgsavegame.cpp
+    dlgserversaveload.cpp
+    dlgsidebarhelp.cpp
+    dlgtechoptions.cpp
+    mainmenutransition.cpp
+    radiocommanddisplay.cpp
+    renegadedialogmgr.cpp
+    skinpackage.cpp
+    skinpackagemgr.cpp
+    WebBrowser.cpp
+)
+set(LANWOL_SOURCES
+    lanchat.cpp
+    chatshre.cpp
+    gamechanlist.cpp
+    gamechannel.cpp
+    gamesideservercontrol.cpp
+    netinterface.cpp
+    ServerSettings.cpp
+    slavemaster.cpp
+)
+set(Modes_SOURCES
+    campaign.cpp
+    console.cpp
+    consolefunction.cpp
+    gamemenu.cpp
+    langmode.cpp
+    movie.cpp
+    overlay.cpp
+    scorescreen.cpp
+    textdisplay.cpp
+    wolgmode.cpp
+)
+set(NetEvenets_SOURCES
+    AnnounceEvent.cpp
+    bioevent.cpp
+    changeteamevent.cpp
+    clientbboevent.cpp
+    clientgoodbyeevent.cpp
+    consolecommandevent.cpp
+    csconsolecommandevent.cpp
+    cshint.cpp
+    cspingrequestevent.cpp
+    cstextobj.cpp
+    donateevent.cpp
+    evictionevent.cpp
+    gamedataupdateevent.cpp
+    gameoptionsevent.cpp
+    gamespycschallengeresponseevent.cpp
+    gamespyscchallengeevent.cpp
+    godmodeevent.cpp
+    loadingevent.cpp
+    moneyevent.cpp
+    netevent.cpp
+    playerkill.cpp
+    purchaserequestevent.cpp
+    purchaseresponseevent.cpp
+    requestkillevent.cpp
+    scoreevent.cpp
+    scpingresponseevent.cpp
+    sctextobj.cpp
+    suicideevent.cpp
+    svrgoodbyeevent.cpp
+    vipmodeevent.cpp
+    warpevent.cpp
+    winevent.cpp
+)
+set(NetObjects_SOURCES
+    clientfps.cpp
+    serverfps.cpp
+)
+set(Network_SOURCES
+    apppacketstats.cpp
+    bandwidth.cpp
+    bandwidthgraph.cpp
+    clienthintmanager.cpp
+    clientpingmanager.cpp
+    cnetwork.cpp
+    datasafe.cpp
+    devoptions.cpp
+    diagnostics.cpp
+    messages.cpp
+    multihud.cpp
+    NAT.cpp
+    nataddr.cpp
+    natsock.cpp
+    natter.cpp
+    netgraphs.cpp
+    nicenum.cpp
+    pkthandlers.cpp
+    priority.cpp
+    sbbomanager.cpp
+    useroptions.cpp
+    vendor.cpp
+)
+set(Shell_SOURCES
+    AutoStart.cpp
+    ConsoleMode.cpp
+    WINMAIN.CPP
+    buildnum.cpp
+    cdverify.cpp
+    cominit.cpp
+    gamemode.cpp
+    init.cpp
+    mainloop.cpp
+    shutdown.cpp
+    singletoninstancekeeper.cpp
+)
+set(Unclaimed_SOURCES
+    floodprotectionmgr.cpp
+    modpackage.cpp
+    modpackagemgr.cpp
+    renegadecheatmgr.cpp
+)
+set(WOL_SOURCES
+    FirewallWait.cpp
+    GameResSend.cpp
+    WOLBuddyMgr.cpp
+    WOLChatMgr.cpp
+    WOLDiags.cpp
+    WOLGameInfo.cpp
+    WOLJoinGame.cpp
+    WOLLoginProfile.cpp
+    WOLLogonMgr.cpp
+    WOLQuickMatch.cpp
+    bandwidthcheck.cpp
+    mpsettingsmgr.cpp
+    wollocalemgr.cpp
+)
+set(WWOnline_SOURCES
+    ../WWOnline/GameResField.cpp
+    ../WWOnline/GameResPacket.cpp
+    ../WWOnline/PingProfile.cpp
+    ../WWOnline/WOLChannel.cpp
+    ../WWOnline/WOLChatMsg.cpp
+    ../WWOnline/WOLChatObserver.cpp
+    ../WWOnline/WOLConnect.cpp
+    ../WWOnline/WOLDownload.cpp
+    ../WWOnline/WOLErrorUtil.cpp
+    ../WWOnline/WOLGame.cpp
+    ../WWOnline/WOLGameOptions.cpp
+    ../WWOnline/WOLLadder.cpp
+    ../WWOnline/WOLLoginInfo.cpp
+    ../WWOnline/WOLNetUtilObserver.cpp
+    ../WWOnline/WOLPageMsg.cpp
+    ../WWOnline/WOLProduct.cpp
+    ../WWOnline/WOLServer.cpp
+    ../WWOnline/WOLSession.cpp
+    ../WWOnline/WOLSquad.cpp
+    ../WWOnline/WOLString.cpp
+    ../WWOnline/WOLUser.cpp
+    ../WWOnline/WaitCondition.cpp
+)
+
+add_executable(Renegade WIN32
+    ${Combat_SOURCES}
+    ${GameModes_SOURCES}
+    ${GameSpy_SOURCES}
+    ${GUI_SOURCES}
+    ${LANWOL_SOURCES}
+    ${Modes_SOURCES}
+    ${NetEvenets_SOURCES}
+    ${NetObjects_SOURCES}
+    ${Network_SOURCES}
+    ${Shell_SOURCES}
+    ${Unclaimed_SOURCES}
+    ${WOL_SOURCES}
+    ${WWOnline_SOURCES}
+    chat.rc
+)
+target_include_directories(Renegade PUBLIC
+    $<BUILD_INTERFACE:
+        ${PROJECT_SOURCE_DIR}/Code/Commando
+        ${PROJECT_SOURCE_DIR}/Code
+    >
+    PRIVATE
+        ${MSS_INCLUDE_DIRS}
+)
+target_link_libraries(Renegade PUBLIC
+    BandTest
+    BinkMovie
+    Combat
+    SControl
+    WOLAPI
+    WOLBrowser
+    WW3D2
+    WWDebug
+    WWLib
+    WWMath
+    WWNet
+    WWSaveLoad
+    WWUi
+    ${MSS_LIBRARIES}
+    Microsoft::D3DX9
+    dinput8
+    version
+    ws2_32
+)
+target_compile_definitions(Renegade PRIVATE
+    WINDOWS_IGNORE_PACKING_MISMATCH
+)
+add_dependencies(Renegade Scripts)
+set_target_properties(Renegade PROPERTIES
+    OUTPUT_NAME_DEBUG "RenegadeD"
+)
