@@ -16,11 +16,11 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <DirectXMath.h>
 #include "sortingrenderer.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "dx8wrapper.h"
-#include "dxdefs.h"
 #include "vertmaterial.h"
 #include "texture.h"
 
@@ -328,15 +328,21 @@ void SortingRendererClass::Insert_Triangles(
 	WWASSERT(state->vertex_count<=vertex_buffer->Get_Vertex_Count());
 
 	// Transform the center point to view space for sorting
+	Matrix4 mtx = state->sorting_state.world * state->sorting_state.view;
+	Vector3 vec = state->bounding_sphere.Center;
 
-	DX_D3DXMATRIX mtx=(DX_D3DXMATRIX&)state->sorting_state.world*(DX_D3DXMATRIX&)state->sorting_state.view;
-	DX_D3DXVECTOR3 vec=(DX_D3DXVECTOR3&)state->bounding_sphere.Center;
-	DX_D3DXVECTOR4 transformed_vec;
-	D3DXVec3Transform(
-		&transformed_vec,
-		&vec,
-		&mtx); 
-	state->transformed_center=Vector3(transformed_vec[0],transformed_vec[1],transformed_vec[2]);
+	DirectX::XMFLOAT4X4 dx_mtx(
+		mtx[0].X, mtx[0].Y, mtx[0].Z, mtx[0].W,
+		mtx[1].X, mtx[1].Y, mtx[1].Z, mtx[1].W,
+		mtx[2].X, mtx[2].Y, mtx[2].Z, mtx[2].W,
+		mtx[3].X, mtx[3].Y, mtx[3].Z, mtx[3].W
+	);
+	DirectX::XMFLOAT3 dx_vec(vec.X, vec.Y, vec.Z);
+	DirectX::XMVECTOR transformed_vec = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&dx_vec), DirectX::XMLoadFloat4x4(&dx_mtx));
+	DirectX::XMFLOAT4 out_transofrmed_vec;
+	
+	DirectX::XMStoreFloat4(&out_transofrmed_vec, transformed_vec);
+	state->transformed_center = Vector3(out_transofrmed_vec.x, out_transofrmed_vec.y, out_transofrmed_vec.z);
 
 	SortingNodeStruct* node=sorted_list.Head();
 	while (node) {
@@ -517,11 +523,19 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			src_verts+=state->sorting_state.index_base_offset;
 			src_verts+=state->min_vertex_index;
 
-			DX_D3DXMATRIX d3d_mtx=(DX_D3DXMATRIX&)state->sorting_state.world*(DX_D3DXMATRIX&)state->sorting_state.view;
-			D3DXMatrixTranspose(&d3d_mtx,&d3d_mtx);
-			const Matrix4& mtx=(const Matrix4&)d3d_mtx;
+			Matrix4 d3d_mtx = state->sorting_state.world * state->sorting_state.view;
+			DirectX::XMFLOAT4X4 dx_mtx(
+				d3d_mtx[0].X, d3d_mtx[0].Y, d3d_mtx[0].Z, d3d_mtx[0].W,
+				d3d_mtx[1].X, d3d_mtx[1].Y, d3d_mtx[1].Z, d3d_mtx[1].W,
+				d3d_mtx[2].X, d3d_mtx[2].Y, d3d_mtx[2].Z, d3d_mtx[2].W,
+				d3d_mtx[3].X, d3d_mtx[3].Y, d3d_mtx[3].Z, d3d_mtx[3].W
+			);
+			DirectX::XMMATRIX transformed_vec = DirectX::XMLoadFloat4x4(&dx_mtx);
+			transformed_vec = DirectX::XMMatrixTranspose(transformed_vec);
+			DirectX::XMStoreFloat4x4(&dx_mtx, transformed_vec);
+
 			for (unsigned i=0;i<state->vertex_count;++i,++src_verts) {
-				vertex_z_array[i] = (mtx[2][0] * src_verts->x + mtx[2][1] * src_verts->y + mtx[2][2] * src_verts->z + mtx[2][3]);
+				vertex_z_array[i] = (dx_mtx._31 * src_verts->x + dx_mtx._32 * src_verts->y + dx_mtx._33 * src_verts->z + dx_mtx._34);
 
 				//
 				// If you have a crash in here and "dest_verts" points to illegal memory area,
