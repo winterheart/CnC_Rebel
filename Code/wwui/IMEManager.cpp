@@ -184,14 +184,8 @@ bool IMEManager::FinalizeCreate(HWND hwnd)
 
 	mHWND = hwnd;
 
-	// Check the OS version, if Win98 or better then we can use unicode
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-
-	bool isWin98orLater = (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) && ((osvi.dwMajorVersion > 4) || ((osvi.dwMajorVersion == 4) && (osvi.dwMinorVersion >= 10)));
-	bool isNT4orLater = (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) && ((osvi.dwMajorVersion > 4) || ((osvi.dwMajorVersion == 4) && (osvi.dwMinorVersion >= 0)));
-	mOSCanUnicode = (isWin98orLater || isNT4orLater);
+	// We already know that OS supports Unicode.
+	mOSCanUnicode = true;
 
 	// Create new input context for the specified window.
 	mHIMC = ImmCreateContext();
