@@ -596,4 +596,7 @@
       <Filter>Debug Widgets</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

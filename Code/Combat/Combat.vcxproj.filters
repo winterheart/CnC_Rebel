@@ -818,4 +818,7 @@
       <Filter>Base Code\Header  Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

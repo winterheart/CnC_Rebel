@@ -713,4 +713,7 @@
     <CustomBuild Include="RenderObjectGuide.txt" />
     <CustomBuild Include="State Management.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

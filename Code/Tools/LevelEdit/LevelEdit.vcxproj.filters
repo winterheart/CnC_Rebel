@@ -1611,4 +1611,7 @@
     <CustomBuild Include="res\way_g.w3d" />
     <CustomBuild Include="res\way_r.w3d" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

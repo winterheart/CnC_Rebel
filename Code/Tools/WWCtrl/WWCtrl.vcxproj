@@ -21,6 +21,7 @@
     </SccLocalPath>
     <Keyword>MFCProj</Keyword>
     <ProjectGuid>{DF523FA0-F6FF-2367-A3B5-B9E9A11DB370}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
@@ -55,19 +56,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)P</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,11 +99,9 @@
       <OutputFile>.\Release\WWCtrl.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWCtrl.dll</OutputFile>
       <ImportLibrary>.\Release\WWCtrl.lib</ImportLibrary>
       <ModuleDefinitionFile>.\WWCtrl.def</ModuleDefinitionFile>
     </Link>
@@ -143,11 +138,9 @@
       <OutputFile>.\Debug\WWCtrl.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWCtrlD.dll</OutputFile>
       <ImportLibrary>.\Debug\WWCtrlD.lib</ImportLibrary>
       <ModuleDefinitionFile>.\WWCtrl.def</ModuleDefinitionFile>
     </Link>
@@ -185,11 +178,9 @@
       <OutputFile>.\Profile\WWCtrl.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWCtrlP.dll</OutputFile>
       <ImportLibrary>.\Profile\WWCtrlP.lib</ImportLibrary>
       <ModuleDefinitionFile>.\WWCtrl.def</ModuleDefinitionFile>
     </Link>
