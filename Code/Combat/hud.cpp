@@ -2723,13 +2723,13 @@ static bool		_HUDEnabled = true;
 static bool		_HUDInited = false;
 
 #ifdef ATI_DEMO_HACK
-typedef enum {
+enum {
 	DEMO_HUD_IMAGE=0,
 	DEMO_HUD_IMAGE2,
 	NUM_RENDER_IMAGES,
 };
 #else
-typedef enum {
+enum {
 	RETICLE	= 0,
 	RETICLE_HIT,
 	ACTION_STATUSBAR_RENDERER,
