@@ -37,7 +37,7 @@
 #include "WWString.h"
 #include "WWDebug.h"
 #include <locale.h>
-#include <mbctype.h>
+#include <mbstring.h>
 
 #if defined(_MSC_VER)
 #pragma warning(push, 3)

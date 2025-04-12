@@ -81,7 +81,7 @@ protected:
 	void					On_Set_Cursor (const Vector2 &mouse_pos);
 	void					On_Create (void);
 	void					On_Kill_Focus (DialogControlClass *focus);
-	void					On_Key_Down (uint32 key_id, uint32 key_data);
+	bool					On_Key_Down (uint32 key_id, uint32 key_data);
 
 	void					Create_Bitmap_Button (void);
 	void					Create_Component_Button (void);
