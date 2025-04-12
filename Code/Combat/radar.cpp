@@ -584,7 +584,7 @@ void	RadarManager::Update( const Matrix3D & player_tm, const Vector2 & center )
 {WWPROFILE( "Objectives" );
 	// for all objectives with a position
 	int count = ObjectiveManager::Get_Objective_Count();
-	for ( int i = 0; i < count; i++ ) {
+	for ( i = 0; i < count; i++ ) {
 		Objective * objective = ObjectiveManager::Get_Objective( i );
 		if ( objective->DrawBlip && objective->Status == ObjectiveManager::STATUS_IS_PENDING ) {
 			float intensity = objective->BlipIntensity;

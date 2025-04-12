@@ -61,11 +61,8 @@ typedef D3DXVECTOR4 DX_D3DXVECTOR4;
 #else
 
 #include <d3d9types.h>
-#include <d3dx9core.h>
-#include <d3dx9math.h>
 #include <d3dx9tex.h>
 #include <d3d9caps.h>
-#include <dxerr.h>
 
 #define DX_D3D_DLL "D3D9.DLL"
 #define DX_D3D_CREATE_FUNC "Direct3DCreate9"
@@ -92,8 +89,5 @@ typedef D3DSAMPLERSTATETYPE DX_D3DSAMPLERSTATETYPE;
 typedef D3DTEXTURESTAGESTATETYPE DX_D3DTEXTURESTAGESTATETYPE;
 typedef D3DTRANSFORMSTATETYPE DX_D3DTRANSFORMSTATETYPE;
 typedef D3DVIEWPORT9 DX_D3DVIEWPORT;
-typedef D3DXMATRIX DX_D3DXMATRIX;
-typedef D3DXVECTOR3 DX_D3DXVECTOR3;
-typedef D3DXVECTOR4 DX_D3DXVECTOR4;
 
 #endif

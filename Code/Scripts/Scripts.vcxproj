@@ -20,6 +20,7 @@
     <SccLocalPath>
     </SccLocalPath>
     <ProjectGuid>{3532519B-EAE9-8567-3967-2167219F2E4B}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -55,18 +56,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)P</TargetName>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)D</TargetName>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
@@ -104,11 +104,9 @@
       <OutputFile>.\Profile\Scripts.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\Run\ScriptsP.dll</OutputFile>
       <ImportLibrary>Profile/Scripts.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -148,13 +146,12 @@
       <OutputFile>.\Debug\Scripts.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\Run\ScriptsD.dll</OutputFile>
       <ImportLibrary>Debug/Scripts.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>..\..\run\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -194,11 +191,9 @@
       <OutputFile>.\Release\Scripts.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\Run\Scripts.dll</OutputFile>
       <ImportLibrary>.\Release\Scripts.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

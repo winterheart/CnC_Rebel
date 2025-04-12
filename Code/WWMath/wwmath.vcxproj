@@ -20,6 +20,7 @@
     <SccLocalPath>
     </SccLocalPath>
     <ProjectGuid>{3BB2AF52-92AC-5CD6-87B5-6C79295C6CB0}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -54,16 +55,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -87,10 +85,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Debug\wwmath.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\debug\wwmath.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -115,10 +110,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Profile\wwmath.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\profile\wwmath.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -143,10 +135,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release\wwmath.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\release\wwmath.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabox.cpp" />

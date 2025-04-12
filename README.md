@@ -12,7 +12,7 @@ See [CHANGES.md](CHANGES.md) for full changelog.
 
 * Microsoft Visual C++ 2022
 * Microsoft Platform SDK 10.0
-* DirectX 9 SDK (June 2010)
+* Microsoft.DXSDK.D3DX 9.29.952.8 (NuGet package)
 * RAD Miles Sound System 6 SDK (`Code/third_party/miles6`)
 * RAD Bink SDK (`Code/third_party/bink`)
 * NvDXTLib SDK (`Code/third_party/nvDXTLib`)
@@ -25,7 +25,7 @@ on [Steam](https://store.steampowered.com/app/2229890/Command__Conquer_Renegade/
 Minimal requirements for system:
 
 * Windows 10
-* [DirectX End-User Runtimes (June 2010)](https://www.microsoft.com/en-us/download/details.aspx?id=8109)
+* A processor that supports the SSE2 instruction set
 * A DirectX 9 compliant video card
 
 ## Licensing

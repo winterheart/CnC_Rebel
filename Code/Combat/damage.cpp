@@ -183,7 +183,7 @@ void	ArmorWarheadManager::Init( void )
 		Multipliers = new safe_float[ Get_Num_Armor_Types() * Get_Num_Warhead_Types() ];
 		for ( armor_num = 0; armor_num < ArmorNames.Count(); armor_num++ ) {
 			char section_name[80];
-			sprintf( section_name, SECTION_SCALE, ArmorNames[armor_num] );
+			sprintf( section_name, SECTION_SCALE, ArmorNames[armor_num].Peek_Buffer() );
 			for ( int warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++ ) {
 				Multipliers[ armor_num * Get_Num_Warhead_Types() + warhead_num ]  =
 					armorINI->Get_Float( section_name, WarheadNames[warhead_num], 1.0f );
@@ -194,7 +194,7 @@ void	ArmorWarheadManager::Init( void )
 		Absorbsion = new safe_float[ Get_Num_Armor_Types() * Get_Num_Warhead_Types() ];
 		for ( armor_num = 0; armor_num < ArmorNames.Count(); armor_num++ ) {
 			char section_name[80];
-			sprintf( section_name, SECTION_SHIELD, ArmorNames[armor_num] );
+			sprintf( section_name, SECTION_SHIELD, ArmorNames[armor_num].Peek_Buffer() );
 			for ( int warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++ ) {
 				Absorbsion[ armor_num * Get_Num_Warhead_Types() + warhead_num ]  =
 					armorINI->Get_Float( section_name, WarheadNames[warhead_num], 0.0f );

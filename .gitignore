@@ -4,7 +4,7 @@
 *.sdf
 *.suo
 .vs
-
+Code/packages/
 
 # Ignore RUNable folder
 [Rr]un

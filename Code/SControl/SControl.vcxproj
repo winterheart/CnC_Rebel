@@ -20,6 +20,7 @@
     <SccLocalPath>
     </SccLocalPath>
     <ProjectGuid>{81F21B91-5400-747A-BBC9-A30D0EE34EB2}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -57,16 +58,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,10 +90,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Debug\SControl.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Debug\SControl.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -122,8 +117,7 @@
       <OutputFile>.\Profile\SControl.bsc</OutputFile>
     </Bscmake>
     <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Profile\SControl.lib</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,8 +145,7 @@
       <OutputFile>.\Release\SControl.bsc</OutputFile>
     </Bscmake>
     <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Release\SControl.lib</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@
     <SccLocalPath>
     </SccLocalPath>
     <ProjectGuid>{2EF73F13-E159-99C5-BAA6-B31B080703FA}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -85,24 +86,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
-    <OutDir>.\ProfileE\</OutDir>
-    <IntDir>.\ProfileE\</IntDir>
+    <OutDir>..\Libs\Profile\</OutDir>
+    <TargetName>$(ProjectName)e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
-    <OutDir>.\DebugE\</OutDir>
-    <IntDir>.\DebugE\</IntDir>
+    <TargetName>$(ProjectName)E</TargetName>
+    <OutDir>..\Libs\Debug\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
     <ClCompile>
@@ -112,7 +110,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINDOWS_IGNORE_PACKING_MISMATCH;WINVER=0x0601;NDEBUG;WWDEBUG;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\ProfileE\Combat.pch</PrecompiledHeaderOutputFile>
@@ -127,10 +125,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\ProfileE\Combat.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Profile\Combate.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -140,7 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINDOWS_IGNORE_PACKING_MISMATCH;WINVER=0x0601;NDEBUG;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Profile\Combat.pch</PrecompiledHeaderOutputFile>
@@ -155,10 +150,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Profile\Combat.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Profile\Combat.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
     <ClCompile>
@@ -167,7 +159,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINDOWS_IGNORE_PACKING_MISMATCH;WINVER=0x0601;_DEBUG;WWDEBUG;PARAM_EDITING_ON;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\DebugE\Combat.pch</PrecompiledHeaderOutputFile>
@@ -183,10 +175,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\DebugE\Combat.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Debug\Combate.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -194,7 +183,7 @@
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINDOWS_IGNORE_PACKING_MISMATCH;WINVER=0x0601;_DEBUG;WWDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Debug\Combat.pch</PrecompiledHeaderOutputFile>
@@ -212,7 +201,6 @@
     </Bscmake>
     <Lib>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Debug\Combat.lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -221,7 +209,7 @@
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwui;..\wwutil;..\wwbitpack;..\wwaudio;..\third_party\miles6\include;..\wwnet;..\wwmath;..\ww3d2;..\wwphys;..\wwlib;..\wwdebug;..\wwsaveload;..\wwtranslatedb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINDOWS_IGNORE_PACKING_MISMATCH;WINVER=0x0601;NDEBUG;WIN32;_LIB;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\Combat.pch</PrecompiledHeaderOutputFile>
@@ -236,10 +224,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release\Combat.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\libs\Release\Combat.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="action.cpp" />
@@ -510,7 +495,17 @@
     <ClInclude Include="string_ids.h" />
     <ClInclude Include="timemgr.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets'))" />
+  </Target>
 </Project>

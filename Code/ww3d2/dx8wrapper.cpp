@@ -184,9 +184,12 @@ void Log_DX8_ErrorCode(unsigned res)
 		WWDEBUG_SAY((tmp));
 	}
 #else
-	// We forced to use "A" variant because of WWDEBUG_SAY
-	const char *tmp = DXGetErrorStringA(res);
-	WWDEBUG_SAY((tmp));
+	// WH: Old version was required D3DXGetErrorString() / DXGetErrorString() function from dxerr aux library.
+	// Now (as for Windows Platform SDK 10) this library deprecated and there no official alternatives.
+	// While it can be implemented with 3rd party code (https://walbourn.github.io/wheres-dxerr-lib/),
+	// I decided just get rid it from code and print error as is. Just use online documentation
+	// to retrieve actual meaning of error code.
+	WWDEBUG_SAY(("%d", res));
 #endif
 
 	WWASSERT(0);
@@ -203,9 +206,8 @@ void Non_Fatal_Log_DX8_ErrorCode(unsigned res,const char * file,int line)
 		WWDEBUG_SAY(("DX8 Error: %s, File: %s, Line: %d\r\n",tmp,file,line));
 	}
 #else
-	// We forced to use "A" variant because of WWDEBUG_SAY
-	const char *tmp = DXGetErrorStringA(res);
-	WWDEBUG_SAY(("DX Error: %s, File: %s, Line: %d\r\n", tmp, file, line));
+	// WH: See comment in Log_DX8_ErrorCode()
+	WWDEBUG_SAY(("DX Error: %d, File: %s, Line: %d\r\n", res, file, line));
 #endif
 }
 

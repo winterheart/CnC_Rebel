@@ -280,7 +280,7 @@ WWINLINE bool operator == (const Vector2 &a,const Vector2 &b)
 {
 	bool a0b0(a[0] == b[0]);
 	bool a1b1(a[1] == b[1]);
-	return ( a0b0 & a1b1);
+	return ( a0b0 && a1b1);
 }
 
 /************************************************************************** 
@@ -298,7 +298,7 @@ WWINLINE bool operator != (const Vector2 &a,const Vector2 &b)
 {
 	bool a0b0(a[0] != b[0]);
 	bool a1b1(a[1] != b[1]);
-	return ( a0b0 | a1b1);
+	return ( a0b0 || a1b1);
 }
 
 /************************************************************************** 

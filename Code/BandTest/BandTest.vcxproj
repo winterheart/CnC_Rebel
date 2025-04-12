@@ -58,18 +58,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>BandTestP</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\Run\$(Configuration)\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>BandTestD</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -105,11 +105,9 @@
       <OutputFile>.\Profile\BandTest.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>..\..\Run\BandTestP.dll</OutputFile>
       <ImportLibrary>Profile/BandTest.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -150,11 +148,10 @@
     </Bscmake>
     <Link>
       <LinkDLL>true</LinkDLL>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>..\..\Run\BandTest.dll</OutputFile>
       <ImportLibrary>.\Release\BandTest.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -192,11 +189,9 @@
       <OutputFile>.\Debug\BandTest.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OutputFile>..\..\Run\BandTestD.dll</OutputFile>
       <ImportLibrary>Debug/BandTest.lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

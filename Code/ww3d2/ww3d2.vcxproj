@@ -28,6 +28,7 @@
     <SccLocalPath>
     </SccLocalPath>
     <ProjectGuid>{DE619ECC-53DB-61E8-F6B9-0561E84BA898}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -80,24 +81,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
-    <OutDir>.\DebugE\</OutDir>
-    <IntDir>.\DebugE\</IntDir>
+    <OutDir>..\Libs\Debug\</OutDir>
+    <TargetName>$(ProjectName)e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
-    <OutDir>.\ProfileE\</OutDir>
-    <IntDir>.\ProfileE\</IntDir>
+    <OutDir>..\Libs\Profile\</OutDir>
+    <TargetName>$(ProjectName)e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Profile\</OutDir>
-    <IntDir>.\Profile\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\Libs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">
     <ClCompile>
@@ -106,13 +104,14 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;_DEBUG;WWDEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;WIN32;PARAM_EDITING_ON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\DebugE\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\DebugE\ww3d2.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\DebugE\</ObjectFileName>
       <ProgramDataBaseFileName>.\DebugE\</ProgramDataBaseFileName>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -121,10 +120,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\DebugE\ww3d2.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\Debug\ww3d2e.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProfileE|Win32'">
     <ClCompile>
@@ -134,12 +130,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;NDEBUG;WWDEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;WIN32;PARAM_EDITING_ON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\ProfileE\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\ProfileE\ww3d2.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\ProfileE\</ObjectFileName>
       <ProgramDataBaseFileName>.\ProfileE\</ProgramDataBaseFileName>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -148,10 +145,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\ProfileE\ww3d2.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\Profile\ww3d2e.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <ClCompile>
@@ -161,12 +155,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;NDEBUG;WWDEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Profile\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Profile\ww3d2.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Profile\</ObjectFileName>
       <ProgramDataBaseFileName>.\Profile\</ProgramDataBaseFileName>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -175,10 +170,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Profile\ww3d2.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\Profile\ww3d2.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -187,13 +179,14 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;_DEBUG;WWDEBUG;WINVER=0x400;_WINDOWS;WIN32_LEAN_AND_MEAN;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Debug\ww3d2.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -202,10 +195,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Debug\ww3d2.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\Debug\ww3d2.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -215,12 +205,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wwlib;..\wwmath;..\wwdebug;..\wwcpuid;..\wwsaveload;..\wwaudio;..\third_party\miles6\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;NDEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\ww3d2.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -229,10 +220,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release\ww3d2.bsc</OutputFile>
     </Bscmake>
-    <Lib>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>..\Libs\Release\ww3d2.lib</OutputFile>
-    </Lib>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabtree.cpp" />
@@ -494,7 +482,17 @@
     <CustomBuild Include="RenderObjectGuide.txt" />
     <CustomBuild Include="State Management.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets'))" />
+  </Target>
 </Project>

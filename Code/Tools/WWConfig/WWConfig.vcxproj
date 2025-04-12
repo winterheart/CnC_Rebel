@@ -21,6 +21,7 @@
     </SccLocalPath>
     <Keyword>MFCProj</Keyword>
     <ProjectGuid>{4087FA2E-EC65-C624-5252-14DDE43C6828}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -58,16 +59,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>WWConfig</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>WWConfigP</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Debug\</OutDir>
-    <IntDir>.\Debug\</IntDir>
+    <OutDir>..\..\..\Run\$(Configuration)\</OutDir>
+    <TargetName>WWConfigD</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -77,7 +78,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;$(IncludePath);$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\WWConfig.pch</PrecompiledHeaderOutputFile>
@@ -102,13 +103,13 @@
       <OutputFile>.\Release\WWConfig.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWConfig.exe</OutputFile>
-      <AdditionalLibraryDirectories>../../libs/release;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(IncludePath);$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>../../libs/$(Configuration);../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
@@ -119,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;$(IncludePath);$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;WIN32;NDEBUG;WWDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <PrecompiledHeaderOutputFile>.\Release\WWConfig.pch</PrecompiledHeaderOutputFile>
@@ -146,10 +147,10 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWConfig.exe</OutputFile>
-      <AdditionalLibraryDirectories>../../libs/release;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(IncludePath);$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>../../libs/$(Configuration);../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -160,7 +161,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;$(IncludePath);$(DXSDK_DIR)/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\combat;..\..\wwdebug;..\..\wwmath;..\..\ww3d2;..\..\wwphys;..\..\wwlib;..\..\wwaudio;..\..\third_party\miles6\include;..\..\wwsaveload;..\..\wwnet;..\wwctrl;..\..\wwtranslatedb;..\..\wwbitpack;..\..\wwutil;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WINVER=0x0601;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
@@ -190,10 +191,10 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>..\..\..\Run\WWConfigD.exe</OutputFile>
-      <AdditionalLibraryDirectories>../../libs/Debug;../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;d3dx9.lib;d3d9.lib;dxerr.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>../../libs/$(Configuration);../../umbra/lib/win32-x86;..\..\third_party\miles6\lib\win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;wwnet.lib;wwaudio.lib;mss32.lib;wwsaveload.lib;ww3d2.lib;wwdebug.lib;wwlib.lib;wwmath.lib;wwphys.lib;wwutil.lib;winmm.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wsock32.lib;wwtranslatedb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -266,7 +267,17 @@
   <ItemGroup>
     <ResourceCompile Include="WWConfig.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets'))" />
+  </Target>
 </Project>
