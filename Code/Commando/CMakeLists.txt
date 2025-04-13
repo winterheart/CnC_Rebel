@@ -284,7 +284,7 @@ target_include_directories(Renegade PUBLIC
     PRIVATE
         ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(Renegade PUBLIC
+target_link_libraries(Renegade PRIVATE
     BandTest
     BinkMovie
     Combat
@@ -296,7 +296,9 @@ target_link_libraries(Renegade PUBLIC
     WWLib
     WWMath
     WWNet
+    WWPhys
     WWSaveLoad
+    WWTranslateDb
     WWUi
     ${MSS_LIBRARIES}
     Microsoft::D3DX9

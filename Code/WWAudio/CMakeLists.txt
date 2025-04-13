@@ -30,13 +30,14 @@ target_include_directories(WWAudio PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/ww3d2
         ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(WWAudio PUBLIC
-    WWDebug
-    WWLib
-    WWMath
-    WWSaveLoad
-    ${MSS_LIBRARIES}
-    winmm   # timeGetTime()
+target_link_libraries(WWAudio
+    PRIVATE
+        WWDebug
+        WWLib
+        WWMath
+        WWSaveLoad
+        ${MSS_LIBRARIES}
+        winmm   # timeGetTime()
 )
 target_compile_definitions(WWAudio PRIVATE
     WINDOWS_IGNORE_PACKING_MISMATCH

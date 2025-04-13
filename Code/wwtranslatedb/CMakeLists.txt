@@ -11,7 +11,7 @@ target_include_directories(WWTranslateDb PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwtranslatedb
     >
 )
-target_link_libraries(WWTranslateDb PUBLIC
+target_link_libraries(WWTranslateDb PRIVATE
     WWDebug
     WWLib
     WWMath

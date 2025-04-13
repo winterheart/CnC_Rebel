@@ -63,7 +63,7 @@ target_include_directories(Scripts PUBLIC
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/Combat
 )
-target_link_libraries(Scripts PUBLIC
+target_link_libraries(Scripts PRIVATE
     WWDebug
     WWLib
 )

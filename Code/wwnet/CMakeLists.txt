@@ -26,11 +26,14 @@ target_include_directories(WWNet PUBLIC
         ${PROJECT_SOURCE_DIR}/Code          # Requires commando/nat.h
         ${PROJECT_SOURCE_DIR}/Code/wolapi
 )
-target_link_libraries(WWNet PUBLIC
-    WWBitPack
-    WWDebug
-    WWLib
-    WWMath
-    WWSaveLoad
-    WWUtil
+target_link_libraries(WWNet
+    PRIVATE
+        WWBitPack
+        WWDebug
+        WWLib
+        WWMath
+        WWSaveLoad
+        WWUtil
+    INTERFACE
+        WWBitPack
 )

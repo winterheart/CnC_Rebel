@@ -51,8 +51,9 @@ target_include_directories(WWUi PUBLIC
     PRIVATE
         ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(WWUi PUBLIC
+target_link_libraries(WWUi PRIVATE
     WW3D2
+    WWAudio
     WWDebug
     WWLib
     WWTranslateDb

@@ -12,6 +12,6 @@ target_include_directories(WWDebug PUBLIC
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/wwlib
 )
-target_link_libraries(WWDebug PUBLIC
+target_link_libraries(WWDebug PRIVATE
     winmm   # timeGetTime()
 )

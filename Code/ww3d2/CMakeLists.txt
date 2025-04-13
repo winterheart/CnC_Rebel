@@ -114,13 +114,16 @@ target_include_directories(WW3D2 PUBLIC
     PRIVATE
         ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(WW3D2 PUBLIC
-    WWAudio
-    WWDebug
-    WWLib
-    WWMath
-    WWSaveLoad
-    Microsoft::D3DX9
-    ${MSS_LIBRARIES}
-    Vfw32
+target_link_libraries(WW3D2
+    PRIVATE
+        WWAudio
+        WWDebug
+        WWLib
+        WWMath
+        WWSaveLoad
+        Microsoft::D3DX9
+        ${MSS_LIBRARIES}
+        Vfw32
+    INTERFACE
+        WWMath
 )

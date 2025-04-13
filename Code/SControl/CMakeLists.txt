@@ -9,7 +9,7 @@ target_include_directories(SControl PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/SControl
     >
 )
-target_link_libraries(SControl PUBLIC
+target_link_libraries(SControl PRIVATE
     WWDebug
     WWLib
 )

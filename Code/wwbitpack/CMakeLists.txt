@@ -11,8 +11,10 @@ target_include_directories(WWBitPack PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwbitpack
     >
 )
-target_link_libraries(WWBitPack PUBLIC
-    WWDebug
-    WWLib
-    WWUtil
+target_link_libraries(WWBitPack PRIVATE
+        WWDebug
+        WWLib
+        WWUtil
+    INTERFACE
+        WWUtil
 )

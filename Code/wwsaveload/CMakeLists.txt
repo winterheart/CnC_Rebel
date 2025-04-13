@@ -19,7 +19,7 @@ target_include_directories(WWSaveLoad PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwsaveload
     >
 )
-target_link_libraries(WWSaveLoad PUBLIC
+target_link_libraries(WWSaveLoad PRIVATE
     WWDebug
     WWLib
     WWMath

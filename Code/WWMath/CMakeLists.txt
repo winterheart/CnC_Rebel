@@ -44,7 +44,11 @@ target_include_directories(WWMath PUBLIC
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/wwsaveload
 )
-target_link_libraries(WWMath PUBLIC
-    WWDebug
-    WWLib
+target_link_libraries(WWMath
+    PRIVATE
+        WWDebug
+        WWLib
+        WWSaveLoad
+    INTERFACE
+        WWSaveLoad
 )

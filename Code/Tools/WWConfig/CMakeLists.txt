@@ -18,10 +18,12 @@ target_compile_definitions(WWConfig PRIVATE _AFXDLL)
 target_include_directories(WWConfig PRIVATE
     ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(WWConfig PUBLIC
+target_link_libraries(WWConfig PRIVATE
     Microsoft::D3DX9
     WW3D2
     WWAudio
+    WWDebug
+    WWLib
     WWPhys
 )
 target_compile_definitions(WWConfig PRIVATE

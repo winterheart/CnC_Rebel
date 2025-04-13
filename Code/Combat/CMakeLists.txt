@@ -137,15 +137,21 @@ target_include_directories(Combat PUBLIC
     PRIVATE
         ${MSS_INCLUDE_DIRS}
 )
-target_link_libraries(Combat PUBLIC
-    WWDebug
-    WWLib
-    WWNet
-    WWPhys
-    WWTranslateDb
-    WWUi
-    Microsoft::D3DX9
-    ${MSS_LIBRARIES}
+target_link_libraries(Combat
+    PRIVATE
+        WW3D2
+        WWAudio
+        WWDebug
+        WWLib
+        WWNet
+        WWPhys
+        WWSaveLoad
+        WWTranslateDb
+        WWUi
+        Microsoft::D3DX9
+        ${MSS_LIBRARIES}
+    INTERFACE
+        WWAudio
 )
 target_compile_definitions(Combat PRIVATE
     _MBCS

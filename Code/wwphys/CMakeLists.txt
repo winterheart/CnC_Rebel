@@ -101,7 +101,7 @@ target_include_directories(WWPhys PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwphys
     >
 )
-target_link_libraries(WWPhys PUBLIC
+target_link_libraries(WWPhys PRIVATE
     WW3D2
     WWBitPack
     WWDebug

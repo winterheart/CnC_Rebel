@@ -12,12 +12,11 @@ target_include_directories(BinkMovie PUBLIC
     >
     PRIVATE
         ${BINK_INCLUDE_DIRS}
-        ${DirectX_INCLUDE_DIR}
 )
-target_link_libraries(BinkMovie PUBLIC
+target_link_libraries(BinkMovie PRIVATE
     WW3D2
     WWDebug
     WWLib
     ${BINK_LIBRARIES}
-    ${DirectX_D3DX9_LIBRARY}
+    Microsoft::D3DX9
 )

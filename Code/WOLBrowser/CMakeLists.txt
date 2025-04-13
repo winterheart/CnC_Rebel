@@ -8,7 +8,3 @@ target_include_directories(WOLBrowser PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/WOLBrowser
     >
 )
-#target_link_libraries(WOLBrowser PUBLIC
-#        WWDebug
-#        WWLib
-#)

@@ -8,7 +8,3 @@ target_include_directories(WOLAPI PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wolapi
     >
 )
-#target_link_libraries(WOLAPI PUBLIC
-#        WWDebug
-#        WWLib
-#)

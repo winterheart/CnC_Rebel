@@ -10,10 +10,11 @@ target_include_directories(WWUtil PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwutil
     >
 )
-target_link_libraries(WWUtil PUBLIC
-    WWDebug
-    WWLib
-    WWMath
+target_link_libraries(WWUtil
+    PRIVATE
+        WWDebug
+        WWLib
+        WWMath
 )
 target_compile_definitions(WWUtil PRIVATE
     _MBCS
