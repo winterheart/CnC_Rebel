@@ -127,3 +127,6 @@ target_link_libraries(WW3D2
     INTERFACE
         WWMath
 )
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    target_compile_options(WW3D2 PRIVATE "/arch:SSE2")
+endif()
