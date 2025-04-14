@@ -157,3 +157,36 @@ target_compile_definitions(Combat PRIVATE
     _MBCS
     WINDOWS_IGNORE_PACKING_MISMATCH
 )
+
+if(REBEL_ENABLE_EDITOR)
+    add_library(CombatE STATIC ${SOURCES})
+    target_include_directories(CombatE PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/Code/Combat
+        >
+        PRIVATE
+            ${MSS_INCLUDE_DIRS}
+    )
+    target_link_libraries(CombatE
+        PRIVATE
+            WW3D2E
+            WWAudioE
+            WWDebugE
+            WWLib
+            WWNet
+            WWPhysE
+            WWSaveLoadE
+            WWTranslateDb
+            WWUi
+            Microsoft::D3DX9
+            ${MSS_LIBRARIES}
+        INTERFACE
+            WWAudioE
+            WWNet
+    )
+    target_compile_definitions(CombatE PRIVATE
+        _MBCS
+        WINDOWS_IGNORE_PACKING_MISMATCH
+        PARAM_EDITING_ON
+    )
+endif()

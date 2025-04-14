@@ -108,3 +108,23 @@ target_link_libraries(WWPhys PRIVATE
     WWLib
     Microsoft::D3DX9
 )
+
+if(REBEL_ENABLE_EDITOR)
+    add_library(WWPhysE STATIC ${SOURCES})
+    target_include_directories(WWPhysE PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/Code/wwphys
+        >
+    )
+    target_link_libraries(WWPhysE
+        PRIVATE
+            WW3D2
+            WWBitPack
+            WWDebugE
+            WWLib
+            Microsoft::D3DX9
+    )
+    target_compile_definitions(WWAudioE PRIVATE
+        PARAM_EDITING_ON
+    )
+endif()

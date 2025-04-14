@@ -72,4 +72,5 @@ target_compile_definitions(Scripts PRIVATE
 )
 set_target_properties(Scripts PROPERTIES
     OUTPUT_NAME_DEBUG "ScriptsD"
+    OUTPUT_NAME_RELWITHDEBINFO "ScriptsP"
 )

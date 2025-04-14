@@ -12,9 +12,8 @@ set(SOURCES
     ../../wwlib/ramfile.cpp
 )
 
-set(CMAKE_MFC_FLAG 2)
+set(CMAKE_MFC_FLAG 1)
 add_executable(WWConfig WIN32 ${SOURCES} WWConfig.rc)
-target_compile_definitions(WWConfig PRIVATE _AFXDLL)
 target_include_directories(WWConfig PRIVATE
     ${MSS_INCLUDE_DIRS}
 )
@@ -31,5 +30,5 @@ target_compile_definitions(WWConfig PRIVATE
 )
 set_target_properties(WWConfig PROPERTIES
     OUTPUT_NAME_DEBUG "WWConfigD"
-    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+    OUTPUT_NAME_RELWITHDEBINFO "WWConfigP"
 )

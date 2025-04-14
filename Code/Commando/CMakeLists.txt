@@ -312,4 +312,5 @@ target_compile_definitions(Renegade PRIVATE
 add_dependencies(Renegade Scripts)
 set_target_properties(Renegade PROPERTIES
     OUTPUT_NAME_DEBUG "RenegadeD"
+    OUTPUT_NAME_RELWITHDEBINFO "RenegadeP"
 )

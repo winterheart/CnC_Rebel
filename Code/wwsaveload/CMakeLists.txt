@@ -27,16 +27,19 @@ target_link_libraries(WWSaveLoad PRIVATE
 )
 
 if(REBEL_ENABLE_EDITOR)
-    add_library(WWSaveLoadEditor STATIC ${SOURCES})
-    target_include_directories(WWSaveLoadEditor PUBLIC
+    add_library(WWSaveLoadE STATIC ${SOURCES})
+    target_include_directories(WWSaveLoadE PUBLIC
         $<BUILD_INTERFACE:
             ${PROJECT_SOURCE_DIR}/Code/wwsaveload
         >
     )
-    target_link_libraries(WWSaveLoadEditor PUBLIC
-        WWDebug
+    target_link_libraries(WWSaveLoadE PUBLIC
+        WWDebugE
         WWLib
         WWMath
     )
-    target_compile_definitions(WWSaveLoadEditor PRIVATE PARAM_EDITING_ON)
+    target_compile_definitions(WWSaveLoadE
+        PRIVATE
+            PARAM_EDITING_ON
+    )
 endif()

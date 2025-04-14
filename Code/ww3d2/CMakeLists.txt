@@ -130,3 +130,33 @@ target_link_libraries(WW3D2
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_options(WW3D2 PRIVATE "/arch:SSE2")
 endif()
+
+if(REBEL_ENABLE_EDITOR)
+    add_library(WW3D2E STATIC ${SOURCES})
+    target_include_directories(WW3D2E PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/Code/ww3d2
+        >
+        PRIVATE
+            ${MSS_INCLUDE_DIRS}
+    )
+    target_link_libraries(WW3D2E
+        PRIVATE
+            WWAudioE
+            WWDebugE
+            WWLib
+            WWMath
+            WWSaveLoadE
+            Microsoft::D3DX9
+            ${MSS_LIBRARIES}
+            Vfw32
+        INTERFACE
+            WWMath
+    )
+    target_compile_definitions(WW3D2E PRIVATE
+        PARAM_EDITING_ON
+    )
+    if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+        target_compile_options(WW3D2E PRIVATE "/arch:SSE2")
+    endif()
+endif()

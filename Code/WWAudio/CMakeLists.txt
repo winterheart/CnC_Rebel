@@ -41,7 +41,31 @@ target_link_libraries(WWAudio
 )
 target_compile_definitions(WWAudio PRIVATE
     WINDOWS_IGNORE_PACKING_MISMATCH
-)
-target_compile_definitions(WWAudio PRIVATE
     _MBCS
 )
+
+if(REBEL_ENABLE_EDITOR)
+    add_library(WWAudioE STATIC ${SOURCES})
+    target_include_directories(WWAudioE PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/Code/WWAudio
+        >
+        PRIVATE
+            ${PROJECT_SOURCE_DIR}/Code/ww3d2
+            ${MSS_INCLUDE_DIRS}
+    )
+    target_link_libraries(WWAudioE
+        PRIVATE
+            WWDebugE
+            WWLib
+            WWMath
+            WWSaveLoadE
+            ${MSS_LIBRARIES}
+            winmm   # timeGetTime()
+    )
+    target_compile_definitions(WWAudioE PRIVATE
+        WINDOWS_IGNORE_PACKING_MISMATCH
+        _MBCS
+        PARAM_EDITING_ON
+    )
+endif()

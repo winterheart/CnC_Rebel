@@ -15,3 +15,7 @@ target_link_libraries(BandTest PRIVATE
     ws2_32
     winmm
 )
+set_target_properties(BandTest PROPERTIES
+        OUTPUT_NAME_DEBUG "BandTestD"
+        OUTPUT_NAME_RELWITHDEBINFO "BandTestP"
+)
