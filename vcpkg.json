@@ -1,0 +1,11 @@
+{
+  "name": "cnc-rebel",
+  "version": "1.37",
+  "builtin-baseline": "baa52c82b9b0e96f6c2557646a74b1f46b0b3071",
+  "dependencies": [
+    {
+      "name": "dxsdk-d3dx",
+      "version>=": "9.29.952.8"
+    }
+  ]
+}

@@ -6,6 +6,10 @@
 .vs
 Code/packages/
 
+# IDEA files
+.idea
+cmake-build-*
+
 # Ignore RUNable folder
 [Rr]un
 

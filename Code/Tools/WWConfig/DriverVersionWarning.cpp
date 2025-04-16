@@ -32,6 +32,7 @@
 #include "locale_api.h"
 #include "wwconfig_ids.h"
 
+#pragma comment(lib,"d3d9.lib")
 
 extern int GlobalExitValue;
 

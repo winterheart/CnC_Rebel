@@ -62,6 +62,7 @@ bool RegistryClass::Exists(const char* sub_key)
 }
 
 RegistryClass::RegistryClass(const HKEY root, const char * sub_key, bool create) : IsValid(false) {
+	IsValid = false;
 	HKEY key;
 	assert( sizeof(HKEY) == sizeof(int) );
 
@@ -85,6 +86,7 @@ RegistryClass::RegistryClass(const HKEY root, const char * sub_key, bool create)
 */
 // TODO: WH: Rewrite with C++11
 RegistryClass::RegistryClass( const char * sub_key, bool create ) {
+	IsValid = false;
 	HKEY key;
 	assert( sizeof(HKEY) == sizeof(int) );
 

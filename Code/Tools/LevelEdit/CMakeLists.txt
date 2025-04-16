@@ -1,0 +1,267 @@
+set(SOURCES
+    AttenuationSphere.cpp
+    Box3D.cpp
+    BuildingNode.cpp
+    CameraMgr.cpp
+    CameraSettingsForm.cpp
+    CheckinStyleDialog.cpp
+    CheckingOutDialog.cpp
+    ChooseModPackageDialog.cpp
+    ColorBar.cpp
+    ColorPicker.cpp
+    ColorPickerDialogClass.cpp
+    ColorSelectionDialog.cpp
+    ColorUtils.cpp
+    ConversationEditorMgr.cpp
+    ConversationPage.cpp
+    ConversationPickerDialog.cpp
+    CoverAttackPointNode.cpp
+    CoverSpotDefinition.cpp
+    CoverSpotInfoPage.cpp
+    CoverSpotNode.cpp
+    DamageZoneNode.cpp
+    DefinitionUtils.cpp
+    DeviceSelectionDialog.cpp
+    DialogToolbar.cpp
+    DockableForm.cpp
+    DummyObjectDefinition.cpp
+    DummyObjectNode.cpp
+    EditConversationDialog.cpp
+    EditConversationListDialog.cpp
+    EditConversationRemarkDialog.cpp
+    EditDialogueDialog.cpp
+    EditFilenameListDialog.cpp
+    EditRemarkDialog.cpp
+    EditScript.cpp
+    EditStringDialog.cpp
+    EditStringTwiddlerDialog.cpp
+    EditorAssetMgr.cpp
+    EditorINI.cpp
+    EditorPhys.cpp
+    EditorPropSheet.cpp
+    EditorSaveLoad.cpp
+    Export.cpp
+    ExportPresetsDialog.cpp
+    FileMgr.cpp
+    FilePicker.cpp
+    FormToolbar.cpp
+    GenerateBaseDialog.cpp
+    GenerateVisDialog.cpp
+    GeneratingEdgeSampledVisDialog.cpp
+    GeneratingLightVisDialog.cpp
+    GeneratingManualVisDialog.cpp
+    GeneratingPathfindDialog.cpp
+    GeneratingVisDialog.cpp
+    GenericTextDialog.cpp
+    GotoGroupDialog.cpp
+    GotoLocationDialog.cpp
+    GotoObjectByIDDialog.cpp
+    GotoObjectDialog.cpp
+    GrabHandles.cpp
+    GroupMgr.cpp
+    HeightfieldMaterialSettingsDialog.cpp
+    HistogramCtl.cpp
+    Icons.cpp
+    ImportTranslationDialog.cpp
+    IncludeFilesDialog.cpp
+    InstancesPage.cpp
+    LODSettingsDialog.cpp
+    LevelEdit.cpp
+    LevelEditDoc.cpp
+    LevelEditView.cpp
+    LevelSettingsDialog.cpp
+    LightAmbientForm.cpp
+    LightDefinition.cpp
+    LightNode.cpp
+    LightSettingsPage.cpp
+    LightSolveOptionsDialog.cpp
+    LightSolveProgressDialog.cpp
+    MainDialogBar.cpp
+    MainFrm.cpp
+    MemLogDialog.cpp
+    MissingTranslationReportDialog.cpp
+    ModelUtils.cpp
+    MouseMgr.cpp
+    Mover.cpp
+    MusicPropPage.cpp
+    NewAssetPackageDialog.cpp
+    NewHeightfieldDialog.cpp
+    Node.cpp
+    NodeIDStartDialog.cpp
+    NodeInfoPage.cpp
+    NodeMgr.cpp
+    NodeScriptsPropPage.cpp
+    ObjectNode.cpp
+    OptimizingVisDialog.cpp
+    OutputForm.cpp
+    OverlapPage.cpp
+    ParameterCtrls.cpp
+    ParameterInheritanceDialog.cpp
+    ParameterSheet.cpp
+    PathfindSectorBuilder.cpp
+    PathfindStartDefinition.cpp
+    PathfindStartNode.cpp
+    PhysObjEditTab.cpp
+    PhysObjectEditDialog.cpp
+    Picker.cpp
+    PlaySoundDialog.cpp
+    PositionPage.cpp
+    Preset.cpp
+    PresetDependencyTab.cpp
+    PresetDialogueTab.cpp
+    PresetExport.cpp
+    PresetGeneralTab.cpp
+    PresetListDialog.cpp
+    PresetLogger.cpp
+    PresetMgr.cpp
+    PresetPicker.cpp
+    PresetPropSheet.cpp
+    PresetRemapDialog.cpp
+    PresetSettingsTab.cpp
+    PresetTransitionTab.cpp
+    PresetZoneTab.cpp
+    PresetsLibForm.cpp
+    ProfileSection.cpp
+    ProgressUI.cpp
+    SceneEditor.cpp
+    ScriptEditDialog.cpp
+    ScriptMgr.cpp
+    SelectPresetDialog.cpp
+    SelectionBox.cpp
+    SkyPropPage.cpp
+    SoundNode.cpp
+    SoundSettingsPage.cpp
+    SpawnPointNode.cpp
+    SpawnerNode.cpp
+    SpecSheet.cpp
+    Splash.cpp
+    SplashScreen.cpp
+    StdAfx.cpp
+    StringLibraryDialog.cpp
+    StringPicker.cpp
+    StringPickerDialog.cpp
+    StringPickerMainDialog.cpp
+    StringsCategoryNameDialog.cpp
+    StringsCategoryViewDialog.cpp
+    SunlightDialog.cpp
+    TGAToDXT.cpp
+    TerrainDefinition.cpp
+    TerrainLODPage.cpp
+    TerrainNode.cpp
+    TerrainSectionPersist.cpp
+    TileDefinition.cpp
+    TileNode.cpp
+    TransitionEditDialog.cpp
+    TransitionNode.cpp
+    TranslationExportDialog.cpp
+    UIThread.cpp
+    UndoMgr.cpp
+    UniqueList.cpp
+    UpdateAssetsDialog.cpp
+    UpdatePresetDialog.cpp
+    UpdatingDBDialog.cpp
+    Utils.cpp
+    VSSClass.cpp
+    ValueListDialog.cpp
+    Vector3Dialog.cpp
+    VisErrorReportDialog.cpp
+    VisLog.cpp
+    VisMgr.cpp
+    VisPointDefinition.cpp
+    VisPointGenerator.cpp
+    VisPointNode.cpp
+    VisSectorSampler.cpp
+    VisStatsDialog.cpp
+    VisWindowDialog.cpp
+    VisualOptionsDialog.cpp
+    WaypathDefinition.cpp
+    WaypathInfoPage.cpp
+    WaypathNode.cpp
+    WaypointNode.cpp
+    WeatherPropPage.cpp
+    WelcomeDialog.cpp
+    ZoneEditDialog.cpp
+    ZoneInfoPage.cpp
+    ZoneNode.cpp
+    _assetmgr.cpp
+    _wwaudio.cpp
+    assetdatabase.cpp
+    assetpackagemgr.cpp
+    buildingchildnode.cpp
+    editableheightfield.cpp
+    editormixfile.cpp
+    editoronlydefinition.cpp
+    editoronlyobjectnode.cpp
+    excel.cpp
+    excel8.cpp
+    heightfieldeditor.cpp
+    heightfieldmgr.cpp
+    heightfieldpage.cpp
+    lightsolvesavesystem.cpp
+    mixfiledatabase.cpp
+    rcstringextractor.cpp
+    reportmgr.cpp
+    stringsmgr.cpp
+    test.cpp
+)
+
+set(CMAKE_MFC_FLAG 1)
+add_executable(LevelEdit WIN32 ${SOURCES} LevelEdit.rc)
+target_include_directories(LevelEdit PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${MSS_INCLUDE_DIRS}
+    ${NVDXTLIB_INCLUDE_DIRS}
+)
+target_link_libraries(LevelEdit PRIVATE
+    Microsoft::D3DX9
+    CombatE
+    WW3D2E
+    WWAudioE
+    WWDebugE
+    WWNet
+    WWPhysE
+    WWSaveLoadE
+    WWTranslateDb
+    WWUi
+    ${MSS_LIBRARIES}
+    ${NVDXTLIB_LIBRARIES}
+    dinput8
+    legacy_stdio_definitions
+    version
+
+    # probably redundant
+    imagehlp.lib
+    shlwapi
+    imagehlp
+    ws2_32
+    winmm
+    vfw32
+)
+
+target_compile_definitions(LevelEdit PRIVATE
+    PARAM_EDITING_ON
+    PUBLIC_EDITOR_VER
+)
+set_target_properties(LevelEdit PROPERTIES
+    OUTPUT_NAME_DEBUG "LevelEditD"
+    OUTPUT_NAME_RELWITHDEBINFO "LevelEditP"
+)
+
+# IDL file generation
+
+set(MIDL_OUTPUT
+    ${CMAKE_CURRENT_BINARY_DIR}/vss.h
+    ${CMAKE_CURRENT_BINARY_DIR}/vss_i.c
+)
+set(MIDL_FILE
+    ${CMAKE_CURRENT_LIST_DIR}/VSS.IDL
+)
+add_custom_command(
+    OUTPUT ${MIDL_OUTPUT}
+    COMMAND midl /h vss.h /iid vss_i.c /o "NUL" /mktyplib20 /env win32 /W1 /char signed /target "NT60"  /D "_DEBUG" ${MIDL_FILE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${MIDL_FILE}
+    MAIN_DEPENDENCY ${MIDL_FILE}
+    VERBATIM
+)
+target_sources(LevelEdit PRIVATE ${MIDL_FILE} ${MIDL_OUTPUT})

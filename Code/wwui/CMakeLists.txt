@@ -1,0 +1,65 @@
+set(SOURCES
+    IMECandidate.cpp
+    IMECandidateCtrl.cpp
+    IMEManager.cpp
+    ProgressCtrl.cpp
+    buttonctrl.cpp
+    checkboxctrl.cpp
+    childdialog.cpp
+    comboboxctrl.cpp
+    dialogbase.cpp
+    dialogbutton.cpp
+    dialogcontrol.cpp
+    dialogmgr.cpp
+    dialogparser.cpp
+    dialogtext.cpp
+    dialogtransition.cpp
+    dropdownctrl.cpp
+    editctrl.cpp
+    healthbarctrl.cpp
+    imagectrl.cpp
+    inputctrl.cpp
+    listctrl.cpp
+    listiconmgr.cpp
+    mapctrl.cpp
+    menubackdrop.cpp
+    menudialog.cpp
+    menuentryctrl.cpp
+    merchandisectrl.cpp
+    mousemgr.cpp
+    multilinetextctrl.cpp
+    popupdialog.cpp
+    screencursor.cpp
+    scrollbarctrl.cpp
+    shortcutbarctrl.cpp
+    sliderctrl.cpp
+    stylemgr.cpp
+    tabctrl.cpp
+    textmarqueectrl.cpp
+    tooltip.cpp
+    tooltipmgr.cpp
+    treectrl.cpp
+    viewerctrl.cpp
+    wwuiinput.cpp
+)
+
+add_library(WWUi STATIC ${SOURCES})
+target_include_directories(WWUi PUBLIC
+    $<BUILD_INTERFACE:
+        ${PROJECT_SOURCE_DIR}/Code/wwui
+    >
+    PRIVATE
+        ${MSS_INCLUDE_DIRS}
+)
+target_link_libraries(WWUi PRIVATE
+    WW3D2
+    WWAudio
+    WWDebug
+    WWLib
+    WWTranslateDb
+    Microsoft::D3DX9
+    ${MSS_LIBRARIES}
+)
+target_compile_definitions(WWUi PRIVATE
+    _MBCS
+)
