@@ -55,7 +55,7 @@
 class FastFixedAllocator;    //Allocates and deletes items of a fixed size.
 class FastAllocatorGeneral;  //Allocates and deletes items of any size. Can use as a fast replacement for global new/delete.
 
-
+extern FastAllocatorGeneral* generalAllocator;
 
 ///////////////////////////////////////////////////////////////////////////////
 // StackAllocator
@@ -545,9 +545,9 @@ WWINLINE void* FastAllocatorGeneral::Realloc(void* pAlloc, unsigned int n){
 
       T*            address(T& t)       const             { return (&t); } //These two are slightly strange but 
       const  T*     address(const T& t) const             { return (&t); } //required functions. Just do it.
-      static T*     allocate(size_t n, const void* =NULL) { return (T*)generalAllocator.Alloc(n*sizeof(T)); }
+      static T*     allocate(size_t n, const void* =NULL) { return (T*)generalAllocator->Alloc(n*sizeof(T)); }
       static void   construct(T* ptr, const T& value)     { new(ptr) T(value); }
-      static void   deallocate(void* ptr, size_t /*n*/)   { generalAllocator.Free(ptr); }
+      static void   deallocate(void* ptr, size_t /*n*/)   { generalAllocator->Free(ptr); }
       static void   destroy(T* ptr)                       { ptr->~T(); }
       static size_t max_size()                            { return (size_t)-1; }
 
@@ -558,7 +558,7 @@ WWINLINE void* FastAllocatorGeneral::Realloc(void* pAlloc, unsigned int n){
       //random objects through this function but delete them through 
       //the above delallocate() function. So your version of deallocate
       //should *not* assume that it will only be given T objects to delete.
-      char* _Charalloc(size_t n){ return (char*)::generalAllocator.Alloc(n*sizeof(char)); }
+      char* _Charalloc(size_t n){ return (char*)::generalAllocator->Alloc(n*sizeof(char)); }
    };
 #else
    //This is a C++ language standard allocator. Most C++ compilers after 1999 

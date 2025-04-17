@@ -184,7 +184,7 @@ public:
 
 	RenderObjClass(void);
 	RenderObjClass(const RenderObjClass & src);
-	RenderObjClass & RenderObjClass::operator = (const RenderObjClass &);
+	RenderObjClass & operator = (const RenderObjClass &);
 	virtual ~RenderObjClass(void)																					{ }
 
 
@@ -443,20 +443,20 @@ protected:
 	{
 		COLLISION_TYPE_MASK =		0x000000FF,
 
-		IS_VISIBLE =					0x00000100,
+		IS_VISIBLE =				0x00000100,
 		IS_NOT_HIDDEN =				0x00000200,
 		IS_NOT_ANIMATION_HIDDEN =	0x00000400,
 		IS_FORCE_VISIBLE =			0x00000800,
 		BOUNDING_VOLUMES_VALID =	0x00002000,		
-		IS_TRANSLUCENT =				0x00004000,			// is additive or alpha blended on any poly
+		IS_TRANSLUCENT =			0x00004000,			// is additive or alpha blended on any poly
 		//IS_VERTEX_PROCESSOR =		0x00008000,			// is or has a vertex processor, OBSOLETE!
 		SUBOBJS_MATCH_LOD =			0x00010000,			// force sub-objects to have same LOD level
 		SUBOBJ_TRANSFORMS_DIRTY =	0x00020000,			// my sub-objects need me to update their transform
 		HAS_USER_LIGHTING =			0x00040000,			// the user has installed a static lighting solve.
 		
-		IS_REALLY_VISIBLE =			IS_VISIBLE | IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
-      IS_NOT_HIDDEN_AT_ALL =     IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
-		DEFAULT_BITS =					COLLISION_TYPE_ALL | IS_NOT_HIDDEN | IS_NOT_ANIMATION_HIDDEN,
+		IS_REALLY_VISIBLE =			static_cast<uint32_t>(IS_VISIBLE) | static_cast<uint32_t>(IS_NOT_HIDDEN) | static_cast<uint32_t>(IS_NOT_ANIMATION_HIDDEN),
+		IS_NOT_HIDDEN_AT_ALL =		static_cast<uint32_t>(IS_NOT_HIDDEN) | static_cast<uint32_t>(IS_NOT_ANIMATION_HIDDEN),
+		DEFAULT_BITS =				static_cast<uint32_t>(COLLISION_TYPE_ALL) | static_cast<uint32_t>(IS_NOT_HIDDEN) | static_cast<uint32_t>(IS_NOT_ANIMATION_HIDDEN),
 	};
 
 	mutable unsigned long		Bits;

@@ -36,7 +36,6 @@
 *
 ******************************************************************************/
 
-#include <atlbase.h>
 #include "WOLSession.h"
 #include "WOLChatObserver.h"
 #include "WOLNetUtilObserver.h"
@@ -45,7 +44,7 @@
 #include "WOLServer.h"
 #include "WaitCondition.h"
 #include "WOLErrorUtil.h"
-#include <WWDebug\WWDebug.h>
+#include <WWDebug/WWDebug.h>
 #include <stdlib.h>
 
 #ifdef _MSC_VER
@@ -57,6 +56,7 @@
 #ifdef _MSC_VER
 #pragma warning (pop)
 #endif
+
 
 namespace WWOnline {
 

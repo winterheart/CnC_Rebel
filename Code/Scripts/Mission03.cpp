@@ -1602,7 +1602,7 @@ DECLARE_SCRIPT(M03_CommCenter_SateliteDish_Controller_JDG, "")
 	
 		if (param == play_sounds)
 		{
-			char *soundName = "Satelite Dish Moving Twiddler";
+			const char *soundName = "Satelite Dish Moving Twiddler";
 			Vector3 soundPosition (-110.26f, 41.30f, 19.37f);
 
 			Commands->Create_Sound ( soundName, soundPosition, obj );
@@ -1708,7 +1708,7 @@ DECLARE_SCRIPT(M03_Ambient_Birdcall_Controller_JDG, "")
 	
 		if (param == play_birdcall)
 		{
-			char *soundName = "Birdcall Twiddler";
+			const char *soundName = "Birdcall Twiddler";
 			Vector3 soundPosition;
 
 			GameObject * star = Commands->Get_A_Star (Vector3(0.0f,0.0f,0.0f));
@@ -1852,12 +1852,12 @@ DECLARE_SCRIPT(M03_Announce_PowerPlant_Controller_JDG, "")
 
 		else if (param == play_klaxon)
 		{
-			char *klaxonNames[2] = {
+			const char *klaxonNames[2] = {
 				"Klaxon Warning",
 				"Klaxon Info"
 			};
 			
-			char *klaxonName = klaxonNames[klaxon];
+			const char *klaxonName = klaxonNames[klaxon];
 
 			Commands->Create_Sound ( klaxonName, spkr_1_spot, obj );
 			Commands->Create_Sound ( klaxonName, spkr_2_spot, obj );
@@ -1875,7 +1875,7 @@ DECLARE_SCRIPT(M03_Announce_PowerPlant_Controller_JDG, "")
 
 		else if (param == play_sound)
 		{
-			char *sounds[19] = {
+			const char *sounds[19] = {
 				"01-i000e",
 				"01-i002e",
 				"01-i004e",
@@ -1896,7 +1896,7 @@ DECLARE_SCRIPT(M03_Announce_PowerPlant_Controller_JDG, "")
 				"01-i078e",
 				"01-i022e"
 			};
-			char *soundName;
+			const char *soundName;
 			soundName = sounds[sound];
 			Commands->Create_Sound ( soundName, spkr_1_spot, obj );
 			Commands->Create_Sound ( soundName, spkr_2_spot, obj );
@@ -2276,12 +2276,12 @@ DECLARE_SCRIPT(M03_Announce_Refinery_Controller_JDG, "")
 
 		else if (param == play_klaxon)
 		{
-			char *klaxonNames[2] = {
+			const char *klaxonNames[2] = {
 				"Klaxon Warning",
 				"Klaxon Info"
 			};
 
-			char *klaxonName = klaxonNames[klaxon];
+			const char *klaxonName = klaxonNames[klaxon];
 
 			Commands->Create_Sound ( klaxonName, spkr_1_spot, obj );
 			Commands->Create_Sound ( klaxonName, spkr_2_spot, obj );
@@ -2308,7 +2308,7 @@ DECLARE_SCRIPT(M03_Announce_Refinery_Controller_JDG, "")
 
 		else if (param == play_sound)
 		{
-			char *sounds[28] = {
+			const char *sounds[28] = {
 				"01-i010E",
 				"01-i022E",
 				"01-i032E",
@@ -2339,7 +2339,7 @@ DECLARE_SCRIPT(M03_Announce_Refinery_Controller_JDG, "")
 				"01-i098E"
 			};
 
-			char *soundName = sounds[sound];
+			const char *soundName = sounds[sound];
 
 			Commands->Create_Sound ( soundName, spkr_1_spot, obj );
 			Commands->Create_Sound ( soundName, spkr_2_spot, obj );
@@ -2767,12 +2767,12 @@ DECLARE_SCRIPT(M03_Announce_CommCenter_Controller_JDG, "")
 
 		else if (param == play_klaxon)
 		{
-			char *klaxonNames[2] = {
+			const char *klaxonNames[2] = {
 				"Klaxon Warning",
 				"Klaxon Info"
 			};
 
-			char *klaxonName = klaxonNames[klaxon];
+			const char *klaxonName = klaxonNames[klaxon];
 
 			Commands->Create_Sound ( klaxonName, spkr_1_spot, obj );
 			Commands->Create_Sound ( klaxonName, spkr_2_spot, obj );
@@ -2789,7 +2789,7 @@ DECLARE_SCRIPT(M03_Announce_CommCenter_Controller_JDG, "")
 
 		else if (param == play_sound)
 		{
-			char *sounds[15] = {
+			const char *sounds[15] = {
 				"01-I022E",
 				"01-I028E",
 				"01-I030E",
@@ -2807,7 +2807,7 @@ DECLARE_SCRIPT(M03_Announce_CommCenter_Controller_JDG, "")
 				"01-I066E"
 			};
 
-			char *soundName = sounds[sound];
+			const char *soundName = sounds[sound];
 
 			Commands->Create_Sound ( soundName, spkr_1_spot, obj );
 			Commands->Create_Sound ( soundName, spkr_2_spot, obj );
@@ -3924,7 +3924,7 @@ DECLARE_SCRIPT(M03_Flyover_Controller, "")
 
 	void Timer_Expired(GameObject * obj, int timer_id)
 	{
-		char *flyovers[17] = 
+		const char *flyovers[17] =
 		{
 			"A-10_1.txt",
 			"A-10_2.txt",
@@ -5730,7 +5730,7 @@ DECLARE_SCRIPT(M03_Beach_Radio, "")
 		}
 		else
 		{
-			char* conv[3];
+			const char* conv[3];
 			conv[0] = "M03CON044";
 			conv[1] = "M03CON045";
 			conv[2] = "M03CON046";

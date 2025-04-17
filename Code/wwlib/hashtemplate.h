@@ -50,11 +50,12 @@
 template <class Key> class HashTemplateKeyClass
 {
 public:
-	static inline unsigned int Get_Hash_Value (const Key& k);
+	static unsigned int Get_Hash_Value (const Key& k);
 };
 
 // Default hash function for data types that can be cast into an unsigned int
-template <class Key> inline unsigned int HashTemplateKeyClass<Key>::Get_Hash_Value (const Key& k)
+template <class Key>
+unsigned int HashTemplateKeyClass<Key>::Get_Hash_Value (const Key& k)
 { 
 	unsigned int hval = *((const unsigned int*)(&k));
 	hval = hval + (hval>>5) + (hval>>10) + (hval >> 20);

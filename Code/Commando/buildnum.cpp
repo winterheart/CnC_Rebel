@@ -247,7 +247,7 @@ BuildInfoClass::BuildType BuildInfoClass::Get_Build_Type(void)
  * HISTORY:                                                                                    *
  *   10/29/2001 7:42PM ST : Created                                                            *
  *=============================================================================================*/
-char *BuildInfoClass::Get_Build_Type_String(void)
+const char *BuildInfoClass::Get_Build_Type_String(void)
 {
 	switch (Get_Build_Type()) {
 		case BUILD_DEBUG:

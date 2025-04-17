@@ -88,7 +88,7 @@ class BuildInfoClass
 		** Get build type.
 		*/
 		static BuildType Get_Build_Type(void);
-		static char *Get_Build_Type_String(void);
+		static const char *Get_Build_Type_String(void);
 
 		/*
 		** Dump build info to the log file

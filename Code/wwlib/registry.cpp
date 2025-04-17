@@ -385,7 +385,7 @@ void	RegistryClass::Set_String( const WCHAR * name, const WCHAR *value )
  * HISTORY:                                                                                    *
  *   11/21/2001 3:32PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Save_Registry_Values(HKEY key, char *path, INIClass *ini)
+void RegistryClass::Save_Registry_Values(HKEY key, const char *path, INIClass *ini)
 {
 	int index = 0;
 	long result = ERROR_SUCCESS;
@@ -461,7 +461,7 @@ void RegistryClass::Save_Registry_Values(HKEY key, char *path, INIClass *ini)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:33PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Save_Registry_Tree(HKEY root, char *path, INIClass *ini)
+void RegistryClass::Save_Registry_Tree(HKEY root, const char *path, INIClass *ini)
 {
 	HKEY base_key;
 	HKEY sub_key;
@@ -541,7 +541,7 @@ void RegistryClass::Save_Registry_Tree(HKEY root, char *path, INIClass *ini)
  * HISTORY:                                                                                    *
  *   11/21/2001 3:36PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Save_Registry(const char *filename, HKEY root, char *path)
+void RegistryClass::Save_Registry(const char *filename, HKEY root, const char *path)
 {
 	RawFileClass file(filename);
 	INIClass ini;
@@ -568,7 +568,7 @@ void RegistryClass::Save_Registry(const char *filename, char *path) {
  * HISTORY:                                                                                    *
  *   11/21/2001 3:35PM ST : Created                                                            *
  *=============================================================================================*/
-void RegistryClass::Load_Registry(const char *filename, HKEY root, char *old_path, char *new_path)
+void RegistryClass::Load_Registry(const char *filename, HKEY root, const char *old_path, const char *new_path)
 {
 	if (!IsLocked) {
 		RawFileClass file(filename);
@@ -764,12 +764,12 @@ void RegistryClass::Delete_Registry_Tree(char *path)
 	RegistryClass::Delete_Registry_Tree(HKEY_CURRENT_USER, path);
 }
 
-bool RegistryClass::Migrate_Registry(HKEY src_root, char *src_path, HKEY dst_root, char *dst_path) {
+bool RegistryClass::Migrate_Registry(HKEY src_root, const char *src_path, HKEY dst_root, const char *dst_path) {
 	if(RegistryClass::Exists(dst_root, dst_path)) {
 		// Path already exists, job well done!
 		return false;
 	}
-	if (!RegistryClass::Exists(src_root, src_path)) {
+	if (!Exists(src_root, src_path)) {
 		// Original path does not exist, nothing to do.
 		return false;
 	}
@@ -780,8 +780,8 @@ bool RegistryClass::Migrate_Registry(HKEY src_root, char *src_path, HKEY dst_roo
 	}
 
 	strcat(tmp_path, "\\registry.ini");
-	RegistryClass::Save_Registry(tmp_path, src_root, src_path);
-	RegistryClass::Load_Registry(tmp_path, dst_root, src_path, dst_path);
+	Save_Registry(tmp_path, src_root, src_path);
+	Load_Registry(tmp_path, dst_root, src_path, dst_path);
 
 	DeleteFile(tmp_path);
 

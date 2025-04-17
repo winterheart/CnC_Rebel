@@ -107,19 +107,19 @@ public:
 	//
 	static void Delete_Registry_Tree(HKEY root, char *path);
 	static void Delete_Registry_Tree(char *path);
-	static void Load_Registry(const char *filename, HKEY root, char *old_path, char *new_path);
+	static void Load_Registry(const char *filename, HKEY root, const char *old_path, const char *new_path);
 	static void Load_Registry(const char *filename, char *old_path, char *new_path);
-	static void Save_Registry(const char *filename, HKEY root, char *path);
+	static void Save_Registry(const char *filename, HKEY root, const char *path);
 	static void Save_Registry(const char *filename, char *path);
 
 	// Migrate entries from src to dst location
-	static bool Migrate_Registry(HKEY src_root, char *src_path, HKEY dst_root, char *dst_path);
+	static bool Migrate_Registry(HKEY src_root, const char *src_path, HKEY dst_root, const char *dst_path);
 
 private:
 
 	static void Delete_Registry_Values(HKEY key);
-	static void Save_Registry_Tree(HKEY root, char *path, INIClass *ini);
-	static void Save_Registry_Values(HKEY key, char *path, INIClass *ini);
+	static void Save_Registry_Tree(HKEY root, const char *path, INIClass *ini);
+	static void Save_Registry_Values(HKEY key, const char *path, INIClass *ini);
 
 
 	int	Key;

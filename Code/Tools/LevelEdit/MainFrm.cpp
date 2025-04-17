@@ -5698,7 +5698,7 @@ CMainFrame::OnExportTileList (void)
 		//
 		//	Open the file
 		//
-		StringClass filename = dialog.GetPathName ();
+		StringClass filename{dialog.GetPathName ()};
 		TextFileClass text_file (filename);
 		if (text_file.Open (FileClass::WRITE)) {
 

@@ -72,8 +72,8 @@ template<typename Event> class Observer
 		//! Notifier has ended notification of this event
 		virtual void NotificationEnded(const Notifier<Event>& notifier)
 			{
-			NotifierColl::iterator pos = std::find(mNotifiers.begin(),
-				mNotifiers.end(), &notifier);
+				typename NotifierColl::iterator pos = std::find(mNotifiers.begin(),
+				                                                mNotifiers.end(), &notifier);
 
 			if (pos != mNotifiers.end())
 				{
@@ -139,8 +139,8 @@ template<typename Event> class Notifier
 		//! Add an observer of this event
 		virtual void AddObserver(Observer<Event>& observer)
 			{
-			ObserverColl::iterator pos = std::find(mObservers.begin(),
-				mObservers.end(), &observer);
+				typename ObserverColl::iterator pos = std::find(mObservers.begin(),
+				                                                mObservers.end(), &observer);
 
 			if (pos == mObservers.end())
 				{
@@ -152,8 +152,8 @@ template<typename Event> class Notifier
 		//! Remove an observer of this event
 		virtual void RemoveObserver(Observer<Event>& observer)
 			{
-			ObserverColl::iterator pos = std::find(mObservers.begin(),
-				mObservers.end(), &observer);
+				typename ObserverColl::iterator pos = std::find(mObservers.begin(),
+				                                                mObservers.end(), &observer);
 
 			if (pos != mObservers.end())
 				{

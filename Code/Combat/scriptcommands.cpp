@@ -102,7 +102,7 @@ bool	DamageModelDirection;		// HACK
 /*
 ** Debug messages
 */
-void	Debug_Message( char *format, ... )
+void	Debug_Message(const char *format, ... )
 {
 #ifdef WWDEBUG
 	SCRIPT_PTR_CHECK( format );
@@ -2257,7 +2257,7 @@ unsigned int Get_Sync_Time( void )
 /*
 ** Objectives
 */
-void	Add_Objective( int id, int type,  int status, int short_description_id, char * description_sound_filename, int long_description_id )
+void	Add_Objective( int id, int type,  int status, int short_description_id, const char * description_sound_filename, int long_description_id )
 {
 	SCRIPT_TRACE((	"ST>Add_Objective( %d, %d, %d, %d %d )\n", id, type, status, short_description_id, long_description_id ));
 	ObjectiveManager::Add_Objective( id, type, status, short_description_id, long_description_id, description_sound_filename );

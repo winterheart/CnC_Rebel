@@ -49,9 +49,8 @@
 #include "bittype.h"
 #include "chunkio.h"
 #include "wwdebug.h"
+#include "persist.h"
 #include "saveload.h"
-
-class PersistClass;
 
 /*
 ** PersistFactoryClass

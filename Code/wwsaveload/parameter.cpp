@@ -231,8 +231,7 @@ StringParameterClass::operator= (const StringParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-StringParameterClass::operator== (const StringParameterClass &src)
-{
+StringParameterClass::operator== (const StringParameterClass &src) const {
 	bool retval = false;
 
 	if (m_String != NULL && src.m_String != NULL &&
@@ -250,7 +249,7 @@ StringParameterClass::operator== (const StringParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-StringParameterClass::operator== (const ParameterClass &src)
+StringParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -512,8 +511,7 @@ EnumParameterClass::operator= (const EnumParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-EnumParameterClass::operator== (const EnumParameterClass &src)
-{
+EnumParameterClass::operator== (const EnumParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -532,7 +530,7 @@ EnumParameterClass::operator== (const EnumParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-EnumParameterClass::operator== (const ParameterClass &src)
+EnumParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -667,8 +665,7 @@ PhysDefParameterClass::operator= (const PhysDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-PhysDefParameterClass::operator== (const PhysDefParameterClass &src)
-{
+PhysDefParameterClass::operator== (const PhysDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -687,7 +684,7 @@ PhysDefParameterClass::operator== (const PhysDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-PhysDefParameterClass::operator== (const ParameterClass &src)
+PhysDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -765,8 +762,7 @@ ModelDefParameterClass::operator= (const ModelDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ModelDefParameterClass::operator== (const ModelDefParameterClass &src)
-{
+ModelDefParameterClass::operator== (const ModelDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -785,7 +781,7 @@ ModelDefParameterClass::operator== (const ModelDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ModelDefParameterClass::operator== (const ParameterClass &src)
+ModelDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -863,8 +859,7 @@ DefParameterClass::operator= (const DefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-DefParameterClass::operator== (const DefParameterClass &src)
-{
+DefParameterClass::operator== (const DefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -883,7 +878,7 @@ DefParameterClass::operator== (const DefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-DefParameterClass::operator== (const ParameterClass &src)
+DefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -966,8 +961,7 @@ GenericDefParameterClass::operator= (const GenericDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-GenericDefParameterClass::operator== (const GenericDefParameterClass &src)
-{
+GenericDefParameterClass::operator== (const GenericDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -986,7 +980,7 @@ GenericDefParameterClass::operator== (const GenericDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-GenericDefParameterClass::operator== (const ParameterClass &src)
+GenericDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1066,8 +1060,7 @@ GameObjDefParameterClass::operator= (const GameObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-GameObjDefParameterClass::operator== (const GameObjDefParameterClass &src)
-{
+GameObjDefParameterClass::operator== (const GameObjDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -1086,7 +1079,7 @@ GameObjDefParameterClass::operator== (const GameObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-GameObjDefParameterClass::operator== (const ParameterClass &src)
+GameObjDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1167,8 +1160,7 @@ WeaponObjDefParameterClass::operator= (const WeaponObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-WeaponObjDefParameterClass::operator== (const WeaponObjDefParameterClass &src)
-{
+WeaponObjDefParameterClass::operator== (const WeaponObjDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -1187,7 +1179,7 @@ WeaponObjDefParameterClass::operator== (const WeaponObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-WeaponObjDefParameterClass::operator== (const ParameterClass &src)
+WeaponObjDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1268,8 +1260,7 @@ AmmoObjDefParameterClass::operator= (const AmmoObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-AmmoObjDefParameterClass::operator== (const AmmoObjDefParameterClass &src)
-{
+AmmoObjDefParameterClass::operator== (const AmmoObjDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -1288,7 +1279,7 @@ AmmoObjDefParameterClass::operator== (const AmmoObjDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-AmmoObjDefParameterClass::operator== (const ParameterClass &src)
+AmmoObjDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1369,8 +1360,7 @@ ExplosionObjDefParameterClass::operator= (const ExplosionObjDefParameterClass &s
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ExplosionObjDefParameterClass::operator== (const ExplosionObjDefParameterClass &src)
-{
+ExplosionObjDefParameterClass::operator== (const ExplosionObjDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -1389,7 +1379,7 @@ ExplosionObjDefParameterClass::operator== (const ExplosionObjDefParameterClass &
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ExplosionObjDefParameterClass::operator== (const ParameterClass &src)
+ExplosionObjDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1468,8 +1458,7 @@ SoundDefParameterClass::operator= (const SoundDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-SoundDefParameterClass::operator== (const SoundDefParameterClass &src)
-{
+SoundDefParameterClass::operator== (const SoundDefParameterClass &src) const {
 	bool retval = false;
 
 	if (m_Value != NULL && src.m_Value != NULL &&
@@ -1488,7 +1477,7 @@ SoundDefParameterClass::operator== (const SoundDefParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-SoundDefParameterClass::operator== (const ParameterClass &src)
+SoundDefParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1554,8 +1543,7 @@ ScriptParameterClass::operator= (const ScriptParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ScriptParameterClass::operator== (const ScriptParameterClass &src)
-{
+ScriptParameterClass::operator== (const ScriptParameterClass &src) const {
 	bool retval = false;
 
 	//
@@ -1585,7 +1573,7 @@ ScriptParameterClass::operator== (const ScriptParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ScriptParameterClass::operator== (const ParameterClass &src)
+ScriptParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1674,8 +1662,7 @@ DefIDListParameterClass::operator= (const DefIDListParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-DefIDListParameterClass::operator== (const DefIDListParameterClass &src)
-{
+DefIDListParameterClass::operator== (const DefIDListParameterClass &src) const {
 	bool retval = false;
 
 	//
@@ -1713,7 +1700,7 @@ DefIDListParameterClass::operator== (const DefIDListParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-DefIDListParameterClass::operator== (const ParameterClass &src)
+DefIDListParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1802,8 +1789,7 @@ ZoneParameterClass::operator= (const ZoneParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ZoneParameterClass::operator== (const ZoneParameterClass &src)
-{
+ZoneParameterClass::operator== (const ZoneParameterClass &src) const {
 	bool retval = false;
 
 	//
@@ -1823,7 +1809,7 @@ ZoneParameterClass::operator== (const ZoneParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-ZoneParameterClass::operator== (const ParameterClass &src)
+ZoneParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -1907,8 +1893,7 @@ FilenameListParameterClass::operator= (const FilenameListParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-FilenameListParameterClass::operator== (const FilenameListParameterClass &src)
-{
+FilenameListParameterClass::operator== (const FilenameListParameterClass &src) const {
 	bool retval = false;
 
 	//
@@ -1940,7 +1925,7 @@ FilenameListParameterClass::operator== (const FilenameListParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-FilenameListParameterClass::operator== (const ParameterClass &src)
+FilenameListParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 
@@ -2152,8 +2137,7 @@ SeparatorParameterClass::operator= (const SeparatorParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-SeparatorParameterClass::operator== (const SeparatorParameterClass &src)
-{
+SeparatorParameterClass::operator== (const SeparatorParameterClass &src) const {
 	return true;
 }
 
@@ -2164,7 +2148,7 @@ SeparatorParameterClass::operator== (const SeparatorParameterClass &src)
 //
 /////////////////////////////////////////////////////////////////////
 bool
-SeparatorParameterClass::operator== (const ParameterClass &src)
+SeparatorParameterClass::operator== (const ParameterClass &src) const
 {
 	bool retval = false;
 

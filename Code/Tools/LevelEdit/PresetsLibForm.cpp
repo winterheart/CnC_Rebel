@@ -108,7 +108,7 @@ private:
 #ifndef TreeView_SetOverlay
    #define TreeView_SetOverlay(hwndLV, i, overlay) \
       {	\
-			TVITEMEX item_info = { TVIF_STATE, i, INDEXTOOVERLAYMASK(overlay), TVIS_OVERLAYMASK, 0 };	\
+			TVITEMEX item_info = { TVIF_STATE, i, (uint)(INDEXTOOVERLAYMASK(overlay)), TVIS_OVERLAYMASK, 0 };	\
 			TreeView_SetItem(hwndLV, &item_info);	\
 		}
 #endif
@@ -2283,7 +2283,7 @@ PresetsFormClass::OnPlay (void)
 		//
 		//	Make sure we have a local copy of this sound
 		//
-		CString filename = definition->Get_Filename ();
+		CString filename{definition->Get_Filename ()};
 		if (::Get_File_Mgr ()->Does_File_Exist (filename, true)) {
 		
 			//

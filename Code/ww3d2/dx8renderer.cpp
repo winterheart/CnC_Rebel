@@ -1622,7 +1622,7 @@ void DX8TextureCategoryClass::Render(void)
 	#endif
 
 		for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
-			SNAPSHOT_SAY(("Set_Texture(%d,%s)\n",i,Peek_Texture(i) ? Peek_Texture(i)->Get_Texture_Name() : "NULL"));
+			SNAPSHOT_SAY(("Set_Texture(%d,%s)\n",i,Peek_Texture(i) ? Peek_Texture(i)->Get_Texture_Name().Peek_Buffer() : "NULL"));
 			DX8Wrapper::Set_Texture(i,Peek_Texture(i));
 		}
 

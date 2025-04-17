@@ -971,9 +971,9 @@ void PointGroupClass::Update_Arrays(
 	// since they always all have the same length.
 	if (VertexLoc.Length() < total_vnum) {
 		// Resize arrays (2x guardband to prevent frequent reallocations).
-		VertexLoc.Resize(total_vnum * 2, false);		
-		VertexUV.Resize(total_vnum * 2, false);
-		VertexDiffuse.Resize(total_vnum * 2, false);
+		VertexLoc.Resize(total_vnum * 2, nullptr);
+		VertexUV.Resize(total_vnum * 2, nullptr);
+		VertexDiffuse.Resize(total_vnum * 2, nullptr);
 	}
 
 	int vert, j;

@@ -112,7 +112,7 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const ParameterClass &	operator= (const ParameterClass &src);
-	virtual bool				operator== (const ParameterClass &src) = 0;
+	virtual bool				operator== (const ParameterClass &src) const  = default;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -269,8 +269,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const StringParameterClass &	operator= (const StringParameterClass &src);
-	bool									operator== (const StringParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const StringParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -397,8 +397,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const EnumParameterClass &	operator= (const EnumParameterClass &src);
-	bool								operator== (const EnumParameterClass &src);
-	bool								operator== (const ParameterClass &src);
+	bool								operator== (const EnumParameterClass &src) const;
+	bool								operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -464,8 +464,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const PhysDefParameterClass &	operator= (const PhysDefParameterClass &src);
-	bool									operator== (const PhysDefParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const PhysDefParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -514,8 +514,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const ModelDefParameterClass &	operator= (const ModelDefParameterClass &src);
-	bool									operator== (const ModelDefParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const ModelDefParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -564,8 +564,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const DefParameterClass &	operator= (const DefParameterClass &src);
-	bool								operator== (const DefParameterClass &src);
-	bool								operator== (const ParameterClass &src);
+	bool								operator== (const DefParameterClass &src) const;
+	bool								operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -610,8 +610,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const GenericDefParameterClass &	operator= (const GenericDefParameterClass &src);
-	bool										operator== (const GenericDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const GenericDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -657,8 +657,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const GameObjDefParameterClass &	operator= (const GameObjDefParameterClass &src);
-	bool										operator== (const GameObjDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const GameObjDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -704,8 +704,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const AmmoObjDefParameterClass &	operator= (const AmmoObjDefParameterClass &src);
-	bool										operator== (const AmmoObjDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const AmmoObjDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -740,8 +740,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const WeaponObjDefParameterClass &	operator= (const WeaponObjDefParameterClass &src);
-	bool										operator== (const WeaponObjDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const WeaponObjDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -776,8 +776,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const ExplosionObjDefParameterClass &	operator= (const ExplosionObjDefParameterClass &src);
-	bool										operator== (const ExplosionObjDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const ExplosionObjDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -813,8 +813,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const SoundDefParameterClass &	operator= (const SoundDefParameterClass &src);
-	bool										operator== (const SoundDefParameterClass &src);
-	bool										operator== (const ParameterClass &src);
+	bool										operator== (const SoundDefParameterClass &src) const;
+	bool										operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -846,8 +846,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const ScriptParameterClass &	operator= (const ScriptParameterClass &src);
-	bool									operator== (const ScriptParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const ScriptParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -896,8 +896,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const DefIDListParameterClass &	operator= (const DefIDListParameterClass &src);
-	bool									operator== (const DefIDListParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const DefIDListParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -949,8 +949,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const ZoneParameterClass &		operator= (const ZoneParameterClass &src);
-	bool									operator== (const ZoneParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const ZoneParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -997,8 +997,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const FilenameListParameterClass &	operator= (const FilenameListParameterClass &src);
-	bool									operator== (const FilenameListParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const FilenameListParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
@@ -1097,8 +1097,8 @@ public:
 	//	Public operators
 	//////////////////////////////////////////////////////////////////////////////
 	const SeparatorParameterClass &	operator= (const SeparatorParameterClass &src);
-	bool									operator== (const SeparatorParameterClass &src);
-	bool									operator== (const ParameterClass &src);
+	bool									operator== (const SeparatorParameterClass &src) const;
+	bool									operator== (const ParameterClass &src) const;
 
 	//////////////////////////////////////////////////////////////////////////////
 	//	Public methods
