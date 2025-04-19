@@ -21,6 +21,7 @@
 #include "thread.h"
 #include "except.h"
 #include "wwdebug.h"
+#include <cassert>
 #include <process.h>
 #include <windows.h>
 #pragma warning ( push )
@@ -55,7 +56,7 @@ void __cdecl ThreadClass::Internal_Thread_Function(void* params)
 #ifdef _WIN32
 	Register_Thread_ID(tc->ThreadID, tc->ThreadName);
 
-	if (tc->ExceptionHandler != NULL) {
+	if (tc->ExceptionHandler != nullptr) {
 		__try {
 			tc->Thread_Function();
 		} __except(tc->ExceptionHandler(GetExceptionCode(), GetExceptionInformation())) {};
@@ -81,7 +82,8 @@ void ThreadClass::Execute()
 		// assert(0);
 		return;
 	#else
-		handle=_beginthread(&Internal_Thread_Function,0,this);
+		handle = reinterpret_cast<unsigned long>(CreateThread(
+			nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(Internal_Thread_Function), this, 0, nullptr));
 		SetThreadPriority((HANDLE)handle,THREAD_PRIORITY_NORMAL+thread_priority);
 		WWDEBUG_SAY(("ThreadClass::Execute: Started thread %s, thread ID is %X\n", ThreadName, handle));
 	#endif
@@ -123,7 +125,7 @@ void ThreadClass::Sleep_Ms(unsigned ms)
 }
 
 #ifndef _UNIX
-HANDLE test_event = ::CreateEvent (NULL, FALSE, FALSE, "");
+HANDLE test_event = ::CreateEvent (nullptr, FALSE, FALSE, nullptr);
 #endif
 
 void ThreadClass::Switch_Thread()
