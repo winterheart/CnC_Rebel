@@ -37,7 +37,7 @@
 
 #include "stdafx.h"
 #include "scriptmgr.h"
-#include "..\..\scripts\ScriptEvents.H"
+#include "../../scripts/ScriptEvents.H"
 #include "EditScript.h"
 #include "Utils.h"
 #include "FileMgr.h"
@@ -75,23 +75,15 @@ ScriptMgrClass::Initialize (void)
 
 	CString filename;
 
-// Denzil 4/3/00 - Use scripts.dll for all builds
-#if(0)
-
-	#ifdef WWDEBUG
-	#ifndef NDEBUG
-		filename = "SCRIPTSD.DLL";
-	#else
-		filename = "SCRIPTSP.DLL";
-	#endif
-	#else
-		filename = "SCRIPTS.DLL";
-	#endif
-
-#else // Denzil
-		filename = "SCRIPTS.DLL";
-#endif // Denzil
-
+#ifdef WWDEBUG
+#ifndef NDEBUG
+	filename = "SCRIPTSD.DLL";
+#else
+	filename = "SCRIPTSP.DLL";
+#endif
+#else
+	filename = "SCRIPTS.DLL";
+#endif
 
 	//
 	// Find all files that match this wildcard

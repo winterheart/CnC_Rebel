@@ -124,7 +124,7 @@ if(REBEL_ENABLE_EDITOR)
             WWLib
             Microsoft::D3DX9
     )
-    target_compile_definitions(WWAudioE PRIVATE
+    target_compile_definitions(WWPhysE PRIVATE
         PARAM_EDITING_ON
     )
 endif()

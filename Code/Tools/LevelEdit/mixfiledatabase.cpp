@@ -59,7 +59,7 @@ MixFileDatabaseClass::MixFileDatabaseClass (void)
 	//
 	//	Open Renegade's registry
 	//
-	const char * const RENEGADE_REG_KEY	= "Software\\Westwood\\Renegade";
+	const char * const RENEGADE_REG_KEY	= "Software\\CnC_Rebel\\Rebel";
 	RegistryClass registry (RENEGADE_REG_KEY);
 	if (registry.Is_Valid ()) {
 
