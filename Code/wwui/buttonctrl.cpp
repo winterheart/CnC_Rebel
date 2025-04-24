@@ -304,7 +304,7 @@ ButtonCtrlClass::Create_Bitmap_Button (void)
 //
 ////////////////////////////////////////////////////////////////
 void
-Blit_Section
+Button_Blit_Section
 (	
 	Render2DClass &	  renderer,
 	const Vector2 &	  screen_pos,
@@ -364,25 +364,25 @@ ButtonCtrlClass::Create_Component_Button (void)
 	//
 	//	Upper left
 	//
-	::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, Rect.Top), Vector2 (left, top),
+	Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, Rect.Top), Vector2 (left, top),
 		Vector2 (edge_width, height), texture_dimensions);
 
 	//
 	//	Upper right
 	//
-	::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, Rect.Top), Vector2 (right - edge_width, top),
+	Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, Rect.Top), Vector2 (right - edge_width, top),
 		Vector2 (edge_width, height), texture_dimensions);
 
 	//
 	//	Lower left
 	//
-	::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, Rect.Bottom - height), Vector2 (left, bottom - height),
+	Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, Rect.Bottom - height), Vector2 (left, bottom - height),
 		Vector2 (edge_width, height), texture_dimensions);
 
 	//
 	//	Lower right
 	//
-	::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, Rect.Bottom - height), Vector2 (right - edge_width, bottom - height),
+	Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, Rect.Bottom - height), Vector2 (right - edge_width, bottom - height),
 		Vector2 (edge_width, height), texture_dimensions);
 
 
@@ -399,10 +399,10 @@ ButtonCtrlClass::Create_Component_Button (void)
 
 		horz_size.X = min (remaining_width, horz_size.X);
 
-		::Blit_Section (ButtonRenderers[0], Vector2 (x_pos, Rect.Top), horz_top_pos,
+		Button_Blit_Section (ButtonRenderers[0], Vector2 (x_pos, Rect.Top), horz_top_pos,
 			horz_size, texture_dimensions);
 
-		::Blit_Section (ButtonRenderers[0], Vector2 (x_pos, Rect.Bottom - height), horz_bottom_pos,
+		Button_Blit_Section (ButtonRenderers[0], Vector2 (x_pos, Rect.Bottom - height), horz_bottom_pos,
 			horz_size, texture_dimensions);
 
 		x_pos += horz_size.X;
@@ -423,10 +423,10 @@ ButtonCtrlClass::Create_Component_Button (void)
 
 		vert_size.Y = min (remaining_height, vert_size.Y);
 
-		::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, y_pos), vert_left_pos,
+		Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Left, y_pos), vert_left_pos,
 			vert_size, texture_dimensions);
 
-		::Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, y_pos), vert_right_pos,
+		Button_Blit_Section (ButtonRenderers[0], Vector2 (Rect.Right - edge_width, y_pos), vert_right_pos,
 			vert_size, texture_dimensions);
  		
 		y_pos += vert_size.Y;
