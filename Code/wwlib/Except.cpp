@@ -87,7 +87,7 @@ bool SymbolsAvailable = false;
 HINSTANCE ImageHelp = (HINSTANCE) -1;
 
 void (*AppCallback)() = nullptr;
-char *(*AppVersionCallback)() = nullptr;
+const char *(*AppVersionCallback)() = nullptr;
 
 /*
 ** Flag to indicate we should exit when an exception occurs.
@@ -1289,7 +1289,7 @@ void Register_Application_Exception_Callback(void (*app_callback)())
 	AppCallback = app_callback;
 }
 
-void Register_Application_Version_Callback(char *(*app_ver_callback)())
+void Register_Application_Version_Callback(const char *(*app_ver_callback)())
 {
 	AppVersionCallback = app_ver_callback;
 }

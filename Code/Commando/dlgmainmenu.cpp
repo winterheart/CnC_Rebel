@@ -34,7 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
+#include "buildinfo.h"
 #include "dlgmainmenu.h"
 #include "assetmgr.h"
 #include "rendobj.h"
@@ -51,11 +51,9 @@
 #include "debug.h"
 #include "dialogcontrol.h"
 #include "specialbuilds.h"
-#include "buildnum.h"
 #include "campaign.h"
 #include "gamedata.h"
 #include "imagectrl.h"
-#include "init.h"
 #include "registry.h"
 #include "_globals.h"
 #include "dialogtests.h"
@@ -479,23 +477,7 @@ MainMenuDialogClass::Display (void)
 void
 MainMenuDialogClass::Update_Version_Number (void)
 {
-	//
-	// Version 1.0 by default
-	//
-	DWORD version_major = 1;
-	DWORD version_minor = 0;
-	Get_Version_Number(version_major, version_minor);
-
-	//
-	// Put the version string into the dialog
-	//
-	WideStringClass version_string;
-	// Add build number temporarily. Will probably be removed for shipping.
-	// WideStringClass build_number(BuildInfoClass::Get_Build_Number_String(), true);
-	// WideStringClass build_initials(BuildInfoClass::Get_Builder_Initials(), true);
-	// WideStringClass build_date(BuildInfoClass::Get_Build_Date_String(), true);
-	WideStringClass build_codename(Get_Version_Codename(), true);
-	version_string.Format (L"v%d.%.3d.%d \"%s\" UNKNOWN", (version_major >> 16), (version_major & 0xFFFF), version_minor, build_codename);
+	WideStringClass version_string{REBEL::BuildInfo::Get_Build_Info_String()};
 	Set_Dlg_Item_Text (IDC_VERSION_STATIC, version_string);
 }
 

@@ -44,8 +44,6 @@
 #include "ffactory.h"
 
 
-void	Get_Version_Number(unsigned long &major, unsigned long &minor);
-const char *Get_Version_Codename();
 bool	Game_Init(void);
 void	Install_Fonts (bool onoff);
 void	Application_Exception_Callback(void);

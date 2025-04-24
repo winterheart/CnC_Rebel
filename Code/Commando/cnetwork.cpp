@@ -39,6 +39,7 @@
 #include <shellapi.h>
 #include <stdio.h>
 
+#include "buildinfo.h"
 #include "specialbuilds.h"
 
 #include "langmode.h"
@@ -77,7 +78,6 @@
 #include "packetmgr.h"
 #include "clientpingmanager.h"
 #include "bandwidthgraph.h"
-#include "buildnum.h"
 #include "messagewindow.h"
 #include "wwmemlog.h"
 #include "consolemode.h"
@@ -511,7 +511,7 @@ void cNetwork::Compute_Exe_Key(void)
 	// 11/07/01
 	// We now match only on build number.
 	//
-	string.Format("RENEGADE %u", BuildInfoClass::Get_Build_Number());
+	string.Format("RENEGADE %s", REBEL::BuildInfo::Get_Hash());
 
 	WWDEBUG_SAY(("File id string: %s\n", string));
 	key_string += string;

@@ -36,6 +36,7 @@
 
 
 #include "always.h"
+#include "buildinfo.h"
 #include "gamesideservercontrol.h"
 #include "registry.h"
 #include "_globals.h"
@@ -43,7 +44,6 @@
 #include "gamedata.h"
 #include "servercontrol.h"
 #include "gamemode.h"
-#include "buildnum.h"
 #include "slavemaster.h"
 #include "consolemode.h"
 
@@ -149,7 +149,7 @@ void GameSideServerControlClass::Set_Welcome_Message(void)
 	/*
 	** Basic welcome message includes build info.
 	*/
-	sprintf(welcome, "Welcome to Renegade %s\n", BuildInfoClass::Composite_Build_Info());
+	sprintf(welcome, "Welcome to Renegade %s\n", REBEL::BuildInfo::Get_Build_Info_String());
 
 	/*
 	** Get the slave info and add it into the welcome message.

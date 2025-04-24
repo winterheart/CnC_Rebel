@@ -4464,7 +4464,7 @@ public:
 		float skytintfactor, ramptime;
 		bool	success = false;
 
-		argcount = sscanf (input, "%f %f %f", &skytintfactor, &ramptime);
+		argcount = sscanf (input, "%f %f", &skytintfactor, &ramptime);
 		switch (argcount) {
 
 			case 1:

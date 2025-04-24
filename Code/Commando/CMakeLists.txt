@@ -205,7 +205,7 @@ set(Shell_SOURCES
     AutoStart.cpp
     ConsoleMode.cpp
     WINMAIN.CPP
-    buildnum.cpp
+    buildinfo.cpp
     cdverify.cpp
     cominit.cpp
     gamemode.cpp
@@ -282,6 +282,7 @@ target_include_directories(Renegade PUBLIC
         ${PROJECT_SOURCE_DIR}/Code
     >
     PRIVATE
+        ${PROJECT_BINARY_DIR}/Code/Commando
         ${MSS_INCLUDE_DIRS}
 )
 target_link_libraries(Renegade PRIVATE
@@ -309,7 +310,7 @@ target_link_libraries(Renegade PRIVATE
 target_compile_definitions(Renegade PRIVATE
     WINDOWS_IGNORE_PACKING_MISMATCH
 )
-add_dependencies(Renegade Scripts)
+add_dependencies(Renegade GetGitHash Scripts)
 set_target_properties(Renegade PROPERTIES
     OUTPUT_NAME_DEBUG "RenegadeD"
     OUTPUT_NAME_RELWITHDEBINFO "RenegadeP"

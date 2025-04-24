@@ -55,6 +55,7 @@
 #include "WWAudio.H"
 #include "FFactory.H"
 
+#include "buildinfo.h"
 #include "debug.h"
 #include "dxdefs.h"
 #include "verchk.h"
@@ -73,7 +74,6 @@
 #include "registry.h"
 #include "init.h"
 #include "_globals.h"
-#include "buildnum.h"
 #include "dx8wrapper.h"
 #include "formconv.h"
 #include "autostart.h"
@@ -502,7 +502,7 @@ int Start_Application( HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /
 #endif //WWDEBUG
 
 		Register_Application_Exception_Callback(&Application_Exception_Callback);
-		Register_Application_Version_Callback(&BuildInfoClass::Composite_Build_Info);
+		Register_Application_Version_Callback(&REBEL::BuildInfo::Get_Build_Info_String);
 
 #ifdef _MSC_VER
 		WWDEBUG_SAY(("Game_Main_Loop_Try\n"));

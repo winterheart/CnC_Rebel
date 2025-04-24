@@ -56,7 +56,7 @@ void Load_Image_Helper();
 void Register_Thread_ID(unsigned long thread_id, const char *thread_name, bool main = false);
 void Unregister_Thread_ID(unsigned long thread_id, const char *thread_name);
 void Register_Application_Exception_Callback(void (*app_callback)());
-void Register_Application_Version_Callback(char *(*app_version_callback)());
+void Register_Application_Version_Callback(const char *(*app_version_callback)());
 void Set_Exit_On_Exception(bool set);
 bool Is_Trying_To_Exit();
 unsigned long Get_Main_Thread_ID();
