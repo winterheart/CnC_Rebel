@@ -158,7 +158,7 @@ EditorAssetMgrClass::Determine_Real_Location
 				//
 				//	Does the file exist in this directoy?
 				//
-				StringClass full_path = Make_Path (path_list[index], path);
+				StringClass full_path{Make_Path (path_list[index], path)};
 				if (::GetFileAttributes (full_path) != 0xFFFFFFFF) {
 					test_path = full_path;
 					break;
@@ -608,7 +608,7 @@ EditorFileFactoryClass::Get_File (char const *filename)
 				//
 				//	Does the file exist in this directoy?
 				//
-				StringClass full_path = Make_Path (SearchPathList[index], filename);
+				StringClass full_path{Make_Path (SearchPathList[index], filename)};
 				if (::GetFileAttributes (full_path) != 0xFFFFFFFF) {
 					path = full_path;
 					break;

@@ -214,9 +214,7 @@ DECLARE_SCRIPT(RMV_Engineer_Wander, "Custom_Type:int, Custom_Param_1:int, Custom
 				float facing = Commands->Get_Facing(terminal);
 				Commands->Set_Facing(obj, facing + 180);
 			}
-			char *anim;
-			anim = (char *)int_anim;
-			anim = "s_a_human.h_a_con2";
+			const char *anim = "s_a_human.h_a_con2";
 			ActionParamsStruct params;
 			params.Set_Basic(this, 70, TECHNICIAN_ANIMATION);
 			params.Set_Animation(anim, false);

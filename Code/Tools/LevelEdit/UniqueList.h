@@ -75,8 +75,8 @@ UniqueListClass<T>::Is_Item_In_List (T const & object)
 
 	// Loop through all the objects in this list and see
 	// if any of them match the provided object
-	for (int index = 0; (index < Count ()) && !bfound; index ++) {
-		if (object == Vector[index]) {
+	for (int index = 0; (index < this->Count ()) && !bfound; index ++) {
+		if (object == this->Vector[index]) {
 			bfound = true;
 		}
 	}
@@ -110,12 +110,12 @@ template<class T>
 bool
 UniqueListClass<T>::Add_Unique (T const & object)
 {
-	// Assume sucess
+	// Assume success
 	bool retval = true;
 
 	// If the object isn't already in the list, then add it
 	if (!Is_Item_In_List (object)) {
-		retval = Add (object);
+		retval = this->Add (object);
 	}
 
 	// Return the true/false result code
@@ -134,9 +134,9 @@ UniqueListClass<T>::Remove (T const & object)
 	// Loop through all the objects in this list and see
 	// if any of them match the provided object
 	bool bfound = false;
-	for (int index = 0; (index < Count ()) && !bfound; index ++) {
-		if (object == Vector[index]) {
-			Delete (index);
+	for (int index = 0; (index < this->Count ()) && !bfound; index ++) {
+		if (object == this->Vector[index]) {
+			this->Delete (index);
 			bfound = true;
 		}
 	}

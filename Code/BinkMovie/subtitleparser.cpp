@@ -333,7 +333,7 @@ bool SubTitleParserClass::Parse_Sub_Title(wchar_t* string, SubTitleClass* subTit
 				string = separator;
 			}
 			else {
-				string = L"";
+				string = (wchar_t *) L"";
 			}
 		}
 

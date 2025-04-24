@@ -125,7 +125,7 @@ typedef struct {
 	unsigned int Version;
 
 	// Debug messages
-	void (*	Debug_Message )( char *format, ... );
+	void (*	Debug_Message )(const char *format, ... );
 
 	// Action Commands
 	void ( * Action_Reset )( GameObject * obj, float priority );
@@ -338,7 +338,7 @@ typedef struct {
 
 	// Objectives
 	// char * description_sound_filename = NULL, int long_description_id = 0
-	void	(* Add_Objective)( int id, int type, int status, int short_description_id, char * description_sound_filename, int long_description_id );
+	void	(* Add_Objective)( int id, int type, int status, int short_description_id, const char * description_sound_filename, int long_description_id );
 	void	(* Remove_Objective)( int id );
 	void	(* Set_Objective_Status)( int id, int status );
 	void	(* Change_Objective_Type)( int id, int type );

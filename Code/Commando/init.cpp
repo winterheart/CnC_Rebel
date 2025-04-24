@@ -35,6 +35,7 @@
  *   Commando_Assert_Handler -- Commando callback function for WWASSERT's                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include "buildinfo.h"
 #include "init.h"
 #include "debug.h"
 #include "wwmath.h"
@@ -95,7 +96,6 @@
 #include "stackdump.h"
 #include "registry.h"
 #include "bandwidthgraph.h"
-#include "buildnum.h"
 #include "dx8wrapper.h"
 #include "autostart.h"
 #include "except.h"
@@ -129,12 +129,6 @@ extern const char *VALUE_NAME_TEXTURE_FILTER_MODE;
 #define IMMEDIATE_LOAD						0
 #define IMMEDIATE_LOAD_LEVELNAME			"MDD_0803.mix"
 #endif
-
-// Update on each release
-// TODO: WH: Move to configurable part of project
-const char *version_codename = "MIRAGE TANK";
-const unsigned long version_major = 0x00010025;
-const unsigned long version_minor = 1;
 
 /*
 ** This defines the subdirectory where the game will load all data from
@@ -601,33 +595,6 @@ void Application_Exception_Callback(void)
 bool RestartNeeded = true;
 
 
-/***********************************************************************************************
- * Get_Version_Number -- Collate version information.                                          *
- *                                                                                             *
- *                                                                                             *
- *                                                                                             *
- * INPUT:    Ptr to var to fill with major version number                                      *
- *           Ptr to var to fill with minor version number                                      *
- *                                                                                             *
- *                                                                                             *
- * OUTPUT:   Nothing                                                                           *
- *                                                                                             *
- * WARNINGS: None                                                                              *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   12/3/2001 11:26PM ST : Created                                                            *
- *=============================================================================================*/
-void Get_Version_Number(unsigned long &major, unsigned long &minor)
-{
-	major = version_major;
-	minor = version_minor;
-}
-
-const char *Get_Version_Codename() {
-	return version_codename;
-}
-
-
 /*
 **
 */
@@ -723,7 +690,8 @@ bool Game_Init(void)
 	DebugManager::Init();
   	DebugManager::Load_Registry_Settings( APPLICATION_SUB_KEY_NAME_DEBUG );
 	WWDebug_Install_Assert_Handler(Commando_Assert_Handler);
-	BuildInfoClass::Log_Build_Info();
+	WWDEBUG_SAY((REBEL::BuildInfo::Get_Build_Info_String()));
+	WWDEBUG_SAY(("\n"));
 
 //CRC_Check();
 
@@ -1118,7 +1086,7 @@ bool Game_Init(void)
  * HISTORY:                                                                                    *
  *   11/9/2001 3:39PM ST : Created                                                             *
  *=============================================================================================*/
-char *Build_Registry_Location_String(char *base, char *modifier, char *sub)
+char *Build_Registry_Location_String(const char *base, const char *modifier, const char *sub)
 {
 	static char _whole_registry_string[1024];
 

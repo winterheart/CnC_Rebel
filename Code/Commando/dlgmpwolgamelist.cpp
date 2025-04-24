@@ -34,6 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include "buildinfo.h"
 #include "DlgMPWOLGameList.h"
 #include "specialbuilds.h"
 #include "cNetwork.h"
@@ -900,12 +901,11 @@ void MPWolGameListMenuClass::On_ListCtrl_Sel_Change(ListCtrlClass* list, int id,
 					text.Format(TRANSLATE(IDS_MENU_HOST_INFO_FORMAT), (const WCHAR*)channel->GetName(),
 							mSelectedGame.Title(), HIWORD(mSelectedGame.Version()), LOWORD(mSelectedGame.Version()));
 #else
-					unsigned long verMajor = 0;
-					unsigned long verMinor = 0;
-					Get_Version_Number(verMajor, verMinor);
+					uint32_t verMajor, verMinor, verPatch;
+					REBEL::BuildInfo::Get_Version(verMajor, verMinor, verPatch);
 
 					text.Format(TRANSLATE(IDS_MENU_HOST_INFO_FORMAT), (const WCHAR*)channel->GetName(),
-							mSelectedGame.Title(), HIWORD(verMajor), LOWORD(verMajor));
+							mSelectedGame.Title(), verMajor, verMinor);
 #endif
 					detailsList->Insert_Entry(0, text);
 

@@ -23,6 +23,7 @@
 #pragma once
 #endif
 
+#include <cassert>
 #include "always.h"
 #include "thread.h"
 

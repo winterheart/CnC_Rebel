@@ -43,23 +43,19 @@
 
 
 #include "winmain.h"
-#define _WIN32_WINDOWS 0x0401
 #include "win.h"
-#include "resource.h"
 #include "WW3D.H"
 
-#include "miscutil.h"
 #include "input.h"
 #include "useroptions.h"
 
 #include "WWAudio.H"
-#include "FFactory.H"
 
+#include "buildinfo.h"
 #include "debug.h"
 #include "dxdefs.h"
 #include "verchk.h"
 #include "devoptions.h"
-#include "dialogmgr.h"
 #include "renegadedialogmgr.h"
 #include "except.h"
 
@@ -69,11 +65,9 @@
 
 #include "datasafe.h"
 
-#include "combatgmode.h"
 #include "registry.h"
 #include "init.h"
 #include "_globals.h"
-#include "buildnum.h"
 #include "dx8wrapper.h"
 #include "formconv.h"
 #include "autostart.h"
@@ -197,15 +191,6 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		PacketManager.Disable_Optimizations();
 	}
 #endif //WWDEBUG
-
-#ifdef _DEBUG // Denzil - DO NOT COMPILE INTO FINAL BUILD
-	bool webInstalled = WebBrowser::InstallPrerequisites();
-
-	if (!webInstalled) {
-		::MessageBox(NULL, "Embedded browser prerequisites missing\n\nBrowser functionality questionable.\n\n(Please call Denzil @ 27272)",
-				"Renegade Warning!", MB_ICONWARNING|MB_OK);
-	}
-#endif // WWDEBUG
 
    if (!cUserOptions::Parse_Command_Line(lpCmdLine)) {
 		return(0);
@@ -502,7 +487,7 @@ int Start_Application( HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /
 #endif //WWDEBUG
 
 		Register_Application_Exception_Callback(&Application_Exception_Callback);
-		Register_Application_Version_Callback(&BuildInfoClass::Composite_Build_Info);
+		Register_Application_Version_Callback(&REBEL::BuildInfo::Get_Build_Info_String);
 
 #ifdef _MSC_VER
 		WWDEBUG_SAY(("Game_Main_Loop_Try\n"));

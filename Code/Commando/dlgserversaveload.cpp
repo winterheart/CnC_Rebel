@@ -628,7 +628,7 @@ void ServerSaveLoadMenuClass::Save_Now(void)
  * HISTORY:                                                                                    *
  *   12/17/2001 5:11PM ST : Created                                                            *
  *=============================================================================================*/
-ServerSettingsClass::ServerSettingsClass(char *filename, const wchar_t *configname, int file_number)
+ServerSettingsClass::ServerSettingsClass(const char *filename, const wchar_t *configname, int file_number)
 {
 	ConfigName = configname;	//"Default C&C Server Settings";
 	RawFileName = filename;		//"svrcfg_cnc.ini"

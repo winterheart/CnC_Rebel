@@ -39,6 +39,14 @@
 #ifndef __WOLSESSION_H__
 #define __WOLSESSION_H__
 
+// TODO: WH: Temporary workaround for https://developercommunity.visualstudio.com/t/C20-compile-error-with-ATL::CComPtrlt/10833434
+// Fixed in Visual Studio 2022 version 17.14
+#include <atlcore.h>
+namespace ATL
+{
+	ATLAPI AtlAdvise(_Inout_ IUnknown* pUnkCP, _Inout_opt_ IUnknown* pUnk, _In_ const IID& iid, _Out_ LPDWORD pdw);
+}
+
 #include <atlbase.h>
 #include "WOLLoginInfo.h"
 #include "WOLUser.h"
@@ -48,12 +56,12 @@
 #include "WOLDownload.h"
 #include "WOLPageMsg.h"
 #include "RefPtr.h"
-#include <WWLib\Notify.h>
-#include <WWLib\WideString.h>
+#include <WWLib/Notify.h>
+#include <WWLib/WideString.h>
 
 namespace WOL
 {
-#include <WOLAPI\wolapi.h>
+#include <WOLAPI/wolapi.h>
 }
 
 #if defined(_MSC_VER)

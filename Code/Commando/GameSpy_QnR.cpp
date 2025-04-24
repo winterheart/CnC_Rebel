@@ -67,8 +67,9 @@
 #include "mousemgr.h"
 #include "directinput.h"
 #include "GameSpy_QnR.h"
+
+#include "buildinfo.h"
 #include "verchk.h"
-#include "buildnum.h"
 #include "serversettings.h"
 #include "consolemode.h"
 #include "useroptions.h"
@@ -173,7 +174,7 @@ CGameSpyQnR::~CGameSpyQnR()
 }
 
 void CGameSpyQnR::LaunchArcade(void) {
-	char *akey = "Software\\GameSpy\\GameSpy Arcade";
+	const char *akey = "Software\\GameSpy\\GameSpy Arcade";
 	BOOL launched = FALSE;
 	HKEY key = NULL;
 	int result = 0;
@@ -251,8 +252,8 @@ void CGameSpyQnR::TrackUsage(void) {
 	int ver = version.dwFileVersionMS;
 
 	StringClass b(true);
-	b.Format("%s %s V%d.%3.3d(%s-%d)", "Win-X86", bname, (ver&0xffff0000)>>16, ver&0xffff, 
-		BuildInfoClass::Get_Builder_Initials(), BuildInfoClass::Get_Build_Number());
+	b.Format("%s %s V%d.%3.3d(%s-%s)", "Win-X86", bname, (ver&0xffff0000)>>16, ver&0xffff,
+		REBEL::BuildInfo::Get_Codename(), REBEL::BuildInfo::Get_Hash());
 
 #ifdef ENABLE_GAMESPY
 	// Send off usage Tracking info to GameSpy
@@ -359,7 +360,7 @@ void CGameSpyQnR::basic_callback(char *outbuf, int maxlen)
 	outbuf[0] = 0;
 
 	StringClass b(true);
-	b.Format("%d", BuildInfoClass::Get_Build_Number());
+	b.Format("%s", REBEL::BuildInfo::Get_Hash());
 	sprintf(outbuf, "\\gamename\\%s\\gamever\\%s", gamename, b.Peek_Buffer());
 //	sprintf(outbuf, "\\gamename\\%s\\gamever\\%s\\location\\%d", gamename, b.Peek_Buffer(), 1);
 

@@ -108,13 +108,14 @@ EditableClass::Unlock_Parameter (int i)
 	//	DECLARE_EDITABLE
 	//
 	//////////////////////////////////////////////////////////////////////////////////
+	// TODO: WH: I don't even know if it executes correctly...
 	#define DECLARE_EDITABLE(_class, _parent)										\
 	ParameterListClass plist_##_class;												\
-	virtual int _class::Get_Parameter_Count(void) const						\
+	virtual int Get_Parameter_Count(void) const						\
 	{																							\
 		return plist_##_class.Count () + _parent::Get_Parameter_Count ();	\
 	}																							\
-	virtual ParameterClass *_class::Lock_Parameter(int i)						\
+	virtual ParameterClass *Lock_Parameter(int i)						\
 	{																							\
 		if (i < _parent::Get_Parameter_Count()) {									\
 			return _parent::Lock_Parameter (i);										\

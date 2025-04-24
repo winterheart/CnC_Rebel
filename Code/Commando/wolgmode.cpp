@@ -34,6 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include "buildinfo.h"
 #include "WOLGMode.h"
 #include "GameData.h"
 #include "GameChanList.h"
@@ -1740,8 +1741,8 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage& message)
 					datastring=requestor;
 					datastring+="\t";
 
-					unsigned long versionminor,versionmajor;
-					Get_Version_Number(versionmajor, versionminor);
+					uint32_t versionminor, versionmajor, versionpatch;
+					REBEL::BuildInfo::Get_Version(versionmajor, versionminor, versionpatch);
 
 					SYSTEMTIME time;
 					GetSystemTime(&time);

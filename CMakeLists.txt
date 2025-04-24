@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(CnC_Rebel VERSION 1.037.2)
+project(CnC_Rebel VERSION 1.37.2)
 set(REBEL_CODENAME "TECHNICIAN")
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(REBEL_ENABLE_DEBUG_MESSAGES "Enable debug messages (WWDEBUG)" ON)
@@ -29,6 +29,22 @@ add_compile_definitions(
 
 add_compile_options(
     "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/Gy;/GF;/W4;/Zc:inline;/Zc:wchar_t>"
+)
+
+add_custom_target(GetGitHash ALL)
+
+add_custom_command(
+    POST_BUILD
+    TARGET GetGitHash
+    COMMAND ${CMAKE_COMMAND}
+    -D SOURCE_DIR=${PROJECT_SOURCE_DIR}
+    -D TARGET_DIR=${PROJECT_BINARY_DIR}
+    -D PROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
+    -D PROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+    -D PROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH}
+    -D PROJECT_CODENAME=${REBEL_CODENAME}
+    -P ${PROJECT_SOURCE_DIR}/cmake/CheckGit.cmake
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 add_subdirectory(Code)

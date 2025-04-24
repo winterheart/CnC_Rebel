@@ -198,14 +198,14 @@ SortedNTreeLeafClass<T> *SortedNTreeClass<T>::Add_Sorted (const T &value, const 
 {
 	SortedNTreeLeafClass<T> *retval = NULL;
 
-	if (m_Root == NULL) {
+	if (this->m_Root == NULL) {
 		
 		//
 		//	Allocate a new root node
 		//
-		m_Root = Allocate_Leaf ();
+		this->m_Root = Allocate_Leaf ();
 		
-		retval = (SortedNTreeLeafClass<T> *)m_Root;
+		retval = (SortedNTreeLeafClass<T> *)this->m_Root;
 		retval->Set_Value (value);
 		retval->Set_Name (name);		
 		
@@ -214,14 +214,14 @@ SortedNTreeLeafClass<T> *SortedNTreeClass<T>::Add_Sorted (const T &value, const 
 		//
 		//	Simply add this value to list
 		//
-		retval = ((SortedNTreeLeafClass<T> *)m_Root)->Add_Sorted (value, name);
+		retval = ((SortedNTreeLeafClass<T> *)this->m_Root)->Add_Sorted (value, name);
 
 		//
 		//	Make sure our 'root' pointer is the first one in the list
 		//
-		NTreeLeafClass<T> *prev = m_Root->Peek_Prev ();
+		NTreeLeafClass<T> *prev = this->m_Root->Peek_Prev ();
 		if (prev != NULL) {			
-			REF_PTR_SET (m_Root, prev);
+			REF_PTR_SET (this->m_Root, prev);
 		}
 	}
 
@@ -491,21 +491,21 @@ SortedNTreeLeafClass<T> *SortedNTreeLeafClass<T>::Add_Child_Sorted (const T &val
 	new_child->Set_Name (name);
 	new_child->Set_Parent (this);
 
-	if (m_Child == NULL) {
-		m_Child = new_child;
+	if (this->m_Child == NULL) {
+		this->m_Child = new_child;
 	} else {
 
 		//
 		//	Insert the new leaf in its sorted position
 		//
-		Insertion_Sort ((SortedNTreeLeafClass<T> *)m_Child, new_child);
+		Insertion_Sort ((SortedNTreeLeafClass<T> *)this->m_Child, new_child);
 
 		//
 		//	Make sure our 'child' pointer is the first one in the list
 		//
-		NTreeLeafClass<T> *prev = m_Child->Peek_Prev ();
+		NTreeLeafClass<T> *prev = this->m_Child->Peek_Prev ();
 		if (prev != NULL) {			
-			REF_PTR_SET (m_Child, prev);
+			REF_PTR_SET (this->m_Child, prev);
 		}
 		
 		//

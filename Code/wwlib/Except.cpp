@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**  Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -49,22 +50,21 @@
 
 #ifdef _MSC_VER
 
-#include	"always.h"
+#include <vector>
+#include "always.h"
 #include <windows.h>
-#include	"assert.h"
+#include <cassert>
 #include "cpudetect.h"
-#include	"except.h"
-//#include "debug.h"
+#include "except.h"
 #include "mpu.h"
-//#include "commando\nat.h"
 #include "thread.h"
 #include "wwdebug.h"
 #include "wwmemlog.h"
 
-#include	<conio.h>
-#include	<imagehlp.h>
+#include <conio.h>
+#include <imagehlp.h>
 #include <crtdbg.h>
-#include	<stdio.h>
+#include <cstdio>
 
 #ifdef WWDEBUG
 #define DebugString 	WWDebug_Printf
@@ -86,8 +86,8 @@ static char ExceptionText [65536];
 bool SymbolsAvailable = false;
 HINSTANCE ImageHelp = (HINSTANCE) -1;
 
-void (*AppCallback)(void) = NULL;
-char *(*AppVersionCallback)(void) = NULL;
+void (*AppCallback)() = nullptr;
+const char *(*AppVersionCallback)() = nullptr;
 
 /*
 ** Flag to indicate we should exit when an exception occurs.
@@ -108,37 +108,40 @@ unsigned long ExceptionReturnFrame = 0;
 */
 int ExceptionRecursions = -1;
 
+// Mutex for guard lock to protect ThreadList
+HANDLE MutexThreadList = CreateMutex(nullptr, FALSE, nullptr);
+
 /*
 ** List of threads that the exception handler knows about.
 */
-DynamicVectorClass<ThreadInfoType*> ThreadList;
+std::vector<ThreadInfoType*> ThreadList;
 
 /*
 ** Definitions to allow run-time linking to the Imagehlp.dll functions.
 **
 */
-typedef BOOL  (WINAPI *SymCleanupType) (HANDLE hProcess);
-typedef BOOL  (WINAPI *SymGetSymFromAddrType) (HANDLE hProcess, DWORD Address, LPDWORD Displacement, PIMAGEHLP_SYMBOL Symbol);
-typedef BOOL  (WINAPI *SymInitializeType) (HANDLE hProcess, LPSTR UserSearchPath, BOOL fInvadeProcess);
-typedef BOOL  (WINAPI *SymLoadModuleType) (HANDLE hProcess, HANDLE hFile, LPSTR ImageName, LPSTR ModuleName, DWORD BaseOfDll, DWORD SizeOfDll);
-typedef DWORD (WINAPI *SymSetOptionsType) (DWORD SymOptions);
-typedef BOOL  (WINAPI *SymUnloadModuleType) (HANDLE hProcess, DWORD BaseOfDll);
-typedef BOOL  (WINAPI *StackWalkType) (DWORD MachineType, HANDLE hProcess, HANDLE hThread, LPSTACKFRAME StackFrame, LPVOID ContextRecord, PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine, PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, PTRANSLATE_ADDRESS_ROUTINE TranslateAddress);
-typedef LPVOID (WINAPI *SymFunctionTableAccessType) (HANDLE hProcess, DWORD AddrBase);
-typedef DWORD (WINAPI *SymGetModuleBaseType) (HANDLE hProcess, DWORD dwAddr);
+using SymCleanupType = BOOL  (WINAPI *) (HANDLE hProcess);
+using SymGetSymFromAddrType = BOOL  (WINAPI *) (HANDLE hProcess, DWORD Address, LPDWORD Displacement, PIMAGEHLP_SYMBOL Symbol);
+using SymInitializeType = BOOL  (WINAPI *) (HANDLE hProcess, LPSTR UserSearchPath, BOOL fInvadeProcess);
+using SymLoadModuleType = BOOL  (WINAPI *) (HANDLE hProcess, HANDLE hFile, LPSTR ImageName, LPSTR ModuleName, DWORD BaseOfDll, DWORD SizeOfDll);
+using SymSetOptionsType = DWORD (WINAPI *) (DWORD SymOptions);
+using SymUnloadModuleType = BOOL  (WINAPI *) (HANDLE hProcess, DWORD BaseOfDll);
+using StackWalkType = BOOL  (WINAPI *) (DWORD MachineType, HANDLE hProcess, HANDLE hThread, LPSTACKFRAME StackFrame, LPVOID ContextRecord, PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine, PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, PTRANSLATE_ADDRESS_ROUTINE TranslateAddress);
+using SymFunctionTableAccessType = LPVOID (WINAPI *) (HANDLE hProcess, DWORD AddrBase);
+using SymGetModuleBaseType = DWORD (WINAPI *) (HANDLE hProcess, DWORD dwAddr);
 
 
-static SymCleanupType							_SymCleanup = NULL;
-static SymGetSymFromAddrType				_SymGetSymFromAddr = NULL;
-static SymInitializeType						_SymInitialize = NULL;
-static SymLoadModuleType						_SymLoadModule = NULL;
-static SymSetOptionsType						_SymSetOptions = NULL;
-static SymUnloadModuleType					_SymUnloadModule = NULL;
-static StackWalkType								_StackWalk = NULL;
-static SymFunctionTableAccessType	_SymFunctionTableAccess = NULL;
-static SymGetModuleBaseType				_SymGetModuleBase = NULL;
+static SymCleanupType							_SymCleanup = nullptr;
+static SymGetSymFromAddrType				_SymGetSymFromAddr = nullptr;
+static SymInitializeType						_SymInitialize = nullptr;
+static SymLoadModuleType						_SymLoadModule = nullptr;
+static SymSetOptionsType						_SymSetOptions = nullptr;
+static SymUnloadModuleType					_SymUnloadModule = nullptr;
+static StackWalkType								_StackWalk = nullptr;
+static SymFunctionTableAccessType	_SymFunctionTableAccess = nullptr;
+static SymGetModuleBaseType				_SymGetModuleBase = nullptr;
 
-static char const *ImagehelpFunctionNames[] =
+static const char *ImagehelpFunctionNames[] =
 {
 	"SymCleanup",
 	"SymGetSymFromAddr",
@@ -149,7 +152,7 @@ static char const *ImagehelpFunctionNames[] =
 	"StackWalk",
 	"SymFunctionTableAccess",
 	"SymGetModuleBaseType",
-	NULL
+	nullptr
 };
 
 
@@ -168,7 +171,7 @@ static char const *ImagehelpFunctionNames[] =
  * HISTORY:                                                                                    *
  *   8/22/00 11:42AM ST : Created                                                              *
  *=============================================================================================*/
-int __cdecl _purecall(void)
+int __cdecl _purecall()
 {
 	int return_code = 0;
 
@@ -180,7 +183,7 @@ int __cdecl _purecall(void)
 	_asm int 0x03;
 #endif	//_DEBUG_ASSERT
 
-	return(return_code);
+	return return_code;
 }
 
 
@@ -199,11 +202,11 @@ int __cdecl _purecall(void)
  * HISTORY:                                                                                    *
  *   8/14/98 11:11AM ST : Created                                                              *
  *=============================================================================================*/
-char const * Last_Error_Text(void)
+char const * Last_Error_Text()
 {
 	static char message_buffer[256];
-	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), &message_buffer[0], 256, NULL);
-	return (message_buffer);
+	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), &message_buffer[0], 256, nullptr);
+	return message_buffer;
 }
 
 
@@ -353,9 +356,9 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	*/
 	HINSTANCE imagehelp = LoadLibrary("IMAGEHLP.DLL");
 
-	if (imagehelp != NULL) {
+	if (imagehelp != nullptr) {
 		DebugString ("Exception Handler: Found IMAGEHLP.DLL - linking to required functions\n");
-		char const *function_name = NULL;
+		char const *function_name = nullptr;
 		unsigned long *fptr = (unsigned long*) &_SymCleanup;
 		int count = 0;
 
@@ -375,14 +378,14 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	/*
 	** Retrieve the programs symbols if they are available
 	*/
-	if (_SymSetOptions != NULL) {
+	if (_SymSetOptions != nullptr) {
 		_SymSetOptions(SYMOPT_DEFERRED_LOADS);
 	}
 
 	int symload = 0;
 	int symbols_available = false;
 
-	if (_SymInitialize != NULL && _SymInitialize (GetCurrentProcess(), NULL, false))	{
+	if (_SymInitialize != nullptr && _SymInitialize (GetCurrentProcess(), nullptr, false))	{
 		DebugString("Exception Handler: Symbols are available\r\n\n");
 		symbols_available = true;
 	}
@@ -390,19 +393,19 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	if (!symbols_available)	{
 		DebugString ("Exception Handler: SymInitialize failed with code %d - %s\n", GetLastError(), Last_Error_Text());
 	} else {
-		if (_SymSetOptions != NULL) {
+		if (_SymSetOptions != nullptr) {
 			_SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_UNDNAME);
 		}
 
 		char module_name[_MAX_PATH];
-		GetModuleFileName(NULL, module_name, sizeof(module_name));
+		GetModuleFileName(nullptr, module_name, sizeof(module_name));
 
-		if (_SymLoadModule != NULL) {
-			symload = _SymLoadModule(GetCurrentProcess(), NULL, module_name, NULL, 0, 0);
+		if (_SymLoadModule != nullptr) {
+			symload = _SymLoadModule(GetCurrentProcess(), nullptr, module_name, nullptr, 0, 0);
 		}
 
 		if (!symload) {
-			assert(_SymLoadModule != NULL);
+			assert(_SymLoadModule != nullptr);
 			DebugString ("Exception Handler: SymLoad failed for module %s with code %d - %s\n", module_name, GetLastError(), Last_Error_Text());
 		}
 	}
@@ -469,11 +472,11 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	symptr->Address = context->Eip;
 
 	if (!IsBadCodePtr((FARPROC)context->Eip)) {
-		if (_SymGetSymFromAddr != NULL && _SymGetSymFromAddr (GetCurrentProcess(), context->Eip, &displacement, symptr)) {
+		if (_SymGetSymFromAddr != nullptr && _SymGetSymFromAddr (GetCurrentProcess(), context->Eip, &displacement, symptr)) {
 			sprintf (scrap, "Exception occurred at %08X - %s + %08X\r\n", context->Eip, symptr->Name, displacement);
 		} else {
 			DebugString ("Exception Handler: Failed to get symbol for EIP\r\n");
-			if (_SymGetSymFromAddr != NULL) {
+			if (_SymGetSymFromAddr != nullptr) {
 				DebugString ("Exception Handler: SymGetSymFromAddr failed with code %d - %s\n", GetLastError(), Last_Error_Text());
 			}
 			sprintf (scrap, "Exception occurred at %08X\r\n", context->Eip);
@@ -508,7 +511,7 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 				symptr->Size = 0;
 				symptr->Address = temp_addr;
 
-				if (_SymGetSymFromAddr != NULL && _SymGetSymFromAddr (GetCurrentProcess(), temp_addr, &displacement, symptr)) {
+				if (_SymGetSymFromAddr != nullptr && _SymGetSymFromAddr (GetCurrentProcess(), temp_addr, &displacement, symptr)) {
 					char symbuf[256];
 					sprintf(symbuf, "%s + %08X\r\n", symptr->Name, displacement);
 					Add_Txt(symbuf);
@@ -559,14 +562,16 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	/*
 	** Get the thread info from ThreadClass.
 	*/
-	for (int thread = 0 ; thread < ThreadList.Count() ; thread++) {
-		sprintf(scrap, "  ID: %08X - %s", ThreadList[thread]->ThreadID, ThreadList[thread]->ThreadName);
+	WaitForSingleObject(MutexThreadList, INFINITE);
+	for (auto & thread : ThreadList) {
+		sprintf(scrap, "  ID: %08X - %s", thread->ThreadID, thread->ThreadName);
 		Add_Txt(scrap);
-		if (GetCurrentThreadId() == ThreadList[thread]->ThreadID) {
+		if (GetCurrentThreadId() == thread->ThreadID) {
 			Add_Txt("   ***CURRENT THREAD***");
 		}
 		Add_Txt("\r\n");
 	}
+	ReleaseMutex(MutexThreadList);
 
 	/*
 	** CPU type
@@ -690,7 +695,7 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 					symptr->Size = 0;
 					symptr->Address = *stackptr;
 
-					if (_SymGetSymFromAddr != NULL && _SymGetSymFromAddr (GetCurrentProcess(), *stackptr, &displacement, symptr)) {
+					if (_SymGetSymFromAddr != nullptr && _SymGetSymFromAddr (GetCurrentProcess(), *stackptr, &displacement, symptr)) {
 						char symbuf[256];
 						sprintf(symbuf, " - %s + %08X", symptr->Name, displacement);
 						strcat(scrap, symbuf);
@@ -709,13 +714,13 @@ void Dump_Exception_Info(EXCEPTION_POINTERS *e_info)
 	** Unload the symbols.
 	*/
 	if (symbols_available) {
-		if (_SymCleanup != NULL) {
+		if (_SymCleanup != nullptr) {
 			_SymCleanup (GetCurrentProcess());
 		}
 
 		if (symload) {
-			if (_SymUnloadModule != NULL) {
-				_SymUnloadModule(GetCurrentProcess(), NULL);
+			if (_SymUnloadModule != nullptr) {
+				_SymUnloadModule(GetCurrentProcess(), 0);
 			}
 		}
 
@@ -807,9 +812,9 @@ int Exception_Handler(int exception_code, EXCEPTION_POINTERS *e_info)
 		*/
 		HANDLE debug_file;
 		DWORD	actual;
-		debug_file = CreateFile("_except.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		debug_file = CreateFile("_except.txt", GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 		if (debug_file != INVALID_HANDLE_VALUE){
-			WriteFile(debug_file, ExceptionText, strlen(ExceptionText), &actual, NULL);
+			WriteFile(debug_file, ExceptionText, strlen(ExceptionText), &actual, nullptr);
 			CloseHandle (debug_file);
 
 #if (0)
@@ -883,17 +888,18 @@ int Exception_Handler(int exception_code, EXCEPTION_POINTERS *e_info)
  * HISTORY:                                                                                    *
  *   8/30/2001 3:04PM ST : Created                                                             *
  *=============================================================================================*/
-void Register_Thread_ID(unsigned long thread_id, char *thread_name, bool main_thread)
+void Register_Thread_ID(unsigned long thread_id, const char *thread_name, bool main_thread)
 {
 	WWMEMLOG(MEM_GAMEDATA);
 	if (thread_name) {
-
+		WaitForSingleObject(MutexThreadList, INFINITE);
 		/*
 		** See if we already know about this thread. Maybe just the thread_id changed.
 		*/
-		for (int i=0 ; i<ThreadList.Count() ; i++) {
-			if (strcmp(thread_name, ThreadList[i]->ThreadName) == 0) {
-				ThreadList[i]->ThreadID = thread_id;
+		for (const auto & i : ThreadList) {
+			if (strcmp(thread_name, i->ThreadName) == 0) {
+				i->ThreadID = thread_id;
+				ReleaseMutex(MutexThreadList);
 				return;
 			}
 		}
@@ -903,7 +909,8 @@ void Register_Thread_ID(unsigned long thread_id, char *thread_name, bool main_th
 		strcpy(thread->ThreadName, thread_name);
 		thread->Main = main_thread;
 		thread->ThreadHandle = INVALID_HANDLE_VALUE;
-		ThreadList.Add(thread);
+		ThreadList.push_back(thread);
+		ReleaseMutex(MutexThreadList);
 	}
 }
 
@@ -995,16 +1002,14 @@ HANDLE Get_Thread_Handle(int thread_index)
  * HISTORY:                                                                                    *
  *   8/30/2001 3:10PM ST : Created                                                             *
  *=============================================================================================*/
-void Unregister_Thread_ID(unsigned long thread_id, char *thread_name)
+void Unregister_Thread_ID(unsigned long thread_id, const char *thread_name)
 {
-	for (int i=0 ; i<ThreadList.Count() ; i++) {
-		if (strcmp(thread_name, ThreadList[i]->ThreadName) == 0) {
-			assert(ThreadList[i]->ThreadID == thread_id);
-			delete ThreadList[i];
-			ThreadList.Delete(i);
-			return;
-		}
-	}
+	WaitForSingleObject(MutexThreadList, INFINITE);
+	std::erase_if(ThreadList,
+		[thread_name](const ThreadInfoType * entry) {
+			return strcmp(entry->ThreadName, thread_name) == 0;
+		});
+	ReleaseMutex(MutexThreadList);
 }
 
 
@@ -1023,19 +1028,19 @@ void Unregister_Thread_ID(unsigned long thread_id, char *thread_name)
  * HISTORY:                                                                                    *
  *   12/6/2001 12:20PM ST : Created                                                            *
  *=============================================================================================*/
-unsigned long Get_Main_Thread_ID(void)
+unsigned long Get_Main_Thread_ID()
 {
-	for (int i=0 ; i<ThreadList.Count() ; i++) {
-		if (ThreadList[i]->Main) {
-			return(ThreadList[i]->ThreadID);
+	WaitForSingleObject(MutexThreadList, INFINITE);
+	unsigned long result = 0;
+	for (const auto & i : ThreadList) {
+		if (i->Main) {
+			result = i->ThreadID;
+			break;
 		}
 	}
-	return(0);
+	ReleaseMutex(MutexThreadList);;
+	return result;
 }
-
-
-
-
 
 
 /***********************************************************************************************
@@ -1052,7 +1057,7 @@ unsigned long Get_Main_Thread_ID(void)
  * HISTORY:                                                                                    *
  *   6/12/2001 4:27PM ST : Created                                                             *
  *=============================================================================================*/
-void Load_Image_Helper(void)
+void Load_Image_Helper()
 {
 	/*
 	** If this is the first time through then fix up the imagehelp function pointers since imagehlp.dll
@@ -1061,8 +1066,8 @@ void Load_Image_Helper(void)
 	if (ImageHelp == (HINSTANCE)-1) {
 		ImageHelp = LoadLibrary("IMAGEHLP.DLL");
 
-		if (ImageHelp != NULL) {
-			char const *function_name = NULL;
+		if (ImageHelp != nullptr) {
+			char const *function_name = nullptr;
 			unsigned long *fptr = (unsigned long *) &_SymCleanup;
 			int count = 0;
 
@@ -1080,23 +1085,23 @@ void Load_Image_Helper(void)
 		/*
 		** Retrieve the programs symbols if they are available. This can be a .pdb or a .dbg file.
 		*/
-		if (_SymSetOptions != NULL) {
+		if (_SymSetOptions != nullptr) {
 			_SymSetOptions(SYMOPT_DEFERRED_LOADS);
 		}
 
 		int symload = 0;
 
-		if (_SymInitialize != NULL && _SymInitialize(GetCurrentProcess(), NULL, FALSE)) {
+		if (_SymInitialize != nullptr && _SymInitialize(GetCurrentProcess(), nullptr, FALSE)) {
 
-			if (_SymSetOptions != NULL) {
+			if (_SymSetOptions != nullptr) {
 				_SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_UNDNAME);
 			}
 
 			char exe_name[_MAX_PATH];
-			GetModuleFileName(NULL, exe_name, sizeof(exe_name));
+			GetModuleFileName(nullptr, exe_name, sizeof(exe_name));
 
-			if (_SymLoadModule != NULL) {
-				symload = _SymLoadModule(GetCurrentProcess(), NULL, exe_name, NULL, 0, 0);
+			if (_SymLoadModule != nullptr) {
+				symload = _SymLoadModule(GetCurrentProcess(), nullptr, exe_name, nullptr, 0, 0);
 			}
 
 			if (symload) {
@@ -1148,8 +1153,8 @@ bool Lookup_Symbol(void *code_ptr, char *symbol, int &displacement)
 	/*
 	** Make sure symbols are available.
 	*/
-	if (!SymbolsAvailable || _SymGetSymFromAddr == NULL) {
-		return(false);
+	if (!SymbolsAvailable || _SymGetSymFromAddr == nullptr) {
+		return false;
 	}
 
 	/*
@@ -1157,7 +1162,7 @@ bool Lookup_Symbol(void *code_ptr, char *symbol, int &displacement)
 	*/
 	if (IsBadCodePtr((FARPROC)code_ptr)) {
 		strcpy(symbol, "Bad code pointer");
-		return(false);
+		return false;
 	}
 
 	/*
@@ -1178,9 +1183,9 @@ bool Lookup_Symbol(void *code_ptr, char *symbol, int &displacement)
 		** Copy it back into the buffer provided.
 		*/
 		strcpy(symbol, symbol_struct_ptr->Name);
-		return(true);
+		return true;
 	}
-	return(false);
+	return false;
 }
 
 
@@ -1217,7 +1222,7 @@ int Stack_Walk(unsigned long *return_addresses, int num_addresses, CONTEXT *cont
 	/*
 	** If there is no debug support .dll available then we can't walk the stack.
 	*/
-	if (ImageHelp == NULL) {
+	if (ImageHelp == nullptr) {
 		return(0);
 	}
 
@@ -1259,12 +1264,12 @@ here:
 	** Walk the stack by the requested number of return address iterations.
 	*/
 	for (int i = 0; i < num_addresses + 1; i++) {
-		if (_StackWalk(IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &stack_frame, NULL, NULL, _SymFunctionTableAccess, _SymGetModuleBase, NULL)) {
+		if (_StackWalk(IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &stack_frame, nullptr, nullptr, _SymFunctionTableAccess, _SymGetModuleBase, nullptr)) {
 
 			/*
 			** First result will always be the return address we were called from.
 			*/
-			if (i==0 && context == NULL) {
+			if (i==0 && context == nullptr) {
 				continue;
 			}
 			unsigned long return_address = stack_frame.AddrReturn.Offset;
@@ -1279,12 +1284,12 @@ here:
 
 
 
-void Register_Application_Exception_Callback(void (*app_callback)(void))
+void Register_Application_Exception_Callback(void (*app_callback)())
 {
 	AppCallback = app_callback;
 }
 
-void Register_Application_Version_Callback(char *(*app_ver_callback)(void))
+void Register_Application_Version_Callback(const char *(*app_ver_callback)())
 {
 	AppVersionCallback = app_ver_callback;
 }
@@ -1296,16 +1301,9 @@ void Set_Exit_On_Exception(bool set)
 	ExitOnException = true;
 }
 
-bool Is_Trying_To_Exit(void)
+bool Is_Trying_To_Exit()
 {
 	return(TryingToExit);
 }
 
-
-
-
 #endif	//_MSC_VER
-
-
-
-

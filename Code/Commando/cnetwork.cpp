@@ -39,6 +39,7 @@
 #include <shellapi.h>
 #include <stdio.h>
 
+#include "buildinfo.h"
 #include "specialbuilds.h"
 
 #include "langmode.h"
@@ -77,7 +78,6 @@
 #include "packetmgr.h"
 #include "clientpingmanager.h"
 #include "bandwidthgraph.h"
-#include "buildnum.h"
 #include "messagewindow.h"
 #include "wwmemlog.h"
 #include "consolemode.h"
@@ -396,7 +396,7 @@ int cNetwork::Get_Data_Files_CRC(void)
 #define	UNINITIALLIZED_CRC	0x4592abf1
 	static int crc = UNINITIALLIZED_CRC;
 	if ( crc == UNINITIALLIZED_CRC ) {
-		char * filelist[] = {
+		const char * filelist[] = {
 		"jgo`fqv+aag",					//"objects.ddb",           
 		"dwhjw+lkl",					//"armor.ini",             
 		"gjk`v+lkl",					//"bones.ini",             
@@ -511,7 +511,7 @@ void cNetwork::Compute_Exe_Key(void)
 	// 11/07/01
 	// We now match only on build number.
 	//
-	string.Format("RENEGADE %u", BuildInfoClass::Get_Build_Number());
+	string.Format("RENEGADE %s", REBEL::BuildInfo::Get_Hash());
 
 	WWDEBUG_SAY(("File id string: %s\n", string));
 	key_string += string;

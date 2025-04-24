@@ -34,6 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include "buildinfo.h"
 #include "consolemode.h"
 #include "consolefunction.h"
 #include "wwdebug.h"
@@ -47,8 +48,6 @@
 #include "textdisplay.h"
 #include "console.h"
 #include "crc.h"
-#include "buildnum.h"
-#include "init.h"
 #include "gamesideservercontrol.h"
 #include "specialbuilds.h"
 #include "serversettings.h"
@@ -190,15 +189,12 @@ void ConsoleModeClass::Init(void)
 			/*
 			** Print up version info.
 			*/
-			DWORD version_major = 1;
-			DWORD version_minor = 0;
-			Get_Version_Number(version_major, version_minor);
 #ifdef FREEDEDICATEDSERVER
 			Print("Renegade Free Dedicated Server ");
 #else  //FREEDEDICATEDSERVER
 			Print("Renegade ");
 #endif //FREEDEDICATEDSERVER
-			Print("v%d.%.3d %s-%s %s\n", (version_major >> 16), (version_major & 0xFFFF), BuildInfoClass::Get_Builder_Initials(), BuildInfoClass::Get_Build_Number_String(), BuildInfoClass::Get_Build_Date_String());
+			Print("%s\n", REBEL::BuildInfo::Get_Build_Info_String());
 			Print("Console mode active\n");
 
 			LastKeypressTime = 0;

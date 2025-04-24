@@ -152,7 +152,7 @@ protected:
 	bool														AnyDelayedPassesToRender;
 
 	void Generate_Texture_Categories(Vertex_Split_Table& split_table,unsigned vertex_offset);
-	void DX8FVFCategoryContainer::Insert_To_Texture_Category(
+	void Insert_To_Texture_Category(
 		Vertex_Split_Table& split_table,
 		TextureClass** textures,
 		VertexMaterialClass* mat,
@@ -306,18 +306,20 @@ private:
 */
 struct MeshRegKeyStruct
 {
-	MeshRegKeyStruct(void) : Model(NULL), UserLighting(NULL) {}
+	MeshRegKeyStruct() : Model(nullptr), UserLighting(nullptr) {}
 	MeshRegKeyStruct(MeshModelClass * mdl,unsigned int * lighting) : Model(mdl), UserLighting(lighting) {}
-	bool operator == (const MeshRegKeyStruct & that) { return ((Model == that.Model) && (UserLighting == that.UserLighting)); }
+	bool operator == (const MeshRegKeyStruct & that) const {
+		return ((Model == that.Model) && (UserLighting == that.UserLighting));
+	}
 
 	MeshModelClass *	Model;
 	unsigned int *		UserLighting;
 };
 
-
-inline unsigned int HashTemplateKeyClass<MeshRegKeyStruct>::Get_Hash_Value(const MeshRegKeyStruct& key)
+template <>
+inline unsigned int HashTemplateKeyClass<MeshRegKeyStruct>::Get_Hash_Value(const MeshRegKeyStruct& k)
 {
-	unsigned int hval = (unsigned int)(key.Model) + (unsigned int)(key.UserLighting);
+	unsigned int hval = (unsigned int)(k.Model) + (unsigned int)(k.UserLighting);
 	hval = hval + (hval>>5) + (hval>>10) + (hval >> 20);
 	return hval;
 }

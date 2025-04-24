@@ -36,6 +36,7 @@
 
 
 #include "always.h"
+#include "buildinfo.h"
 #include "gamesideservercontrol.h"
 #include "registry.h"
 #include "_globals.h"
@@ -43,7 +44,6 @@
 #include "gamedata.h"
 #include "servercontrol.h"
 #include "gamemode.h"
-#include "buildnum.h"
 #include "slavemaster.h"
 #include "consolemode.h"
 
@@ -149,7 +149,7 @@ void GameSideServerControlClass::Set_Welcome_Message(void)
 	/*
 	** Basic welcome message includes build info.
 	*/
-	sprintf(welcome, "Welcome to Renegade %s\n", BuildInfoClass::Composite_Build_Info());
+	sprintf(welcome, "Welcome to Renegade %s\n", REBEL::BuildInfo::Get_Build_Info_String());
 
 	/*
 	** Get the slave info and add it into the welcome message.
@@ -226,7 +226,7 @@ const char *GameSideServerControlClass::App_Request_Callback(char *request)
  * HISTORY:                                                                                    *
  *   11/16/2001 3:58PM ST : Created                                                            *
  *=============================================================================================*/
-void GameSideServerControlClass::Print(char *text, ...)
+void GameSideServerControlClass::Print(const char *text, ...)
 {
 	if (Listening) {
 		if (Response.Get_Length() > 32768) {
@@ -264,7 +264,7 @@ void GameSideServerControlClass::Print(char *text, ...)
  * HISTORY:                                                                                    *
  *   11/16/2001 3:59PM ST : Created                                                            *
  *=============================================================================================*/
-void GameSideServerControlClass::Send_Message(char *text, unsigned long ip, unsigned short port)
+void GameSideServerControlClass::Send_Message(const char *text, unsigned long ip, unsigned short port)
 {
 	if (Listening) {
 		ServerControl.Send_Message(text, ip, port);
