@@ -253,28 +253,6 @@ void Get_Compact_Detail_String(StringClass& str)
 	}
 }
 
-static class SysInfoCopyThreadClass : public ThreadClass
-{
-public:
-	StringClass String;
-	StringClass Filename;
-
-	SysInfoCopyThreadClass()
-		:
-		ThreadClass("SysInfoCopyThread", &Exception_Handler) {}
-
-	void Thread_Function()
-	{
-		DWORD written;
-		HANDLE file = CreateFile(Filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
-				FILE_ATTRIBUTE_NORMAL, NULL);
-		if (INVALID_HANDLE_VALUE != file) {
-			WriteFile(file, String, strlen(String), &written, NULL);
-			CloseHandle(file);
-		}
-	}
-} SysInfoCopyThread;
-
 // For debug purposes, log system information to \\Mordane\marketin\transfer\users\Jani\SYSINFO
 static void Log_System_Information()
 {
@@ -325,33 +303,10 @@ static void Log_System_Information()
 
 	// Write log to network folder
 	DWORD written;
-	HANDLE file;
-
-#ifdef WWDEBUG
-	RegistryClass registry( APPLICATION_SUB_KEY_NAME_DEBUG );
-	if ( registry.Is_Valid() ) {
-		int disable=registry.Get_Int( SYSTEM_INFO_LOG_DISABLE );
-		if (!disable) {
-			if (!SysInfoCopyThread.Is_Running()) {
-				StringClass filename(0,true);
-	//			filename="\\\\havoc\\rock\\projects\\renegade\\logs\\";
-				filename="\\\\tanya\\game\\Projects\\Renegade\\_sysinfo_logs\\";
-				tmp.Format("%d_%d_",DX8Wrapper::Get_Current_Caps()->Get_Vendor(),DX8Wrapper::Get_Current_Caps()->Get_Device());
-				filename+=tmp;
-				filename+=name;
-				filename+=".txt";
-
-				SysInfoCopyThread.String=string;
-				SysInfoCopyThread.Filename=filename;
-				SysInfoCopyThread.Execute();
-			}
-		}
-	}
-#endif
 
 	// Write log to local work folder
-	file = CreateFile("sysinfo.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
-			FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE file = CreateFile("sysinfo.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+	                         FILE_ATTRIBUTE_NORMAL, NULL);
 	if (INVALID_HANDLE_VALUE != file) {
 		WriteFile(file, string, strlen(string), &written, NULL);
 		CloseHandle(file);

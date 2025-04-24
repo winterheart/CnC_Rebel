@@ -787,9 +787,9 @@ public:
 			GameObject * obj = Commands->Find_Object( id );
 			if ( obj ) {
 				Commands->Enable_Hibernation( obj, false );
-				char id[10];
-				sprintf( id, "%d", MyID );
-				Commands->Attach_Script( obj, "Test_Cinematic_Primary_Killed", id );
+				char char_id[10];
+				snprintf( char_id, 10, "%d", MyID );
+				Commands->Attach_Script( obj, "Test_Cinematic_Primary_Killed", char_id );
 			} else {
 //				Commands->Debug_Message( "Slot Object not found %d\n", obj_slot );
 			}
