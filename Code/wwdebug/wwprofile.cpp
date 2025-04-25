@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -49,11 +50,11 @@
  *   WWProfileManager::Release_In_Order_Iterator -- Return an "in-order" iterator              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <windows.h>
+
 #include "wwprofile.h"
 #include "fastallocator.h"
 #include "wwdebug.h"
-#include <windows.h>
-// #include "systimer.h"
 #include "systimer.h"
 #include "rawfile.h"
 #include "ffactory.h"
@@ -78,7 +79,7 @@ unsigned WWProfile_Get_System_Time() { return TIMEGETTIME(); }
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-inline void WWProfile_Get_Ticks(_int64 *ticks) {
+inline void WWProfile_Get_Ticks(int64_t *ticks) {
 #ifdef _UNIX
   *ticks = TIMEGETTIME();
 #else
@@ -117,8 +118,8 @@ inline void WWProfile_Get_Ticks(_int64 *ticks) {
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 WWProfileHierachyNodeClass::WWProfileHierachyNodeClass(const char *name, WWProfileHierachyNodeClass *parent)
-    : Name(name), TotalCalls(0), TotalTime(0), StartTime(0), RecursionCounter(0), Parent(parent), Child(NULL),
-      Sibling(NULL) {
+    : Name(name), TotalCalls(0), TotalTime(0), StartTime(0), RecursionCounter(0), Parent(parent), Child(nullptr),
+      Sibling(nullptr) {
   Reset();
 }
 
@@ -134,7 +135,7 @@ WWProfileHierachyNodeClass::WWProfileHierachyNodeClass(const char *name, WWProfi
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWProfileHierachyNodeClass::~WWProfileHierachyNodeClass(void) {
+WWProfileHierachyNodeClass::~WWProfileHierachyNodeClass() {
   delete Child;
   delete Sibling;
 }
@@ -156,12 +157,11 @@ WWProfileHierachyNodeClass *WWProfileHierachyNodeClass::Clone_Hierarchy(WWProfil
   return node;
 }
 
-void WWProfileHierachyNodeClass::Write_To_File(FileClass *file, int recursion) {
+void WWProfileHierachyNodeClass::Write_To_File(FileClass *file, int recursion) const {
   if (TotalTime != 0.0f) {
-    int i;
     StringClass string;
     StringClass work;
-    for (i = 0; i < recursion; ++i) {
+    for (int i = 0; i < recursion; ++i) {
       string += "\t";
     }
     work.Format("%s\t%d\t%f\r\n", Name, TotalCalls, TotalTime * 1000.0f);
@@ -220,7 +220,7 @@ WWProfileHierachyNodeClass *WWProfileHierachyNodeClass::Get_Sub_Node(const char 
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWProfileHierachyNodeClass::Reset(void) {
+void WWProfileHierachyNodeClass::Reset() {
   TotalCalls = 0;
   TotalTime = 0.0f;
 
@@ -244,7 +244,7 @@ void WWProfileHierachyNodeClass::Reset(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWProfileHierachyNodeClass::Call(void) {
+void WWProfileHierachyNodeClass::Call() {
   TotalCalls++;
   if (RecursionCounter++ == 0) {
     WWProfile_Get_Ticks(&StartTime);
@@ -263,14 +263,14 @@ void WWProfileHierachyNodeClass::Call(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-bool WWProfileHierachyNodeClass::Return(void) {
+bool WWProfileHierachyNodeClass::Return() {
   if (--RecursionCounter == 0) {
     if (TotalCalls != 0) {
-      __int64 time;
+      int64_t time;
       WWProfile_Get_Ticks(&time);
       time -= StartTime;
 
-      TotalTime += float(double(time) * CPUDetectClass::Get_Inv_Processor_Ticks_Per_Second());
+      TotalTime += static_cast<float>(static_cast<double>(time) * CPUDetectClass::Get_Inv_Processor_Ticks_Per_Second());
     }
   }
   return RecursionCounter == 0;
@@ -281,7 +281,7 @@ bool WWProfileHierachyNodeClass::Return(void) {
 ** WWProfileManager Implementation
 **
 ***************************************************************************************************/
-WWProfileHierachyNodeClass WWProfileManager::Root("Root", NULL);
+WWProfileHierachyNodeClass WWProfileManager::Root("Root", nullptr);
 WWProfileHierachyNodeClass *WWProfileManager::CurrentNode = &WWProfileManager::Root;
 WWProfileHierachyNodeClass *WWProfileManager::CurrentRootNode = &WWProfileManager::Root;
 int WWProfileManager::FrameCounter = 0;
@@ -344,7 +344,7 @@ void WWProfileManager::Start_Root_Profile(const char *name) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWProfileManager::Stop_Profile(void) {
+void WWProfileManager::Stop_Profile() {
   if (::GetCurrentThreadId() != ThreadID) {
     return;
   }
@@ -356,7 +356,7 @@ void WWProfileManager::Stop_Profile(void) {
   }
 }
 
-void WWProfileManager::Stop_Root_Profile(void) {
+void WWProfileManager::Stop_Root_Profile() {
   if (::GetCurrentThreadId() != ThreadID) {
     return;
   }
@@ -383,7 +383,7 @@ void WWProfileManager::Stop_Root_Profile(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWProfileManager::Reset(void) {
+void WWProfileManager::Reset() {
   ThreadID = ::GetCurrentThreadId();
 
   Root.Reset();
@@ -403,11 +403,11 @@ void WWProfileManager::Reset(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWProfileManager::Increment_Frame_Counter(void) {
+void WWProfileManager::Increment_Frame_Counter() {
   if (ProfileCollecting) {
     float time = Get_Time_Since_Reset();
     TotalFrameTimes += time;
-    WWProfileHierachyNodeClass *new_root = Root.Clone_Hierarchy(NULL);
+    WWProfileHierachyNodeClass *new_root = Root.Clone_Hierarchy(nullptr);
     new_root->Set_Total_Time(time);
     new_root->Set_Total_Calls(1);
     ProfileCollectVector.Add(new_root);
@@ -429,12 +429,12 @@ void WWProfileManager::Increment_Frame_Counter(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-float WWProfileManager::Get_Time_Since_Reset(void) {
-  __int64 time;
+float WWProfileManager::Get_Time_Since_Reset() {
+  int64_t time;
   WWProfile_Get_Ticks(&time);
   time -= ResetTime;
 
-  return float(double(time) * CPUDetectClass::Get_Inv_Processor_Ticks_Per_Second());
+  return static_cast<float>(static_cast<double>(time) * CPUDetectClass::Get_Inv_Processor_Ticks_Per_Second());
 }
 
 /***********************************************************************************************
@@ -449,7 +449,7 @@ float WWProfileManager::Get_Time_Since_Reset(void) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWProfileIterator *WWProfileManager::Get_Iterator(void) { return new WWProfileIterator(&Root); }
+WWProfileIterator *WWProfileManager::Get_Iterator() { return new WWProfileIterator(&Root); }
 
 /***********************************************************************************************
  * WWProfileManager::Release_Iterator -- Return an iterator for the profile tree               *
@@ -475,14 +475,12 @@ void WWProfileManager::End_Collecting(const char *filename) {
   int i;
   if (filename && ProfileCollectVector.Count() != 0) {
     FileClass *file = _TheWritingFileFactory->Get_File(filename);
-    if (file != NULL) {
-      //
-      //	Open or create the file
-      //
+    if (file != nullptr) {
+      // Open or create the file
       file->Open(FileClass::WRITE);
 
       StringClass str;
-      float avg_frame_time = TotalFrameTimes / float(ProfileCollectVector.Count());
+      float avg_frame_time = TotalFrameTimes / static_cast<float>(ProfileCollectVector.Count());
       str.Format("Total frames: %d, average frame time: %fms\r\n"
                  "All frames taking more than twice the average frame time are marked with keyword SPIKE.\r\n\r\n",
                  ProfileCollectVector.Count(), avg_frame_time * 1000.0f);
@@ -496,9 +494,7 @@ void WWProfileManager::End_Collecting(const char *filename) {
         ProfileCollectVector[i]->Write_To_File(file, 0);
       }
 
-      //
-      //	Close the file
-      //
+      // Close the file
       file->Close();
       _TheWritingFileFactory->Return_File(file);
     }
@@ -506,7 +502,7 @@ void WWProfileManager::End_Collecting(const char *filename) {
 
   for (i = 0; i < ProfileCollectVector.Count(); ++i) {
     delete ProfileCollectVector[i];
-    ProfileCollectVector[i] = 0;
+    ProfileCollectVector[i] = nullptr;
   }
   ProfileCollectVector.Delete_All();
   ProfileCollecting = false;
@@ -524,7 +520,7 @@ void WWProfileManager::End_Collecting(const char *filename) {
  * HISTORY:                                                                                    *
  *   9/24/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWProfileInOrderIterator *WWProfileManager::Get_In_Order_Iterator(void) { return new WWProfileInOrderIterator; }
+WWProfileInOrderIterator *WWProfileManager::Get_In_Order_Iterator() { return new WWProfileInOrderIterator; }
 
 /***********************************************************************************************
  * WWProfileManager::Release_In_Order_Iterator -- Return an "in-order" iterator                *
@@ -550,32 +546,32 @@ WWProfileIterator::WWProfileIterator(WWProfileHierachyNodeClass *start) {
   CurrentChild = CurrentParent->Get_Child();
 }
 
-void WWProfileIterator::First(void) { CurrentChild = CurrentParent->Get_Child(); }
+void WWProfileIterator::First() { CurrentChild = CurrentParent->Get_Child(); }
 
-void WWProfileIterator::Next(void) { CurrentChild = CurrentChild->Get_Sibling(); }
+void WWProfileIterator::Next() { CurrentChild = CurrentChild->Get_Sibling(); }
 
-bool WWProfileIterator::Is_Done(void) { return CurrentChild == NULL; }
+bool WWProfileIterator::Is_Done() const { return CurrentChild == nullptr; }
 
-void WWProfileIterator::Enter_Child(void) {
+void WWProfileIterator::Enter_Child() {
   CurrentParent = CurrentChild;
   CurrentChild = CurrentParent->Get_Child();
 }
 
 void WWProfileIterator::Enter_Child(int index) {
   CurrentChild = CurrentParent->Get_Child();
-  while ((CurrentChild != NULL) && (index != 0)) {
+  while ((CurrentChild != nullptr) && (index != 0)) {
     index--;
     CurrentChild = CurrentChild->Get_Sibling();
   }
 
-  if (CurrentChild != NULL) {
+  if (CurrentChild != nullptr) {
     CurrentParent = CurrentChild;
     CurrentChild = CurrentParent->Get_Child();
   }
 }
 
-void WWProfileIterator::Enter_Parent(void) {
-  if (CurrentParent->Get_Parent() != NULL) {
+void WWProfileIterator::Enter_Parent() {
+  if (CurrentParent->Get_Parent() != nullptr) {
     CurrentParent = CurrentParent->Get_Parent();
   }
   CurrentChild = CurrentParent->Get_Child();
@@ -587,11 +583,11 @@ void WWProfileIterator::Enter_Parent(void) {
 **
 ***************************************************************************************************/
 
-WWProfileInOrderIterator::WWProfileInOrderIterator(void) { CurrentNode = &WWProfileManager::Root; }
+WWProfileInOrderIterator::WWProfileInOrderIterator() { CurrentNode = &WWProfileManager::Root; }
 
-void WWProfileInOrderIterator::First(void) { CurrentNode = &WWProfileManager::Root; }
+void WWProfileInOrderIterator::First() { CurrentNode = &WWProfileManager::Root; }
 
-void WWProfileInOrderIterator::Next(void) {
+void WWProfileInOrderIterator::Next() {
   if (CurrentNode->Get_Child()) { // If I have a child, go to child
     CurrentNode = CurrentNode->Get_Child();
   } else if (CurrentNode->Get_Sibling()) { // If I have a sibling, go to sibling
@@ -599,13 +595,13 @@ void WWProfileInOrderIterator::Next(void) {
   } else { //	if not, go to my parent's sibling, or his.......
     // Find a parent with a sibling....
     bool done = false;
-    while (CurrentNode != NULL && !done) {
+    while (CurrentNode != nullptr && !done) {
 
       // go to my parent
       CurrentNode = CurrentNode->Get_Parent();
 
       // If I have a sibling, go there
-      if (CurrentNode != NULL && CurrentNode->Get_Sibling() != NULL) {
+      if (CurrentNode != nullptr && CurrentNode->Get_Sibling() != nullptr) {
         CurrentNode = CurrentNode->Get_Sibling();
         done = true;
       }
@@ -613,7 +609,7 @@ void WWProfileInOrderIterator::Next(void) {
   }
 }
 
-bool WWProfileInOrderIterator::Is_Done(void) { return CurrentNode == NULL; }
+bool WWProfileInOrderIterator::Is_Done() const { return CurrentNode == nullptr; }
 
 /*
 **
@@ -623,7 +619,7 @@ WWTimeItClass::WWTimeItClass(const char *name) {
   WWProfile_Get_Ticks(&Time);
 }
 
-WWTimeItClass::~WWTimeItClass(void) {
+WWTimeItClass::~WWTimeItClass() {
   __int64 End;
   WWProfile_Get_Ticks(&End);
   End -= Time;
@@ -637,16 +633,16 @@ WWTimeItClass::~WWTimeItClass(void) {
 **
 */
 WWMeasureItClass::WWMeasureItClass(float *p_result) {
-  WWASSERT(p_result != NULL);
+  WWASSERT(p_result != nullptr);
   PResult = p_result;
   WWProfile_Get_Ticks(&Time);
 }
 
-WWMeasureItClass::~WWMeasureItClass(void) {
+WWMeasureItClass::~WWMeasureItClass() {
   __int64 End;
   WWProfile_Get_Ticks(&End);
   End -= Time;
-  WWASSERT(PResult != NULL);
+  WWASSERT(PResult != nullptr);
   *PResult = End * CPUDetectClass::Get_Inv_Processor_Ticks_Per_Second();
 }
 
@@ -659,16 +655,17 @@ WWMeasureItClass::~WWMeasureItClass(void) {
 unsigned WWMemoryAndTimeLog::TabCount;
 
 WWMemoryAndTimeLog::WWMemoryAndTimeLog(const char *name)
-    : Name(name), TimeStart(WWProfile_Get_System_Time()),
+    : TimeStart(WWProfile_Get_System_Time()),
       AllocCountStart(FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count()),
-      AllocSizeStart(FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size()) {
+      AllocSizeStart(FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size()),
+      Name(name) {
   IntermediateTimeStart = TimeStart;
   IntermediateAllocCountStart = AllocCountStart;
   IntermediateAllocSizeStart = AllocSizeStart;
   StringClass tmp(0, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
-  WWRELEASE_SAY(("%s%s {\n", tmp, name));
+  WWRELEASE_SAY(("%s%s {\n", tmp.Peek_Buffer(), name));
   TabCount++;
 }
 
@@ -678,12 +675,12 @@ WWMemoryAndTimeLog::~WWMemoryAndTimeLog() {
   StringClass tmp(0, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
-  WWRELEASE_SAY(("%s} ", tmp));
+  WWRELEASE_SAY(("%s} ", tmp.Peek_Buffer()));
 
   unsigned current_time = WWProfile_Get_System_Time();
-  int current_alloc_count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
-  int current_alloc_size = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
-  WWRELEASE_SAY(("IN TOTAL %s took %d.%3.3d s, did %d memory allocations of %d bytes\n", Name,
+  unsigned int current_alloc_count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
+  unsigned int current_alloc_size = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
+  WWRELEASE_SAY(("IN TOTAL %s took %d.%3.3d s, did %d memory allocations of %d bytes\n", Name.Peek_Buffer(),
                  (current_time - TimeStart) / 1000, (current_time - TimeStart) % 1000,
                  current_alloc_count - AllocCountStart, current_alloc_size - AllocSizeStart));
   WWRELEASE_SAY(("\n"));
@@ -691,12 +688,12 @@ WWMemoryAndTimeLog::~WWMemoryAndTimeLog() {
 
 void WWMemoryAndTimeLog::Log_Intermediate(const char *text) {
   unsigned current_time = WWProfile_Get_System_Time();
-  int current_alloc_count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
-  int current_alloc_size = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
+  unsigned int current_alloc_count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
+  unsigned int current_alloc_size = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
   StringClass tmp(0, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
-  WWRELEASE_SAY(("%s%s took %d.%3.3d s, did %d memory allocations of %d bytes\n", tmp, text,
+  WWRELEASE_SAY(("%s%s took %d.%3.3d s, did %d memory allocations of %d bytes\n", tmp.Peek_Buffer(), text,
                  (current_time - IntermediateTimeStart) / 1000, (current_time - IntermediateTimeStart) % 1000,
                  current_alloc_count - IntermediateAllocCountStart, current_alloc_size - IntermediateAllocSizeStart));
   IntermediateTimeStart = current_time;

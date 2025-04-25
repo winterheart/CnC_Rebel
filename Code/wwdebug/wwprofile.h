@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,21 +35,14 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 // #define ENABLE_TIME_AND_MEMORY_LOG
 
-#ifndef WWPROFILE_H
-#define WWPROFILE_H
+#include <cstdint>
 
 #include "wwstring.h"
 
-#ifdef _UNIX
-typedef signed long long __int64;
-typedef signed long long _int64;
-#endif
 
 // enable profiling by default in debug mode.
 #ifdef WWDEBUG
@@ -65,24 +59,22 @@ class WWProfileHierachyNodeClass {
 
 public:
   WWProfileHierachyNodeClass(const char *name, WWProfileHierachyNodeClass *parent);
-  ~WWProfileHierachyNodeClass(void);
+  ~WWProfileHierachyNodeClass();
 
   WWProfileHierachyNodeClass *Get_Sub_Node(const char *name);
 
-  WWProfileHierachyNodeClass *Get_Parent(void) { return Parent; }
-  WWProfileHierachyNodeClass *Get_Sibling(void) { return Sibling; }
-  WWProfileHierachyNodeClass *Get_Child(void) { return Child; }
+  WWProfileHierachyNodeClass *Get_Parent() const { return Parent; }
+  WWProfileHierachyNodeClass *Get_Sibling() const { return Sibling; }
+  WWProfileHierachyNodeClass *Get_Child() const { return Child; }
 
-  void Reset(void);
-  void Call(void);
-  bool Return(void);
+  void Reset();
+  void Call();
+  bool Return();
 
-  const char *Get_Name(void) { return Name; }
-  int Get_Total_Calls(void) { return TotalCalls; }
-  float Get_Total_Time(void) { return TotalTime; }
+  const char *Get_Name() const { return Name; }
 
   WWProfileHierachyNodeClass *Clone_Hierarchy(WWProfileHierachyNodeClass *parent);
-  void Write_To_File(FileClass *file, int recursion);
+  void Write_To_File(FileClass *file, int recursion) const;
 
   int Get_Total_Calls() const { return TotalCalls; }
   float Get_Total_Time() const { return TotalTime; }
@@ -93,7 +85,7 @@ protected:
   const char *Name;
   int TotalCalls;
   float TotalTime;
-  __int64 StartTime;
+  int64_t StartTime;
   int RecursionCounter;
 
   WWProfileHierachyNodeClass *Parent;
@@ -107,29 +99,29 @@ protected:
 class WWProfileIterator {
 public:
   // Access all the children of the current parent
-  void First(void);
-  void Next(void);
-  bool Is_Done(void);
+  void First();
+  void Next();
+  bool Is_Done() const;
 
-  void Enter_Child(void);      // Make the current child the new parent
+  void Enter_Child();      // Make the current child the new parent
   void Enter_Child(int index); // Make the given child the new parent
-  void Enter_Parent(void);     // Make the current parent's parent the new parent
+  void Enter_Parent();     // Make the current parent's parent the new parent
 
   // Access the current child
-  const char *Get_Current_Name(void) { return CurrentChild->Get_Name(); }
-  int Get_Current_Total_Calls(void) { return CurrentChild->Get_Total_Calls(); }
-  float Get_Current_Total_Time(void) { return CurrentChild->Get_Total_Time(); }
+  const char *Get_Current_Name() const { return CurrentChild->Get_Name(); }
+  int Get_Current_Total_Calls() const { return CurrentChild->Get_Total_Calls(); }
+  float Get_Current_Total_Time() const { return CurrentChild->Get_Total_Time(); }
 
   // Access the current parent
-  const char *Get_Current_Parent_Name(void) { return CurrentParent->Get_Name(); }
-  int Get_Current_Parent_Total_Calls(void) { return CurrentParent->Get_Total_Calls(); }
-  float Get_Current_Parent_Total_Time(void) { return CurrentParent->Get_Total_Time(); }
+  const char *Get_Current_Parent_Name() const { return CurrentParent->Get_Name(); }
+  int Get_Current_Parent_Total_Calls() const { return CurrentParent->Get_Total_Calls(); }
+  float Get_Current_Parent_Total_Time() const { return CurrentParent->Get_Total_Time(); }
 
 protected:
   WWProfileHierachyNodeClass *CurrentParent;
   WWProfileHierachyNodeClass *CurrentChild;
 
-  WWProfileIterator(WWProfileHierachyNodeClass *start);
+  explicit WWProfileIterator(WWProfileHierachyNodeClass *start);
   friend class WWProfileManager;
 };
 
@@ -138,19 +130,19 @@ protected:
 */
 class WWProfileInOrderIterator {
 public:
-  void First(void);
-  void Next(void);
-  bool Is_Done(void);
+  void First();
+  void Next();
+  bool Is_Done() const;
 
   // Access the current node
-  const char *Get_Current_Name(void) { return CurrentNode->Get_Name(); }
-  int Get_Current_Total_Calls(void) { return CurrentNode->Get_Total_Calls(); }
-  float Get_Current_Total_Time(void) { return CurrentNode->Get_Total_Time(); }
+  const char *Get_Current_Name() const { return CurrentNode->Get_Name(); }
+  int Get_Current_Total_Calls() const { return CurrentNode->Get_Total_Calls(); }
+  float Get_Current_Total_Time() const { return CurrentNode->Get_Total_Time(); }
 
 protected:
   WWProfileHierachyNodeClass *CurrentNode;
 
-  WWProfileInOrderIterator(void);
+  WWProfileInOrderIterator();
   friend class WWProfileManager;
 };
 
@@ -160,22 +152,22 @@ protected:
 class WWProfileManager {
 public:
   static void Start_Profile(const char *name);
-  static void Stop_Profile(void);
+  static void Stop_Profile();
 
   static void Start_Root_Profile(const char *name);
-  static void Stop_Root_Profile(void);
+  static void Stop_Root_Profile();
 
-  static void Reset(void);
-  static void Increment_Frame_Counter(void);
-  static int Get_Frame_Count_Since_Reset(void) { return FrameCounter; }
-  static float Get_Time_Since_Reset(void);
+  static void Reset();
+  static void Increment_Frame_Counter();
+  static int Get_Frame_Count_Since_Reset() { return FrameCounter; }
+  static float Get_Time_Since_Reset();
 
-  static WWProfileIterator *Get_Iterator(void);
+  static WWProfileIterator *Get_Iterator();
   static void Release_Iterator(WWProfileIterator *iterator);
-  static WWProfileInOrderIterator *Get_In_Order_Iterator(void);
+  static WWProfileInOrderIterator *Get_In_Order_Iterator();
   static void Release_In_Order_Iterator(WWProfileInOrderIterator *iterator);
 
-  static WWProfileHierachyNodeClass *Get_Root(void) { return &Root; }
+  static WWProfileHierachyNodeClass *Get_Root() { return &Root; }
 
   static void Begin_Collecting();
   static void End_Collecting(const char *filename);
@@ -185,7 +177,7 @@ private:
   static WWProfileHierachyNodeClass *CurrentNode;
   static WWProfileHierachyNodeClass *CurrentRootNode;
   static int FrameCounter;
-  static __int64 ResetTime;
+  static int64_t ResetTime;
 
   friend class WWProfileInOrderIterator;
 };
@@ -205,7 +197,7 @@ public:
       WWProfileManager::Start_Profile(name);
   }
 
-  ~WWProfileSampleClass(void) {
+  ~WWProfileSampleClass() {
     if (IsRoot)
       WWProfileManager::Stop_Root_Profile();
     else
@@ -226,8 +218,8 @@ public:
 */
 class WWTimeItClass {
 public:
-  WWTimeItClass(const char *name);
-  ~WWTimeItClass(void);
+  explicit WWTimeItClass(const char *name);
+  ~WWTimeItClass();
 
 private:
   const char *Name;
@@ -247,8 +239,8 @@ private:
 */
 class WWMeasureItClass {
 public:
-  WWMeasureItClass(float *p_result);
-  ~WWMeasureItClass(void);
+  explicit WWMeasureItClass(float *p_result);
+  ~WWMeasureItClass();
 
 private:
   __int64 Time;
@@ -273,18 +265,16 @@ private:
 #endif
 
 struct WWMemoryAndTimeLog {
-  unsigned TimeStart;
-  unsigned IntermediateTimeStart;
-  int AllocCountStart;
-  int IntermediateAllocCountStart;
-  int AllocSizeStart;
-  int IntermediateAllocSizeStart;
+  uint32_t TimeStart;
+  uint32_t IntermediateTimeStart;
+  uint32_t AllocCountStart;
+  uint32_t IntermediateAllocCountStart;
+  uint32_t AllocSizeStart;
+  uint32_t IntermediateAllocSizeStart;
   StringClass Name;
-  static unsigned TabCount;
+  static uint32_t TabCount;
 
-  WWMemoryAndTimeLog(const char *name);
+  explicit WWMemoryAndTimeLog(const char *name);
   ~WWMemoryAndTimeLog();
   void Log_Intermediate(const char *text);
 };
-
-#endif // WWPROFILE_H

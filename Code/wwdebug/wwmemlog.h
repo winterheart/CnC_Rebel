@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,12 +37,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif
-
-#ifndef WWMEMLOG_H
-#define WWMEMLOG_H
 
 class MemLogClass;
 
@@ -95,7 +91,7 @@ public:
   /*
   ** Accessors to the current memory map
   */
-  static int Get_Category_Count(void);
+  static int Get_Category_Count();
   static const char *Get_Category_Name(int category);
   static int Get_Current_Allocated_Memory(int category);
   static int Get_Peak_Allocated_Memory(int category);
@@ -125,10 +121,10 @@ protected:
   ** Interface for WWMemorySampleClass to set the active category
   */
   static void Push_Active_Category(int category);
-  static void Pop_Active_Category(void);
+  static void Pop_Active_Category();
 
-  static MemLogClass *Get_Log(void);
-  static void Release_Log(void);
+  static MemLogClass *Get_Log();
+  static void Release_Log();
 
   friend class WWMemorySampleClass;
 };
@@ -141,8 +137,8 @@ protected:
 */
 class WWMemorySampleClass {
 public:
-  WWMemorySampleClass(int category) { WWMemoryLogClass::Push_Active_Category(category); }
-  ~WWMemorySampleClass(void) { WWMemoryLogClass::Pop_Active_Category(); }
+  explicit WWMemorySampleClass(int category) { WWMemoryLogClass::Push_Active_Category(category); }
+  ~WWMemorySampleClass() { WWMemoryLogClass::Pop_Active_Category(); }
 };
 
 /*
@@ -154,5 +150,3 @@ public:
 #else
 #define WWMEMLOG(category)
 #endif
-
-#endif // WWMEMLOG_H

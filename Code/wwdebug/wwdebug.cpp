@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -41,29 +42,29 @@
  *   WWDebug_Check_Trigger -- calls the user-installed debug trigger handler                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "wwdebug.h"
 #include <windows.h>
-// #include "win.h" can use this if allowed to see wwlib
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <signal.h>
-#include "except.h"
+#include <cstdlib>
+#include <cstdarg>
+#include <cstdio>
+#include <cassert>
+#include <cstring>
+#include <csignal>
 
-static PrintFunc _CurMessageHandler = NULL;
-static AssertPrintFunc _CurAssertHandler = NULL;
-static TriggerFunc _CurTriggerHandler = NULL;
-static ProfileFunc _CurProfileStartHandler = NULL;
-static ProfileFunc _CurProfileStopHandler = NULL;
+#include "except.h"
+#include "wwdebug.h"
+
+static PrintFunc _CurMessageHandler = nullptr;
+static AssertPrintFunc _CurAssertHandler = nullptr;
+static TriggerFunc _CurTriggerHandler = nullptr;
+static ProfileFunc _CurProfileStartHandler = nullptr;
+static ProfileFunc _CurProfileStopHandler = nullptr;
 
 // Convert the latest system error into a string and return a pointer to
 // a static buffer containing the error string.
 
 void Convert_System_Error_To_String(int id, char *buffer, int buf_len) {
 #ifndef _UNIX
-  FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, id, 0, buffer, buf_len, NULL);
+  FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, id, 0, buffer, buf_len, nullptr);
 #endif
 }
 
@@ -173,7 +174,7 @@ ProfileFunc WWDebug_Install_Profile_Stop_Handler(ProfileFunc func) {
  *=============================================================================================*/
 
 void WWDebug_Printf(const char *format, ...) {
-  if (_CurMessageHandler != NULL) {
+  if (_CurMessageHandler != nullptr) {
 
     va_list va;
     char buffer[4096];
@@ -201,7 +202,7 @@ void WWDebug_Printf(const char *format, ...) {
  *=============================================================================================*/
 
 void WWDebug_Printf_Warning(const char *format, ...) {
-  if (_CurMessageHandler != NULL) {
+  if (_CurMessageHandler != nullptr) {
 
     va_list va;
     char buffer[4096];
@@ -229,7 +230,7 @@ void WWDebug_Printf_Warning(const char *format, ...) {
  *=============================================================================================*/
 
 void WWDebug_Printf_Error(const char *format, ...) {
-  if (_CurMessageHandler != NULL) {
+  if (_CurMessageHandler != nullptr) {
 
     va_list va;
     char buffer[4096];
@@ -257,7 +258,7 @@ void WWDebug_Printf_Error(const char *format, ...) {
  *=============================================================================================*/
 #ifdef WWDEBUG
 void WWDebug_Assert_Fail(const char *expr, const char *file, int line) {
-  if (_CurAssertHandler != NULL) {
+  if (_CurAssertHandler != nullptr) {
 
     char buffer[4096];
     sprintf(buffer, "%s (%d) Assert: %s\n", file, line, expr);
@@ -275,7 +276,7 @@ void WWDebug_Assert_Fail(const char *expr, const char *file, int line) {
     char assertbuf[4096];
     sprintf(assertbuf, "Assert failed\n\n. File %s Line %d", file, line);
 
-    int code = MessageBoxA(NULL, assertbuf, "WWDebug_Assert_Fail",
+    int code = MessageBoxA(nullptr, assertbuf, "WWDebug_Assert_Fail",
                            MB_ABORTRETRYIGNORE | MB_ICONHAND | MB_SETFOREGROUND | MB_TASKMODAL);
 
     if (code == IDABORT) {
@@ -307,7 +308,7 @@ void WWDebug_Assert_Fail(const char *expr, const char *file, int line) {
  *=============================================================================================*/
 #ifdef WWDEBUG
 void __cdecl _assert(void *expr, void *filename, unsigned lineno) {
-  WWDebug_Assert_Fail((const char *)expr, (const char *)filename, lineno);
+  WWDebug_Assert_Fail(static_cast<const char *>(expr), static_cast<const char *>(filename), lineno);
 }
 #endif // WWDEBUG
 
@@ -325,7 +326,7 @@ void __cdecl _assert(void *expr, void *filename, unsigned lineno) {
  *=============================================================================================*/
 #ifdef WWDEBUG
 void WWDebug_Assert_Fail_Print(const char *expr, const char *file, int line, const char *string) {
-  if (_CurAssertHandler != NULL) {
+  if (_CurAssertHandler != nullptr) {
 
     char buffer[4096];
     sprintf(buffer, "%s (%d) Assert: %s %s\n", file, line, expr, string);
@@ -351,7 +352,7 @@ void WWDebug_Assert_Fail_Print(const char *expr, const char *file, int line, con
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 bool WWDebug_Check_Trigger(int trigger_num) {
-  if (_CurTriggerHandler != NULL) {
+  if (_CurTriggerHandler != nullptr) {
     return _CurTriggerHandler(trigger_num);
   } else {
     return false;
@@ -371,7 +372,7 @@ bool WWDebug_Check_Trigger(int trigger_num) {
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 void WWDebug_Profile_Start(const char *title) {
-  if (_CurProfileStartHandler != NULL) {
+  if (_CurProfileStartHandler != nullptr) {
     _CurProfileStartHandler(title);
   }
 }
@@ -389,7 +390,7 @@ void WWDebug_Profile_Start(const char *title) {
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 void WWDebug_Profile_Stop(const char *title) {
-  if (_CurProfileStopHandler != NULL) {
+  if (_CurProfileStopHandler != nullptr) {
     _CurProfileStopHandler(title);
   }
 }
@@ -429,7 +430,7 @@ void WWDebug_DBWin32_Message_Handler(const char *str) {
     return;
   }
 
-  hSharedFile = CreateFileMapping((HANDLE)-1, NULL, PAGE_READWRITE, 0, 4096, "DBWIN_BUFFER");
+  hSharedFile = CreateFileMapping(reinterpret_cast<HANDLE>(-1), nullptr, PAGE_READWRITE, 0, 4096, "DBWIN_BUFFER");
   if (!hSharedFile) {
     // MessageBox(NULL, "DebugTrace: Unable to create file mapping object DBWIN_BUFFER", "Error", MB_OK);
     CloseHandle(heventDBWIN);
@@ -437,7 +438,7 @@ void WWDebug_DBWin32_Message_Handler(const char *str) {
     return;
   }
 
-  lpszSharedMem = (LPSTR)MapViewOfFile(hSharedFile, FILE_MAP_WRITE, 0, 0, 512);
+  lpszSharedMem = static_cast<LPSTR>(MapViewOfFile(hSharedFile, FILE_MAP_WRITE, 0, 0, 512));
   if (!lpszSharedMem) {
     // MessageBox(NULL, "DebugTrace: Unable to map shared memory", "Error", MB_OK);
     CloseHandle(heventDBWIN);
@@ -449,7 +450,7 @@ void WWDebug_DBWin32_Message_Handler(const char *str) {
   WaitForSingleObject(heventDBWIN, INFINITE);
 
   /* write it to the shared memory */
-  *((LPDWORD)lpszSharedMem) = 0;
+  *reinterpret_cast<LPDWORD>(lpszSharedMem) = 0;
   wsprintf(lpszSharedMem + sizeof(DWORD), "%s", str);
 
   /* signal data ready event */
@@ -460,6 +461,5 @@ void WWDebug_DBWin32_Message_Handler(const char *str) {
   CloseHandle(heventData);
   CloseHandle(heventDBWIN);
 
-  return;
 }
 #endif // WWDEBUG
