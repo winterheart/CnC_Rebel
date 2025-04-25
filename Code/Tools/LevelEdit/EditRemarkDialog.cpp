@@ -19,7 +19,6 @@
 // EditRemarkDialog.cpp : implementation file
 //
 
-
 #include "stdafx.h"
 
 #if 0
@@ -29,7 +28,6 @@
 #include "dialogue.h"
 #include "translatedb.h"
 #include "translateobj.h"
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -143,4 +141,4 @@ EditRemarkDialogClass::OnOK (void)
 	return ;
 }
 
-#endif //0
+#endif // 0

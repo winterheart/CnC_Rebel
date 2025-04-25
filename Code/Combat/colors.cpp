@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/colors.cpp                            $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/25/00 3:44p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/colors.cpp                            $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/25/00 3:44p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "colors.h"
@@ -39,14 +39,12 @@
 #include "playertype.h"
 #include "wwdebug.h"
 
+Vector3 Get_Color_For_Team(int team) {
+  WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
 
-Vector3 Get_Color_For_Team(int team)
-{
-	WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
-
-	if (team == PLAYERTYPE_NOD) {
-		return COLOR_TEAM_0;
-	} else {
-		return COLOR_TEAM_1;
-	}	
+  if (team == PLAYERTYPE_NOD) {
+    return COLOR_TEAM_0;
+  } else {
+    return COLOR_TEAM_1;
+  }
 }

@@ -29,79 +29,71 @@
 #include <afxext.h>
 #endif
 
-
 #include "DockableForm.H"
 #include "Resource.H"
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	CameraSettingsFormClass
 //
-class CameraSettingsFormClass : public DockableFormClass
-{
-	public:
-		CameraSettingsFormClass ();
-		virtual ~CameraSettingsFormClass (void);
-
-// Form Data
+class CameraSettingsFormClass : public DockableFormClass {
 public:
-	//{{AFX_DATA(CameraSettingsFormClass)
-	enum { IDD = IDD_CAMERA_SETTINGS };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  CameraSettingsFormClass();
+  virtual ~CameraSettingsFormClass(void);
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(CameraSettingsFormClass)
+  enum { IDD = IDD_CAMERA_SETTINGS };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CameraSettingsFormClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CameraSettingsFormClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Implementation
 protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(CameraSettingsFormClass)
-	afx_msg void OnDeltaPosDepthSpin(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnUpdateDepthEdit();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(CameraSettingsFormClass)
+  afx_msg void OnDeltaPosDepthSpin(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnUpdateDepthEdit();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ///////////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void HandleInitDialog(void);
+  void Update_Controls(void);
 
-		///////////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void		HandleInitDialog (void);
-		void		Update_Controls (void);
+protected:
+  ///////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  void Set_Depth(int new_depth);
 
-	protected:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		void		Set_Depth (int new_depth);
-
-	private:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
+private:
+  ///////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
 };
 
 /////////////////////////////////////////////////////////////////////////////

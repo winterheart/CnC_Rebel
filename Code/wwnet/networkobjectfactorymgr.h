@@ -54,34 +54,30 @@ class NetworkObjectFactoryClass;
 //	NetworkObjectFactoryMgrClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-class NetworkObjectFactoryMgrClass
-{
+class NetworkObjectFactoryMgrClass {
 public:
+  /////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////
+  static NetworkObjectFactoryClass *Find_Factory(uint32 class_id);
+  static void Register_Factory(NetworkObjectFactoryClass *factory);
+  static void Unregister_Factory(NetworkObjectFactoryClass *factory);
 
-	/////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////
-	static NetworkObjectFactoryClass *	Find_Factory (uint32 class_id);	
-	static void									Register_Factory (NetworkObjectFactoryClass *factory);
-	static void									Unregister_Factory (NetworkObjectFactoryClass *factory);
+  // Factory enumeration
+  static NetworkObjectFactoryClass *Get_First(void);
+  static NetworkObjectFactoryClass *Get_Next(NetworkObjectFactoryClass *current);
 
-	// Factory enumeration
-	static NetworkObjectFactoryClass *	Get_First (void);
-	static NetworkObjectFactoryClass *	Get_Next (NetworkObjectFactoryClass *current);
-	
 private:
+  /////////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////////
+  static void Link_Factory(NetworkObjectFactoryClass *factory);
+  static void Unlink_Factory(NetworkObjectFactoryClass *factory);
 
-	/////////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////////
-	static void									Link_Factory (NetworkObjectFactoryClass *factory);
-	static void									Unlink_Factory (NetworkObjectFactoryClass *factory);
-
-	/////////////////////////////////////////////////////////////////////
-	//	Static member data
-	/////////////////////////////////////////////////////////////////////
-	static NetworkObjectFactoryClass *	_FactoryListHead;
+  /////////////////////////////////////////////////////////////////////
+  //	Static member data
+  /////////////////////////////////////////////////////////////////////
+  static NetworkObjectFactoryClass *_FactoryListHead;
 };
-
 
 #endif //__NETWORK_OBJECT_FACTORY_MGR_H

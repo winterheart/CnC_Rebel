@@ -17,24 +17,23 @@
 */
 
 /* $Header: /Commando/Code/ww3d2/mesh.h 17    3/14/02 2:37p Greg_h $ */
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando / G 3D engine                                       * 
- *                                                                                             * 
- *                    File Name : MESH.H                                                       * 
- *                                                                                             * 
- *                   Programmer : Greg Hjelstrom                                               * 
- *                                                                                             * 
- *                   Start Date : 06/11/97                                                     * 
- *                                                                                             * 
- *                  Last Update : June 11, 1997 [GH]                                           * 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando / G 3D engine                                       *
+ *                                                                                             *
+ *                    File Name : MESH.H                                                       *
+ *                                                                                             *
+ *                   Programmer : Greg Hjelstrom                                               *
+ *                                                                                             *
+ *                   Start Date : 06/11/97                                                     *
+ *                                                                                             *
+ *                  Last Update : June 11, 1997 [GH]                                           *
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #if defined(_MSC_VER)
 #pragma once
@@ -73,156 +72,147 @@ class DX8FVFCategoryContainer;
 /**
 ** MeshClass -- Render3DObject for rendering meshes.
 */
-class MeshClass : public RenderObjClass
-{
+class MeshClass : public RenderObjClass {
 public:
+  MeshClass(void);
+  MeshClass(const MeshClass &src);
 
-	MeshClass(void);
-	MeshClass(const MeshClass & src);
-private:	
-	MeshClass & operator = (const MeshClass &);
+private:
+  MeshClass &operator=(const MeshClass &);
+
 public:
-	virtual ~MeshClass(void);
+  virtual ~MeshClass(void);
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Render Object Interface 
-	/////////////////////////////////////////////////////////////////////////////
-	virtual RenderObjClass *	Clone(void) const;
-	virtual int						Class_ID(void) const { return CLASSID_MESH; }
-	virtual const char *			Get_Name(void) const;
-	virtual void					Set_Name(const char * name);
-	virtual int						Get_Num_Polys(void) const;
-	virtual void					Render(RenderInfoClass & rinfo);
-	void								Render_Material_Pass(MaterialPassClass * pass,IndexBufferClass * ib);
-	virtual void					Special_Render(SpecialRenderInfoClass & rinfo);
+  /////////////////////////////////////////////////////////////////////////////
+  // Render Object Interface
+  /////////////////////////////////////////////////////////////////////////////
+  virtual RenderObjClass *Clone(void) const;
+  virtual int Class_ID(void) const { return CLASSID_MESH; }
+  virtual const char *Get_Name(void) const;
+  virtual void Set_Name(const char *name);
+  virtual int Get_Num_Polys(void) const;
+  virtual void Render(RenderInfoClass &rinfo);
+  void Render_Material_Pass(MaterialPassClass *pass, IndexBufferClass *ib);
+  virtual void Special_Render(SpecialRenderInfoClass &rinfo);
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Render Object Interface - Collision Detection
-	/////////////////////////////////////////////////////////////////////////////	
-	virtual bool					Cast_Ray(RayCollisionTestClass & raytest);
-	virtual bool					Cast_AABox(AABoxCollisionTestClass & boxtest);
-	virtual bool					Cast_OBBox(OBBoxCollisionTestClass & boxtest);
-	virtual bool					Intersect_AABox(AABoxIntersectionTestClass & boxtest);
-	virtual bool					Intersect_OBBox(OBBoxIntersectionTestClass & boxtest);
-   
-	/////////////////////////////////////////////////////////////////////////////
-	// Render Object Interface - Bounding Volumes
-	/////////////////////////////////////////////////////////////////////////////
-	virtual void					Get_Obj_Space_Bounding_Sphere(SphereClass & sphere) const;
-   virtual void					Get_Obj_Space_Bounding_Box(AABoxClass & box) const;
+  /////////////////////////////////////////////////////////////////////////////
+  // Render Object Interface - Collision Detection
+  /////////////////////////////////////////////////////////////////////////////
+  virtual bool Cast_Ray(RayCollisionTestClass &raytest);
+  virtual bool Cast_AABox(AABoxCollisionTestClass &boxtest);
+  virtual bool Cast_OBBox(OBBoxCollisionTestClass &boxtest);
+  virtual bool Intersect_AABox(AABoxIntersectionTestClass &boxtest);
+  virtual bool Intersect_OBBox(OBBoxIntersectionTestClass &boxtest);
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Render Object Interface - Attributes, Options, Properties, etc
-	/////////////////////////////////////////////////////////////////////////////
-	virtual void					Scale(float scale);
-	virtual void					Scale(float scalex, float scaley, float scalez);
-	virtual MaterialInfoClass * Get_Material_Info(void);
-	
-   virtual int						Get_Sort_Level(void) const;
-   virtual void					Set_Sort_Level(int level);	
+  /////////////////////////////////////////////////////////////////////////////
+  // Render Object Interface - Bounding Volumes
+  /////////////////////////////////////////////////////////////////////////////
+  virtual void Get_Obj_Space_Bounding_Sphere(SphereClass &sphere) const;
+  virtual void Get_Obj_Space_Bounding_Box(AABoxClass &box) const;
 
+  /////////////////////////////////////////////////////////////////////////////
+  // Render Object Interface - Attributes, Options, Properties, etc
+  /////////////////////////////////////////////////////////////////////////////
+  virtual void Scale(float scale);
+  virtual void Scale(float scalex, float scaley, float scalez);
+  virtual MaterialInfoClass *Get_Material_Info(void);
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Render Object Interface - Decals
-	/////////////////////////////////////////////////////////////////////////////
-	virtual void					Create_Decal(DecalGeneratorClass * generator);
-	virtual void					Delete_Decal(uint32 decal_id);
-	
-	/////////////////////////////////////////////////////////////////////////////
-	// MeshClass Interface
-	/////////////////////////////////////////////////////////////////////////////
-	WW3DErrorType					Init(const MeshBuilderClass & builder,MaterialInfoClass * matinfo,const char * name,const char * hmodelname);
-	WW3DErrorType					Load_W3D(ChunkLoadClass & cload);
-	void								Generate_Culling_Tree(void);
-	MeshModelClass *				Get_Model(void);
-	MeshModelClass *				Peek_Model(void);
-	uint32							Get_W3D_Flags(void);
-	const char *					Get_User_Text(void) const;
+  virtual int Get_Sort_Level(void) const;
+  virtual void Set_Sort_Level(int level);
 
-	bool								Contains(const Vector3 &point);
+  /////////////////////////////////////////////////////////////////////////////
+  // Render Object Interface - Decals
+  /////////////////////////////////////////////////////////////////////////////
+  virtual void Create_Decal(DecalGeneratorClass *generator);
+  virtual void Delete_Decal(uint32 decal_id);
 
-	void								Compose_Deformed_Vertex_Buffer(
-											VertexFormatXYZNDUV2* verts,
-											const Vector2* uv0,
-											const Vector2* uv1,
-											const unsigned* diffuse);
-	void								Get_Deformed_Vertices(Vector3 *dst_vert, Vector3 *dst_norm);
-	void								Get_Deformed_Vertices(Vector3 *dst_vert);
+  /////////////////////////////////////////////////////////////////////////////
+  // MeshClass Interface
+  /////////////////////////////////////////////////////////////////////////////
+  WW3DErrorType Init(const MeshBuilderClass &builder, MaterialInfoClass *matinfo, const char *name,
+                     const char *hmodelname);
+  WW3DErrorType Load_W3D(ChunkLoadClass &cload);
+  void Generate_Culling_Tree(void);
+  MeshModelClass *Get_Model(void);
+  MeshModelClass *Peek_Model(void);
+  uint32 Get_W3D_Flags(void);
+  const char *Get_User_Text(void) const;
 
-	void								Set_Lighting_Environment(LightEnvironmentClass * light_env) { LightEnvironment = light_env; }
-	LightEnvironmentClass *		Get_Lighting_Environment(void) { return LightEnvironment; }
+  bool Contains(const Vector3 &point);
 
-	void								Set_Next_Visible_Skin(MeshClass * next_visible) { NextVisibleSkin = next_visible; }
-	MeshClass *						Peek_Next_Visible_Skin(void) { return NextVisibleSkin; }
+  void Compose_Deformed_Vertex_Buffer(VertexFormatXYZNDUV2 *verts, const Vector2 *uv0, const Vector2 *uv1,
+                                      const unsigned *diffuse);
+  void Get_Deformed_Vertices(Vector3 *dst_vert, Vector3 *dst_norm);
+  void Get_Deformed_Vertices(Vector3 *dst_vert);
 
-	void								Set_Base_Vertex_Offset(int base) { BaseVertexOffset = base; }
-	int								Get_Base_Vertex_Offset(void) { return BaseVertexOffset; }
+  void Set_Lighting_Environment(LightEnvironmentClass *light_env) { LightEnvironment = light_env; }
+  LightEnvironmentClass *Get_Lighting_Environment(void) { return LightEnvironment; }
 
-	// Do old .w3d mesh files get fog turned on or off?
-	static bool						Legacy_Meshes_Fogged;
+  void Set_Next_Visible_Skin(MeshClass *next_visible) { NextVisibleSkin = next_visible; }
+  MeshClass *Peek_Next_Visible_Skin(void) { return NextVisibleSkin; }
 
-	void								Replace_Texture(TextureClass* texture,TextureClass* new_texture);
-	void								Replace_VertexMaterial(VertexMaterialClass* vmat,VertexMaterialClass* new_vmat);
+  void Set_Base_Vertex_Offset(int base) { BaseVertexOffset = base; }
+  int Get_Base_Vertex_Offset(void) { return BaseVertexOffset; }
 
-	void								Make_Unique();
-	unsigned							Get_Debug_Id() const { return  MeshDebugId; }
+  // Do old .w3d mesh files get fog turned on or off?
+  static bool Legacy_Meshes_Fogged;
 
-	void								Set_Debugger_Disable(bool b) { IsDisabledByDebugger=b; }
-	bool								Is_Disabled_By_Debugger() const { return IsDisabledByDebugger; }
+  void Replace_Texture(TextureClass *texture, TextureClass *new_texture);
+  void Replace_VertexMaterial(VertexMaterialClass *vmat, VertexMaterialClass *new_vmat);
 
-	/*
-	** User Lighting feature, meshes can have a user lighting array.
-	*/
-	void								Install_User_Lighting_Array(Vector4 * lighting);
-	unsigned int *					Get_User_Lighting_Array(bool alloc = false);
+  void Make_Unique();
+  unsigned Get_Debug_Id() const { return MeshDebugId; }
 
-	virtual void					Save_User_Lighting (ChunkSaveClass & csave);
-	virtual void					Load_User_Lighting (ChunkLoadClass & cload);
+  void Set_Debugger_Disable(bool b) { IsDisabledByDebugger = b; }
+  bool Is_Disabled_By_Debugger() const { return IsDisabledByDebugger; }
+
+  /*
+  ** User Lighting feature, meshes can have a user lighting array.
+  */
+  void Install_User_Lighting_Array(Vector4 *lighting);
+  unsigned int *Get_User_Lighting_Array(bool alloc = false);
+
+  virtual void Save_User_Lighting(ChunkSaveClass &csave);
+  virtual void Load_User_Lighting(ChunkLoadClass &cload);
 
 protected:
+  void Free(void);
 
-	void								Free(void);
+  virtual void Add_Dependencies_To_List(DynamicVectorClass<StringClass> &file_list, bool textures_only = false);
+  virtual void Update_Cached_Bounding_Volumes(void) const;
+  DX8FVFCategoryContainer *Peek_FVF_Category_Container(void);
 
-	virtual void					Add_Dependencies_To_List (DynamicVectorClass<StringClass> &file_list, bool textures_only = false);
-	virtual void					Update_Cached_Bounding_Volumes(void) const;
-	DX8FVFCategoryContainer*	Peek_FVF_Category_Container(void);
+  void install_materials(MeshLoadInfoClass *loadinfo);
+  void clone_materials(const MeshClass &srcmesh);
+  void setup_materials_for_user_lighting(void);
+  void setup_material_for_user_lighting(VertexMaterialClass *mtl);
 
-	void								install_materials(MeshLoadInfoClass * loadinfo);
-	void								clone_materials(const MeshClass & srcmesh);
-	void								setup_materials_for_user_lighting(void);
-	void								setup_material_for_user_lighting(VertexMaterialClass * mtl);
+  MeshModelClass *Model;
+  DecalMeshClass *DecalMesh;
 
-	MeshModelClass *				Model;
-	DecalMeshClass *				DecalMesh;
+  LightEnvironmentClass *LightEnvironment; // cached pointer to the light environment for this mesh
+  int BaseVertexOffset;                    // offset to our first vertex in whatever vb this mesh is in.
+  MeshClass *NextVisibleSkin;              // linked list of visible skins
 
-	LightEnvironmentClass *		LightEnvironment;		// cached pointer to the light environment for this mesh
-	int								BaseVertexOffset;		// offset to our first vertex in whatever vb this mesh is in.
-	MeshClass *						NextVisibleSkin;		// linked list of visible skins
+  unsigned MeshDebugId;
+  bool IsDisabledByDebugger;
 
-	unsigned							MeshDebugId;
-	bool								IsDisabledByDebugger;
+  unsigned int *UserLighting; // optional array of user lighting values
 
-	unsigned int *					UserLighting;			// optional array of user lighting values
+  // DX8 Mesh rendering system data
+  DX8PolygonRendererList PolygonRendererList;
 
-	// DX8 Mesh rendering system data
-	DX8PolygonRendererList		PolygonRendererList;
-
-	friend class MeshBuilderClass;
-	friend class DX8MeshRendererClass;
-	friend class DX8PolygonRendererClass;
+  friend class MeshBuilderClass;
+  friend class DX8MeshRendererClass;
+  friend class DX8PolygonRendererClass;
 };
 
-inline MeshModelClass * MeshClass::Peek_Model(void)
-{
-	return Model;
-}
-
+inline MeshModelClass *MeshClass::Peek_Model(void) { return Model; }
 
 // This utility function recurses throughout the subobjects of a renderobject,
 // and for each MeshClass it finds it sets the given MeshModel flag on its
 // model. This is useful for stuff like making a RenderObjects' polys sort.
-//void Set_MeshModel_Flag(RenderObjClass *robj, MeshModelClass::FlagsType flag, int onoff);
+// void Set_MeshModel_Flag(RenderObjClass *robj, MeshModelClass::FlagsType flag, int onoff);
 void Set_MeshModel_Flag(RenderObjClass *robj, int flag, int onoff);
 
 #endif /*MESH_H*/
-

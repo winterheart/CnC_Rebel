@@ -17,66 +17,62 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Denzil_l $
-*     $Revision: 2 $
-*     $Modtime: 3/29/00 1:17p $
-*     $Archive: /Commando/Code/Scripts/strtrim.cpp $
-*
-******************************************************************************/
+ *
+ * FILE
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Denzil_l $
+ *     $Revision: 2 $
+ *     $Modtime: 3/29/00 1:17p $
+ *     $Archive: /Commando/Code/Scripts/strtrim.cpp $
+ *
+ ******************************************************************************/
 
 #include "strtrim.h"
 #include <ctype.h>
 #include <stddef.h>
 #include <string.h>
 
-
 /******************************************************************************
-*
-* NAME
-*     strtrim
-*
-* DESCRIPTION
-*     Trim leading and trailing white space off of a string.
-*
-* INPUTS
-*     char* buffer
-*
-* RESULTS
-*     char*
-*
-******************************************************************************/
+ *
+ * NAME
+ *     strtrim
+ *
+ * DESCRIPTION
+ *     Trim leading and trailing white space off of a string.
+ *
+ * INPUTS
+ *     char* buffer
+ *
+ * RESULTS
+ *     char*
+ *
+ ******************************************************************************/
 
-char* strtrim(char* buffer)
-	{
-	if (buffer != NULL)
-		{
-		// Strip leading white space from the string.
-		char* source = buffer;
-		
-		while (isspace(*source))
-			source++;
+char *strtrim(char *buffer) {
+  if (buffer != NULL) {
+    // Strip leading white space from the string.
+    char *source = buffer;
 
-		if (source != buffer)
-			strcpy(buffer, source);
+    while (isspace(*source))
+      source++;
 
-		// Clip trailing white space from the string.
-		for (int index = strlen(buffer) - 1; index >= 0; index--)
-			{
-			if (isspace(buffer[index]))
-				buffer[index] = '\0';
-			else
-				break;
-			}
-		}
+    if (source != buffer)
+      strcpy(buffer, source);
 
-	return buffer;
-	}
+    // Clip trailing white space from the string.
+    for (int index = strlen(buffer) - 1; index >= 0; index--) {
+      if (isspace(buffer[index]))
+        buffer[index] = '\0';
+      else
+        break;
+    }
+  }
+
+  return buffer;
+}

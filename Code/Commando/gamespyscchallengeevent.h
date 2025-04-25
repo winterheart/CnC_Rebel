@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/gamespyscchallengeevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 2/21/02 4:17p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/gamespyscchallengeevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 2/21/02 4:17p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __GAMESPYSCCHALLENGEEVENT_H__
@@ -45,25 +45,23 @@
 //
 // A S->C mirrored object for the GameSpy S->C auth. challenge
 //
-class	cGameSpyScChallengeEvent : public cNetEvent
-{
+class cGameSpyScChallengeEvent : public cNetEvent {
 public:
-   cGameSpyScChallengeEvent(void);
+  cGameSpyScChallengeEvent(void);
 
-	void						Init(int client_id, StringClass & challenge_string);
+  void Init(int client_id, StringClass &challenge_string);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_GAMESPYSCCHALLENGEEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_GAMESPYSCCHALLENGEEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	enum						{MAX_CHALLENGE_STRING_LENGTH = 128};
-	StringClass				ChallengeString;
+  enum { MAX_CHALLENGE_STRING_LENGTH = 128 };
+  StringClass ChallengeString;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __GAMESPYSCCHALLENGEEVENT_H__
+#endif // __GAMESPYSCCHALLENGEEVENT_H__

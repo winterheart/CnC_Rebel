@@ -48,7 +48,6 @@
 #include "part_emt.h"
 #include "matrix3d.h"
 
-
 /***********************************************************************************************
  * RenderObjectRecyclerClass::Reset -- reset the pool                                          *
  *                                                                                             *
@@ -61,11 +60,7 @@
  * HISTORY:                                                                                    *
  *   4/25/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-void RenderObjectRecyclerClass::Reset(void)
-{
-	InactiveModels.Reset_List();
-}
-
+void RenderObjectRecyclerClass::Reset(void) { InactiveModels.Reset_List(); }
 
 /***********************************************************************************************
  * RenderObjectRecyclerClass::Get_Render_Object -- Create/Re-use a render object               *
@@ -79,38 +74,36 @@ void RenderObjectRecyclerClass::Reset(void)
  * HISTORY:                                                                                    *
  *   4/25/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-RenderObjClass * RenderObjectRecyclerClass::Get_Render_Object(const char * name,const Matrix3D & tm)
-{
-	RefRenderObjListIterator it(&InactiveModels);
-	
-	RenderObjClass * found = NULL;
-	while (!it.Is_Done()) {
-		if (stricmp(it.Peek_Obj()->Get_Name(),name) == 0) {
-			found = it.Peek_Obj();
-			break;
-		}
-		it.Next();
-	}
+RenderObjClass *RenderObjectRecyclerClass::Get_Render_Object(const char *name, const Matrix3D &tm) {
+  RefRenderObjListIterator it(&InactiveModels);
 
-	if (found != NULL) {
-		found->Add_Ref();
-		InactiveModels.Remove(found);
-		found->Set_Transform(tm);
-		Reset_Model(found);
-		return found;
+  RenderObjClass *found = NULL;
+  while (!it.Is_Done()) {
+    if (stricmp(it.Peek_Obj()->Get_Name(), name) == 0) {
+      found = it.Peek_Obj();
+      break;
+    }
+    it.Next();
+  }
 
-	} else {
-		
-		RenderObjClass * new_model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(name);
-		if (new_model != NULL) {
-			new_model->Set_Transform(tm);
-			return new_model;
-		} 
-	}	
-	
-	return NULL;
+  if (found != NULL) {
+    found->Add_Ref();
+    InactiveModels.Remove(found);
+    found->Set_Transform(tm);
+    Reset_Model(found);
+    return found;
+
+  } else {
+
+    RenderObjClass *new_model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(name);
+    if (new_model != NULL) {
+      new_model->Set_Transform(tm);
+      return new_model;
+    }
+  }
+
+  return NULL;
 }
-
 
 /***********************************************************************************************
  * RenderObjectRecyclerClass::Return_Render_Object -- Return a render object to the pool       *
@@ -124,11 +117,7 @@ RenderObjClass * RenderObjectRecyclerClass::Get_Render_Object(const char * name,
  * HISTORY:                                                                                    *
  *   4/25/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-void RenderObjectRecyclerClass::Return_Render_Object(RenderObjClass * obj)
-{
-	Insert_Inactive_Model(obj);
-}
-
+void RenderObjectRecyclerClass::Return_Render_Object(RenderObjClass *obj) { Insert_Inactive_Model(obj); }
 
 /***********************************************************************************************
  * RenderObjectRecyclerClass::Insert_Inactive_Model -- Internally add a render object to the po*
@@ -142,10 +131,9 @@ void RenderObjectRecyclerClass::Return_Render_Object(RenderObjClass * obj)
  * HISTORY:                                                                                    *
  *   4/25/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-void RenderObjectRecyclerClass::Insert_Inactive_Model(RenderObjClass * obj)
-{
-	WWASSERT(obj != NULL);
-	InactiveModels.Add(obj);
+void RenderObjectRecyclerClass::Insert_Inactive_Model(RenderObjClass *obj) {
+  WWASSERT(obj != NULL);
+  InactiveModels.Add(obj);
 }
 
 /***********************************************************************************************
@@ -160,29 +148,28 @@ void RenderObjectRecyclerClass::Insert_Inactive_Model(RenderObjClass * obj)
  * HISTORY:                                                                                    *
  *   5/8/2001   gth : Created.                                                                 *
  *=============================================================================================*/
-void RenderObjectRecyclerClass::Reset_Model(RenderObjClass * model)
-{
-	/*
-	** recursively reset all sub-objects (if any)
-	*/
-	for (int i=0; i<model->Get_Num_Sub_Objects(); i++) {
-		RenderObjClass * robj = model->Get_Sub_Object(i);
-		Reset_Model(robj);
-		robj->Release_Ref();
-	}
-	
-	/*
-	** particle emitters must be reset (this should release their buffers)
-	*/
-	if (model->Class_ID() == RenderObjClass::CLASSID_PARTICLEEMITTER) {
-		ParticleEmitterClass * emitter = (ParticleEmitterClass *)model;
-		emitter->Reset();
-	}
-	
-	/*
-	** animated models must have their animation reset (if present)
-	*/
-	if (model->Peek_Animation() != NULL) {
-		model->Set_Animation(model->Peek_Animation(),0.0f,RenderObjClass::ANIM_MODE_ONCE);
-	}
+void RenderObjectRecyclerClass::Reset_Model(RenderObjClass *model) {
+  /*
+  ** recursively reset all sub-objects (if any)
+  */
+  for (int i = 0; i < model->Get_Num_Sub_Objects(); i++) {
+    RenderObjClass *robj = model->Get_Sub_Object(i);
+    Reset_Model(robj);
+    robj->Release_Ref();
+  }
+
+  /*
+  ** particle emitters must be reset (this should release their buffers)
+  */
+  if (model->Class_ID() == RenderObjClass::CLASSID_PARTICLEEMITTER) {
+    ParticleEmitterClass *emitter = (ParticleEmitterClass *)model;
+    emitter->Reset();
+  }
+
+  /*
+  ** animated models must have their animation reset (if present)
+  */
+  if (model->Peek_Animation() != NULL) {
+    model->Set_Animation(model->Peek_Animation(), 0.0f, RenderObjClass::ANIM_MODE_ONCE);
+  }
 }

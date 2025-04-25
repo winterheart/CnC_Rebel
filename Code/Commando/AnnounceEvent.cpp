@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/AnnounceEvent.cpp $
-*
-* DESCRIPTION
-*     Client announcement
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 9 $
-*     $Modtime: 1/12/02 9:33p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/AnnounceEvent.cpp $
+ *
+ * DESCRIPTION
+ *     Client announcement
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 9 $
+ *     $Modtime: 1/12/02 9:33p $
+ *
+ ******************************************************************************/
 
 #include "announceevent.h"
 #include "networkobjectfactory.h"
@@ -49,295 +49,232 @@
 #include "cncmodesettings.h"
 #include "floodprotectionmgr.h"
 
-
 DECLARE_NETWORKOBJECT_FACTORY(CSAnnouncement, NETCLASSID_CSANNOUNCEMENT);
 
+CSAnnouncement::CSAnnouncement(void)
+    : mFromID(-1), mToID(-1), mAnnouncementID(0), mRadioCmdID(-1), mType(ANNOUNCEMENT_PUBLIC) {
+  Set_App_Packet_Type(APPPACKETTYPE_CSANNOUNCEMENT);
+}
 
-CSAnnouncement::CSAnnouncement(void) :
-		mFromID(-1),
-		mToID(-1),
-		mAnnouncementID(0),
-		mRadioCmdID(-1),
-		mType(ANNOUNCEMENT_PUBLIC)
-	{
-	Set_App_Packet_Type(APPPACKETTYPE_CSANNOUNCEMENT);
-	}
+CSAnnouncement::~CSAnnouncement() {}
 
+void CSAnnouncement::Init(int to_id, int announcementID, AnnouncementEnum type, int radio_cmd_id) {
+  WWASSERT(cNetwork::I_Am_Client());
 
-CSAnnouncement::~CSAnnouncement()
-	{
-	}
+  mToID = to_id;
+  mFromID = cNetwork::Get_My_Id();
+  mAnnouncementID = announcementID;
+  mRadioCmdID = radio_cmd_id;
+  mType = type;
 
+  Set_Network_ID(NetworkObjectMgrClass::Get_New_Client_ID());
 
-void CSAnnouncement::Init(int to_id, int announcementID, AnnouncementEnum type, int radio_cmd_id)
-	{
-	WWASSERT(cNetwork::I_Am_Client());
+  //
+  //	Is this user "flooding" the server with text?
+  //
+  if (FloodProtectionMgrClass::Detect_Flooding(L"") == false) {
 
-	mToID = to_id;
-	mFromID = cNetwork::Get_My_Id();
-	mAnnouncementID = announcementID;
-	mRadioCmdID = radio_cmd_id;
-	mType = type;
+    if (cNetwork::I_Am_Server()) {
+      Act();
+    } else {
+      Set_Object_Dirty_Bit(0, BIT_CREATION, true);
+    }
+  } else {
+    //
+    //	Flooding detected -- don't send the message
+    //
+    Set_Delete_Pending();
+  }
+}
 
-	Set_Network_ID(NetworkObjectMgrClass::Get_New_Client_ID());
+void CSAnnouncement::Act(void) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	//
-	//	Is this user "flooding" the server with text?
-	//
-	if (FloodProtectionMgrClass::Detect_Flooding (L"") == false)
-		{
+  if (GameModeManager::Find("Combat")->Is_Active()) {
+    SCAnnouncement *announce = new SCAnnouncement;
+    announce->Init(mToID, mFromID, mAnnouncementID, mType, mRadioCmdID);
+  }
 
-		if (cNetwork::I_Am_Server())
-			{
-			Act();
-			}
-		else
-			{
-			Set_Object_Dirty_Bit(0, BIT_CREATION, true);
-			}
-		}
-	else
-		{
-			//
-			//	Flooding detected -- don't send the message
-			//
-			Set_Delete_Pending();			
-		}
-	}
+  Set_Delete_Pending();
+}
 
+void CSAnnouncement::Export_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-void CSAnnouncement::Act(void)
-	{
-	WWASSERT(cNetwork::I_Am_Server());
+  cNetEvent::Export_Creation(packet);
+  packet.Add(mToID);
+  packet.Add(mFromID);
+  packet.Add(mAnnouncementID);
+  packet.Add(mRadioCmdID);
+  packet.Add((BYTE)mType);
 
-	if (GameModeManager::Find("Combat")->Is_Active())
-		{
-		SCAnnouncement* announce = new SCAnnouncement;
-		announce->Init(mToID, mFromID, mAnnouncementID, mType, mRadioCmdID);
-		}
+  Set_Delete_Pending();
+}
 
-	Set_Delete_Pending();
-	}
+void CSAnnouncement::Import_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Server());
 
+  cNetEvent::Import_Creation(packet);
+  packet.Get(mToID);
+  packet.Get(mFromID);
+  packet.Get(mAnnouncementID);
+  packet.Get(mRadioCmdID);
 
-void CSAnnouncement::Export_Creation(BitStreamClass& packet)
-	{
-	WWASSERT(cNetwork::I_Am_Only_Client());
+  BYTE type = 0;
+  packet.Get(type);
+  mType = (AnnouncementEnum)type;
 
-	cNetEvent::Export_Creation(packet);
-	packet.Add(mToID);
-	packet.Add(mFromID);
-	packet.Add(mAnnouncementID);
-	packet.Add(mRadioCmdID);
-	packet.Add((BYTE)mType);	
-
-	Set_Delete_Pending();
-	}
-
-
-void CSAnnouncement::Import_Creation(BitStreamClass& packet)
-	{
-	WWASSERT(cNetwork::I_Am_Server());
-
-	cNetEvent::Import_Creation(packet);
-	packet.Get(mToID);
-	packet.Get(mFromID);
-	packet.Get(mAnnouncementID);
-	packet.Get(mRadioCmdID);
-
-	BYTE type = 0;
-	packet.Get(type);
-	mType = (AnnouncementEnum)type;	
-
-	Act();
-	}
-
+  Act();
+}
 
 //-----------------------------------------------------------------------------
 DECLARE_NETWORKOBJECT_FACTORY(SCAnnouncement, NETCLASSID_SCANNOUNCEMENT);
 
+SCAnnouncement::SCAnnouncement(void)
+    : mToID(-1), mFromID(-1), mAnnouncementID(0), mRadioCmdID(-1), mType(ANNOUNCEMENT_PUBLIC) {
+  Set_App_Packet_Type(APPPACKETTYPE_SCANNOUNCEMENT);
+}
 
-SCAnnouncement::SCAnnouncement(void) :
-		mToID(-1),
-		mFromID(-1),
-		mAnnouncementID(0),
-		mRadioCmdID(-1),
-		mType(ANNOUNCEMENT_PUBLIC)
-	{
-	Set_App_Packet_Type(APPPACKETTYPE_SCANNOUNCEMENT);
-	}
+SCAnnouncement::~SCAnnouncement() {}
 
+void SCAnnouncement::Init(int to_id, int from_id, int announcementID, AnnouncementEnum type, int radio_cmd_id) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-SCAnnouncement::~SCAnnouncement()
-	{
-	}
+  mToID = to_id;
+  mFromID = from_id;
+  mAnnouncementID = announcementID;
+  mRadioCmdID = radio_cmd_id;
+  mType = type;
 
+  switch (type) {
+  case ANNOUNCEMENT_PUBLIC:
+    Set_Object_Dirty_Bit(BIT_CREATION, true);
+    break;
 
-void SCAnnouncement::Init(int to_id, int from_id, int announcementID, AnnouncementEnum type, int radio_cmd_id)
-	{
-	WWASSERT(cNetwork::I_Am_Server());
+  case ANNOUNCEMENT_TEAM:
+    if (mToID >= 0) {
+      Set_Dirty_Bit_For_Team(BIT_CREATION, mToID);
+    }
+    break;
 
-	mToID = to_id;
-	mFromID = from_id;
-	mAnnouncementID = announcementID;
-	mRadioCmdID = radio_cmd_id;
-	mType = type;
+  case ANNOUNCEMENT_PRIVATE:
+    if (mToID >= 0) {
+      Set_Object_Dirty_Bit(mToID, BIT_CREATION, true);
+    }
+    break;
 
-	switch (type)
-		{
-		case ANNOUNCEMENT_PUBLIC:
-			Set_Object_Dirty_Bit(BIT_CREATION, true);
-			break;
+  default:
+    break;
+  }
 
-		case ANNOUNCEMENT_TEAM:
-			if (mToID >= 0)
-				{
-				Set_Dirty_Bit_For_Team(BIT_CREATION, mToID);
-				}
-			break;
+  // Explicitly show the message on the server if he is among the recipients.
+  if (cNetwork::I_Am_Client() && Is_Client_Dirty(cNetwork::Get_My_Id())) {
+    Act();
+  }
+}
 
-		case ANNOUNCEMENT_PRIVATE:
-			if (mToID >= 0)
-				{
-				Set_Object_Dirty_Bit(mToID, BIT_CREATION, true);
-				}
-			break;
+void SCAnnouncement::Set_Dirty_Bit_For_Team(DIRTY_BIT bit, int team) {
+  WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
 
-		default:
-			break;
-		}
+  SList<cPlayer> *playerList = cPlayerManager::Get_Player_Object_List();
 
-	// Explicitly show the message on the server if he is among the recipients.
-	if (cNetwork::I_Am_Client() && Is_Client_Dirty(cNetwork::Get_My_Id()))
-		{
-		Act();
-		}
-	}
+  if (playerList) {
+    SLNode<cPlayer> *playerNode = playerList->Head();
 
+    while (playerNode) {
+      cPlayer *player = playerNode->Data();
 
-void SCAnnouncement::Set_Dirty_Bit_For_Team(DIRTY_BIT bit, int team)
-	{
-	WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
+      if (player && player->Is_Active() && (player->Get_Player_Type() == team)) {
+        Set_Object_Dirty_Bit(player->Get_Id(), bit, true);
+      }
 
-	SList<cPlayer>* playerList = cPlayerManager::Get_Player_Object_List();
+      playerNode = playerNode->Next();
+    }
+  }
+}
 
-	if (playerList)
-		{
-		SLNode<cPlayer>* playerNode = playerList->Head();
+void SCAnnouncement::Act(void) {
+  if (mAnnouncementID > 0) {
+    // Lookup the translation object from the strings database
+    TDBObjClass *translateObj = TranslateDBClass::Find_Object(mAnnouncementID);
 
-		while (playerNode)
-			{
-			cPlayer* player = playerNode->Data();
+    cPlayer *sender = cPlayerManager::Find_Player(mFromID);
 
-			if (player && player->Is_Active() && (player->Get_Player_Type() == team))
-				{
-				Set_Object_Dirty_Bit(player->Get_Id(), bit, true);
-				}
+    //
+    //	Display the emot icon as ncessary
+    //
+    if (sender != NULL && mRadioCmdID != -1) {
 
-			playerNode = playerNode->Next();
-			}
-		}
-	}
+      //
+      //	Dig the soldier game object out from the player data
+      //
+      SmartGameObj *game_obj = sender->Get_GameObj();
+      if (game_obj != NULL && game_obj->As_SoldierGameObj() != NULL) {
+        CNCModeSettingsDef *cncDef = CNCModeSettingsDef::Get_Instance();
+        if (cncDef != NULL) {
+          //
+          //	Display the emot icon
+          //
+          const float EMOT_ICON_DURATION = 2.0F;
+          const char *emot_icon_name = cncDef->Get_Radio_Command_Emot_Icon(mRadioCmdID);
+          game_obj->As_SoldierGameObj()->Set_Emot_Icon(emot_icon_name, EMOT_ICON_DURATION);
+        }
+      }
+    }
 
+    if (translateObj) {
+      // Display the text on the screen
+      const WCHAR *string = translateObj->Get_String();
 
-void SCAnnouncement::Act(void)
-	{
-	if (mAnnouncementID > 0)
-		{
-		// Lookup the translation object from the strings database
-		TDBObjClass* translateObj = TranslateDBClass::Find_Object(mAnnouncementID);
+      if (string) {
 
-		cPlayer* sender = cPlayerManager::Find_Player(mFromID);
+        if (sender) {
+          WideStringClass message(0, true);
+          message.Format(L"%s: %s", sender->Get_Name(), string);
+          CombatManager::Get_Message_Window()->Add_Message(message, sender->Get_Color());
+        } else {
+          CombatManager::Get_Message_Window()->Add_Message(string, Vector3(1, 1, 1));
+        }
+      }
 
-		//
-		//	Display the emot icon as ncessary
-		//
-		if (sender != NULL && mRadioCmdID != -1)
-			{
+      // Play the sound effect
+      int soundID = (int)translateObj->Get_Sound_ID();
 
-			//
-			//	Dig the soldier game object out from the player data
-			//
-			SmartGameObj *game_obj = sender->Get_GameObj();
-			if (game_obj != NULL && game_obj->As_SoldierGameObj () != NULL)
-				{
-				CNCModeSettingsDef* cncDef = CNCModeSettingsDef::Get_Instance();
-				if (cncDef != NULL)
-					{
-					//
-					//	Display the emot icon
-					//
-					const float EMOT_ICON_DURATION = 2.0F;
-					const char *emot_icon_name = cncDef->Get_Radio_Command_Emot_Icon (mRadioCmdID);
-					game_obj->As_SoldierGameObj ()->Set_Emot_Icon (emot_icon_name, EMOT_ICON_DURATION);
-					}				
-				}
-			}
+      if (soundID > 0) {
+        WWAudioClass::Get_Instance()->Create_Instant_Sound(soundID, Matrix3D(1));
+      }
+    }
+  }
 
-		if (translateObj)
-			{
-			// Display the text on the screen
-			const WCHAR* string = translateObj->Get_String();
-
-			if (string)
-				{
-
-		    if (sender)
-					{
-					WideStringClass message(0, true);
-					message.Format(L"%s: %s", sender->Get_Name(), string);
-					CombatManager::Get_Message_Window()->Add_Message(message, sender->Get_Color());
-					}
-				else
-					{
-					CombatManager::Get_Message_Window()->Add_Message(string, Vector3(1,1,1));
-					}
-				}		
-
-			// Play the sound effect
-			int soundID = (int)translateObj->Get_Sound_ID();
-
-			if (soundID > 0)
-				{
-				WWAudioClass::Get_Instance()->Create_Instant_Sound(soundID, Matrix3D(1));
-				}
-			}
-		}
-
-
-	Set_Delete_Pending();
-	}
-
+  Set_Delete_Pending();
+}
 
 //-----------------------------------------------------------------------------
-void SCAnnouncement::Export_Creation(BitStreamClass& packet)
-	{
-	cNetEvent::Export_Creation(packet);
-	packet.Add(mToID);
-	packet.Add(mFromID);
-	packet.Add(mAnnouncementID);
-	packet.Add(mRadioCmdID);
-	packet.Add((BYTE)mType);
+void SCAnnouncement::Export_Creation(BitStreamClass &packet) {
+  cNetEvent::Export_Creation(packet);
+  packet.Add(mToID);
+  packet.Add(mFromID);
+  packet.Add(mAnnouncementID);
+  packet.Add(mRadioCmdID);
+  packet.Add((BYTE)mType);
 
-	Set_Delete_Pending();
-	}
-
+  Set_Delete_Pending();
+}
 
 //-----------------------------------------------------------------------------
-void SCAnnouncement::Import_Creation(BitStreamClass& packet)
-	{
-	cNetEvent::Import_Creation(packet);
+void SCAnnouncement::Import_Creation(BitStreamClass &packet) {
+  cNetEvent::Import_Creation(packet);
 
-	WWASSERT(cNetwork::I_Am_Only_Client());
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	packet.Get(mToID);
-	packet.Get(mFromID);
-	packet.Get(mAnnouncementID);
-	packet.Add(mRadioCmdID);
+  packet.Get(mToID);
+  packet.Get(mFromID);
+  packet.Get(mAnnouncementID);
+  packet.Add(mRadioCmdID);
 
-	BYTE type = 0;
-	packet.Get(type);
-	mType = (AnnouncementEnum)type;
+  BYTE type = 0;
+  packet.Get(type);
+  mType = (AnnouncementEnum)type;
 
-	Act();
-	}
+  Act();
+}

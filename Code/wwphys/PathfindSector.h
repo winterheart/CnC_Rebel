@@ -38,7 +38,6 @@
 #pragma once
 #endif
 
-
 #ifndef __PATHFIND_SECTOR_H
 #define __PATHFIND_SECTOR_H
 
@@ -56,130 +55,103 @@ class ChunkLoadClass;
 class PathfindPortalClass;
 class PathfindWaypathSectorClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	PathfindSectorClass
 //
 //////////////////////////////////////////////////////////////////////////
-class PathfindSectorClass : public CullableClass
-{
+class PathfindSectorClass : public CullableClass {
 public:
+  ////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////////
+  PathfindSectorClass(void) : m_IsValid(true) {}
 
-	////////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////////
-	PathfindSectorClass (void)
-		:	m_IsValid (true)		{}
+  PathfindSectorClass(const AABoxClass &box) : m_IsValid(true) {}
 
-	PathfindSectorClass (const AABoxClass &box)
-		:	m_IsValid (true)		{}
+  virtual ~PathfindSectorClass(void);
 
-	virtual ~PathfindSectorClass (void);
+  ////////////////////////////////////////////////////////////////////
+  //	RTTI
+  ////////////////////////////////////////////////////////////////////
+  virtual PathfindWaypathSectorClass *As_PathfindWaypathSectorClass(void) { return NULL; }
+  virtual const PathfindWaypathSectorClass *As_PathfindWaypathSectorClass(void) const { return NULL; }
 
-	////////////////////////////////////////////////////////////////////
-	//	RTTI
-	////////////////////////////////////////////////////////////////////
-	virtual PathfindWaypathSectorClass *			As_PathfindWaypathSectorClass (void)			{ return NULL; }
-	virtual const PathfindWaypathSectorClass *	As_PathfindWaypathSectorClass (void) const	{ return NULL; }
+  ////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////////
-	
-	//
-	//	Bounding box access
-	//
-	const AABoxClass &	Get_Bounding_Box (void) const;
-	void						Set_Bounding_Box (const AABoxClass &box);
+  //
+  //	Bounding box access
+  //
+  const AABoxClass &Get_Bounding_Box(void) const;
+  void Set_Bounding_Box(const AABoxClass &box);
 
-	//
-	//	Portal managment
-	//
-	void						Add_Portal (uint32 portal_id);
-	void						Remove_Portal (uint32 portal_id);
-	void						Reset_Portal_List (void);
+  //
+  //	Portal managment
+  //
+  void Add_Portal(uint32 portal_id);
+  void Remove_Portal(uint32 portal_id);
+  void Reset_Portal_List(void);
 
-	//
-	//	Portal access
-	//
-	int						Get_Portal_Count (void);
-	PathfindPortalClass *Peek_Portal (int index);
+  //
+  //	Portal access
+  //
+  int Get_Portal_Count(void);
+  PathfindPortalClass *Peek_Portal(int index);
 
-	//
-	//	Validity managment
-	//
-	bool						Is_Valid (void)				{ return m_IsValid; }
-	void						Set_Valid (bool is_valid)	{ m_IsValid = is_valid; }
+  //
+  //	Validity managment
+  //
+  bool Is_Valid(void) { return m_IsValid; }
+  void Set_Valid(bool is_valid) { m_IsValid = is_valid; }
 
-	//
-	//	Portal testing methods
-	//
-	virtual bool			Can_Access_Portal (PathfindPortalClass *last_portal, PathfindPortalClass *test_portal);
+  //
+  //	Portal testing methods
+  //
+  virtual bool Can_Access_Portal(PathfindPortalClass *last_portal, PathfindPortalClass *test_portal);
 
-	//
-	//	Serialization methods
-	//
-	virtual bool			Save (ChunkSaveClass &csave);
-	virtual bool			Load (ChunkLoadClass &cload);		
+  //
+  //	Serialization methods
+  //
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
 protected:
-
-	////////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////////
-	DynamicVectorClass<uint32>		m_PortalList;
-	bool									m_IsValid;
+  ////////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////////
+  DynamicVectorClass<uint32> m_PortalList;
+  bool m_IsValid;
 
 private:
-
-	//////////////////////////////////////////////////////////////////////
-	//	Private methods
-	//////////////////////////////////////////////////////////////////////
-	bool						Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////////
+  bool Load_Variables(ChunkLoadClass &cload);
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 //	Inlines
 //////////////////////////////////////////////////////////////////////////
 
-inline const AABoxClass &
-PathfindSectorClass::Get_Bounding_Box (void) const
-{
-	return Get_Cull_Box ();
+inline const AABoxClass &PathfindSectorClass::Get_Bounding_Box(void) const { return Get_Cull_Box(); }
+
+inline void PathfindSectorClass::Set_Bounding_Box(const AABoxClass &box) {
+  Set_Cull_Box(box);
+  return;
 }
 
-inline void
-PathfindSectorClass::Set_Bounding_Box (const AABoxClass &box)
-{
-	Set_Cull_Box (box);
-	return ;
+inline void PathfindSectorClass::Add_Portal(uint32 portal_id) {
+  m_PortalList.Add(portal_id);
+  return;
 }
 
-inline void
-PathfindSectorClass::Add_Portal (uint32 portal_id)
-{
-	m_PortalList.Add (portal_id);
-	return ;
-}
+inline int PathfindSectorClass::Get_Portal_Count(void) { return m_PortalList.Count(); }
 
-inline int
-PathfindSectorClass::Get_Portal_Count (void)
-{
-	return m_PortalList.Count ();
+inline bool PathfindSectorClass::Can_Access_Portal(PathfindPortalClass *last_portal, PathfindPortalClass *test_portal) {
+  return (test_portal != last_portal);
 }
-
-inline bool
-PathfindSectorClass::Can_Access_Portal
-(
-	PathfindPortalClass *last_portal,
-	PathfindPortalClass *test_portal
-)
-{
-	return (test_portal != last_portal);
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -190,60 +162,52 @@ PathfindSectorClass::Can_Access_Portal
 // occurance on the waypath.
 //
 //////////////////////////////////////////////////////////////////////////
-class PathfindWaypathSectorClass : public PathfindSectorClass
-{
+class PathfindWaypathSectorClass : public PathfindSectorClass {
 public:
+  ////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////////
+  PathfindWaypathSectorClass(void) : WaypathID(-1) {}
+  ~PathfindWaypathSectorClass(void) {}
 
-	////////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////////
-	PathfindWaypathSectorClass (void)
-		: WaypathID (-1)						{}
-	~PathfindWaypathSectorClass (void)	{}
+  ////////////////////////////////////////////////////////////////////
+  //	RTTI
+  ////////////////////////////////////////////////////////////////////
+  PathfindWaypathSectorClass *As_PathfindWaypathSectorClass(void) { return this; }
+  const PathfindWaypathSectorClass *As_PathfindWaypathSectorClass(void) const { return this; }
 
-	////////////////////////////////////////////////////////////////////
-	//	RTTI
-	////////////////////////////////////////////////////////////////////
-	PathfindWaypathSectorClass *			As_PathfindWaypathSectorClass (void)			{ return this; }
-	const PathfindWaypathSectorClass *	As_PathfindWaypathSectorClass (void) const	{ return this; }
+  ////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////////
-	
-	//
-	//	Waypath access
-	//
-	void					Set_Waypath_ID (int waypath_id)	{ WaypathID = waypath_id; }
-	int					Get_Waypath_ID (void)				{ return WaypathID; }
-	
-	//
-	//	From PathfindSectorClass
-	//
-	bool					Can_Access_Portal (PathfindPortalClass *last_portal, PathfindPortalClass *test_portal);
-	bool					Save (ChunkSaveClass &csave);
-	bool					Load (ChunkLoadClass &cload);		
+  //
+  //	Waypath access
+  //
+  void Set_Waypath_ID(int waypath_id) { WaypathID = waypath_id; }
+  int Get_Waypath_ID(void) { return WaypathID; }
+
+  //
+  //	From PathfindSectorClass
+  //
+  bool Can_Access_Portal(PathfindPortalClass *last_portal, PathfindPortalClass *test_portal);
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
 protected:
+  ////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////////
-	int					WaypathID;
+  ////////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////////
+  int WaypathID;
 
 private:
-
-	//////////////////////////////////////////////////////////////////////
-	//	Private methods
-	//////////////////////////////////////////////////////////////////////
-	bool					Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////////
+  bool Load_Variables(ChunkLoadClass &cload);
 };
 
-
 #endif //__PATHFIND_SECTOR_H
-
-

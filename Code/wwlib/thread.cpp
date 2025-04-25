@@ -24,132 +24,119 @@
 #include <cassert>
 #include <process.h>
 #include <windows.h>
-#pragma warning ( push )
-#pragma warning ( disable : 4201 )
+#pragma warning(push)
+#pragma warning(disable : 4201)
 #include "systimer.h"
-#pragma warning ( pop )
+#pragma warning(pop)
 
+ThreadClass::ThreadClass(const char *thread_name, ExceptionHandlerType exception_handler)
+    : handle(0), running(false), thread_priority(0) {
+  if (thread_name) {
+    assert(strlen(thread_name) < sizeof(ThreadName) - 1);
+    strcpy(ThreadName, thread_name);
+  } else {
+    strcpy(ThreadName, "No name");
+    ;
+  }
 
-ThreadClass::ThreadClass(const char *thread_name, ExceptionHandlerType exception_handler) : handle(0), running(false), thread_priority(0)
-{
-	if (thread_name) {
-		assert(strlen(thread_name) < sizeof(ThreadName) - 1);
-		strcpy(ThreadName, thread_name);
-	} else {
-		strcpy(ThreadName, "No name");;
-	}
-
-	ExceptionHandler = exception_handler;
+  ExceptionHandler = exception_handler;
 }
 
-ThreadClass::~ThreadClass()
-{
-	Stop();
-}
+ThreadClass::~ThreadClass() { Stop(); }
 
-void __cdecl ThreadClass::Internal_Thread_Function(void* params)
-{
-	ThreadClass* tc=reinterpret_cast<ThreadClass*>(params);
-	tc->running=true;
-	tc->ThreadID = GetCurrentThreadId();
+void __cdecl ThreadClass::Internal_Thread_Function(void *params) {
+  ThreadClass *tc = reinterpret_cast<ThreadClass *>(params);
+  tc->running = true;
+  tc->ThreadID = GetCurrentThreadId();
 
 #ifdef _WIN32
-	Register_Thread_ID(tc->ThreadID, tc->ThreadName);
+  Register_Thread_ID(tc->ThreadID, tc->ThreadName);
 
-	if (tc->ExceptionHandler != nullptr) {
-		__try {
-			tc->Thread_Function();
-		} __except(tc->ExceptionHandler(GetExceptionCode(), GetExceptionInformation())) {};
-	} else {
-		tc->Thread_Function();
-	}
+  if (tc->ExceptionHandler != nullptr) {
+    __try {
+      tc->Thread_Function();
+    } __except (tc->ExceptionHandler(GetExceptionCode(), GetExceptionInformation())) {
+    };
+  } else {
+    tc->Thread_Function();
+  }
 
-#else //_WIN32
-	tc->Thread_Function();
+#else  //_WIN32
+  tc->Thread_Function();
 #endif //_WIN32
 
 #ifdef _WIN32
-	Unregister_Thread_ID(tc->ThreadID, tc->ThreadName);
+  Unregister_Thread_ID(tc->ThreadID, tc->ThreadName);
 #endif // _WIN32
-	tc->handle=0;
-	tc->ThreadID = 0;
+  tc->handle = 0;
+  tc->ThreadID = 0;
 }
 
-void ThreadClass::Execute()
-{
-	WWASSERT(!handle);	// Only one thread at a time!
-	#ifdef _UNIX
-		// assert(0);
-		return;
-	#else
-		handle = reinterpret_cast<unsigned long>(CreateThread(
-			nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(Internal_Thread_Function), this, 0, nullptr));
-		SetThreadPriority((HANDLE)handle,THREAD_PRIORITY_NORMAL+thread_priority);
-		WWDEBUG_SAY(("ThreadClass::Execute: Started thread %s, thread ID is %X\n", ThreadName, handle));
-	#endif
+void ThreadClass::Execute() {
+  WWASSERT(!handle); // Only one thread at a time!
+#ifdef _UNIX
+                     // assert(0);
+  return;
+#else
+  handle = reinterpret_cast<unsigned long>(
+      CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(Internal_Thread_Function), this, 0, nullptr));
+  SetThreadPriority((HANDLE)handle, THREAD_PRIORITY_NORMAL + thread_priority);
+  WWDEBUG_SAY(("ThreadClass::Execute: Started thread %s, thread ID is %X\n", ThreadName, handle));
+#endif
 }
 
-void ThreadClass::Set_Priority(int priority)
-{
-	#ifdef _UNIX
-		// assert(0);
-		return;
-	#else
-		thread_priority=priority;
-		if (handle) SetThreadPriority((HANDLE)handle,THREAD_PRIORITY_NORMAL+thread_priority);
-	#endif
+void ThreadClass::Set_Priority(int priority) {
+#ifdef _UNIX
+  // assert(0);
+  return;
+#else
+  thread_priority = priority;
+  if (handle)
+    SetThreadPriority((HANDLE)handle, THREAD_PRIORITY_NORMAL + thread_priority);
+#endif
 }
 
-void ThreadClass::Stop(unsigned ms)
-{
-	#ifdef _UNIX
-		// assert(0);
-		return;
-	#else
-		running=false;
-		unsigned time=TIMEGETTIME();
-		while (handle) {
-			if ((TIMEGETTIME()-time)>ms) {
-				int res=TerminateThread((HANDLE)handle,0);
-				WWASSERT(res);	// Thread still not killed!
-				handle=0;
-			}
-			Sleep(0);
-		}
-	#endif
+void ThreadClass::Stop(unsigned ms) {
+#ifdef _UNIX
+  // assert(0);
+  return;
+#else
+  running = false;
+  unsigned time = TIMEGETTIME();
+  while (handle) {
+    if ((TIMEGETTIME() - time) > ms) {
+      int res = TerminateThread((HANDLE)handle, 0);
+      WWASSERT(res); // Thread still not killed!
+      handle = 0;
+    }
+    Sleep(0);
+  }
+#endif
 }
 
-void ThreadClass::Sleep_Ms(unsigned ms)
-{
-	Sleep(ms);
-}
+void ThreadClass::Sleep_Ms(unsigned ms) { Sleep(ms); }
 
 #ifndef _UNIX
-HANDLE test_event = ::CreateEvent (nullptr, FALSE, FALSE, nullptr);
+HANDLE test_event = ::CreateEvent(nullptr, FALSE, FALSE, nullptr);
 #endif
 
-void ThreadClass::Switch_Thread()
-{
-	#ifdef _UNIX
-		return;
-	#else
-		//	::SwitchToThread ();
-		::WaitForSingleObject (test_event, 1);
-		//	Sleep(1);	// Note! Parameter can not be 0 (or the thread switch doesn't occur)
-	#endif
+void ThreadClass::Switch_Thread() {
+#ifdef _UNIX
+  return;
+#else
+  //	::SwitchToThread ();
+  ::WaitForSingleObject(test_event, 1);
+  //	Sleep(1);	// Note! Parameter can not be 0 (or the thread switch doesn't occur)
+#endif
 }
 
 // Return calling thread's unique thread id
-unsigned ThreadClass::_Get_Current_Thread_ID()
-{
-	#ifdef _UNIX
-		return 0;
-	#else
-		return GetCurrentThreadId();
-	#endif
+unsigned ThreadClass::_Get_Current_Thread_ID() {
+#ifdef _UNIX
+  return 0;
+#else
+  return GetCurrentThreadId();
+#endif
 }
 
-bool ThreadClass::Is_Running()
-{
-	return !!handle;
-}
+bool ThreadClass::Is_Running() { return !!handle; }

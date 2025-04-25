@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/gameoptionsevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/26/01 4:35p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/gameoptionsevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/26/01 4:35p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __GAMEOPTIONSEVENT_H__
@@ -44,24 +44,22 @@
 //
 // A S->C mirrored object to represent S->C notification of game options
 //
-class	cGameOptionsEvent : public cNetEvent
-{
+class cGameOptionsEvent : public cNetEvent {
 public:
-   cGameOptionsEvent(void);
+  cGameOptionsEvent(void);
 
-	void						Init(int client_id);
+  void Init(int client_id);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_GAMEOPTIONSEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_GAMEOPTIONSEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						HostedGameNumber;
+  int HostedGameNumber;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __GAMEOPTIONSEVENT_H__
+#endif // __GAMEOPTIONSEVENT_H__

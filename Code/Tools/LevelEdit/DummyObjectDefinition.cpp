@@ -43,168 +43,133 @@
 #include "editorchunkids.h"
 #include "dummyobjectnode.h"
 
-
 //////////////////////////////////////////////////////////////////////////////////
 //	Constants
 //////////////////////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_VARIABLES			= 0x00000100,
-	CHUNKID_BASE_CLASS		= 0x00000200,
+enum {
+  CHUNKID_VARIABLES = 0x00000100,
+  CHUNKID_BASE_CLASS = 0x00000200,
 };
 
-enum
-{
-	VARID_MODEL_NAME			= 0x01,
+enum {
+  VARID_MODEL_NAME = 0x01,
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Static factories
 //
 //////////////////////////////////////////////////////////////////////////////////
-DECLARE_DEFINITION_FACTORY(DummyObjectDefinitionClass, CLASSID_DUMMY_OBJECTS, "Dummy Object")	_DummyObjDefFactory;
-SimplePersistFactoryClass<DummyObjectDefinitionClass, CHUNKID_DUMMY_OBJECT_DEF>			_DummyObjDefPersistFactory;
-
+DECLARE_DEFINITION_FACTORY(DummyObjectDefinitionClass, CLASSID_DUMMY_OBJECTS, "Dummy Object") _DummyObjDefFactory;
+SimplePersistFactoryClass<DummyObjectDefinitionClass, CHUNKID_DUMMY_OBJECT_DEF> _DummyObjDefPersistFactory;
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	DummyObjectDefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-DummyObjectDefinitionClass::DummyObjectDefinitionClass (void)
-	:	DefinitionClass ()
-		
-{
-	FILENAME_PARAM (DummyObjectDefinitionClass, m_ModelName, "Westwood 3D Files", ".w3d");
-	return ;
-}
+DummyObjectDefinitionClass::DummyObjectDefinitionClass(void)
+    : DefinitionClass()
 
+{
+  FILENAME_PARAM(DummyObjectDefinitionClass, m_ModelName, "Westwood 3D Files", ".w3d");
+  return;
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	~DummyObjectDefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-DummyObjectDefinitionClass::~DummyObjectDefinitionClass (void)
-{
-	return ;
-}
-
+DummyObjectDefinitionClass::~DummyObjectDefinitionClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Factory
 //
 //////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &
-DummyObjectDefinitionClass::Get_Factory (void) const
-{
-	return _DummyObjDefPersistFactory;
-}
-
+const PersistFactoryClass &DummyObjectDefinitionClass::Get_Factory(void) const { return _DummyObjDefPersistFactory; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-DummyObjectDefinitionClass::Save (ChunkSaveClass &csave)
-{
-	bool retval = true;
+bool DummyObjectDefinitionClass::Save(ChunkSaveClass &csave) {
+  bool retval = true;
 
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
-	retval &= Save_Variables (csave);
-	csave.End_Chunk ();
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
+  retval &= Save_Variables(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk (CHUNKID_BASE_CLASS);
-	retval &= DefinitionClass::Save (csave);
-	csave.End_Chunk ();
+  csave.Begin_Chunk(CHUNKID_BASE_CLASS);
+  retval &= DefinitionClass::Save(csave);
+  csave.End_Chunk();
 
-	return retval;
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-DummyObjectDefinitionClass::Load (ChunkLoadClass &cload)
-{
-	bool retval = true;
+bool DummyObjectDefinitionClass::Load(ChunkLoadClass &cload) {
+  bool retval = true;
 
-	while (cload.Open_Chunk ()) {
-		switch (cload.Cur_Chunk_ID ()) {
-			
-			case CHUNKID_VARIABLES:
-				retval &= Load_Variables (cload);
-				break;
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_BASE_CLASS:
-				retval &= DefinitionClass::Load (cload);
-				break;
-		}
+    case CHUNKID_VARIABLES:
+      retval &= Load_Variables(cload);
+      break;
 
-		cload.Close_Chunk ();
-	}
+    case CHUNKID_BASE_CLASS:
+      retval &= DefinitionClass::Load(cload);
+      break;
+    }
 
-	return retval;
+    cload.Close_Chunk();
+  }
+
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Save_Variables
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-DummyObjectDefinitionClass::Save_Variables (ChunkSaveClass &csave)
-{
-	bool retval = true;
+bool DummyObjectDefinitionClass::Save_Variables(ChunkSaveClass &csave) {
+  bool retval = true;
 
-	WRITE_MICRO_CHUNK_WWSTRING (csave, VARID_MODEL_NAME, m_ModelName)
-	return retval;
+  WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_MODEL_NAME, m_ModelName)
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-DummyObjectDefinitionClass::Load_Variables (ChunkLoadClass &cload)
-{
-	bool retval = true;
+bool DummyObjectDefinitionClass::Load_Variables(ChunkLoadClass &cload) {
+  bool retval = true;
 
-	//
-	//	Loop through all the microchunks that define the variables
-	//
-	while (cload.Open_Micro_Chunk ()) {
-		switch (cload.Cur_Micro_Chunk_ID ()) {
-			
-			READ_MICRO_CHUNK_WWSTRING (cload, VARID_MODEL_NAME, m_ModelName)
-		}
+  //
+  //	Loop through all the microchunks that define the variables
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) { READ_MICRO_CHUNK_WWSTRING(cload, VARID_MODEL_NAME, m_ModelName) }
 
-		cload.Close_Micro_Chunk ();
-	}
+    cload.Close_Micro_Chunk();
+  }
 
-	return retval;
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Create
 //
 //////////////////////////////////////////////////////////////////////////////////
-PersistClass *
-DummyObjectDefinitionClass::Create (void) const
-{
-	return new DummyObjectNodeClass ();
-}
-
+PersistClass *DummyObjectDefinitionClass::Create(void) const { return new DummyObjectNodeClass(); }

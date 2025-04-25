@@ -25,7 +25,6 @@
 
 #include "resource.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 /////////////////////////////////////////////////////////////////////////////
@@ -37,71 +36,66 @@ class ConversationRemarkClass;
 // EditConversationDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class EditConversationDialogClass : public CDialog
-{
-// Construction
+class EditConversationDialogClass : public CDialog {
+  // Construction
 public:
-	EditConversationDialogClass (CWnd *pParent = NULL);
-	~EditConversationDialogClass (void);
+  EditConversationDialogClass(CWnd *pParent = NULL);
+  ~EditConversationDialogClass(void);
 
-// Dialog Data
-	//{{AFX_DATA(EditConversationDialogClass)
-	enum { IDD = IDD_EDIT_CONVERSATION };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(EditConversationDialogClass)
+  enum { IDD = IDD_EDIT_CONVERSATION };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(EditConversationDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(EditConversationDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(EditConversationDialogClass)
-	afx_msg void OnDblclkRemarkList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnKeydownRemarkList(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual void OnOK();
-	afx_msg void OnAdd();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnInsert();
-	afx_msg void OnItemchangedRemarkList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDeleteitemRemarkList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(EditConversationDialogClass)
+  afx_msg void OnDblclkRemarkList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnKeydownRemarkList(NMHDR *pNMHDR, LRESULT *pResult);
+  virtual void OnOK();
+  afx_msg void OnAdd();
+  virtual BOOL OnInitDialog();
+  afx_msg void OnInsert();
+  afx_msg void OnItemchangedRemarkList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDeleteitemRemarkList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////////////
-	void						Set_Conversation (ConversationClass *conversation);
-	ConversationClass *	Peek_Conversation (void) { return m_Conversation; }
+  /////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////
+  void Set_Conversation(ConversationClass *conversation);
+  ConversationClass *Peek_Conversation(void) { return m_Conversation; }
 
 protected:
+  /////////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////////////
+  ConversationRemarkClass *Get_Entry_Data(int index);
+  void Add_Entry(const ConversationRemarkClass &remark, int insert_index = 0xFFFF);
+  void Update_Button_States(void);
+  void Update_Enable_State(int orator_index);
+  void Update_Player_Type_Combos(int orator_index);
+  void Update_Remarks(int orator_index);
+  int Get_Orator_Type(int orator_index);
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////////////////////
-	ConversationRemarkClass *Get_Entry_Data (int index);
-	void						Add_Entry (const ConversationRemarkClass &remark, int insert_index = 0xFFFF);
-	void						Update_Button_States (void);
-	void						Update_Enable_State (int orator_index);
-	void						Update_Player_Type_Combos (int orator_index);
-	void						Update_Remarks (int orator_index);
-	int						Get_Orator_Type (int orator_index);
+  int Find_Combobox_Entry(int orator_type);
 
-	int						Find_Combobox_Entry (int orator_type);
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Protected member data
-	/////////////////////////////////////////////////////////////////////////////
-	ConversationClass *	m_Conversation;
+  /////////////////////////////////////////////////////////////////////////////
+  //	Protected member data
+  /////////////////////////////////////////////////////////////////////////////
+  ConversationClass *m_Conversation;
 };
 
 //{{AFX_INSERT_LOCATION}}

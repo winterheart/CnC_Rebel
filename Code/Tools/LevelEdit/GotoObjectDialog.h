@@ -28,57 +28,51 @@
 // Forward declarations
 class NodeClass;
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // GotoObjectDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class GotoObjectDialogClass : public CDialog
-{
-// Construction
+class GotoObjectDialogClass : public CDialog {
+  // Construction
 public:
-	GotoObjectDialogClass (NodeClass *sel_node, CWnd *parent = NULL);
+  GotoObjectDialogClass(NodeClass *sel_node, CWnd *parent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(GotoObjectDialogClass)
-	enum { IDD = IDD_GOTO_OBJECT };
-	CComboBox	m_NodeList;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GotoObjectDialogClass)
+  enum { IDD = IDD_GOTO_OBJECT };
+  CComboBox m_NodeList;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GotoObjectDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GotoObjectDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GotoObjectDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnEditChangeObjectList();
-	afx_msg void OnSelChangeObjectList();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GotoObjectDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  afx_msg void OnEditChangeObjectList();
+  afx_msg void OnSelChangeObjectList();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public Methods
-	////////////////////////////////////////////////////////////////
-	int				Get_Current_Selection (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public Methods
+  ////////////////////////////////////////////////////////////////
+  int Get_Current_Selection(void);
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	NodeClass *		m_pNode;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  NodeClass *m_pNode;
 };
 
 //{{AFX_INSERT_LOCATION}}

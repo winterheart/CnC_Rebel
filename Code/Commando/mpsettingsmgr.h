@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/mpsettingsmgr.h        $*
  *                                                                                             *
@@ -65,113 +66,108 @@
 //	MPSettingsMgrClass
 //
 ////////////////////////////////////////////////////////////////
-class MPSettingsMgrClass
-{
+class MPSettingsMgrClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum {
+    OPTION_ALLOW_PAGES = 1,
+    OPTION_LANGUAGE_FILTER = 2,
+    OPTION_ALLOW_FIND = 4,
+    OPTION_DISPLAY_ASIAN = 8,
+    OPTION_DISPLAY_NONASIAN = 16,
+    OPTION_BUDDY_CHAT_ONLY = 32,
+    OPTION_CLAN_CHAT_ONLY = 64,
 
-	////////////////////////////////////////////////////////////////
-	//	Public constants
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		OPTION_ALLOW_PAGES			= 1,
-		OPTION_LANGUAGE_FILTER		= 2,
-		OPTION_ALLOW_FIND				= 4,
-		OPTION_DISPLAY_ASIAN			= 8,
-		OPTION_DISPLAY_NONASIAN		= 16,
-		OPTION_BUDDY_CHAT_ONLY		= 32,
-		OPTION_CLAN_CHAT_ONLY			= 64,
+    OPTION_DEFAULTS = OPTION_ALLOW_PAGES | OPTION_ALLOW_FIND | OPTION_DISPLAY_ASIAN | OPTION_DISPLAY_NONASIAN,
 
-		OPTION_DEFAULTS				= OPTION_ALLOW_PAGES | OPTION_ALLOW_FIND |
-												OPTION_DISPLAY_ASIAN | OPTION_DISPLAY_NONASIAN,
+    OPTION_DEFAULTS_LATIN = OPTION_ALLOW_PAGES | OPTION_ALLOW_FIND | OPTION_DISPLAY_NONASIAN,
 
-		OPTION_DEFAULTS_LATIN = OPTION_ALLOW_PAGES|OPTION_ALLOW_FIND|OPTION_DISPLAY_NONASIAN,
+  } OPTION;
 
-	} OPTION;
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Save/load settings
+  //
+  static void Load_Settings(void);
 
-	//
-	//	Save/load settings
-	//
-	static void				Load_Settings (void);
+  //
+  //	Login methods
+  //
+  static void Set_Last_Login(const char *name);
+  static const char *Get_Last_Login(void);
 
-	//
-	//	Login methods
-	//
-	static void				Set_Last_Login (const char *name);
-	static const char *	Get_Last_Login (void);
+  static void Set_Auto_Login(const char *);
+  static const char *Get_Auto_Login(void);
 
-	static void				Set_Auto_Login (const char *);
-	static const char *	Get_Auto_Login (void);
-
-	static void				Set_Auto_Password (const char *);
-	static const char *	Get_Auto_Password (void);
+  static void Set_Auto_Password(const char *);
+  static const char *Get_Auto_Password(void);
 
 #ifdef OBSOLETE
-	//
-	// Quickmatch preferences
-	//
-	static void		Set_QuickMatch_Mode_Preference (const char *mode, int preference);
-	static int		Get_QuickMatch_Mode_Preference (const char *mode);
-	static void		Save_QuickMatch_Mode_Preferences (void);
+  //
+  // Quickmatch preferences
+  //
+  static void Set_QuickMatch_Mode_Preference(const char *mode, int preference);
+  static int Get_QuickMatch_Mode_Preference(const char *mode);
+  static void Save_QuickMatch_Mode_Preferences(void);
 #endif
 
-	//
-	//	Sidebar help
-	//
-	static bool	Is_Sidebar_Help_Displayed (void)					{ return DisplaySidebarHelp; }
-	static void	Set_Is_Sidebar_Help_Displayed (bool onoff);
+  //
+  //	Sidebar help
+  //
+  static bool Is_Sidebar_Help_Displayed(void) { return DisplaySidebarHelp; }
+  static void Set_Is_Sidebar_Help_Displayed(bool onoff);
 
-	//
-	//	Auto login prompt
-	//
-	static bool	Is_Auto_Login_Prompt_Enabled (void)		{ return IsAutoLoginPromptEnabled; }
-	static void	Enable_Auto_Login_Prompt (bool onoff);
+  //
+  //	Auto login prompt
+  //
+  static bool Is_Auto_Login_Prompt_Enabled(void) { return IsAutoLoginPromptEnabled; }
+  static void Enable_Auto_Login_Prompt(bool onoff);
 
-	//
-	//	Message of the day support
-	//
-	static bool	Has_MOTD_Been_Viewed (void)	{ return HasMOTDBeenViewed; }
-	static void Set_MOTD_Viewed (bool onoff)	{ HasMOTDBeenViewed = onoff; }
+  //
+  //	Message of the day support
+  //
+  static bool Has_MOTD_Been_Viewed(void) { return HasMOTDBeenViewed; }
+  static void Set_MOTD_Viewed(bool onoff) { HasMOTDBeenViewed = onoff; }
 
-	//
-	//	Options
-	//
-	static void	Set_Option_Flag (OPTION flag, bool onoff);
-	static bool	Get_Option_Flag (OPTION flag)						{ return (OptionFlags & flag) == flag; }
+  //
+  //	Options
+  //
+  static void Set_Option_Flag(OPTION flag, bool onoff);
+  static bool Get_Option_Flag(OPTION flag) { return (OptionFlags & flag) == flag; }
 
-	//
-	//	Alternate skins unlocking
-	//
-	static bool	Are_Alternate_Skins_Unlocked (void);
+  //
+  //	Alternate skins unlocking
+  //
+  static bool Are_Alternate_Skins_Unlocked(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-
-	static StringClass					SelectedLogin;
-	static StringClass					LastLogin;
-	static StringClass					AutoLogin;
-	static StringClass					AutoPassword;
-	static bool								DisplaySidebarHelp;
-	static bool								IsAutoLoginPromptEnabled;
-	static bool								IsIGR;
-	static bool								HasMOTDBeenViewed;
-	static bool								AreSkinsUnlocked;
-	static int								OptionFlags;
+  static StringClass SelectedLogin;
+  static StringClass LastLogin;
+  static StringClass AutoLogin;
+  static StringClass AutoPassword;
+  static bool DisplaySidebarHelp;
+  static bool IsAutoLoginPromptEnabled;
+  static bool IsIGR;
+  static bool HasMOTDBeenViewed;
+  static bool AreSkinsUnlocked;
+  static int OptionFlags;
 
 #ifdef OBSOLETE
-	typedef std::map<const char*, int> GameModeMap;
-	static GameModeMap _mModePrefs;
+  typedef std::map<const char *, int> GameModeMap;
+  static GameModeMap _mModePrefs;
 #endif
 };
 

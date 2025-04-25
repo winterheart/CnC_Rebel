@@ -34,32 +34,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "StdAfx.H"
 #include "Icons.H"
 
-
-const UINT ICON_RESOURCE_IDS[ICON_COUNT] =
-{
-	IDI_FOLDER,
-	IDI_OPENFOLDER,
-	IDI_OBJECT,
-	IDI_TILE,
-	IDI_TERRAIN,
-	IDI_LIGHT,
-	IDI_ZONE,
-	IDI_TRANSITION,
-	IDI_WAYPATH,
-	IDI_SOUND,
-	IDI_TEMP,
-	IDI_3DFILE,
-	IDI_3DFILES,
-	IDI_VISPOINT,
-	IDI_PATHFIND,	
-	IDI_NAVIGATOR,
-	IDI_PLUS_OVERLAY,
-	IDI_BUILDING,
-	IDI_NULL,
-	IDI_RAND,
-	IDI_DIALOGUE
-};
+const UINT ICON_RESOURCE_IDS[ICON_COUNT] = {
+    IDI_FOLDER,     IDI_OPENFOLDER, IDI_OBJECT,       IDI_TILE,     IDI_TERRAIN, IDI_LIGHT,   IDI_ZONE,
+    IDI_TRANSITION, IDI_WAYPATH,    IDI_SOUND,        IDI_TEMP,     IDI_3DFILE,  IDI_3DFILES, IDI_VISPOINT,
+    IDI_PATHFIND,   IDI_NAVIGATOR,  IDI_PLUS_OVERLAY, IDI_BUILDING, IDI_NULL,    IDI_RAND,    IDI_DIALOGUE};

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/gamespycschallengeresponseevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 2/21/02 4:35p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/gamespycschallengeresponseevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 2/21/02 4:35p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __GAMESPYCSCHALLENGERESPONSEEVENT_H__
@@ -44,27 +44,24 @@
 //
 // A C->S mirrored object to respond to the server's GameSpy auth. challenge.
 //
-class	cGameSpyCsChallengeResponseEvent : public cNetEvent
-{
+class cGameSpyCsChallengeResponseEvent : public cNetEvent {
 public:
+  cGameSpyCsChallengeResponseEvent(void);
 
-   cGameSpyCsChallengeResponseEvent(void);
+  void Init(StringClass &challenge_string);
 
-	void						Init(StringClass & challenge_string);
-
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_GAMESPYCSCHALLENGERESPONSEEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_GAMESPYCSCHALLENGERESPONSEEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						ClientId;
-	enum						{MAX_CHALLENGE_RESPONSE_STRING_LENGTH = 256};
-	StringClass				ChallengeResponseString;
+  int ClientId;
+  enum { MAX_CHALLENGE_RESPONSE_STRING_LENGTH = 256 };
+  StringClass ChallengeResponseString;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __GAMESPYCSCHALLENGERESPONSEEVENT_H__
+#endif // __GAMESPYCSCHALLENGERESPONSEEVENT_H__

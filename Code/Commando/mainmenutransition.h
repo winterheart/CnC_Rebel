@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/mainmenutransition.h      $*
  *                                                                                             *
@@ -41,9 +42,7 @@
 #ifndef __MAIN_MENU_TRANSITION_H
 #define __MAIN_MENU_TRANSITION_H
 
-
 #include "dialogtransition.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
@@ -53,66 +52,59 @@ class HAnimClass;
 class CameraClass;
 class DialogBaseClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	MainMenuDialogClass
 //
 ////////////////////////////////////////////////////////////////
 
-class MainMenuTransitionClass : public DialogTransitionClass
-{
+class MainMenuTransitionClass : public DialogTransitionClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MainMenuTransitionClass(void);
+  ~MainMenuTransitionClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	MainMenuTransitionClass (void);
-	~MainMenuTransitionClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	From DialogTransitionClass
-	//
-	void	On_Frame_Update (void);
-	void	Set_Type (TYPE type);
-	bool	Is_Complete (void)					{ return (CurrentFrame >= TargetFrame); }
+  //
+  //	From DialogTransitionClass
+  //
+  void On_Frame_Update(void);
+  void Set_Type(TYPE type);
+  bool Is_Complete(void) { return (CurrentFrame >= TargetFrame); }
 
-	//
-	//	Configuration
-	//
-	void	Set_Camera (CameraClass *camera)	{ Camera = camera; }
-	void	Set_Model (RenderObjClass *model);	
-	void	Set_Dialogs (DialogBaseClass *dialog, DialogBaseClass *other_dlg);
+  //
+  //	Configuration
+  //
+  void Set_Camera(CameraClass *camera) { Camera = camera; }
+  void Set_Model(RenderObjClass *model);
+  void Set_Dialogs(DialogBaseClass *dialog, DialogBaseClass *other_dlg);
 
-	//
-	//	Validity check
-	//
-	bool	Is_Valid (void) const;
-	
-private:	
+  //
+  //	Validity check
+  //
+  bool Is_Valid(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void	Update_Controls (void);
+private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Update_Controls(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	DialogBaseClass *	Dialog;
-	DialogBaseClass *	OtherDlg;
-	RenderObjClass *	Model;
-	HAnimClass *		TransitionAnim;
-	CameraClass *		Camera;
-	float					CurrentFrame;
-	float					TargetFrame;
-
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  DialogBaseClass *Dialog;
+  DialogBaseClass *OtherDlg;
+  RenderObjClass *Model;
+  HAnimClass *TransitionAnim;
+  CameraClass *Camera;
+  float CurrentFrame;
+  float TargetFrame;
 };
 
-
 #endif //__MAIN_MENU_TRANSITION_H
-

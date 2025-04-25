@@ -28,35 +28,32 @@
 /////////////////////////////////////////////////////////////////////////////
 // LightSolveOptionsDialogClass dialog
 
-class LightSolveOptionsDialogClass : public CDialog
-{
-// Construction
+class LightSolveOptionsDialogClass : public CDialog {
+  // Construction
 public:
-	LightSolveOptionsDialogClass(CWnd* pParent = NULL);   // standard constructor
+  LightSolveOptionsDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(LightSolveOptionsDialogClass)
-	enum { IDD = IDD_LIGHT_SOLVE_OPTIONS };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(LightSolveOptionsDialogClass)
+  enum { IDD = IDD_LIGHT_SOLVE_OPTIONS };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LightSolveOptionsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LightSolveOptionsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(LightSolveOptionsDialogClass)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(LightSolveOptionsDialogClass)
+  virtual void OnOK();
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

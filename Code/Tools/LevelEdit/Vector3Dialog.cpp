@@ -35,147 +35,126 @@ static char THIS_FILE[] = __FILE__;
 // Vector3DialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-Vector3DialogClass::Vector3DialogClass (CWnd *parent)
-	:	m_DefaultValue (0, 0, 0),
-		CDialog (Vector3DialogClass::IDD, parent)
-{
-	//{{AFX_DATA_INIT(Vector3DialogClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	return ;
+Vector3DialogClass::Vector3DialogClass(CWnd *parent)
+    : m_DefaultValue(0, 0, 0), CDialog(Vector3DialogClass::IDD, parent) {
+  //{{AFX_DATA_INIT(Vector3DialogClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-Vector3DialogClass::DoDataExchange (CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(Vector3DialogClass)
-	DDX_Control(pDX, IDC_Z_STATIC, m_ZStatic);
-	DDX_Control(pDX, IDC_Y_STATIC, m_YStatic);
-	DDX_Control(pDX, IDC_X_STATIC, m_XStatic);
-	DDX_Control(pDX, IDC_Z_EDIT, m_ZEdit);
-	DDX_Control(pDX, IDC_Y_EDIT, m_YEdit);
-	DDX_Control(pDX, IDC_X_EDIT, m_XEdit);
-	DDX_Control(pDX, IDC_Z_SPIN, m_ZSpin);
-	DDX_Control(pDX, IDC_Y_SPIN, m_YSpin);
-	DDX_Control(pDX, IDC_X_SPIN, m_XSpin);
-	//}}AFX_DATA_MAP
+void Vector3DialogClass::DoDataExchange(CDataExchange *pDX) {
+  CDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(Vector3DialogClass)
+  DDX_Control(pDX, IDC_Z_STATIC, m_ZStatic);
+  DDX_Control(pDX, IDC_Y_STATIC, m_YStatic);
+  DDX_Control(pDX, IDC_X_STATIC, m_XStatic);
+  DDX_Control(pDX, IDC_Z_EDIT, m_ZEdit);
+  DDX_Control(pDX, IDC_Y_EDIT, m_YEdit);
+  DDX_Control(pDX, IDC_X_EDIT, m_XEdit);
+  DDX_Control(pDX, IDC_Z_SPIN, m_ZSpin);
+  DDX_Control(pDX, IDC_Y_SPIN, m_YSpin);
+  DDX_Control(pDX, IDC_X_SPIN, m_XSpin);
+  //}}AFX_DATA_MAP
 
-	return ;
+  return;
 }
 
-
 BEGIN_MESSAGE_MAP(Vector3DialogClass, CDialog)
-	//{{AFX_MSG_MAP(Vector3DialogClass)
-	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(Vector3DialogClass)
+ON_WM_CREATE()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	OnCreate
 //
 /////////////////////////////////////////////////////////////////////////////
-int
-Vector3DialogClass::OnCreate (LPCREATESTRUCT lpCreateStruct)
-{
-	if (CDialog::OnCreate(lpCreateStruct) == -1)
-		return -1;
+int Vector3DialogClass::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+  if (CDialog::OnCreate(lpCreateStruct) == -1)
+    return -1;
 
-	return 0;
+  return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	Set_Default_Value
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-Vector3DialogClass::Set_Default_Value (const Vector3 &value)
-{
-	m_DefaultValue = value;
+void Vector3DialogClass::Set_Default_Value(const Vector3 &value) {
+  m_DefaultValue = value;
 
-	//
-	//	Put the default values into the controls
-	//
-	::SetWindowFloat (m_XEdit, m_DefaultValue.X);
-	::SetWindowFloat (m_YEdit, m_DefaultValue.Y);
-	::SetWindowFloat (m_ZEdit, m_DefaultValue.Z);	
-	return ;
+  //
+  //	Put the default values into the controls
+  //
+  ::SetWindowFloat(m_XEdit, m_DefaultValue.X);
+  ::SetWindowFloat(m_YEdit, m_DefaultValue.Y);
+  ::SetWindowFloat(m_ZEdit, m_DefaultValue.Z);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Current_Value
 //
 /////////////////////////////////////////////////////////////////////////////
-Vector3
-Vector3DialogClass::Get_Current_Value (void)
-{
-	Vector3 retval (0, 0, 0);
+Vector3 Vector3DialogClass::Get_Current_Value(void) {
+  Vector3 retval(0, 0, 0);
 
-	//
-	//	Get the current value from the controls
-	//
-	retval.X = ::GetWindowFloat (m_XEdit, true);
-	retval.Y = ::GetWindowFloat (m_YEdit, true);
-	retval.Z = ::GetWindowFloat (m_ZEdit, true);	
-	return retval;
+  //
+  //	Get the current value from the controls
+  //
+  retval.X = ::GetWindowFloat(m_XEdit, true);
+  retval.Y = ::GetWindowFloat(m_YEdit, true);
+  retval.Z = ::GetWindowFloat(m_ZEdit, true);
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	Create
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-Vector3DialogClass::Create (CWnd *parent)
-{
-	CDialog::Create (Vector3DialogClass::IDD, parent);
-	return ;
+void Vector3DialogClass::Create(CWnd *parent) {
+  CDialog::Create(Vector3DialogClass::IDD, parent);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	OnInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-Vector3DialogClass::OnInitDialog (void)
-{
-	CDialog::OnInitDialog();
-	
-	//
-	//	Turn all the edit controls into 'float' controls that will
-	// allow the user to type only numbers (with decimals and signs)
-	//
-	::Make_Edit_Float_Ctrl (m_XEdit);
-	::Make_Edit_Float_Ctrl (m_YEdit);
-	::Make_Edit_Float_Ctrl (m_ZEdit);
+BOOL Vector3DialogClass::OnInitDialog(void) {
+  CDialog::OnInitDialog();
 
-	//
-	//	Set the float control ranges
-	//
-	m_XSpin.SetRange32 (-1000000, 1000000);
-	m_YSpin.SetRange32 (-1000000, 1000000);
-	m_ZSpin.SetRange32 (-1000000, 1000000);
+  //
+  //	Turn all the edit controls into 'float' controls that will
+  // allow the user to type only numbers (with decimals and signs)
+  //
+  ::Make_Edit_Float_Ctrl(m_XEdit);
+  ::Make_Edit_Float_Ctrl(m_YEdit);
+  ::Make_Edit_Float_Ctrl(m_ZEdit);
 
-	//
-	//	Set the default values for the control
-	//
-	::SetWindowFloat (m_XEdit, m_DefaultValue.X);
-	::SetWindowFloat (m_YEdit, m_DefaultValue.Y);
-	::SetWindowFloat (m_ZEdit, m_DefaultValue.Z);
-	return TRUE;
+  //
+  //	Set the float control ranges
+  //
+  m_XSpin.SetRange32(-1000000, 1000000);
+  m_YSpin.SetRange32(-1000000, 1000000);
+  m_ZSpin.SetRange32(-1000000, 1000000);
+
+  //
+  //	Set the default values for the control
+  //
+  ::SetWindowFloat(m_XEdit, m_DefaultValue.X);
+  ::SetWindowFloat(m_YEdit, m_DefaultValue.Y);
+  ::SetWindowFloat(m_ZEdit, m_DefaultValue.Z);
+  return TRUE;
 }

@@ -17,23 +17,23 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     Toolkit_Broadcaster.cpp
-*
-* DESCRIPTION
-*     Designer Toolkit for Mission Construction - Broadcaster Subset
-*
-* PROGRAMMER
-*     Design Team
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 2 $
-*     $Modtime: 9/26/00 11:52a $
-*     $Archive: /Commando/Code/Scripts/Toolkit_Broadcaster.cpp $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     Toolkit_Broadcaster.cpp
+ *
+ * DESCRIPTION
+ *     Designer Toolkit for Mission Construction - Broadcaster Subset
+ *
+ * PROGRAMMER
+ *     Design Team
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 2 $
+ *     $Modtime: 9/26/00 11:52a $
+ *     $Archive: /Commando/Code/Scripts/Toolkit_Broadcaster.cpp $
+ *
+ ******************************************************************************/
 
 #include "toolkit.h"
 
@@ -48,88 +48,80 @@ Editor Script - M00_Broadcaster_Register_RAD
   Send_Attempts	= The number of attempts to send to the terminal this will make before failing.
   Send_Delay	= The delay between attempts to send.
   Debug_Mode	= Turn this on if debug information is needed.
-  
+
   Custom:
 
   M00_CUSTOM_BROADCASTER_REGISTRATION
-  
+
   Script activates upon creation.
 */
 
-DECLARE_SCRIPT (M00_Broadcaster_Register_RAD, "Terminal_ID:int, Send_Attempts=3:int, Send_Delay=1:int, Debug_Mode=0:int")
-{
-	int		send_attempts;
-	int		terminal_id;
-	int		current_send;
-	int		send_delay;
-	int		item_id;
-	bool	debug_mode;
+DECLARE_SCRIPT(M00_Broadcaster_Register_RAD,
+               "Terminal_ID:int, Send_Attempts=3:int, Send_Delay=1:int, Debug_Mode=0:int") {
+  int send_attempts;
+  int terminal_id;
+  int current_send;
+  int send_delay;
+  int item_id;
+  bool debug_mode;
 
-	void Created (GameObject* obj)
-	{
-		debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
-		send_attempts = Get_Int_Parameter("Send_Attempts");
-		terminal_id = Get_Int_Parameter("Terminal_ID");
-		send_delay = Get_Int_Parameter("Send_Delay");
-		item_id = Commands->Get_ID(obj);
-		current_send = 0;
+  void Created(GameObject * obj) {
+    debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
+    send_attempts = Get_Int_Parameter("Send_Attempts");
+    terminal_id = Get_Int_Parameter("Terminal_ID");
+    send_delay = Get_Int_Parameter("Send_Delay");
+    item_id = Commands->Get_ID(obj);
+    current_send = 0;
 
-		SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Register_RAD ACTIVATED.\n"));
+    SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Register_RAD ACTIVATED.\n"));
 
-		Commands->Start_Timer (obj, this, 0.1f, 0);
-		//DEBUG Timer may not work here without proper ID later.
-	}
+    Commands->Start_Timer(obj, this, 0.1f, 0);
+    // DEBUG Timer may not work here without proper ID later.
+  }
 
-	void Timer_Expired (GameObject* obj, int timer_id)
-	{
-		GameObject* terminal_obj;
+  void Timer_Expired(GameObject * obj, int timer_id) {
+    GameObject *terminal_obj;
 
-		if (!timer_id)
-		{
-			current_send++;
-			if (current_send > send_attempts)
-			{
-				DebugPrint("ERROR - M00_Broadcaster_Registry_RAD - Object %d cannot find Terminal %d to register with!\n", item_id, terminal_id);
-			}
-			else
-			{
-				terminal_obj = Commands->Find_Object(terminal_id);
-				if (terminal_obj)
-				{
-					SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Registry_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param %d.\n", item_id));
-					Commands->Send_Custom_Event (obj, terminal_obj, M00_CUSTOM_BROADCASTER_REGISTRATION, item_id, 0.0f);
-				}
-				else
-				{
-					Commands->Start_Timer (obj, this, send_delay, 0);
-				}
-			}
-		}
-	}
+    if (!timer_id) {
+      current_send++;
+      if (current_send > send_attempts) {
+        DebugPrint("ERROR - M00_Broadcaster_Registry_RAD - Object %d cannot find Terminal %d to register with!\n",
+                   item_id, terminal_id);
+      } else {
+        terminal_obj = Commands->Find_Object(terminal_id);
+        if (terminal_obj) {
+          SCRIPT_DEBUG_MESSAGE(
+              ("M00_Broadcaster_Registry_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param %d.\n",
+               item_id));
+          Commands->Send_Custom_Event(obj, terminal_obj, M00_CUSTOM_BROADCASTER_REGISTRATION, item_id, 0.0f);
+        } else {
+          Commands->Start_Timer(obj, this, send_delay, 0);
+        }
+      }
+    }
+  }
 
-	virtual void Custom (GameObject* obj, int type, int param, GameObject* sender)
-	{
-		if (type == M00_CUSTOM_BROADCASTER_REGISTRY_ERROR)
-		{
-			SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Registry_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, param %d.\n", param));
-			Commands->Start_Timer (obj, this, send_delay, 0);
-		}
-		else
-		{
-			SCRIPT_DEBUG_MESSAGE(("ERROR - M00_Broadcaster_Registry_RAD received custom type %d, param %d - unknown!\n", type, param));
-		}
-	}
+  virtual void Custom(GameObject * obj, int type, int param, GameObject *sender) {
+    if (type == M00_CUSTOM_BROADCASTER_REGISTRY_ERROR) {
+      SCRIPT_DEBUG_MESSAGE(
+          ("M00_Broadcaster_Registry_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, param %d.\n",
+           param));
+      Commands->Start_Timer(obj, this, send_delay, 0);
+    } else {
+      SCRIPT_DEBUG_MESSAGE(
+          ("ERROR - M00_Broadcaster_Registry_RAD received custom type %d, param %d - unknown!\n", type, param));
+    }
+  }
 
-	void Destroyed (GameObject* obj)
-	{
-		GameObject* terminal_obj;
-		terminal_obj = Commands->Find_Object(terminal_id);
-		if (terminal_obj)
-		{
-			SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Registry_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param 0.\n"));
-			Commands->Send_Custom_Event (obj, terminal_obj, M00_CUSTOM_BROADCASTER_REGISTRATION, 0, 0.0f);
-		}
-	}
+  void Destroyed(GameObject * obj) {
+    GameObject *terminal_obj;
+    terminal_obj = Commands->Find_Object(terminal_id);
+    if (terminal_obj) {
+      SCRIPT_DEBUG_MESSAGE(
+          ("M00_Broadcaster_Registry_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param 0.\n"));
+      Commands->Send_Custom_Event(obj, terminal_obj, M00_CUSTOM_BROADCASTER_REGISTRATION, 0, 0.0f);
+    }
+  }
 };
 
 /*
@@ -143,8 +135,8 @@ Editor Script - M00_Broadcaster_Terminal_RAD
   object_specific_record	= Storage of each registry item one at a time.
   object_random_record		= Storage of any registry item as many times as desired.
   object_prompts			= Storage of any sent prompts from objects.
-	0 = Object ID that is prompting.
-	1 = custom type to send with next regular custom.
+        0 = Object ID that is prompting.
+        1 = custom type to send with next regular custom.
 
   Parameters:
 
@@ -165,320 +157,270 @@ Editor Script - M00_Broadcaster_Terminal_RAD
   Script activates upon receipt of a custom.
 */
 
-DECLARE_SCRIPT (M00_Broadcaster_Terminal_RAD, "Random_Percentage=100.0:float, Random_Param_Min=0:int, Random_Param_Max=0:int, Debug_Mode=0:int")
-{
-	int		object_specific_record [M00_BROADCASTER_TERMINAL_SIZE_RAD];
-	int		object_random_record [M00_BROADCASTER_TERMINAL_SIZE_RAD];
-	int		object_prompts [M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD][2];
-	bool	ready_for_objects;
-	bool	debug_mode;
+DECLARE_SCRIPT(M00_Broadcaster_Terminal_RAD,
+               "Random_Percentage=100.0:float, Random_Param_Min=0:int, Random_Param_Max=0:int, Debug_Mode=0:int") {
+  int object_specific_record[M00_BROADCASTER_TERMINAL_SIZE_RAD];
+  int object_random_record[M00_BROADCASTER_TERMINAL_SIZE_RAD];
+  int object_prompts[M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD][2];
+  bool ready_for_objects;
+  bool debug_mode;
 
-	void Created (GameObject* obj)
-	{
-		debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
-		int object_count;
+  void Created(GameObject * obj) {
+    debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
+    int object_count;
 
-		ready_for_objects = false;
-		
-		for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-		{
-			object_specific_record [object_count]	= 0;
-			object_specific_record [object_count]	= 0;
-			object_random_record [object_count]		= 0;
-		}
-		for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++)
-		{
-			object_prompts [object_count][0] = 0;
-		}
-		
-		SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD ACTIVATED.\n"));
-		ready_for_objects = true;
-	}
+    ready_for_objects = false;
 
-	void Custom (GameObject* obj, int type, int param, GameObject* sender)
-	{
-		int my_id;
-		int sender_id;
-		int object_count;
-		int last_empty;
-		int obj_id;
-		int prompt_value;
-		int random_value;
-		int random_value2;
-		int parameter_low;
-		int parameter_high;
+    for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+      object_specific_record[object_count] = 0;
+      object_specific_record[object_count] = 0;
+      object_random_record[object_count] = 0;
+    }
+    for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++) {
+      object_prompts[object_count][0] = 0;
+    }
 
-		bool found_object;
+    SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD ACTIVATED.\n"));
+    ready_for_objects = true;
+  }
 
-		GameObject* target_obj;
+  void Custom(GameObject * obj, int type, int param, GameObject *sender) {
+    int my_id;
+    int sender_id;
+    int object_count;
+    int last_empty;
+    int obj_id;
+    int prompt_value;
+    int random_value;
+    int random_value2;
+    int parameter_low;
+    int parameter_high;
 
-		// Check if the sender still exists, just an error catch routine.
+    bool found_object;
 
-		if (sender)
-		{
-			sender_id = Commands->Get_ID (sender);
-		}
-		else
-		{
-			sender_id = 0;
-		}
+    GameObject *target_obj;
 
-		if (ready_for_objects)
-		{
-			my_id = Commands->Get_ID (obj);
+    // Check if the sender still exists, just an error catch routine.
 
-			if (my_id == sender_id)
-			{
-				DebugPrint ("ERROR - M00_Broadcaster_Terminal_RAD - Broadcaster sent a custom to itself!\n");
-			}
-			else
-			{
-				// Check which type of custom was just sent.
+    if (sender) {
+      sender_id = Commands->Get_ID(sender);
+    } else {
+      sender_id = 0;
+    }
 
-				switch (type)
-				{
-				case (M00_CUSTOM_BROADCASTER_REGISTRATION):
-					{
-						// Object is attempting to register or unregister itself.
+    if (ready_for_objects) {
+      my_id = Commands->Get_ID(obj);
 
-						if (param)
-						{
-							SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param %d.\n", param));
+      if (my_id == sender_id) {
+        DebugPrint("ERROR - M00_Broadcaster_Terminal_RAD - Broadcaster sent a custom to itself!\n");
+      } else {
+        // Check which type of custom was just sent.
 
-							// Object is attempting to register itself.
-							// Check if the object is already in the specific list.
+        switch (type) {
+        case (M00_CUSTOM_BROADCASTER_REGISTRATION): {
+          // Object is attempting to register or unregister itself.
 
-							found_object = false;
-							last_empty = -1;
+          if (param) {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param %d.\n",
+                 param));
 
-							for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-							{
-								if (object_specific_record [object_count] == sender_id)
-								{
-									// Object already exists in the specific record, skip entry.
+            // Object is attempting to register itself.
+            // Check if the object is already in the specific list.
 
-									object_count = M00_BROADCASTER_TERMINAL_SIZE_RAD;
-									found_object = true;
-								}
-								else
-								{
-									if ((!object_specific_record [object_count]) && (last_empty == -1))
-									{
-										last_empty = object_count;
-									}
-								}
-							}
+            found_object = false;
+            last_empty = -1;
 
-							if (!found_object)
-							{
-								// Enter the object into the list in the next available slot.
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (object_specific_record[object_count] == sender_id) {
+                // Object already exists in the specific record, skip entry.
 
-								if (last_empty >= 0)
-								{
-									object_specific_record [last_empty] = sender_id;
-								}
-								else
-								{
-									obj_id = Commands->Get_ID (obj);
-									DebugPrint ("ERROR - M00_Broadcaster_Terminal_RAD - Broadcaster Terminal %d is full!\n", obj_id);
-								}
-							}
+                object_count = M00_BROADCASTER_TERMINAL_SIZE_RAD;
+                found_object = true;
+              } else {
+                if ((!object_specific_record[object_count]) && (last_empty == -1)) {
+                  last_empty = object_count;
+                }
+              }
+            }
 
-							// Now, insert the object into the random list regardless of number of entries.
+            if (!found_object) {
+              // Enter the object into the list in the next available slot.
 
-							for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-							{
-								if (!object_random_record [object_count])
-								{
-									object_random_record [object_count] = sender_id;
-									object_count = M00_BROADCASTER_TERMINAL_SIZE_RAD;
-								}
-							}
-						}
-						else
-						{
-							SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param 0.\n"));
+              if (last_empty >= 0) {
+                object_specific_record[last_empty] = sender_id;
+              } else {
+                obj_id = Commands->Get_ID(obj);
+                DebugPrint("ERROR - M00_Broadcaster_Terminal_RAD - Broadcaster Terminal %d is full!\n", obj_id);
+              }
+            }
 
-							// Object is attempting to unregister itself.
+            // Now, insert the object into the random list regardless of number of entries.
 
-							for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-							{
-								if (object_specific_record [object_count] == sender_id)
-								{
-									object_specific_record [object_count] = 0;
-								}
-								if (object_random_record [object_count] == sender_id)
-								{
-									object_random_record [object_count] = 0;
-								}
-							}
-						}
-						break;
-					}
-				case (M00_CUSTOM_BROADCASTER_PROMPTER):
-					{
-						SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_PROMPTER, param %d.\n", param));
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (!object_random_record[object_count]) {
+                object_random_record[object_count] = sender_id;
+                object_count = M00_BROADCASTER_TERMINAL_SIZE_RAD;
+              }
+            }
+          } else {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_REGISTRATION, param 0.\n"));
 
-						// Check if the object is already in the prompt list, or if there is a blank slot.
+            // Object is attempting to unregister itself.
 
-						prompt_value = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
-						for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++)
-						{
-							if (object_prompts [object_count][0] == sender_id)
-							{
-								prompt_value = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
-								object_count = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
-							}
-							if (!object_prompts [object_count][0])
-							{
-								prompt_value = object_count;
-								object_count = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
-							}
-						}
-						if (prompt_value < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD)
-						{
-							// Object is attempting to prompt another custom send.
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (object_specific_record[object_count] == sender_id) {
+                object_specific_record[object_count] = 0;
+              }
+              if (object_random_record[object_count] == sender_id) {
+                object_random_record[object_count] = 0;
+              }
+            }
+          }
+          break;
+        }
+        case (M00_CUSTOM_BROADCASTER_PROMPTER): {
+          SCRIPT_DEBUG_MESSAGE((
+              "M00_Broadcaster_Terminal_RAD received custom type M00_CUSTOM_BROADCASTER_PROMPTER, param %d.\n", param));
 
-							object_prompts [prompt_value][0] = sender_id;
-							object_prompts [prompt_value][1] = param;
-						}
-						break;
-					}
-				default:
-					{
-						SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD received custom type %d, param %d.\n", type, param));
+          // Check if the object is already in the prompt list, or if there is a blank slot.
 
-						// Object is sending a custom that should be already prompted.
-						// If it is not prompted, default to non-random send.
+          prompt_value = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
+          for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++) {
+            if (object_prompts[object_count][0] == sender_id) {
+              prompt_value = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
+              object_count = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
+            }
+            if (!object_prompts[object_count][0]) {
+              prompt_value = object_count;
+              object_count = M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD;
+            }
+          }
+          if (prompt_value < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD) {
+            // Object is attempting to prompt another custom send.
 
-						prompt_value = 0;
-						for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++)
-						{
-							if (object_prompts [object_count][0] == sender_id)
-							{
-								prompt_value = object_prompts [object_count][1];
-								object_prompts [object_count][0] = 0;
-								object_prompts [object_count][1] = 0;
-							}
-						}
+            object_prompts[prompt_value][0] = sender_id;
+            object_prompts[prompt_value][1] = param;
+          }
+          break;
+        }
+        default: {
+          SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD received custom type %d, param %d.\n", type, param));
 
-						switch ( prompt_value )
-						{
-						case (1): // Object is sending a custom that should be sent to random objects with one parameter.
-							{
-								SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending a custom to random objects with one parameter.\n"));
+          // Object is sending a custom that should be already prompted.
+          // If it is not prompted, default to non-random send.
 
-								for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-								{
-									random_value = Commands->Get_Random (0.0f, 100.0f);
-									if (random_value <= Get_Float_Parameter ("Random_Percentage"))
-									{
-										if (object_random_record [object_count])
-										{
-											target_obj = Commands->Find_Object (object_random_record [object_count]);
-											if (target_obj)
-											{
-												SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, param));
-												Commands->Send_Custom_Event (obj, target_obj, type, param, 0.0f);
-											}
-											else
-											{
-												object_random_record [object_count] = 0;
-											}
-										}
-									}
-								}
-								break;
-							}
-						case (2): // Object is sending a custom that should be sent to everyone with random parameter.
-							{
-								SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending a custom to everyone with random parameter.\n"));
-								parameter_low = Get_Int_Parameter("Random_Param_Min");
-								parameter_high = Get_Int_Parameter("Random_Param_Max");
-								for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-								{
-									if (object_specific_record [object_count])
-									{
-										target_obj = Commands->Find_Object (object_specific_record [object_count]);
-										if (target_obj)
-										{
-											random_value = int(Commands->Get_Random (float(parameter_low), float(parameter_high)));
-											SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, random_value));
-											Commands->Send_Custom_Event (obj, target_obj, type, random_value, 0.0f);
-										}
-										else
-										{
-											object_specific_record [object_count] = 0;
-										}
-									}
-								}
-								break;
-							}
-						case (3): // Object is sending a custom that should be sent to random objects with random parameter.
-							{
-								SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending a custom to random objects with random parameter.\n"));
-								parameter_low = Get_Int_Parameter("Random_Param_Min");
-								parameter_high = Get_Int_Parameter("Random_Param_Max");
+          prompt_value = 0;
+          for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_PROMPT_SIZE_RAD; object_count++) {
+            if (object_prompts[object_count][0] == sender_id) {
+              prompt_value = object_prompts[object_count][1];
+              object_prompts[object_count][0] = 0;
+              object_prompts[object_count][1] = 0;
+            }
+          }
 
-								for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-								{
-									if (object_random_record [object_count])
-									{
-										random_value = Commands->Get_Random (0.0f, 100.0f);
-										if (random_value <= Get_Float_Parameter ("Random_Percentage"))
-										{
-											target_obj = Commands->Find_Object (object_random_record [object_count]);
-											if (target_obj)
-											{
-												random_value2 = int(Commands->Get_Random (float(parameter_low), float(parameter_high)));
-												SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, random_value2));
-												Commands->Send_Custom_Event (obj, target_obj, type, random_value2, 0.0f);
-											}
-											else
-											{
-												object_random_record [object_count] = 0;
-											}
-										}
-									}
-								}
-								break;
-							}
-						default: // Object is sending a custom that should be sent to everyone with one parameter.
-							{
-								SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending a custom to everyone with one parameter.\n"));
-								for (object_count = 0;object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++)
-								{
-									if (object_specific_record [object_count])
-									{
-										target_obj = Commands->Find_Object(object_specific_record [object_count]);
-										if (target_obj)
-										{
-											SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, param));
-											Commands->Send_Custom_Event (obj, target_obj, type, param, 0.0f);
-										}
-										else
-										{
-											object_specific_record [object_count] = 0;
-										}
-									}
-								}
-								break;
-							}
-						}
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			// Terminal is not ready for customs. Send an error message.
+          switch (prompt_value) {
+          case (1): // Object is sending a custom that should be sent to random objects with one parameter.
+          {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD is sending a custom to random objects with one parameter.\n"));
 
-			SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Terminal_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, param 0.\n"));
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              random_value = Commands->Get_Random(0.0f, 100.0f);
+              if (random_value <= Get_Float_Parameter("Random_Percentage")) {
+                if (object_random_record[object_count]) {
+                  target_obj = Commands->Find_Object(object_random_record[object_count]);
+                  if (target_obj) {
+                    SCRIPT_DEBUG_MESSAGE(
+                        ("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, param));
+                    Commands->Send_Custom_Event(obj, target_obj, type, param, 0.0f);
+                  } else {
+                    object_random_record[object_count] = 0;
+                  }
+                }
+              }
+            }
+            break;
+          }
+          case (2): // Object is sending a custom that should be sent to everyone with random parameter.
+          {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD is sending a custom to everyone with random parameter.\n"));
+            parameter_low = Get_Int_Parameter("Random_Param_Min");
+            parameter_high = Get_Int_Parameter("Random_Param_Max");
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (object_specific_record[object_count]) {
+                target_obj = Commands->Find_Object(object_specific_record[object_count]);
+                if (target_obj) {
+                  random_value = int(Commands->Get_Random(float(parameter_low), float(parameter_high)));
+                  SCRIPT_DEBUG_MESSAGE(
+                      ("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, random_value));
+                  Commands->Send_Custom_Event(obj, target_obj, type, random_value, 0.0f);
+                } else {
+                  object_specific_record[object_count] = 0;
+                }
+              }
+            }
+            break;
+          }
+          case (3): // Object is sending a custom that should be sent to random objects with random parameter.
+          {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD is sending a custom to random objects with random parameter.\n"));
+            parameter_low = Get_Int_Parameter("Random_Param_Min");
+            parameter_high = Get_Int_Parameter("Random_Param_Max");
 
-			Commands->Send_Custom_Event (obj, sender, M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, 0, 0.0f);
-		}
-	}
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (object_random_record[object_count]) {
+                random_value = Commands->Get_Random(0.0f, 100.0f);
+                if (random_value <= Get_Float_Parameter("Random_Percentage")) {
+                  target_obj = Commands->Find_Object(object_random_record[object_count]);
+                  if (target_obj) {
+                    random_value2 = int(Commands->Get_Random(float(parameter_low), float(parameter_high)));
+                    SCRIPT_DEBUG_MESSAGE(
+                        ("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, random_value2));
+                    Commands->Send_Custom_Event(obj, target_obj, type, random_value2, 0.0f);
+                  } else {
+                    object_random_record[object_count] = 0;
+                  }
+                }
+              }
+            }
+            break;
+          }
+          default: // Object is sending a custom that should be sent to everyone with one parameter.
+          {
+            SCRIPT_DEBUG_MESSAGE(
+                ("M00_Broadcaster_Terminal_RAD is sending a custom to everyone with one parameter.\n"));
+            for (object_count = 0; object_count < M00_BROADCASTER_TERMINAL_SIZE_RAD; object_count++) {
+              if (object_specific_record[object_count]) {
+                target_obj = Commands->Find_Object(object_specific_record[object_count]);
+                if (target_obj) {
+                  SCRIPT_DEBUG_MESSAGE(
+                      ("M00_Broadcaster_Terminal_RAD is sending custom type %d, param %d.\n", type, param));
+                  Commands->Send_Custom_Event(obj, target_obj, type, param, 0.0f);
+                } else {
+                  object_specific_record[object_count] = 0;
+                }
+              }
+            }
+            break;
+          }
+          }
+          break;
+        }
+        }
+      }
+    } else {
+      // Terminal is not ready for customs. Send an error message.
+
+      SCRIPT_DEBUG_MESSAGE(
+          ("M00_Broadcaster_Terminal_RAD is sending custom type M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, param 0.\n"));
+
+      Commands->Send_Custom_Event(obj, sender, M00_CUSTOM_BROADCASTER_REGISTRY_ERROR, 0, 0.0f);
+    }
+  }
 };
 
 /*
@@ -495,43 +437,39 @@ Editor Script - M00_Broadcaster_Activator_RAD
   1	= Object is sending a custom that should be sent to random objects with one parameter.
   2	= Object is sending a custom that should be sent to everyone with random parameter.
   3	= Object is sending a custom that should be sent to random objects with random parameter.
-  
+
   Script activates upon receipt of a custom. Defaults to constant send, 0.
 */
 
-DECLARE_SCRIPT (M00_Broadcaster_Activator_RAD, "Terminal_ID:int, Prompt_Value=0:int, Debug_Mode=0:int")
-{
-	int terminal_id;
-	int prompt_value;
-	bool		debug_mode;
+DECLARE_SCRIPT(M00_Broadcaster_Activator_RAD, "Terminal_ID:int, Prompt_Value=0:int, Debug_Mode=0:int") {
+  int terminal_id;
+  int prompt_value;
+  bool debug_mode;
 
-	void Created (GameObject* obj)
-	{
-		debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
-		terminal_id = Get_Int_Parameter ("Terminal_ID");
-		prompt_value = Get_Int_Parameter ("Prompt_Value");
+  void Created(GameObject * obj) {
+    debug_mode = (Get_Int_Parameter("Debug_Mode") == 1) ? true : false;
+    terminal_id = Get_Int_Parameter("Terminal_ID");
+    prompt_value = Get_Int_Parameter("Prompt_Value");
 
-		SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD ACTIVATED.\n"));
-	}
+    SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD ACTIVATED.\n"));
+  }
 
-	void Custom (GameObject* obj, int type, int param, GameObject* sender)
-	{
-		SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD received custom type %d, param %d.\n", type, param));
+  void Custom(GameObject * obj, int type, int param, GameObject *sender) {
+    SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD received custom type %d, param %d.\n", type, param));
 
-		GameObject* terminal_obj;
+    GameObject *terminal_obj;
 
-		terminal_obj = Commands->Find_Object(terminal_id);
-		if (terminal_obj)
-		{
-			SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD is sending custom type M00_CUSTOM_BROADCASTER_PROMPTER, param %d.\n", prompt_value));
-			SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD is sending custom type %d, param %d.\n", type, param));
-			
-			Commands->Send_Custom_Event (obj, terminal_obj, M00_CUSTOM_BROADCASTER_PROMPTER, prompt_value, 0.0f);
-			Commands->Send_Custom_Event (obj, terminal_obj, type, param, 0.0f);
-		}
-		else
-		{
-			DebugPrint ("ERROR - M00_Broadcaster_Activator_RAD - Cannot find Terminal %d!\n", terminal_id);
-		}
-	}
+    terminal_obj = Commands->Find_Object(terminal_id);
+    if (terminal_obj) {
+      SCRIPT_DEBUG_MESSAGE(
+          ("M00_Broadcaster_Activator_RAD is sending custom type M00_CUSTOM_BROADCASTER_PROMPTER, param %d.\n",
+           prompt_value));
+      SCRIPT_DEBUG_MESSAGE(("M00_Broadcaster_Activator_RAD is sending custom type %d, param %d.\n", type, param));
+
+      Commands->Send_Custom_Event(obj, terminal_obj, M00_CUSTOM_BROADCASTER_PROMPTER, prompt_value, 0.0f);
+      Commands->Send_Custom_Event(obj, terminal_obj, type, param, 0.0f);
+    } else {
+      DebugPrint("ERROR - M00_Broadcaster_Activator_RAD - Cannot find Terminal %d!\n", terminal_id);
+    }
+  }
 };

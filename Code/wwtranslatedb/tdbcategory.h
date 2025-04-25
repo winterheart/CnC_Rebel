@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : wwtranslatedb																  *
+ *                 Project Name : wwtranslatedb
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwtranslatedb/tdbcategory.h       $*
  *                                                                                             *
@@ -34,7 +35,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -47,78 +47,70 @@
 #include "vector.h"
 #include "bittype.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////////////////////
 class ChunkSaveClass;
 class ChunkLoadClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	TDBCategoryClass
 //
 //////////////////////////////////////////////////////////////////////////
-class TDBCategoryClass : public PersistClass
-{
+class TDBCategoryClass : public PersistClass {
 public:
-	
-	//////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////
-	TDBCategoryClass (void);
-	TDBCategoryClass (const TDBCategoryClass &src);
-	virtual ~TDBCategoryClass (void);
+  //////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////
+  TDBCategoryClass(void);
+  TDBCategoryClass(const TDBCategoryClass &src);
+  virtual ~TDBCategoryClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const TDBCategoryClass &operator= (const TDBCategoryClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const TDBCategoryClass &operator=(const TDBCategoryClass &src);
 
-	//////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////
-	
-	//
-	// From PersistClass
-	//
-	const PersistFactoryClass &Get_Factory (void) const;
-	bool								Save (ChunkSaveClass &csave);
-	bool								Load (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////
 
-	//
-	// Copy methods
-	//
-	TDBCategoryClass *			Clone (void) const				{ return new TDBCategoryClass (*this); }
+  //
+  // From PersistClass
+  //
+  const PersistFactoryClass &Get_Factory(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
-	//
-	// TDBCategoryClass specific
-	//
-	
-	const StringClass &			Get_Name (void) const			{ return Name; }
-	void								Set_Name (const char *name)	{ Name = name; }
+  //
+  // Copy methods
+  //
+  TDBCategoryClass *Clone(void) const { return new TDBCategoryClass(*this); }
 
-	uint32							Get_ID (void) const				{ return ID; }
-	void								Set_ID (uint32 id)				{ ID = id; }
-	
-	
+  //
+  // TDBCategoryClass specific
+  //
+
+  const StringClass &Get_Name(void) const { return Name; }
+  void Set_Name(const char *name) { Name = name; }
+
+  uint32 Get_ID(void) const { return ID; }
+  void Set_ID(uint32 id) { ID = id; }
+
 protected:
-
-	//////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////
-	void								Save_Variables (ChunkSaveClass &csave);
-	void								Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////
+  void Save_Variables(ChunkSaveClass &csave);
+  void Load_Variables(ChunkLoadClass &cload);
 
 private:
-
-	//////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////
-	StringClass			Name;
-	uint32				ID;
+  //////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////
+  StringClass Name;
+  uint32 ID;
 };
-
 
 #endif //__TDB_CATEGORY_H

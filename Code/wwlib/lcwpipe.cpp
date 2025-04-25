@@ -16,35 +16,33 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/LCWPIPE.CPP                               $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/LCWPIPE.CPP                               $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   LCWPipe::Flush -- Flushes any partially accumulated block.                                *
  *   LCWPipe::LCWPipe -- Constructor for the LCW processor pipe.                               *
  *   LCWPipe::Put -- Send some data through the LCW processor pipe.                            *
  *   LCWPipe::~LCWPipe -- Deconstructor for the LCW pipe object.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-#include	"always.h"
-#include	"lcw.h"
-#include	"lcwpipe.h"
-#include	<assert.h>
-#include	<string.h>
-
+#include "always.h"
+#include "lcw.h"
+#include "lcwpipe.h"
+#include <assert.h>
+#include <string.h>
 
 /***********************************************************************************************
  * LCWPipe::LCWPipe -- Constructor for the LCW processor pipe.                                 *
@@ -63,19 +61,13 @@
  * HISTORY:                                                                                    *
  *   07/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-LCWPipe::LCWPipe(CompControl control, int blocksize) :
-		Control(control),
-		Counter(0),
-		Buffer(NULL),
-		Buffer2(NULL),
-		BlockSize(blocksize)
-{
-	SafetyMargin = BlockSize/128+1;
-	Buffer = new char[BlockSize+SafetyMargin];
-	Buffer2 = new char[BlockSize+SafetyMargin];
-	BlockHeader.CompCount = 0xFFFF;
+LCWPipe::LCWPipe(CompControl control, int blocksize)
+    : Control(control), Counter(0), Buffer(NULL), Buffer2(NULL), BlockSize(blocksize) {
+  SafetyMargin = BlockSize / 128 + 1;
+  Buffer = new char[BlockSize + SafetyMargin];
+  Buffer2 = new char[BlockSize + SafetyMargin];
+  BlockHeader.CompCount = 0xFFFF;
 }
-
 
 /***********************************************************************************************
  * LCWPipe::~LCWPipe -- Deconstructor for the LCW pipe object.                                 *
@@ -91,15 +83,13 @@ LCWPipe::LCWPipe(CompControl control, int blocksize) :
  * HISTORY:                                                                                    *
  *   07/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-LCWPipe::~LCWPipe(void)
-{
-	delete [] Buffer;
-	Buffer = NULL;
+LCWPipe::~LCWPipe(void) {
+  delete[] Buffer;
+  Buffer = NULL;
 
-	delete [] Buffer2;
-	Buffer2 = NULL;
+  delete[] Buffer2;
+  Buffer2 = NULL;
 }
-
 
 /***********************************************************************************************
  * LCWPipe::Put -- Send some data through the LCW processor pipe.                              *
@@ -120,122 +110,120 @@ LCWPipe::~LCWPipe(void)
  * HISTORY:                                                                                    *
  *   07/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int LCWPipe::Put(void const * source, int slen)
-{
-	if (source == NULL || slen < 1) {
-		return(Pipe::Put(source, slen));
-	}
+int LCWPipe::Put(void const *source, int slen) {
+  if (source == NULL || slen < 1) {
+    return (Pipe::Put(source, slen));
+  }
 
-	assert(Buffer != NULL);
+  assert(Buffer != NULL);
 
-	int total = 0;
+  int total = 0;
 
-	/*
-	**	Copy as much as can fit into the buffer from the source data supplied.
-	*/
-	if (Control ==  DECOMPRESS) {
+  /*
+  **	Copy as much as can fit into the buffer from the source data supplied.
+  */
+  if (Control == DECOMPRESS) {
 
-		while (slen > 0) {
+    while (slen > 0) {
 
-			/*
-			**	First check to see if we are in the block header accumulation phase.
-			**	When a whole block header has been accumulated, only then will the regular
-			**	data processing begin for the block.
-			*/
-			if (BlockHeader.CompCount == 0xFFFF) {
-				int len = ((unsigned)slen < (sizeof(BlockHeader)-Counter)) ? slen : (sizeof(BlockHeader)-Counter);
-				memmove(&Buffer[Counter], source, len);
-				source = ((char *)source) + len;
-				slen -= len;
-				Counter += len;
+      /*
+      **	First check to see if we are in the block header accumulation phase.
+      **	When a whole block header has been accumulated, only then will the regular
+      **	data processing begin for the block.
+      */
+      if (BlockHeader.CompCount == 0xFFFF) {
+        int len = ((unsigned)slen < (sizeof(BlockHeader) - Counter)) ? slen : (sizeof(BlockHeader) - Counter);
+        memmove(&Buffer[Counter], source, len);
+        source = ((char *)source) + len;
+        slen -= len;
+        Counter += len;
 
-				/*
-				**	A whole block header has been accumulated. Store it for safekeeping.
-				*/
-				if (Counter == sizeof(BlockHeader)) {
-					memmove(&BlockHeader, Buffer, sizeof(BlockHeader));
-					Counter = 0;
-				}
-			}
+        /*
+        **	A whole block header has been accumulated. Store it for safekeeping.
+        */
+        if (Counter == sizeof(BlockHeader)) {
+          memmove(&BlockHeader, Buffer, sizeof(BlockHeader));
+          Counter = 0;
+        }
+      }
 
-			/*
-			**	Fill the buffer with compressed data until there is enough to make a whole
-			**	data block.
-			*/
-			if (slen > 0) {
-				int len = (slen < (BlockHeader.CompCount-Counter)) ? slen : (BlockHeader.CompCount-Counter);
+      /*
+      **	Fill the buffer with compressed data until there is enough to make a whole
+      **	data block.
+      */
+      if (slen > 0) {
+        int len = (slen < (BlockHeader.CompCount - Counter)) ? slen : (BlockHeader.CompCount - Counter);
 
-				memmove(&Buffer[Counter], source, len);
-				slen -= len;
-				source = ((char *)source) + len;
-				Counter += len;
+        memmove(&Buffer[Counter], source, len);
+        slen -= len;
+        source = ((char *)source) + len;
+        Counter += len;
 
-				/*
-				**	If an entire block has been accumulated, then uncompress it and feed it
-				**	through the pipe.
-				*/
-				if (Counter == BlockHeader.CompCount) {
-					LCW_Uncomp(Buffer, Buffer2);
-					total += Pipe::Put(Buffer2, BlockHeader.UncompCount);
-					Counter = 0;
-					BlockHeader.CompCount = 0xFFFF;
-				}
-			}
-		}
+        /*
+        **	If an entire block has been accumulated, then uncompress it and feed it
+        **	through the pipe.
+        */
+        if (Counter == BlockHeader.CompCount) {
+          LCW_Uncomp(Buffer, Buffer2);
+          total += Pipe::Put(Buffer2, BlockHeader.UncompCount);
+          Counter = 0;
+          BlockHeader.CompCount = 0xFFFF;
+        }
+      }
+    }
 
-	} else {
+  } else {
 
-		/*
-		**	If the buffer already contains some data, then any new data must be stored
-		**	into the staging buffer until a full set has been accumulated.
-		*/
-		if (Counter > 0) {
-			int tocopy = (slen < (BlockSize-Counter)) ? slen : (BlockSize-Counter);
-			memmove(&Buffer[Counter], source, tocopy);
-			source = ((char *)source) + tocopy;
-			slen -= tocopy;
-			Counter += tocopy;
+    /*
+    **	If the buffer already contains some data, then any new data must be stored
+    **	into the staging buffer until a full set has been accumulated.
+    */
+    if (Counter > 0) {
+      int tocopy = (slen < (BlockSize - Counter)) ? slen : (BlockSize - Counter);
+      memmove(&Buffer[Counter], source, tocopy);
+      source = ((char *)source) + tocopy;
+      slen -= tocopy;
+      Counter += tocopy;
 
-			if (Counter == BlockSize) {
-				int len = LCW_Comp(Buffer, Buffer2, BlockSize);
+      if (Counter == BlockSize) {
+        int len = LCW_Comp(Buffer, Buffer2, BlockSize);
 
-				BlockHeader.CompCount = (unsigned short)len;
-				BlockHeader.UncompCount = (unsigned short)BlockSize;
-				total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
-				total += Pipe::Put(Buffer2, len);
-				Counter = 0;
-			}
-		}
+        BlockHeader.CompCount = (unsigned short)len;
+        BlockHeader.UncompCount = (unsigned short)BlockSize;
+        total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
+        total += Pipe::Put(Buffer2, len);
+        Counter = 0;
+      }
+    }
 
-		/*
-		**	Process the source data in whole block chunks until there is insufficient
-		**	source data left for a whole data block.
-		*/
-		while (slen >= BlockSize) {
-			int len = LCW_Comp(source, Buffer2, BlockSize);
+    /*
+    **	Process the source data in whole block chunks until there is insufficient
+    **	source data left for a whole data block.
+    */
+    while (slen >= BlockSize) {
+      int len = LCW_Comp(source, Buffer2, BlockSize);
 
-			source = ((char *)source) + BlockSize;
-			slen -= BlockSize;
+      source = ((char *)source) + BlockSize;
+      slen -= BlockSize;
 
-			BlockHeader.CompCount = (unsigned short)len;
-			BlockHeader.UncompCount = (unsigned short)BlockSize;
-			total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
-			total += Pipe::Put(Buffer2, len);
-		}
+      BlockHeader.CompCount = (unsigned short)len;
+      BlockHeader.UncompCount = (unsigned short)BlockSize;
+      total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
+      total += Pipe::Put(Buffer2, len);
+    }
 
-		/*
-		**	If there is any remaining data, then it is stored into the buffer
-		**	until a full data block has been accumulated.
-		*/
-		if (slen > 0) {
-			memmove(Buffer, source, slen);
-			Counter = slen;
-		}
-	}
+    /*
+    **	If there is any remaining data, then it is stored into the buffer
+    **	until a full data block has been accumulated.
+    */
+    if (slen > 0) {
+      memmove(Buffer, source, slen);
+      Counter = slen;
+    }
+  }
 
-	return(total);
+  return (total);
 }
-
 
 /***********************************************************************************************
  * LCWPipe::Flush -- Flushes any partially accumulated block.                                  *
@@ -256,58 +244,56 @@ int LCWPipe::Put(void const * source, int slen)
  * HISTORY:                                                                                    *
  *   07/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int LCWPipe::Flush(void)
-{
-	assert(Buffer != NULL);
+int LCWPipe::Flush(void) {
+  assert(Buffer != NULL);
 
-	int total = 0;
+  int total = 0;
 
-	/*
-	**	If there is accumulated data, then it must processed.
-	*/
-	if (Counter > 0) {
-		if (Control == DECOMPRESS) {
+  /*
+  **	If there is accumulated data, then it must processed.
+  */
+  if (Counter > 0) {
+    if (Control == DECOMPRESS) {
 
-			/*
-			**	If the accumulated data is insufficient to make a block header, then
-			**	this means the data has been truncated. Just dump the data through
-			**	as if were already decompressed.
-			*/
-			if (BlockHeader.CompCount == 0xFFFF) {
-				total += Pipe::Put(Buffer, Counter);
-				Counter = 0;
-			}
+      /*
+      **	If the accumulated data is insufficient to make a block header, then
+      **	this means the data has been truncated. Just dump the data through
+      **	as if were already decompressed.
+      */
+      if (BlockHeader.CompCount == 0xFFFF) {
+        total += Pipe::Put(Buffer, Counter);
+        Counter = 0;
+      }
 
-			/*
-			**	There appears to be a partial block accumulated in the buffer. It would
-			**	be disastrous to try to decompress the data since there wouldn't be
-			**	the special end of data code that LCW decompression needs. In this
-			**	case, dump the data out as if it were already decompressed.
-			*/
-			if (Counter > 0) {
-				total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
-				total += Pipe::Put(Buffer, Counter);
-				Counter = 0;
-				BlockHeader.CompCount = 0xFFFF;
-			}
+      /*
+      **	There appears to be a partial block accumulated in the buffer. It would
+      **	be disastrous to try to decompress the data since there wouldn't be
+      **	the special end of data code that LCW decompression needs. In this
+      **	case, dump the data out as if it were already decompressed.
+      */
+      if (Counter > 0) {
+        total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
+        total += Pipe::Put(Buffer, Counter);
+        Counter = 0;
+        BlockHeader.CompCount = 0xFFFF;
+      }
 
-		} else {
+    } else {
 
-			/*
-			**	A partial block in the compression process is a normal occurrence. Just
-			**	compress the partial block and output normally.
-			*/
-			int len = LCW_Comp(Buffer, Buffer2, Counter);
+      /*
+      **	A partial block in the compression process is a normal occurrence. Just
+      **	compress the partial block and output normally.
+      */
+      int len = LCW_Comp(Buffer, Buffer2, Counter);
 
-			BlockHeader.CompCount = (unsigned short)len;
-			BlockHeader.UncompCount = (unsigned short)Counter;
-			total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
-			total += Pipe::Put(Buffer2, len);
-			Counter = 0;
-		}
-	}
+      BlockHeader.CompCount = (unsigned short)len;
+      BlockHeader.UncompCount = (unsigned short)Counter;
+      total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
+      total += Pipe::Put(Buffer2, len);
+      Counter = 0;
+    }
+  }
 
-	total += Pipe::Flush();
-	return(total);
+  total += Pipe::Flush();
+  return (total);
 }
-

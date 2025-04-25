@@ -33,174 +33,148 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // ConversationPickerDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-ConversationPickerDialogClass::ConversationPickerDialogClass (CWnd *pParent /*=NULL*/)
-	:	Conversation (NULL),
-		GlobalsRoot (NULL),
-		LevelsRoot (NULL),
-		CDialog (ConversationPickerDialogClass::IDD, pParent)
-{
-	//{{AFX_DATA_INIT(ConversationPickerDialogClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	return ;
+ConversationPickerDialogClass::ConversationPickerDialogClass(CWnd *pParent /*=NULL*/)
+    : Conversation(NULL), GlobalsRoot(NULL), LevelsRoot(NULL), CDialog(ConversationPickerDialogClass::IDD, pParent) {
+  //{{AFX_DATA_INIT(ConversationPickerDialogClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-ConversationPickerDialogClass::DoDataExchange (CDataExchange *pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(ConversationPickerDialogClass)
-	DDX_Control(pDX, IDC_CONVERSATION_TREE, m_TreeCtrl);
-	//}}AFX_DATA_MAP
+void ConversationPickerDialogClass::DoDataExchange(CDataExchange *pDX) {
+  CDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(ConversationPickerDialogClass)
+  DDX_Control(pDX, IDC_CONVERSATION_TREE, m_TreeCtrl);
+  //}}AFX_DATA_MAP
 
-	return ;
+  return;
 }
 
-
 BEGIN_MESSAGE_MAP(ConversationPickerDialogClass, CDialog)
-	//{{AFX_MSG_MAP(ConversationPickerDialogClass)
-	ON_NOTIFY(TVN_SELCHANGED, IDC_CONVERSATION_TREE, OnSelchangedConversationTree)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(ConversationPickerDialogClass)
+ON_NOTIFY(TVN_SELCHANGED, IDC_CONVERSATION_TREE, OnSelchangedConversationTree)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnSelchangedConversationTree
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-ConversationPickerDialogClass::OnSelchangedConversationTree
-(
-	NMHDR *		pNMHDR,
-	LRESULT *	pResult
-)
-{
-	NM_TREEVIEW *pNMTreeView = (NM_TREEVIEW *)pNMHDR;
-	(*pResult) = 0;
+void ConversationPickerDialogClass::OnSelchangedConversationTree(NMHDR *pNMHDR, LRESULT *pResult) {
+  NM_TREEVIEW *pNMTreeView = (NM_TREEVIEW *)pNMHDR;
+  (*pResult) = 0;
 
-	Conversation = NULL;
+  Conversation = NULL;
 
-	//
-	//	Lookup the currently selected conversation
-	//
-	HTREEITEM selected_item = m_TreeCtrl.GetSelectedItem ();
-	if (selected_item != NULL) {
-		Conversation = (ConversationClass *)m_TreeCtrl.GetItemData (selected_item);
-	}
+  //
+  //	Lookup the currently selected conversation
+  //
+  HTREEITEM selected_item = m_TreeCtrl.GetSelectedItem();
+  if (selected_item != NULL) {
+    Conversation = (ConversationClass *)m_TreeCtrl.GetItemData(selected_item);
+  }
 
-	//
-	//	Update the enable state based on whether or not a conversation was selected
-	//
-	::EnableWindow (::GetDlgItem (m_hWnd, IDOK), (Conversation != NULL));
-	return ;
+  //
+  //	Update the enable state based on whether or not a conversation was selected
+  //
+  ::EnableWindow(::GetDlgItem(m_hWnd, IDOK), (Conversation != NULL));
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-ConversationPickerDialogClass::OnInitDialog (void)
-{
-	CDialog::OnInitDialog ();
-	
-	//
-	// Pass the general use imagelist onto the tree control
-	//
-	m_TreeCtrl.SetImageList (::Get_Global_Image_List (), TVSIL_NORMAL);
+BOOL ConversationPickerDialogClass::OnInitDialog(void) {
+  CDialog::OnInitDialog();
 
-	//
-	//	Insert the folders
-	//
-	GlobalsRoot	= m_TreeCtrl.InsertItem ("Globals", FOLDER_ICON, FOLDER_ICON);
-	LevelsRoot	= m_TreeCtrl.InsertItem ("Level Specific", FOLDER_ICON, FOLDER_ICON);
+  //
+  // Pass the general use imagelist onto the tree control
+  //
+  m_TreeCtrl.SetImageList(::Get_Global_Image_List(), TVSIL_NORMAL);
 
-	//
-	//	Add all the conversations to the tree
-	//
-	int count = ConversationMgrClass::Get_Conversation_Count ();
-	for (int index = 0; index < count; index ++) {
-		Insert_Entry (ConversationMgrClass::Peek_Conversation (index));
-	}
+  //
+  //	Insert the folders
+  //
+  GlobalsRoot = m_TreeCtrl.InsertItem("Globals", FOLDER_ICON, FOLDER_ICON);
+  LevelsRoot = m_TreeCtrl.InsertItem("Level Specific", FOLDER_ICON, FOLDER_ICON);
 
-	//
-	//	Open the globals and levels folders
-	//
-	m_TreeCtrl.Expand (GlobalsRoot, TVE_EXPAND);
-	m_TreeCtrl.Expand (LevelsRoot, TVE_EXPAND);
+  //
+  //	Add all the conversations to the tree
+  //
+  int count = ConversationMgrClass::Get_Conversation_Count();
+  for (int index = 0; index < count; index++) {
+    Insert_Entry(ConversationMgrClass::Peek_Conversation(index));
+  }
 
-	return TRUE;
+  //
+  //	Open the globals and levels folders
+  //
+  m_TreeCtrl.Expand(GlobalsRoot, TVE_EXPAND);
+  m_TreeCtrl.Expand(LevelsRoot, TVE_EXPAND);
+
+  return TRUE;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnOK
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-ConversationPickerDialogClass::OnOK (void)
-{
-	if (Conversation != NULL) {
-		CDialog::OnOK ();
-	}
+void ConversationPickerDialogClass::OnOK(void) {
+  if (Conversation != NULL) {
+    CDialog::OnOK();
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Insert_Entry
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-ConversationPickerDialogClass::Insert_Entry (ConversationClass *conversation)
-{
-	//
-	//	Determine which folder this conversation goes under
-	//
-	HTREEITEM parent_item = LevelsRoot;
-	if (conversation->Get_Category_ID () != ConversationMgrClass::CATEGORY_LEVEL) {
-		parent_item = GlobalsRoot;
-	}
+void ConversationPickerDialogClass::Insert_Entry(ConversationClass *conversation) {
+  //
+  //	Determine which folder this conversation goes under
+  //
+  HTREEITEM parent_item = LevelsRoot;
+  if (conversation->Get_Category_ID() != ConversationMgrClass::CATEGORY_LEVEL) {
+    parent_item = GlobalsRoot;
+  }
 
-	//
-	//	Insert this item into the tree
-	//
-	HTREEITEM tree_item = m_TreeCtrl.InsertItem (conversation->Get_Name (), DIALOGUE_ICON,
-													DIALOGUE_ICON, parent_item);
-	if (tree_item != NULL) {
-		
-		//
-		//	Associate the conversation with the entry in the tree
-		//
-		m_TreeCtrl.SetItemData (tree_item, (DWORD)conversation);
-		m_TreeCtrl.SortChildren (parent_item);
+  //
+  //	Insert this item into the tree
+  //
+  HTREEITEM tree_item = m_TreeCtrl.InsertItem(conversation->Get_Name(), DIALOGUE_ICON, DIALOGUE_ICON, parent_item);
+  if (tree_item != NULL) {
 
-		//
-		//	Select this conversation if necessary
-		//
-		if (conversation == Conversation) {
-			m_TreeCtrl.SelectItem (tree_item);
-			m_TreeCtrl.EnsureVisible (tree_item);
-		}
-	}
+    //
+    //	Associate the conversation with the entry in the tree
+    //
+    m_TreeCtrl.SetItemData(tree_item, (DWORD)conversation);
+    m_TreeCtrl.SortChildren(parent_item);
 
-	return ;
+    //
+    //	Select this conversation if necessary
+    //
+    if (conversation == Conversation) {
+      m_TreeCtrl.SelectItem(tree_item);
+      m_TreeCtrl.EnsureVisible(tree_item);
+    }
+  }
+
+  return;
 }

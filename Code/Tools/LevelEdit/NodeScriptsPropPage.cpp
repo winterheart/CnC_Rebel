@@ -22,14 +22,13 @@
  *                                                                                             *
  *                 Project Name : LevelEdit                                                    *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/Tools/LevelEdit/NodeScriptsPropPage.cpp                                                                                                                                                                                                                                                                                                                                          $Modtime::                                                             $*
+ *                     $Archive:: /Commando/Code/Tools/LevelEdit/NodeScriptsPropPage.cpp $Modtime:: $*
  *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #include "stdafx.h"
 #include "leveledit.h"
@@ -40,430 +39,364 @@
 #include "scripteditdialog.h"
 #include "parameter.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Local Constants
 //
 /////////////////////////////////////////////////////////////////////////////
-const int COL_NAME		= 0;
-const int COL_PARAMS		= 1;
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// NodeScriptsPropPage
-//
-/////////////////////////////////////////////////////////////////////////////
-NodeScriptsPropPage::NodeScriptsPropPage (void)
-	:	m_ScriptList (NULL),
-		m_ScriptListParam (NULL),
-		DockableFormClass (NodeScriptsPropPage::IDD)
-{
-	//{{AFX_DATA_INIT(NodeScriptsPropPage)
-	//}}AFX_DATA_INIT
-	return ;
-}
-
+const int COL_NAME = 0;
+const int COL_PARAMS = 1;
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // NodeScriptsPropPage
 //
 /////////////////////////////////////////////////////////////////////////////
-NodeScriptsPropPage::NodeScriptsPropPage (SCRIPT_LIST *script_list)
-	:	m_ScriptList (script_list),
-		m_ScriptListParam (NULL),
-		DockableFormClass (NodeScriptsPropPage::IDD)
-{
-	return ;
+NodeScriptsPropPage::NodeScriptsPropPage(void)
+    : m_ScriptList(NULL), m_ScriptListParam(NULL), DockableFormClass(NodeScriptsPropPage::IDD) {
+  //{{AFX_DATA_INIT(NodeScriptsPropPage)
+  //}}AFX_DATA_INIT
+  return;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// NodeScriptsPropPage
+//
+/////////////////////////////////////////////////////////////////////////////
+NodeScriptsPropPage::NodeScriptsPropPage(SCRIPT_LIST *script_list)
+    : m_ScriptList(script_list), m_ScriptListParam(NULL), DockableFormClass(NodeScriptsPropPage::IDD) {
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // ~NodeScriptsPropPage
 //
 /////////////////////////////////////////////////////////////////////////////
-NodeScriptsPropPage::~NodeScriptsPropPage (void)
-{
-	return ;
-}
-
+NodeScriptsPropPage::~NodeScriptsPropPage(void) { return; }
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::DoDataExchange (CDataExchange* pDX)
-{
-	DockableFormClass ::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(NodeScriptsPropPage)
-	DDX_Control(pDX, IDC_SCRIPTLIST, m_ListCtrl);
-	//}}AFX_DATA_MAP
-	return ;
+void NodeScriptsPropPage::DoDataExchange(CDataExchange *pDX) {
+  DockableFormClass ::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(NodeScriptsPropPage)
+  DDX_Control(pDX, IDC_SCRIPTLIST, m_ListCtrl);
+  //}}AFX_DATA_MAP
+  return;
 }
 
-
-BEGIN_MESSAGE_MAP(NodeScriptsPropPage, DockableFormClass )
-	//{{AFX_MSG_MAP(NodeScriptsPropPage)
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_SCRIPTLIST, OnItemChangedScriptList)
-	ON_BN_CLICKED(IDC_ADD, OnAdd)
-	ON_BN_CLICKED(IDC_DELETE, OnDelete)
-	ON_BN_CLICKED(IDC_MODIFY, OnModify)
-	ON_NOTIFY(LVN_DELETEITEM, IDC_SCRIPTLIST, OnDeleteItemScriptList)
-	ON_NOTIFY(NM_DBLCLK, IDC_SCRIPTLIST, OnDblclkScriptlist)
-	//}}AFX_MSG_MAP
+BEGIN_MESSAGE_MAP(NodeScriptsPropPage, DockableFormClass)
+//{{AFX_MSG_MAP(NodeScriptsPropPage)
+ON_NOTIFY(LVN_ITEMCHANGED, IDC_SCRIPTLIST, OnItemChangedScriptList)
+ON_BN_CLICKED(IDC_ADD, OnAdd)
+ON_BN_CLICKED(IDC_DELETE, OnDelete)
+ON_BN_CLICKED(IDC_MODIFY, OnModify)
+ON_NOTIFY(LVN_DELETEITEM, IDC_SCRIPTLIST, OnDeleteItemScriptList)
+ON_NOTIFY(NM_DBLCLK, IDC_SCRIPTLIST, OnDblclkScriptlist)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // NodeScriptsPropPage diagnostics
 
 #ifdef _DEBUG
-void NodeScriptsPropPage::AssertValid() const
-{
-	DockableFormClass ::AssertValid();
-}
+void NodeScriptsPropPage::AssertValid() const { DockableFormClass ::AssertValid(); }
 
-void NodeScriptsPropPage::Dump(CDumpContext& dc) const
-{
-	DockableFormClass ::Dump(dc);
-}
+void NodeScriptsPropPage::Dump(CDumpContext &dc) const { DockableFormClass ::Dump(dc); }
 #endif //_DEBUG
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Build_Script_List
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::Build_Script_List (void)
-{
-	//
-	//	If we are dealing with a script list parameter, then convert
-	// it into a list of editable scripts
-	//
-	if (m_ScriptListParam != NULL) {
-		m_ScriptList = new SCRIPT_LIST;
+void NodeScriptsPropPage::Build_Script_List(void) {
+  //
+  //	If we are dealing with a script list parameter, then convert
+  // it into a list of editable scripts
+  //
+  if (m_ScriptListParam != NULL) {
+    m_ScriptList = new SCRIPT_LIST;
 
-		DynamicVectorClass<StringClass> &name_list = m_ScriptListParam->Get_Name_List ();
-		DynamicVectorClass<StringClass> &param_list = m_ScriptListParam->Get_Param_List ();
-		
-		//
-		//	Loop over and create edit scripts for each string pair
-		//
-		for (int index = 0; index < name_list.Count (); index ++) {
-			EditScriptClass *edit_script = new EditScriptClass;
-			edit_script->Set_Name (name_list[index]);
-			edit_script->Lookup_Param_Description ();
-			edit_script->Set_Composite_Values (param_list[index]);
+    DynamicVectorClass<StringClass> &name_list = m_ScriptListParam->Get_Name_List();
+    DynamicVectorClass<StringClass> &param_list = m_ScriptListParam->Get_Param_List();
 
-			//
-			//	Add this script to our list
-			//
-			m_ScriptList->Add (edit_script);
-		}
-	}
+    //
+    //	Loop over and create edit scripts for each string pair
+    //
+    for (int index = 0; index < name_list.Count(); index++) {
+      EditScriptClass *edit_script = new EditScriptClass;
+      edit_script->Set_Name(name_list[index]);
+      edit_script->Lookup_Param_Description();
+      edit_script->Set_Composite_Values(param_list[index]);
 
-	return ;
+      //
+      //	Add this script to our list
+      //
+      m_ScriptList->Add(edit_script);
+    }
+  }
+
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // HandleInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::HandleInitDialog (void)
-{
-	ListView_SetExtendedListViewStyle (m_ListCtrl, LVS_EX_FULLROWSELECT);
+void NodeScriptsPropPage::HandleInitDialog(void) {
+  ListView_SetExtendedListViewStyle(m_ListCtrl, LVS_EX_FULLROWSELECT);
 
-	//
-	//	Make sure we have a script list (can be built internally in some cases)
-	//
-	Build_Script_List ();
+  //
+  //	Make sure we have a script list (can be built internally in some cases)
+  //
+  Build_Script_List();
 
-	// Insert the 2 columns into the list oontrol
-	m_ListCtrl.InsertColumn (COL_NAME, "Name");
-	m_ListCtrl.InsertColumn (COL_PARAMS, "Params");
+  // Insert the 2 columns into the list oontrol
+  m_ListCtrl.InsertColumn(COL_NAME, "Name");
+  m_ListCtrl.InsertColumn(COL_PARAMS, "Params");
 
-	//
-	// Add all the scripts that we are editing to the list control
-	//
-	for (int index = 0; index < m_ScriptList->Count (); index ++) {		
-		EditScriptClass *script = (*m_ScriptList)[index];
-		if (script != NULL) {
-			
-			//
-			// Put this script into the list control
-			//
-			int item_index = m_ListCtrl.InsertItem (index, (LPCTSTR)script->Get_Name ());
-			m_ListCtrl.SetItemText (item_index, COL_PARAMS, (LPCTSTR)script->Get_Composite_String ());
-			m_ListCtrl.SetItemData (item_index, (DWORD)script->Clone ());
-		}
-	}
+  //
+  // Add all the scripts that we are editing to the list control
+  //
+  for (int index = 0; index < m_ScriptList->Count(); index++) {
+    EditScriptClass *script = (*m_ScriptList)[index];
+    if (script != NULL) {
 
-	//
-	// Size the columns to fit their largest entry
-	//
-	CRect rect;
-	m_ListCtrl.GetClientRect (&rect);
-	m_ListCtrl.SetColumnWidth (COL_NAME, (rect.Width () / 3) - 2);
-	m_ListCtrl.SetColumnWidth (COL_PARAMS, ((rect.Width () * 2) / 3) - 2);
+      //
+      // Put this script into the list control
+      //
+      int item_index = m_ListCtrl.InsertItem(index, (LPCTSTR)script->Get_Name());
+      m_ListCtrl.SetItemText(item_index, COL_PARAMS, (LPCTSTR)script->Get_Composite_String());
+      m_ListCtrl.SetItemData(item_index, (DWORD)script->Clone());
+    }
+  }
 
-	// Disable the 'add', 'delete' and 'modify' buttons
-	::EnableWindow (::GetDlgItem (m_hWnd, IDC_DELETE), FALSE);
-	::EnableWindow (::GetDlgItem (m_hWnd, IDC_MODIFY), FALSE);
-	return ;
+  //
+  // Size the columns to fit their largest entry
+  //
+  CRect rect;
+  m_ListCtrl.GetClientRect(&rect);
+  m_ListCtrl.SetColumnWidth(COL_NAME, (rect.Width() / 3) - 2);
+  m_ListCtrl.SetColumnWidth(COL_PARAMS, ((rect.Width() * 2) / 3) - 2);
+
+  // Disable the 'add', 'delete' and 'modify' buttons
+  ::EnableWindow(::GetDlgItem(m_hWnd, IDC_DELETE), FALSE);
+  ::EnableWindow(::GetDlgItem(m_hWnd, IDC_MODIFY), FALSE);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnItemChangedScriptList
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnItemChangedScriptList
-(
-	NMHDR*	pNMHDR,
-	LRESULT*	pResult
-)
-{
-	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-	
-	// Did the selection state change?
-	if ((pNMListView != NULL) &&
-		 (pNMListView->uChanged & LVIF_STATE) &&
-		 ((pNMListView->uNewState & LVIS_SELECTED) || (pNMListView->uOldState & LVIS_SELECTED)))
-	{
-		
-		// Get the index of the currently selected property
-		int index = m_ListCtrl.GetNextItem (-1, LVNI_ALL | LVNI_SELECTED);
-		if (index != -1) {
+void NodeScriptsPropPage::OnItemChangedScriptList(NMHDR *pNMHDR, LRESULT *pResult) {
+  NM_LISTVIEW *pNMListView = (NM_LISTVIEW *)pNMHDR;
 
-			// Enable the 'delete' and 'modify' buttons
-			::EnableWindow (::GetDlgItem (m_hWnd, IDC_DELETE), TRUE);
-			::EnableWindow (::GetDlgItem (m_hWnd, IDC_MODIFY), TRUE);
+  // Did the selection state change?
+  if ((pNMListView != NULL) && (pNMListView->uChanged & LVIF_STATE) &&
+      ((pNMListView->uNewState & LVIS_SELECTED) || (pNMListView->uOldState & LVIS_SELECTED))) {
 
-		} else {
+    // Get the index of the currently selected property
+    int index = m_ListCtrl.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+    if (index != -1) {
 
-			// Disable the 'delete' and 'modify' buttons
-			::EnableWindow (::GetDlgItem (m_hWnd, IDC_DELETE), FALSE);
-			::EnableWindow (::GetDlgItem (m_hWnd, IDC_MODIFY), FALSE);
-		}
-	}
-	
-	*pResult = 0;
-	return ;
+      // Enable the 'delete' and 'modify' buttons
+      ::EnableWindow(::GetDlgItem(m_hWnd, IDC_DELETE), TRUE);
+      ::EnableWindow(::GetDlgItem(m_hWnd, IDC_MODIFY), TRUE);
+
+    } else {
+
+      // Disable the 'delete' and 'modify' buttons
+      ::EnableWindow(::GetDlgItem(m_hWnd, IDC_DELETE), FALSE);
+      ::EnableWindow(::GetDlgItem(m_hWnd, IDC_MODIFY), FALSE);
+    }
+  }
+
+  *pResult = 0;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnModify
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnModify (void)
-{
-	// Get the index of the currently selected property
-	int index = m_ListCtrl.GetNextItem (-1, LVNI_ALL | LVNI_SELECTED);
-	if (index != -1) {
+void NodeScriptsPropPage::OnModify(void) {
+  // Get the index of the currently selected property
+  int index = m_ListCtrl.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+  if (index != -1) {
 
-		// Get a pointer to the script
-		EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData (index);
-		if (script != NULL) {
+    // Get a pointer to the script
+    EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData(index);
+    if (script != NULL) {
 
-			//
-			//	Show the dialog that allows the user to edit this script's settings
-			//
-			ScriptEditDialogClass dialog (this);
-			dialog.Set_Script (*script);
-			if (dialog.DoModal () == IDOK) {
-				
-				//
-				//	Update the list
-				//
-				(*script) = dialog.Get_Script ();
-				m_ListCtrl.SetItemText (index, COL_NAME, (LPCTSTR)script->Get_Name ());
-				m_ListCtrl.SetItemText (index, COL_PARAMS, (LPCTSTR)script->Get_Composite_String ());
-			}
-		}
-	}
+      //
+      //	Show the dialog that allows the user to edit this script's settings
+      //
+      ScriptEditDialogClass dialog(this);
+      dialog.Set_Script(*script);
+      if (dialog.DoModal() == IDOK) {
 
-	return ;
+        //
+        //	Update the list
+        //
+        (*script) = dialog.Get_Script();
+        m_ListCtrl.SetItemText(index, COL_NAME, (LPCTSTR)script->Get_Name());
+        m_ListCtrl.SetItemText(index, COL_PARAMS, (LPCTSTR)script->Get_Composite_String());
+      }
+    }
+  }
+
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnAdd
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnAdd (void)
-{
-	//
-	//	Show the dialog that allows the user to edit this script's settings
-	//
-	ScriptEditDialogClass dialog (this);
-	if (dialog.DoModal () == IDOK) {
-		EditScriptClass *new_script = new EditScriptClass (dialog.Get_Script ());
+void NodeScriptsPropPage::OnAdd(void) {
+  //
+  //	Show the dialog that allows the user to edit this script's settings
+  //
+  ScriptEditDialogClass dialog(this);
+  if (dialog.DoModal() == IDOK) {
+    EditScriptClass *new_script = new EditScriptClass(dialog.Get_Script());
 
-		// Put this script into the list control
-		int index = m_ListCtrl.InsertItem (0xFFFF, (LPCTSTR)new_script->Get_Name ());
-		m_ListCtrl.SetItemText (index, COL_PARAMS, (LPCTSTR)new_script->Get_Composite_String ());
-		m_ListCtrl.SetItemData (index, (DWORD)new_script);
-	}
+    // Put this script into the list control
+    int index = m_ListCtrl.InsertItem(0xFFFF, (LPCTSTR)new_script->Get_Name());
+    m_ListCtrl.SetItemText(index, COL_PARAMS, (LPCTSTR)new_script->Get_Composite_String());
+    m_ListCtrl.SetItemData(index, (DWORD)new_script);
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnDelete
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnDelete (void) 
-{
-	// Get the index of the currently selected property
-	int index = m_ListCtrl.GetNextItem (-1, LVNI_ALL | LVNI_SELECTED);
-	if (index != -1) {
+void NodeScriptsPropPage::OnDelete(void) {
+  // Get the index of the currently selected property
+  int index = m_ListCtrl.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+  if (index != -1) {
 
-		// Delete the entry from the list control
-		m_ListCtrl.DeleteItem (index);
-	}
+    // Delete the entry from the list control
+    m_ListCtrl.DeleteItem(index);
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Apply_Changes
 //
 /////////////////////////////////////////////////////////////////////////////
-bool
-NodeScriptsPropPage::Apply_Changes (void)
-{
-	//
-	//	Delete all the scripts in the old list
-	//
-	for (int index = 0; index < m_ScriptList->Count (); index ++) {
-		EditScriptClass *script = (*m_ScriptList)[index];
-		SAFE_DELETE (script);
-	}
+bool NodeScriptsPropPage::Apply_Changes(void) {
+  //
+  //	Delete all the scripts in the old list
+  //
+  for (int index = 0; index < m_ScriptList->Count(); index++) {
+    EditScriptClass *script = (*m_ScriptList)[index];
+    SAFE_DELETE(script);
+  }
 
-	m_ScriptList->Delete_All ();
+  m_ScriptList->Delete_All();
 
-	//
-	// Loop through all the entries in the list contrl and add them 
-	// to the script list
-	//
-	int index = -1;
-	while ((index = m_ListCtrl.GetNextItem (index, LVNI_ALL)) != -1) {
-		EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData (index);
-		if (script != NULL) {
+  //
+  // Loop through all the entries in the list contrl and add them
+  // to the script list
+  //
+  int index = -1;
+  while ((index = m_ListCtrl.GetNextItem(index, LVNI_ALL)) != -1) {
+    EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData(index);
+    if (script != NULL) {
 
-			//
-			//	Add this script to the script list and remove it from the list control
-			//
-			m_ScriptList->Add (script);
-			m_ListCtrl.SetItemData (index, NULL);
-		}
-	}
+      //
+      //	Add this script to the script list and remove it from the list control
+      //
+      m_ScriptList->Add(script);
+      m_ListCtrl.SetItemData(index, NULL);
+    }
+  }
 
-	//
-	//	Do we need to convert the script list to a script list param object?
-	//
-	if (m_ScriptListParam != NULL) {
+  //
+  //	Do we need to convert the script list to a script list param object?
+  //
+  if (m_ScriptListParam != NULL) {
 
-		//
-		//	Reset the contents of the script parameter's lists
-		//
-		DynamicVectorClass<StringClass> &name_list = m_ScriptListParam->Get_Name_List ();
-		DynamicVectorClass<StringClass> &param_list = m_ScriptListParam->Get_Param_List ();
-		name_list.Delete_All ();
-		param_list.Delete_All ();
+    //
+    //	Reset the contents of the script parameter's lists
+    //
+    DynamicVectorClass<StringClass> &name_list = m_ScriptListParam->Get_Name_List();
+    DynamicVectorClass<StringClass> &param_list = m_ScriptListParam->Get_Param_List();
+    name_list.Delete_All();
+    param_list.Delete_All();
 
-		//
-		//	Copy the data from each script object into the string lists
-		//
-		for (index = 0; index < m_ScriptList->Count (); index ++) {
-			EditScriptClass *script = (*m_ScriptList)[index];
+    //
+    //	Copy the data from each script object into the string lists
+    //
+    for (index = 0; index < m_ScriptList->Count(); index++) {
+      EditScriptClass *script = (*m_ScriptList)[index];
 
-			//
-			//	Pull the values from the script object into the string lists
-			//
-			name_list.Add (script->Get_Name ());
-			param_list.Add ((LPCTSTR)script->Get_Composite_String ());
+      //
+      //	Pull the values from the script object into the string lists
+      //
+      name_list.Add(script->Get_Name());
+      param_list.Add((LPCTSTR)script->Get_Composite_String());
 
-			SAFE_DELETE (script);
-		}
+      SAFE_DELETE(script);
+    }
 
-		SAFE_DELETE (m_ScriptList);
-	}
+    SAFE_DELETE(m_ScriptList);
+  }
 
-
-	return true;
+  return true;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnDeleteItemPropertyList
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnDeleteItemScriptList
-(
-	NMHDR *		pNMHDR,
-	LRESULT *	pResult
-)
-{
-	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-	if (pNMListView != NULL) {
+void NodeScriptsPropPage::OnDeleteItemScriptList(NMHDR *pNMHDR, LRESULT *pResult) {
+  NM_LISTVIEW *pNMListView = (NM_LISTVIEW *)pNMHDR;
+  if (pNMListView != NULL) {
 
-		// Free the associated script
-		EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData (pNMListView->iItem);
-		SAFE_DELETE (script);
-		
-		// Reset the associated data for this item
-		m_ListCtrl.SetItemData (pNMListView->iItem, NULL);
-	}
-	
-	*pResult = 0;
-	return;
+    // Free the associated script
+    EditScriptClass *script = (EditScriptClass *)m_ListCtrl.GetItemData(pNMListView->iItem);
+    SAFE_DELETE(script);
+
+    // Reset the associated data for this item
+    m_ListCtrl.SetItemData(pNMListView->iItem, NULL);
+  }
+
+  *pResult = 0;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnDblclkScriptlist
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-NodeScriptsPropPage::OnDblclkScriptlist
-(
-	NMHDR *		pNMHDR,
-	LRESULT *	pResult
-)
-{
-	(*pResult) = 0;
-	OnModify ();
-	return ;
+void NodeScriptsPropPage::OnDblclkScriptlist(NMHDR *pNMHDR, LRESULT *pResult) {
+  (*pResult) = 0;
+  OnModify();
+  return;
 }

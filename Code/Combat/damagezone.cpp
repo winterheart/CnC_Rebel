@@ -49,225 +49,197 @@
 #include "combat.h"
 #include "crandom.h"
 
-DECLARE_FORCE_LINK( DamageZone )
+DECLARE_FORCE_LINK(DamageZone)
 
-SimplePersistFactoryClass<DamageZoneGameObjDef, CHUNKID_GAME_OBJECT_DEF_DAMAGE_ZONE>	_DamageZoneGameObjDefPersistFactory;
-DECLARE_DEFINITION_FACTORY(DamageZoneGameObjDef, CLASSID_GAME_OBJECT_DEF_DAMAGE_ZONE, "Damage Zone") _DamageZoneGameObjDefDefFactory;
+SimplePersistFactoryClass<DamageZoneGameObjDef, CHUNKID_GAME_OBJECT_DEF_DAMAGE_ZONE>
+    _DamageZoneGameObjDefPersistFactory;
+DECLARE_DEFINITION_FACTORY(DamageZoneGameObjDef, CLASSID_GAME_OBJECT_DEF_DAMAGE_ZONE, "Damage Zone")
+_DamageZoneGameObjDefDefFactory;
 
-DamageZoneGameObjDef::DamageZoneGameObjDef( void ) :
-	DamageRate( 10 ),
-	DamageWarhead( 1 ),
-	Color( 0.7F, 0, 0 )
-{
+DamageZoneGameObjDef::DamageZoneGameObjDef(void) : DamageRate(10), DamageWarhead(1), Color(0.7F, 0, 0) {
 #ifdef PARAM_EDITING_ON
-	EDITABLE_PARAM( DamageZoneGameObjDef, ParameterClass::TYPE_FLOAT, DamageRate );
+  EDITABLE_PARAM(DamageZoneGameObjDef, ParameterClass::TYPE_FLOAT, DamageRate);
 
-	EnumParameterClass *param;
-	param = new EnumParameterClass( &DamageWarhead );
-	param->Set_Name ( "Damage Warhead" );
-	for ( int i = 0; i < ArmorWarheadManager::Get_Num_Warhead_Types(); i++ ) {
-		param->Add_Value ( ArmorWarheadManager::Get_Warhead_Name( i ), i );
-	}
-	GENERIC_EDITABLE_PARAM(DamageZoneGameObjDef,param)
+  EnumParameterClass *param;
+  param = new EnumParameterClass(&DamageWarhead);
+  param->Set_Name("Damage Warhead");
+  for (int i = 0; i < ArmorWarheadManager::Get_Num_Warhead_Types(); i++) {
+    param->Add_Value(ArmorWarheadManager::Get_Warhead_Name(i), i);
+  }
+  GENERIC_EDITABLE_PARAM(DamageZoneGameObjDef, param)
 
-	EDITABLE_PARAM( DamageZoneGameObjDef, ParameterClass::TYPE_COLOR, Color );
-#endif	//PARAM_EDITING_ON
+  EDITABLE_PARAM(DamageZoneGameObjDef, ParameterClass::TYPE_COLOR, Color);
+#endif // PARAM_EDITING_ON
 }
 
-uint32	DamageZoneGameObjDef::Get_Class_ID (void) const
-{
-	return CLASSID_GAME_OBJECT_DEF_DAMAGE_ZONE;
+uint32 DamageZoneGameObjDef::Get_Class_ID(void) const { return CLASSID_GAME_OBJECT_DEF_DAMAGE_ZONE; }
+
+PersistClass *DamageZoneGameObjDef::Create(void) const {
+  DamageZoneGameObj *zone = new DamageZoneGameObj;
+  zone->Init(*this);
+  return zone;
 }
 
-PersistClass *	DamageZoneGameObjDef::Create( void ) const
-{
-	DamageZoneGameObj * zone = new DamageZoneGameObj;
-	zone->Init( *this );
-	return zone;
-}
+enum {
+  CHUNKID_DEF_PARENT = 626000947,
+  CHUNKID_DEF_VARIABLES,
 
-enum	{
-	CHUNKID_DEF_PARENT							=	626000947,
-	CHUNKID_DEF_VARIABLES,
-
-	XXXMICROCHUNKID_DEF_DAMAGE_TYPE				=	1,
-	MICROCHUNKID_DEF_ZONE_COLOR,
-	MICROCHUNKID_DEF_DAMAGE_RATE,
-	MICROCHUNKID_DEF_DAMAGE_WARHEAD,
+  XXXMICROCHUNKID_DEF_DAMAGE_TYPE = 1,
+  MICROCHUNKID_DEF_ZONE_COLOR,
+  MICROCHUNKID_DEF_DAMAGE_RATE,
+  MICROCHUNKID_DEF_DAMAGE_WARHEAD,
 };
 
-bool	DamageZoneGameObjDef::Save( ChunkSaveClass & csave )
-{
-	csave.Begin_Chunk( CHUNKID_DEF_PARENT );
-		BaseGameObjDef::Save( csave );
-	csave.End_Chunk();
+bool DamageZoneGameObjDef::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_DEF_PARENT);
+  BaseGameObjDef::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk( CHUNKID_DEF_VARIABLES );
-		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_DEF_ZONE_COLOR, Color );
-		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_DEF_DAMAGE_RATE, DamageRate );
-		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_DEF_DAMAGE_WARHEAD, DamageWarhead );
-	csave.End_Chunk();
+  csave.Begin_Chunk(CHUNKID_DEF_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, MICROCHUNKID_DEF_ZONE_COLOR, Color);
+  WRITE_MICRO_CHUNK(csave, MICROCHUNKID_DEF_DAMAGE_RATE, DamageRate);
+  WRITE_MICRO_CHUNK(csave, MICROCHUNKID_DEF_DAMAGE_WARHEAD, DamageWarhead);
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
 
-bool	DamageZoneGameObjDef::Load( ChunkLoadClass &cload )
-{
-	while (cload.Open_Chunk()) {
-		switch(cload.Cur_Chunk_ID()) {
+bool DamageZoneGameObjDef::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_DEF_PARENT:
-				BaseGameObjDef::Load( cload );
-				break;
+    case CHUNKID_DEF_PARENT:
+      BaseGameObjDef::Load(cload);
+      break;
 
-			case CHUNKID_DEF_VARIABLES:
-				while (cload.Open_Micro_Chunk()) {
-					switch(cload.Cur_Micro_Chunk_ID()) {
-						READ_MICRO_CHUNK( cload, MICROCHUNKID_DEF_ZONE_COLOR, Color );
-						READ_MICRO_CHUNK( cload, MICROCHUNKID_DEF_DAMAGE_RATE, DamageRate );
-						READ_MICRO_CHUNK( cload, MICROCHUNKID_DEF_DAMAGE_WARHEAD, DamageWarhead );
-						default:
-							Debug_Say(("Unhandled Variable Chunk:%d File:%s Line:%d\r\n",cload.Cur_Micro_Chunk_ID(),__FILE__,__LINE__));
-							break;
-					}
-					cload.Close_Micro_Chunk();
-				}
-				break;
+    case CHUNKID_DEF_VARIABLES:
+      while (cload.Open_Micro_Chunk()) {
+        switch (cload.Cur_Micro_Chunk_ID()) {
+          READ_MICRO_CHUNK(cload, MICROCHUNKID_DEF_ZONE_COLOR, Color);
+          READ_MICRO_CHUNK(cload, MICROCHUNKID_DEF_DAMAGE_RATE, DamageRate);
+          READ_MICRO_CHUNK(cload, MICROCHUNKID_DEF_DAMAGE_WARHEAD, DamageWarhead);
+        default:
+          Debug_Say(
+              ("Unhandled Variable Chunk:%d File:%s Line:%d\r\n", cload.Cur_Micro_Chunk_ID(), __FILE__, __LINE__));
+          break;
+        }
+        cload.Close_Micro_Chunk();
+      }
+      break;
 
-			default:
-				Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n",cload.Cur_Chunk_ID(),__FILE__,__LINE__));
-				break;
-		}
-		cload.Close_Chunk();
-	}
+    default:
+      Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n", cload.Cur_Chunk_ID(), __FILE__, __LINE__));
+      break;
+    }
+    cload.Close_Chunk();
+  }
 
-	return true;
+  return true;
 }
 
-const PersistFactoryClass & DamageZoneGameObjDef::Get_Factory (void) const
-{
-	return _DamageZoneGameObjDefPersistFactory;
-}
+const PersistFactoryClass &DamageZoneGameObjDef::Get_Factory(void) const { return _DamageZoneGameObjDefPersistFactory; }
 
 /*
 **
 */
-DamageZoneGameObj::DamageZoneGameObj( void ) :
-	DamageTimer( 0 )
-{
+DamageZoneGameObj::DamageZoneGameObj(void) : DamageTimer(0) {}
+
+DamageZoneGameObj::~DamageZoneGameObj(void) {}
+
+void DamageZoneGameObj::Init(void) { Init(Get_Definition()); }
+
+void DamageZoneGameObj::Init(const DamageZoneGameObjDef &definition) { BaseGameObj::Init(definition); }
+
+const DamageZoneGameObjDef &DamageZoneGameObj::Get_Definition(void) const {
+  return (const DamageZoneGameObjDef &)BaseGameObj::Get_Definition();
 }
 
-DamageZoneGameObj::~DamageZoneGameObj( void )
-{
-}
+enum {
+  CHUNKID_PARENT = 626000947,
 
-void DamageZoneGameObj::Init( void )
-{
-	Init( Get_Definition() );
-}
-
-void	DamageZoneGameObj::Init( const DamageZoneGameObjDef & definition )
-{
-	BaseGameObj::Init( definition );
-}
-
-const DamageZoneGameObjDef & DamageZoneGameObj::Get_Definition( void ) const
-{
-	return (const DamageZoneGameObjDef &)BaseGameObj::Get_Definition();
-}
-
-enum	{
-	CHUNKID_PARENT							=	626000947,
-
-	CHUNKID_VARIABLES,
-	MICROCHUNKID_BOUNDING_BOX			=	1,
-	MICROCHUNKID_DAMAGE_TIMER,
+  CHUNKID_VARIABLES,
+  MICROCHUNKID_BOUNDING_BOX = 1,
+  MICROCHUNKID_DAMAGE_TIMER,
 };
 
-bool	DamageZoneGameObj::Save( ChunkSaveClass & csave )
-{
-	csave.Begin_Chunk( CHUNKID_PARENT );
-		BaseGameObj::Save( csave );
-	csave.End_Chunk();
+bool DamageZoneGameObj::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_PARENT);
+  BaseGameObj::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk( CHUNKID_VARIABLES );
-		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_BOUNDING_BOX, BoundingBox );
-		WRITE_MICRO_CHUNK( csave, MICROCHUNKID_DAMAGE_TIMER, DamageTimer );
-	csave.End_Chunk();
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, MICROCHUNKID_BOUNDING_BOX, BoundingBox);
+  WRITE_MICRO_CHUNK(csave, MICROCHUNKID_DAMAGE_TIMER, DamageTimer);
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
 
-bool	DamageZoneGameObj::Load( ChunkLoadClass &cload )
-{
-	while (cload.Open_Chunk()) {
-		switch(cload.Cur_Chunk_ID()) {
+bool DamageZoneGameObj::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_PARENT:
-				BaseGameObj::Load( cload );
-				break;
+    case CHUNKID_PARENT:
+      BaseGameObj::Load(cload);
+      break;
 
-			case CHUNKID_VARIABLES:
-				while (cload.Open_Micro_Chunk()) {
-					switch(cload.Cur_Micro_Chunk_ID()) {
-						READ_MICRO_CHUNK( cload, MICROCHUNKID_BOUNDING_BOX, BoundingBox );
-						READ_MICRO_CHUNK( cload, MICROCHUNKID_DAMAGE_TIMER, DamageTimer );
-						default:
-							Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n",cload.Cur_Chunk_ID(),__FILE__,__LINE__));
-							break;
-					}
-					cload.Close_Micro_Chunk();
-				}
-				break;
+    case CHUNKID_VARIABLES:
+      while (cload.Open_Micro_Chunk()) {
+        switch (cload.Cur_Micro_Chunk_ID()) {
+          READ_MICRO_CHUNK(cload, MICROCHUNKID_BOUNDING_BOX, BoundingBox);
+          READ_MICRO_CHUNK(cload, MICROCHUNKID_DAMAGE_TIMER, DamageTimer);
+        default:
+          Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n", cload.Cur_Chunk_ID(), __FILE__, __LINE__));
+          break;
+        }
+        cload.Close_Micro_Chunk();
+      }
+      break;
 
-			default:
-				Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n",cload.Cur_Chunk_ID(),__FILE__,__LINE__));
-				break;
-		}
-		cload.Close_Chunk();
-	}
+    default:
+      Debug_Say(("Unhandled Chunk:%d File:%s Line:%d\r\n", cload.Cur_Chunk_ID(), __FILE__, __LINE__));
+      break;
+    }
+    cload.Close_Chunk();
+  }
 
-	return true;
+  return true;
 }
 
-SimplePersistFactoryClass<DamageZoneGameObj, CHUNKID_GAME_OBJECT_DAMAGE_ZONE>	_DamageZonePersistFactory;
+SimplePersistFactoryClass<DamageZoneGameObj, CHUNKID_GAME_OBJECT_DAMAGE_ZONE> _DamageZonePersistFactory;
 
-const PersistFactoryClass & DamageZoneGameObj::Get_Factory( void ) const
-{
-	return _DamageZonePersistFactory;
-}
+const PersistFactoryClass &DamageZoneGameObj::Get_Factory(void) const { return _DamageZonePersistFactory; }
 
-void	DamageZoneGameObj::Think( void )
-{
-	WWPROFILE( "DamageZone Think" );
+void DamageZoneGameObj::Think(void) {
+  WWPROFILE("DamageZone Think");
 
-	if ( !CombatManager::I_Am_Server() ) {
-		return;
-	}
+  if (!CombatManager::I_Am_Server()) {
+    return;
+  }
 
-	// Only apply damage every second...
-	DamageTimer += TimeManager::Get_Frame_Seconds();
+  // Only apply damage every second...
+  DamageTimer += TimeManager::Get_Frame_Seconds();
 
-	// Scramble it a bit so all don't hit at the same time...
-	float trigger = 1.0f;
-	trigger = FreeRandom.Get_Float( 1.0f, 1.5f );
-	if ( DamageTimer >= trigger ) {
-//		Debug_Say(( "Zone Damage %f\n", DamageTimer ));
-		OffenseObjectClass offense( Get_Definition().DamageRate, Get_Definition().DamageWarhead );
+  // Scramble it a bit so all don't hit at the same time...
+  float trigger = 1.0f;
+  trigger = FreeRandom.Get_Float(1.0f, 1.5f);
+  if (DamageTimer >= trigger) {
+    //		Debug_Say(( "Zone Damage %f\n", DamageTimer ));
+    OffenseObjectClass offense(Get_Definition().DamageRate, Get_Definition().DamageWarhead);
 
-		SLNode<SmartGameObj> * smart_objnode;
-		for (smart_objnode = GameObjManager::Get_Smart_Game_Obj_List()->Head(); smart_objnode; smart_objnode = smart_objnode->Next()) {
-			SmartGameObj * obj = smart_objnode->Data();
-			WWASSERT( obj != NULL );
+    SLNode<SmartGameObj> *smart_objnode;
+    for (smart_objnode = GameObjManager::Get_Smart_Game_Obj_List()->Head(); smart_objnode;
+         smart_objnode = smart_objnode->Next()) {
+      SmartGameObj *obj = smart_objnode->Data();
+      WWASSERT(obj != NULL);
 
-			Vector3 pos;
-			obj->Get_Position(&pos);
-			if ( CollisionMath::Overlap_Test(BoundingBox,pos) == CollisionMath::INSIDE ) {
-				obj->Apply_Damage_Extended( offense, DamageTimer );
-			}
-  		}
+      Vector3 pos;
+      obj->Get_Position(&pos);
+      if (CollisionMath::Overlap_Test(BoundingBox, pos) == CollisionMath::INSIDE) {
+        obj->Apply_Damage_Extended(offense, DamageTimer);
+      }
+    }
 
-		DamageTimer = 0;
-	}
-
+    DamageTimer = 0;
+  }
 }

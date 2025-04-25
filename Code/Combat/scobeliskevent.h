@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/scobeliskevent.h                        $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 1/04/02 7:22p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/scobeliskevent.h                        $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 1/04/02 7:22p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __SCOBELISKEVENT_H__
@@ -45,28 +45,25 @@
 //
 // A S->C mirrored object to represent an explosion
 //
-class	cScObeliskEvent : public NetworkObjectClass
-{
+class cScObeliskEvent : public NetworkObjectClass {
 public:
-   cScObeliskEvent(void);
+  cScObeliskEvent(void);
 
-	void						Init(int def_id, const Vector3 & position, int owner_id);
-	virtual void			Delete(void)										{delete this;}
+  void Init(int def_id, const Vector3 &position, int owner_id);
+  virtual void Delete(void) { delete this; }
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_SCOBELISKEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_SCOBELISKEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						DefID;
-	Vector3					Position;
-	int						OwnerID;
-
+  int DefID;
+  Vector3 Position;
+  int OwnerID;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __SCOBELISKEVENT_H__
+#endif // __SCOBELISKEVENT_H__

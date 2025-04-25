@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* NAME
-*     $Archive: /Commando/Code/Commando/DlgQuickmatch.cpp $
-*
-* DESCRIPTION
-*     Quick match dialog
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 21 $
-*     $Modtime: 1/16/02 5:06p $
-*
-******************************************************************************/
+ *
+ * NAME
+ *     $Archive: /Commando/Code/Commando/DlgQuickmatch.cpp $
+ *
+ * DESCRIPTION
+ *     Quick match dialog
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 21 $
+ *     $Modtime: 1/16/02 5:06p $
+ *
+ ******************************************************************************/
 
 #include "DlgQuickMatch.h"
 #include "DlgWOLWait.h"
@@ -48,451 +48,394 @@
 #include <WWUI\ListCtrl.h>
 #include <WWDebug\WWDebug.h>
 
-
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include "systimer.h"
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 using namespace WWOnline;
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::DoDialog
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*     Success - True if dialog successfully started.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::DoDialog
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *     Success - True if dialog successfully started.
+ *
+ ******************************************************************************/
 
-bool DlgQuickMatch::DoDialog(void)
-	{
-	DlgQuickMatch* dialog = new DlgQuickMatch;
+bool DlgQuickMatch::DoDialog(void) {
+  DlgQuickMatch *dialog = new DlgQuickMatch;
 
-	if (dialog)
-		{
-		if (dialog->FinalizeCreate())
-			{
-			dialog->Start_Dialog();
-			}
+  if (dialog) {
+    if (dialog->FinalizeCreate()) {
+      dialog->Start_Dialog();
+    }
 
-		dialog->Release_Ref();
-		}
+    dialog->Release_Ref();
+  }
 
-	return (dialog != NULL);
-	}
-
+  return (dialog != NULL);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::DlgQuickMatch
-*
-* DESCRIPTION
-*     Constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::DlgQuickMatch
+ *
+ * DESCRIPTION
+ *     Constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-DlgQuickMatch::DlgQuickMatch() :
-		MenuDialogClass(IDD_MP_WOL_QUICKMATCH_CONNECT),
-		mTimeoutTime(0),
-		mResendTime(0)
-	{
-	WWDEBUG_SAY(("DlgQuickMatch: Instantiating\n"));
-	}
-
+DlgQuickMatch::DlgQuickMatch() : MenuDialogClass(IDD_MP_WOL_QUICKMATCH_CONNECT), mTimeoutTime(0), mResendTime(0) {
+  WWDEBUG_SAY(("DlgQuickMatch: Instantiating\n"));
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::~DlgQuickMatch
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::~DlgQuickMatch
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-DlgQuickMatch::~DlgQuickMatch()
-	{
-	WWDEBUG_SAY(("DlgQuickMatch: Destructing\n"));
+DlgQuickMatch::~DlgQuickMatch() {
+  WWDEBUG_SAY(("DlgQuickMatch: Destructing\n"));
 
-	if (mQuickMatch)
-		{
-		mQuickMatch->Release_Ref();
-		}
-	}
-
+  if (mQuickMatch) {
+    mQuickMatch->Release_Ref();
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::FinalizeCreate
-*
-* DESCRIPTION
-*     Finalize the creation of this object (Initialize).
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::FinalizeCreate
+ *
+ * DESCRIPTION
+ *     Finalize the creation of this object (Initialize).
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool DlgQuickMatch::FinalizeCreate(void)
-	{
-	mQuickMatch = WOLQuickMatch::Create();
+bool DlgQuickMatch::FinalizeCreate(void) {
+  mQuickMatch = WOLQuickMatch::Create();
 
-	if (!mQuickMatch)
-		{
-		return false;
-		}
+  if (!mQuickMatch) {
+    return false;
+  }
 
-	Observer<QuickMatchEvent>::NotifyMe(*mQuickMatch);
-	return true;
-	}
-
+  Observer<QuickMatchEvent>::NotifyMe(*mQuickMatch);
+  return true;
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::On_Init_Dialog
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::On_Init_Dialog
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::On_Init_Dialog(void)
-	{
-	ListCtrlClass* output = (ListCtrlClass*)Get_Dlg_Item(IDC_OUTPUT);
-	WWASSERT_PRINT(output, "IDC_OUTOUT list control missing from dialog!");
+void DlgQuickMatch::On_Init_Dialog(void) {
+  ListCtrlClass *output = (ListCtrlClass *)Get_Dlg_Item(IDC_OUTPUT);
+  WWASSERT_PRINT(output, "IDC_OUTOUT list control missing from dialog!");
 
-	if (output)
-		{
-		output->Add_Column(L"", 1.0F, Vector3 (1, 1, 1));
-		}
+  if (output) {
+    output->Add_Column(L"", 1.0F, Vector3(1, 1, 1));
+  }
 
-	Connect();
+  Connect();
 
-	MenuDialogClass::On_Init_Dialog();
-	}
-
+  MenuDialogClass::On_Init_Dialog();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::On_Frame_Update
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::On_Frame_Update
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::On_Frame_Update(void)
-	{
-	if (mConnectWait.IsValid())
-		{
-		WaitCondition::WaitResult waitStatus = mConnectWait->GetResult();
+void DlgQuickMatch::On_Frame_Update(void) {
+  if (mConnectWait.IsValid()) {
+    WaitCondition::WaitResult waitStatus = mConnectWait->GetResult();
 
-		if (waitStatus != WaitCondition::Waiting)
-			{
-			if (waitStatus == WaitCondition::ConditionMet)
-				{
-				SendMatchingInfo();
-				}
-			else
-				{
-				OutputMessage(mConnectWait->GetResultText());
-				}
+    if (waitStatus != WaitCondition::Waiting) {
+      if (waitStatus == WaitCondition::ConditionMet) {
+        SendMatchingInfo();
+      } else {
+        OutputMessage(mConnectWait->GetResultText());
+      }
 
-			mConnectWait.Release();
-			}
-		}
+      mConnectWait.Release();
+    }
+  }
 
-	unsigned long theTime = TIMEGETTIME();
+  unsigned long theTime = TIMEGETTIME();
 
-	if ((mResendTime > 0) && (theTime >= mResendTime))
-		{
-		mQuickMatch->SendClientInfo();
-		mResendTime = 0;
-		}
+  if ((mResendTime > 0) && (theTime >= mResendTime)) {
+    mQuickMatch->SendClientInfo();
+    mResendTime = 0;
+  }
 
-	// Watch for timeout
-	if ((mTimeoutTime > 0) && (theTime >= mTimeoutTime))
-		{
-		OutputMessage(TRANSLATE(IDS_WOL_TIMEDOUT));
-		mTimeoutTime = 0;
-		}
+  // Watch for timeout
+  if ((mTimeoutTime > 0) && (theTime >= mTimeoutTime)) {
+    OutputMessage(TRANSLATE(IDS_WOL_TIMEDOUT));
+    mTimeoutTime = 0;
+  }
 
-	MenuDialogClass::On_Frame_Update();
-	}
-
+  MenuDialogClass::On_Frame_Update();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::On_Command(int ctrl, int message, DWORD param)
-	{
-	if (ctrl == IDC_MENU_BACK_BUTTON)
-		{
-		OutputMessage(IDS_QM_DISCONNECT);
-		RefPtr<WaitCondition> wait = mQuickMatch->Disconnect();
+void DlgQuickMatch::On_Command(int ctrl, int message, DWORD param) {
+  if (ctrl == IDC_MENU_BACK_BUTTON) {
+    OutputMessage(IDS_QM_DISCONNECT);
+    RefPtr<WaitCondition> wait = mQuickMatch->Disconnect();
 
-		if (wait.IsValid())
-			{
-			DlgWOLWait::DoDialog(IDS_QM_DISCONNECT, wait);
-			}
-		}
+    if (wait.IsValid()) {
+      DlgWOLWait::DoDialog(IDS_QM_DISCONNECT, wait);
+    }
+  }
 
-	MenuDialogClass::On_Command(ctrl, message, param);
-	}
-
+  MenuDialogClass::On_Command(ctrl, message, param);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::Connect
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::Connect
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::Connect(void)
-	{
-	OutputMessage(IDS_QM_CONNECTING);
-	mConnectWait = mQuickMatch->ConnectClient();
+void DlgQuickMatch::Connect(void) {
+  OutputMessage(IDS_QM_CONNECTING);
+  mConnectWait = mQuickMatch->ConnectClient();
 
-	if (mConnectWait.IsValid())
-		{
-		mConnectWait->WaitBeginning();
-		}
+  if (mConnectWait.IsValid()) {
+    mConnectWait->WaitBeginning();
+  }
 
-	mTimeoutTime = (TIMEGETTIME() + 60000);
-	}
-
+  mTimeoutTime = (TIMEGETTIME() + 60000);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::SendMatchingInfo
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::SendMatchingInfo
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::SendMatchingInfo(void)
-	{
-	OutputMessage(IDS_QM_SENDINGMATCHINFO);
+void DlgQuickMatch::SendMatchingInfo(void) {
+  OutputMessage(IDS_QM_SENDINGMATCHINFO);
 
-	bool sent = mQuickMatch->SendClientInfo();
+  bool sent = mQuickMatch->SendClientInfo();
 
-	if (sent)
-		{
-		OutputMessage(TRANSLATE (IDS_MENU_SEARCHING_FOR_MATCH));
-		}
-	else
-		{
-		OutputMessage(TRANSLATE (IDS_MENU_CANT_LOCATE_MATCH));
-		}
-	}
-
+  if (sent) {
+    OutputMessage(TRANSLATE(IDS_MENU_SEARCHING_FOR_MATCH));
+  } else {
+    OutputMessage(TRANSLATE(IDS_MENU_CANT_LOCATE_MATCH));
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::OutputMessage
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Message - Message to add to output.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::OutputMessage
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Message - Message to add to output.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::OutputMessage(int messageID)
-	{
-	const WCHAR* message = TranslateDBClass::Get_String(messageID);
-	OutputMessage(message);
-	}
-
+void DlgQuickMatch::OutputMessage(int messageID) {
+  const WCHAR *message = TranslateDBClass::Get_String(messageID);
+  OutputMessage(message);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::OutputMessage
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Message - Message to add to output.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::OutputMessage
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Message - Message to add to output.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::OutputMessage(const WCHAR* message)
-	{
-	WWDEBUG_SAY(("QM: %S\n", message));
+void DlgQuickMatch::OutputMessage(const WCHAR *message) {
+  WWDEBUG_SAY(("QM: %S\n", message));
 
-	ListCtrlClass* output = (ListCtrlClass*)Get_Dlg_Item(IDC_OUTPUT);
+  ListCtrlClass *output = (ListCtrlClass *)Get_Dlg_Item(IDC_OUTPUT);
 
-	if (output)
-		{
-		int entryCount = output->Get_Entry_Count();
-		output->Insert_Entry(entryCount, message);
+  if (output) {
+    int entryCount = output->Get_Entry_Count();
+    output->Insert_Entry(entryCount, message);
 
-		// Limit message entries.
-		if (entryCount > 100)
-			{
-			output->Delete_Entry(0);
-			}
-		}
-	}
-
+    // Limit message entries.
+    if (entryCount > 100) {
+      output->Delete_Entry(0);
+    }
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::HandleNotification(QuickMatchEvent)
-*
-* DESCRIPTION
-*     Handle status information from quickmatch.
-*
-* INPUTS
-*     Status -
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgQuickMatch::HandleNotification(QuickMatchEvent)
+ *
+ * DESCRIPTION
+ *     Handle status information from quickmatch.
+ *
+ * INPUTS
+ *     Status -
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgQuickMatch::HandleNotification(QuickMatchEvent& status)
-	{
-	QuickMatchEvent::Event event = status.GetEvent();
-	const WCHAR* msg = (const WCHAR*)status.Subject();
+void DlgQuickMatch::HandleNotification(QuickMatchEvent &status) {
+  QuickMatchEvent::Event event = status.GetEvent();
+  const WCHAR *msg = (const WCHAR *)status.Subject();
 
-	if (QuickMatchEvent::QMERROR == event)
-		{
-		const WideStringClass& statusMsg = status.Subject();
+  if (QuickMatchEvent::QMERROR == event) {
+    const WideStringClass &statusMsg = status.Subject();
 
-		// If no match then resend the request in 10 seconds.
-		if (statusMsg.Compare_No_Case(L"QM:NoMatch") == 0)
-			{
-			msg = TRANSLATE(IDS_QM_NOMATCH);
-			}
-		else
-			{
-			#ifdef QUICKMATCH_OPTIONS
-			// Unable to match user because preferred modes are all zero.
-			if (statusMsg.Compare_No_Case(L"QM:NoModes") == 0)
-				{
-				DlgMsgBox::DoDialog(TRANSLATE (IDS_MENU_INVALID_QM_SETTINGS_TITLE), TRANSLATE (IDS_MENU_INVALID_QM_SETTINGS),
-						DlgMsgBox::Okay, this);
-
-				return;
-				}
-			#endif
-			}
-		}
-	else if (QuickMatchEvent::QMMATCHED == event)
-		{
-		GameInitMgrClass::Set_WOL_Return_Dialog(RenegadeDialogMgrClass::LOC_INTERNET_MAIN);
-
-		// Join the game
-		const WCHAR* gameName = (const WCHAR*)status.Subject();
-		WOLJoinGame::JoinTheGame(gameName, L"", false);
-		return;
-		}
-
-	// Assume any other message is for the user.
-	OutputMessage(msg);
-	}
-
-
-/******************************************************************************
-*
-* NAME
-*     DlgQuickMatch::HandleNotification(DlgMsgBoxEvent)
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
-
-void DlgQuickMatch::HandleNotification(DlgMsgBoxEvent& msgbox)
-	{
+    // If no match then resend the request in 10 seconds.
+    if (statusMsg.Compare_No_Case(L"QM:NoMatch") == 0) {
+      msg = TRANSLATE(IDS_QM_NOMATCH);
+    } else {
 #ifdef QUICKMATCH_OPTIONS
-	Add_Ref();
+      // Unable to match user because preferred modes are all zero.
+      if (statusMsg.Compare_No_Case(L"QM:NoModes") == 0) {
+        DlgMsgBox::DoDialog(TRANSLATE(IDS_MENU_INVALID_QM_SETTINGS_TITLE), TRANSLATE(IDS_MENU_INVALID_QM_SETTINGS),
+                            DlgMsgBox::Okay, this);
 
-	if (msgbox.Event() == DlgMsgBoxEvent::Okay)
-		{
-		End_Dialog();
-		START_DIALOG(MPWolQuickMatchOptionsMenuClass);
-		}
+        return;
+      }
+#endif
+    }
+  } else if (QuickMatchEvent::QMMATCHED == event) {
+    GameInitMgrClass::Set_WOL_Return_Dialog(RenegadeDialogMgrClass::LOC_INTERNET_MAIN);
 
-	Release_Ref();
+    // Join the game
+    const WCHAR *gameName = (const WCHAR *)status.Subject();
+    WOLJoinGame::JoinTheGame(gameName, L"", false);
+    return;
+  }
+
+  // Assume any other message is for the user.
+  OutputMessage(msg);
+}
+
+/******************************************************************************
+ *
+ * NAME
+ *     DlgQuickMatch::HandleNotification(DlgMsgBoxEvent)
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
+
+void DlgQuickMatch::HandleNotification(DlgMsgBoxEvent &msgbox) {
+#ifdef QUICKMATCH_OPTIONS
+  Add_Ref();
+
+  if (msgbox.Event() == DlgMsgBoxEvent::Okay) {
+    End_Dialog();
+    START_DIALOG(MPWolQuickMatchOptionsMenuClass);
+  }
+
+  Release_Ref();
 #endif // QUICKMATCH_OPTIONS
-	}
+}

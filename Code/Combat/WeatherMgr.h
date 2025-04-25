@@ -24,7 +24,8 @@
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/WeatherMgr.h          $*
  *                                                                                             *
- *                       Author:: Ian Leslie																	  *
+ *                       Author:: Ian Leslie
+ **
  *                                                                                             *
  *                     $Modtime:: 1/15/02 7:26p       $*
  *                                                                                             *
@@ -37,7 +38,6 @@
 #ifndef WEATHERMGR_H
 #define WEATHERMGR_H
 
-
 // Code controlling defines.
 #define WEATHER_PARTICLE_SORT 0
 
@@ -47,7 +47,7 @@
 #include "mempool.h"
 #include "networkobject.h"
 #include "random.h"
-#include	"rendobj.h"
+#include "rendobj.h"
 #include "saveloadsubsystem.h"
 #include "soundenvironment.h"
 #include "texture.h"
@@ -55,7 +55,6 @@
 #include "vector2.h"
 #include "vector3.h"
 #include "wwdebug.h"
-
 
 // Class declarations.
 class ChunkLoadClass;
@@ -65,388 +64,318 @@ class PhysicsSceneClass;
 #if WEATHER_PARTICLE_SORT
 class SortingIndexBufferClass;
 #else
-class	DX8IndexBufferClass;
+class DX8IndexBufferClass;
 #endif
 
 class AudibleSoundClass;
 
+class WindClass {
+public:
+  WindClass(float heading, float speed, float variability, SoundEnvironmentClass *soundenvironment);
+  ~WindClass();
 
-class WindClass
-{
-	public:
+  Vector2 Get_Velocity() { return (Velocity); }
+  void Set(float heading, float speed, float variability);
+  bool Update();
 
-		 WindClass (float heading, float speed, float variability, SoundEnvironmentClass *soundenvironment);
-		~WindClass();
+protected:
+  enum { OCTAVE_COUNT = 2 };
 
-		Vector2 Get_Velocity()	{return (Velocity);}
-		void	  Set (float heading, float speed, float variability);
-		bool	  Update();
-
-	protected:
-
-		enum {
-			OCTAVE_COUNT = 2
-		};
-
-		SoundEnvironmentClass *SoundEnvironment;
-		float						  Heading;
-		float						  Speed;
-		float						  Variability;
-		double					  Theta [OCTAVE_COUNT];
-		Vector2					  Velocity;
-		AudibleSoundClass		 *Sound;
+  SoundEnvironmentClass *SoundEnvironment;
+  float Heading;
+  float Speed;
+  float Variability;
+  double Theta[OCTAVE_COUNT];
+  Vector2 Velocity;
+  AudibleSoundClass *Sound;
 };
 
+class WeatherSystemClass : public RenderObjClass {
+public:
+  enum { GROWTH_STEP = 256 };
 
-class WeatherSystemClass : public RenderObjClass
-{
-	public:
+  enum RenderModeEnum {
+    RENDER_MODE_AXIS_ALIGNED,   // Render particle oriented about the particle's velocity vector (suitable for rain, for
+                                // example).
+    RENDER_MODE_CAMERA_ALIGNED, // Render particle aligned with the camera direction (suitable for snow, for example).
+    RENDER_MODE_SURFACE_ALIGNED // Render particle such that it looks attached to the surface of an object.
+  };
 
-		enum {
-			GROWTH_STEP = 256
-		};
+  WeatherSystemClass(PhysicsSceneClass *scene, float emittersize, float emitterheight, float particledensity,
+                     float particlesperunitlength, float particlewidth, float particleheight, float particlespeed,
+                     const Vector2 &pageoffset, const Vector2 &pagesize, unsigned pagecount, bool staticpageexists,
+                     float minstatictime, float maxstatictime, RenderModeEnum rendermode, bool decayaftercollision,
+                     bool prime);
 
-		enum RenderModeEnum {
-			RENDER_MODE_AXIS_ALIGNED,		// Render particle oriented about the particle's velocity vector (suitable for rain, for example).
-			RENDER_MODE_CAMERA_ALIGNED,	// Render particle aligned with the camera direction (suitable for snow, for example).
-			RENDER_MODE_SURFACE_ALIGNED	// Render particle such that it looks attached to the surface of an object.
-		};
+  ~WeatherSystemClass();
+  RenderObjClass *Clone() const {
+    WWASSERT(false);
+    return (0);
+  }
 
-		 WeatherSystemClass (PhysicsSceneClass *scene,
-									float emittersize,
-								   float emitterheight,
-								   float particledensity,
-									float particlesperunitlength,
-								   float particlewidth,
-								   float particleheight,
-								   float particlespeed,
-								   const Vector2 &pageoffset,
-									const Vector2 &pagesize,
-								   unsigned pagecount,
-									bool staticpageexists,
-									float minstatictime,
-									float maxstatictime,
-									RenderModeEnum rendermode,
-									bool decayaftercollision,
-									bool prime);
+  void Set_Density(float density);
+  void Render(RenderInfoClass &rinfo);
+  void Get_Obj_Space_Bounding_Sphere(SphereClass &sphere) const;
+  void Get_Obj_Space_Bounding_Box(AABoxClass &box) const;
 
-		~WeatherSystemClass();
-		RenderObjClass *Clone() const
-		{
-			WWASSERT (false);
-			return (0);
-		}
+  virtual bool Update(WindClass *wind, const Vector3 &cameraposition);
 
-		void Set_Density (float density);
-		void Render (RenderInfoClass &rinfo);
-		void Get_Obj_Space_Bounding_Sphere (SphereClass &sphere) const;
-		void Get_Obj_Space_Bounding_Box (AABoxClass &box) const;
+  struct RayStruct : public AutoPoolClass<RayStruct, GROWTH_STEP> {
+  public:
+    RayStruct *Next;          // Next ray in list.
+    bool Initialized;         // Has the ray been defined?
+    bool RayCast;             // Does this ray need to be relocated in the emitter (and therefore needs to be raycast).
+    Vector3 ParticleVelocity; // Velocity of all particles spawned by this ray.
+    Vector2 StartPosition;    // Start position of ray inside emitter.
+    Vector3 EndPosition;      // Point of collision of ray with environment.
+    bool ValidSurfaceNormal;  // Does the ray intersect a phyical object?
+    Vector3 SurfaceNormal;    // Normal of surface ray intersects (if any).
+  };
 
-		virtual bool Update (WindClass *wind, const Vector3 &cameraposition);
+  struct ParticleStruct : public AutoPoolClass<ParticleStruct, GROWTH_STEP> {
+  public:
+    ParticleStruct *Prev;      // Previous particle in list.
+    ParticleStruct *Next;      // Next particle in list.
+    float CollisionTime;       // Time when particle hits something (in seconds).
+    float LifeTime;            // Lifetime of particle (in seconds).
+    float ElapsedTime;         // Time elapsed since birth of particle (in seconds).
+    Vector3 Velocity;          // Velocity of particle (in metres per second).
+    Vector2 UnitZVelocity;     // Velocity / Velocity.Z (precomputed for optimization purposes).
+    Vector3 CollisionPosition; // Position of collision.
+    Vector3 CurrentPosition;   // Current position of particle (in world space).
+    Vector3 SurfaceNormal;     // Normal of surface particle collides with (if any).
 
-		struct RayStruct : public AutoPoolClass <RayStruct, GROWTH_STEP>
-		{
-			public:
+    unsigned char Page; // Texture page for this particle.
+    unsigned char RenderMode;
+    unsigned char Pad[2]; // Pad structure to 4-byte multiple.
+  };
 
-				RayStruct		*Next;				  	// Next ray in list.
-				bool				 Initialized;			// Has the ray been defined?
-				bool				 RayCast;				// Does this ray need to be relocated in the emitter (and therefore needs to be raycast).
-				Vector3			 ParticleVelocity;	// Velocity of all particles spawned by this ray.
-				Vector2			 StartPosition;		// Start position of ray inside emitter.
-				Vector3			 EndPosition;			// Point of collision of ray with environment.
-				bool				 ValidSurfaceNormal;	// Does the ray intersect a phyical object?
-				Vector3			 SurfaceNormal;		// Normal of surface ray intersects (if any).
-		};
+protected:
+  enum { VERTICES_PER_TRIANGLE = 3, MAX_IB_PARTICLE_COUNT = 2048, MAX_AGE = 1000000 };
 
-		struct ParticleStruct : public AutoPoolClass <ParticleStruct, GROWTH_STEP>
-		{
-			public:
+  // Utility functions.
+  float Spawn_Count(float time) { return (ParticleDensity * EmitterSize * EmitterSize * time); }
+  bool Can_Spawn(const RayStruct *rayptr) { return (rayptr->EndPosition.Z < EmitterPosition.Z); }
 
-				ParticleStruct *Prev;					// Previous particle in list.
-				ParticleStruct *Next;					// Next particle in list.
-				float				 CollisionTime;		// Time when particle hits something (in seconds).
-				float				 LifeTime;				// Lifetime of particle (in seconds).
-				float				 ElapsedTime;			// Time elapsed since birth of particle (in seconds).
-				Vector3			 Velocity;				// Velocity of particle (in metres per second).
-				Vector2			 UnitZVelocity;		// Velocity / Velocity.Z (precomputed for optimization purposes).
-				Vector3			 CollisionPosition;	// Position of collision.
-				Vector3			 CurrentPosition;		// Current position of particle (in world space).
-				Vector3			 SurfaceNormal;		// Normal of surface particle collides with (if any).
+  bool Spawn(RayStruct *suppliedrayptr = NULL);
+  void Kill(ParticleStruct *particleptr);
 
-				unsigned char	 Page;					// Texture page for this particle.
-				unsigned char	 RenderMode;
-				unsigned char	 Pad [2];				// Pad structure to 4-byte multiple.
-		};
+  PhysicsSceneClass *Scene; // The scene that contains the weather system.
+  float Age;                // Age of this weather system (in seconds).
+  float EmitterSize;        // Size of square emitter (area of emitter = size * size).
+  float EmitterHeight;      // Height of emitter (relative to camera).
+  Vector3 EmitterPosition;  // Centroid of emitter (in world space).
+  float ParticleDensity;    // Density of particles (over area of emitter).
+  float ParticlesPerUnitLength;
+  float ParticleSpeed;
+  Vector3 ParticleVelocity; // Dominant velocity vector of particles.
+  float HalfParticleWidth;
+  float HalfParticleHeight;
+  RayStruct *RayHead;
+  unsigned RayCount;
+  RayStruct *RaySpawnPtr;
+  RayStruct *RayUpdatePtr;
+  float MinRayEndZ; // Current lowest Z-value of end of any ray (used to determine a bounding box around this render
+                    // object).
+  float SpawnCountFraction;     // Cumulative fractional spawn counts (for improved accuracy).
+  Vector3 SceneMin, SceneMax;   // Bounding box around the scene that the particle system lives in.
+  Vector3 ObjectMin, ObjectMax; // Bounding box around this render object (for culling purposes).
+  ParticleStruct *ParticleHead; // Head of list of particles in system.
+  unsigned ParticleCount;       // No. of particles in system.
 
-	protected:
+#if WEATHER_PARTICLE_SORT
+  SortingIndexBufferClass *IndexBuffer;
+#else
+  DX8IndexBufferClass *IndexBuffer;
+#endif
 
-		enum {
-			VERTICES_PER_TRIANGLE = 3,
-			MAX_IB_PARTICLE_COUNT = 2048,
-			MAX_AGE					 = 1000000
-		};
+  VertexMaterialClass *Material;
+  ShaderClass Shader;
+  TextureClass *Texture;
+  Vector2 *TextureArray;
+  RenderModeEnum RenderMode;
+  bool DecayAfterCollision;
+  unsigned PageCount;
+  bool StaticPageExists;
+  float MinStaticTime;
+  float MaxStaticTime;
+  Vector3 CameraPosition;
+  bool CameraPositionValid;
 
-		// Utility functions.
-		float Spawn_Count (float time) {return (ParticleDensity * EmitterSize * EmitterSize * time);}
-		bool	Can_Spawn (const RayStruct *rayptr) {return (rayptr->EndPosition.Z < EmitterPosition.Z);}
-
-		bool Spawn (RayStruct *suppliedrayptr = NULL);
-		void Kill (ParticleStruct *particleptr);
-
-		PhysicsSceneClass						*Scene;						// The scene that contains the weather system.
-		float										 Age;							// Age of this weather system (in seconds).
-		float										 EmitterSize;				// Size of square emitter (area of emitter = size * size).
-		float										 EmitterHeight;			// Height of emitter (relative to camera).
-		Vector3									 EmitterPosition;			// Centroid of emitter (in world space).
-		float										 ParticleDensity;			// Density of particles (over area of emitter).
-		float										 ParticlesPerUnitLength;
-		float										 ParticleSpeed;
-		Vector3									 ParticleVelocity;		// Dominant velocity vector of particles.
-		float										 HalfParticleWidth;
-		float										 HalfParticleHeight;
-	   RayStruct								*RayHead;
-		unsigned									 RayCount;
-	   RayStruct								*RaySpawnPtr;
-		RayStruct								*RayUpdatePtr;
-		float										 MinRayEndZ;				// Current lowest Z-value of end of any ray (used to determine a bounding box around this render object).
-		float										 SpawnCountFraction;		// Cumulative fractional spawn counts (for improved accuracy).
-		Vector3									 SceneMin, SceneMax;		// Bounding box around the scene that the particle system lives in.
-		Vector3									 ObjectMin, ObjectMax;	// Bounding box around this render object (for culling purposes).
-		ParticleStruct							*ParticleHead;				// Head of list of particles in system.
-		unsigned									 ParticleCount;			// No. of particles in system.
-
-		#if WEATHER_PARTICLE_SORT
-		SortingIndexBufferClass				*IndexBuffer;
-		#else
-		DX8IndexBufferClass					*IndexBuffer;
-		#endif
-
-		VertexMaterialClass					*Material;
-		ShaderClass								 Shader;
-		TextureClass							*Texture;
-		Vector2									*TextureArray;
-		RenderModeEnum							 RenderMode;
-		bool										 DecayAfterCollision;
-		unsigned									 PageCount;
-		bool										 StaticPageExists;
-		float										 MinStaticTime;
-		float										 MaxStaticTime;
-		Vector3									 CameraPosition;
-		bool										 CameraPositionValid;
-
-		static Random2Class					_RandomNumber;				// Random no. generator.
-		static unsigned						_GlobalParticleCount;	// Total no. of particles over all weather systems.
+  static Random2Class _RandomNumber;    // Random no. generator.
+  static unsigned _GlobalParticleCount; // Total no. of particles over all weather systems.
 };
 
+class RainSystemClass : public WeatherSystemClass {
+public:
+  RainSystemClass(PhysicsSceneClass *scene, float particledensity, WindClass *wind,
+                  SoundEnvironmentClass *soundenvironment, bool prime);
+  virtual ~RainSystemClass();
 
-class RainSystemClass : public WeatherSystemClass
-{
-	public:
+  bool Update(WindClass *wind, const Vector3 &cameraposition);
 
-					RainSystemClass (PhysicsSceneClass *scene, float particledensity, WindClass *wind, SoundEnvironmentClass *soundenvironment, bool prime);
-		virtual ~RainSystemClass();
+protected:
+  enum { PAGE_COUNT = 4 };
 
-		bool Update (WindClass *wind, const Vector3 &cameraposition);
-
-	protected:
-
-		enum {
-			PAGE_COUNT = 4
-		};
-
-		AudibleSoundClass		 *Sound;					// Sound effect for rainfall.
-		SoundEnvironmentClass *SoundEnvironment;
+  AudibleSoundClass *Sound; // Sound effect for rainfall.
+  SoundEnvironmentClass *SoundEnvironment;
 };
 
+class SnowSystemClass : public WeatherSystemClass {
+public:
+  SnowSystemClass(PhysicsSceneClass *scene, float particledensity, WindClass *wind, bool prime);
 
-class SnowSystemClass : public WeatherSystemClass
-{
-	public:
+  bool Update(WindClass *wind, const Vector3 &cameraposition);
 
-		SnowSystemClass (PhysicsSceneClass *scene, float particledensity, WindClass *wind, bool prime);
-
-		bool Update (WindClass *wind, const Vector3 &cameraposition);
-
-	protected:
-
-		enum {
-			PAGE_COUNT = 4
-		};
+protected:
+  enum { PAGE_COUNT = 4 };
 };
 
+class AshSystemClass : public WeatherSystemClass {
+public:
+  AshSystemClass(PhysicsSceneClass *scene, float particledensity, WindClass *wind, bool prime);
 
-class AshSystemClass : public WeatherSystemClass
-{
-	public:
+  bool Update(WindClass *wind, const Vector3 &cameraposition);
 
-		AshSystemClass (PhysicsSceneClass *scene, float particledensity, WindClass *wind, bool prime);
-
-		bool Update (WindClass *wind, const Vector3 &cameraposition);
-
-	protected:
-
-		enum {
-			PAGE_COUNT = 4
-		};
+protected:
+  enum { PAGE_COUNT = 4 };
 };
 
+class WeatherParameterClass {
+public:
+  void Initialize();
+  void Set(float targetvalue, float ramptime, bool override);
+  void Set(float overrideramptime) { OverrideDuration = overrideramptime; }
 
-class WeatherParameterClass
-{
-	public:
+  float Value() { return (CurrentValue); }
 
-		void Initialize();
-		void Set (float targetvalue, float ramptime, bool override);
-		void Set (float overrideramptime) {OverrideDuration = overrideramptime;}
+  bool Update(float time, bool override);
+  void Update(float &value, float &target, float &duration, float time);
 
-		float Value() {return (CurrentValue);}
+private:
+  float CurrentValue;
+  float NormalValue;
+  float NormalTarget;
+  float NormalDuration;
+  float OverrideTarget;
+  float OverrideDuration;
 
-		bool Update (float time, bool override);
-		void Update (float &value, float &target, float &duration, float time);
-
-	private:
-
-		float CurrentValue;
-		float NormalValue;
-		float NormalTarget;
-		float	NormalDuration;
-		float OverrideTarget;
-		float OverrideDuration;
-
-		friend class WeatherMgrClass;
+  friend class WeatherMgrClass;
 };
 
+class WeatherMgrClass : public SaveLoadSubSystemClass, public NetworkObjectClass {
+public:
+  enum PrecipitationEnum {
+    PRECIPITATION_FIRST,
+    PRECIPITATION_RAIN = PRECIPITATION_FIRST,
+    PRECIPITATION_SNOW,
+    PRECIPITATION_ASH,
+    PRECIPITATION_COUNT
+  };
 
+  WeatherMgrClass();
+  ~WeatherMgrClass() {}
 
-class	WeatherMgrClass : public SaveLoadSubSystemClass, public NetworkObjectClass
-{
-	public:
+  uint32 Chunk_ID() const { return (CHUNKID_WEATHER_MGR); }
+  const char *Name() const { return ("WeatherMgrClass"); }
+  void Delete(void) {}
+  virtual void Set_Delete_Pending(void) {};
 
-		enum PrecipitationEnum {
-			PRECIPITATION_FIRST,
-			PRECIPITATION_RAIN = PRECIPITATION_FIRST,
-			PRECIPITATION_SNOW,
-			PRECIPITATION_ASH,
-			PRECIPITATION_COUNT
-		};
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  bool Load_Micro_Chunks(ChunkLoadClass &cload);
+  void Export_Rare(BitStreamClass &packet);
+  void Import_Rare(BitStreamClass &packet);
 
-		 WeatherMgrClass();
-		~WeatherMgrClass() {}
+  static void Init(SoundEnvironmentClass *soundenvironment);
+  static void Reset();
+  static void Shutdown();
 
-		uint32		Chunk_ID() const	{return (CHUNKID_WEATHER_MGR);}
-		const char *Name() const		{return ("WeatherMgrClass");}
-		void Delete (void)				{}
-		virtual void Set_Delete_Pending (void) {};
+  static bool Save_Dynamic(ChunkSaveClass &csave);
+  static bool Load_Dynamic(ChunkLoadClass &cload);
+  static bool Load_Dynamic_Micro_Chunks(ChunkLoadClass &cload);
 
-		bool Save (ChunkSaveClass &csave);
-		bool Load (ChunkLoadClass &cload);
-		bool Load_Micro_Chunks (ChunkLoadClass &cload);
-		void Export_Rare (BitStreamClass &packet);
-		void Import_Rare (BitStreamClass &packet);
+  static bool Set_Wind(float heading, float speed, float variability, float ramptime = 0.0f);
+  static bool Override_Wind(float heading, float speed, float variability, float ramptime = 0.0f);
+  static void Get_Wind(float &heading, float &speed, float &variability);
+  static void Restore_Wind(float ramptime);
 
-		static void Init (SoundEnvironmentClass *soundenvironment);
-		static void	Reset();
-		static void Shutdown();
+  static bool Set_Precipitation(PrecipitationEnum precipitation, float density, float ramptime = 0.0f);
+  static bool Override_Precipitation(PrecipitationEnum precipitation, float density, float ramptime = 0.0f);
+  static void Get_Precipitation(PrecipitationEnum precipitation, float &density);
+  static void Restore_Precipitation(float ramptime);
 
-		static bool Save_Dynamic (ChunkSaveClass &csave);
-		static bool Load_Dynamic (ChunkLoadClass &cload);
-		static bool Load_Dynamic_Micro_Chunks (ChunkLoadClass &cload);
+  static void Set_Fog_Enable(bool enabled) {
+    _FogEnabled = enabled;
+    Set_Dirty();
+  }
+  static bool Get_Fog_Enable() { return (_FogEnabled); }
+  static bool Set_Fog_Range(float startdistance, float enddistance, float ramptime = 0.0f);
+  static void Get_Fog_Range(float &startdistance, float &enddistance);
 
-		static bool Set_Wind (float heading, float speed, float variability, float ramptime = 0.0f);
-		static bool Override_Wind (float heading, float speed, float variability, float ramptime = 0.0f);
-		static void Get_Wind (float &heading, float &speed, float &variability);
-		static void Restore_Wind (float ramptime);
+  static void Update(PhysicsSceneClass *scene, CameraClass *camera);
+  static void Render(const CameraClass *camera);
 
-		static bool Set_Precipitation (PrecipitationEnum precipitation, float density, float ramptime = 0.0f);
-		static bool Override_Precipitation (PrecipitationEnum precipitation, float density, float ramptime = 0.0f);
-		static void Get_Precipitation (PrecipitationEnum precipitation, float &density);
-		static void Restore_Precipitation (float ramptime);
+private:
+#define VARID_PARAMETER(varname)                                                                                       \
+  VARID_##varname##_CURRENT_VALUE, VARID_##varname##_NORMAL_VALUE, VARID_##varname##_NORMAL_TARGET,                    \
+      VARID_##varname##_NORMAL_DURATION, VARID_##varname##_OVERRIDE_TARGET, VARID_##varname##_OVERRIDE_DURATION
 
-		static void Set_Fog_Enable (bool enabled)
-		{
-			_FogEnabled = enabled;
-			Set_Dirty();
-		}
-		static bool Get_Fog_Enable()
-		{
-			return (_FogEnabled);
-		}
-		static bool Set_Fog_Range (float startdistance, float enddistance, float ramptime = 0.0f);
-		static void Get_Fog_Range (float &startdistance, float &enddistance);
+  // Constants.
+  enum { CHUNKID_MICRO_CHUNKS = 0x03020113, CHUNKID_DYNAMIC_MICRO_CHUNKS = 0x11020245 };
 
-		static void Update (PhysicsSceneClass *scene, CameraClass *camera);
-		static void Render (const CameraClass *camera);
+  enum {
+    VARID_DUMMY = 0x09,
 
-	private:
+    VARID_PARAMETER(WIND_HEADING),
+    VARID_PARAMETER(WIND_SPEED),
+    VARID_PARAMETER(WIND_VARIABILITY),
+    VARID_PARAMETER(RAIN_DENSITY),
+    VARID_PARAMETER(SNOW_DENSITY),
+    VARID_PARAMETER(ASH_DENSITY),
 
-		#define VARID_PARAMETER(varname) \
-			VARID_ ## varname ## _CURRENT_VALUE, \
-			VARID_ ## varname ## _NORMAL_VALUE,	\
-			VARID_ ## varname ## _NORMAL_TARGET, \
-			VARID_ ## varname ## _NORMAL_DURATION, \
-			VARID_ ## varname ## _OVERRIDE_TARGET,	\
-			VARID_ ## varname ## _OVERRIDE_DURATION
+    VARID_WIND_OVERRIDE_COUNT,
+    VARID_PRECIPITATION_OVERRIDE_COUNT,
 
-		// Constants.
-		enum {
-			CHUNKID_MICRO_CHUNKS			  = 0x03020113,
-			CHUNKID_DYNAMIC_MICRO_CHUNKS = 0x11020245
-		};
+    VARID_FOG_ENABLED,
+    VARID_PARAMETER(FOG_START_DISTANCE),
+    VARID_PARAMETER(FOG_END_DISTANCE)
+  };
 
-		enum {
-			VARID_DUMMY = 0x09,
+#undef VARID_PARAMETER
 
-			VARID_PARAMETER (WIND_HEADING),
-			VARID_PARAMETER (WIND_SPEED),
-			VARID_PARAMETER (WIND_VARIABILITY),
-			VARID_PARAMETER (RAIN_DENSITY),
-			VARID_PARAMETER (SNOW_DENSITY),
-			VARID_PARAMETER (ASH_DENSITY),
+  enum {
+    PARAMETER_WIND_HEADING,
+    PARAMETER_WIND_SPEED,
+    PARAMETER_WIND_VARIABILITY,
+    PARAMETER_RAIN_DENSITY,
+    PARAMETER_SNOW_DENSITY,
+    PARAMETER_ASH_DENSITY,
+    PARAMETER_FOG_START_DISTANCE,
+    PARAMETER_FOG_END_DISTANCE,
+    PARAMETER_COUNT
+  };
 
-			VARID_WIND_OVERRIDE_COUNT,
-			VARID_PRECIPITATION_OVERRIDE_COUNT,
+  static bool Set_Wind(float heading, float speed, float variability, float ramptime, bool override);
+  static bool Set_Precipitation(PrecipitationEnum precipitation, float density, float ramptime, bool override);
 
-			VARID_FOG_ENABLED,
-			VARID_PARAMETER (FOG_START_DISTANCE),
-			VARID_PARAMETER (FOG_END_DISTANCE)
-		};
+  static bool Is_Dirty() { return (_Dirty); }
+  static void Set_Dirty(bool dirty = true) { _Dirty = dirty; }
 
-		#undef VARID_PARAMETER
+  static SoundEnvironmentClass *_SoundEnvironment;
+  static WeatherParameterClass _Parameters[PARAMETER_COUNT];
+  static bool _Prime;
+  static bool _Imported;
+  static unsigned _WindOverrideCount;
+  static unsigned _PrecipitationOverrideCount;
 
-		enum {
-			PARAMETER_WIND_HEADING,
-			PARAMETER_WIND_SPEED,
-			PARAMETER_WIND_VARIABILITY,
-			PARAMETER_RAIN_DENSITY,
-			PARAMETER_SNOW_DENSITY,
-			PARAMETER_ASH_DENSITY,
-			PARAMETER_FOG_START_DISTANCE,
-			PARAMETER_FOG_END_DISTANCE,
-			PARAMETER_COUNT
-		};
-
-		static bool Set_Wind (float heading, float speed, float variability, float ramptime, bool override);
-		static bool Set_Precipitation (PrecipitationEnum precipitation, float density, float ramptime, bool override);
-
-		static bool Is_Dirty()							{return (_Dirty);}
-		static void Set_Dirty (bool dirty = true)	{_Dirty = dirty;}
-
-		static SoundEnvironmentClass *_SoundEnvironment;
-		static WeatherParameterClass	_Parameters [PARAMETER_COUNT];
-		static bool							_Prime;
-		static bool							_Imported;
-		static unsigned					_WindOverrideCount;
-		static unsigned					_PrecipitationOverrideCount;
-
-		static WindClass				  *_Wind;
-		static WeatherSystemClass	  *_Precipitation [PRECIPITATION_COUNT];
-		static bool							_FogEnabled;
-		static bool							_Dirty;
+  static WindClass *_Wind;
+  static WeatherSystemClass *_Precipitation[PRECIPITATION_COUNT];
+  static bool _FogEnabled;
+  static bool _Dirty;
 };
-
 
 // Externals.
 extern WeatherMgrClass _TheWeatherMgr;
-
 
 #endif // WEATHERMGR_H

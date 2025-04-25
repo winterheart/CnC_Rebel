@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/csconsolecommandevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 10/11/01 10:52a                                             $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/csconsolecommandevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 10/11/01 10:52a                                             $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CSCONSOLECOMMANDEVENT_H__
@@ -44,25 +44,22 @@
 //
 // A C->S mirrored object to act a console command on the server
 //
-class	cCsConsoleCommandEvent : public cNetEvent
-{
+class cCsConsoleCommandEvent : public cNetEvent {
 public:
+  cCsConsoleCommandEvent(void);
 
-   cCsConsoleCommandEvent(void);
+  void Init(LPCSTR command);
 
-	void						Init(LPCSTR command);
-
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CSCONSOLECOMMANDEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CSCONSOLECOMMANDEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	char						Command[500];
+  char Command[500];
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CSCONSOLECOMMANDEVENT_H__
+#endif // __CSCONSOLECOMMANDEVENT_H__

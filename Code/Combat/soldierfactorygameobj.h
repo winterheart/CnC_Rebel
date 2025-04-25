@@ -16,143 +16,132 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/soldierfactorygameobj.h               $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 8/22/01 4:55p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/soldierfactorygameobj.h               $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 8/22/01 4:55p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__SOLDIERFACTORYGAMEOBJ_H
-#define	__SOLDIERFACTORYGAMEOBJ_H
+#ifndef __SOLDIERFACTORYGAMEOBJ_H
+#define __SOLDIERFACTORYGAMEOBJ_H
 
 #include "always.h"
 #include "building.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
 ////////////////////////////////////////////////////////////////
 class BaseControllerClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	SoldierFactoryGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class SoldierFactoryGameObjDef : public BuildingGameObjDef
-{
+class SoldierFactoryGameObjDef : public BuildingGameObjDef {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  SoldierFactoryGameObjDef(void);
+  ~SoldierFactoryGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	SoldierFactoryGameObjDef (void);
-	~SoldierFactoryGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
-
-	////////////////////////////////////////////////////////////////
-	//	Editable support
-	////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE (SoldierFactoryGameObjDef, BuildingGameObjDef);
+  ////////////////////////////////////////////////////////////////
+  //	Editable support
+  ////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(SoldierFactoryGameObjDef, BuildingGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float UnloadTime;
+  float FundsGathered;
+  int HarvesterDefID;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float			UnloadTime;
-	float			FundsGathered;	
-	int			HarvesterDefID;
-
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class SoldierFactoryGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class SoldierFactoryGameObj;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	SoldierFactoryGameObj
 //
 ////////////////////////////////////////////////////////////////
-class SoldierFactoryGameObj : public BuildingGameObj
-{
+class SoldierFactoryGameObj : public BuildingGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  SoldierFactoryGameObj(void);
+  ~SoldierFactoryGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	SoldierFactoryGameObj (void);
-	~SoldierFactoryGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const SoldierFactoryGameObjDef &definition);
+  const SoldierFactoryGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void						Init( void );
-	void									Init (const SoldierFactoryGameObjDef & definition);
-	const SoldierFactoryGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  SoldierFactoryGameObj *As_SoldierFactoryGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	SoldierFactoryGameObj *			As_SoldierFactoryGameObj (void)	{ return this; }
+  //
+  // Persist support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Persist support
-	//
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &	Get_Factory (void) const;
-
-	//
-	//	From BuildingGameObj
-	//
-	void									CnC_Initialize (BaseControllerClass *base);
-	void									On_Destroyed (void);
-	
+  //
+  //	From BuildingGameObj
+  //
+  void CnC_Initialize(BaseControllerClass *base);
+  void On_Destroyed(void);
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 };
 
-
-#endif	//__SOLDIERFACTORYGAMEOBJ_H
+#endif //__SOLDIERFACTORYGAMEOBJ_H

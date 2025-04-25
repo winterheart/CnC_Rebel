@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgevaencyclopedia.h      $*
  *                                                                                             *
@@ -45,66 +46,59 @@
 #include "resource.h"
 #include "dlgmessagebox.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	EVAEncyclopediaMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class EVAEncyclopediaMenuClass : public MenuDialogClass, public Observer<DlgMsgBoxEvent>
-{
+class EVAEncyclopediaMenuClass : public MenuDialogClass, public Observer<DlgMsgBoxEvent> {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constants
-	////////////////////////////////////////////////////////////////	
-	typedef enum
-	{
-		TAB_NONE				= -1,
-		TAB_OBJECTIVES		= 0,
-		TAB_MAP,
-		TAB_DATA,
-		TAB_CHARACTERS,
-		TAB_WEAPONS,
-		TAB_VEHICLES,
-		TAB_BUILDINGS
-	} TAB_ID;
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	EVAEncyclopediaMenuClass (void);
-	~EVAEncyclopediaMenuClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum {
+    TAB_NONE = -1,
+    TAB_OBJECTIVES = 0,
+    TAB_MAP,
+    TAB_DATA,
+    TAB_CHARACTERS,
+    TAB_WEAPONS,
+    TAB_VEHICLES,
+    TAB_BUILDINGS
+  } TAB_ID;
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-	void		On_Destroy (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  EVAEncyclopediaMenuClass(void);
+  ~EVAEncyclopediaMenuClass(void);
 
-	//
-	//	Singleton access
-	//
-	static void									Display (TAB_ID tab_id = TAB_NONE);
-	static EVAEncyclopediaMenuClass *	Get_Instance (void)	{ return _TheInstance; }
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Destroy(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+
+  //
+  //	Singleton access
+  //
+  static void Display(TAB_ID tab_id = TAB_NONE);
+  static EVAEncyclopediaMenuClass *Get_Instance(void) { return _TheInstance; }
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Prompt_User(void);
+  void HandleNotification(DlgMsgBoxEvent &event);
+  void Exit_Game(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////	
-	void		Prompt_User (void);
-	void		HandleNotification (DlgMsgBoxEvent &event);
-	void		Exit_Game (void);
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////	
-	static EVAEncyclopediaMenuClass *	_TheInstance;
-	static int									_NextTabIndex;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  static EVAEncyclopediaMenuClass *_TheInstance;
+  static int _NextTabIndex;
 };
 
-
 #endif //__DLGEVAENCYCLOPEDIA_H
-

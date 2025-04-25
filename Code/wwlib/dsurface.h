@@ -16,190 +16,189 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/dsurface.h                                         $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/dsurface.h                                         $*
+ *                                                                                             *
  *                      $Author:: Neal_k                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 6/23/00 2:24p                                               $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef DSURFACE_H
 #define DSURFACE_H
 
-#include	"palette.h"
-#include	"win.h"
-#include	"xsurface.h"
-#include	<ddraw.h>
+#include "palette.h"
+#include "win.h"
+#include "xsurface.h"
+#include <ddraw.h>
 
 /*
 **	This is a concrete surface class that is based on the DirectDraw
 **	API.
 */
-class DSurface : public XSurface
-{
-		typedef XSurface BASECLASS;
+class DSurface : public XSurface {
+  typedef XSurface BASECLASS;
 
-	public:
-		virtual ~DSurface(void);
+public:
+  virtual ~DSurface(void);
 
-		/*
-		**	Default constructor.
-		*/
-		DSurface(void);
+  /*
+  **	Default constructor.
+  */
+  DSurface(void);
 
-		/*
-		**	Constructs a working surface (not visible).
-		*/
-		DSurface(int width, int height, bool system_memory = false, DDPIXELFORMAT *pixform=NULL);
+  /*
+  **	Constructs a working surface (not visible).
+  */
+  DSurface(int width, int height, bool system_memory = false, DDPIXELFORMAT *pixform = NULL);
 
-		/*
-		**	Creates a surface from a previously created DirectDraw surface object.
-		*/
-		DSurface(LPDIRECTDRAWSURFACE surfaceptr);
+  /*
+  **	Creates a surface from a previously created DirectDraw surface object.
+  */
+  DSurface(LPDIRECTDRAWSURFACE surfaceptr);
 
-		/*
-		** Get/Release a windows device context from a DirectX surface
-		*/
-		HDC GetDC(void);
-		int ReleaseDC(HDC hdc);
+  /*
+  ** Get/Release a windows device context from a DirectX surface
+  */
+  HDC GetDC(void);
+  int ReleaseDC(HDC hdc);
 
-		/*
-		**	Create a surface object that represents the currently visible screen.
-		*/
-		static DSurface * Create_Primary(DSurface ** backsurface1=NULL);
+  /*
+  **	Create a surface object that represents the currently visible screen.
+  */
+  static DSurface *Create_Primary(DSurface **backsurface1 = NULL);
 
-		/*
-		**	Copies regions from one surface to another.
-		*/
-		virtual bool Blit_From(Rect const & dcliprect, Rect const & destrect, Surface const & source, Rect const & scliprect, Rect const & sourcerect, bool trans=false);
-		virtual bool Blit_From(Rect const & destrect, Surface const & source, Rect const & sourcerect, bool trans=false);
-		virtual bool Blit_From(Surface const & source, bool trans=false) {return(XSurface::Blit_From(source, trans));}
+  /*
+  **	Copies regions from one surface to another.
+  */
+  virtual bool Blit_From(Rect const &dcliprect, Rect const &destrect, Surface const &source, Rect const &scliprect,
+                         Rect const &sourcerect, bool trans = false);
+  virtual bool Blit_From(Rect const &destrect, Surface const &source, Rect const &sourcerect, bool trans = false);
+  virtual bool Blit_From(Surface const &source, bool trans = false) { return (XSurface::Blit_From(source, trans)); }
 
-		/*
-		**	Fills a region with a constant color.
-		*/
-		virtual bool Fill_Rect(Rect const & rect, int color);
-		virtual bool Fill_Rect(Rect const & cliprect, Rect const & fillrect, int color);
+  /*
+  **	Fills a region with a constant color.
+  */
+  virtual bool Fill_Rect(Rect const &rect, int color);
+  virtual bool Fill_Rect(Rect const &cliprect, Rect const &fillrect, int color);
 
-		/*
-		**	Gets and frees a direct pointer to the video memory.
-		*/
-		virtual void * Lock(Point2D point = Point2D(0, 0)) const;
-		virtual bool Unlock(void) const;
+  /*
+  **	Gets and frees a direct pointer to the video memory.
+  */
+  virtual void *Lock(Point2D point = Point2D(0, 0)) const;
+  virtual bool Unlock(void) const;
 
-		/*
-		**	Queries information about the surface.
-		*/
-		virtual int Bytes_Per_Pixel(void) const;
-		virtual int Stride(void) const;
-		bool In_Video_Ram(void) const {return(IsVideoRam);}
+  /*
+  **	Queries information about the surface.
+  */
+  virtual int Bytes_Per_Pixel(void) const;
+  virtual int Stride(void) const;
+  bool In_Video_Ram(void) const { return (IsVideoRam); }
 
-		/*
-		**	Verifies that this is a direct draw enabled surface.
-		*/
-		virtual bool Is_Direct_Draw(void) const {return(true);}
+  /*
+  **	Verifies that this is a direct draw enabled surface.
+  */
+  virtual bool Is_Direct_Draw(void) const { return (true); }
 
-		static int Build_Hicolor_Pixel(int red, int green, int blue);
-		static void Build_Remap_Table(unsigned short * table, PaletteClass const & palette);
-		static unsigned short Get_Halfbright_Mask(void) {return(HalfbrightMask);}
-		static unsigned short Get_Quarterbright_Mask(void) {return(QuarterbrightMask);}
-		static unsigned short Get_Eighthbright_Mask(void) {return(EighthbrightMask);}
+  static int Build_Hicolor_Pixel(int red, int green, int blue);
+  static void Build_Remap_Table(unsigned short *table, PaletteClass const &palette);
+  static unsigned short Get_Halfbright_Mask(void) { return (HalfbrightMask); }
+  static unsigned short Get_Quarterbright_Mask(void) { return (QuarterbrightMask); }
+  static unsigned short Get_Eighthbright_Mask(void) { return (EighthbrightMask); }
 
-	protected:
-		void Restore_Check(void) const;
+protected:
+  void Restore_Check(void) const;
 
-		/*
-		**	Convenient copy of the bytes per pixel value to speed accessing it. It
-		**	gets accessed frequently.
-		*/
-		mutable int BytesPerPixel;
+  /*
+  **	Convenient copy of the bytes per pixel value to speed accessing it. It
+  **	gets accessed frequently.
+  */
+  mutable int BytesPerPixel;
 
-		/*
-		**	Lock count and pointer values. This is used to keep track of the levels
-		**	of locking the graphic data. This is only here because DirectDraw prohibits
-		**	the blitter from working on a surface that has been locked.
-		*/
-		mutable void * LockPtr;
+  /*
+  **	Lock count and pointer values. This is used to keep track of the levels
+  **	of locking the graphic data. This is only here because DirectDraw prohibits
+  **	the blitter from working on a surface that has been locked.
+  */
+  mutable void *LockPtr;
 
-		/*
-		**	If this surface object represents the one that is visible and associated
-		**	with the system GDI, then this flag will be true.
-		*/
-		bool IsPrimary;
+  /*
+  **	If this surface object represents the one that is visible and associated
+  **	with the system GDI, then this flag will be true.
+  */
+  bool IsPrimary;
 
-		/*
-		**	Is this surface represented in video ram?
-		*/
-		bool IsVideoRam;
+  /*
+  **	Is this surface represented in video ram?
+  */
+  bool IsVideoRam;
 
-		/*
-		**	Direct draw specific data.
-		*/
-		LPDIRECTDRAWSURFACE SurfacePtr;
-		DDSURFACEDESC * Description;
-		
-		/*
-		**	Pointer to the clipper object that is attached to the primary
-		**	surface.
-		*/
-		static LPDIRECTDRAWCLIPPER Clipper;
+  /*
+  **	Direct draw specific data.
+  */
+  LPDIRECTDRAWSURFACE SurfacePtr;
+  DDSURFACEDESC *Description;
 
-		/*
-		**	Pixel format of primary surface.
-		*/
-		static DDPIXELFORMAT PixelFormat;
+  /*
+  **	Pointer to the clipper object that is attached to the primary
+  **	surface.
+  */
+  static LPDIRECTDRAWCLIPPER Clipper;
 
-		/*
-		**	Shift values to extract the gun value from a hicolor pixel such that the 
-		**	gun component is normalized to a byte value.
-		*/
-		static int RedRight;
-		static int RedLeft;
-		static int BlueRight;
-		static int BlueLeft;
-		static int GreenRight;
-		static int GreenLeft;
+  /*
+  **	Pixel format of primary surface.
+  */
+  static DDPIXELFORMAT PixelFormat;
 
-	public:
-		/*
-		** Shift values specific to this surface (the above are for the primary surface)
-		*/
-		int ThisRedRight;
-		int ThisRedLeft;
-		int ThisBlueRight;
-		int ThisBlueLeft;
-		int ThisGreenRight;
-		int ThisGreenLeft;
+  /*
+  **	Shift values to extract the gun value from a hicolor pixel such that the
+  **	gun component is normalized to a byte value.
+  */
+  static int RedRight;
+  static int RedLeft;
+  static int BlueRight;
+  static int BlueLeft;
+  static int GreenRight;
+  static int GreenLeft;
 
-	protected:
-		static unsigned short HalfbrightMask;
-		static unsigned short QuarterbrightMask;
-		static unsigned short EighthbrightMask;
+public:
+  /*
+  ** Shift values specific to this surface (the above are for the primary surface)
+  */
+  int ThisRedRight;
+  int ThisRedLeft;
+  int ThisBlueRight;
+  int ThisBlueLeft;
+  int ThisGreenRight;
+  int ThisGreenLeft;
 
+protected:
+  static unsigned short HalfbrightMask;
+  static unsigned short QuarterbrightMask;
+  static unsigned short EighthbrightMask;
 
-		/*
-		** Number of locks we had to remove in order to get the device context...
-		*/
-		int	DCUnlockCount;
+  /*
+  ** Number of locks we had to remove in order to get the device context...
+  */
+  int DCUnlockCount;
 
-	private:
-		/*
-		**	This prevents the creation of a surface in ways that are not
-		**	supported.
-		*/
-		DSurface(DSurface const & rvalue);
-		DSurface const operator = (DSurface const & rvalue);
+private:
+  /*
+  **	This prevents the creation of a surface in ways that are not
+  **	supported.
+  */
+  DSurface(DSurface const &rvalue);
+  DSurface const operator=(DSurface const &rvalue);
 };
 
 #endif

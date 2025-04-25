@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolpagebuddy.h       $*
  *                                                                                             *
@@ -50,31 +51,27 @@
 //	MPWolPageBuddyPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolPageBuddyPopupClass :
-	public PopupDialogClass,
-	protected Observer<WOLBuddyMgrEvent>
-{
+class MPWolPageBuddyPopupClass : public PopupDialogClass, protected Observer<WOLBuddyMgrEvent> {
 public:
-	MPWolPageBuddyPopupClass(void);
-	~MPWolPageBuddyPopupClass(void);
+  MPWolPageBuddyPopupClass(void);
+  ~MPWolPageBuddyPopupClass(void);
 
-	void Set_Buddy_Name(const WCHAR* user_name);
+  void Set_Buddy_Name(const WCHAR *user_name);
 
 protected:
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
-	void On_Init_Dialog(void);
-	void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void Send_Page(void);
+  void CheckIfCanSendPage(void);
 
-	void Send_Page(void);
-	void CheckIfCanSendPage(void);
-	
-	void On_ComboBoxCtrl_Edit_Change(ComboBoxCtrlClass* combo, int id);
-	void On_EditCtrl_Change(EditCtrlClass* edit, int id);
-	void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int id);
+  void On_ComboBoxCtrl_Edit_Change(ComboBoxCtrlClass *combo, int id);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int id);
 
-	void HandleNotification(WOLBuddyMgrEvent& event);
+  void HandleNotification(WOLBuddyMgrEvent &event);
 
-	WOLBuddyMgr* mBuddyMgr;
+  WOLBuddyMgr *mBuddyMgr;
 };
 
 #endif //__DLG_MP_WOL_PAGE_BUDDY_H

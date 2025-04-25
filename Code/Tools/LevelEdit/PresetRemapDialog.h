@@ -36,51 +36,46 @@ class NodeClass;
 // PresetRemapDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetRemapDialogClass : public CDialog
-{
-// Construction
+class PresetRemapDialogClass : public CDialog {
+  // Construction
 public:
-	PresetRemapDialogClass(CWnd* pParent = NULL);   // standard constructor
+  PresetRemapDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(PresetRemapDialogClass)
-	enum { IDD = IDD_PRESET_REMAP_DIALOG };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(PresetRemapDialogClass)
+  enum { IDD = IDD_PRESET_REMAP_DIALOG };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetRemapDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetRemapDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetRemapDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDblclkListCtrl(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDeleteitemListCtrl(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(PresetRemapDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDblclkListCtrl(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDeleteitemListCtrl(NMHDR *pNMHDR, LRESULT *pResult);
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	///////////////////////////////////////////////////////////////
-	//	Public Methods
-	///////////////////////////////////////////////////////////////
-	void	Set_Node_list (const DynamicVectorClass<NodeClass *> &node_list)	{ NodeList = node_list; }
+  ///////////////////////////////////////////////////////////////
+  //	Public Methods
+  ///////////////////////////////////////////////////////////////
+  void Set_Node_list(const DynamicVectorClass<NodeClass *> &node_list) { NodeList = node_list; }
 
 private:
-
-	///////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////
-	DynamicVectorClass<NodeClass *>	NodeList;
+  ///////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////
+  DynamicVectorClass<NodeClass *> NodeList;
 };
 
 //{{AFX_INSERT_LOCATION}}

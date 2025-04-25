@@ -17,29 +17,24 @@
 */
 
 /****************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/BinkMovie/subtitleparser.h $
-*
-* DESCRIPTION
-*     Subtitling control file parser
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Ian_l $
-*     $Modtime: 8/24/01 2:36p $
-*     $Revision: 1 $
-*
-****************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/BinkMovie/subtitleparser.h $
+ *
+ * DESCRIPTION
+ *     Subtitling control file parser
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Ian_l $
+ *     $Modtime: 8/24/01 2:36p $
+ *     $Revision: 1 $
+ *
+ ****************************************************************************/
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef _SUBTITLEPARSER_H_
-#define _SUBTITLEPARSER_H_
 
 #include "always.h"
 #include "vector.h"
@@ -48,37 +43,33 @@
 class Straw;
 class SubTitleClass;
 
-class SubTitleParserClass
-{
+class SubTitleParserClass {
 public:
-	SubTitleParserClass(Straw& input);
-	~SubTitleParserClass();
+  SubTitleParserClass(Straw &input);
+  ~SubTitleParserClass();
 
-	DynamicVectorClass<SubTitleClass*>* Get_Sub_Titles(const char* moviename);
+  DynamicVectorClass<SubTitleClass *> *Get_Sub_Titles(const char *moviename);
 
 private:
-	enum {LINE_MAX = 1024};
+  enum { LINE_MAX = 1024 };
 
-	typedef struct tagTokenHook
-	{
-		const wchar_t* Token;
-		void (*Handler)(wchar_t* param, SubTitleClass* subTitle);
-	} TokenHook;
+  typedef struct tagTokenHook {
+    const wchar_t *Token;
+    void (*Handler)(wchar_t *param, SubTitleClass *subTitle);
+  } TokenHook;
 
-	// Prevent copy construction
-	SubTitleParserClass(const SubTitleParserClass&);
-	const SubTitleParserClass operator=(const SubTitleParserClass&);
+  // Prevent copy construction
+  SubTitleParserClass(const SubTitleParserClass &);
+  const SubTitleParserClass operator=(const SubTitleParserClass &);
 
-	bool Find_Movie_Entry(const char* moviename);
-	bool Parse_Sub_Title(wchar_t* string, SubTitleClass* subTitle);
-	void Parse_Token(wchar_t* token, wchar_t* param, SubTitleClass* subTitle);
-	wchar_t* Get_Next_Line(void);
-	unsigned int Get_Line_Number(void) const	{return mLineNumber;}
+  bool Find_Movie_Entry(const char *moviename);
+  bool Parse_Sub_Title(wchar_t *string, SubTitleClass *subTitle);
+  void Parse_Token(wchar_t *token, wchar_t *param, SubTitleClass *subTitle);
+  wchar_t *Get_Next_Line(void);
+  unsigned int Get_Line_Number(void) const { return mLineNumber; }
 
-	static TokenHook mTokenHooks[];
-	Straw& mInput;
-	wchar_t mBuffer[LINE_MAX];
-	unsigned int mLineNumber;
+  static TokenHook mTokenHooks[];
+  Straw &mInput;
+  wchar_t mBuffer[LINE_MAX];
+  unsigned int mLineNumber;
 };
-
-#endif // _SUBTITLEPARSER_H_

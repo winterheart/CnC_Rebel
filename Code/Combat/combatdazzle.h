@@ -48,15 +48,10 @@
 ** are rendered and it determines visibility by asking the game scene to cast a ray
 ** from the camera to the dazzle position.
 */
-class CombatDazzleClass : public DazzleVisibilityClass
-{
-	float Compute_Dazzle_Visibility(	RenderInfoClass & rinfo,
-												DazzleRenderObjClass * dazzle,
-												const Vector3 & point) const;
+class CombatDazzleClass : public DazzleVisibilityClass {
+  float Compute_Dazzle_Visibility(RenderInfoClass &rinfo, DazzleRenderObjClass *dazzle, const Vector3 &point) const;
 };
 
 extern CombatDazzleClass _TheCombatDazzleHandler;
 
-
 #endif
-

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwoladdbuddy.h       $*
  *                                                                                             *
@@ -41,7 +42,6 @@
 #ifndef __DLG_MP_WOL_ADD_BUDDY_H
 #define __DLG_MP_WOL_ADD_BUDDY_H
 
-
 #include "popupdialog.h"
 #include "resource.h"
 #include "wwstring.h"
@@ -53,37 +53,33 @@ class WOLBuddyMgr;
 //	MPWolAddBuddyPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolAddBuddyPopupClass : public PopupDialogClass
-{
+class MPWolAddBuddyPopupClass : public PopupDialogClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolAddBuddyPopupClass (void);
-	~MPWolAddBuddyPopupClass();
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolAddBuddyPopupClass(void);
+  ~MPWolAddBuddyPopupClass();
 
-	//
-	//	Content control
-	//
-	void		Set_Default_User_Name (const WCHAR* user_name)	{ DefaultUserName = user_name; }
+  //
+  //	Content control
+  //
+  void Set_Default_User_Name(const WCHAR *user_name) { DefaultUserName = user_name; }
 
 protected:
+  void On_Init_Dialog(void);
+  void On_Activate(bool onoff);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void Add_Buddy(void);
 
-	void		On_Init_Dialog (void);
-	void		On_Activate (bool onoff);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	void		Add_Buddy (void);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int id);
 
-	void On_EditCtrl_Change(EditCtrlClass* edit, int id);
-	void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int id);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	WideStringClass	DefaultUserName;
-	WOLBuddyMgr* mBuddyMgr;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  WideStringClass DefaultUserName;
+  WOLBuddyMgr *mBuddyMgr;
 };
-
 
 #endif //__DLG_MP_WOL_ADD_BUDDY_H

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/consolecommandevent.cpp               $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 10/10/01 7:39p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 5                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/consolecommandevent.cpp               $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 10/10/01 7:39p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 5                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "consolecommandevent.h"
@@ -45,76 +45,66 @@
 #include "consolefunction.h"
 #include "apppackettypes.h"
 
-
 DECLARE_NETWORKOBJECT_FACTORY(cConsoleCommandEvent, NETCLASSID_CONSOLECOMMANDEVENT);
 
 //-----------------------------------------------------------------------------
-cConsoleCommandEvent::cConsoleCommandEvent(void)
-{
-	::strcpy(Command, "");
+cConsoleCommandEvent::cConsoleCommandEvent(void) {
+  ::strcpy(Command, "");
 
-	Set_App_Packet_Type(APPPACKETTYPE_CONSOLECOMMANDEVENT);
+  Set_App_Packet_Type(APPPACKETTYPE_CONSOLECOMMANDEVENT);
 }
 
 //-----------------------------------------------------------------------------
-void
-cConsoleCommandEvent::Init(LPCSTR command)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cConsoleCommandEvent::Init(LPCSTR command) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	WWASSERT(command != NULL);
-   WWASSERT(::strlen(command) > 0);
-   WWASSERT(::strlen(command) < sizeof(Command));
+  WWASSERT(command != NULL);
+  WWASSERT(::strlen(command) > 0);
+  WWASSERT(::strlen(command) < sizeof(Command));
 
-	::strcpy(Command, command);
+  ::strcpy(Command, command);
 
-	Set_Object_Dirty_Bit(BIT_CREATION, true);
+  Set_Object_Dirty_Bit(BIT_CREATION, true);
 
-	if (cNetwork::I_Am_Client()) {
-		Act();
-	}
+  if (cNetwork::I_Am_Client()) {
+    Act();
+  }
 }
 
 //-----------------------------------------------------------------------------
-void
-cConsoleCommandEvent::Act(void)
-{
-   WWASSERT(cNetwork::I_Am_Client());
+void cConsoleCommandEvent::Act(void) {
+  WWASSERT(cNetwork::I_Am_Client());
 
-	if (GameModeManager::Find("Combat")->Is_Active()) {
-		ConsoleFunctionManager::Parse_Input(Command);
-	}
+  if (GameModeManager::Find("Combat")->Is_Active()) {
+    ConsoleFunctionManager::Parse_Input(Command);
+  }
 }
 
 //-----------------------------------------------------------------------------
-void
-cConsoleCommandEvent::Export_Creation(BitStreamClass & packet)
-{
-   WWASSERT(cNetwork::I_Am_Server());
+void cConsoleCommandEvent::Export_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	cNetEvent::Export_Creation(packet);
+  cNetEvent::Export_Creation(packet);
 
-	packet.Add_Terminated_String(Command);
+  packet.Add_Terminated_String(Command);
 
-	//
-	// TSS101001
-	// Even though this object is reflected to all clients, we can set delete here because
-	// TCADN is immediate and reliable.
-	//
-	Set_Delete_Pending();
+  //
+  // TSS101001
+  // Even though this object is reflected to all clients, we can set delete here because
+  // TCADN is immediate and reliable.
+  //
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cConsoleCommandEvent::Import_Creation(BitStreamClass & packet)
-{
-	WWASSERT(cNetwork::I_Am_Only_Client());
+void cConsoleCommandEvent::Import_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	cNetEvent::Import_Creation(packet);
+  cNetEvent::Import_Creation(packet);
 
-	packet.Get_Terminated_String(Command, sizeof(Command));
+  packet.Get_Terminated_String(Command, sizeof(Command));
 
-	Act();
+  Act();
 
-	Set_Delete_Pending();
+  Set_Delete_Pending();
 }

@@ -20,31 +20,30 @@
 #ifndef __WOLDIAGS_H__
 #define __WOLDIAGS_H__
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLDiags.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 2 $
-*     $Modtime: 9/21/01 3:14p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLDiags.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 2 $
+ *     $Modtime: 9/21/01 3:14p $
+ *
+ ******************************************************************************/
 
 #include "ConsoleFunction.h"
 
 class WOLConsoleFunctionClass : public ConsoleFunctionClass {
 public:
-	const char* Get_Name(void)
-		{return ("wol");}
+  const char *Get_Name(void) { return ("wol"); }
 
-	const char* Get_Help(void);
-	
-	void Activate(const char* input);
+  const char *Get_Help(void);
+
+  void Activate(const char *input);
 };
 
 #endif // __WOLDIAGS_H__

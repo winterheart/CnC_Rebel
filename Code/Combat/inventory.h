@@ -16,73 +16,70 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/inventory.h                           $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 8/15/01 11:36a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/inventory.h                           $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 8/15/01 11:36a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	INVENTORY_H
-#define	INVENTORY_H
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	SIMPLEVEC_H
-	#include "simplevec.h"
+#ifndef SIMPLEVEC_H
+#include "simplevec.h"
 #endif
 
-#ifndef	DAMAGE_H
-	#include "damage.h"
+#ifndef DAMAGE_H
+#include "damage.h"
 #endif
 
-class	SoldierGameObj;
+class SoldierGameObj;
 
 /*
 ** InventoryClass is a black box used to remember the inventory of a soldier across levels
 */
-class	InventoryClass {
+class InventoryClass {
 
 public:
-	InventoryClass( void );
-	~InventoryClass( void );
+  InventoryClass(void);
+  ~InventoryClass(void);
 
-	void	Reset( void );
+  void Reset(void);
 
-	void	Store_Inventory( SoldierGameObj * soldier );
-	void	Restore_Inventory( SoldierGameObj * soldier );
+  void Store_Inventory(SoldierGameObj *soldier);
+  void Restore_Inventory(SoldierGameObj *soldier);
 
-	void	Add_Weapon( int id, int rounds, bool has_weapon );
+  void Add_Weapon(int id, int rounds, bool has_weapon);
 
 private:
+  struct WeaponAmmo {
+    int WeaponID;
+    int AmmoCount;
+    bool HasWeapon;
+  };
 
-	struct WeaponAmmo {
-		int	WeaponID;
-		int	AmmoCount;
-		bool	HasWeapon;
-	};
-
-	SimpleDynVecClass<WeaponAmmo>	WeaponAmmoList;
-	ArmorType	ShieldType;
-	float			ShieldStrength;
-	float			ShieldStrengthMax;
-	float			Health;
-	float			HealthMax;
+  SimpleDynVecClass<WeaponAmmo> WeaponAmmoList;
+  ArmorType ShieldType;
+  float ShieldStrength;
+  float ShieldStrengthMax;
+  float Health;
+  float HealthMax;
 };
 
 #endif
-
-

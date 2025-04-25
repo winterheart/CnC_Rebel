@@ -16,25 +16,25 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/gdsingleplayer.cpp                  $* 
- *                                                                                             * 
- *                      $Author:: Denzil_l                                                    $* 
- *                                                                                             * 
- *                     $Modtime:: 12/13/01 2:35p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 22                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/gdsingleplayer.cpp                  $*
+ *                                                                                             *
+ *                      $Author:: Denzil_l                                                    $*
+ *                                                                                             *
+ *                     $Modtime:: 12/13/01 2:35p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 22                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "gdsingleplayer.h"  // I WANNA BE FIRST!
+#include "gdsingleplayer.h" // I WANNA BE FIRST!
 
 #include "cnetwork.h"
 #include "translatedb.h"
@@ -42,57 +42,45 @@
 #include "playertype.h"
 
 //-----------------------------------------------------------------------------
-cGameDataSinglePlayer::cGameDataSinglePlayer(void) : cGameData()
-{
-   //WWDEBUG_SAY(("cGameDataSinglePlayer::cGameDataSinglePlayer\n"));
+cGameDataSinglePlayer::cGameDataSinglePlayer(void) : cGameData() {
+  // WWDEBUG_SAY(("cGameDataSinglePlayer::cGameDataSinglePlayer\n"));
 
-	IsFriendlyFirePermitted.Set(true);
-	IsTeamChangingAllowed.Set(false);
-	SpawnWeapons.Set(true);
+  IsFriendlyFirePermitted.Set(true);
+  IsTeamChangingAllowed.Set(false);
+  SpawnWeapons.Set(true);
 
-	Set_Max_Players(1);
+  Set_Max_Players(1);
 }
 
 //-----------------------------------------------------------------------------
-cGameDataSinglePlayer::~cGameDataSinglePlayer(void)
-{
-   //WWDEBUG_SAY(("cGameDataSinglePlayer::~cGameDataSinglePlayer\n"));
+cGameDataSinglePlayer::~cGameDataSinglePlayer(void) {
+  // WWDEBUG_SAY(("cGameDataSinglePlayer::~cGameDataSinglePlayer\n"));
 }
 
 //-----------------------------------------------------------------------------
-cGameDataSinglePlayer& cGameDataSinglePlayer::operator=(const cGameDataSinglePlayer& rhs)
-{
-	// 
-	// Call the base class
-	//
-	cGameData::operator=(rhs);
+cGameDataSinglePlayer &cGameDataSinglePlayer::operator=(const cGameDataSinglePlayer &rhs) {
+  //
+  // Call the base class
+  //
+  cGameData::operator=(rhs);
 
-	return (*this);
+  return (*this);
 }
 
 //-----------------------------------------------------------------------------
-const WCHAR* cGameDataSinglePlayer::Get_Static_Game_Name(void)
-{
-	return TRANSLATION(IDS_MP_GAME_TYPE_SINGLE_PLAYER);
-}
+const WCHAR *cGameDataSinglePlayer::Get_Static_Game_Name(void) { return TRANSLATION(IDS_MP_GAME_TYPE_SINGLE_PLAYER); }
 
 //-----------------------------------------------------------------------------
-int cGameDataSinglePlayer::Choose_Player_Type(cPlayer* player, int team_choice, bool is_grunt)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+int cGameDataSinglePlayer::Choose_Player_Type(cPlayer *player, int team_choice, bool is_grunt) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	int team;
+  int team;
 
-	if (is_grunt) {
-		team = PLAYERTYPE_NOD;
-	} else {
-		team = PLAYERTYPE_GDI;
-	}
+  if (is_grunt) {
+    team = PLAYERTYPE_NOD;
+  } else {
+    team = PLAYERTYPE_GDI;
+  }
 
-	return team;
+  return team;
 }
-
-
-
-
-

@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/DlgWOLWait.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Bhayes $
-*
-* VERSION INFO
-*     $Revision: 21 $
-*     $Modtime: 2/18/02 7:57p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/DlgWOLWait.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Bhayes $
+ *
+ * VERSION INFO
+ *     $Revision: 21 $
+ *     $Modtime: 2/18/02 7:57p $
+ *
+ ******************************************************************************/
 
 #include "DlgWOLWait.h"
 #include "DlgMessageBox.h"
@@ -44,424 +44,379 @@
 #include "gamespyadmin.h"
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include "systimer.h"
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 using namespace WWOnline;
 
-DlgWOLWait* DlgWOLWait::mTheInstance = NULL;
+DlgWOLWait *DlgWOLWait::mTheInstance = NULL;
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::DoDialog
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Title    - Title of dialog
-*     Wait     - Wait condition to process.
-*     Observer - DlgWOLWaitEvent observer
-*
-* RESULT
-*     Success - True if dialog successfully started.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::DoDialog
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Title    - Title of dialog
+ *     Wait     - Wait condition to process.
+ *     Observer - DlgWOLWaitEvent observer
+ *
+ * RESULT
+ *     Success - True if dialog successfully started.
+ *
+ ******************************************************************************/
 
-bool DlgWOLWait::DoDialog(const WCHAR* title, RefPtr<WaitCondition>& wait,
-			Observer<DlgWOLWaitEvent>* observer, unsigned long timeout, unsigned long dialog_timeout)
-	{
-	if (wait.IsValid())
-		{
-		DlgWOLWait* popup = new DlgWOLWait(wait, timeout, dialog_timeout);
+bool DlgWOLWait::DoDialog(const WCHAR *title, RefPtr<WaitCondition> &wait, Observer<DlgWOLWaitEvent> *observer,
+                          unsigned long timeout, unsigned long dialog_timeout) {
+  if (wait.IsValid()) {
+    DlgWOLWait *popup = new DlgWOLWait(wait, timeout, dialog_timeout);
 
-		if (popup)
-			{
-			WWDEBUG_SAY(("DlgWOLWait: Starting dialog '%S'\n", title));
-			popup->Start_Dialog();
-			popup->Set_Title(title);
+    if (popup) {
+      WWDEBUG_SAY(("DlgWOLWait: Starting dialog '%S'\n", title));
+      popup->Start_Dialog();
+      popup->Set_Title(title);
 
-			if (observer)
-				{
-				popup->AddObserver(*observer);
-				}
+      if (observer) {
+        popup->AddObserver(*observer);
+      }
 
-			popup->Release_Ref();
-			}
+      popup->Release_Ref();
+    }
 
-		return (popup != NULL);
-		}
+    return (popup != NULL);
+  }
 
-	return false;
-	}
-
+  return false;
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::DoDialog
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Title    - Title of dialog
-*     Wait     - Wait condition to process.
-*     Observer - DlgWOLWaitEvent observer
-*
-* RESULT
-*     Success - True if dialog successfully started.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::DoDialog
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Title    - Title of dialog
+ *     Wait     - Wait condition to process.
+ *     Observer - DlgWOLWaitEvent observer
+ *
+ * RESULT
+ *     Success - True if dialog successfully started.
+ *
+ ******************************************************************************/
 
-bool DlgWOLWait::DoDialog(const WCHAR* title, const WCHAR* button_text, RefPtr<WaitCondition>& wait,
-			Observer<DlgWOLWaitEvent>* observer, unsigned long timeout, unsigned long dialog_timeout)
-	{
-	if (wait.IsValid())
-		{
-		DlgWOLWait* popup = new DlgWOLWait(wait, timeout, dialog_timeout);
+bool DlgWOLWait::DoDialog(const WCHAR *title, const WCHAR *button_text, RefPtr<WaitCondition> &wait,
+                          Observer<DlgWOLWaitEvent> *observer, unsigned long timeout, unsigned long dialog_timeout) {
+  if (wait.IsValid()) {
+    DlgWOLWait *popup = new DlgWOLWait(wait, timeout, dialog_timeout);
 
-		if (popup)
-			{
-			WWDEBUG_SAY(("DlgWOLWait: Starting dialog '%S'\n", title));
-			popup->Start_Dialog();
-			popup->Set_Dlg_Item_Text(IDCANCEL, button_text);
-			popup->Set_Title(title);
+    if (popup) {
+      WWDEBUG_SAY(("DlgWOLWait: Starting dialog '%S'\n", title));
+      popup->Start_Dialog();
+      popup->Set_Dlg_Item_Text(IDCANCEL, button_text);
+      popup->Set_Title(title);
 
-			if (observer)
-				{
-				popup->AddObserver(*observer);
-				}
+      if (observer) {
+        popup->AddObserver(*observer);
+      }
 
-			popup->Release_Ref();
-			}
+      popup->Release_Ref();
+    }
 
-		return (popup != NULL);
-		}
+    return (popup != NULL);
+  }
 
-	return false;
-	}
-
+  return false;
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::DoDialog
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Title    - Title ID of dialog
-*     Wait     - Wait condition to process.
-*     Observer - DlgWOLWaitEvent observer
-*
-* RESULT
-*     Success - True if dialog successfully started.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::DoDialog
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Title    - Title ID of dialog
+ *     Wait     - Wait condition to process.
+ *     Observer - DlgWOLWaitEvent observer
+ *
+ * RESULT
+ *     Success - True if dialog successfully started.
+ *
+ ******************************************************************************/
 
-bool DlgWOLWait::DoDialog(int titleID, RefPtr<WaitCondition>& wait,
-			Observer<DlgWOLWaitEvent>* observer, unsigned long timeout, unsigned long dialog_timeout)
-	{
-	const WCHAR* title = TranslateDBClass::Get_String(titleID);
-	return DoDialog(title, wait, observer, timeout, dialog_timeout);
-	}
-
+bool DlgWOLWait::DoDialog(int titleID, RefPtr<WaitCondition> &wait, Observer<DlgWOLWaitEvent> *observer,
+                          unsigned long timeout, unsigned long dialog_timeout) {
+  const WCHAR *title = TranslateDBClass::Get_String(titleID);
+  return DoDialog(title, wait, observer, timeout, dialog_timeout);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::DlgWOLWait
-*
-* DESCRIPTION
-*     Constructor
-*
-* INPUTS
-*     Wait - Wait condition to process.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::DlgWOLWait
+ *
+ * DESCRIPTION
+ *     Constructor
+ *
+ * INPUTS
+ *     Wait - Wait condition to process.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-DlgWOLWait::DlgWOLWait(RefPtr<WaitCondition>& wait, unsigned long timeout, unsigned long dialog_timeout) :
-		PopupDialogClass(IDD_WOL_WAIT),
-		mWait(wait),
-		mStartTime(0),
-		mTimeout(timeout),
-		mDialogTimeout(dialog_timeout),
-		mShowDialog(false)
-	{
-	mTheInstance = this;
-	}
-
+DlgWOLWait::DlgWOLWait(RefPtr<WaitCondition> &wait, unsigned long timeout, unsigned long dialog_timeout)
+    : PopupDialogClass(IDD_WOL_WAIT), mWait(wait), mStartTime(0), mTimeout(timeout), mDialogTimeout(dialog_timeout),
+      mShowDialog(false) {
+  mTheInstance = this;
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::~DlgWOLWait
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::~DlgWOLWait
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-DlgWOLWait::~DlgWOLWait()
-	{
-	mTheInstance = NULL;
-	}
-
+DlgWOLWait::~DlgWOLWait() { mTheInstance = NULL; }
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::On_Init_Dialog
-*
-* DESCRIPTION
-*     One time dialog initialization.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::On_Init_Dialog
+ *
+ * DESCRIPTION
+ *     One time dialog initialization.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::On_Init_Dialog(void)
-	{
-	if (mWait.IsValid())
-		{
-		if (!cGameSpyAdmin::Is_Gamespy_Game()) {
-			mWOLSession = Session::GetInstance(false);
-			WWASSERT(mWOLSession.IsValid());
-		}
+void DlgWOLWait::On_Init_Dialog(void) {
+  if (mWait.IsValid()) {
+    if (!cGameSpyAdmin::Is_Gamespy_Game()) {
+      mWOLSession = Session::GetInstance(false);
+      WWASSERT(mWOLSession.IsValid());
+    }
 
-		// Start the wait condition
-		mWait->WaitBeginning();
+    // Start the wait condition
+    mWait->WaitBeginning();
 
-		// Set the dialogs wait text
-		Set_Dlg_Item_Text(IDC_WAITTEXT, mWait->GetWaitText());
+    // Set the dialogs wait text
+    Set_Dlg_Item_Text(IDC_WAITTEXT, mWait->GetWaitText());
 
-		mStartTime = TIMEGETTIME();
+    mStartTime = TIMEGETTIME();
 
-		if (mDialogTimeout != SHOW_NEVER)
-			{
-			// Initially the dialog is not shown so bring up the wait cursor.
-			mShowDialog = false;
-			MouseMgrClass::Begin_Wait_Cursor();
-			}
-		}
+    if (mDialogTimeout != SHOW_NEVER) {
+      // Initially the dialog is not shown so bring up the wait cursor.
+      mShowDialog = false;
+      MouseMgrClass::Begin_Wait_Cursor();
+    }
+  }
 
-	PopupDialogClass::On_Init_Dialog();
-	}
-
+  PopupDialogClass::On_Init_Dialog();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::On_Destroy
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::On_Destroy
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::On_Destroy(void)
-	{
-	WWDEBUG_SAY(("DlgWOLWait: Ending dialog '%S'\n", (const WCHAR*)Title));
+void DlgWOLWait::On_Destroy(void) {
+  WWDEBUG_SAY(("DlgWOLWait: Ending dialog '%S'\n", (const WCHAR *)Title));
 
-	if (!mShowDialog && mDialogTimeout != SHOW_NEVER)
-		{
-		MouseMgrClass::End_Wait_Cursor();
-		}
-	}
-
+  if (!mShowDialog && mDialogTimeout != SHOW_NEVER) {
+    MouseMgrClass::End_Wait_Cursor();
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::On_Periodic
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::On_Periodic
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::On_Periodic(void)
-	{
-	Add_Ref();
+void DlgWOLWait::On_Periodic(void) {
+  Add_Ref();
 
-	CheckCondition();
-	PopupDialogClass::On_Periodic();
+  CheckCondition();
+  PopupDialogClass::On_Periodic();
 
-	Release_Ref();
-	}
-
+  Release_Ref();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::CheckCondition
-*
-* DESCRIPTION
-*     Check the condition of the wait.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::CheckCondition
+ *
+ * DESCRIPTION
+ *     Check the condition of the wait.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::CheckCondition(void)
-	{
-	// Quit if there is nothing to wait on or there is not WWOnline session.
-	if (!mWait.IsValid() || (!mWOLSession.IsValid() && !cGameSpyAdmin::Is_Gamespy_Game()))
-		{
-		End_Dialog();
-		return;
-		}
+void DlgWOLWait::CheckCondition(void) {
+  // Quit if there is nothing to wait on or there is not WWOnline session.
+  if (!mWait.IsValid() || (!mWOLSession.IsValid() && !cGameSpyAdmin::Is_Gamespy_Game())) {
+    End_Dialog();
+    return;
+  }
 
-	// Check the status of the wait condition
-	WaitCondition::WaitResult waitStatus = mWait->GetResult();
+  // Check the status of the wait condition
+  WaitCondition::WaitResult waitStatus = mWait->GetResult();
 
-	// If we are no longer waiting then process the result.
-	if (waitStatus != WaitCondition::Waiting)
-		{
-		// If there are no observers and the wait timed out or errored then
-		// show a message dialog describing the failure.
-		if ((Notifier<DlgWOLWaitEvent>::HasObservers() == false)
-				&& ((waitStatus == WaitCondition::TimeOut) || (waitStatus == WaitCondition::Error)))
-			{
-			DlgMsgBox::DoDialog(mWait->GetWaitText(), mWait->GetResultText());
-			}
+  // If we are no longer waiting then process the result.
+  if (waitStatus != WaitCondition::Waiting) {
+    // If there are no observers and the wait timed out or errored then
+    // show a message dialog describing the failure.
+    if ((Notifier<DlgWOLWaitEvent>::HasObservers() == false) &&
+        ((waitStatus == WaitCondition::TimeOut) || (waitStatus == WaitCondition::Error))) {
+      DlgMsgBox::DoDialog(mWait->GetWaitText(), mWait->GetResultText());
+    }
 
-		// Notify the observers about the status of the wait.
-		Add_Ref();
-		DlgWOLWaitEvent event(waitStatus, mWait.ReferencedObject());
-		NotifyObservers(event);
-		Release_Ref();
+    // Notify the observers about the status of the wait.
+    Add_Ref();
+    DlgWOLWaitEvent event(waitStatus, mWait.ReferencedObject());
+    NotifyObservers(event);
+    Release_Ref();
 
-		End_Dialog();
-		return;
-		}
+    End_Dialog();
+    return;
+  }
 
-	// Change the waiting text if necessary.
-	const WCHAR* text = Get_Dlg_Item_Text(IDC_WAITTEXT);
-	const WideStringClass& waitText = mWait->GetWaitText();
+  // Change the waiting text if necessary.
+  const WCHAR *text = Get_Dlg_Item_Text(IDC_WAITTEXT);
+  const WideStringClass &waitText = mWait->GetWaitText();
 
-	if (waitText.Compare_No_Case(text) != 0)
-		{
-		Set_Dlg_Item_Text(IDC_WAITTEXT, waitText);
-		PopupDialogClass::Build_Background_Renderers();
-		}
+  if (waitText.Compare_No_Case(text) != 0) {
+    Set_Dlg_Item_Text(IDC_WAITTEXT, waitText);
+    PopupDialogClass::Build_Background_Renderers();
+  }
 
-	// Watch for timeout
-	unsigned long currTime = TIMEGETTIME();
-	unsigned long timeout = mTimeout;
-	unsigned long dialog_timeout = mDialogTimeout;
+  // Watch for timeout
+  unsigned long currTime = TIMEGETTIME();
+  unsigned long timeout = mTimeout;
+  unsigned long dialog_timeout = mDialogTimeout;
 
-	if (dialog_timeout == 0)
-		{
-		dialog_timeout = 2000;
-		}
+  if (dialog_timeout == 0) {
+    dialog_timeout = 2000;
+  }
 
-	// If the dialog timeout is 0 then use the wait conditions timeout.
-	if (timeout == 0)
-		{
-		timeout = mWait->GetTimeout();
-		}
+  // If the dialog timeout is 0 then use the wait conditions timeout.
+  if (timeout == 0) {
+    timeout = mWait->GetTimeout();
+  }
 
-	if ((currTime - mStartTime) > timeout)
-		{
-		mWait->EndWait(WaitCondition::TimeOut, TRANSLATE(IDS_WOL_TIMEDOUT));
-		}
+  if ((currTime - mStartTime) > timeout) {
+    mWait->EndWait(WaitCondition::TimeOut, TRANSLATE(IDS_WOL_TIMEDOUT));
+  }
 
-	// Do not render until sufficient time has elapsed. This will prevent the
-	// dialog from flashing in and out when the wait condition is satisfied quickly.
-	if (!mShowDialog && mStartTime && dialog_timeout != SHOW_NEVER && ((currTime - mStartTime) > 2000))
-		{
-		mShowDialog = true;
-		MouseMgrClass::End_Wait_Cursor();
-		}
+  // Do not render until sufficient time has elapsed. This will prevent the
+  // dialog from flashing in and out when the wait condition is satisfied quickly.
+  if (!mShowDialog && mStartTime && dialog_timeout != SHOW_NEVER && ((currTime - mStartTime) > 2000)) {
+    mShowDialog = true;
+    MouseMgrClass::End_Wait_Cursor();
+  }
 
-	// Allow time for WWOnline processing.
-	if (mWOLSession.IsValid()) mWOLSession->Process();
-	}
-
+  // Allow time for WWOnline processing.
+  if (mWOLSession.IsValid())
+    mWOLSession->Process();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::On_Command
-*
-* DESCRIPTION
-*     Process command message
-*
-* INPUTS
-*     Ctrl    - ID of control
-*     Message -
-*     Param   -
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::On_Command
+ *
+ * DESCRIPTION
+ *     Process command message
+ *
+ * INPUTS
+ *     Ctrl    - ID of control
+ *     Message -
+ *     Param   -
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::On_Command(int ctrl, int message, DWORD param)
-	{
-	if ((ctrl == IDCANCEL) && mWait.IsValid())
-		{
-		WWDEBUG_SAY(("DlgWOLWait: UserAborted '%S'\n", (const WCHAR*)mWait->GetWaitText()));
-		mWait->EndWait(WaitCondition::UserCancel, TRANSLATE(IDS_WOL_CANCELED));
-		}
-	}
-
+void DlgWOLWait::On_Command(int ctrl, int message, DWORD param) {
+  if ((ctrl == IDCANCEL) && mWait.IsValid()) {
+    WWDEBUG_SAY(("DlgWOLWait: UserAborted '%S'\n", (const WCHAR *)mWait->GetWaitText()));
+    mWait->EndWait(WaitCondition::UserCancel, TRANSLATE(IDS_WOL_CANCELED));
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgWOLWait::Render
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgWOLWait::Render
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgWOLWait::Render(void)
-	{
-	// Do not render until sufficient time has elapsed. This will prevent the
-	// dialog from flashing in and out when the wait condition is satisfied quickly.
-	if (mShowDialog)
-		{
-		PopupDialogClass::Render();
-		}
-	}
+void DlgWOLWait::Render(void) {
+  // Do not render until sufficient time has elapsed. This will prevent the
+  // dialog from flashing in and out when the wait condition is satisfied quickly.
+  if (mShowDialog) {
+    PopupDialogClass::Render();
+  }
+}

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgevamaptab.h      $*
  *                                                                                             *
@@ -41,45 +42,36 @@
 #ifndef __DLG_EVA_MAP_TAB_H
 #define __DLG_EVA_MAP_TAB_H
 
-
 #include "childdialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	EvaMapTabClass
 //
 ////////////////////////////////////////////////////////////////
-class EvaMapTabClass : public ChildDialogClass
-{
+class EvaMapTabClass : public ChildDialogClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  EvaMapTabClass(void) : ChildDialogClass(IDD_ENCYCLOPEDIA_MAP_TAB) {}
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	EvaMapTabClass (void)	:
-		ChildDialogClass (IDD_ENCYCLOPEDIA_MAP_TAB)	{}
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_MapCtrl_Marker_Hilighted(MapCtrlClass *map_ctrl, int ctrl_id, int marker_index);
+  void On_MapCtrl_Pos_Clicked(MapCtrlClass *map_ctrl, int ctrl_id, const Vector3 &pos);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_MapCtrl_Marker_Hilighted (MapCtrlClass *map_ctrl, int ctrl_id, int marker_index);
-	void		On_MapCtrl_Pos_Clicked (MapCtrlClass *map_ctrl, int ctrl_id, const Vector3 &pos);
-	
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
 };
 
-
 #endif //__DLG_EVA_MAP_TAB_H
-

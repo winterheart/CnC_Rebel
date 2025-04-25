@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -48,140 +47,124 @@
 #include "decophys.h"
 #include "spawnernode.h"
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 ////////////////////////////////////////////////////////////////////////////
 class PresetClass;
-
 
 ////////////////////////////////////////////////////////////////////////////
 //
 //	SpawnPointNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class SpawnPointNodeClass : public NodeClass
-{
+class SpawnPointNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	SpawnPointNodeClass (PresetClass *preset = NULL);
-	SpawnPointNodeClass (const SpawnPointNodeClass &src);
-	~SpawnPointNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  SpawnPointNodeClass(PresetClass *preset = NULL);
+  SpawnPointNodeClass(const SpawnPointNodeClass &src);
+  ~SpawnPointNodeClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const SpawnPointNodeClass &operator= (const SpawnPointNodeClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const SpawnPointNodeClass &operator=(const SpawnPointNodeClass &src);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// SpawnPointNodeClass specific
-	//
-	SpawnerNodeClass *	Peek_Spawner (void) const					{ return SpawnerNode; }
-	void						Set_Spawner (SpawnerNodeClass *spot)	{ SpawnerNode = spot; }
+  //
+  // SpawnPointNodeClass specific
+  //
+  SpawnerNodeClass *Peek_Spawner(void) const { return SpawnerNode; }
+  void Set_Spawner(SpawnerNodeClass *spot) { SpawnerNode = spot; }
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	
-	//
-	// From NodeClass
-	//
-	void			Initialize (void);
-	NodeClass *	Clone (void)								{ return new SpawnPointNodeClass (*this); }
-	NODE_TYPE	Get_Type (void) const					{ return NODE_TYPE_SPAWN_POINT; }
-	int			Get_Icon_Index (void) const			{ return VIS_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const			{ return PhysObj; }
-	bool			Is_Static (void) const					{ return false; }
-	bool			Can_Be_Rotated_Freely (void) const	{ return true; }
-	void			On_Delete (void);
-	NodeClass *	Get_Parent_Node (void) const			{ return SpawnerNode; }
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Notifications
-	//
-	void			On_Rotate (void);
-	void			On_Translate (void);
-	void			On_Transform (void);
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  // From NodeClass
+  //
+  void Initialize(void);
+  NodeClass *Clone(void) { return new SpawnPointNodeClass(*this); }
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_SPAWN_POINT; }
+  int Get_Icon_Index(void) const { return VIS_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return PhysObj; }
+  bool Is_Static(void) const { return false; }
+  bool Can_Be_Rotated_Freely(void) const { return true; }
+  void On_Delete(void);
+  NodeClass *Get_Parent_Node(void) const { return SpawnerNode; }
 
+  //
+  //	Notifications
+  //
+  void On_Rotate(void);
+  void On_Translate(void);
+  void On_Transform(void);
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//	From PersistClass
-	bool			Save (ChunkSaveClass &csave);
-	bool			Load (ChunkLoadClass &cload);
+  //	From PersistClass
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	bool			Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  DecorationPhysClass *PhysObj;
+  SpawnerNodeClass *SpawnerNode;
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	DecorationPhysClass *	PhysObj;
-	SpawnerNodeClass *		SpawnerNode;
-
-	static PhysClass *		_TheCollisionObj;
-	static int					_InstanceCount;
+  static PhysClass *_TheCollisionObj;
+  static int _InstanceCount;
 };
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Rotate
 //////////////////////////////////////////////////////////////////
-inline void
-SpawnPointNodeClass::On_Rotate (void)
-{	
-	if (SpawnerNode != NULL) {
-		SpawnerNode->Update_Lines ();
-	}
+inline void SpawnPointNodeClass::On_Rotate(void) {
+  if (SpawnerNode != NULL) {
+    SpawnerNode->Update_Lines();
+  }
 
-	NodeClass::On_Rotate ();
-	return ;
+  NodeClass::On_Rotate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Translate
 //////////////////////////////////////////////////////////////////
-inline void
-SpawnPointNodeClass::On_Translate (void)
-{
-	if (SpawnerNode != NULL) {
-		SpawnerNode->Update_Lines ();
-	}
+inline void SpawnPointNodeClass::On_Translate(void) {
+  if (SpawnerNode != NULL) {
+    SpawnerNode->Update_Lines();
+  }
 
-	NodeClass::On_Translate ();
-	return ;
+  NodeClass::On_Translate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Transform
 //////////////////////////////////////////////////////////////////
-inline void
-SpawnPointNodeClass::On_Transform (void)
-{
-	if (SpawnerNode != NULL) {
-		SpawnerNode->Update_Lines ();
-	}
+inline void SpawnPointNodeClass::On_Transform(void) {
+  if (SpawnerNode != NULL) {
+    SpawnerNode->Update_Lines();
+  }
 
-	NodeClass::On_Transform ();
-	return ;
+  NodeClass::On_Transform();
+  return;
 }
-
 
 #endif //__SPAWN_POINT_NODE_H

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/basecontroller.h        $*
  *                                                                                             *
@@ -47,7 +48,6 @@
 #include "characterclasssettings.h"
 #include "networkobject.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
@@ -65,191 +65,181 @@ class BeaconGameObj;
 //	BaseControllerClass
 //
 ////////////////////////////////////////////////////////////////
-class BaseControllerClass : public NetworkObjectClass
-{
+class BaseControllerClass : public NetworkObjectClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class BuildingMonitorClass;
 
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class BuildingMonitorClass;
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  BaseControllerClass(void);
+  virtual ~BaseControllerClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	BaseControllerClass (void);
-	virtual ~BaseControllerClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Initialization
+  //
+  void Initialize(int player_type);
+  void Shutdown(void);
+  void Delete(void) {};
 
-	//
-	//	Initialization
-	//
-	void		Initialize ( int player_type );
-	void		Shutdown (void);
-	void		Delete (void) {};
+  //
+  // Networking.
+  //
+  //	Set_Delete_Pending -
+  //
+  // The base controllers persist between levels so they should never be marked for deletion. They will be deleted
+  // when needed by their owner, the game mode
+  //
+  virtual void Set_Delete_Pending(void) {};
 
-	//
-	// Networking.
-	//
-	//	Set_Delete_Pending -
-	//
-	// The base controllers persist between levels so they should never be marked for deletion. They will be deleted
-	// when needed by their owner, the game mode
-	//
-	virtual void Set_Delete_Pending (void) {};
+  //
+  //	Building access
+  //
+  void Add_Building(BuildingGameObj *building);
 
-	//
-	//	Building access
-	//
-	void		Add_Building (BuildingGameObj *building);
+  //
+  //	Timestep
+  //
+  void Think(void);
 
-	//
-	//	Timestep
-	//
-	void		Think (void);
+  //
+  //	Power related methods
+  //
+  void Set_Base_Powered(bool onoff);
+  bool Is_Base_Powered(void) const { return BasePowered; }
+  void Check_Base_Power(void);
+  void Power_Base(bool onoff);
+  void Set_Operation_Time_Factor(float factor);
+  float Get_Operation_Time_Factor(void) { return OperationTimeFactor; }
 
-	//
-	//	Power related methods
-	//
-	void		Set_Base_Powered (bool onoff);
-	bool		Is_Base_Powered (void) const		{ return BasePowered; }
-	void		Check_Base_Power (void);
-	void		Power_Base (bool onoff);
-	void		Set_Operation_Time_Factor (float factor);
-	float		Get_Operation_Time_Factor (void)	{ return OperationTimeFactor; }
+  //
+  //	Harvester support
+  //
+  void Request_Harvester(int def_id);
+  VehicleGameObj *Get_Harvester_Vehicle(void);
 
-	//
-	//	Harvester support
-	//
-	void					Request_Harvester (int def_id);
-	VehicleGameObj *	Get_Harvester_Vehicle (void);
+  //
+  //	State accessors
+  //
+  bool Can_Generate_Soldiers(void) const { return CanGenerateSoldiers; }
+  bool Can_Generate_Vehicles(void) const { return CanGenerateVehicles; }
 
-	//
-	//	State accessors
-	//
-	bool		Can_Generate_Soldiers (void) const		{ return CanGenerateSoldiers; }
-	bool		Can_Generate_Vehicles (void) const		{ return CanGenerateVehicles; }
+  void Set_Can_Generate_Soldiers(bool onoff);
+  void Set_Can_Generate_Vehicles(bool onoff);
 
-	void		Set_Can_Generate_Soldiers (bool onoff);
-	void		Set_Can_Generate_Vehicles (bool onoff);
+  //
+  //	Data accessors
+  //
+  int Get_Player_Type(void) const { return PlayerType; }
 
-	//
-	//	Data accessors
-	//
-	int			Get_Player_Type (void) const			{  return PlayerType; }
+  //
+  //	Base destruction
+  //
+  void Set_Base_Destroyed(bool onoff);
+  bool Is_Base_Destroyed(void) const { return IsBaseDestroyed; }
+  void Destroy_Base(void);
+  void Set_Beacon_Destroyed_Base(bool onoff);
+  bool Did_Beacon_Destroy_Base(void) const { return DidBeaconDestroyBase; }
 
-	//
-	//	Base destruction
-	//
-	void		Set_Base_Destroyed ( bool onoff );
-	bool		Is_Base_Destroyed (void) const			{ return IsBaseDestroyed; }
-	void		Destroy_Base (void);
-	void		Set_Beacon_Destroyed_Base ( bool onoff );
-	bool		Did_Beacon_Destroy_Base ( void ) const	{ return DidBeaconDestroyBase; }
+  //
+  //	Beacon zone access
+  //
+  const OBBoxClass &Get_Beacon_Zone(void) { return BeaconZone; }
 
-	//
-	//	Beacon zone access
-	//
-	const OBBoxClass &	Get_Beacon_Zone (void)		{ return BeaconZone; }
+  //
+  //	Radar support
+  //
+  void Check_Radar(void);
+  bool Is_Radar_Enabled(void) const { return IsRadarEnabled; }
 
-	//
-	//	Radar support
-	//
-	void		Check_Radar (void);
-	bool		Is_Radar_Enabled (void) const	{ return IsRadarEnabled; }
+  void Play_Announcement(int text_id);
 
-	void Play_Announcement(int text_id);
+  //
+  //	Notifications
+  //
+  void On_Building_Damaged(BuildingGameObj *building);
+  void On_Building_Destroyed(BuildingGameObj *building);
 
-	//
-	//	Notifications
-	//
-	void		On_Building_Damaged (BuildingGameObj *building);
-	void		On_Building_Destroyed (BuildingGameObj *building);
+  void On_Vehicle_Generated(VehicleGameObj *vehicle);
+  void On_Vehicle_Delivered(VehicleGameObj *vehicle);
+  void On_Vehicle_Damaged(VehicleGameObj *vehicle);
+  void On_Vehicle_Destroyed(VehicleGameObj *vehicle);
 
-	void		On_Vehicle_Generated(VehicleGameObj *vehicle);
-	void		On_Vehicle_Delivered(VehicleGameObj *vehicle);
-	void		On_Vehicle_Damaged(VehicleGameObj* vehicle);
-	void		On_Vehicle_Destroyed(VehicleGameObj* vehicle);
+  void On_Beacon_Armed(BeaconGameObj *beacon);
+  void On_Beacon_Disarmed(BeaconGameObj *beacon);
+  void On_Beacon_Warning(BeaconGameObj *beacon);
 
-	void		On_Beacon_Armed(BeaconGameObj* beacon);
-	void		On_Beacon_Disarmed(BeaconGameObj* beacon);
-	void		On_Beacon_Warning(BeaconGameObj* beacon);
+  //
+  //	Fund support
+  //
+  // void		Deposit_Funds (int funds);
+  void Distribute_Funds_To_Each_Teammate(int funds);
 
-	//
-	//	Fund support
-	//
-	//void		Deposit_Funds (int funds);
-	void		Distribute_Funds_To_Each_Teammate (int funds);
+  //
+  //	Network support
+  //
+  void Import_Occasional(BitStreamClass &packet);
+  void Export_Occasional(BitStreamClass &packet);
 
-	//
-	//	Network support
-	//
-	void		Import_Occasional (BitStreamClass &packet);
-   void		Export_Occasional (BitStreamClass &packet);
-
-	//
-	//	Component lookup
-	//
-	static BaseControllerClass *	Find_Base ( int playertype );
-	static BaseControllerClass *	Find_Base_For_Star (void);
-	BuildingGameObj *				Find_Building (BuildingConstants::BuildingType type);
+  //
+  //	Component lookup
+  //
+  static BaseControllerClass *Find_Base(int playertype);
+  static BaseControllerClass *Find_Base_For_Star(void);
+  BuildingGameObj *Find_Building(BuildingConstants::BuildingType type);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum { BASE_UNDER_ATTACK = 0, BUILDING_DESTROYED } Notification;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected constants
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		BASE_UNDER_ATTACK		= 0,
-		BUILDING_DESTROYED
-	}	Notification;
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Initialize_Building_List(void);
+  void Reset_Building_List(void);
+  void Enable_Radar(bool onoff);
 
-
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		Initialize_Building_List (void);
-	void		Reset_Building_List (void);
-	void		Enable_Radar (bool onoff);
-
-	//
-	//	Team notification
-	//
-	void		Notify_Team (Notification event, BuildingConstants::BuildingType type);
+  //
+  //	Team notification
+  //
+  void Notify_Team(Notification event, BuildingConstants::BuildingType type);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  bool Are_All_Buildings_Destroyed(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	bool							Are_All_Buildings_Destroyed (void);
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  float OperationTimeFactor;
+  int PlayerType; // Team
+  DynamicVectorClass<BuildingGameObj *> BuildingList;
+  bool BasePowered;
+  bool CanGenerateSoldiers;
+  bool CanGenerateVehicles;
+  bool IsRadarEnabled;
+  bool IsBaseDestroyed;
+  bool DidBeaconDestroyBase;
+  OBBoxClass BeaconZone;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	float										OperationTimeFactor;
-	int											PlayerType;				// Team
-	DynamicVectorClass<BuildingGameObj *>		BuildingList;
-	bool										BasePowered;
-	bool										CanGenerateSoldiers;
-	bool										CanGenerateVehicles;
-	bool										IsRadarEnabled;
-	bool										IsBaseDestroyed;
-	bool										DidBeaconDestroyBase;
-	OBBoxClass									BeaconZone;
+  int AnnounceInterval;
+  float AnnouncedAlliedBldgDamageTime;
+  float AnnouncedEnemyBldgDamageTime;
+  float AnnouncedAlliedVehicleDamageTime;
+  float AnnouncedEnemyVehicleDamageTime;
 
-	int AnnounceInterval;
-	float AnnouncedAlliedBldgDamageTime;
-	float AnnouncedEnemyBldgDamageTime;
-	float AnnouncedAlliedVehicleDamageTime;
-	float AnnouncedEnemyVehicleDamageTime;
-
-	static BaseControllerClass	*		CurrentBases[BuildingConstants::BASE_COUNT];
+  static BaseControllerClass *CurrentBases[BuildingConstants::BASE_COUNT];
 };
-
 
 #endif //__BASE_CONTROLLER_H

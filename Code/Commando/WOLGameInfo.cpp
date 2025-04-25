@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLGameInfo.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Steve_t $
-*
-* VERSION INFO
-*     $Revision: 18 $
-*     $Modtime: 10/31/02 4:30p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLGameInfo.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Steve_t $
+ *
+ * VERSION INFO
+ *     $Revision: 18 $
+ *     $Modtime: 10/31/02 4:30p $
+ *
+ ******************************************************************************/
 
 #include "WOLGameInfo.h"
 #include "GameData.h"
@@ -44,611 +44,558 @@
 using namespace WWOnline;
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::WOLGameInfo
-*
-* DESCRIPTION
-*     Default constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::WOLGameInfo
+ *
+ * DESCRIPTION
+ *     Default constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-WOLGameInfo::WOLGameInfo(void) :
-		mIsDataValid(false),
-		mIsMapValid(true),
-		mPingTime(-1)
-	{
-	}
-
+WOLGameInfo::WOLGameInfo(void) : mIsDataValid(false), mIsMapValid(true), mPingTime(-1) {}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::WOLGameInfo
-*
-* DESCRIPTION
-*     Import information about the game.
-*
-* INPUTS
-*     Game - Game to import information from.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::WOLGameInfo
+ *
+ * DESCRIPTION
+ *     Import information about the game.
+ *
+ * INPUTS
+ *     Game - Game to import information from.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-WOLGameInfo::WOLGameInfo(const cGameData& theGame)
-	{
-	ImportFromGame(theGame);
-	}
-
+WOLGameInfo::WOLGameInfo(const cGameData &theGame) { ImportFromGame(theGame); }
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::WOLGameInfo
-*
-* DESCRIPTION
-*     Import information about the game from a channel.
-*
-* INPUTS
-*     Channel - Channel to import game information from.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::WOLGameInfo
+ *
+ * DESCRIPTION
+ *     Import information about the game from a channel.
+ *
+ * INPUTS
+ *     Channel - Channel to import game information from.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-WOLGameInfo::WOLGameInfo(const RefPtr<ChannelData>& channel)
-	{
-	ImportFromChannel(channel);
-	}
-
+WOLGameInfo::WOLGameInfo(const RefPtr<ChannelData> &channel) { ImportFromChannel(channel); }
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::~WOLGameInfo
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::~WOLGameInfo
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-WOLGameInfo::~WOLGameInfo(void)
-	{
-	}
-
+WOLGameInfo::~WOLGameInfo(void) {}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::Reset
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::Reset
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void WOLGameInfo::Reset(void)
-	{
-	mIsDataValid = false;
-	mIsMapValid = true;
+void WOLGameInfo::Reset(void) {
+  mIsDataValid = false;
+  mIsMapValid = true;
 
-	mVersion = 0;
-	mGameType = 0;
+  mVersion = 0;
+  mGameType = 0;
 
-	mMapName[0] = 0;
-	mModName[0] = 0;
-	mTitle[0] = 0;
+  mMapName[0] = 0;
+  mModName[0] = 0;
+  mTitle[0] = 0;
 
-	mMinPlayers = 0;
-	mMaxPlayers = 0;
-	mNumPlayers = 0;
-		
-	mClanID1 = 0;
-	mClanID2 = 0;
-		
-	mIsMod = false;
-	mIsLaddered = false;
-	mIsPassworded = false;
-	mIsQuickmatch = false;
-	mIsDedicated = false;
-	mIsFriendlyFire = false;
-	mIsFreeWeapons = false;
-	mIsTeamRemix = false;
-	mIsTeamChange = false;
-	mIsClanGame = false;
-	mIsRepairBuildings = false;
-	mIsDriverGunner = false;
-	mSpawnWeapons = false;
-		
-	mPingTime = -1;
-	}
+  mMinPlayers = 0;
+  mMaxPlayers = 0;
+  mNumPlayers = 0;
 
+  mClanID1 = 0;
+  mClanID2 = 0;
+
+  mIsMod = false;
+  mIsLaddered = false;
+  mIsPassworded = false;
+  mIsQuickmatch = false;
+  mIsDedicated = false;
+  mIsFriendlyFire = false;
+  mIsFreeWeapons = false;
+  mIsTeamRemix = false;
+  mIsTeamChange = false;
+  mIsClanGame = false;
+  mIsRepairBuildings = false;
+  mIsDriverGunner = false;
+  mSpawnWeapons = false;
+
+  mPingTime = -1;
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::ImportFromGame
-*
-* DESCRIPTION
-*     Import information about the game.
-*
-* INPUTS
-*     Game - Game to import information from.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::ImportFromGame
+ *
+ * DESCRIPTION
+ *     Import information about the game.
+ *
+ * INPUTS
+ *     Game - Game to import information from.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void WOLGameInfo::ImportFromGame(const cGameData& theGame)
-	{
-	Reset();
+void WOLGameInfo::ImportFromGame(const cGameData &theGame) {
+  Reset();
 
-	mIsDataValid = true;
-	mIsMapValid = true;
+  mIsDataValid = true;
+  mIsMapValid = true;
 
-	mVersion  = theGame.Get_Version_Number();
-	mGameType = theGame.Get_Game_Type();
+  mVersion = theGame.Get_Version_Number();
+  mGameType = theGame.Get_Game_Type();
 
-	strncpy(mMapName, theGame.Get_Map_Name(), MAX_TEXT_LENGTH);
-	mMapName[MAX_TEXT_LENGTH - 1] = 0;
-	
-	strncpy(mModName, theGame.Get_Mod_Name(), MAX_TEXT_LENGTH);
-	mModName[MAX_TEXT_LENGTH - 1] = 0;
+  strncpy(mMapName, theGame.Get_Map_Name(), MAX_TEXT_LENGTH);
+  mMapName[MAX_TEXT_LENGTH - 1] = 0;
 
-	wcstombs(mTitle, theGame.Get_Game_Title(), MAX_TEXT_LENGTH);
-	mTitle[MAX_TEXT_LENGTH - 1] = 0;
+  strncpy(mModName, theGame.Get_Mod_Name(), MAX_TEXT_LENGTH);
+  mModName[MAX_TEXT_LENGTH - 1] = 0;
 
-	mMinPlayers = theGame.Get_Min_Players();
-	mMaxPlayers = theGame.Get_Max_Players();
-	mNumPlayers = theGame.Get_Current_Players();
+  wcstombs(mTitle, theGame.Get_Game_Title(), MAX_TEXT_LENGTH);
+  mTitle[MAX_TEXT_LENGTH - 1] = 0;
 
-	mClanID1 = theGame.Get_Clan(0);
-	mClanID2 = theGame.Get_Clan(1);
+  mMinPlayers = theGame.Get_Min_Players();
+  mMaxPlayers = theGame.Get_Max_Players();
+  mNumPlayers = theGame.Get_Current_Players();
 
-	const WCHAR* password = theGame.Get_Password();
-	mIsPassworded = ((password != NULL) && (wcslen(password) > 0));
-	mIsLaddered   = theGame.IsLaddered.Get();
-	mIsQuickmatch = theGame.Is_QuickMatch_Server();
-	mIsDedicated  = theGame.IsDedicated.Get();
+  mClanID1 = theGame.Get_Clan(0);
+  mClanID2 = theGame.Get_Clan(1);
 
-	mIsFriendlyFire = theGame.IsFriendlyFirePermitted.Get();
-	mIsFreeWeapons  = theGame.IsFreeWeapons.Get();
-	mIsTeamRemix    = theGame.RemixTeams.Get();
-	mIsTeamChange   = theGame.IsTeamChangingAllowed.Get();
-	mIsClanGame     = theGame.IsClanGame.Get();
+  const WCHAR *password = theGame.Get_Password();
+  mIsPassworded = ((password != NULL) && (wcslen(password) > 0));
+  mIsLaddered = theGame.IsLaddered.Get();
+  mIsQuickmatch = theGame.Is_QuickMatch_Server();
+  mIsDedicated = theGame.IsDedicated.Get();
 
-	// C&C mode flags
-	mIsRepairBuildings = theGame.CanRepairBuildings.Get();
-	mIsDriverGunner    = theGame.DriverIsAlwaysGunner.Get();
-	mSpawnWeapons      = theGame.SpawnWeapons.Get();
+  mIsFriendlyFire = theGame.IsFriendlyFirePermitted.Get();
+  mIsFreeWeapons = theGame.IsFreeWeapons.Get();
+  mIsTeamRemix = theGame.RemixTeams.Get();
+  mIsTeamChange = theGame.IsTeamChangingAllowed.Get();
+  mIsClanGame = theGame.IsClanGame.Get();
 
-	mIsMod = (theGame.Get_Mod_Name().Is_Empty() == false);
+  // C&C mode flags
+  mIsRepairBuildings = theGame.CanRepairBuildings.Get();
+  mIsDriverGunner = theGame.DriverIsAlwaysGunner.Get();
+  mSpawnWeapons = theGame.SpawnWeapons.Get();
 
-	mPingTime = -1;
-	}
+  mIsMod = (theGame.Get_Mod_Name().Is_Empty() == false);
 
+  mPingTime = -1;
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::ImportFromChannel
-*
-* DESCRIPTION
-*     Import information about the game from a channel.
-*
-* INPUTS
-*     Channel - Channel to import game information from.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::ImportFromChannel
+ *
+ * DESCRIPTION
+ *     Import information about the game from a channel.
+ *
+ * INPUTS
+ *     Channel - Channel to import game information from.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void WOLGameInfo::ImportFromChannel(const RefPtr<ChannelData>& channel)
-	{
-	Reset();
+void WOLGameInfo::ImportFromChannel(const RefPtr<ChannelData> &channel) {
+  Reset();
 
-	if (channel.IsValid() == false)
-		{
-		mIsDataValid = false;
-		return;
-		}
-					
-	//ST - Test code
-	//if (channel->GetName() != WideStringClass(L"ladtest07")) {
-	//	mIsDataValid = false;
-	//	return;
-	//}
-		
+  if (channel.IsValid() == false) {
+    mIsDataValid = false;
+    return;
+  }
 
-	const char* exInfo = channel->GetExtraInfo();
+  // ST - Test code
+  // if (channel->GetName() != WideStringClass(L"ladtest07")) {
+  //	mIsDataValid = false;
+  //	return;
+  // }
 
-	if ((exInfo == NULL) || (exInfo && (strlen(exInfo) != 36)))
-		{
-		WWDEBUG_SAY(("WOLERROR: Channel ExInfo NULL or wrong size\n"));
-		mIsDataValid = false;
-		return;
-		}
+  const char *exInfo = channel->GetExtraInfo();
 
-	// Assume the data will be valid
-	mIsDataValid = true;
+  if ((exInfo == NULL) || (exInfo && (strlen(exInfo) != 36))) {
+    WWDEBUG_SAY(("WOLERROR: Channel ExInfo NULL or wrong size\n"));
+    mIsDataValid = false;
+    return;
+  }
 
-	// Extract ExInfo settings
-	unsigned long fileCRC = 0;
-	unsigned long version = 0;
-	unsigned long clanID1 = 0;
-	unsigned long clanID2 = 0;
-	unsigned char gameType = 0;
-	unsigned char gameFlags1 = 0;
-	unsigned char gameFlags2 = 0;
-	unsigned char modMapIndex = 0;
+  // Assume the data will be valid
+  mIsDataValid = true;
 
-	int count = sscanf(exInfo, "%08lX%08lX%08lX%08lX%c%c%c%c", &version, &fileCRC,
-			&clanID1, &clanID2, &gameType, &gameFlags1, &gameFlags2, &modMapIndex);
+  // Extract ExInfo settings
+  unsigned long fileCRC = 0;
+  unsigned long version = 0;
+  unsigned long clanID1 = 0;
+  unsigned long clanID2 = 0;
+  unsigned char gameType = 0;
+  unsigned char gameFlags1 = 0;
+  unsigned char gameFlags2 = 0;
+  unsigned char modMapIndex = 0;
 
-	// There should be 8 parameters in the exinfo
-	if (count != 8)
-		{
-		WWDEBUG_SAY(("WOLERROR: Channel ExInfo malformed\n"));
-		mIsDataValid = false;
-		}
+  int count = sscanf(exInfo, "%08lX%08lX%08lX%08lX%c%c%c%c", &version, &fileCRC, &clanID1, &clanID2, &gameType,
+                     &gameFlags1, &gameFlags2, &modMapIndex);
 
-	if (version != cNetwork::Get_Exe_Key()) {
-		mIsDataValid = false;
-		return;
-	}
+  // There should be 8 parameters in the exinfo
+  if (count != 8) {
+    WWDEBUG_SAY(("WOLERROR: Channel ExInfo malformed\n"));
+    mIsDataValid = false;
+  }
 
-	mVersion  = version;
-	mGameType = (cGameData::GameTypeEnum)(gameType - '0');
+  if (version != cNetwork::Get_Exe_Key()) {
+    mIsDataValid = false;
+    return;
+  }
 
-	if (mGameType != cGameData::GAME_TYPE_CNC)
-		{
-		WWDEBUG_SAY(("WOLERROR: GameType '%d' out of range\n", mGameType));
-		mIsDataValid = false;
-		}
+  mVersion = version;
+  mGameType = (cGameData::GameTypeEnum)(gameType - '0');
 
-	// Extract game flags
-	mIsLaddered   = (channel->GetTournament() != 0);
-	mIsPassworded = channel->IsPassworded();
+  if (mGameType != cGameData::GAME_TYPE_CNC) {
+    WWDEBUG_SAY(("WOLERROR: GameType '%d' out of range\n", mGameType));
+    mIsDataValid = false;
+  }
 
-	mIsDedicated    = ((gameFlags1 & 0x40) == 0x40);
-	mIsFriendlyFire = ((gameFlags1 & 0x10) == 0x10);
-	mIsFreeWeapons  = ((gameFlags1 & 0x08) == 0x08);
-	mIsTeamRemix    = ((gameFlags1 & 0x04) == 0x04);
-	mIsTeamChange   = ((gameFlags1 & 0x02) == 0x02);
-	mIsClanGame     = ((gameFlags1 & 0x01) == 0x01);
+  // Extract game flags
+  mIsLaddered = (channel->GetTournament() != 0);
+  mIsPassworded = channel->IsPassworded();
 
-	mIsMod             = ((gameFlags2 & 0x40) == 0x40);
-	mSpawnWeapons      = ((gameFlags2 & 0x04) == 0x04);
-	mIsRepairBuildings = ((gameFlags2 & 0x02) == 0x02);
-	mIsDriverGunner    = ((gameFlags2 & 0x01) == 0x01);
-	
-	// Find the mod and map names from their CRC
-	StringClass mapName(0, true);
-	mapName = "<Unknown>";
+  mIsDedicated = ((gameFlags1 & 0x40) == 0x40);
+  mIsFriendlyFire = ((gameFlags1 & 0x10) == 0x10);
+  mIsFreeWeapons = ((gameFlags1 & 0x08) == 0x08);
+  mIsTeamRemix = ((gameFlags1 & 0x04) == 0x04);
+  mIsTeamChange = ((gameFlags1 & 0x02) == 0x02);
+  mIsClanGame = ((gameFlags1 & 0x01) == 0x01);
 
-	StringClass modName(0, true);
+  mIsMod = ((gameFlags2 & 0x40) == 0x40);
+  mSpawnWeapons = ((gameFlags2 & 0x04) == 0x04);
+  mIsRepairBuildings = ((gameFlags2 & 0x02) == 0x02);
+  mIsDriverGunner = ((gameFlags2 & 0x01) == 0x01);
 
-	bool got_map_name = true;
-	if (mIsMod)
-		{
-		// Get the true index (+32 put the index into the printable range)
-		modMapIndex -= 32;
+  // Find the mod and map names from their CRC
+  StringClass mapName(0, true);
+  mapName = "<Unknown>";
 
-		// Find mod based on its crc and get map filename based on the index.
-		if (ModPackageMgrClass::Get_Mod_Map_Name_From_CRC_Index(fileCRC, modMapIndex, &modName, &mapName) == false)
-			{
-			//mIsDataValid = false;
-			got_map_name = false;
-			}
-		}
-	else
-		{
-		// Find mod based on its crc and get map filename based on the index.
-		if (ModPackageMgrClass::Get_Mod_Map_Name_From_CRC (0, fileCRC, &modName, &mapName) == false)
-			{
-			//mIsDataValid = false;
-			got_map_name = false;
-			}
-		}
+  StringClass modName(0, true);
 
-	strncpy(mModName, modName, MAX_TEXT_LENGTH);
-	mModName[MAX_TEXT_LENGTH - 1] = 0;
+  bool got_map_name = true;
+  if (mIsMod) {
+    // Get the true index (+32 put the index into the printable range)
+    modMapIndex -= 32;
 
-	strncpy(mMapName, mapName, MAX_TEXT_LENGTH);
-	mMapName[MAX_TEXT_LENGTH - 1] = 0;
+    // Find mod based on its crc and get map filename based on the index.
+    if (ModPackageMgrClass::Get_Mod_Map_Name_From_CRC_Index(fileCRC, modMapIndex, &modName, &mapName) == false) {
+      // mIsDataValid = false;
+      got_map_name = false;
+    }
+  } else {
+    // Find mod based on its crc and get map filename based on the index.
+    if (ModPackageMgrClass::Get_Mod_Map_Name_From_CRC(0, fileCRC, &modName, &mapName) == false) {
+      // mIsDataValid = false;
+      got_map_name = false;
+    }
+  }
 
-	mMinPlayers = channel->GetMinUsers();
-	mMaxPlayers = channel->GetMaxUsers();
-	mNumPlayers = channel->GetCurrentUsers();
+  strncpy(mModName, modName, MAX_TEXT_LENGTH);
+  mModName[MAX_TEXT_LENGTH - 1] = 0;
 
-	// Do not count the host as a player for dedicated servers.
-	if (mIsDedicated)
-		{
-		WWASSERT(mNumPlayers > 0);
-		--mNumPlayers;
+  strncpy(mMapName, mapName, MAX_TEXT_LENGTH);
+  mMapName[MAX_TEXT_LENGTH - 1] = 0;
 
-		WWASSERT(mMaxPlayers > 0);
-		--mMaxPlayers;
-		}
+  mMinPlayers = channel->GetMinUsers();
+  mMaxPlayers = channel->GetMaxUsers();
+  mNumPlayers = channel->GetCurrentUsers();
 
-	mClanID1 = clanID1;
-	mClanID2 = clanID2;
+  // Do not count the host as a player for dedicated servers.
+  if (mIsDedicated) {
+    WWASSERT(mNumPlayers > 0);
+    --mNumPlayers;
 
-	const char* topic = channel->GetTopic();
+    WWASSERT(mMaxPlayers > 0);
+    --mMaxPlayers;
+  }
 
-	if (topic == NULL)
-		{
-		WWDEBUG_SAY(("WOLERROR: Channel Topic is NULL\n"));
-		mIsDataValid = false;
-		}
+  mClanID1 = clanID1;
+  mClanID2 = clanID2;
 
-	// Quickmatch settings are marked by a pipe '|' character
-	mIsQuickmatch = (strchr(topic, '|') != NULL);
+  const char *topic = channel->GetTopic();
 
-	// Extract game title from topic
-	unsigned int titleLength = (topic[0] - 0x20);
-	WWASSERT(titleLength <= 32);
-	titleLength = min<unsigned int>(titleLength, 32);
-	++topic;
+  if (topic == NULL) {
+    WWDEBUG_SAY(("WOLERROR: Channel Topic is NULL\n"));
+    mIsDataValid = false;
+  }
 
-	strncpy(mTitle, topic, titleLength);
-	mTitle[titleLength] = 0;
-	WWASSERT(strlen(mTitle) == titleLength);
-	topic += titleLength;
+  // Quickmatch settings are marked by a pipe '|' character
+  mIsQuickmatch = (strchr(topic, '|') != NULL);
 
-	unsigned int mapLength = (topic[0] - 0x20);
-	WWASSERT(mapLength <= 16);
-	mapLength = min<unsigned int>(mapLength, 16);
-	++topic;
+  // Extract game title from topic
+  unsigned int titleLength = (topic[0] - 0x20);
+  WWASSERT(titleLength <= 32);
+  titleLength = min<unsigned int>(titleLength, 32);
+  ++topic;
 
-	if (!got_map_name) {
-		strncpy(mMapName, topic, mapLength);
-		mMapName[mapLength] = 0;
-		WWASSERT(strlen(mMapName) == mapLength);
-		mIsMapValid = false;
-	}
-	topic += mapLength;
+  strncpy(mTitle, topic, titleLength);
+  mTitle[titleLength] = 0;
+  WWASSERT(strlen(mTitle) == titleLength);
+  topic += titleLength;
 
-	// Calculate ping
-	PingProfile pings;
-	DecodePingProfile(topic, pings);
+  unsigned int mapLength = (topic[0] - 0x20);
+  WWASSERT(mapLength <= 16);
+  mapLength = min<unsigned int>(mapLength, 16);
+  ++topic;
 
-	const PingProfile& localPings = GetLocalPingProfile();
-	mPingTime = ComparePingProfile(localPings, pings);
-	}
+  if (!got_map_name) {
+    strncpy(mMapName, topic, mapLength);
+    mMapName[mapLength] = 0;
+    WWASSERT(strlen(mMapName) == mapLength);
+    mIsMapValid = false;
+  }
+  topic += mapLength;
 
+  // Calculate ping
+  PingProfile pings;
+  DecodePingProfile(topic, pings);
+
+  const PingProfile &localPings = GetLocalPingProfile();
+  mPingTime = ComparePingProfile(localPings, pings);
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::ExportToChannel
-*
-* DESCRIPTION
-*     Export game information into a channel.
-*
-* INPUTS
-*     Channel - Channel to export game information into.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::ExportToChannel
+ *
+ * DESCRIPTION
+ *     Export game information into a channel.
+ *
+ * INPUTS
+ *     Channel - Channel to export game information into.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void WOLGameInfo::ExportToChannel(const RefPtr<ChannelData>& channel)
-	{
-	if (channel.IsValid() && mIsDataValid)
-		{
-		// If this is a dedicated server then the max players must be incremented
-		// by one to account for the host.
-		unsigned int maxPlayers = (mIsDedicated == true) ? (mMaxPlayers + 1) : mMaxPlayers;
+void WOLGameInfo::ExportToChannel(const RefPtr<ChannelData> &channel) {
+  if (channel.IsValid() && mIsDataValid) {
+    // If this is a dedicated server then the max players must be incremented
+    // by one to account for the host.
+    unsigned int maxPlayers = (mIsDedicated == true) ? (mMaxPlayers + 1) : mMaxPlayers;
 
-		// Set the channels min and max players
-		channel->SetMinMaxUsers(mMinPlayers, maxPlayers);
+    // Set the channels min and max players
+    channel->SetMinMaxUsers(mMinPlayers, maxPlayers);
 
-		// Set the tournament type
-		unsigned int tournamentType = (mIsLaddered ? 1 : 0);
-		channel->SetTournament(tournamentType);
+    // Set the tournament type
+    unsigned int tournamentType = (mIsLaddered ? 1 : 0);
+    channel->SetTournament(tournamentType);
 
-		//-------------------------------------------------------------------------
-		// Encode ExInfo
-		//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // Encode ExInfo
+    //-------------------------------------------------------------------------
 
-		// For flags bit 6 must be set to keep the overall value at least a space character
-		unsigned char gameFlags1 = 0x20;
-		gameFlags1 |= mIsDedicated ? 0x40 : 0x00;
-		gameFlags1 |= mIsFriendlyFire ? 0x10 : 0x00;
-		gameFlags1 |= mIsFreeWeapons ? 0x08 : 0x00;
-		gameFlags1 |= mIsTeamRemix ? 0x04 : 0x00;
-		gameFlags1 |= mIsTeamChange ? 0x02 : 0x00;
-		gameFlags1 |= mIsClanGame ? 0x01 : 0x00;
+    // For flags bit 6 must be set to keep the overall value at least a space character
+    unsigned char gameFlags1 = 0x20;
+    gameFlags1 |= mIsDedicated ? 0x40 : 0x00;
+    gameFlags1 |= mIsFriendlyFire ? 0x10 : 0x00;
+    gameFlags1 |= mIsFreeWeapons ? 0x08 : 0x00;
+    gameFlags1 |= mIsTeamRemix ? 0x04 : 0x00;
+    gameFlags1 |= mIsTeamChange ? 0x02 : 0x00;
+    gameFlags1 |= mIsClanGame ? 0x01 : 0x00;
 
-		unsigned char gameFlags2 = 0x20;
-		gameFlags2 |= mIsMod ? 0x40 : 0x00;
-		gameFlags2 |= mSpawnWeapons ? 0x04: 0x00;
-		gameFlags2 |= mIsRepairBuildings ? 0x02: 0x00;
-		gameFlags2 |= mIsDriverGunner ? 0x01: 0x00;
+    unsigned char gameFlags2 = 0x20;
+    gameFlags2 |= mIsMod ? 0x40 : 0x00;
+    gameFlags2 |= mSpawnWeapons ? 0x04 : 0x00;
+    gameFlags2 |= mIsRepairBuildings ? 0x02 : 0x00;
+    gameFlags2 |= mIsDriverGunner ? 0x01 : 0x00;
 
-		// The file CRC is either the map name or the mod name depending on if
-		// the mod flag is set.
-		unsigned long fileCRC = 0;
-		unsigned char modMapIndex = 0;
+    // The file CRC is either the map name or the mod name depending on if
+    // the mod flag is set.
+    unsigned long fileCRC = 0;
+    unsigned char modMapIndex = 0;
 
-		if (mIsMod)
-			{
-			ModPackageClass& package = ModPackageMgrClass::Get_Current_Package();
-			fileCRC = package.Get_CRC();
-			modMapIndex = package.Get_Map_Index(mMapName);
-			}
-		else
-			{
-			fileCRC = ::CRC_Stringi(mMapName);
-			}
+    if (mIsMod) {
+      ModPackageClass &package = ModPackageMgrClass::Get_Current_Package();
+      fileCRC = package.Get_CRC();
+      modMapIndex = package.Get_Map_Index(mMapName);
+    } else {
+      fileCRC = ::CRC_Stringi(mMapName);
+    }
 
-		// Put the map index into the printable ASCII range
-		modMapIndex += 32;
+    // Put the map index into the printable ASCII range
+    modMapIndex += 32;
 
-		// WARNING: The channels ExInfo field has a maximum size of 40 bytes.
-		char exInfo[41];
-		sprintf(exInfo, "%08lX%08lX%08lX%08lX%c%c%c%c", mVersion, fileCRC,
-				mClanID1, mClanID2, (0x30 + mGameType), gameFlags1, gameFlags2, modMapIndex);
+    // WARNING: The channels ExInfo field has a maximum size of 40 bytes.
+    char exInfo[41];
+    sprintf(exInfo, "%08lX%08lX%08lX%08lX%c%c%c%c", mVersion, fileCRC, mClanID1, mClanID2, (0x30 + mGameType),
+            gameFlags1, gameFlags2, modMapIndex);
 
-		channel->SetExtraInfo(exInfo);
+    channel->SetExtraInfo(exInfo);
 
-		//-------------------------------------------------------------------------
-		// Encode topic
-		//-------------------------------------------------------------------------
-		unsigned int titleLength = min<unsigned int>(strlen(mTitle), 32);
-		titleLength += 0x20;
+    //-------------------------------------------------------------------------
+    // Encode topic
+    //-------------------------------------------------------------------------
+    unsigned int titleLength = min<unsigned int>(strlen(mTitle), 32);
+    titleLength += 0x20;
 
-		// WARNING: The channels topic field has a maximum size of 80 bytes.
-		// Ping profile and quickmatch settings are encoded in the topic in
-		// addition to the the game title. The combined maximum of ALL these
-		// entries MUST NEVER exceed 80 bytes.
-		char topic[81];
-		sprintf(topic, "%c%.32s", titleLength, mTitle);
-		
-		//
-		// Only using 61 max right now. Room for a map name maybe? ST - 10/31/2002 2:55PM
-		//
-		unsigned int mapLength = min<unsigned int>(strlen(mMapName), 16);
-		mapLength += 0x20;
+    // WARNING: The channels topic field has a maximum size of 80 bytes.
+    // Ping profile and quickmatch settings are encoded in the topic in
+    // addition to the the game title. The combined maximum of ALL these
+    // entries MUST NEVER exceed 80 bytes.
+    char topic[81];
+    sprintf(topic, "%c%.32s", titleLength, mTitle);
 
-		// WARNING: The channels topic field has a maximum size of 80 bytes.
-		// Ping profile and quickmatch settings are encoded in the topic in
-		// addition to the the game title. The combined maximum of ALL these
-		// entries MUST NEVER exceed 80 bytes.
-		char mapinfo[81];
-		sprintf(mapinfo, "%c%.16s", mapLength, mMapName);
-		strcat(topic, mapinfo);
+    //
+    // Only using 61 max right now. Room for a map name maybe? ST - 10/31/2002 2:55PM
+    //
+    unsigned int mapLength = min<unsigned int>(strlen(mMapName), 16);
+    mapLength += 0x20;
 
-		// Add our ping profile
-		const PingProfile& localPings = GetLocalPingProfile();
-		EncodePingProfile(localPings, topic);
+    // WARNING: The channels topic field has a maximum size of 80 bytes.
+    // Ping profile and quickmatch settings are encoded in the topic in
+    // addition to the the game title. The combined maximum of ALL these
+    // entries MUST NEVER exceed 80 bytes.
+    char mapinfo[81];
+    sprintf(mapinfo, "%c%.16s", mapLength, mMapName);
+    strcat(topic, mapinfo);
 
-		channel->SetTopic(topic);
-		}
-	}
+    // Add our ping profile
+    const PingProfile &localPings = GetLocalPingProfile();
+    EncodePingProfile(localPings, topic);
 
+    channel->SetTopic(topic);
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool WOLGameInfo::IsValidGameChannel(const RefPtr<ChannelData>& channel)
-	{
-	WOLGameInfo gameInfo(channel);
-	return (gameInfo.IsDataValid() && (gameInfo.mVersion == (unsigned long)cNetwork::Get_Exe_Key()));
-	}
-
+bool WOLGameInfo::IsValidGameChannel(const RefPtr<ChannelData> &channel) {
+  WOLGameInfo gameInfo(channel);
+  return (gameInfo.IsDataValid() && (gameInfo.mVersion == (unsigned long)cNetwork::Get_Exe_Key()));
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::IsClanCompeting
-*
-* DESCRIPTION
-*     Check if the specified clan is competing in the game.
-*
-* INPUTS
-*     Clan - ID of clan to check.
-*
-* RESULT
-*     True if clan is competing.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::IsClanCompeting
+ *
+ * DESCRIPTION
+ *     Check if the specified clan is competing in the game.
+ *
+ * INPUTS
+ *     Clan - ID of clan to check.
+ *
+ * RESULT
+ *     True if clan is competing.
+ *
+ ******************************************************************************/
 
-bool WOLGameInfo::IsClanCompeting(unsigned long clanID) const
-	{
-	return (mIsClanGame && (clanID != 0) && ((clanID == mClanID1) || (clanID == mClanID2)));
-	}
-
+bool WOLGameInfo::IsClanCompeting(unsigned long clanID) const {
+  return (mIsClanGame && (clanID != 0) && ((clanID == mClanID1) || (clanID == mClanID2)));
+}
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::IsClanGameOpen
-*
-* DESCRIPTION
-*     Check if the clan game is open for new clans to join.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     True if the game is open to clans.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::IsClanGameOpen
+ *
+ * DESCRIPTION
+ *     Check if the clan game is open for new clans to join.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     True if the game is open to clans.
+ *
+ ******************************************************************************/
 
-bool WOLGameInfo::IsClanGameOpen(void) const
-	{
-	return (mIsClanGame && ((0 == mClanID1) || (0 == mClanID2)));
-	}
-
+bool WOLGameInfo::IsClanGameOpen(void) const { return (mIsClanGame && ((0 == mClanID1) || (0 == mClanID2))); }
 
 /******************************************************************************
-*
-* NAME
-*     WOLGameInfo::CanUserJoin
-*
-* DESCRIPTION
-*     Check if the user is able to join this game.
-*
-* INPUTS
-*     User
-*
-* RESULT
-*     True if user can join this game.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     WOLGameInfo::CanUserJoin
+ *
+ * DESCRIPTION
+ *     Check if the user is able to join this game.
+ *
+ * INPUTS
+ *     User
+ *
+ * RESULT
+ *     True if user can join this game.
+ *
+ ******************************************************************************/
 
-bool WOLGameInfo::CanUserJoin(const RefPtr<UserData>& user)
-	{
-	if (!user.IsValid() || !mIsDataValid || !mIsMapValid)
-		{
-		return false;
-		}
+bool WOLGameInfo::CanUserJoin(const RefPtr<UserData> &user) {
+  if (!user.IsValid() || !mIsDataValid || !mIsMapValid) {
+    return false;
+  }
 
-	if (mVersion != (unsigned long)cNetwork::Get_Exe_Key())
-		{
-		return false;
-		}
+  if (mVersion != (unsigned long)cNetwork::Get_Exe_Key()) {
+    return false;
+  }
 
-	if (mIsClanGame)
-		{
-		unsigned long userClanID = user->GetSquadID();
-		return ((0 != userClanID) && (IsClanGameOpen() || IsClanCompeting(userClanID)));
-		}
+  if (mIsClanGame) {
+    unsigned long userClanID = user->GetSquadID();
+    return ((0 != userClanID) && (IsClanGameOpen() || IsClanCompeting(userClanID)));
+  }
 
-	return true;
-	}
+  return true;
+}

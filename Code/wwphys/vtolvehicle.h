@@ -36,7 +36,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -59,13 +58,13 @@ class VTOLVehicleDefClass;
 ** a controller which exerts torques to align the craft to a desired orientation
 ** The x-y accelerations of the craft will be related to its orientation.
 ** Turning will be an independent controller I guess...
-** In addition, "WheelP" bones should be used to provide landing gear in case 
-** the orca tries to "land".  
+** In addition, "WheelP" bones should be used to provide landing gear in case
+** the orca tries to "land".
 **
-** Model animation: 
-** For Orcas, I want to show the engines tilting and engine flames lengthening 
-** and shortening.  For Helecopters, I want to just tilt the rotor...  Maybe 
-** I'll just have to do each in a derived class which is custom coded for Orca 
+** Model animation:
+** For Orcas, I want to show the engines tilting and engine flames lengthening
+** and shortening.  For Helecopters, I want to just tilt the rotor...  Maybe
+** I'll just have to do each in a derived class which is custom coded for Orca
 ** or Helecopter behavior...
 ** - Decided to add support for all of the above behaviors to this class.
 **
@@ -77,130 +76,122 @@ class VTOLVehicleDefClass;
 ** - Flame bones (orca engines), these translate along their Z-axis to stretch
 **   a flame 'skin'.
 */
-class VTOLVehicleClass : public VehiclePhysClass
-{
+class VTOLVehicleClass : public VehiclePhysClass {
 public:
-	VTOLVehicleClass(void);
-	virtual ~VTOLVehicleClass(void);
-	virtual VTOLVehicleClass * As_VTOLVehicleClass(void) { return this; }
-	const VTOLVehicleDefClass * Get_VTOLVehicleDef(void) { return (VTOLVehicleDefClass *)Definition; }
+  VTOLVehicleClass(void);
+  virtual ~VTOLVehicleClass(void);
+  virtual VTOLVehicleClass *As_VTOLVehicleClass(void) { return this; }
+  const VTOLVehicleDefClass *Get_VTOLVehicleDef(void) { return (VTOLVehicleDefClass *)Definition; }
 
-	void								Init(const VTOLVehicleDefClass & def);
+  void Init(const VTOLVehicleDefClass &def);
 
-	virtual void					Render(RenderInfoClass & rinfo);
-	virtual void					Set_Model(RenderObjClass * model);
-	virtual void					Timestep(float dt);
+  virtual void Render(RenderInfoClass &rinfo);
+  virtual void Set_Model(RenderObjClass *model);
+  virtual void Timestep(float dt);
 
-	/*
-	** Save-Load System
-	*/
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
-	virtual void								On_Post_Load (void);
+  /*
+  ** Save-Load System
+  */
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual void On_Post_Load(void);
 
 protected:
+  virtual bool Can_Go_To_Sleep(void) { return false; }
 
-	virtual bool					Can_Go_To_Sleep(void) { return false; }
+  virtual void Compute_Force_And_Torque(Vector3 *force, Vector3 *torque);
+  virtual SuspensionElementClass *Alloc_Suspension_Element(void);
+  virtual float Get_Normalized_Engine_Flame(void);
 
-	virtual void					Compute_Force_And_Torque(Vector3 * force,Vector3 * torque);
-	virtual SuspensionElementClass *	Alloc_Suspension_Element(void);
-	virtual float					Get_Normalized_Engine_Flame(void);
+  void Release_Engine_Bones(void);
+  void Update_Cached_Model_Parameters(void);
 
-	void								Release_Engine_Bones(void);
-	void								Update_Cached_Model_Parameters(void);
+  /*
+  ** Captured bones for physics-based graphical effects
+  */
+  SimpleVecClass<int> EngineAngleBones;
+  SimpleVecClass<int> RotorAngleBones;
 
-	/*
-	** Captured bones for physics-based graphical effects
-	*/
-	SimpleVecClass<int>			EngineAngleBones;
-	SimpleVecClass<int>			RotorAngleBones;				
-
-	/*
-	** Visual state variables
-	*/
-	float								NormalizedEngineRotation;
-	float								NormalizedEngineThrust;
-	float								RotorAngle;
-	float								RotorAngularVelocity;
+  /*
+  ** Visual state variables
+  */
+  float NormalizedEngineRotation;
+  float NormalizedEngineThrust;
+  float RotorAngle;
+  float RotorAngularVelocity;
 
 private:
-
-	// not implemented
-	VTOLVehicleClass(const VTOLVehicleClass &);
-	VTOLVehicleClass & operator = (const VTOLVehicleClass &);
+  // not implemented
+  VTOLVehicleClass(const VTOLVehicleClass &);
+  VTOLVehicleClass &operator=(const VTOLVehicleClass &);
 };
-
 
 /**
 ** VTOLVehicleDefClass
 ** Initialization/Editor Integration for VTOLVehicleClass
 */
-class VTOLVehicleDefClass : public VehiclePhysDefClass
-{
+class VTOLVehicleDefClass : public VehiclePhysDefClass {
 public:
-	VTOLVehicleDefClass(void);
-	
-	/*
-	** From DefinitionClass
-	*/
-	virtual uint32								Get_Class_ID (void) const;
-	virtual PersistClass *					Create(void) const;
+  VTOLVehicleDefClass(void);
 
-	/*
-	** From PhysDefClass
-	*/
-	virtual const char *						Get_Type_Name(void)				{ return "VTOLVehicleDef"; }
-	virtual bool								Is_Type(const char *);
+  /*
+  ** From DefinitionClass
+  */
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
 
-	/*
-	** From PersistClass
-	*/
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save(ChunkSaveClass &csave);
-	virtual bool								Load(ChunkLoadClass &cload);
+  /*
+  ** From PhysDefClass
+  */
+  virtual const char *Get_Type_Name(void) { return "VTOLVehicleDef"; }
+  virtual bool Is_Type(const char *);
 
-	/*
-	** Editable interface requirements
-	*/
-	DECLARE_EDITABLE(VTOLVehicleDefClass,VehiclePhysDefClass);
+  /*
+  ** From PersistClass
+  */
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+
+  /*
+  ** Editable interface requirements
+  */
+  DECLARE_EDITABLE(VTOLVehicleDefClass, VehiclePhysDefClass);
 
 protected:
+  /*
+  ** Engine thrust in units of acceleration (force = mass * accel...)
+  */
+  float MaxVerticalAcceleration;
+  float MaxHorizontalAcceleration;
 
-	/*
-	** Engine thrust in units of acceleration (force = mass * accel...)
-	*/
-	float											MaxVerticalAcceleration;
-	float											MaxHorizontalAcceleration;
+  /*
+  ** Vehicle behavior controls
+  */
+  float MaxFuselagePitch;       //	DEG_TO_RADF(15.0f);
+  float MaxFuselageRoll;        // DEG_TO_RADF(20.0f);
+  float PitchControllerGain;    // 45.5
+  float PitchControllerDamping; // 12.75
+  float RollControllerGain;     // 45.5
+  float RollControllerDamping;  // 12.75
 
-	/*
-	** Vehicle behavior controls
-	*/
-	float											MaxFuselagePitch;				//	DEG_TO_RADF(15.0f);
-	float											MaxFuselageRoll;				// DEG_TO_RADF(20.0f);
-	float											PitchControllerGain;			// 45.5
-	float											PitchControllerDamping;		// 12.75
-	float											RollControllerGain;			// 45.5
-	float											RollControllerDamping;		// 12.75
+  float MaxYawVelocity;    // DEG_TO_RADF(180.0f);
+  float YawControllerGain; // 5.0f;
 
-	float											MaxYawVelocity;				// DEG_TO_RADF(180.0f);
-	float											YawControllerGain;			// 5.0f;
+  /*
+  ** Engine Graphical Behavior
+  */
+  float MaxEngineRotation;
 
-	/*
-	** Engine Graphical Behavior
-	*/
-	float											MaxEngineRotation;			
+  /*
+  ** Rotor Graphical Behavior
+  */
+  float RotorSpeed;
+  float RotorAcceleration;
+  float RotorDeceleration;
 
-	/*
-	** Rotor Graphical Behavior
-	*/
-	float											RotorSpeed;		
-	float											RotorAcceleration;
-	float											RotorDeceleration;
-
-	friend class VTOLVehicleClass;
+  friend class VTOLVehicleClass;
 };
 
-
 #endif
-

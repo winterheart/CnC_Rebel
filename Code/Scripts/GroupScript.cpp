@@ -17,23 +17,23 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     GroupScript.cpp
-*
-* DESCRIPTION
-*     Group script
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 2 $
-*     $Modtime: 6/14/00 12:55p $
-*     $Archive: /Commando/Code/Scripts/GroupScript.cpp $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     GroupScript.cpp
+ *
+ * DESCRIPTION
+ *     Group script
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 2 $
+ *     $Modtime: 6/14/00 12:55p $
+ *     $Archive: /Commando/Code/Scripts/GroupScript.cpp $
+ *
+ ******************************************************************************/
 
 #include "scripts.h"
 #include "groupcontrol.h"
@@ -41,141 +41,118 @@
 #include "customevents.h"
 #include "dprint.h"
 
+DECLARE_SCRIPT(MXX_Group_Member_DEL, "GroupName:string") {
+  const char *mGroupName;
 
-DECLARE_SCRIPT(MXX_Group_Member_DEL, "GroupName:string")
-	{
-	const char* mGroupName;
+  // Add the object to the group when it is created.
+  void Created(GameObject * owner) {
+    mGroupName = Get_Parameter("GroupName");
+    assert(mGroupName != NULL);
 
-	// Add the object to the group when it is created.
-	void Created(GameObject* owner)
-		{
-		mGroupName = Get_Parameter("GroupName");
-		assert(mGroupName != NULL);
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
+    controller->AddToGroup(mGroupName, owner);
+  }
 
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
-		controller->AddToGroup(mGroupName, owner);
-		}
+  // Remove the object from the group when it is destroyed.
+  void Destroyed(GameObject * owner) {
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
+    controller->RemoveFromGroup(mGroupName, owner);
+  }
 
-	
-	// Remove the object from the group when it is destroyed.
-	void Destroyed(GameObject* owner)
-		{
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
-		controller->RemoveFromGroup(mGroupName, owner);
-		}
+  // Notify group that a member was killed.
+  void Killed(GameObject * owner, GameObject * killer) {
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
 
+    GroupEventInfo info;
+    info.GroupName = mGroupName;
+    info.Event = GROUP_MEMBER_KILLED;
+    info.Object = killer;
 
-	// Notify group that a member was killed.
-	void Killed(GameObject* owner, GameObject* killer)
-		{
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
+    Group *group = controller->FindGroup(mGroupName);
+    assert(group != NULL);
+    group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
+  }
 
-		GroupEventInfo info;
-		info.GroupName = mGroupName;
-		info.Event = GROUP_MEMBER_KILLED;
-		info.Object = killer;
+  // Notify group that a member was damaged.
+  void Damaged(GameObject * owner, GameObject * damager) {
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
 
-		Group* group = controller->FindGroup(mGroupName);
-		assert(group != NULL);
-		group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
-		}
+    GroupEventInfo info;
+    info.GroupName = mGroupName;
+    info.Event = GROUP_MEMBER_DAMAGED;
+    info.Object = damager;
 
-	
-	// Notify group that a member was damaged.
-	void Damaged(GameObject* owner, GameObject* damager)
-		{
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
+    Group *group = controller->FindGroup(mGroupName);
+    assert(group != NULL);
+    group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
+  }
 
-		GroupEventInfo info;
-		info.GroupName = mGroupName;
-		info.Event = GROUP_MEMBER_DAMAGED;
-		info.Object = damager;
+  // Notify group that a member heard a sound.
+  void Sound_Heard(GameObject * owner, const CombatSound &sound) {
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
 
-		Group* group = controller->FindGroup(mGroupName);
-		assert(group != NULL);
-		group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
-		}
+    GroupEventInfo info;
+    info.GroupName = mGroupName;
+    info.Event = GROUP_MEMBER_HEARD;
+    info.Sound = &sound;
 
+    Group *group = controller->FindGroup(mGroupName);
+    assert(group != NULL);
+    group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
+  }
 
-	// Notify group that a member heard a sound.
-	void Sound_Heard(GameObject* owner, const CombatSound& sound)
-		{
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
+  // Notify group that a member saw the enemy.
+  void Enemy_Seen(GameObject * owner, GameObject * enemy) {
+    GroupController *controller = GroupController::Instance();
+    assert(controller != NULL);
 
-		GroupEventInfo info;
-		info.GroupName = mGroupName;
-		info.Event = GROUP_MEMBER_HEARD;
-		info.Sound = &sound;
+    GroupEventInfo info;
+    info.GroupName = mGroupName;
+    info.Event = GROUP_MEMBER_SAW;
+    info.Object = enemy;
 
-		Group* group = controller->FindGroup(mGroupName);
-		assert(group != NULL);
-		group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
-		}
+    Group *group = controller->FindGroup(mGroupName);
+    assert(group != NULL);
+    group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
+  }
 
+#ifdef _DEBUG
+  void Custom(GameObject * owner, int event, int data, GameObject *sender) {
+    if (SCMD_GROUP_EVENT == event) {
+      GroupEventInfo *info = (GroupEventInfo *)data;
+      assert(info != NULL);
 
-	// Notify group that a member saw the enemy.
-	void Enemy_Seen(GameObject* owner, GameObject* enemy)
-		{
-		GroupController* controller = GroupController::Instance();
-		assert(controller != NULL);
+      int senderID = Commands->Get_ID(sender);
+      int objectID = Commands->Get_ID(info->Object);
 
-		GroupEventInfo info;
-		info.GroupName = mGroupName;
-		info.Event = GROUP_MEMBER_SAW;
-		info.Object = enemy;
+      switch (info->Event) {
+      case GROUP_MEMBER_DAMAGED:
+        DebugPrint("Group %s member %d damaged by object %d\n", info->GroupName, senderID, objectID);
+        break;
 
-		Group* group = controller->FindGroup(mGroupName);
-		assert(group != NULL);
-		group->SendCustomEvent(owner, SCMD_GROUP_EVENT, (int)&info);
-		}
+      case GROUP_MEMBER_KILLED:
+        DebugPrint("Group %s member %d killed by object %d\n", info->GroupName, senderID, objectID);
+        break;
 
+      case GROUP_MEMBER_HEARD: {
+        const CombatSound *sound = info->Sound;
+        objectID = Commands->Get_ID(sound->Creator);
+        DebugPrint("Group %s member %d heard a sound from object %d\n", info->GroupName, senderID, objectID);
+      } break;
 
-	#ifdef _DEBUG
-	void Custom(GameObject* owner, int event, int data, GameObject* sender)
-		{
-		if (SCMD_GROUP_EVENT == event)
-			{
-			GroupEventInfo* info = (GroupEventInfo*)data;
-			assert(info != NULL);
+      case GROUP_MEMBER_SAW:
+        DebugPrint("Group %s member %d saw object %d\n", info->GroupName, senderID, objectID);
+        break;
 
-			int senderID = Commands->Get_ID(sender);
-			int objectID = Commands->Get_ID(info->Object);
-
-			switch (info->Event)
-				{
-				case GROUP_MEMBER_DAMAGED:
-					DebugPrint("Group %s member %d damaged by object %d\n",
-						info->GroupName, senderID, objectID);
-				break;
-
-				case GROUP_MEMBER_KILLED:
-					DebugPrint("Group %s member %d killed by object %d\n",
-						info->GroupName, senderID, objectID);
-				break;
-
-				case GROUP_MEMBER_HEARD:
-					{
-					const CombatSound* sound = info->Sound;
-					objectID = Commands->Get_ID(sound->Creator);
-					DebugPrint("Group %s member %d heard a sound from object %d\n",
-						info->GroupName, senderID, objectID);
-					}
-				break;
-
-				case GROUP_MEMBER_SAW:
-					DebugPrint("Group %s member %d saw object %d\n",
-						info->GroupName, senderID, objectID);
-				break;
-
-				default:
-				break;
-				}
-			}
-		}
-	#endif
-	};
+      default:
+        break;
+      }
+    }
+  }
+#endif
+};

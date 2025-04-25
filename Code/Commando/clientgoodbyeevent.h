@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/clientgoodbyeevent.h                     $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:42p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/clientgoodbyeevent.h                     $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:42p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CLIENTGOODBYEEVENT_H__
@@ -44,24 +44,22 @@
 //
 // A C->S mirrored object to represent client destruction
 //
-class	cClientGoodbyeEvent : public cNetEvent
-{
+class cClientGoodbyeEvent : public cNetEvent {
 public:
-   cClientGoodbyeEvent(void);
+  cClientGoodbyeEvent(void);
 
-	void						Init(void);
+  void Init(void);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CLIENTGOODBYEEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CLIENTGOODBYEEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
+  int SenderId;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CLIENTGOODBYEEVENT_H__
+#endif // __CLIENTGOODBYEEVENT_H__

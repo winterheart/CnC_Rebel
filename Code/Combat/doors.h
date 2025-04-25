@@ -16,33 +16,33 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/doors.h                         $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 1/17/02 10:37a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 23                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/doors.h                         $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 1/17/02 10:37a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 23                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	DOORS_H
-#define	DOORS_H
+#ifndef DOORS_H
+#define DOORS_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	__ACCESSIBLE_PHYS_H
-	#include "accessiblephys.h"
+#ifndef __ACCESSIBLE_PHYS_H
+#include "accessiblephys.h"
 #endif
 
 class SoldierGameObj;
@@ -50,112 +50,106 @@ class SoldierGameObj;
 /*
 **	Door States
 */
-enum
-{
-	STATE_CLOSED_DOOR				= 0,
-	STATE_OPENED_DOOR,
-	STATE_OPENING_DOOR,
-	STATE_CLOSING_DOOR,
-	STATE_ACCESS_DENIED,
-	STATE_MAX
+enum {
+  STATE_CLOSED_DOOR = 0,
+  STATE_OPENED_DOOR,
+  STATE_OPENING_DOOR,
+  STATE_CLOSING_DOOR,
+  STATE_ACCESS_DENIED,
+  STATE_MAX
 };
-
 
 /*
 ** DoorPhysDefClass
 */
-class DoorPhysDefClass : public AccessiblePhysDefClass 
-{
+class DoorPhysDefClass : public AccessiblePhysDefClass {
 public:
-	DoorPhysDefClass(void);
-	
-	virtual uint32								Get_Class_ID( void ) const;
-	virtual const char *						Get_Type_Name(void)				{ return "DoorPhysDef"; }
-	virtual bool								Is_Type(const char *);
-	virtual PersistClass *					Create( void ) const ;
-	virtual bool								Save( ChunkSaveClass &csave );
-	virtual bool								Load( ChunkLoadClass &cload );
-	virtual const PersistFactoryClass &	Get_Factory( void ) const;
+  DoorPhysDefClass(void);
 
-	DECLARE_EDITABLE( DoorPhysDefClass, AccessiblePhysDefClass );
+  virtual uint32 Get_Class_ID(void) const;
+  virtual const char *Get_Type_Name(void) { return "DoorPhysDef"; }
+  virtual bool Is_Type(const char *);
+  virtual PersistClass *Create(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	const OBBoxClass &						Get_Trigger_Zone1 (void) const { return TriggerZone1; }
-	const OBBoxClass &						Get_Trigger_Zone2 (void) const { return TriggerZone2; }
+  DECLARE_EDITABLE(DoorPhysDefClass, AccessiblePhysDefClass);
 
+  const OBBoxClass &Get_Trigger_Zone1(void) const { return TriggerZone1; }
+  const OBBoxClass &Get_Trigger_Zone2(void) const { return TriggerZone2; }
 
-	bool											Is_Vehicle_Door (void) const	{ return DoorOpensForVehicles; }
+  bool Is_Vehicle_Door(void) const { return DoorOpensForVehicles; }
 
 protected:
+  OBBoxClass TriggerZone1;
+  OBBoxClass TriggerZone2;
 
-	OBBoxClass									TriggerZone1;
-	OBBoxClass									TriggerZone2;
+  float CloseDelay;
+  int OpenSoundDefID;
+  int CloseSoundDefID;
+  int UnlockSoundDefID;
+  int AccessDeniedSoundDefID;
+  bool DoorOpensForVehicles;
 
-	float											CloseDelay;
-	int											OpenSoundDefID;
-	int											CloseSoundDefID;
-	int											UnlockSoundDefID;
-	int											AccessDeniedSoundDefID;
-	bool											DoorOpensForVehicles;
-
-	friend	class								DoorPhysClass;
+  friend class DoorPhysClass;
 };
-
 
 /*
 ** DoorPhysClass
 */
-class	DoorPhysClass : public AccessiblePhysClass
-{
+class DoorPhysClass : public AccessiblePhysClass {
 public:
-	//	Constructor and Destructor
-	DoorPhysClass( void );
-	virtual ~DoorPhysClass( void );
+  //	Constructor and Destructor
+  DoorPhysClass(void);
+  virtual ~DoorPhysClass(void);
 
-	// RTTI
-	virtual DoorPhysClass *	As_DoorPhysClass(void)	{ return this; }
+  // RTTI
+  virtual DoorPhysClass *As_DoorPhysClass(void) { return this; }
 
-	// Definitions
-	void	Init( const DoorPhysDefClass & definition );
-	const DoorPhysDefClass * Get_DoorPhysDef( void ) const { WWASSERT( Definition ); return (DoorPhysDefClass *)Definition; }
+  // Definitions
+  void Init(const DoorPhysDefClass &definition);
+  const DoorPhysDefClass *Get_DoorPhysDef(void) const {
+    WWASSERT(Definition);
+    return (DoorPhysDefClass *)Definition;
+  }
 
-	// State import/export
-	static void		Set_Precision(void);
+  // State import/export
+  static void Set_Precision(void);
 
-	// Save / Load
-	virtual	bool	Save( ChunkSaveClass & csave );
-	virtual	bool	Load( ChunkLoadClass & cload );
-	virtual	const	PersistFactoryClass & Get_Factory( void ) const;
+  // Save / Load
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	virtual	void	Save_State( ChunkSaveClass & csave );
-	virtual	void	Load_State( ChunkLoadClass & cload );
+  virtual void Save_State(ChunkSaveClass &csave);
+  virtual void Load_State(ChunkLoadClass &cload);
 
-	// Timestep
-	virtual void	Timestep( float dt ); 
+  // Timestep
+  virtual void Timestep(float dt);
 
-	// State access
-	bool				Is_Door_Open( void ) const;
-	void				Request_Door_Open( void )		{ OpenRequestPending = true; }
-	void				Lock_Door_Open( bool onoff );
-	bool				Is_State_Locked( void )			{ return LockState; }
-	bool				Can_Unlock_Me( SoldierGameObj * soldier ) const;
+  // State access
+  bool Is_Door_Open(void) const;
+  void Request_Door_Open(void) { OpenRequestPending = true; }
+  void Lock_Door_Open(bool onoff);
+  bool Is_State_Locked(void) { return LockState; }
+  bool Can_Unlock_Me(SoldierGameObj *soldier) const;
 
 protected:
-	
-	// State determination
-	virtual void	Update_State( float dt );
-	virtual int		Can_Open_Door( void );
-	virtual int		Check_Door_Trigger( const OBBoxClass &trigger_zone );
-	virtual bool	Set_State( int new_state );
-	
-	float		Timer;
-	float		CheckTimer;
-	int		State;
-	bool		OpenRequestPending;
-	bool		LockState;
+  // State determination
+  virtual void Update_State(float dt);
+  virtual int Can_Open_Door(void);
+  virtual int Check_Door_Trigger(const OBBoxClass &trigger_zone);
+  virtual bool Set_State(int new_state);
 
-	// Friends
-	friend class DoorNetworkObjectClass;
+  float Timer;
+  float CheckTimer;
+  int State;
+  bool OpenRequestPending;
+  bool LockState;
+
+  // Friends
+  friend class DoorNetworkObjectClass;
 };
 
-#endif	// DOORS_H
-
+#endif // DOORS_H

@@ -16,44 +16,43 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/diaglog.h                             $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 6/08/01 4:41p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/diaglog.h                             $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 6/08/01 4:41p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	DIAGLOG_H
-#define	DIAGLOG_H
+#ifndef DIAGLOG_H
+#define DIAGLOG_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-
-#define	DIAG_LOG( a ) 		DiagLogClass::Log_Timed a 
+#define DIAG_LOG(a) DiagLogClass::Log_Timed a
 
 /*
 **
 */
-class	DiagLogClass {
+class DiagLogClass {
 
 public:
-	static	void	Init( void );
-	static	void	Shutdown( void );
+  static void Init(void);
+  static void Shutdown(void);
 
-	static	void	Log_Timed( const char * type, const char * format, ... );
+  static void Log_Timed(const char *type, const char *format, ...);
 };
 
-#endif	// DIAGLOG_H
+#endif // DIAGLOG_H

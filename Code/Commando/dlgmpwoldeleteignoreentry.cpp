@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwoldeleteignoreentry.cpp     $*
  *                                                                                             *
@@ -34,68 +35,56 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "dlgmpwoldeleteignoreentry.h"
 #include "WOLBuddyMgr.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolDeleteIgnoreEntryPopupClass
 //
 ////////////////////////////////////////////////////////////////
-MPWolDeleteIgnoreEntryPopupClass::MPWolDeleteIgnoreEntryPopupClass (void)	:
-	PopupDialogClass (IDD_MP_WOL_DELETE_IGNORE_ENTRY)
-{
-	return ;
+MPWolDeleteIgnoreEntryPopupClass::MPWolDeleteIgnoreEntryPopupClass(void)
+    : PopupDialogClass(IDD_MP_WOL_DELETE_IGNORE_ENTRY) {
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolDeleteIgnoreEntryPopupClass::On_Init_Dialog (void)
-{
-	Set_Dlg_Item_Text(IDC_USER_NAME_STATIC, UserName);
-	PopupDialogClass::On_Init_Dialog ();
-	return ;
+void MPWolDeleteIgnoreEntryPopupClass::On_Init_Dialog(void) {
+  Set_Dlg_Item_Text(IDC_USER_NAME_STATIC, UserName);
+  PopupDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolDeleteIgnoreEntryPopupClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id)
-	{
-		case IDC_DELETE_BUTTON:
-		{	
-			//
-			//	Simply remove the user from the list
-			//		
-			if (UserName.Is_Empty () == false) {
-				WOLBuddyMgr* buddyMgr = WOLBuddyMgr::GetInstance(false);
+void MPWolDeleteIgnoreEntryPopupClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  case IDC_DELETE_BUTTON: {
+    //
+    //	Simply remove the user from the list
+    //
+    if (UserName.Is_Empty() == false) {
+      WOLBuddyMgr *buddyMgr = WOLBuddyMgr::GetInstance(false);
 
-				if (buddyMgr) {
-					buddyMgr->RemoveIgnore(UserName);
-					buddyMgr->Release_Ref();
-				}
+      if (buddyMgr) {
+        buddyMgr->RemoveIgnore(UserName);
+        buddyMgr->Release_Ref();
+      }
 
-				End_Dialog ();
-			}
+      End_Dialog();
+    }
 
-			break;
-		}
-	}
+    break;
+  }
+  }
 
-	PopupDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }
-

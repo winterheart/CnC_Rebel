@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLGameOptions.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 10/04/01 10:28p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLGameOptions.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 10/04/01 10:28p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLGAMEOPTIONS_H__
 #define __WOLGAMEOPTIONS_H__
@@ -38,56 +38,49 @@
 #include "RefPtr.h"
 #include <WWLib\WWString.h>
 
-namespace WOL
-{
+namespace WOL {
 #include "wolapi.h"
 }
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include <vector>
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 namespace WWOnline {
 
-class GameOptionsMessage
-	{
-	public:
-		GameOptionsMessage(const WOL::User* user, const WOL::Channel* channel, const char* options, bool isPrivate);
+class GameOptionsMessage {
+public:
+  GameOptionsMessage(const WOL::User *user, const WOL::Channel *channel, const char *options, bool isPrivate);
 
-		virtual ~GameOptionsMessage();
+  virtual ~GameOptionsMessage();
 
-		inline const char* GetSendersName(void) const
-			{return (const char*)mUser.name;}
+  inline const char *GetSendersName(void) const { return (const char *)mUser.name; }
 
-		inline const WOL::User& GetWOLUser(void) const
-			{return mUser;}
+  inline const WOL::User &GetWOLUser(void) const { return mUser; }
 
-		inline const WOL::Channel& GetWOLChannel(void) const
-			{return mChannel;}
+  inline const WOL::Channel &GetWOLChannel(void) const { return mChannel; }
 
-		inline const StringClass& GetOptions(void) const
-			{return mOptions;}
+  inline const StringClass &GetOptions(void) const { return mOptions; }
 
-		inline bool IsPrivate(void) const
-			{return mIsPrivate;}
+  inline bool IsPrivate(void) const { return mIsPrivate; }
 
-	protected:
-		WOL::User mUser;
-		WOL::Channel mChannel;
-		StringClass mOptions;
-		bool mIsPrivate;
+protected:
+  WOL::User mUser;
+  WOL::Channel mChannel;
+  StringClass mOptions;
+  bool mIsPrivate;
 
-	private:
-		GameOptionsMessage(const GameOptionsMessage&);
-		const GameOptionsMessage& operator=(const GameOptionsMessage&);
-	};
+private:
+  GameOptionsMessage(const GameOptionsMessage &);
+  const GameOptionsMessage &operator=(const GameOptionsMessage &);
+};
 
-}
+} // namespace WWOnline
 
 #endif // __WOLGAMEOPTIONS_H__

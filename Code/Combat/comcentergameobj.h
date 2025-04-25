@@ -16,142 +16,131 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/comcentergameobj.h                    $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 7/16/01 11:20a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/comcentergameobj.h                    $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 7/16/01 11:20a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__COMCENTERGAMEOBJ_H
-#define	__COMCENTERGAMEOBJ_H
+#ifndef __COMCENTERGAMEOBJ_H
+#define __COMCENTERGAMEOBJ_H
 
 #include "always.h"
 #include "building.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
 ////////////////////////////////////////////////////////////////
 class BaseControllerClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	ComCenterGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class ComCenterGameObjDef : public BuildingGameObjDef
-{
+class ComCenterGameObjDef : public BuildingGameObjDef {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  ComCenterGameObjDef(void);
+  ~ComCenterGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	ComCenterGameObjDef (void);
-	~ComCenterGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
-
-	////////////////////////////////////////////////////////////////
-	//	Editable support
-	////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE (ComCenterGameObjDef, BuildingGameObjDef);
+  ////////////////////////////////////////////////////////////////
+  //	Editable support
+  ////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(ComCenterGameObjDef, BuildingGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float UnloadTime;
+  float FundsGathered;
+  int HarvesterDefID;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float			UnloadTime;
-	float			FundsGathered;	
-	int			HarvesterDefID;
-
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class ComCenterGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class ComCenterGameObj;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ComCenterGameObj
 //
 ////////////////////////////////////////////////////////////////
-class ComCenterGameObj : public BuildingGameObj
-{
+class ComCenterGameObj : public BuildingGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  ComCenterGameObj(void);
+  ~ComCenterGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	ComCenterGameObj (void);
-	~ComCenterGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const ComCenterGameObjDef &definition);
+  const ComCenterGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void						Init( void );
-	void									Init (const ComCenterGameObjDef & definition);
-	const ComCenterGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  ComCenterGameObj *As_ComCenterGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	ComCenterGameObj *				As_ComCenterGameObj (void)	{ return this; }
+  //
+  // Persist support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Persist support
-	//
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &	Get_Factory (void) const;
-
-	//
-	//	From BuildingGameObj
-	//
-	void									On_Destroyed (void);
-	
+  //
+  //	From BuildingGameObj
+  //
+  void On_Destroyed(void);
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 };
 
-
-#endif	//__COMCENTERGAMEOBJ_H
+#endif //__COMCENTERGAMEOBJ_H

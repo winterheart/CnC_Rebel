@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -56,57 +55,49 @@ class SnapPointsClass;
 ** The HmdlNodeDefStruct associates a named render object with
 ** an indexed pivot/bone in the hierarchy tree.
 */
-struct HmdlNodeDefStruct
-{
-	char	RenderObjName[2*W3D_NAME_LEN];
-	int	PivotID;
+struct HmdlNodeDefStruct {
+  char RenderObjName[2 * W3D_NAME_LEN];
+  int PivotID;
 };
-
 
 /*
 **	HModelDefClass
 **
 **	"Hierarchy Model Definition Class"
-**	This class serves as a blueprint for creating HierarchyModelClasses.  
-**	The asset manager stores these objects internally and uses them to 
+**	This class serves as a blueprint for creating HierarchyModelClasses.
+**	The asset manager stores these objects internally and uses them to
 **	create instances of HierarchyModels for the user.
 */
-class HModelDefClass
-{
+class HModelDefClass {
 
 public:
-	
-	enum {
-		OK,
-		LOAD_ERROR
-	};
+  enum { OK, LOAD_ERROR };
 
-	HModelDefClass(void);
-	~HModelDefClass(void);
+  HModelDefClass(void);
+  ~HModelDefClass(void);
 
-	int				Load_W3D(ChunkLoadClass & cload);
-	const char *	Get_Name(void) const { return Name; }
+  int Load_W3D(ChunkLoadClass &cload);
+  const char *Get_Name(void) const { return Name; }
 
 private:
+  char Name[2 * W3D_NAME_LEN];     // <basepose>.<modelname>
+  char ModelName[W3D_NAME_LEN];    // name of the model
+  char BasePoseName[W3D_NAME_LEN]; // name of the base pose (hierarchy tree)
 
-	char							Name[2*W3D_NAME_LEN];			// <basepose>.<modelname>
-	char							ModelName[W3D_NAME_LEN];		// name of the model
-	char							BasePoseName[W3D_NAME_LEN];	// name of the base pose (hierarchy tree)
+  int SubObjectCount;
+  HmdlNodeDefStruct *SubObjects;
+  SnapPointsClass *SnapPoints;
 
-	int							SubObjectCount;
-	HmdlNodeDefStruct *		SubObjects;
-	SnapPointsClass *			SnapPoints;
+  void Free(void);
+  bool read_header(ChunkLoadClass &cload);
+  bool read_connection(ChunkLoadClass &cload, HmdlNodeDefStruct *con, bool pre30);
+  bool read_mesh_connection(ChunkLoadClass &cload, int idx, bool pre30);
+  bool read_collision_connection(ChunkLoadClass &cload, int idx, bool pre30);
+  bool read_skin_connection(ChunkLoadClass &cload, int idx, bool pre30);
 
-	void Free(void);
-	bool read_header(ChunkLoadClass & cload);
-	bool read_connection(ChunkLoadClass & cload,HmdlNodeDefStruct * con,bool pre30);
-	bool read_mesh_connection(ChunkLoadClass & cload,int idx,bool pre30);
-	bool read_collision_connection(ChunkLoadClass & cload,int idx,bool pre30);
-	bool read_skin_connection(ChunkLoadClass & cload,int idx,bool pre30);
-
-	// HModelClass requires intimate knowlege of us
-	friend class HModelClass;
-	friend class HLodClass;
+  // HModelClass requires intimate knowlege of us
+  friend class HModelClass;
+  friend class HLodClass;
 };
 
-#endif 
+#endif

@@ -50,109 +50,97 @@
 //	TeamPurchaseSettingsDefClass
 //
 //////////////////////////////////////////////////////////////////////
-class TeamPurchaseSettingsDefClass : public DefinitionClass
-{
+class TeamPurchaseSettingsDefClass : public DefinitionClass {
 public:
+  //////////////////////////////////////////////////////////////////////
+  //	Public constants
+  //////////////////////////////////////////////////////////////////////
+  typedef enum { TEAM_GDI = 0, TEAM_NOD, TEAM_COUNT } TEAM;
 
-	//////////////////////////////////////////////////////////////////////
-	//	Public constants
-	//////////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		TEAM_GDI				= 0,
-		TEAM_NOD,
-		TEAM_COUNT
-	} TEAM;
-	
-	//////////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////////
-	TeamPurchaseSettingsDefClass (void);
-	~TeamPurchaseSettingsDefClass (void);
+  //////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////////
+  TeamPurchaseSettingsDefClass(void);
+  ~TeamPurchaseSettingsDefClass(void);
 
-	//////////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////////
 
-	//
-	//	From DefinitionClass
-	//
-	virtual uint32								Get_Class_ID (void) const;
-	virtual PersistClass *					Create (void) const ;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
-	virtual const PersistFactoryClass &	Get_Factory (void) const;	
+  //
+  //	From DefinitionClass
+  //
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Accessors
-	//
-	TEAM								Get_Team (void)							{ return Team; }
+  //
+  //	Accessors
+  //
+  TEAM Get_Team(void) { return Team; }
 
-	const WCHAR *					Get_Enlisted_Name (int index);
-	int								Get_Enlisted_Definition (int index)	{ return DefinitionList[index]; }
-	const StringClass &			Get_Enlisted_Texture (int index)		{ return TextureList[index]; }
+  const WCHAR *Get_Enlisted_Name(int index);
+  int Get_Enlisted_Definition(int index) { return DefinitionList[index]; }
+  const StringClass &Get_Enlisted_Texture(int index) { return TextureList[index]; }
 
-	const WCHAR *					Get_Beacon_Name (void)			{ return TRANSLATE (BeaconNameID); }
-	int								Get_Beacon_Cost (void)			{ return BeaconCost; }
-	int								Get_Beacon_Definition (void)	{ return BeaconDefinitionID; }
-	const StringClass &			Get_Beacon_Texture (void)		{ return BeaconTextureName; }
+  const WCHAR *Get_Beacon_Name(void) { return TRANSLATE(BeaconNameID); }
+  int Get_Beacon_Cost(void) { return BeaconCost; }
+  int Get_Beacon_Definition(void) { return BeaconDefinitionID; }
+  const StringClass &Get_Beacon_Texture(void) { return BeaconTextureName; }
 
-	const WCHAR *					Get_Supply_Name (void)			{ return TRANSLATE (SupplyNameID); }
-	const StringClass &			Get_Supply_Texture (void)		{ return SupplyTextureName; }
+  const WCHAR *Get_Supply_Name(void) { return TRANSLATE(SupplyNameID); }
+  const StringClass &Get_Supply_Texture(void) { return SupplyTextureName; }
 
-	//
-	//	Singleton access
-	//
-	static TeamPurchaseSettingsDefClass *	Get_Definition (TEAM team);
-	
-	//
-	//	Editable support
-	//
-	DECLARE_EDITABLE (TeamPurchaseSettingsDefClass, DefinitionClass);
+  //
+  //	Singleton access
+  //
+  static TeamPurchaseSettingsDefClass *Get_Definition(TEAM team);
+
+  //
+  //	Editable support
+  //
+  DECLARE_EDITABLE(TeamPurchaseSettingsDefClass, DefinitionClass);
 
 protected:
+  //////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////////
-	void				Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////////
+  //	Protected constants
+  //////////////////////////////////////////////////////////////////////
+  enum { MAX_ENTRIES = 4 };
 
-	//////////////////////////////////////////////////////////////////////
-	//	Protected constants
-	//////////////////////////////////////////////////////////////////////
-	enum
-	{
-		MAX_ENTRIES = 4
-	};
-	
-	//////////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////////
-	TEAM					Team;
-	
-	//
-	//	Enlisted character settings
-	//
-	int					DefinitionList[MAX_ENTRIES];
-	int					NameList[MAX_ENTRIES];
-	StringClass			TextureList[MAX_ENTRIES];
+  //////////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////////
+  TEAM Team;
 
-	//
-	//	Beacon settings
-	//
-	int					BeaconCost;
-	int					BeaconDefinitionID;
-	int					BeaconNameID;
-	StringClass			BeaconTextureName;
+  //
+  //	Enlisted character settings
+  //
+  int DefinitionList[MAX_ENTRIES];
+  int NameList[MAX_ENTRIES];
+  StringClass TextureList[MAX_ENTRIES];
 
-	//
-	//	Supply settings
-	//
-	int					SupplyNameID;
-	StringClass			SupplyTextureName;
-	
-	static TeamPurchaseSettingsDefClass *	DefinitionArray[TEAM_COUNT];
+  //
+  //	Beacon settings
+  //
+  int BeaconCost;
+  int BeaconDefinitionID;
+  int BeaconNameID;
+  StringClass BeaconTextureName;
+
+  //
+  //	Supply settings
+  //
+  int SupplyNameID;
+  StringClass SupplyTextureName;
+
+  static TeamPurchaseSettingsDefClass *DefinitionArray[TEAM_COUNT];
 };
-
 
 #endif //__TEAMPURCHASESETTINGS_H

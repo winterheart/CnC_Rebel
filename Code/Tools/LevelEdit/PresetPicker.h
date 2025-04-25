@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -44,59 +43,52 @@
 
 #include "picker.h"
 
-
 /////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 /////////////////////////////////////////////////////////////////////////
 class PresetClass;
-
 
 /////////////////////////////////////////////////////////////////////////
 //
 //	PresetPickerClass
 //
 /////////////////////////////////////////////////////////////////////////
-class PresetPickerClass : public PickerClass
-{
+class PresetPickerClass : public PickerClass {
 public:
+  //////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////
+  PresetPickerClass(void);
+  virtual ~PresetPickerClass(void);
 
-	//////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////
-	PresetPickerClass (void);
-	virtual ~PresetPickerClass (void);
+  //////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////
+  //
+  //	Base class overrides
+  //
+  void On_Pick(void);
 
-	//
-	//	Base class overrides
-	//
-	void				On_Pick (void);
+  //
+  //	Selection management
+  //
+  void Set_Preset(PresetClass *preset);
+  PresetClass *Get_Preset(void) const { return m_Preset; }
 
-	//
-	//	Selection management
-	//
-	void				Set_Preset (PresetClass *preset);
-	PresetClass *	Get_Preset (void) const					{ return m_Preset; }
-
-	//
-	//	Content management
-	//
-	void				Set_Class_ID (int class_id)			{ m_ClassID = class_id; }
-	void				Set_Icon_Index (int index)				{ m_IconIndex = index; }
+  //
+  //	Content management
+  //
+  void Set_Class_ID(int class_id) { m_ClassID = class_id; }
+  void Set_Icon_Index(int index) { m_IconIndex = index; }
 
 protected:
-
-	//////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////
-	PresetClass *	m_Preset;
-	int				m_ClassID;
-	int				m_IconIndex;
+  //////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////
+  PresetClass *m_Preset;
+  int m_ClassID;
+  int m_IconIndex;
 };
 
-
 #endif //__PRESETPICKER_H
-

@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "stdafx.h"
 #include "undomgr.h"
 #include "utils.h"
@@ -46,20 +45,12 @@
 #include "zonenode.h"
 #include "damagezonenode.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////////
 //
 //	Local constants
 //
 ////////////////////////////////////////////////////////////////////////////////////
-const LPCTSTR OPERATION_NAMES[OPERATION_COUNT] =
-{
-	"Move",
-	"Rotate",
-	"Delete",
-	"Resize"
-};
-
+const LPCTSTR OPERATION_NAMES[OPERATION_COUNT] = {"Move", "Rotate", "Delete", "Resize"};
 
 //**************************************************************************************************************//
 //
@@ -67,110 +58,89 @@ const LPCTSTR OPERATION_NAMES[OPERATION_COUNT] =
 //
 //**************************************************************************************************************//
 
-
 ///////////////////////////////////////////////////////////
 //
 //	Free_Buffer_List
 //
 ///////////////////////////////////////////////////////////
-void
-UndoMgrClass::Free_Buffer_List (void)
-{
-	// Free each buffer in our array
-	for (int index = 0; index < m_iCurrentBuffer; index ++) {
-		SAFE_DELETE (m_pBuffers[index]);
-	}
+void UndoMgrClass::Free_Buffer_List(void) {
+  // Free each buffer in our array
+  for (int index = 0; index < m_iCurrentBuffer; index++) {
+    SAFE_DELETE(m_pBuffers[index]);
+  }
 
-	// Reset the current index
-	m_iCurrentBuffer = 0;
-	return ;
+  // Reset the current index
+  m_iCurrentBuffer = 0;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////
 //
 //	Begin_Operation
 //
 ///////////////////////////////////////////////////////////
-void
-UndoMgrClass::Begin_Operation
-(
-	OPERATION_TYPE type,
-	const NODE_LIST &nodes_affected
-)
-{
-	UndoBufferClass *pbuffer = new UndoBufferClass;
-	ASSERT (pbuffer != NULL);
-	if (pbuffer != NULL) {
+void UndoMgrClass::Begin_Operation(OPERATION_TYPE type, const NODE_LIST &nodes_affected) {
+  UndoBufferClass *pbuffer = new UndoBufferClass;
+  ASSERT(pbuffer != NULL);
+  if (pbuffer != NULL) {
 
-		// Pass the identifcation information onto the new buffer
-		pbuffer->Set_Operation_Type (type);
-		pbuffer->Set_ID (m_dwNextOperationID++);
-		
-		// Capture the current state of the world in the buffer
-		switch (type)
-		{
-			case OPERATION_MOVE:
-			case OPERATION_ROTATE:
-			{
-				// Record the positions and orientations of the nodes
-				pbuffer->Capture_Position (nodes_affected);
-			}
-			break;
-			
-			case OPERATION_DELETE:
-			{
-				// Make 'backups' of the node that will be deleted
-				pbuffer->Capture_Existence (nodes_affected);
-			}
-			break;
+    // Pass the identifcation information onto the new buffer
+    pbuffer->Set_Operation_Type(type);
+    pbuffer->Set_ID(m_dwNextOperationID++);
 
-			case OPERATION_RESIZE:
-			{
-				// Record the width, height, and depth of the nodes
-				pbuffer->Capture_Dimensions (nodes_affected);
-			}
-			break;
-		}
+    // Capture the current state of the world in the buffer
+    switch (type) {
+    case OPERATION_MOVE:
+    case OPERATION_ROTATE: {
+      // Record the positions and orientations of the nodes
+      pbuffer->Capture_Position(nodes_affected);
+    } break;
 
-		// Push this undo buffer onto the end of our 'stack'
-		Push_Buffer (pbuffer);
-	}
+    case OPERATION_DELETE: {
+      // Make 'backups' of the node that will be deleted
+      pbuffer->Capture_Existence(nodes_affected);
+    } break;
 
-	return ;
+    case OPERATION_RESIZE: {
+      // Record the width, height, and depth of the nodes
+      pbuffer->Capture_Dimensions(nodes_affected);
+    } break;
+    }
+
+    // Push this undo buffer onto the end of our 'stack'
+    Push_Buffer(pbuffer);
+  }
+
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////
 //
 //	Push_Buffer
 //
 ///////////////////////////////////////////////////////////
-void
-UndoMgrClass::Push_Buffer (UndoBufferClass *pbuffer)
-{
-	// Param OK?
-	ASSERT (pbuffer != NULL);
-	if (pbuffer != NULL) {
-		
-		// Can we just add the buffer onto the end of the array?
-		if (m_iCurrentBuffer < UNDO_LEVELS) {
-			m_pBuffers[m_iCurrentBuffer++] = pbuffer;
-		} else {
-			
-			// Push the first entry off the list and move everything else down a position
-			SAFE_DELETE (m_pBuffers[0]);
-			::memmove (&m_pBuffers[0], &m_pBuffers[1], sizeof (UndoBufferClass *) * (UNDO_LEVELS - 1));
+void UndoMgrClass::Push_Buffer(UndoBufferClass *pbuffer) {
+  // Param OK?
+  ASSERT(pbuffer != NULL);
+  if (pbuffer != NULL) {
 
-			// Now simply add the buffer to the end of the array
-			m_iCurrentBuffer = UNDO_LEVELS;
-			m_pBuffers[m_iCurrentBuffer-1] = pbuffer;
-		}
-	}
+    // Can we just add the buffer onto the end of the array?
+    if (m_iCurrentBuffer < UNDO_LEVELS) {
+      m_pBuffers[m_iCurrentBuffer++] = pbuffer;
+    } else {
 
-	return ;
+      // Push the first entry off the list and move everything else down a position
+      SAFE_DELETE(m_pBuffers[0]);
+      ::memmove(&m_pBuffers[0], &m_pBuffers[1], sizeof(UndoBufferClass *) * (UNDO_LEVELS - 1));
+
+      // Now simply add the buffer to the end of the array
+      m_iCurrentBuffer = UNDO_LEVELS;
+      m_pBuffers[m_iCurrentBuffer - 1] = pbuffer;
+    }
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
@@ -178,41 +148,36 @@ UndoMgrClass::Push_Buffer (UndoBufferClass *pbuffer)
 //
 //////////////////////////////////////////////////////////
 LPCTSTR
-UndoMgrClass::Get_Next_Undo_Name (void) const
-{
-	LPCTSTR pundo_name = NULL;
+UndoMgrClass::Get_Next_Undo_Name(void) const {
+  LPCTSTR pundo_name = NULL;
 
-	// If we have an undo stack, then return the name of the topmost buffer
-	if (m_iCurrentBuffer > 0) {
-		pundo_name = m_pBuffers[m_iCurrentBuffer - 1]->Get_Operation_Name ();
-	}
+  // If we have an undo stack, then return the name of the topmost buffer
+  if (m_iCurrentBuffer > 0) {
+    pundo_name = m_pBuffers[m_iCurrentBuffer - 1]->Get_Operation_Name();
+  }
 
-	// Return the undo name
-	return pundo_name;
+  // Return the undo name
+  return pundo_name;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	Perform_Undo
 //
 //////////////////////////////////////////////////////////
-void
-UndoMgrClass::Perform_Undo (int ilevels)
-{
-	// Loop through the undo levels and restore the world state at each...
-	int imin_index = ::max((m_iCurrentBuffer - ilevels), 0);
-	for (int index = (m_iCurrentBuffer - 1); index >= imin_index; index --) {
-		
-		// Undo this level
-		m_pBuffers[index]->Restore_State ();
-		SAFE_DELETE (m_pBuffers[index]);
-		m_iCurrentBuffer --;
-	}
+void UndoMgrClass::Perform_Undo(int ilevels) {
+  // Loop through the undo levels and restore the world state at each...
+  int imin_index = ::max((m_iCurrentBuffer - ilevels), 0);
+  for (int index = (m_iCurrentBuffer - 1); index >= imin_index; index--) {
 
-	return ;
+    // Undo this level
+    m_pBuffers[index]->Restore_State();
+    SAFE_DELETE(m_pBuffers[index]);
+    m_iCurrentBuffer--;
+  }
+
+  return;
 }
-
 
 //**************************************************************************************************************//
 //
@@ -226,225 +191,196 @@ UndoMgrClass::Perform_Undo (int ilevels)
 //
 //**************************************************************************************************************//
 
-
 //////////////////////////////////////////////////////////
 //
 //	operator=
 //
 //////////////////////////////////////////////////////////
-const UndoBufferClass::NodeStateClass &
-UndoBufferClass::NodeStateClass::operator= (const NodeStateClass &src)
-{
-	MEMBER_ADD (node_ptr, src.node_ptr);
-	transform = src.transform;
-	dimensions = src.dimensions;
-	return *this;
+const UndoBufferClass::NodeStateClass &UndoBufferClass::NodeStateClass::operator=(const NodeStateClass &src) {
+  MEMBER_ADD(node_ptr, src.node_ptr);
+  transform = src.transform;
+  dimensions = src.dimensions;
+  return *this;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	~NodeStateClass
 //
 //////////////////////////////////////////////////////////
-UndoBufferClass::NodeStateClass::~NodeStateClass (void)
-{
-	MEMBER_RELEASE (node_ptr);
-	return ;
+UndoBufferClass::NodeStateClass::~NodeStateClass(void) {
+  MEMBER_RELEASE(node_ptr);
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	Capture_Dimensions
 //
 //////////////////////////////////////////////////////////
-void
-UndoBufferClass::Capture_Dimensions (const NODE_LIST &node_list)
-{
-	// Loop through all the nodes in the list and copy their dimensions
-	for (int index = 0; index < node_list.Count (); index ++) {
+void UndoBufferClass::Capture_Dimensions(const NODE_LIST &node_list) {
+  // Loop through all the nodes in the list and copy their dimensions
+  for (int index = 0; index < node_list.Count(); index++) {
 
-		NodeClass *node = node_list[index];
-		if (node != NULL) {
-		
-			//
-			// This operation only applies to zones.  Is this a zone?
-			//
-			if (	node->Get_Type () == NODE_TYPE_ZONE ||
-					node->Get_Type () == NODE_TYPE_DAMAGE_ZONE)
-			{
-				Box3DClass *box = NULL;
-				
-				if (node->Get_Type () == NODE_TYPE_ZONE) {
-					ZoneNodeClass *zone = (ZoneNodeClass *)node;
-					box = zone->Get_Box ();
-				} else {
-					DamageZoneNodeClass *zone = (DamageZoneNodeClass *)node;
-					box = zone->Get_Box ();
-				}
+    NodeClass *node = node_list[index];
+    if (node != NULL) {
 
-				//
-				// Copy the node's dimensions
-				//
-				NodeStateClass state;
-				MEMBER_ADD (state.node_ptr, node);
-				state.dimensions	= box->Get_Dimensions ();
-				state.transform	= node->Get_Transform ();
+      //
+      // This operation only applies to zones.  Is this a zone?
+      //
+      if (node->Get_Type() == NODE_TYPE_ZONE || node->Get_Type() == NODE_TYPE_DAMAGE_ZONE) {
+        Box3DClass *box = NULL;
 
-				//
-				// Add this state information to our list
-				//
-				m_StateList.Add (state);
-			}
-		}
-	}
+        if (node->Get_Type() == NODE_TYPE_ZONE) {
+          ZoneNodeClass *zone = (ZoneNodeClass *)node;
+          box = zone->Get_Box();
+        } else {
+          DamageZoneNodeClass *zone = (DamageZoneNodeClass *)node;
+          box = zone->Get_Box();
+        }
 
-	return ;
+        //
+        // Copy the node's dimensions
+        //
+        NodeStateClass state;
+        MEMBER_ADD(state.node_ptr, node);
+        state.dimensions = box->Get_Dimensions();
+        state.transform = node->Get_Transform();
+
+        //
+        // Add this state information to our list
+        //
+        m_StateList.Add(state);
+      }
+    }
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	Capture_Existence
 //
 //////////////////////////////////////////////////////////
-void
-UndoBufferClass::Capture_Existence (const NODE_LIST &node_list)
-{
-	// Loop through all the nodes in the list and copy their pointers
-	for (int index = 0; index < node_list.Count (); index ++) {
+void UndoBufferClass::Capture_Existence(const NODE_LIST &node_list) {
+  // Loop through all the nodes in the list and copy their pointers
+  for (int index = 0; index < node_list.Count(); index++) {
 
-		NodeClass *node = node_list[index];
-		if (node != NULL && node->Get_Type () != NODE_TYPE_WAYPOINT) {
-		
-			// Store this node in our state manager			
-			NodeStateClass state;
-			MEMBER_ADD (state.node_ptr, node);
+    NodeClass *node = node_list[index];
+    if (node != NULL && node->Get_Type() != NODE_TYPE_WAYPOINT) {
 
-			// Add this state information to our list
-			m_StateList.Add (state);
-		}
-	}
+      // Store this node in our state manager
+      NodeStateClass state;
+      MEMBER_ADD(state.node_ptr, node);
 
-	return ;
+      // Add this state information to our list
+      m_StateList.Add(state);
+    }
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	Capture_Position
 //
 //////////////////////////////////////////////////////////
-void
-UndoBufferClass::Capture_Position (const NODE_LIST &node_list)
-{
-	// Loop through all the nodes in the list and copy their position information
-	for (int index = 0; index < node_list.Count (); index ++) {
+void UndoBufferClass::Capture_Position(const NODE_LIST &node_list) {
+  // Loop through all the nodes in the list and copy their position information
+  for (int index = 0; index < node_list.Count(); index++) {
 
-		NodeClass *node = node_list[index];
-		if (node != NULL) {
-		
-			// Copy the node's state information
-			NodeStateClass state;
-			MEMBER_ADD (state.node_ptr, node);
-			state.transform = node->Get_Transform ();
+    NodeClass *node = node_list[index];
+    if (node != NULL) {
 
-			// Add this state information to our list
-			m_StateList.Add (state);
-		}
-	}
+      // Copy the node's state information
+      NodeStateClass state;
+      MEMBER_ADD(state.node_ptr, node);
+      state.transform = node->Get_Transform();
 
-	return ;
+      // Add this state information to our list
+      m_StateList.Add(state);
+    }
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
 //	Restore_State
 //
 //////////////////////////////////////////////////////////
-void
-UndoBufferClass::Restore_State (void)
-{
-	// Turn painting off
-	CLevelEditView::Allow_Repaint (false);
+void UndoBufferClass::Restore_State(void) {
+  // Turn painting off
+  CLevelEditView::Allow_Repaint(false);
 
-	//
-	// Loop through all the entries in our state list,
-	// and restore their state
-	//
-	for (int index = 0; index < m_StateList.Count (); index ++) {
+  //
+  // Loop through all the entries in our state list,
+  // and restore their state
+  //
+  for (int index = 0; index < m_StateList.Count(); index++) {
 
-		// Alias the state structure
-		NodeStateClass &state = m_StateList[index];
+    // Alias the state structure
+    NodeStateClass &state = m_StateList[index];
 
-		// What type of undo operation is this?
-		switch (m_Type)
-		{
-			case OPERATION_MOVE:
-			case OPERATION_ROTATE:
-			{
-				//
-				// Reset this node's position and orientation
-				//
-				if (state.node_ptr != NULL) {
-					state.node_ptr->Set_Transform (state.transform);
-				}
-			}
-			break;
+    // What type of undo operation is this?
+    switch (m_Type) {
+    case OPERATION_MOVE:
+    case OPERATION_ROTATE: {
+      //
+      // Reset this node's position and orientation
+      //
+      if (state.node_ptr != NULL) {
+        state.node_ptr->Set_Transform(state.transform);
+      }
+    } break;
 
-			case OPERATION_RESIZE:
-			{
-				NodeClass *node = state.node_ptr;
-				ASSERT (node != NULL);
+    case OPERATION_RESIZE: {
+      NodeClass *node = state.node_ptr;
+      ASSERT(node != NULL);
 
-				//
-				// This operation only applies to zones, so if
-				// this node is a zone, then resize it.
-				//
-				if (	node->Get_Type () == NODE_TYPE_ZONE ||
-						node->Get_Type () == NODE_TYPE_DAMAGE_ZONE)
-				{					
-					Box3DClass *box = NULL;
-					
-					if (node->Get_Type () == NODE_TYPE_ZONE) {
-						ZoneNodeClass *zone = (ZoneNodeClass *)node;
-						box = zone->Get_Box ();
-					} else {
-						DamageZoneNodeClass *zone = (DamageZoneNodeClass *)node;
-						box = zone->Get_Box ();
-					}
-					
-					ASSERT (box != NULL);
-					box->Set_Dimensions (state.dimensions);
-					node->Set_Transform (state.transform);
-				}
-			}
-			break;
+      //
+      // This operation only applies to zones, so if
+      // this node is a zone, then resize it.
+      //
+      if (node->Get_Type() == NODE_TYPE_ZONE || node->Get_Type() == NODE_TYPE_DAMAGE_ZONE) {
+        Box3DClass *box = NULL;
 
-			case OPERATION_DELETE:
-			{
-				// Add the 'deleted' node back into the world
-				ASSERT (state.node_ptr != NULL);
-				if (state.node_ptr != NULL) {
-					::Get_Scene_Editor ()->Add_Node (state.node_ptr);
-					state.node_ptr->On_Restore ();
-					state.node_ptr->Hide (false);
-				}
-			}
-			break;
-		}			
-	}
+        if (node->Get_Type() == NODE_TYPE_ZONE) {
+          ZoneNodeClass *zone = (ZoneNodeClass *)node;
+          box = zone->Get_Box();
+        } else {
+          DamageZoneNodeClass *zone = (DamageZoneNodeClass *)node;
+          box = zone->Get_Box();
+        }
 
-	// Ensure the main view is updated
-	::Refresh_Main_View ();
+        ASSERT(box != NULL);
+        box->Set_Dimensions(state.dimensions);
+        node->Set_Transform(state.transform);
+      }
+    } break;
 
-	// Turn painting back on
-	CLevelEditView::Allow_Repaint (true);
-	return ;
+    case OPERATION_DELETE: {
+      // Add the 'deleted' node back into the world
+      ASSERT(state.node_ptr != NULL);
+      if (state.node_ptr != NULL) {
+        ::Get_Scene_Editor()->Add_Node(state.node_ptr);
+        state.node_ptr->On_Restore();
+        state.node_ptr->Hide(false);
+      }
+    } break;
+    }
+  }
+
+  // Ensure the main view is updated
+  ::Refresh_Main_View();
+
+  // Turn painting back on
+  CLevelEditView::Allow_Repaint(true);
+  return;
 }
-
 
 //////////////////////////////////////////////////////////
 //
@@ -452,11 +388,7 @@ UndoBufferClass::Restore_State (void)
 //
 //////////////////////////////////////////////////////////
 LPCTSTR
-UndoBufferClass::Get_Operation_Name (void)
-{
-	return OPERATION_NAMES[m_Type];
-}
-
+UndoBufferClass::Get_Operation_Name(void) { return OPERATION_NAMES[m_Type]; }
 
 //**************************************************************************************************************//
 //

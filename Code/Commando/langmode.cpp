@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/langmode.cpp                        $* 
- *                                                                                             * 
- *                      $Author:: Denzil_l                                                    $* 
- *                                                                                             * 
- *                     $Modtime:: 11/16/01 1:29p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 21                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/langmode.cpp                        $*
+ *                                                                                             *
+ *                      $Author:: Denzil_l                                                    $*
+ *                                                                                             *
+ *                     $Modtime:: 11/16/01 1:29p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 21                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "langmode.h" // I WANNA BE FIRST!
@@ -41,50 +41,46 @@
 //
 // class statics
 //
-cLanChat * LanGameModeClass::PLanChat = NULL;
+cLanChat *LanGameModeClass::PLanChat = NULL;
 
 //-----------------------------------------------------------------------------
 //
 // called when the mode is activated
 //
-void LanGameModeClass::Init(void)
-{
-	WWDEBUG_SAY(("LanGameModeClass::Init\n"));
+void LanGameModeClass::Init(void) {
+  WWDEBUG_SAY(("LanGameModeClass::Init\n"));
 
-	WWASSERT(PLanChat == NULL);
-	PLanChat = new cLanChat();
-	WWASSERT(PLanChat != NULL);
+  WWASSERT(PLanChat == NULL);
+  PLanChat = new cLanChat();
+  WWASSERT(PLanChat != NULL);
 }
 
 //-----------------------------------------------------------------------------
 //
 // called when the mode is deactivated
 //
-void LanGameModeClass::Shutdown(void)
-{
-	WWDEBUG_SAY(("LanGameModeClass::Shutdown"));
+void LanGameModeClass::Shutdown(void) {
+  WWDEBUG_SAY(("LanGameModeClass::Shutdown"));
 
-	WWASSERT(PLanChat != NULL);
-	delete PLanChat;
-	PLanChat = NULL;
+  WWASSERT(PLanChat != NULL);
+  delete PLanChat;
+  PLanChat = NULL;
 }
 
 //-----------------------------------------------------------------------------
 //
 // called each time through the main loop
 //
-void LanGameModeClass::Think(void)
-{
-	WWPROFILE( "Lan Think" );
+void LanGameModeClass::Think(void) {
+  WWPROFILE("Lan Think");
 
-	WWASSERT(PLanChat != NULL);
-	PLanChat->Think();
+  WWASSERT(PLanChat != NULL);
+  PLanChat->Think();
 }
 
 //-----------------------------------------------------------------------------
-cLanChat * LanGameModeClass::Get_Lan_Interface(void)
-{
-	//WWASSERT(PLanChat != NULL);
+cLanChat *LanGameModeClass::Get_Lan_Interface(void) {
+  // WWASSERT(PLanChat != NULL);
 
-	return PLanChat;
+  return PLanChat;
 }

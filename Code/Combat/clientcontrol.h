@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/clientcontrol.h                        $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/17/01 4:18p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/clientcontrol.h                        $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/17/01 4:18p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CLIENTCONTROL_H__
@@ -45,35 +45,32 @@
 //
 // A C-S mirrored object to represent client control and targeting data
 //
-class	CClientControl : public NetworkObjectClass
-{
+class CClientControl : public NetworkObjectClass {
 public:
+  CClientControl();
+  ~CClientControl();
 
-	CClientControl();
-	~CClientControl();
+  void Init(void);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CLIENTCONTROL; }
+  virtual void Delete(void) { delete this; }
 
-	void					Init(void);
-	virtual uint32		Get_Network_Class_ID(void) const					{return NETCLASSID_CLIENTCONTROL;}
-	virtual void		Delete(void)											{delete this;}
+  void Set_Update_Flag(int id);
 
-	void					Set_Update_Flag(int id);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual void		Export_Creation(BitStreamClass &packet);
-	virtual void		Import_Creation(BitStreamClass &packet);
-
-	virtual void		Export_Frequent(BitStreamClass &packet);
-	virtual void		Import_Frequent(BitStreamClass &packet);
+  virtual void Export_Frequent(BitStreamClass &packet);
+  virtual void Import_Frequent(BitStreamClass &packet);
 
 private:
-
-	int					ClientId;
-	int					SmartObjId;
+  int ClientId;
+  int SmartObjId;
 };
 
 //-----------------------------------------------------------------------------
 
-extern CClientControl *		PClientControl;
+extern CClientControl *PClientControl;
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CLIENTCONTROL_H__
+#endif // __CLIENTCONTROL_H__

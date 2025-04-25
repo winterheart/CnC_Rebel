@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/evictionevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:42p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/evictionevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:42p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __EVICTIONEVENT_H__
@@ -41,34 +41,31 @@
 #include "netclassids.h"
 
 //-----------------------------------------------------------------------------
-enum EvictionCodeEnum
-{
-	EVICTION_POOR_BANDWIDTH,
-	//EVICTION_BAD_PASSWORD,
+enum EvictionCodeEnum {
+  EVICTION_POOR_BANDWIDTH,
+  // EVICTION_BAD_PASSWORD,
 };
 
 //-----------------------------------------------------------------------------
 //
 // A S->C mirrored object to represent server eviction of a client
 //
-class	cEvictionEvent : public cNetEvent
-{
+class cEvictionEvent : public cNetEvent {
 public:
-   cEvictionEvent(void);
+  cEvictionEvent(void);
 
-	void						Init(int client_id, EvictionCodeEnum code);
+  void Init(int client_id, EvictionCodeEnum code);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_EVICTIONEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_EVICTIONEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	EvictionCodeEnum		EvictionCode;
+  EvictionCodeEnum EvictionCode;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __EVICTIONEVENT_H__
+#endif // __EVICTIONEVENT_H__

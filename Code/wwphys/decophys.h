@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -48,9 +47,7 @@
 #include "wwdebug.h"
 #include "physcoltest.h"
 
-
 class DecorationPhysDefClass;
-
 
 /**
 ** DecorationPhysClass
@@ -58,75 +55,67 @@ class DecorationPhysDefClass;
 ** system but doesn't really do anything.  It can be collided against if collision is
 ** enabled in its render object...
 */
-class DecorationPhysClass : public DynamicPhysClass
-{
+class DecorationPhysClass : public DynamicPhysClass {
 public:
+  DecorationPhysClass(void);
+  virtual DecorationPhysClass *As_DecorationPhysClass(void) { return this; }
 
-	DecorationPhysClass(void);
-	virtual DecorationPhysClass *	As_DecorationPhysClass(void)							{ return this; }
-	
-	void									Init(const DecorationPhysDefClass & def);
-	virtual void						Timestep(float dt)										{ } 
-	virtual void						Set_Model(RenderObjClass * model);
-	
-	virtual bool						Cast_Ray(PhysRayCollisionTestClass & raytest);
-	virtual bool						Cast_AABox(PhysAABoxCollisionTestClass & boxtest);
-	virtual bool						Cast_OBBox(PhysOBBoxCollisionTestClass & boxtest);
+  void Init(const DecorationPhysDefClass &def);
+  virtual void Timestep(float dt) {}
+  virtual void Set_Model(RenderObjClass *model);
 
-	virtual bool						Intersection_Test(PhysAABoxIntersectionTestClass & test);
-	virtual bool						Intersection_Test(PhysOBBoxIntersectionTestClass & test);
+  virtual bool Cast_Ray(PhysRayCollisionTestClass &raytest);
+  virtual bool Cast_AABox(PhysAABoxCollisionTestClass &boxtest);
+  virtual bool Cast_OBBox(PhysOBBoxCollisionTestClass &boxtest);
 
-	virtual const AABoxClass &		Get_Bounding_Box(void) const;
-	virtual const Matrix3D &		Get_Transform(void) const;
-	virtual void						Set_Transform(const Matrix3D & m);
-	virtual void						Get_Shadow_Blob_Box(AABoxClass * set_obj_space_box);
+  virtual bool Intersection_Test(PhysAABoxIntersectionTestClass &test);
+  virtual bool Intersection_Test(PhysOBBoxIntersectionTestClass &test);
 
-	// save-load system
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);		
-	virtual void								On_Post_Load(void);
+  virtual const AABoxClass &Get_Bounding_Box(void) const;
+  virtual const Matrix3D &Get_Transform(void) const;
+  virtual void Set_Transform(const Matrix3D &m);
+  virtual void Get_Shadow_Blob_Box(AABoxClass *set_obj_space_box);
+
+  // save-load system
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual void On_Post_Load(void);
 
 private:
+  // Not implemented...
+  DecorationPhysClass(const DecorationPhysClass &);
+  DecorationPhysClass &operator=(const DecorationPhysClass &);
 
-	// Not implemented...
-	DecorationPhysClass(const DecorationPhysClass &);
-	DecorationPhysClass & operator = (const DecorationPhysClass &);
-
-	AABoxClass							ObjSpaceWorldBox;
+  AABoxClass ObjSpaceWorldBox;
 };
-
 
 /**
 ** DecorationPhysDefClass
 ** Definition data structure for DecorationPhysClass
 */
-class DecorationPhysDefClass : public DynamicPhysDefClass
-{
+class DecorationPhysDefClass : public DynamicPhysDefClass {
 public:
-	
-	DecorationPhysDefClass(void);
-	
-	// From DefinitionClass
-	virtual uint32								Get_Class_ID (void) const;
-	virtual PersistClass *					Create(void) const;
+  DecorationPhysDefClass(void);
 
-	// From PhysDefClass
-	virtual const char *						Get_Type_Name(void);
-	virtual bool								Is_Type(const char *);
+  // From DefinitionClass
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
 
-	// From PersistClass
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save(ChunkSaveClass &csave);
-	virtual bool								Load(ChunkLoadClass &cload);
+  // From PhysDefClass
+  virtual const char *Get_Type_Name(void);
+  virtual bool Is_Type(const char *);
 
-	//	Editable interface requirements
-	DECLARE_EDITABLE(DecorationPhysDefClass,DynamicPhysDefClass);
+  // From PersistClass
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+
+  //	Editable interface requirements
+  DECLARE_EDITABLE(DecorationPhysDefClass, DynamicPhysDefClass);
 
 protected:
-	
-	friend class StaticPhysClass;
+  friend class StaticPhysClass;
 };
-
 
 #endif

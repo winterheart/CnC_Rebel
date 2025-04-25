@@ -27,7 +27,6 @@
 #include "always.h"
 #include "thread.h"
 
-
 // Always use mutex or critical section when accessing the same data from multiple threads!
 
 // ----------------------------------------------------------------------------
@@ -37,42 +36,39 @@
 //
 // ----------------------------------------------------------------------------
 
-class MutexClass
-{
-	void* handle;
-	unsigned locked;
+class MutexClass {
+  void *handle;
+  unsigned locked;
 
-	// Lock and unlock are private so that you can't use them directly. Use LockClass as a sentry instead!
-	// Lock returns true if lock was succesful, false otherwise
-	bool Lock(int time);
-	void Unlock();
+  // Lock and unlock are private so that you can't use them directly. Use LockClass as a sentry instead!
+  // Lock returns true if lock was succesful, false otherwise
+  bool Lock(int time);
+  void Unlock();
 
 public:
-	// Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
-	MutexClass(const char* name = NULL);
-	~MutexClass();
+  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+  MutexClass(const char *name = NULL);
+  ~MutexClass();
 
-	enum {
-		WAIT_INFINITE=-1
-	};
+  enum { WAIT_INFINITE = -1 };
 
-	class LockClass
-	{
-		MutexClass& mutex;
-		bool failed;
-	public:
+  class LockClass {
+    MutexClass &mutex;
+    bool failed;
 
-		// In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
-		// Time is in milliseconds, INFINITE means infinite wait.
-		LockClass(MutexClass& m, int time=MutexClass::WAIT_INFINITE);
-		~LockClass();
+  public:
+    // In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
+    // Time is in milliseconds, INFINITE means infinite wait.
+    LockClass(MutexClass &m, int time = MutexClass::WAIT_INFINITE);
+    ~LockClass();
 
-		// Returns true if the lock failed
-		bool Failed() { return failed; }
-	private:
-		LockClass &operator=(const LockClass&) { return(*this); }
-	};
-	friend class LockClass;
+    // Returns true if the lock failed
+    bool Failed() { return failed; }
+
+  private:
+    LockClass &operator=(const LockClass &) { return (*this); }
+  };
+  friend class LockClass;
 };
 
 // ----------------------------------------------------------------------------
@@ -82,31 +78,31 @@ public:
 //
 // ----------------------------------------------------------------------------
 
-class CriticalSectionClass
-{
-	void* handle;
-	unsigned locked;
+class CriticalSectionClass {
+  void *handle;
+  unsigned locked;
 
-	// Lock and unlock are private so that you can't use them directly. Use LockClass as a sentry instead!
-	void Lock();
-	void Unlock();
+  // Lock and unlock are private so that you can't use them directly. Use LockClass as a sentry instead!
+  void Lock();
+  void Unlock();
 
 public:
-	// Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
-	CriticalSectionClass();
-	~CriticalSectionClass();
+  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+  CriticalSectionClass();
+  ~CriticalSectionClass();
 
-	class LockClass
-	{
-		CriticalSectionClass& CriticalSection;
-	public:
-		// In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
-		LockClass(CriticalSectionClass& c);
-		~LockClass();
-	private:
-		LockClass &operator=(const LockClass&) { return(*this); }
-	};
-	friend class LockClass;
+  class LockClass {
+    CriticalSectionClass &CriticalSection;
+
+  public:
+    // In order to lock a mutex create a local instance of LockClass with mutex as a parameter.
+    LockClass(CriticalSectionClass &c);
+    ~LockClass();
+
+  private:
+    LockClass &operator=(const LockClass &) { return (*this); }
+  };
+  friend class LockClass;
 };
 
 // ----------------------------------------------------------------------------
@@ -116,60 +112,54 @@ public:
 //
 // ----------------------------------------------------------------------------
 
-class FastCriticalSectionClass
-{
-	volatile unsigned Flag;
+class FastCriticalSectionClass {
+  volatile unsigned Flag;
 
-	void Thread_Safe_Set_Flag()
-	{
-		volatile unsigned& nFlag=Flag;
+  void Thread_Safe_Set_Flag() {
+    volatile unsigned &nFlag = Flag;
 
-		#define ts_lock _emit 0xF0
-		assert(((unsigned)&nFlag % 4) == 0);
+#define ts_lock _emit 0xF0
+    assert(((unsigned)&nFlag % 4) == 0);
 
-		__asm mov ebx, [nFlag]
-		__asm ts_lock
-		__asm bts dword ptr [ebx], 0
-		__asm jc The_Bit_Was_Previously_Set_So_Try_Again
-		return;
+// clang-format off
+    __asm mov ebx, [nFlag]
+    __asm ts_lock
+    __asm bts dword ptr[ebx], 0
+    __asm jc The_Bit_Was_Previously_Set_So_Try_Again
+// clang-format on
+    return;
 
-		The_Bit_Was_Previously_Set_So_Try_Again:
-		ThreadClass::Switch_Thread();
-		__asm mov ebx, [nFlag]
-		__asm ts_lock
-		__asm bts dword ptr [ebx], 0
-		__asm jc  The_Bit_Was_Previously_Set_So_Try_Again
-	}
+  The_Bit_Was_Previously_Set_So_Try_Again:
+    ThreadClass::Switch_Thread();
+// clang-format off
+    __asm mov ebx, [nFlag]
+    __asm ts_lock
+    __asm bts dword ptr[ebx], 0
+    __asm jc The_Bit_Was_Previously_Set_So_Try_Again
+// clang-format on
+  }
 
-	WWINLINE void Thread_Safe_Clear_Flag()
-	{
-		Flag = 0;
-	}
+  WWINLINE void Thread_Safe_Clear_Flag() { Flag = 0; }
 
 public:
-	// Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
-	FastCriticalSectionClass() : Flag(0) {}
+  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+  FastCriticalSectionClass() : Flag(0) {}
 
-	class LockClass
-	{
-		FastCriticalSectionClass& CriticalSection;
-	public:
-		LockClass(FastCriticalSectionClass& critical_section) : CriticalSection(critical_section)
-		{
-			CriticalSection.Thread_Safe_Set_Flag();
-		}
+  class LockClass {
+    FastCriticalSectionClass &CriticalSection;
 
-		~LockClass()
-		{
-			CriticalSection.Thread_Safe_Clear_Flag();
-		}
-	private:
-		LockClass &operator=(const LockClass&) { return(*this); }
-	};
+  public:
+    LockClass(FastCriticalSectionClass &critical_section) : CriticalSection(critical_section) {
+      CriticalSection.Thread_Safe_Set_Flag();
+    }
 
-	friend class LockClass;
+    ~LockClass() { CriticalSection.Thread_Safe_Clear_Flag(); }
+
+  private:
+    LockClass &operator=(const LockClass &) { return (*this); }
+  };
+
+  friend class LockClass;
 };
-
-
 
 #endif

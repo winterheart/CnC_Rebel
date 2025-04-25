@@ -16,29 +16,28 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/CRCPIPE.CPP                               $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/CRCPIPE.CPP                               $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   CRCPipe::Result -- Fetches the current CRC of the data.                                   *
  *   CRCPipe::Put -- Retrieves the data bytes specified and calculates CRC on it.              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"crcpipe.h"
-
+#include "always.h"
+#include "crcpipe.h"
 
 /***********************************************************************************************
  * CRCPipe::Put -- Retrieves the data bytes specified and calculates CRC on it.                *
@@ -60,12 +59,10 @@
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int CRCPipe::Put(void const * source, int slen)
-{
-	CRC(source, slen);
-	return(Pipe::Put(source, slen));
+int CRCPipe::Put(void const *source, int slen) {
+  CRC(source, slen);
+  return (Pipe::Put(source, slen));
 }
-
 
 /***********************************************************************************************
  * CRCPipe::Result -- Fetches the current CRC of the data.                                     *
@@ -82,8 +79,4 @@ int CRCPipe::Put(void const * source, int slen)
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-long CRCPipe::Result(void) const
-{
-	return(CRC());
-}
-
+long CRCPipe::Result(void) const { return (CRC()); }

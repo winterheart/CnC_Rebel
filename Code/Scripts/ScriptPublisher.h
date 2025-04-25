@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Denzil_l $
-*     $Revision: 5 $
-*     $Modtime: 4/04/00 11:37a $
-*     $Archive: /Commando/Code/Scripts/ScriptPublisher.h $
-*
-******************************************************************************/
+ *
+ * FILE
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Denzil_l $
+ *     $Revision: 5 $
+ *     $Modtime: 4/04/00 11:37a $
+ *     $Archive: /Commando/Code/Scripts/ScriptPublisher.h $
+ *
+ ******************************************************************************/
 
 #ifndef _SCRIPTPUBLISHER_H_
 #define _SCRIPTPUBLISHER_H_
@@ -40,25 +40,24 @@
 
 class ScriptClass;
 
-class ScriptPublisher
-{
-	public:
-		// Add a subscriber to the publisher list
-		void AddSubscriber(ScriptClass* subscriber);
+class ScriptPublisher {
+public:
+  // Add a subscriber to the publisher list
+  void AddSubscriber(ScriptClass *subscriber);
 
-		// Remove a subscriber from the publisher list
-		void RemoveSubscriber(ScriptClass* subscriber);
+  // Remove a subscriber from the publisher list
+  void RemoveSubscriber(ScriptClass *subscriber);
 
-		// Send subscribers a message
-		void NotifySubscribers(int what, int param);
+  // Send subscribers a message
+  void NotifySubscribers(int what, int param);
 
-	protected:
-		// Protected to prevent direct instantiation or deletion
-		ScriptPublisher();
-		virtual ~ScriptPublisher();
+protected:
+  // Protected to prevent direct instantiation or deletion
+  ScriptPublisher();
+  virtual ~ScriptPublisher();
 
-	private:
-		SList<ScriptClass> mSubscribers;
+private:
+  SList<ScriptClass> mSubscribers;
 };
 
 #endif // _SCRIPTPUBLISHER_H_

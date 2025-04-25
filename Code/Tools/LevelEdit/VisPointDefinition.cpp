@@ -43,113 +43,88 @@
 #include "editorchunkids.h"
 #include "vispointnode.h"
 
-
 //////////////////////////////////////////////////////////////////////////////////
 //	Constants
 //////////////////////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_VARIABLES			= 0x00000100,
-	CHUNKID_BASE_CLASS		= 0x00000200,
+enum {
+  CHUNKID_VARIABLES = 0x00000100,
+  CHUNKID_BASE_CLASS = 0x00000200,
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Static factories
 //
 //////////////////////////////////////////////////////////////////////////////////
-DECLARE_DEFINITION_FACTORY(VisPointDefinitionClass, CLASSID_VIS_POINT_DEF, "Manual Vis Point")	_VisPointDefFactory;
-SimplePersistFactoryClass<VisPointDefinitionClass, CHUNKID_VIS_POINT_DEF>								_VisPointPersistFactory;
-
+DECLARE_DEFINITION_FACTORY(VisPointDefinitionClass, CLASSID_VIS_POINT_DEF, "Manual Vis Point") _VisPointDefFactory;
+SimplePersistFactoryClass<VisPointDefinitionClass, CHUNKID_VIS_POINT_DEF> _VisPointPersistFactory;
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	VisPointDefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-VisPointDefinitionClass::VisPointDefinitionClass (void)
-	:	DefinitionClass ()
-		
-{
-	return ;
-}
+VisPointDefinitionClass::VisPointDefinitionClass(void)
+    : DefinitionClass()
 
+{
+  return;
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	~VisPointDefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-VisPointDefinitionClass::~VisPointDefinitionClass (void)
-{
-	return ;
-}
-
+VisPointDefinitionClass::~VisPointDefinitionClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Factory
 //
 //////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &
-VisPointDefinitionClass::Get_Factory (void) const
-{
-	return _VisPointPersistFactory;
-}
-
+const PersistFactoryClass &VisPointDefinitionClass::Get_Factory(void) const { return _VisPointPersistFactory; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-VisPointDefinitionClass::Save (ChunkSaveClass &csave)
-{
-	bool retval = true;
+bool VisPointDefinitionClass::Save(ChunkSaveClass &csave) {
+  bool retval = true;
 
-	csave.Begin_Chunk (CHUNKID_BASE_CLASS);
-	retval &= DefinitionClass::Save (csave);
-	csave.End_Chunk ();
+  csave.Begin_Chunk(CHUNKID_BASE_CLASS);
+  retval &= DefinitionClass::Save(csave);
+  csave.End_Chunk();
 
-	return retval;
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool
-VisPointDefinitionClass::Load (ChunkLoadClass &cload)
-{
-	bool retval = true;
+bool VisPointDefinitionClass::Load(ChunkLoadClass &cload) {
+  bool retval = true;
 
-	while (cload.Open_Chunk ()) {
-		switch (cload.Cur_Chunk_ID ()) {
-			
-			case CHUNKID_BASE_CLASS:
-				retval &= DefinitionClass::Load (cload);
-				break;
-		}
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-		cload.Close_Chunk ();
-	}
+    case CHUNKID_BASE_CLASS:
+      retval &= DefinitionClass::Load(cload);
+      break;
+    }
 
-	return retval;
+    cload.Close_Chunk();
+  }
+
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Create
 //
 //////////////////////////////////////////////////////////////////////////////////
-PersistClass *
-VisPointDefinitionClass::Create (void) const
-{
-	return new VisPointNodeClass ();
-}
-
+PersistClass *VisPointDefinitionClass::Create(void) const { return new VisPointNodeClass(); }

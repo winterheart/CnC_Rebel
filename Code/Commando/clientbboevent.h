@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/clientbboevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:42p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/clientbboevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:42p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CLIENTBBOEVENT_H__
@@ -44,26 +44,24 @@
 //
 // A C->S mirrored object for client bandwidth adjustment
 //
-class	cClientBboEvent : public cNetEvent
-{
+class cClientBboEvent : public cNetEvent {
 public:
-   cClientBboEvent(void);
+  cClientBboEvent(void);
 
-	void						Init(int bbo);
+  void Init(int bbo);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CLIENTBBOEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CLIENTBBOEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	int						Bbo;
+  int SenderId;
+  int Bbo;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CLIENTBBOEVENT_H__
+#endif // __CLIENTBBOEVENT_H__

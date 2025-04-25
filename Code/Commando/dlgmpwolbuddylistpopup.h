@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgmpwolbuddylistpopup.h    $*
  *                                                                                             *
@@ -41,58 +42,50 @@
 #ifndef __DLG_MP_WOL_BUDDY_LIST_POPUP_H
 #define __DLG_MP_WOL_BUDDY_LIST_POPUP_H
 
-
 #include "popupdialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class MPWolPageBuddyPopupClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolBuddyListPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolBuddyListPopupClass : public PopupDialogClass
-{
+class MPWolBuddyListPopupClass : public PopupDialogClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolBuddyListPopupClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolBuddyListPopupClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	void		On_ListCtrl_DblClk (ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
 
-	//
-	//	Accessors
-	//
-	const WCHAR *	Get_Selection (void)	{ return SelectedUserName; }
-	void				Set_Observer (MPWolPageBuddyPopupClass *observer)	{ Observer = observer; }
+  //
+  //	Accessors
+  //
+  const WCHAR *Get_Selection(void) { return SelectedUserName; }
+  void Set_Observer(MPWolPageBuddyPopupClass *observer) { Observer = observer; }
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Select(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		On_Select (void);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	WideStringClass				SelectedUserName;
-	MPWolPageBuddyPopupClass *	Observer;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  WideStringClass SelectedUserName;
+  MPWolPageBuddyPopupClass *Observer;
 };
 
-
 #endif //__DLG_MP_WOL_BUDDY_LIST_POPUP_H
-

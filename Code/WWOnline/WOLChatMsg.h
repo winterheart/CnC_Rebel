@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLChatMsg.h $
-*
-* DESCRIPTION
-*     Chat Message representation.
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 6 $
-*     $Modtime: 10/23/01 10:19a $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLChatMsg.h $
+ *
+ * DESCRIPTION
+ *     Chat Message representation.
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 6 $
+ *     $Modtime: 10/23/01 10:19a $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLCHATMSG_H__
 #define __WOLCHATMSG_H__
@@ -39,62 +39,56 @@
 #include <WWLib\WideString.h>
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include <vector>
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
-namespace WOL
-{
+namespace WOL {
 struct User;
 }
 
 namespace WWOnline {
 
-class ChatMessage
-	{
-	public:
-		ChatMessage(const WOL::User* sender, const char* message, bool isPrivate, bool isAction);
-		ChatMessage(const WOL::User* sender, const wchar_t* message, bool isPrivate, bool isAction);
-		ChatMessage(const wchar_t* sender, const wchar_t* message, bool isPrivate, bool isAction);
-		ChatMessage(const ChatMessage&);
-		virtual ~ChatMessage();
+class ChatMessage {
+public:
+  ChatMessage(const WOL::User *sender, const char *message, bool isPrivate, bool isAction);
+  ChatMessage(const WOL::User *sender, const wchar_t *message, bool isPrivate, bool isAction);
+  ChatMessage(const wchar_t *sender, const wchar_t *message, bool isPrivate, bool isAction);
+  ChatMessage(const ChatMessage &);
+  virtual ~ChatMessage();
 
-		const ChatMessage& operator=(const ChatMessage&);
+  const ChatMessage &operator=(const ChatMessage &);
 
-		inline const WideStringClass& GetSendersName(void) const
-			{return mSenderName;}
+  inline const WideStringClass &GetSendersName(void) const { return mSenderName; }
 
-		inline const WideStringClass& GetMessage(void) const
-			{return mMessage;}
+  inline const WideStringClass &GetMessage(void) const { return mMessage; }
 
-		inline bool IsAction(void) const
-			{return mIsAction;}
+  inline bool IsAction(void) const { return mIsAction; }
 
-		inline bool IsPrivate(void) const
-			{return mIsPrivate;}
+  inline bool IsPrivate(void) const { return mIsPrivate; }
 
-		bool IsSenderMyself(void) const;
-		bool IsSenderChannelOwner(void) const;
-		bool IsSenderSquelched(void) const;
-		bool IsSenderInClan(unsigned long clanID) const;
+  bool IsSenderMyself(void) const;
+  bool IsSenderChannelOwner(void) const;
+  bool IsSenderSquelched(void) const;
+  bool IsSenderInClan(unsigned long clanID) const;
 
-	protected:
-		WideStringClass mSenderName;
-		WideStringClass mMessage;
-		bool mIsPrivate;
-		bool mIsAction;
-		unsigned long mSenderFlags;
-		unsigned long mSenderClanID;
-	};
+protected:
+  WideStringClass mSenderName;
+  WideStringClass mMessage;
+  bool mIsPrivate;
+  bool mIsAction;
+  unsigned long mSenderFlags;
+  unsigned long mSenderClanID;
+};
 
 typedef std::vector<ChatMessage> ChatMessageList;
 
-bool IsAnsiText(const wchar_t* text);
+bool IsAnsiText(const wchar_t *text);
 
 } // namespace WWOnline
 

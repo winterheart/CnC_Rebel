@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/wwlib/blitter.h                              $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwlib/blitter.h                              $*
+ *                                                                                             *
  *                      $Author:: Jani_p                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 5/04/01 7:48p                                               $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -47,30 +47,33 @@
 **	call the appropriate method as the pixel are being processed.
 */
 class Blitter {
-	public:
+public:
+  /*
+  **	Blits from source to dest (starts at first pixel). This is the preferred
+  **	method of pixel blitting and this routine will be called 99% of the time under
+  **	normal circumstances.
+  */
+  virtual void BlitForward(void *dest, void const *source, int length) const = 0;
 
-		/*
-		**	Blits from source to dest (starts at first pixel). This is the preferred
-		**	method of pixel blitting and this routine will be called 99% of the time under
-		**	normal circumstances.
-		*/
-		virtual void BlitForward(void * dest, void const * source, int length) const = 0;
+  /*
+  **	Copies the pixel in reverse order. This only required if the source and dest
+  **	pixel regions overlap in a certain way. This routine will rarely be called.
+  */
+  virtual void BlitBackward(void *dest, void const *source, int length) const = 0;
 
-		/*
-		**	Copies the pixel in reverse order. This only required if the source and dest
-		**	pixel regions overlap in a certain way. This routine will rarely be called.
-		*/
-		virtual void BlitBackward(void * dest, void const * source, int length) const = 0;
-
-		/*
-		**	This routine calls the appropriate blit routine. A proper overlap check cannot
-		**	be performed by this routine because the pixel size information is not present.
-		**	as such, you should call the appropriate blit routine rather than letting this
-		**	routine perform the check and call.
-		*/
-		void Blit(void * dest, void const * source, int length) const {if (dest < source) BlitBackward(dest, source, length); else BlitForward(dest, source, length);}
+  /*
+  **	This routine calls the appropriate blit routine. A proper overlap check cannot
+  **	be performed by this routine because the pixel size information is not present.
+  **	as such, you should call the appropriate blit routine rather than letting this
+  **	routine perform the check and call.
+  */
+  void Blit(void *dest, void const *source, int length) const {
+    if (dest < source)
+      BlitBackward(dest, source, length);
+    else
+      BlitForward(dest, source, length);
+  }
 };
-
 
 /*
 **	This is the blitter object interface for dealing with RLE compressed pixel data. For
@@ -78,17 +81,14 @@ class Blitter {
 **	that supports this interface.
 */
 class RLEBlitter {
-	public:
-
-		/*
-		**	Blits from the RLE compressed source to the destination buffer. An optional
-		**	leading pixel skip value can be supplied when a sub-section of an RLE
-		**	compressed pixel sequence is desired. This is necessary because RLE decompression
-		**	must begin at the start of the compressed data sequence.
-		*/
-		virtual void Blit(void * dest, void const * source, int length, int leadskip=0) const = 0;
+public:
+  /*
+  **	Blits from the RLE compressed source to the destination buffer. An optional
+  **	leading pixel skip value can be supplied when a sub-section of an RLE
+  **	compressed pixel sequence is desired. This is necessary because RLE decompression
+  **	must begin at the start of the compressed data sequence.
+  */
+  virtual void Blit(void *dest, void const *source, int length, int leadskip = 0) const = 0;
 };
-
-
 
 #endif

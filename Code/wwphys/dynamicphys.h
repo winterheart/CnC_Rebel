@@ -47,98 +47,83 @@ class DynamicPhysDefClass;
 /**
 ** DynamicPhysClass
 ** This class adds some behavior that will be common to all dynamic physics objects.  It tracks
-** the current vis-ID for the object and has a method to automatically update it which should 
+** the current vis-ID for the object and has a method to automatically update it which should
 ** be called whenever the object moves.  This class is not a concrete derived class.
 */
-class DynamicPhysClass : public PhysClass
-{
+class DynamicPhysClass : public PhysClass {
 public:
-	
-	DynamicPhysClass(void);
-	~DynamicPhysClass(void);
-	virtual DynamicPhysClass *	As_DynamicPhysClass(void)									{ return this; }
-	void Init(const DynamicPhysDefClass & definition);
-		
-	virtual void								Set_Model(RenderObjClass * model);
-	
-	/*
-	** Call this whenever the object moves to update its visibility status
-	*/
-	void											Update_Visibility_Status(void);
-	virtual int									Get_Vis_Object_ID(void);
+  DynamicPhysClass(void);
+  ~DynamicPhysClass(void);
+  virtual DynamicPhysClass *As_DynamicPhysClass(void) { return this; }
+  void Init(const DynamicPhysDefClass &definition);
 
-	/*
-	** Simulation and rendering toggles for all dynamic physics objects
-	*/
-	virtual bool								Is_Simulation_Disabled(void)				{ return _DisableDynamicPhysSimulation; }
-	virtual bool								Is_Rendering_Disabled(void)				{ return _DisableDynamicPhysRendering; }
-	static void									Disable_All_Simulation(bool onoff)		{ _DisableDynamicPhysSimulation = onoff; }
-	static void									Disable_All_Rendering(bool onoff)		{ _DisableDynamicPhysRendering = onoff; }
-	static bool									Is_All_Simulation_Disabled(void)			{ return _DisableDynamicPhysSimulation; }
-	static bool									Is_All_Rendering_Disabled(void)			{ return _DisableDynamicPhysRendering; }
+  virtual void Set_Model(RenderObjClass *model);
 
-	/*
-	** Save-Load System
-	*/
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
-	virtual void								On_Post_Load(void);
+  /*
+  ** Call this whenever the object moves to update its visibility status
+  */
+  void Update_Visibility_Status(void);
+  virtual int Get_Vis_Object_ID(void);
+
+  /*
+  ** Simulation and rendering toggles for all dynamic physics objects
+  */
+  virtual bool Is_Simulation_Disabled(void) { return _DisableDynamicPhysSimulation; }
+  virtual bool Is_Rendering_Disabled(void) { return _DisableDynamicPhysRendering; }
+  static void Disable_All_Simulation(bool onoff) { _DisableDynamicPhysSimulation = onoff; }
+  static void Disable_All_Rendering(bool onoff) { _DisableDynamicPhysRendering = onoff; }
+  static bool Is_All_Simulation_Disabled(void) { return _DisableDynamicPhysSimulation; }
+  static bool Is_All_Rendering_Disabled(void) { return _DisableDynamicPhysRendering; }
+
+  /*
+  ** Save-Load System
+  */
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual void On_Post_Load(void);
 
 protected:
+  void Internal_Update_Visibility_Status(void);
 
-	void											Internal_Update_Visibility_Status(void);
+  bool DirtyVisObjectID;             // dirty flag for the vis object id
+  int VisNodeID;                     // ID of the node this object is in for temporal coherence
+  unsigned int VisStatusLastUpdated; // tickcount of last vis update
 
-	bool											DirtyVisObjectID;			// dirty flag for the vis object id
-	int											VisNodeID;					// ID of the node this object is in for temporal coherence
-	unsigned int								VisStatusLastUpdated;	// tickcount of last vis update
-	
 private:
+  static bool _DisableDynamicPhysSimulation;
+  static bool _DisableDynamicPhysRendering;
 
-	static bool									_DisableDynamicPhysSimulation;
-	static bool									_DisableDynamicPhysRendering;
-
-	/*
-	** Not implemented...
-	*/
-	DynamicPhysClass(const DynamicPhysClass &);
-	DynamicPhysClass & operator = (const DynamicPhysClass &);
-
+  /*
+  ** Not implemented...
+  */
+  DynamicPhysClass(const DynamicPhysClass &);
+  DynamicPhysClass &operator=(const DynamicPhysClass &);
 };
-
 
 /**
 ** DynamicPhysDefClass
 ** Definition data structure for DynamicPhysClass
 */
-class DynamicPhysDefClass : public PhysDefClass
-{
+class DynamicPhysDefClass : public PhysDefClass {
 public:
-	
-	DynamicPhysDefClass(void);
+  DynamicPhysDefClass(void);
 
-	// From PersistClass
-	virtual bool								Save(ChunkSaveClass &csave);
-	virtual bool								Load(ChunkLoadClass &cload);
+  // From PersistClass
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
-	// From PhysDefClass
-	virtual const char *						Get_Type_Name(void)			{ return "DynamicPhysDef"; }
-	virtual bool								Is_Type(const char *);
+  // From PhysDefClass
+  virtual const char *Get_Type_Name(void) { return "DynamicPhysDef"; }
+  virtual bool Is_Type(const char *);
 
-	// Validation methods
-	virtual bool								Is_Valid_Config (StringClass &message);
+  // Validation methods
+  virtual bool Is_Valid_Config(StringClass &message);
 
-	//	Editable interface requirements
-	DECLARE_EDITABLE(DynamicPhysDefClass,PhysDefClass);
+  //	Editable interface requirements
+  DECLARE_EDITABLE(DynamicPhysDefClass, PhysDefClass);
 
 protected:
-
-	friend class DynamicPhysClass;
+  friend class DynamicPhysClass;
 };
 
-
-
-
-#endif //DYNAMICPHYS_H
-
-
-
+#endif // DYNAMICPHYS_H

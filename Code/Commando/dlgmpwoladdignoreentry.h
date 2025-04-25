@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwoladdignoreentry.h     $*
  *                                                                                             *
@@ -47,29 +48,27 @@
 
 class EditCtrlClass;
 
-class MPWolAddIgnoreEntry :
-		public PopupDialogClass
-	{
-	public:
-		static bool DoDialog(const WCHAR* defaultUser);
+class MPWolAddIgnoreEntry : public PopupDialogClass {
+public:
+  static bool DoDialog(const WCHAR *defaultUser);
 
-	protected:
-		MPWolAddIgnoreEntry(const WCHAR* defaultUser);
-		~MPWolAddIgnoreEntry();
+protected:
+  MPWolAddIgnoreEntry(const WCHAR *defaultUser);
+  ~MPWolAddIgnoreEntry();
 
-		// Prevent copy and assignment
-		MPWolAddIgnoreEntry(const MPWolAddIgnoreEntry&);
-		const MPWolAddIgnoreEntry& operator=(const MPWolAddIgnoreEntry&);
+  // Prevent copy and assignment
+  MPWolAddIgnoreEntry(const MPWolAddIgnoreEntry &);
+  const MPWolAddIgnoreEntry &operator=(const MPWolAddIgnoreEntry &);
 
-		void On_Init_Dialog (void);
-		void On_Command (int ctrl_id, int mesage_id, DWORD param);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
-		void Add_Ignore_Entry (void);
+  void Add_Ignore_Entry(void);
 
-		void On_EditCtrl_Change(EditCtrlClass* edit, int id);
-		void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int id);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int id);
 
-		WideStringClass mDefaultUser;
-	};
+  WideStringClass mDefaultUser;
+};
 
 #endif //__DLG_MP_WOL_ADD_IGNORE_ENTRY_H

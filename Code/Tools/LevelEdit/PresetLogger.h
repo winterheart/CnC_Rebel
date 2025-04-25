@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -42,50 +41,44 @@
 #ifndef __PRESET_LOGGER_H
 #define __PRESET_LOGGER_H
 
-
 //////////////////////////////////////////////////////////////////////////
 // Forward declarations
 //////////////////////////////////////////////////////////////////////////
 class PresetClass;
 class TextFileClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	PresetLoggerClass
 //
 //////////////////////////////////////////////////////////////////////////
-class PresetLoggerClass
-{
+class PresetLoggerClass {
 public:
-	
-	//////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////
-	PresetLoggerClass (void)		{}
-	~PresetLoggerClass (void)		{}
+  //////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////
+  PresetLoggerClass(void) {}
+  ~PresetLoggerClass(void) {}
 
-	//////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////
-	
-	//
-	//	Static logging methods
-	//
-	static void			Log_Created (PresetClass *preset);
-	static void			Log_Moved (PresetClass *preset, const char *new_parent_name);
-	static void			Log_Renamed (const char *old_name, const char *new_name);
-	static void			Log_Deleted (const char *preset_name);
-	static void			Log_File_Reference_Changed (PresetClass *preset, const char *param_name, const char *new_value);
+  //////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////
+
+  //
+  //	Static logging methods
+  //
+  static void Log_Created(PresetClass *preset);
+  static void Log_Moved(PresetClass *preset, const char *new_parent_name);
+  static void Log_Renamed(const char *old_name, const char *new_name);
+  static void Log_Deleted(const char *preset_name);
+  static void Log_File_Reference_Changed(PresetClass *preset, const char *param_name, const char *new_value);
 
 private:
+  /////////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////////
-
-	static bool			Open_Log_File (TextFileClass &file_obj);
+  static bool Open_Log_File(TextFileClass &file_obj);
 };
-
 
 #endif //__PRESET_LOGGER_H

@@ -34,11 +34,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
-
 
 #ifndef WW3DIDS_H
 #define WW3DIDS_H
@@ -67,12 +65,11 @@
 **   avoid that since it will at least double the size of our files and just seems like a
 **   lot of work to solve a few specific problems.
 */
-enum
-{
-	WW3D_PERSIST_CHUNKID_RENDEROBJ			= CHUNKID_WW3D_BEGIN,
-	WW3D_PERSIST_CHUNKID_LIGHT,
-	WW3D_PERSIST_CHUNKID_DAZZLE,
-	WW3D_PERSIST_CHUNKID_RENEGADE_TERRAIN,
+enum {
+  WW3D_PERSIST_CHUNKID_RENDEROBJ = CHUNKID_WW3D_BEGIN,
+  WW3D_PERSIST_CHUNKID_LIGHT,
+  WW3D_PERSIST_CHUNKID_DAZZLE,
+  WW3D_PERSIST_CHUNKID_RENEGADE_TERRAIN,
 };
 
 #endif

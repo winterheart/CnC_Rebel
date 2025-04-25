@@ -16,23 +16,23 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /VSS_Sync/wwlib/random.h                                    $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /VSS_Sync/wwlib/random.h                                    $*
+ *                                                                                             *
  *                      $Author:: Vss_sync                                                    $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 8/29/01 10:24p                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
- *   Pick_Random_Number -- Picks a random number between two values (inclusive).               * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
+ *   Pick_Random_Number -- Picks a random number between two values (inclusive).               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -49,31 +49,30 @@
 **	limited to 15 bits (0..32767).
 */
 class RandomClass {
-	public:
-		RandomClass(unsigned seed=0);
+public:
+  RandomClass(unsigned seed = 0);
 
-		operator int(void) {return(operator()());};
-		int operator() (void);
-		int operator() (int minval, int maxval);
+  operator int(void) { return (operator()()); };
+  int operator()(void);
+  int operator()(int minval, int maxval);
 
-		enum {
-			SIGNIFICANT_BITS=15				// Random number bit significance.
-		};
+  enum {
+    SIGNIFICANT_BITS = 15 // Random number bit significance.
+  };
 
-	protected:
-		unsigned long Seed;
+protected:
+  unsigned long Seed;
 
-		/*
-		**	Internal working constants that are used to generate the next
-		**	random number.
-		*/
-		enum {
-			MULT_CONSTANT=0x41C64E6D,		// K multiplier value.
-			ADD_CONSTANT=0x00003039,		// K additive value.
-			THROW_AWAY_BITS=10				// Low bits to throw away.
-		};
+  /*
+  **	Internal working constants that are used to generate the next
+  **	random number.
+  */
+  enum {
+    MULT_CONSTANT = 0x41C64E6D, // K multiplier value.
+    ADD_CONSTANT = 0x00003039,  // K additive value.
+    THROW_AWAY_BITS = 10        // Low bits to throw away.
+  };
 };
-
 
 /*
 **	This class functions like a 'magic' number where it returns a different value every
@@ -94,23 +93,22 @@ class RandomClass {
 // behaving very badly in that domain
 // HY 6/14/01
 class Random2Class {
-	public:
-		Random2Class(unsigned seed=0);
+public:
+  Random2Class(unsigned seed = 0);
 
-		operator int(void) {return(operator()());};
-		int operator() (void);
-		int operator() (int minval, int maxval);
+  operator int(void) { return (operator()()); };
+  int operator()(void);
+  int operator()(int minval, int maxval);
 
-		enum {
-			SIGNIFICANT_BITS=32				// Random number bit significance.
-		};
+  enum {
+    SIGNIFICANT_BITS = 32 // Random number bit significance.
+  };
 
-	protected:
-		int Index1;
-		int Index2;
-		int Table[250];
+protected:
+  int Index1;
+  int Index2;
+  int Table[250];
 };
-
 
 /*
 **	This class functions like a 'magic' number where it returns a different value every
@@ -130,22 +128,22 @@ class Random2Class {
 // exhibiting a strange bias
 // HY 6/14/01
 class Random3Class {
-	public:
-		Random3Class(unsigned seed1=0, unsigned seed2=0);
+public:
+  Random3Class(unsigned seed1 = 0, unsigned seed2 = 0);
 
-		operator int(void) {return(operator()());};
-		int operator() (void);
-		int operator() (int minval, int maxval);
+  operator int(void) { return (operator()()); };
+  int operator()(void);
+  int operator()(int minval, int maxval);
 
-		enum {
-			SIGNIFICANT_BITS=32				// Random number bit significance.
-		};
+  enum {
+    SIGNIFICANT_BITS = 32 // Random number bit significance.
+  };
 
-	protected:
-		static int Mix1[20];
-		static int Mix2[20];
-		int Seed;
-		int Index;
+protected:
+  static int Mix1[20];
+  static int Mix2[20];
+  int Seed;
+  int Index;
 };
 
 /*
@@ -170,98 +168,96 @@ class Random3Class {
 // http://www.math.keio.ac.jp/~matumoto/emt.html
 // HY 6/14/01
 class Random4Class {
-	public:
-		Random4Class(unsigned int seed=4357);
+public:
+  Random4Class(unsigned int seed = 4357);
 
-		operator int(void) {return(operator()());};
-		int operator() (void);
-		int operator() (int minval, int maxval);
-		float Get_Float();
+  operator int(void) { return (operator()()); };
+  int operator()(void);
+  int operator()(int minval, int maxval);
+  float Get_Float();
 
-		enum {
-			SIGNIFICANT_BITS=32				// Random number bit significance.
-		};
-		
-	protected:
-		unsigned int mt[624]; // state vector
-		int mti;			 // index
+  enum {
+    SIGNIFICANT_BITS = 32 // Random number bit significance.
+  };
+
+protected:
+  unsigned int mt[624]; // state vector
+  int mti;              // index
 };
 
-
-/*********************************************************************************************** 
- * Pick_Random_Number -- Picks a random number between two values (inclusive).                 * 
- *                                                                                             * 
- *    This is a utility template that works with one of the random number classes. Given a     * 
- *    random number generator, this routine will return with a value that lies between the     * 
- *    minimum and maximum values specified (subject to the bit precision limitations of the    * 
- *    random number generator itself).                                                         * 
- *                                                                                             * 
- * INPUT:   generator   -- Reference to the random number generator to use for the pick        * 
- *                         process.                                                            * 
- *                                                                                             * 
- *          minval      -- The minimum legal return value (inclusive).                         * 
- *                                                                                             * 
- *          maxval      -- The maximum legal return value (inclusive).                         * 
- *                                                                                             * 
- * OUTPUT:  Returns with a random number between the minval and maxval (inclusive).            * 
- *                                                                                             * 
- * WARNINGS:   none                                                                            * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/23/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * Pick_Random_Number -- Picks a random number between two values (inclusive).                 *
+ *                                                                                             *
+ *    This is a utility template that works with one of the random number classes. Given a     *
+ *    random number generator, this routine will return with a value that lies between the     *
+ *    minimum and maximum values specified (subject to the bit precision limitations of the    *
+ *    random number generator itself).                                                         *
+ *                                                                                             *
+ * INPUT:   generator   -- Reference to the random number generator to use for the pick        *
+ *                         process.                                                            *
+ *                                                                                             *
+ *          minval      -- The minimum legal return value (inclusive).                         *
+ *                                                                                             *
+ *          maxval      -- The maximum legal return value (inclusive).                         *
+ *                                                                                             *
+ * OUTPUT:  Returns with a random number between the minval and maxval (inclusive).            *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/23/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-int Pick_Random_Number(T & generator, int minval, int maxval)
-{
-	/*
-	**	Test for shortcut case where the range is null and thus
-	**	the number to return is actually implicit from the
-	**	parameters.
-	*/
-	if (minval == maxval) return(minval);
+template <class T> int Pick_Random_Number(T &generator, int minval, int maxval) {
+  /*
+  **	Test for shortcut case where the range is null and thus
+  **	the number to return is actually implicit from the
+  **	parameters.
+  */
+  if (minval == maxval)
+    return (minval);
 
-	/*
-	**	Ensure that the min and max range values are in proper order.
-	*/
-	if (minval > maxval) {
-		int temp = minval;
-		minval = maxval;
-		maxval = temp;
-	}
+  /*
+  **	Ensure that the min and max range values are in proper order.
+  */
+  if (minval > maxval) {
+    int temp = minval;
+    minval = maxval;
+    maxval = temp;
+  }
 
-	/*
-	**	Find the highest bit that fits within the magnitude of the
-	**	range of random numbers desired. Notice that the scan is
-	**	limited to the range of significant bits returned by the
-	**	random number algorithm.
-	*/
-	int magnitude = maxval - minval;
-	int highbit = T::SIGNIFICANT_BITS-1;
-	while ((magnitude & (1 << highbit)) == 0 && highbit > 0) {
-		highbit--;
-	}
+  /*
+  **	Find the highest bit that fits within the magnitude of the
+  **	range of random numbers desired. Notice that the scan is
+  **	limited to the range of significant bits returned by the
+  **	random number algorithm.
+  */
+  int magnitude = maxval - minval;
+  int highbit = T::SIGNIFICANT_BITS - 1;
+  while ((magnitude & (1 << highbit)) == 0 && highbit > 0) {
+    highbit--;
+  }
 
-	/*
-	**	Create a full bit mask pattern that has all bits set that just
-	**	barely covers the magnitude of the number range desired.
-	*/
-	int mask = ~( (~0L) << (highbit+1));
+  /*
+  **	Create a full bit mask pattern that has all bits set that just
+  **	barely covers the magnitude of the number range desired.
+  */
+  int mask = ~((~0L) << (highbit + 1));
 
-	/*
-	**	Keep picking random numbers until it fits within the magnitude desired. With a 
-	**	good random number generator, it will have to perform this loop an average
-	**	of one and a half times.
-	*/
-	int pick = magnitude+1;
-	while (pick > magnitude) {
-		pick = generator() & mask;
-	}
+  /*
+  **	Keep picking random numbers until it fits within the magnitude desired. With a
+  **	good random number generator, it will have to perform this loop an average
+  **	of one and a half times.
+  */
+  int pick = magnitude + 1;
+  while (pick > magnitude) {
+    pick = generator() & mask;
+  }
 
-	/*
-	**	Finally, bias the random number pick to the start of the range
-	**	requested.
-	*/
-	return(pick + minval);
+  /*
+  **	Finally, bias the random number pick to the start of the range
+  **	requested.
+  */
+  return (pick + minval);
 }
 
 #endif

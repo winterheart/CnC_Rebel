@@ -28,41 +28,39 @@
 /////////////////////////////////////////////////////////////////////////////
 // MusicPropPageClass dialog
 
-class MusicPropPageClass : public CPropertyPage
-{
-	DECLARE_DYNCREATE(MusicPropPageClass)
+class MusicPropPageClass : public CPropertyPage {
+  DECLARE_DYNCREATE(MusicPropPageClass)
 
-// Construction
+  // Construction
 public:
-	MusicPropPageClass();
-	~MusicPropPageClass();
+  MusicPropPageClass();
+  ~MusicPropPageClass();
 
-// Dialog Data
-	//{{AFX_DATA(MusicPropPageClass)
-	enum { IDD = IDD_BACKGROUND_MUSIC };
-		// NOTE - ClassWizard will add data members here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(MusicPropPageClass)
+  enum { IDD = IDD_BACKGROUND_MUSIC };
+  // NOTE - ClassWizard will add data members here.
+  //    DO NOT EDIT what you see in these blocks of generated code !
+  //}}AFX_DATA
 
+  // Overrides
+  // ClassWizard generate virtual function overrides
+  //{{AFX_VIRTUAL(MusicPropPageClass)
+public:
+  virtual void OnOK();
 
-// Overrides
-	// ClassWizard generate virtual function overrides
-	//{{AFX_VIRTUAL(MusicPropPageClass)
-	public:
-	virtual void OnOK();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
 protected:
-	// Generated message map functions
-	//{{AFX_MSG(MusicPropPageClass)
-	afx_msg void OnBrowse();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(MusicPropPageClass)
+  afx_msg void OnBrowse();
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

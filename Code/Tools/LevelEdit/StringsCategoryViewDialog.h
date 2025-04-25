@@ -23,10 +23,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "resource.h"
 #include "vector.h"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //	Forward declarations
@@ -35,167 +33,145 @@ class TDBObjClass;
 class StringLibraryDialogClass;
 class StringsCategoryViewCallbackClass;
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // StringsCategoryViewDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class StringsCategoryViewDialogClass : public CDialog
-{
-// Construction
+class StringsCategoryViewDialogClass : public CDialog {
+  // Construction
 public:
-	StringsCategoryViewDialogClass(CWnd* pParent = NULL);   // standard constructor
+  StringsCategoryViewDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(StringsCategoryViewDialogClass)
-	enum { IDD = IDD_STRINGS_CATEGORY_VIEW };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(StringsCategoryViewDialogClass)
+  enum { IDD = IDD_STRINGS_CATEGORY_VIEW };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(StringsCategoryViewDialogClass)
-	public:
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(StringsCategoryViewDialogClass)
+public:
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(StringsCategoryViewDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnColumnclickStringList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDblclkStringList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDeleteitemStringList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnKeydownStringList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnItemchangedStringList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(StringsCategoryViewDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnColumnclickStringList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDblclkStringList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDeleteitemStringList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnKeydownStringList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnItemchangedStringList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////////////////////
+  //	Constants
+  /////////////////////////////////////////////////////////////////////////////
+  const enum { COL_ID = 0, COL_TEXT, COL_MAX };
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Constants
-	/////////////////////////////////////////////////////////////////////////////
-	const enum
-	{
-		COL_ID		= 0,
-		COL_TEXT,
-		COL_MAX
-	};
+  typedef enum { EDIT_MODE_NONE = 0, EDIT_MODE_STRING, EDIT_MODE_TWIDDLER } EDIT_MODE;
 
-	typedef enum
-	{
-		EDIT_MODE_NONE			= 0,
-		EDIT_MODE_STRING,
-		EDIT_MODE_TWIDDLER
-	} EDIT_MODE;
+  /////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////////////
-	
-	//
-	//	Creation
-	//
-	void		Create (CWnd *parent_wnd);
-	void		Apply_Changes (void);
-	void		Update_Controls (void);
+  //
+  //	Creation
+  //
+  void Create(CWnd *parent_wnd);
+  void Apply_Changes(void);
+  void Update_Controls(void);
 
-	//
-	//	Modification
-	//	
-	void		Cut (DynamicVectorClass <TDBObjClass *> &entry_list, bool sel_only = true);
-	void		Paste (DynamicVectorClass <TDBObjClass *> &entry_list);
-	
-	//
-	//	Accessors
-	//
-	int		Get_Category_ID (void) const				{ return CategoryID; }
-	void		Set_Category_ID (int id)					{ CategoryID = id; }
-	bool		Is_Version_Number_Dirty (void) const	{ return ShouldUpdateVersionNumber; }
-	void		Set_Edit_Mode (EDIT_MODE mode)			{ EditMode = mode; }
+  //
+  //	Modification
+  //
+  void Cut(DynamicVectorClass<TDBObjClass *> &entry_list, bool sel_only = true);
+  void Paste(DynamicVectorClass<TDBObjClass *> &entry_list);
 
-	//
-	//	Callback support
-	//
-	void		Set_Callback (StringsCategoryViewCallbackClass *callback)	{ CallbackObject = callback; }
+  //
+  //	Accessors
+  //
+  int Get_Category_ID(void) const { return CategoryID; }
+  void Set_Category_ID(int id) { CategoryID = id; }
+  bool Is_Version_Number_Dirty(void) const { return ShouldUpdateVersionNumber; }
+  void Set_Edit_Mode(EDIT_MODE mode) { EditMode = mode; }
 
-	//
-	//	Column control
-	//
-	void		Remove_Column (int col_id);
-	void		Set_Column_Width (int col_id, float width);
+  //
+  //	Callback support
+  //
+  void Set_Callback(StringsCategoryViewCallbackClass *callback) { CallbackObject = callback; }
 
-	//
-	//	Selection access
-	//
-	void		Set_Selection (int object_id)				{ SelectedObjectID = object_id; }
-	int		Get_Selection (void);
+  //
+  //	Column control
+  //
+  void Remove_Column(int col_id);
+  void Set_Column_Width(int col_id, float width);
+
+  //
+  //	Selection access
+  //
+  void Set_Selection(int object_id) { SelectedObjectID = object_id; }
+  int Get_Selection(void);
 
 private:
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private data types
+  /////////////////////////////////////////////////////////////////////////////
+  typedef struct _COL_INFO {
+    int id;
+    const char *name;
+    float width;
+  } COL_INFO;
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private data types
-	/////////////////////////////////////////////////////////////////////////////	
-	typedef struct _COL_INFO
-	{
-		int				id;
-		const char *	name;
-		float				width;
-	} COL_INFO;
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////////////////
+  void Resize_Controls(void);
+  void Insert_New_Entry(TDBObjClass *object);
+  void Upate_Entry(int index);
+  int Find_Entry(TDBObjClass *object);
 
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////////////////	
-	void		Resize_Controls (void);
-	void		Insert_New_Entry (TDBObjClass *object);
-	void		Upate_Entry (int index);
-	int		Find_Entry (TDBObjClass *object);
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////////////
-	int								SelectedObjectID;
-	int								CategoryID;
-	bool								IsInitialized;
-	bool								ShouldUpdateVersionNumber;
-	int								CurrentColSort;
-	bool								AscendingSort;
-	StringsCategoryViewCallbackClass *	CallbackObject;
-	CRect								CurrListRect;
-	EDIT_MODE						EditMode;
-	DynamicVectorClass<int>		Columns;
-	COL_INFO							ColumnSettings[COL_MAX];
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////
+  int SelectedObjectID;
+  int CategoryID;
+  bool IsInitialized;
+  bool ShouldUpdateVersionNumber;
+  int CurrentColSort;
+  bool AscendingSort;
+  StringsCategoryViewCallbackClass *CallbackObject;
+  CRect CurrListRect;
+  EDIT_MODE EditMode;
+  DynamicVectorClass<int> Columns;
+  COL_INFO ColumnSettings[COL_MAX];
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // StringsCategoryViewCallbackClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class StringsCategoryViewCallbackClass
-{
+class StringsCategoryViewCallbackClass {
 public:
+  StringsCategoryViewCallbackClass(void) {}
+  virtual ~StringsCategoryViewCallbackClass(void) {}
 
-	StringsCategoryViewCallbackClass (void)				{}
-	virtual ~StringsCategoryViewCallbackClass (void)	{}
-	
-	/////////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////////////
-	virtual void	On_Selection_Changed (int sel_object_id)	{}
-	virtual void	On_Cut (void)										{}
-	virtual void	On_Paste (void)									{}
+  /////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////
+  virtual void On_Selection_Changed(int sel_object_id) {}
+  virtual void On_Cut(void) {}
+  virtual void On_Paste(void) {}
 };
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

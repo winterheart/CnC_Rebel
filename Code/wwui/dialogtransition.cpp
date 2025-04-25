@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/dialogtransition.cpp      $*
  *                                                                                             *
@@ -34,29 +35,19 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "dialogtransition.h"
 #include "dialogmgr.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogTransitionClass
 //
 ////////////////////////////////////////////////////////////////
-DialogTransitionClass::DialogTransitionClass (TYPE type)	:
-	Type (type)
-{
-	return ;
-}
-
+DialogTransitionClass::DialogTransitionClass(TYPE type) : Type(type) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	~DialogTransitionClass
 //
 ////////////////////////////////////////////////////////////////
-DialogTransitionClass::~DialogTransitionClass (void)
-{
-	return ;
-}
+DialogTransitionClass::~DialogTransitionClass(void) { return; }

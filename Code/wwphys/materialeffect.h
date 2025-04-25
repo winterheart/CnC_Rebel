@@ -47,12 +47,9 @@
 #include "multilist.h"
 #include "refcount.h"
 
-
 class PhysClass;
 class RenderInfoClass;
-class	MaterialPassClass;
-
-
+class MaterialPassClass;
 
 /**
 ** MaterialEffectClass
@@ -75,66 +72,56 @@ class	MaterialPassClass;
 **  flag so the phys object can discard it after rendering is complete if necessary.
 **
 **  If we want to also use the stealth object for game logic, we need to ensure that its internal
-**  variables update even when it doesn't get rendered.  The PhysClass could timestep all of the 
-**  currently attached material effects.  The only ones attached during timestep would be the 
-**  "persistant" ones...  
+**  variables update even when it doesn't get rendered.  The PhysClass could timestep all of the
+**  currently attached material effects.  The only ones attached during timestep would be the
+**  "persistant" ones...
 **
 */
 
-class MaterialEffectClass : public MultiListObjectClass, public RefCountClass
-{
+class MaterialEffectClass : public MultiListObjectClass, public RefCountClass {
 public:
+  MaterialEffectClass(void);
+  virtual ~MaterialEffectClass(void);
 
-	MaterialEffectClass(void);
-	virtual ~MaterialEffectClass(void);
+  void Enable_Auto_Remove(bool onoff) { AutoRemoveEnabled = onoff; }
+  bool Is_Auto_Remove_Enabled(void) { return AutoRemoveEnabled; }
 
-	void					Enable_Auto_Remove(bool onoff)			{ AutoRemoveEnabled = onoff; }
-	bool					Is_Auto_Remove_Enabled(void)				{ return AutoRemoveEnabled; }
+  void Enable_Suppress_Shadows(bool onoff) { SuppressShadows = onoff; }
+  bool Are_Shadows_Suppressed(void) { return SuppressShadows; }
 
-	void					Enable_Suppress_Shadows(bool onoff)		{ SuppressShadows = onoff; }
-	bool					Are_Shadows_Suppressed(void)				{ return SuppressShadows; }
+  virtual void Timestep(float dt) {}
 
-	virtual void		Timestep(float dt)							{ }
+  virtual void Render_Push(RenderInfoClass &rinfo, PhysClass *obj) = 0;
+  virtual void Render_Pop(RenderInfoClass &rinfo) = 0;
 
-	virtual void		Render_Push(RenderInfoClass & rinfo,PhysClass * obj)		= 0;
-	virtual void		Render_Pop(RenderInfoClass & rinfo)								= 0;
-
-	static void			Timestep_All_Effects(float dt);
+  static void Timestep_All_Effects(float dt);
 
 private:
-
-	bool					AutoRemoveEnabled;
-	bool					SuppressShadows;
+  bool AutoRemoveEnabled;
+  bool SuppressShadows;
 };
-
 
 /**
 ** SimpleEffectClass
 ** This is a material effect object which simply causes a material pass to be added.  The texture
-** projection system uses this in "Auto Remove" mode to simply get the shadow pass applied to 
+** projection system uses this in "Auto Remove" mode to simply get the shadow pass applied to
 ** each object that the shadow falls on.  These objects are Auto-Pooled for fast allocation and
-** de-allocation so the user cannot derive a class from SimpleEffectClass.  
+** de-allocation so the user cannot derive a class from SimpleEffectClass.
 */
 
 #define SIMPLE_EFFECT_GROWTH_STEP 256
 
-class SimpleEffectClass : public MaterialEffectClass , public AutoPoolClass<SimpleEffectClass,SIMPLE_EFFECT_GROWTH_STEP>
-{
+class SimpleEffectClass : public MaterialEffectClass,
+                          public AutoPoolClass<SimpleEffectClass, SIMPLE_EFFECT_GROWTH_STEP> {
 public:
-	SimpleEffectClass(MaterialPassClass * matpass);
-	~SimpleEffectClass(void);
+  SimpleEffectClass(MaterialPassClass *matpass);
+  ~SimpleEffectClass(void);
 
-	virtual void		Render_Push(RenderInfoClass & rinfo,PhysClass * obj);
-	virtual void		Render_Pop(RenderInfoClass & rinfo);
+  virtual void Render_Push(RenderInfoClass &rinfo, PhysClass *obj);
+  virtual void Render_Pop(RenderInfoClass &rinfo);
 
 private:
-
-	MaterialPassClass *	MatPass;
-
+  MaterialPassClass *MatPass;
 };
 
-
-
-
-#endif //MATERIALEFFECT_H
-
+#endif // MATERIALEFFECT_H

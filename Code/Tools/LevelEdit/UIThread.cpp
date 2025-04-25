@@ -34,30 +34,24 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(UIThreadClass, CWinThread)
 
-UIThreadClass::UIThreadClass()
-{
+UIThreadClass::UIThreadClass() {}
+
+UIThreadClass::~UIThreadClass() {}
+
+BOOL UIThreadClass::InitInstance() {
+  // TODO:  perform and per-thread initialization here
+  return TRUE;
 }
 
-UIThreadClass::~UIThreadClass()
-{
-}
-
-BOOL UIThreadClass::InitInstance()
-{
-	// TODO:  perform and per-thread initialization here
-	return TRUE;
-}
-
-int UIThreadClass::ExitInstance()
-{
-	// TODO:  perform any per-thread cleanup here
-	return CWinThread::ExitInstance();
+int UIThreadClass::ExitInstance() {
+  // TODO:  perform any per-thread cleanup here
+  return CWinThread::ExitInstance();
 }
 
 BEGIN_MESSAGE_MAP(UIThreadClass, CWinThread)
-	//{{AFX_MSG_MAP(UIThreadClass)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(UIThreadClass)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

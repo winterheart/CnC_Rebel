@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLChannel.h $
-*
-* DESCRIPTION
-*     Westwood Online channel representation.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 17 $
-*     $Modtime: 11/08/01 5:05p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLChannel.h $
+ *
+ * DESCRIPTION
+ *     Westwood Online channel representation.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 17 $
+ *     $Modtime: 11/08/01 5:05p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLCHANNEL_H__
 #define __WOLCHANNEL_H__
@@ -42,8 +42,7 @@
 #include <WWLib\Notify.h>
 #include <WWLib\WideString.h>
 
-namespace WOL
-{
+namespace WOL {
 #include <WOLAPI\wolapi.h>
 }
 
@@ -59,160 +58,127 @@ namespace WOL
 
 namespace WWOnline {
 
-class ChannelData :
-		public RefCounted
-	{
-	public:
-		static RefPtr<ChannelData> Create(const WOL::Channel&);
-		static RefPtr<ChannelData> Create(const wchar_t* name, const wchar_t* password, int type);
+class ChannelData : public RefCounted {
+public:
+  static RefPtr<ChannelData> Create(const WOL::Channel &);
+  static RefPtr<ChannelData> Create(const wchar_t *name, const wchar_t *password, int type);
 
-		const WideStringClass& GetName(void)
-			const {return mChannelName;}
+  const WideStringClass &GetName(void) const { return mChannelName; }
 
-		int GetType(void) const
-			{return mData.type;}
+  int GetType(void) const { return mData.type; }
 
-		void SetLatency(int latency);
+  void SetLatency(int latency);
 
-		int GetLatency(void) const
-			{return mData.latency;}
+  int GetLatency(void) const { return mData.latency; }
 
-		bool IsHidden(void) const
-			{return (mData.hidden != 0);}
+  bool IsHidden(void) const { return (mData.hidden != 0); }
 
-		void SetTopic(const char* topic);
+  void SetTopic(const char *topic);
 
-		const char* GetTopic(void) const
-			{return (const char*)mData.topic;}
+  const char *GetTopic(void) const { return (const char *)mData.topic; }
 
-		void SetExtraInfo(const char* exInfo);
-	
-		const char* GetExtraInfo(void) const
-			{return (const char*)mData.exInfo;}
+  void SetExtraInfo(const char *exInfo);
 
-		// Check if this channel requires a password to join.
-		bool IsPassworded(void) const;
+  const char *GetExtraInfo(void) const { return (const char *)mData.exInfo; }
 
-		// Set the channels minimum and maximum users allowed.
-		void SetMinMaxUsers(unsigned int minUsers, unsigned int maxUsers);
+  // Check if this channel requires a password to join.
+  bool IsPassworded(void) const;
 
-		// Get the minimum number of users for game.
-		inline unsigned int GetMinUsers(void) const
-			{return mData.minUsers;}
+  // Set the channels minimum and maximum users allowed.
+  void SetMinMaxUsers(unsigned int minUsers, unsigned int maxUsers);
 
-		// Get the maximum number of users for game.
-		inline unsigned int GetMaxUsers(void) const
-			{return mData.maxUsers;}
+  // Get the minimum number of users for game.
+  inline unsigned int GetMinUsers(void) const { return mData.minUsers; }
 
-		inline unsigned int GetCurrentUsers(void) const
-			{return mData.currentUsers;}
+  // Get the maximum number of users for game.
+  inline unsigned int GetMaxUsers(void) const { return mData.maxUsers; }
 
-		// Set official status
-		void SetOfficial(bool official);
-		
-		// Test if this channel is an official Westwood channel
-		inline bool IsOfficial(void) const
-			{return (mData.official != 0);}
+  inline unsigned int GetCurrentUsers(void) const { return mData.currentUsers; }
 
-		// Set the tournament type this channel is hosting (0 = none)
-		void SetTournament(unsigned int tournamentType);
-	
-		// Get the tournament type for this channel
-		inline unsigned int GetTournament(void) const
-			{return mData.tournament;}
-		
-		inline unsigned int GetFlags(void) const
-			{return mData.flags;}
+  // Set official status
+  void SetOfficial(bool official);
 
-		WOL::Channel& GetData(void)
-			{return mData;}
+  // Test if this channel is an official Westwood channel
+  inline bool IsOfficial(void) const { return (mData.official != 0); }
 
-		void UpdateData(const WOL::Channel&);
+  // Set the tournament type this channel is hosting (0 = none)
+  void SetTournament(unsigned int tournamentType);
 
-	protected:
-		ChannelData(const WOL::Channel&);
-		ChannelData(const wchar_t* name, const wchar_t* password, int type);
-		virtual ~ChannelData();
+  // Get the tournament type for this channel
+  inline unsigned int GetTournament(void) const { return mData.tournament; }
 
-		ChannelData(const ChannelData&);
-		const ChannelData& operator=(const ChannelData&);
+  inline unsigned int GetFlags(void) const { return mData.flags; }
 
-		WOL::Channel mData;
-		WideStringClass mChannelName;
-	};
+  WOL::Channel &GetData(void) { return mData; }
 
+  void UpdateData(const WOL::Channel &);
 
-typedef enum
-	{
-	ChannelError = -1,
-	ChannelLeft = 0,
-	ChannelJoined,
-	ChannelCreated,
-	ChannelNotFound,
-	ChannelExists,
-	ChannelBadPassword,
-	ChannelFull,
-	ChannelBanned,
-	ChannelKicked,
-	ChannelNewData,
-	ChannelLeaving
-	} ChannelStatus;
+protected:
+  ChannelData(const WOL::Channel &);
+  ChannelData(const wchar_t *name, const wchar_t *password, int type);
+  virtual ~ChannelData();
+
+  ChannelData(const ChannelData &);
+  const ChannelData &operator=(const ChannelData &);
+
+  WOL::Channel mData;
+  WideStringClass mChannelName;
+};
+
+typedef enum {
+  ChannelError = -1,
+  ChannelLeft = 0,
+  ChannelJoined,
+  ChannelCreated,
+  ChannelNotFound,
+  ChannelExists,
+  ChannelBadPassword,
+  ChannelFull,
+  ChannelBanned,
+  ChannelKicked,
+  ChannelNewData,
+  ChannelLeaving
+} ChannelStatus;
 
 ChannelStatus GetChannelStatusFromHResult(HRESULT result);
-const wchar_t* GetChannelStatusDescription(ChannelStatus status);
+const wchar_t *GetChannelStatusDescription(ChannelStatus status);
 
-class ChannelEvent :
-		public TypedEvent< ChannelEvent, const RefPtr<ChannelData> >
-	{
-	public:
-		ChannelStatus GetStatus(void) const
-			{return mStatus;}
+class ChannelEvent : public TypedEvent<ChannelEvent, const RefPtr<ChannelData>> {
+public:
+  ChannelStatus GetStatus(void) const { return mStatus; }
 
-		ChannelEvent(ChannelStatus status, const RefPtr<ChannelData>& channel) :
-				TypedEvent< ChannelEvent, const RefPtr<ChannelData> >(channel),
-				mStatus(status)
-			{}
+  ChannelEvent(ChannelStatus status, const RefPtr<ChannelData> &channel)
+      : TypedEvent<ChannelEvent, const RefPtr<ChannelData>>(channel), mStatus(status) {}
 
-		~ChannelEvent()
-			{}
+  ~ChannelEvent() {}
 
-	protected:
-		ChannelStatus mStatus;
-	};
+protected:
+  ChannelStatus mStatus;
+};
 
+typedef std::list<RefPtr<ChannelData>> ChannelList;
 
-typedef std::list< RefPtr<ChannelData> > ChannelList;
+class ChannelListEvent : public TypedEvent<ChannelListEvent, ChannelList> {
+public:
+  typedef enum { Error = -1, NewList, Update, Remove } Event;
 
-class ChannelListEvent :
-		public TypedEvent<ChannelListEvent, ChannelList>
-	{
-	public:
-		typedef enum {Error = -1, NewList, Update, Remove} Event;
+  Event GetEvent(void) const { return mEvent; }
 
-		Event GetEvent(void) const
-			{return mEvent;}
+  int GetChannelType(void) { return mType; }
 
-		int GetChannelType(void)
-			{return mType;}
+  ChannelListEvent(Event event, ChannelList &list, int type)
+      : TypedEvent<ChannelListEvent, ChannelList>(list), mEvent(event), mType(type) {}
 
-		ChannelListEvent(Event event, ChannelList& list, int type) :
-				TypedEvent<ChannelListEvent, ChannelList>(list),
-				mEvent(event),
-				mType(type)
-			{}
+  ~ChannelListEvent() {}
 
-		~ChannelListEvent()
-			{}
+protected:
+  Event mEvent;
+  int mType;
+};
 
-	protected:
-		Event mEvent;
-		int mType;
-	};
-
-
-ChannelList::iterator FindChannelNode(ChannelList& list, const char* name);
-RefPtr<ChannelData> FindChannelInList(ChannelList& list, const wchar_t* name);
-RefPtr<ChannelData> FindChannelInList(ChannelList& list, const char* name);
+ChannelList::iterator FindChannelNode(ChannelList &list, const char *name);
+RefPtr<ChannelData> FindChannelInList(ChannelList &list, const wchar_t *name);
+RefPtr<ChannelData> FindChannelInList(ChannelList &list, const char *name);
 
 } // namespace WWOnline
 

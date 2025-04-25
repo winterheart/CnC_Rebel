@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/dialogtext.h            $*
  *                                                                                             *
@@ -46,50 +47,45 @@
 #include "render2d.h"
 #include "render2dsentence.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	DialogTextClass
 //
 ////////////////////////////////////////////////////////////////
-class DialogTextClass : public DialogControlClass
-{
+class DialogTextClass : public DialogControlClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  DialogTextClass(void);
+  virtual ~DialogTextClass(void) {}
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	DialogTextClass (void);
-	virtual ~DialogTextClass (void)	{}
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  // RTTI
+  DialogTextClass *As_DialogTextClass(void) { return (this); }
 
-	// RTTI
-	DialogTextClass *As_DialogTextClass (void)		{ return (this); }
-
-	//
-	//	From DialogControlClass
-	//
-	void					Render (void);
+  //
+  //	From DialogControlClass
+  //
+  void Render(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Create(void);
+  void Create_Text_Renderer(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					On_Create (void);
-	void					Create_Text_Renderer (void);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	Render2DSentenceClass	TextRenderer;
-	Render2DSentenceClass	GlowRenderer;
-	Render2DClass				ControlRenderer;
-	bool							IsTitle;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  Render2DSentenceClass TextRenderer;
+  Render2DSentenceClass GlowRenderer;
+  Render2DClass ControlRenderer;
+  bool IsTitle;
 };
-
 
 #endif //__DIALOG_TEXT_H

@@ -28,39 +28,37 @@
 /////////////////////////////////////////////////////////////////////////////
 // DriverVersionWarning dialog
 
-class DriverVersionWarning : public CDialog
-{
-// Construction
+class DriverVersionWarning : public CDialog {
+  // Construction
 public:
-	DriverVersionWarning(CWnd* pParent = NULL);   // standard constructor
+  DriverVersionWarning(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(DriverVersionWarning)
-	enum { IDD = IDD_DRIVER_VERSION_WARNING };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(DriverVersionWarning)
+  enum { IDD = IDD_DRIVER_VERSION_WARNING };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(DriverVersionWarning)
+public:
+  virtual int DoModal();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(DriverVersionWarning)
-	public:
-	virtual int DoModal();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(DriverVersionWarning)
-	afx_msg void OnDisableDriverVersionDialogCheckbox();
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(DriverVersionWarning)
+  afx_msg void OnDisableDriverVersionDialogCheckbox();
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

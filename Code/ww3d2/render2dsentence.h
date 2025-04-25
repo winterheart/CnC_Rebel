@@ -16,23 +16,23 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
- /***********************************************************************************************
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
- ***********************************************************************************************
- *                                                                                             *
- *                 Project Name : WW3D                                                         *
- *                                                                                             *
- *                     $Archive:: /Commando/Code/ww3d2/render2dsentence.h                     $*
- *                                                                                             *
- *                       Author:: Greg Hjelstrom                                               *
- *                                                                                             *
- *                     $Modtime:: 10/08/01 10:16p                                             $*
- *                                                                                             *
- *                    $Revision:: 10                                                          $*
- *                                                                                             *
- *---------------------------------------------------------------------------------------------*
- * Functions:                                                                                  *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/***********************************************************************************************
+***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+***********************************************************************************************
+*                                                                                             *
+*                 Project Name : WW3D                                                         *
+*                                                                                             *
+*                     $Archive:: /Commando/Code/ww3d2/render2dsentence.h                     $*
+*                                                                                             *
+*                       Author:: Greg Hjelstrom                                               *
+*                                                                                             *
+*                     $Modtime:: 10/08/01 10:16p                                             $*
+*                                                                                             *
+*                    $Revision:: 10                                                          $*
+*                                                                                             *
+*---------------------------------------------------------------------------------------------*
+* Functions:                                                                                  *
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
@@ -51,68 +51,67 @@
 /*
 ** FontCharsClass
 */
-class	SurfaceClass;
+class SurfaceClass;
 
 class FontCharsClass : public RefCountClass {
 
 public:
-	FontCharsClass( void );
-	~FontCharsClass();
+  FontCharsClass(void);
+  ~FontCharsClass();
 
-	void	Initialize_GDI_Font( const char *font_name, int point_size, bool is_bold );
-	bool	Is_Font( const char *font_name, int point_size, bool is_bold );
-	const char * Get_Name( void )			{ return Name; }	
+  void Initialize_GDI_Font(const char *font_name, int point_size, bool is_bold);
+  bool Is_Font(const char *font_name, int point_size, bool is_bold);
+  const char *Get_Name(void) { return Name; }
 
-	int	Get_Char_Height( void )			{ return CharHeight; }
-	int	Get_Char_Width( WCHAR ch );
-	int	Get_Char_Spacing( WCHAR ch );
+  int Get_Char_Height(void) { return CharHeight; }
+  int Get_Char_Width(WCHAR ch);
+  int Get_Char_Spacing(WCHAR ch);
 
-	void	Blit_Char( WCHAR ch, uint16 *dest_ptr, int dest_stride, int x, int y );
+  void Blit_Char(WCHAR ch, uint16 *dest_ptr, int dest_stride, int x, int y);
 
 private:
+  //
+  //	Private data structures
+  //
+  struct CharDataStruct {
+    WCHAR Value;
+    short Width;
+    uint16 *Buffer;
+  };
 
-	//
-	//	Private data structures
-	//
-	struct CharDataStruct {
-		WCHAR				Value;
-		short				Width;
-		uint16 *			Buffer;
-	};
+  //
+  //	Private methods
+  //
+  void Create_GDI_Font(const char *font_name);
+  void Free_GDI_Font(void);
+  const CharDataStruct *Store_GDI_Char(WCHAR ch);
+  void Update_Current_Buffer(int char_width);
+  const CharDataStruct *Get_Char_Data(WCHAR ch);
 
-	//
-	//	Private methods
-	//
-	void							Create_GDI_Font( const char *font_name );
-	void							Free_GDI_Font( void );
-	const CharDataStruct *	Store_GDI_Char( WCHAR ch );
-	void							Update_Current_Buffer( int char_width );
-	const CharDataStruct	*	Get_Char_Data( WCHAR ch );
+  void Grow_Unicode_Array(WCHAR ch);
+  void Free_Character_Arrays(void);
 
-	void							Grow_Unicode_Array( WCHAR ch );
-	void							Free_Character_Arrays( void );
-
-	//
-	//	Private member data
-	//
-	StringClass							Name;
-	DynamicVectorClass<uint16 *>	BufferList;
-	uint16*								PreAllocatedBufferList[16];	// We'll use this with BufferList first
-	int									CurrPixelOffset;
-	int									CharHeight;
-	int									PointSize;
-	StringClass							GDIFontName;
-	HFONT									OldGDIFont;
-	HBITMAP								OldGDIBitmap;
-	HBITMAP								GDIBitmap;	
-	HFONT									GDIFont;
-	uint8 *								GDIBitmapBits;
-	HDC									MemDC;
-	CharDataStruct *					ASCIICharArray[256];
-	CharDataStruct **					UnicodeCharArray;
-	wchar_t								FirstUnicodeChar;
-	wchar_t								LastUnicodeChar;
-	bool									IsBold;
+  //
+  //	Private member data
+  //
+  StringClass Name;
+  DynamicVectorClass<uint16 *> BufferList;
+  uint16 *PreAllocatedBufferList[16]; // We'll use this with BufferList first
+  int CurrPixelOffset;
+  int CharHeight;
+  int PointSize;
+  StringClass GDIFontName;
+  HFONT OldGDIFont;
+  HBITMAP OldGDIBitmap;
+  HBITMAP GDIBitmap;
+  HFONT GDIFont;
+  uint8 *GDIBitmapBits;
+  HDC MemDC;
+  CharDataStruct *ASCIICharArray[256];
+  CharDataStruct **UnicodeCharArray;
+  wchar_t FirstUnicodeChar;
+  wchar_t LastUnicodeChar;
+  bool IsBold;
 };
 
 /*
@@ -120,133 +119,136 @@ private:
 */
 class Render2DSentenceClass {
 public:
-	//Render2DSentenceClass( FontCharsClass * font );
-	Render2DSentenceClass( void );
-	~Render2DSentenceClass();
+  // Render2DSentenceClass( FontCharsClass * font );
+  Render2DSentenceClass(void);
+  ~Render2DSentenceClass();
 
-	void				Render (void);
-	virtual	void	Reset (void);
-	void				Reset_Polys (void);
+  void Render(void);
+  virtual void Reset(void);
+  void Reset_Polys(void);
 
-	FontCharsClass *	Peek_Font( void )						{ return Font; }
-	void	Set_Font( FontCharsClass *font );
+  FontCharsClass *Peek_Font(void) { return Font; }
+  void Set_Font(FontCharsClass *font);
 
-	void	Set_Location( const Vector2 & loc );
-	void	Set_Base_Location( const Vector2 & loc );
-	void	Set_Wrapping_Width (float width)					{ WrapWidth = width; }
-	
-	void	Set_Tabstop(float stop);
+  void Set_Location(const Vector2 &loc);
+  void Set_Base_Location(const Vector2 &loc);
+  void Set_Wrapping_Width(float width) { WrapWidth = width; }
 
-	//
-	// Clipping support
-	//
-	void	Set_Clipping_Rect( const RectClass &rect )	{ ClipRect = rect; IsClippedEnabled = true; }
-	bool	Is_Clipping_Enabled( void ) const				{ return IsClippedEnabled; }
-	void	Enable_Clipping( bool onoff )						{ IsClippedEnabled = onoff; }
+  void Set_Tabstop(float stop);
 
-	//
-	//	Shader modification support
-	//
-	void			Make_Additive (void);
-	ShaderClass	Get_Shader (void) const						{ return Shader; }
-	void			Set_Shader (ShaderClass shader);
+  //
+  // Clipping support
+  //
+  void Set_Clipping_Rect(const RectClass &rect) {
+    ClipRect = rect;
+    IsClippedEnabled = true;
+  }
+  bool Is_Clipping_Enabled(void) const { return IsClippedEnabled; }
+  void Enable_Clipping(bool onoff) { IsClippedEnabled = onoff; }
 
-//	void	Draw_Block( const RectClass & screen, unsigned long color = 0xFFFFFFFF );
+  //
+  //	Shader modification support
+  //
+  void Make_Additive(void);
+  ShaderClass Get_Shader(void) const { return Shader; }
+  void Set_Shader(ShaderClass shader);
 
-	const RectClass & Get_Draw_Extents( void )			{ return DrawExtents; }
-//	const RectClass & Get_Total_Extents( void )			{ return TotalExtents; }
-//	const Vector2 & Get_Cursor( void )						{ return Cursor; }
+  //	void	Draw_Block( const RectClass & screen, unsigned long color = 0xFFFFFFFF );
 
-	Vector2			Get_Text_Extents( const WCHAR * text );
-	Vector2			Get_Formatted_Text_Extents( const WCHAR * text, int *row_count = NULL );
-	const WCHAR *	Find_Row_Start( const WCHAR * text, int row_index );
+  const RectClass &Get_Draw_Extents(void) { return DrawExtents; }
+  //	const RectClass & Get_Total_Extents( void )			{ return TotalExtents; }
+  //	const Vector2 & Get_Cursor( void )						{ return Cursor; }
 
-	//
-	//	Sentence control
-	//
-	void	Build_Sentence (const WCHAR *text);
-	void	Draw_Sentence (uint32 color = 0xFFFFFFFF);
+  Vector2 Get_Text_Extents(const WCHAR *text);
+  Vector2 Get_Formatted_Text_Extents(const WCHAR *text, int *row_count = NULL);
+  const WCHAR *Find_Row_Start(const WCHAR *text, int row_index);
 
-	//
-	//	Texture hint
-	//
-	void	Set_Texture_Size_Hint( int hint )				{ TextureSizeHint = hint; }
-	int	Get_Texture_Size_Hint( void ) const				{ return TextureSizeHint; }
+  //
+  //	Sentence control
+  //
+  void Build_Sentence(const WCHAR *text);
+  void Draw_Sentence(uint32 color = 0xFFFFFFFF);
 
-	void	Set_Mono_Spaced( bool onoff )						{ MonoSpaced = onoff; }
+  //
+  //	Texture hint
+  //
+  void Set_Texture_Size_Hint(int hint) { TextureSizeHint = hint; }
+  int Get_Texture_Size_Hint(void) const { return TextureSizeHint; }
 
-	// Force all alphas 
-	void	Force_Alpha( float alpha );
+  void Set_Mono_Spaced(bool onoff) { MonoSpaced = onoff; }
+
+  // Force all alphas
+  void Force_Alpha(float alpha);
 
 private:
+  //
+  //	Private structures
+  //
+  struct SentenceDataStruct {
+    SurfaceClass *Surface;
+    RectClass ScreenRect;
+    RectClass UVRect;
 
-	//
-	//	Private structures
-	//
-	struct SentenceDataStruct {
-		SurfaceClass *		Surface;
-		RectClass			ScreenRect;
-		RectClass			UVRect;
+    bool operator==(const SentenceDataStruct &src) { return false; }
+    bool operator!=(const SentenceDataStruct &src) { return true; }
+  };
 
-		bool operator== (const SentenceDataStruct &src)	{ return false; }
-		bool operator!= (const SentenceDataStruct &src)	{ return true; }
-	};
+  struct PendingSurfaceStruct {
+    SurfaceClass *Surface;
+    DynamicVectorClass<Render2DClass *> Renderers;
+    Render2DClass *PreAllocatedRenderers[16]; // Use this with Renderers at first
 
-	struct PendingSurfaceStruct {
-		SurfaceClass *								Surface;
-		DynamicVectorClass<Render2DClass *>	Renderers;
-		Render2DClass *							PreAllocatedRenderers[16];	// Use this with Renderers at first
+    PendingSurfaceStruct()
+        : Renderers(sizeof(PreAllocatedRenderers) / sizeof(Render2DClass *), PreAllocatedRenderers) {}
 
-		PendingSurfaceStruct() : Renderers(sizeof(PreAllocatedRenderers)/sizeof(Render2DClass*),PreAllocatedRenderers) {}
+    bool operator==(const PendingSurfaceStruct &src) { return false; }
+    bool operator!=(const PendingSurfaceStruct &src) { return true; }
+  };
 
-		bool operator== (const PendingSurfaceStruct &src)	{ return false; }
-		bool operator!= (const PendingSurfaceStruct &src)	{ return true; }
-	};
+  struct RendererDataStruct {
+    Render2DClass *Renderer;
+    SurfaceClass *Surface;
 
-	struct RendererDataStruct {
-		Render2DClass *	Renderer;
-		SurfaceClass *		Surface;
+    bool operator==(const RendererDataStruct &src) { return false; }
+    bool operator!=(const RendererDataStruct &src) { return true; }
+  };
 
-		bool operator== (const RendererDataStruct &src)	{ return false; }
-		bool operator!= (const RendererDataStruct &src)	{ return true; }
-	};
+  //
+  //	Private methods
+  //
+  void Reset_Sentence_Data(void);
+  void Build_Textures(void);
+  void Record_Sentence_Chunk(void);
+  void Allocate_New_Surface(const WCHAR *text);
+  void Release_Pending_Surfaces(void);
 
-	//
-	//	Private methods
-	//
-	void	Reset_Sentence_Data (void);
-	void	Build_Textures (void);
-	void	Record_Sentence_Chunk (void);
-	void	Allocate_New_Surface (const WCHAR *text);
-	void	Release_Pending_Surfaces (void);
-		
-	//
-	//	Private member data
-	//
-	DynamicVectorClass<SentenceDataStruct>		SentenceData;
-	DynamicVectorClass<PendingSurfaceStruct>	PendingSurfaces;
-	DynamicVectorClass<RendererDataStruct>		Renderers;
-	RendererDataStruct								PreAllocatedRenderers[16];	// Use this with Renderers at first
-	FontCharsClass	*								Font;
-	Vector2											BaseLocation;
-	Vector2											Location;
-	Vector2											Cursor;
-	Vector2i											TextureOffset;
-	int												TextureStartX;
-	int												CurrTextureSize;
-	int												TextureSizeHint;
-	SurfaceClass *									CurSurface;
-	bool												MonoSpaced;
-	float												WrapWidth;
-	float												TabStop;
-	RectClass										ClipRect;
-	RectClass										DrawExtents;
-	bool												IsClippedEnabled;
-													
-	uint16 *											LockedPtr;
-	int												LockedStride;
-	TextureClass *									CurTexture;
-	ShaderClass										Shader;
+  //
+  //	Private member data
+  //
+  DynamicVectorClass<SentenceDataStruct> SentenceData;
+  DynamicVectorClass<PendingSurfaceStruct> PendingSurfaces;
+  DynamicVectorClass<RendererDataStruct> Renderers;
+  RendererDataStruct PreAllocatedRenderers[16]; // Use this with Renderers at first
+  FontCharsClass *Font;
+  Vector2 BaseLocation;
+  Vector2 Location;
+  Vector2 Cursor;
+  Vector2i TextureOffset;
+  int TextureStartX;
+  int CurrTextureSize;
+  int TextureSizeHint;
+  SurfaceClass *CurSurface;
+  bool MonoSpaced;
+  float WrapWidth;
+  float TabStop;
+  RectClass ClipRect;
+  RectClass DrawExtents;
+  bool IsClippedEnabled;
+
+  uint16 *LockedPtr;
+  int LockedStride;
+  TextureClass *CurTexture;
+  ShaderClass Shader;
 };
 
-#endif	// RENDER2DSENTENCE_H
+#endif // RENDER2DSENTENCE_H

@@ -38,373 +38,308 @@
 #include "chunkio.h"
 #include "wwmath.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Constants
 ////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_OPTION_VARIABLES		= 0x08040528,
+enum {
+  CHUNKID_OPTION_VARIABLES = 0x08040528,
 
-	CHUNKID_DIALOGUE_VARIABLES		= 0x08040529,
-	CHUNKID_DIALOGUE_OPTION
+  CHUNKID_DIALOGUE_VARIABLES = 0x08040529,
+  CHUNKID_DIALOGUE_OPTION
 };
 
-enum
-{
-	VARID_WEIGHT						= 0,
-	XXX_VARID_REMARK_TEXT_ID,
-	VARID_CONVERSATION_ID,
+enum {
+  VARID_WEIGHT = 0,
+  XXX_VARID_REMARK_TEXT_ID,
+  VARID_CONVERSATION_ID,
 
-	VARID_DIALOGUE_SILENCE			= 0,
+  VARID_DIALOGUE_SILENCE = 0,
 };
 
-const char * const DIALOG_EVENT_NAMES[DIALOG_MAX] =
-{
-	"TAKE_DAMAGE_FROM_FRIEND",
-	"TAKE_DAMAGE_FROM_ENEMY",
-	"DAMAGE_FRIEND",
-	"DAMAGE_ENEMY",
-	"KILLED_FRIEND",
-	"KILLED_ENEMY",
-	"SAW_FRIEND",
-	"SAW_ENEMY",
-	"OBSOLETE_01",
-	"OBSOLETE_02",
-	"DIE",
-	"POKE_IDLE",
-	"POKE_SEARCH",
-	"POKE_COMBAT",
+const char *const DIALOG_EVENT_NAMES[DIALOG_MAX] = {"TAKE_DAMAGE_FROM_FRIEND",
+                                                    "TAKE_DAMAGE_FROM_ENEMY",
+                                                    "DAMAGE_FRIEND",
+                                                    "DAMAGE_ENEMY",
+                                                    "KILLED_FRIEND",
+                                                    "KILLED_ENEMY",
+                                                    "SAW_FRIEND",
+                                                    "SAW_ENEMY",
+                                                    "OBSOLETE_01",
+                                                    "OBSOLETE_02",
+                                                    "DIE",
+                                                    "POKE_IDLE",
+                                                    "POKE_SEARCH",
+                                                    "POKE_COMBAT",
 
-	"IDLE_TO_COMBAT",
-	"IDLE_TO_SEARCH",
-	"SEARCH_TO_COMBAT",
-	"SEARCH_TO_IDLE",
-	"COMBAT_TO_SEARCH",
-	"COMBAT_TO_IDLE"
-};
-
+                                                    "IDLE_TO_COMBAT",
+                                                    "IDLE_TO_SEARCH",
+                                                    "SEARCH_TO_COMBAT",
+                                                    "SEARCH_TO_IDLE",
+                                                    "COMBAT_TO_SEARCH",
+                                                    "COMBAT_TO_IDLE"};
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogueOptionClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueOptionClass::DialogueOptionClass (void)
-	:	Weight (1),
-		ConversationID (0)
-{
-	return ;
-}
-
+DialogueOptionClass::DialogueOptionClass(void) : Weight(1), ConversationID(0) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogueOptionClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueOptionClass::DialogueOptionClass (const DialogueOptionClass &src)
-	:	Weight (1),
-		ConversationID (0)
-{
-	(*this) = src;
-	return ;
+DialogueOptionClass::DialogueOptionClass(const DialogueOptionClass &src) : Weight(1), ConversationID(0) {
+  (*this) = src;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	~DialogueOptionClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueOptionClass::~DialogueOptionClass (void)
-{
-	return ;
-}
-
+DialogueOptionClass::~DialogueOptionClass(void) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 ////////////////////////////////////////////////////////////////
-const DialogueOptionClass &
-DialogueOptionClass::operator= (const DialogueOptionClass &src)
-{
-	Weight			= src.Weight;
-	ConversationID	= src.ConversationID;
-	return (*this);
+const DialogueOptionClass &DialogueOptionClass::operator=(const DialogueOptionClass &src) {
+  Weight = src.Weight;
+  ConversationID = src.ConversationID;
+  return (*this);
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 ////////////////////////////////////////////////////////////////
-void
-DialogueOptionClass::Save (ChunkSaveClass &csave)
-{
-	csave.Begin_Chunk (CHUNKID_OPTION_VARIABLES);
-		WRITE_MICRO_CHUNK (csave, VARID_WEIGHT, Weight);
-		WRITE_MICRO_CHUNK (csave, VARID_CONVERSATION_ID, ConversationID);
-	csave.End_Chunk ();
-		
-	return ;
-}
+void DialogueOptionClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_OPTION_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, VARID_WEIGHT, Weight);
+  WRITE_MICRO_CHUNK(csave, VARID_CONVERSATION_ID, ConversationID);
+  csave.End_Chunk();
 
+  return;
+}
 
 ////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 ////////////////////////////////////////////////////////////////
-void
-DialogueOptionClass::Load (ChunkLoadClass &cload)
-{
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {
+void DialogueOptionClass::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_OPTION_VARIABLES:
-				Load_Variables (cload);
-				break;
-		}
+    case CHUNKID_OPTION_VARIABLES:
+      Load_Variables(cload);
+      break;
+    }
 
-		cload.Close_Chunk ();
-	}
+    cload.Close_Chunk();
+  }
 
-	return ;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////
-void
-DialogueOptionClass::Load_Variables (ChunkLoadClass &cload)
-{
-	//
-	//	Loop through all the microchunks that define the variables
-	//
-	while (cload.Open_Micro_Chunk ()) {
-		switch (cload.Cur_Micro_Chunk_ID ()) {
+void DialogueOptionClass::Load_Variables(ChunkLoadClass &cload) {
+  //
+  //	Loop through all the microchunks that define the variables
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
 
-			READ_MICRO_CHUNK (cload, VARID_WEIGHT, Weight);
-			READ_MICRO_CHUNK (cload, VARID_CONVERSATION_ID, ConversationID);
-		}
+      READ_MICRO_CHUNK(cload, VARID_WEIGHT, Weight);
+      READ_MICRO_CHUNK(cload, VARID_CONVERSATION_ID, ConversationID);
+    }
 
-		cload.Close_Micro_Chunk ();
-	}
+    cload.Close_Micro_Chunk();
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogueClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueClass::DialogueClass (void)
-	:	SilenceWeight (1)
-{
-	return ;
-}
-
+DialogueClass::DialogueClass(void) : SilenceWeight(1) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogueClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueClass::DialogueClass (const DialogueClass &src)
-	:	SilenceWeight (1)
-{
-	(*this) = src;
-	return ;
+DialogueClass::DialogueClass(const DialogueClass &src) : SilenceWeight(1) {
+  (*this) = src;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	~DialogueClass
 //
 ////////////////////////////////////////////////////////////////
-DialogueClass::~DialogueClass (void)
-{
-	Free_Options ();
-	return ;
+DialogueClass::~DialogueClass(void) {
+  Free_Options();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 ////////////////////////////////////////////////////////////////
-const DialogueClass &
-DialogueClass::operator= (const DialogueClass &src)
-{
-	SilenceWeight	= src.SilenceWeight;
-	
-	//
-	//	Free any option objects we may contain
-	//
-	Free_Options ();
+const DialogueClass &DialogueClass::operator=(const DialogueClass &src) {
+  SilenceWeight = src.SilenceWeight;
 
-	//
-	//	Copy all the option  objects from the src object
-	//
-	for (int index = 0; index < src.OptionList.Count (); index ++) {
-		DialogueOptionClass *option = src.OptionList[index];
-		if (option != NULL) {
-			OptionList.Add (new DialogueOptionClass (*option));
-		}
-	}
+  //
+  //	Free any option objects we may contain
+  //
+  Free_Options();
 
-	return (*this);
+  //
+  //	Copy all the option  objects from the src object
+  //
+  for (int index = 0; index < src.OptionList.Count(); index++) {
+    DialogueOptionClass *option = src.OptionList[index];
+    if (option != NULL) {
+      OptionList.Add(new DialogueOptionClass(*option));
+    }
+  }
+
+  return (*this);
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 ////////////////////////////////////////////////////////////////
-void
-DialogueClass::Save (ChunkSaveClass &csave)
-{
-	csave.Begin_Chunk (CHUNKID_DIALOGUE_VARIABLES);
-		WRITE_MICRO_CHUNK (csave, VARID_DIALOGUE_SILENCE, SilenceWeight);
-	csave.End_Chunk ();
+void DialogueClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_DIALOGUE_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, VARID_DIALOGUE_SILENCE, SilenceWeight);
+  csave.End_Chunk();
 
-	//
-	//	Save the options
-	//
-	for (int index = 0; index < OptionList.Count (); index ++) {
-		csave.Begin_Chunk (CHUNKID_DIALOGUE_OPTION);
-			OptionList[index]->Save (csave);
-		csave.End_Chunk ();
-	}
-		
-	return ;
+  //
+  //	Save the options
+  //
+  for (int index = 0; index < OptionList.Count(); index++) {
+    csave.Begin_Chunk(CHUNKID_DIALOGUE_OPTION);
+    OptionList[index]->Save(csave);
+    csave.End_Chunk();
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 ////////////////////////////////////////////////////////////////
-void
-DialogueClass::Load (ChunkLoadClass &cload)
-{
-	Free_Options ();
+void DialogueClass::Load(ChunkLoadClass &cload) {
+  Free_Options();
 
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_DIALOGUE_VARIABLES:
-				Load_Variables (cload);
-				break;
+    case CHUNKID_DIALOGUE_VARIABLES:
+      Load_Variables(cload);
+      break;
 
-			case CHUNKID_DIALOGUE_OPTION:
-			{
-				//
-				//	Create a new option object and add it to the list
-				//
-				DialogueOptionClass *option = new DialogueOptionClass;
-				option->Load (cload);
-				OptionList.Add (option);
-			}
-			break;
-		}
+    case CHUNKID_DIALOGUE_OPTION: {
+      //
+      //	Create a new option object and add it to the list
+      //
+      DialogueOptionClass *option = new DialogueOptionClass;
+      option->Load(cload);
+      OptionList.Add(option);
+    } break;
+    }
 
-		cload.Close_Chunk ();
-	}
+    cload.Close_Chunk();
+  }
 
-	return ;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////
-void
-DialogueClass::Load_Variables (ChunkLoadClass &cload)
-{
-	//
-	//	Loop through all the microchunks that define the variables
-	//
-	while (cload.Open_Micro_Chunk ()) {
-		switch (cload.Cur_Micro_Chunk_ID ()) {
+void DialogueClass::Load_Variables(ChunkLoadClass &cload) {
+  //
+  //	Loop through all the microchunks that define the variables
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) { READ_MICRO_CHUNK(cload, VARID_DIALOGUE_SILENCE, SilenceWeight); }
 
-			READ_MICRO_CHUNK (cload, VARID_DIALOGUE_SILENCE, SilenceWeight);
-		}
+    cload.Close_Micro_Chunk();
+  }
 
-		cload.Close_Micro_Chunk ();
-	}
-
-	return ;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Free_Options
 //
 ///////////////////////////////////////////////////////////////////////
-void
-DialogueClass::Free_Options (void)
-{
-	for (int index = 0; index < OptionList.Count (); index ++) {
-		DialogueOptionClass *option = OptionList[index];
-		if (option != NULL) {
-			delete option;
-		}
-	}
+void DialogueClass::Free_Options(void) {
+  for (int index = 0; index < OptionList.Count(); index++) {
+    DialogueOptionClass *option = OptionList[index];
+    if (option != NULL) {
+      delete option;
+    }
+  }
 
-	OptionList.Delete_All ();
-	return ;
+  OptionList.Delete_All();
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Get_Conversation
 //
 ///////////////////////////////////////////////////////////////////////
-int
-DialogueClass::Get_Conversation (void)
-{
-	int conv_id = 0;
+int DialogueClass::Get_Conversation(void) {
+  int conv_id = 0;
 
-	//
-	//	Make a number we can use to index linearly into the option list 
-	// to determine which one to use.
-	//
-	float total = SilenceWeight;
-	for (int index = 0; index < OptionList.Count (); index ++) {
-		total += OptionList[index]->Get_Weight ();
-	}
+  //
+  //	Make a number we can use to index linearly into the option list
+  // to determine which one to use.
+  //
+  float total = SilenceWeight;
+  for (int index = 0; index < OptionList.Count(); index++) {
+    total += OptionList[index]->Get_Weight();
+  }
 
-	//
-	//	Choose a random value in this linear range
-	//
-	float value = WWMath::Random_Float (0, total);
+  //
+  //	Choose a random value in this linear range
+  //
+  float value = WWMath::Random_Float(0, total);
 
-	//
-	//	Now find the object this value corresponds to
-	//
-	float count = SilenceWeight;
-	for (int index = 0; value > count && index < OptionList.Count (); index ++) {
-		conv_id	= OptionList[index]->Get_Conversation_ID ();
-		count		+= OptionList[index]->Get_Weight ();
-	}
+  //
+  //	Now find the object this value corresponds to
+  //
+  float count = SilenceWeight;
+  for (int index = 0; value > count && index < OptionList.Count(); index++) {
+    conv_id = OptionList[index]->Get_Conversation_ID();
+    count += OptionList[index]->Get_Weight();
+  }
 
-	return conv_id;
+  return conv_id;
 }

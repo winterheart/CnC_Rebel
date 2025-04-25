@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLSquad.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 8 $
-*     $Modtime: 12/10/01 5:15p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLSquad.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 8 $
+ *     $Modtime: 12/10/01 5:15p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLSQUAD_H__
 #define __WOLSQUAD_H__
@@ -40,8 +40,7 @@
 #include <WWLib\WideString.h>
 #include "WOLLadder.h"
 
-namespace WOL
-{
+namespace WOL {
 #include <wolapi\wolapi.h>
 }
 
@@ -57,119 +56,97 @@ namespace WOL
 
 namespace WWOnline {
 
-class SquadData :
-		public RefCounted
-	{
-	public:
-		static void Reset(void);
+class SquadData : public RefCounted {
+public:
+  static void Reset(void);
 
-		// Find a squad by its ID
-		static RefPtr<SquadData> FindByID(unsigned long);
+  // Find a squad by its ID
+  static RefPtr<SquadData> FindByID(unsigned long);
 
-		// Find a squad by its abbreviation
-		static RefPtr<SquadData> FindByAbbr(const wchar_t* abbr);
+  // Find a squad by its abbreviation
+  static RefPtr<SquadData> FindByAbbr(const wchar_t *abbr);
 
-		// Create SquadData instance from WOL::Squad
-		static RefPtr<SquadData> Create(const WOL::Squad&);
+  // Create SquadData instance from WOL::Squad
+  static RefPtr<SquadData> Create(const WOL::Squad &);
 
-		// Update the squad information
-		void UpdateData(const WOL::Squad&);
+  // Update the squad information
+  void UpdateData(const WOL::Squad &);
 
-		// Get raw WOL::Squad data
-		WOL::Squad& GetData(void)
-			{return mData;}
+  // Get raw WOL::Squad data
+  WOL::Squad &GetData(void) { return mData; }
 
-		// Get ID of this squad
-		unsigned long GetID(void) const
-			{return mData.id;}
+  // Get ID of this squad
+  unsigned long GetID(void) const { return mData.id; }
 
-		// Get full name of this squad
-    const char* GetName(void) const
-			{return (const char*)mData.name;}
+  // Get full name of this squad
+  const char *GetName(void) const { return (const char *)mData.name; }
 
-		// Get abbreviated name of this squad
-		const char* GetAbbr(void) const
-			{return (const char*)mData.abbreviation;}
+  // Get abbreviated name of this squad
+  const char *GetAbbr(void) const { return (const char *)mData.abbreviation; }
 
-		// Get the number of members in this squad
-		int GetMemberCount(void) const
-			{return mData.members;}
+  // Get the number of members in this squad
+  int GetMemberCount(void) const { return mData.members; }
 
-		// Get the squads rank
-		int GetRank(void) const
-			{return mData.rank;}
+  // Get the squads rank
+  int GetRank(void) const { return mData.rank; }
 
-    int GetTeam(void) const
-			{return mData.team;}
+  int GetTeam(void) const { return mData.team; }
 
-		int GetStatus(void) const
-			{return mData.status;}
+  int GetStatus(void) const { return mData.status; }
 
-		// Get the email address for this squad
-		const char* GetEmailAddress(void) const
-			{return (const char*)mData.email;}
+  // Get the email address for this squad
+  const char *GetEmailAddress(void) const { return (const char *)mData.email; }
 
-		// Get the ICQ address for this squad
-		const char* GetICQAddress(void) const
-			{return (const char*)mData.icq;}
+  // Get the ICQ address for this squad
+  const char *GetICQAddress(void) const { return (const char *)mData.icq; }
 
-		// Get the squads motto
-		const char* GetMotto(void) const
-			{return (const char*)mData.motto;}
+  // Get the squads motto
+  const char *GetMotto(void) const { return (const char *)mData.motto; }
 
-		// Get the homepage URL for this squad
-		const char* GetHomepageURL(void) const
-			{return (const char*)mData.url;}
+  // Get the homepage URL for this squad
+  const char *GetHomepageURL(void) const { return (const char *)mData.url; }
 
-		// Get the ladder ranking informatio for this squad.
-		RefPtr<LadderData> GetLadder(void) const
-			{return mLadder;}
+  // Get the ladder ranking informatio for this squad.
+  RefPtr<LadderData> GetLadder(void) const { return mLadder; }
 
-		// Set ladder ranking information for this squad
-		void SetLadder(const RefPtr<LadderData>&);
+  // Set ladder ranking information for this squad
+  void SetLadder(const RefPtr<LadderData> &);
 
-	protected:
-		SquadData(const WOL::Squad&);
-		virtual ~SquadData();
+protected:
+  SquadData(const WOL::Squad &);
+  virtual ~SquadData();
 
-	private:
-		SquadData(const SquadData&);
-		const SquadData& operator=(const SquadData&);
+private:
+  SquadData(const SquadData &);
+  const SquadData &operator=(const SquadData &);
 
-		WOL::Squad mData;
-		RefPtr<LadderData> mLadder;
+  WOL::Squad mData;
+  RefPtr<LadderData> mLadder;
 
-		typedef std::vector<RefPtr<SquadData> > SquadColl;
-		static SquadColl _mSquadColl;
-	};
+  typedef std::vector<RefPtr<SquadData>> SquadColl;
+  static SquadColl _mSquadColl;
+};
 
+class SquadEvent {
+public:
+  SquadEvent(const wchar_t *memberName, const RefPtr<SquadData> &squadData)
+      : mMemberName(memberName), mSquadData(squadData) {}
 
-class SquadEvent
-	{
-	public:
-		SquadEvent(const wchar_t* memberName, const RefPtr<SquadData>& squadData) :
-				mMemberName(memberName),
-				mSquadData(squadData)
-			{}
+  ~SquadEvent() {}
 
-		~SquadEvent()
-			{}
+  const wchar_t *GetMemberName(void) const { return mMemberName; }
 
-		const wchar_t* GetMemberName(void) const
-			{return mMemberName;}
+  const RefPtr<SquadData> &GetSquadData(void) const { return mSquadData; }
 
-		const RefPtr<SquadData>& GetSquadData(void) const
-			{return mSquadData;}
+protected:
+  // Prevent copy and assignment
+  SquadEvent(const SquadEvent &);
+  const SquadEvent &operator=(const SquadEvent &);
 
-	protected:
-		// Prevent copy and assignment
-		SquadEvent(const SquadEvent&);
-		const SquadEvent& operator=(const SquadEvent&);
+  const wchar_t *mMemberName;
+  RefPtr<SquadData> mSquadData;
+};
 
-		const wchar_t* mMemberName;
-		RefPtr<SquadData> mSquadData;
-	};
-
-}
+} // namespace WWOnline
 
 #endif __WOLSQUAD_H__

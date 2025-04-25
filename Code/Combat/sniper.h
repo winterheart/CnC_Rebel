@@ -16,44 +16,44 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/sniper.h                              $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 7/05/01 11:24a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 22                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/sniper.h                              $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 7/05/01 11:24a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 22                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	SNIPER_H
-#define	SNIPER_H
+#ifndef SNIPER_H
+#define SNIPER_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
 /*
 **
 */
-class	SniperHUDClass {
+class SniperHUDClass {
 
 public:
-	static	void	Init( void );
-	static	void 	Shutdown( void );
-	static	void 	Update( void );
-	static	void 	Render( void );
+  static void Init(void);
+  static void Shutdown(void);
+  static void Update(void);
+  static void Render(void);
 
 private:
-	static	void 	Build_Base( void );
+  static void Build_Base(void);
 };
 
 #endif

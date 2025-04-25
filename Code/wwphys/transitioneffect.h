@@ -39,7 +39,6 @@
 #ifndef TRANSITIONEFFECT_H
 #define TRANSITIONEFFECT_H
 
-
 #include "always.h"
 #include "materialeffect.h"
 #include "vector2.h"
@@ -56,71 +55,71 @@ class TextureClass;
 ** state gets updated.  The transition is controlled by a single parameter which
 ** when zero, the object is invisible and when 1, the object is fully visible.
 */
-class TransitionEffectClass : public MaterialEffectClass
-{
+class TransitionEffectClass : public MaterialEffectClass {
 public:
-	TransitionEffectClass(void);
-	~TransitionEffectClass(void);
-	
-	virtual void		Timestep(float dt);
-	virtual void		Render_Push(RenderInfoClass & rinfo,PhysClass * obj);
-	virtual void		Render_Pop(RenderInfoClass & rinfo);
+  TransitionEffectClass(void);
+  ~TransitionEffectClass(void);
 
-	/*
-	** Initialization
-	*/
-	void					Set_Parameter(float param)							{ CurrentParameter = param; }
-	void					Set_Target_Parameter(float param)				{ TargetParameter = param; }
-	void					Set_Texture(TextureClass * texture);
-	void					Set_Start_Delay(float seconds)					{ StartDelay = seconds; }
-	void					Set_Transition_Time(float seconds)				{ if (seconds > 0.0f) ParameterVelocity = 1.0f / seconds; }
-	void					Set_Min_UV_Velocity(const Vector2 & uv_vel)	{ MinUVRate = uv_vel; }
-	void					Set_Max_UV_Velocity(const Vector2 & uv_vel)	{ MaxUVRate = uv_vel; }
-	void					Set_Max_Intensity(float max_inten)				{ MaxIntensity = max_inten; }
-	void					Enable_Remove_On_Complete(bool onoff)			{ RemoveOnComplete = onoff; }
+  virtual void Timestep(float dt);
+  virtual void Render_Push(RenderInfoClass &rinfo, PhysClass *obj);
+  virtual void Render_Pop(RenderInfoClass &rinfo);
 
-	float					Get_Parameter(void) const							{ return CurrentParameter; }
-	float					Get_Target_Parameter(void) const					{ return TargetParameter; }
-	float					Get_Max_Intensity(void) const						{ return MaxIntensity; }
-	float					Get_Start_Delay(void) const						{ return StartDelay; }
-	bool					Is_Remove_On_Complete_Enabled(void) const		{ return RemoveOnComplete; }
+  /*
+  ** Initialization
+  */
+  void Set_Parameter(float param) { CurrentParameter = param; }
+  void Set_Target_Parameter(float param) { TargetParameter = param; }
+  void Set_Texture(TextureClass *texture);
+  void Set_Start_Delay(float seconds) { StartDelay = seconds; }
+  void Set_Transition_Time(float seconds) {
+    if (seconds > 0.0f)
+      ParameterVelocity = 1.0f / seconds;
+  }
+  void Set_Min_UV_Velocity(const Vector2 &uv_vel) { MinUVRate = uv_vel; }
+  void Set_Max_UV_Velocity(const Vector2 &uv_vel) { MaxUVRate = uv_vel; }
+  void Set_Max_Intensity(float max_inten) { MaxIntensity = max_inten; }
+  void Enable_Remove_On_Complete(bool onoff) { RemoveOnComplete = onoff; }
 
-	/*
-	** Save-Load support
-	*/
-	bool					Save(ChunkSaveClass & csave);
-	bool					Load(ChunkLoadClass & cload);
+  float Get_Parameter(void) const { return CurrentParameter; }
+  float Get_Target_Parameter(void) const { return TargetParameter; }
+  float Get_Max_Intensity(void) const { return MaxIntensity; }
+  float Get_Start_Delay(void) const { return StartDelay; }
+  bool Is_Remove_On_Complete_Enabled(void) const { return RemoveOnComplete; }
+
+  /*
+  ** Save-Load support
+  */
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
 protected:
-	
-	/*
-	** Current State
-	*/
-	float					CurrentParameter;
-	float					TargetParameter;
+  /*
+  ** Current State
+  */
+  float CurrentParameter;
+  float TargetParameter;
 
-	/*
-	** Properties
-	*/
-	float					ParameterVelocity;
-	Vector2				MinUVRate;
-	Vector2				MaxUVRate;
-	Vector2				UVRate;
-	float					MaxIntensity;
-	float					StartDelay;
-	bool					RemoveOnComplete;
+  /*
+  ** Properties
+  */
+  float ParameterVelocity;
+  Vector2 MinUVRate;
+  Vector2 MaxUVRate;
+  Vector2 UVRate;
+  float MaxIntensity;
+  float StartDelay;
+  bool RemoveOnComplete;
 
-	/* 
-	** Render State
-	*/
-	bool					RenderBaseMaterial;
-	bool					RenderTransitionMaterial;
-	float					IntensityScale;
-	Vector2				UVOffset;
+  /*
+  ** Render State
+  */
+  bool RenderBaseMaterial;
+  bool RenderTransitionMaterial;
+  float IntensityScale;
+  Vector2 UVOffset;
 
-	MatrixMapperClass *		Mapper;
-	MaterialPassClass *		MaterialPass;
+  MatrixMapperClass *Mapper;
+  MaterialPassClass *MaterialPass;
 };
 
-#endif //TRANSITIONEFFECT_H
-
+#endif // TRANSITIONEFFECT_H

@@ -26,69 +26,63 @@
 #include "resource.h"
 #include "visoptprogress.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // OptimizingVisDialogClass dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-class OptimizingVisDialogClass : public CDialog
-{
-// Construction
+class OptimizingVisDialogClass : public CDialog {
+  // Construction
 public:
-	OptimizingVisDialogClass(CWnd* pParent = NULL);   // standard constructor
+  OptimizingVisDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(OptimizingVisDialogClass)
-	enum { IDD = IDD_OPTIMIZING_VIS };
-	CProgressCtrl	m_ProgressBar;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(OptimizingVisDialogClass)
+  enum { IDD = IDD_OPTIMIZING_VIS };
+  CProgressCtrl m_ProgressBar;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(OptimizingVisDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(OptimizingVisDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(OptimizingVisDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(OptimizingVisDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////
+  bool Was_Cancelled(void) const { return m_Cancelled; }
+  void Set_Status_Object(VisOptProgressClass *status_object);
+  void Set_Finished(void);
 
-	/////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////
-	bool			Was_Cancelled (void) const											{ return m_Cancelled; }
-	void			Set_Status_Object (VisOptProgressClass *status_object);
-	void			Set_Finished (void);
-
-	/////////////////////////////////////////////////////////////
-	//	Static methods
-	/////////////////////////////////////////////////////////////
-	static void	Optimize (void);
+  /////////////////////////////////////////////////////////////
+  //	Static methods
+  /////////////////////////////////////////////////////////////
+  static void Optimize(void);
 
 private:
+  /////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////
+  void Update_Stats(void);
 
-	/////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////
-	void			Update_Stats (void);
-
-	/////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////
-	bool							m_Cancelled;
-	VisOptProgressClass	*	m_ProgressStats;
+  /////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////
+  bool m_Cancelled;
+  VisOptProgressClass *m_ProgressStats;
 };
 
 //{{AFX_INSERT_LOCATION}}

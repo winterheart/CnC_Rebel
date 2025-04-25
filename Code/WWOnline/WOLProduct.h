@@ -17,28 +17,28 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLProduct.h $
-*
-* DESCRIPTION
-*     This class specifies product-specific information, such as SKU.
-*
-*     Client code should create a Product::Initializer object. This will create
-*     a Product object and set it as the current product. Creating additional
-*     Initializer objects will replace the current product information. This
-*     will change the application's "identity" on the fly; this may cause
-*     problems if Westwood Online activity is in progress. I don't expect there
-*     to be any need to do this, except perhaps during early product development.
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 1/25/02 6:45p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLProduct.h $
+ *
+ * DESCRIPTION
+ *     This class specifies product-specific information, such as SKU.
+ *
+ *     Client code should create a Product::Initializer object. This will create
+ *     a Product object and set it as the current product. Creating additional
+ *     Initializer objects will replace the current product information. This
+ *     will change the application's "identity" on the fly; this may cause
+ *     problems if Westwood Online activity is in progress. I don't expect there
+ *     to be any need to do this, except perhaps during early product development.
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 1/25/02 6:45p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLPRODUCT_H__
 #define __WOLPRODUCT_H__
@@ -50,57 +50,47 @@
 
 namespace WWOnline {
 
-class Product :
-		public RefCounted
-	{
-	public:
-		static RefPtr<Product> Current(void);
+class Product : public RefCounted {
+public:
+  static RefPtr<Product> Current(void);
 
-		const char* GetRegistryPath(void) const
-			{return mRegistryPath;}
+  const char *GetRegistryPath(void) const { return mRegistryPath; }
 
-		unsigned long GetSKU(void) const
-			{return mProductSKU;}
+  unsigned long GetSKU(void) const { return mProductSKU; }
 
-		unsigned long GetLanguageSKU(void) const
-			{return mProductSKU | mLanguageCode;}
+  unsigned long GetLanguageSKU(void) const { return mProductSKU | mLanguageCode; }
 
-		unsigned long GetLadderSKU(void) const
-			{return mLadderSKU;}
+  unsigned long GetLadderSKU(void) const { return mLadderSKU; }
 
-		unsigned long GetLanguageCode(void) const
-			{return mLanguageCode;}
+  unsigned long GetLanguageCode(void) const { return mLanguageCode; }
 
-		unsigned long GetVersion(void) const
-			{return mProductVersion;}
+  unsigned long GetVersion(void) const { return mProductVersion; }
 
-		long GetGameCode(void) const
-			{return mGameCode;}
+  long GetGameCode(void) const { return mGameCode; }
 
-		const wchar_t* GetChannelPassword(void) const
-			{return mChannelPassword;}
+  const wchar_t *GetChannelPassword(void) const { return mChannelPassword; }
 
-		class Initializer
-			{
-			public:
-				Initializer(const char* registryPath, int gameCode, const wchar_t* chanPass, unsigned long ladderSKU);
-				~Initializer();
-			};
+  class Initializer {
+  public:
+    Initializer(const char *registryPath, int gameCode, const wchar_t *chanPass, unsigned long ladderSKU);
+    ~Initializer();
+  };
 
-	private:
-		friend class Initializer;
-		static RefPtr<Product> Create(const char* registryPath, int gameCode, const wchar_t* chanPass, unsigned long ladderSKU);
+private:
+  friend class Initializer;
+  static RefPtr<Product> Create(const char *registryPath, int gameCode, const wchar_t *chanPass,
+                                unsigned long ladderSKU);
 
-		Product(const char* registryPath, int gameCode, const wchar_t* chanPass, unsigned long ladderSKU);
+  Product(const char *registryPath, int gameCode, const wchar_t *chanPass, unsigned long ladderSKU);
 
-		StringClass mRegistryPath;
-		unsigned long mProductSKU;
-		unsigned long mProductVersion;
-		unsigned long mLanguageCode;
-		unsigned long mLadderSKU;
-		long mGameCode;
-		WideStringClass mChannelPassword;
-	};
+  StringClass mRegistryPath;
+  unsigned long mProductSKU;
+  unsigned long mProductVersion;
+  unsigned long mLanguageCode;
+  unsigned long mLadderSKU;
+  long mGameCode;
+  WideStringClass mChannelPassword;
+};
 
-}
+} // namespace WWOnline
 #endif // __WOLPRODUCT_H__

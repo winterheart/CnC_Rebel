@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/clientfps.h                      $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/18/01 5:12p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/clientfps.h                      $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/18/01 5:12p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CLIENTFPS_H__
@@ -39,42 +39,39 @@
 
 #include "networkobject.h"
 #include "netclassids.h"
-//#include "control.h"
+// #include "control.h"
 
 //-----------------------------------------------------------------------------
 //
 // A C-S mirrored object to inform server of client framerate
 //
-class	CClientFps : public NetworkObjectClass
-{
+class CClientFps : public NetworkObjectClass {
 public:
+  CClientFps();
+  ~CClientFps();
 
-	CClientFps();
-	~CClientFps();
+  void Init(void);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CLIENTFPS; }
+  virtual void Delete(void) { delete this; }
 
-	void					Init(void);
-	virtual uint32		Get_Network_Class_ID(void) const					{return NETCLASSID_CLIENTFPS;}
-	virtual void		Delete(void)											{delete this;}
+  void Set_Fps(int fps);
+  void Act(void);
 
-	void					Set_Fps(int fps);
-	void					Act(void);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual void		Export_Creation(BitStreamClass &packet);
-	virtual void		Import_Creation(BitStreamClass &packet);
-
-	virtual void		Export_Frequent(BitStreamClass &packet);
-	virtual void		Import_Frequent(BitStreamClass &packet);
+  virtual void Export_Frequent(BitStreamClass &packet);
+  virtual void Import_Frequent(BitStreamClass &packet);
 
 private:
-
-	int					ClientId;
-	BYTE					Fps;
+  int ClientId;
+  BYTE Fps;
 };
 
 //-----------------------------------------------------------------------------
 
-extern CClientFps *		PClientFps;
+extern CClientFps *PClientFps;
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CLIENTFPS_H__
+#endif // __CLIENTFPS_H__

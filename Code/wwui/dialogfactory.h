@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/dialogfactory.h         $*
  *                                                                                             *
@@ -43,39 +44,34 @@
 
 #include "dialogbase.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	DialogFactoryBaseClass
 //
 ////////////////////////////////////////////////////////////////
-class DialogFactoryBaseClass
-{
+class DialogFactoryBaseClass {
 public:
-
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	virtual void	Do_Dialog (void)	= 0;
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  virtual void Do_Dialog(void) = 0;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	DialogFactoryClass
 //
 ////////////////////////////////////////////////////////////////
-template<class  T>
-class DialogFactoryClass : public DialogFactoryBaseClass
-{
+template <class T> class DialogFactoryClass : public DialogFactoryBaseClass {
 public:
-
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void	Do_Dialog (void)	{ T *dialog = new T; dialog->Start_Dialog (); REF_PTR_RELEASE (dialog); }
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void Do_Dialog(void) {
+    T *dialog = new T;
+    dialog->Start_Dialog();
+    REF_PTR_RELEASE(dialog);
+  }
 };
 
-
 #endif //__DIALOG_FACTORY_H
-

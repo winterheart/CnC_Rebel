@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/PIPE.H                                             $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/PIPE.H                                             $*
+ *                                                                                             *
  *                      $Author:: Eric_c                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 4/02/99 12:00p                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -47,31 +47,29 @@
 **	another useful class serves only as a pseudo null-pipe. It will accept data but
 **	just throw it away but pretend that it sent it somewhere.
 */
-class Pipe
-{
-	public:
-		Pipe(void) : ChainTo(0), ChainFrom(0) {}
-		virtual ~Pipe(void);
+class Pipe {
+public:
+  Pipe(void) : ChainTo(0), ChainFrom(0) {}
+  virtual ~Pipe(void);
 
-		virtual int Flush(void);
-		virtual int End(void) {return(Flush());}
-		virtual void Put_To(Pipe * pipe);
-		void Put_To(Pipe & pipe) {Put_To(&pipe);}
-		virtual int Put(void const * source, int slen);
+  virtual int Flush(void);
+  virtual int End(void) { return (Flush()); }
+  virtual void Put_To(Pipe *pipe);
+  void Put_To(Pipe &pipe) { Put_To(&pipe); }
+  virtual int Put(void const *source, int slen);
 
-		/*
-		**	Pointer to the next pipe segment in the chain.
-		*/
-		Pipe * ChainTo;
-		Pipe * ChainFrom;
+  /*
+  **	Pointer to the next pipe segment in the chain.
+  */
+  Pipe *ChainTo;
+  Pipe *ChainFrom;
 
-	private:
-
-		/*
-		**	Disable the copy constructor and assignment operator.
-		*/
-		Pipe(Pipe & rvalue);
-		Pipe & operator = (Pipe const & pipe);
+private:
+  /*
+  **	Disable the copy constructor and assignment operator.
+  */
+  Pipe(Pipe &rvalue);
+  Pipe &operator=(Pipe const &pipe);
 };
 
 #endif

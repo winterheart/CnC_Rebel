@@ -37,42 +37,33 @@
 #include "stdafx.h"
 #include "ProgressUI.h"
 
-
 ///////////////////////////////////////////////////////////////////////
 //	Static member initialization
 ///////////////////////////////////////////////////////////////////////
-ProgressUIClass *	ProgressUIMgrClass::_CurrentProgressUI = NULL;
-
+ProgressUIClass *ProgressUIMgrClass::_CurrentProgressUI = NULL;
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Set_Status_Text
 //
 ///////////////////////////////////////////////////////////////////////
-void
-ProgressUIMgrClass::Set_Status_Text (LPCTSTR text)
-{
-	if (_CurrentProgressUI != NULL) {
-		_CurrentProgressUI->Set_Status_Text (text);
-	}
+void ProgressUIMgrClass::Set_Status_Text(LPCTSTR text) {
+  if (_CurrentProgressUI != NULL) {
+    _CurrentProgressUI->Set_Status_Text(text);
+  }
 
-	return ;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Set_Progress_Percent
 //
 ///////////////////////////////////////////////////////////////////////
-void
-ProgressUIMgrClass::Set_Progress_Percent (float percent)
-{
-	if (_CurrentProgressUI != NULL) {
-		_CurrentProgressUI->Set_Progress_Percent (percent);
-	}
+void ProgressUIMgrClass::Set_Progress_Percent(float percent) {
+  if (_CurrentProgressUI != NULL) {
+    _CurrentProgressUI->Set_Progress_Percent(percent);
+  }
 
-	return ;
+  return;
 }
-
-

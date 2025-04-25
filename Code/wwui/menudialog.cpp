@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/menudialog.cpp          $*
  *                                                                                             *
@@ -42,112 +43,96 @@
 #include "childdialog.h"
 #include "dialogcontrol.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Static member initialization
 ////////////////////////////////////////////////////////////////
-MenuDialogClass *								MenuDialogClass::ActiveMenu	= NULL;
-MenuBackDropClass *							MenuDialogClass::BackDrop		= NULL;
-DynamicVectorClass<MenuDialogClass *>	MenuDialogClass::MenuStack;
-
+MenuDialogClass *MenuDialogClass::ActiveMenu = NULL;
+MenuBackDropClass *MenuDialogClass::BackDrop = NULL;
+DynamicVectorClass<MenuDialogClass *> MenuDialogClass::MenuStack;
 
 ////////////////////////////////////////////////////////////////
 //
 //	MenuDialogClass
 //
 ////////////////////////////////////////////////////////////////
-MenuDialogClass::MenuDialogClass (int res_id)	:
-	DialogBaseClass (res_id)
-{	
-	//
-	//	Add ourselves to the global stack of menus
-	//
-	MenuStack.Add (this);
-	return ;
+MenuDialogClass::MenuDialogClass(int res_id) : DialogBaseClass(res_id) {
+  //
+  //	Add ourselves to the global stack of menus
+  //
+  MenuStack.Add(this);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	~MenuDialogClass
 //
 ////////////////////////////////////////////////////////////////
-MenuDialogClass::~MenuDialogClass (void)
-{
-	if (ActiveMenu == this) {
-		ActiveMenu = NULL;
-	}
+MenuDialogClass::~MenuDialogClass(void) {
+  if (ActiveMenu == this) {
+    ActiveMenu = NULL;
+  }
 
-	//
-	//	Remove ourselves from the stack
-	//
-	int index = MenuStack.ID (this);
-	if (index != -1) {
-		MenuStack.Delete (index);
-	}
+  //
+  //	Remove ourselves from the stack
+  //
+  int index = MenuStack.ID(this);
+  if (index != -1) {
+    MenuStack.Delete(index);
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Initialize
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::Initialize (void)
-{	
-	BackDrop = new MenuBackDropClass;
-	return ;
+void MenuDialogClass::Initialize(void) {
+  BackDrop = new MenuBackDropClass;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Shutdown
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::Shutdown (void)
-{
-	if (BackDrop != NULL) {
-		delete BackDrop;
-		BackDrop = NULL;
-	}
+void MenuDialogClass::Shutdown(void) {
+  if (BackDrop != NULL) {
+    delete BackDrop;
+    BackDrop = NULL;
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Render
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::Render (void)
-{
-	//
-	//	Don't render if we aren't the active menu
-	//
-	if (ActiveMenu == this || DialogMgrClass::Peek_Transitioning_Dialog () == this) {
+void MenuDialogClass::Render(void) {
+  //
+  //	Don't render if we aren't the active menu
+  //
+  if (ActiveMenu == this || DialogMgrClass::Peek_Transitioning_Dialog() == this) {
 
-		//
-		//	Render the background scene first
-		//
-		BackDrop->Render ();
+    //
+    //	Render the background scene first
+    //
+    BackDrop->Render();
 
-		//
-		//	Now, let the dialog subsystem render the controls and
-		// such...
-		//
-		DialogBaseClass::Render ();
-	}
-	
-	return ;
+    //
+    //	Now, let the dialog subsystem render the controls and
+    // such...
+    //
+    DialogBaseClass::Render();
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
@@ -157,108 +142,91 @@ MenuDialogClass::Render (void)
 /*void
 MenuDialogClass::On_Init_Dialog (void)
 {
-	DialogBaseClass::Set_Default_Focus ();
-	return ;
+        DialogBaseClass::Set_Default_Focus ();
+        return ;
 }*/
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Start_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::Start_Dialog (void)
-{
-	//
-	//	As a menu dialog we use the whole screen
-	//
-	Rect = Render2DClass::Get_Screen_Resolution ();
+void MenuDialogClass::Start_Dialog(void) {
+  //
+  //	As a menu dialog we use the whole screen
+  //
+  Rect = Render2DClass::Get_Screen_Resolution();
 
-	DialogBaseClass::Start_Dialog ();
-	return ;
+  DialogBaseClass::Start_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Activate
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::On_Activate (bool onoff)
-{
-	if (onoff) {
+void MenuDialogClass::On_Activate(bool onoff) {
+  if (onoff) {
 
-		//
-		//	Notify the old menu
-		//
-		if (ActiveMenu != NULL) {
-			ActiveMenu->On_Menu_Activate (false);
-		}
+    //
+    //	Notify the old menu
+    //
+    if (ActiveMenu != NULL) {
+      ActiveMenu->On_Menu_Activate(false);
+    }
 
-		//
-		//	Switch to active state
-		//
-		ActiveMenu = this;
-		On_Menu_Activate (true);
-	}
+    //
+    //	Switch to active state
+    //
+    ActiveMenu = this;
+    On_Menu_Activate(true);
+  }
 
-	DialogBaseClass::On_Activate (onoff);
-	return ;
+  DialogBaseClass::On_Activate(onoff);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Menu_Activate
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::On_Menu_Activate (bool onoff)
-{
-	return ;
-}
-
+void MenuDialogClass::On_Menu_Activate(bool onoff) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	End_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MenuDialogClass::End_Dialog (void)
-{	
-	//
-	//	Is this the last menu?  If so, send a notification
-	//
-	if (DialogMgrClass::Is_Flushing_Dialogs () == false) {
+void MenuDialogClass::End_Dialog(void) {
+  //
+  //	Is this the last menu?  If so, send a notification
+  //
+  if (DialogMgrClass::Is_Flushing_Dialogs() == false) {
 
-		if (MenuStack.Count () == 1) {
-			On_Last_Menu_Ending ();
-		} else {
+    if (MenuStack.Count() == 1) {
+      On_Last_Menu_Ending();
+    } else {
 
-			//
-			//	Play the sound effect
-			//
-			StyleMgrClass::Play_Sound (StyleMgrClass::EVENT_MENU_BACK);			
-		}
-	} 
+      //
+      //	Play the sound effect
+      //
+      StyleMgrClass::Play_Sound(StyleMgrClass::EVENT_MENU_BACK);
+    }
+  }
 
-	DialogBaseClass::End_Dialog ();
-	return ;
+  DialogBaseClass::End_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Replace_BackDrop
 //
 ////////////////////////////////////////////////////////////////
-MenuBackDropClass *
-MenuDialogClass::Replace_BackDrop (MenuBackDropClass *backdrop)
-{
-	MenuBackDropClass *retval = BackDrop;
-	BackDrop = backdrop;
-	return retval;
+MenuBackDropClass *MenuDialogClass::Replace_BackDrop(MenuBackDropClass *backdrop) {
+  MenuBackDropClass *retval = BackDrop;
+  BackDrop = backdrop;
+  return retval;
 }

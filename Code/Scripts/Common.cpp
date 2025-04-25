@@ -17,49 +17,48 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     Common.cpp
-*
-* DESCRIPTION
-*     Programmer Inserted Common Scripting Functions
-*
-* PROGRAMMER
-*     Programming Team
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 14 $
-*     $Modtime: 6/13/00 11:46a $
-*     $Archive: /Commando/Code/Scripts/Common.cpp $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     Common.cpp
+ *
+ * DESCRIPTION
+ *     Programmer Inserted Common Scripting Functions
+ *
+ * PROGRAMMER
+ *     Programming Team
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 14 $
+ *     $Modtime: 6/13/00 11:46a $
+ *     $Archive: /Commando/Code/Scripts/Common.cpp $
+ *
+ ******************************************************************************/
 
 #include "common.h"
 
 /******************************************************************************
-*
-* NAME
-*     RandomVector3
-*
-* DESCRIPTION
-*     Generate a random vector.
-*
-* INPUTS
-*     xRange - Maximum X extent.
-*     yRange - Maximum Y extent.
-*     zRange - Maximum Z extent.
-*
-* RESULTS
-*     Vector - Randomized vector
-*
-******************************************************************************/
+ *
+ * NAME
+ *     RandomVector3
+ *
+ * DESCRIPTION
+ *     Generate a random vector.
+ *
+ * INPUTS
+ *     xRange - Maximum X extent.
+ *     yRange - Maximum Y extent.
+ *     zRange - Maximum Z extent.
+ *
+ * RESULTS
+ *     Vector - Randomized vector
+ *
+ ******************************************************************************/
 
-Vector3 RandomVector3(float xRange, float yRange, float zRange)
-{
-	float x = Commands->Get_Random(-xRange, xRange);
-	float y = Commands->Get_Random(-yRange, yRange);
-	float z = Commands->Get_Random(-zRange, zRange);
+Vector3 RandomVector3(float xRange, float yRange, float zRange) {
+  float x = Commands->Get_Random(-xRange, xRange);
+  float y = Commands->Get_Random(-yRange, yRange);
+  float z = Commands->Get_Random(-zRange, zRange);
 
-	return Vector3(x, y, z);
+  return Vector3(x, y, z);
 }

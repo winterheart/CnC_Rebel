@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -60,8 +59,8 @@ class NormalWheelClass;
 class WheeledVehicleDefClass;
 
 /**
-** WheeledVehicleClass 
-** This is a derivation of RigidBodyClass which basically adds wheels to 
+** WheeledVehicleClass
+** This is a derivation of RigidBodyClass which basically adds wheels to
 ** a rigid body object.  Each wheel detected in the model will have a friction
 ** model and a spring-damper force.  Each one will "roll" an amount derived
 ** from the motion of the contact point for the wheel.  Special engine wheels
@@ -73,87 +72,76 @@ class WheeledVehicleDefClass;
 ** - The two most important things to simulate are the forces at the contact
 **   patches of the tires and the behavior of the engine.
 */
-class WheeledVehicleClass : public MotorVehicleClass
-{
+class WheeledVehicleClass : public MotorVehicleClass {
 public:
+  WheeledVehicleClass(void);
+  virtual ~WheeledVehicleClass(void);
+  virtual WheeledVehicleClass *As_WheeledVehicleClass(void) { return this; }
+  const WheeledVehicleDefClass *Get_WheeledVehicleDef(void);
 
-	WheeledVehicleClass(void);
-	virtual ~WheeledVehicleClass(void);
-	virtual WheeledVehicleClass * As_WheeledVehicleClass(void) { return this; }
-	const WheeledVehicleDefClass * Get_WheeledVehicleDef(void);
+  void Init(const WheeledVehicleDefClass &def);
 
-	void											Init(const WheeledVehicleDefClass & def);
-
-	/*
-	** Save-Load System
-	*/
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
+  /*
+  ** Save-Load System
+  */
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
 protected:
+  virtual SuspensionElementClass *Alloc_Suspension_Element(void);
 
-	virtual SuspensionElementClass *	Alloc_Suspension_Element(void);
+  virtual void Compute_Force_And_Torque(Vector3 *force, Vector3 *torque);
+  virtual float Get_Ideal_Drive_Axle_Angular_Velocity(void);
+  virtual bool Drive_Wheels_In_Contact(void);
 
-	virtual void					Compute_Force_And_Torque(Vector3 * force,Vector3 * torque);
-	virtual float					Get_Ideal_Drive_Axle_Angular_Velocity(void);
-	virtual bool					Drive_Wheels_In_Contact(void);
-
-	float								SteeringAngle;
+  float SteeringAngle;
 
 private:
-
-	WheeledVehicleClass(const WheeledVehicleClass &);
-	WheeledVehicleClass & operator = (const WheeledVehicleClass &);
-
+  WheeledVehicleClass(const WheeledVehicleClass &);
+  WheeledVehicleClass &operator=(const WheeledVehicleClass &);
 };
 
 /**
 ** WheeledVehicleDefClass
 ** Initialization/Editor Integration for WheeledVehicleClass
 */
-class WheeledVehicleDefClass : public MotorVehicleDefClass
-{
+class WheeledVehicleDefClass : public MotorVehicleDefClass {
 public:
-	WheeledVehicleDefClass(void);
-	
-	// From DefinitionClass
-	virtual uint32								Get_Class_ID (void) const;
-	virtual PersistClass *					Create(void) const;
+  WheeledVehicleDefClass(void);
 
-	// From PhysDefClass
-	virtual const char *						Get_Type_Name(void)				{ return "WheeledVehicleDef"; }
-	virtual bool								Is_Type(const char *);
+  // From DefinitionClass
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
 
-	// From PersistClass
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save(ChunkSaveClass &csave);
-	virtual bool								Load(ChunkLoadClass &cload);
+  // From PhysDefClass
+  virtual const char *Get_Type_Name(void) { return "WheeledVehicleDef"; }
+  virtual bool Is_Type(const char *);
 
-	// Read/Write access to our variables
-	float											Get_Max_Steering_Angle(void) const	{ return MaxSteeringAngle; }
-	void											Set_Max_Steering_Angle(float a)		{ MaxSteeringAngle = a; }
+  // From PersistClass
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
-	//	Editable interface requirements
-	DECLARE_EDITABLE(WheeledVehicleDefClass,MotorVehicleDefClass);
+  // Read/Write access to our variables
+  float Get_Max_Steering_Angle(void) const { return MaxSteeringAngle; }
+  void Set_Max_Steering_Angle(float a) { MaxSteeringAngle = a; }
+
+  //	Editable interface requirements
+  DECLARE_EDITABLE(WheeledVehicleDefClass, MotorVehicleDefClass);
 
 protected:
+  float MaxSteeringAngle; // maximum angle for the steering wheels
 
-	float											MaxSteeringAngle;			// maximum angle for the steering wheels
-	
-	friend class WheeledVehicleClass;
+  friend class WheeledVehicleClass;
 };
-
 
 /*
 ** Inline functions
 */
 
-inline const WheeledVehicleDefClass * WheeledVehicleClass::Get_WheeledVehicleDef(void)
-{
-	return (WheeledVehicleDefClass *)Definition;
+inline const WheeledVehicleDefClass *WheeledVehicleClass::Get_WheeledVehicleDef(void) {
+  return (WheeledVehicleDefClass *)Definition;
 }
 
-
 #endif
-

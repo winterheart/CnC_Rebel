@@ -17,76 +17,65 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLGameOptions.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 9/20/01 6:22p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLGameOptions.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 9/20/01 6:22p $
+ *
+ ******************************************************************************/
 
 #include "WOLGameOptions.h"
 
 namespace WWOnline {
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-GameOptionsMessage::GameOptionsMessage(const WOL::User* user, const WOL::Channel* channel,
-			const char* options, bool isPrivate) :
-		mOptions(options),
-		mIsPrivate(isPrivate)
-	{
-	if (user)
-		{
-		memcpy(&mUser, user, sizeof(mUser));
-		}
-	else
-		{
-		memset(&mUser, 0, sizeof(mUser));
-		}
+GameOptionsMessage::GameOptionsMessage(const WOL::User *user, const WOL::Channel *channel, const char *options,
+                                       bool isPrivate)
+    : mOptions(options), mIsPrivate(isPrivate) {
+  if (user) {
+    memcpy(&mUser, user, sizeof(mUser));
+  } else {
+    memset(&mUser, 0, sizeof(mUser));
+  }
 
-	if (channel)
-		{
-		memcpy(&mChannel, &channel, sizeof(mChannel));
-		}
-	else
-		{
-		memset(&mChannel, 0, sizeof(mChannel));
-		}
-	}
-
+  if (channel) {
+    memcpy(&mChannel, &channel, sizeof(mChannel));
+  } else {
+    memset(&mChannel, 0, sizeof(mChannel));
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-GameOptionsMessage::~GameOptionsMessage()
-	{
-	}
+GameOptionsMessage::~GameOptionsMessage() {}
 
 } // namespace WWOnline

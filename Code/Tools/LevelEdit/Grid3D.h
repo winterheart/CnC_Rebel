@@ -22,14 +22,13 @@
  *                                                                                             *
  *                 Project Name : LevelEdit                                                    *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/Tools/LevelEdit/Grid3D.h                                                                                                                                                                                                                                                                                                                     $Modtime::                                                             $*
+ *                     $Archive:: /Commando/Code/Tools/LevelEdit/Grid3D.h $Modtime:: $*
  *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #if defined(_MSC_VER)
 #pragma once
@@ -46,161 +45,131 @@
 //	Grid3DClass
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-class Grid3DClass
-{
-	public:
+template <class T> class Grid3DClass {
+public:
+  ////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////////
+  Grid3DClass(void) : m_GridSize(0, 0, 0), m_Grid(NULL) {}
 
-		////////////////////////////////////////////////////////////////////
-		//	Public constructors/destructors
-		////////////////////////////////////////////////////////////////////
-		Grid3DClass (void)
-			:	m_GridSize (0, 0, 0),
-				m_Grid (NULL)				{ }
+  Grid3DClass(const Vector3 &grid_size, const T &inital_value) : m_GridSize(0, 0, 0), m_Grid(NULL) {
+    Create_Grid(grid_size, inital_value);
+  }
 
-		Grid3DClass (const Vector3 &grid_size, const T &inital_value)
-			:	m_GridSize (0, 0, 0),
-				m_Grid (NULL)				{ Create_Grid (grid_size, inital_value); }
-						
-		virtual ~Grid3DClass (void)	{ Free_Grid (); }
+  virtual ~Grid3DClass(void) { Free_Grid(); }
 
-		////////////////////////////////////////////////////////////////////
-		//	Public methods
-		////////////////////////////////////////////////////////////////////
-		
-		// Cell manipulation
-		T &				Get_At (int x, int y, int z);		
-		void				Set_At (int x, int y, int z, const T &value);		
-		
-		// Allocation routines
-		void				Create_Grid (const Vector3 &grid_size, const T &initial_value);
-		void				Free_Grid (void);
+  ////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////
 
-		// Information methods		
-		Vector3			Get_Grid_Size (void) const { return m_GridSize; }
-		int				Get_Cells_X (void) const { return m_GridSize.X; }
-		int				Get_Cells_Y (void) const { return m_GridSize.Y; }
-		int				Get_Cells_Z (void) const { return m_GridSize.Z; }
+  // Cell manipulation
+  T &Get_At(int x, int y, int z);
+  void Set_At(int x, int y, int z, const T &value);
 
-		// 'Flat' methods, for enumerating every cell
-		T &				Get_At_Flat (int index)		{ return m_Grid[index]; }
-		int				Get_Flat_Size (void) const	{ return (m_GridSize.X * m_GridSize.Y * m_GridSize.Z); }
+  // Allocation routines
+  void Create_Grid(const Vector3 &grid_size, const T &initial_value);
+  void Free_Grid(void);
 
-	protected:
-		
-		////////////////////////////////////////////////////////////////////
-		//	Protected methods
-		////////////////////////////////////////////////////////////////////
-		virtual int		Cell_Coord_To_Index (int x, int y, int z);
+  // Information methods
+  Vector3 Get_Grid_Size(void) const { return m_GridSize; }
+  int Get_Cells_X(void) const { return m_GridSize.X; }
+  int Get_Cells_Y(void) const { return m_GridSize.Y; }
+  int Get_Cells_Z(void) const { return m_GridSize.Z; }
 
-	private:
+  // 'Flat' methods, for enumerating every cell
+  T &Get_At_Flat(int index) { return m_Grid[index]; }
+  int Get_Flat_Size(void) const { return (m_GridSize.X * m_GridSize.Y * m_GridSize.Z); }
 
-		////////////////////////////////////////////////////////////////////
-		//	Private member data
-		////////////////////////////////////////////////////////////////////
-		T *		m_Grid;
-		Vector3	m_GridSize;
+protected:
+  ////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////////
+  virtual int Cell_Coord_To_Index(int x, int y, int z);
+
+private:
+  ////////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////////
+  T *m_Grid;
+  Vector3 m_GridSize;
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	Create_Grid
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-inline void
-Grid3DClass<T>::Create_Grid (const Vector3 &grid_size, const T &inital_value)
-{
-	// Start fresh
-	Free_Grid ();
-	
-	// Store the grid's dimensions
-	m_GridSize = grid_size;
-	
-	//
-	//	Allocate a flat array we can index into like a 3-D grid
-	//
-	int flat_size = m_GridSize.X * m_GridSize.Y * m_GridSize.Z;
-	WWASSERT ((flat_size * sizeof (T)) < 16000000L);
-	m_Grid = new T[flat_size];	
+template <class T> inline void Grid3DClass<T>::Create_Grid(const Vector3 &grid_size, const T &inital_value) {
+  // Start fresh
+  Free_Grid();
 
-	//
-	//	Initialize the grid cells
-	//
-	for (int index = 0; index < flat_size; index ++) {
-		m_Grid[index] = inital_value;
-	}
+  // Store the grid's dimensions
+  m_GridSize = grid_size;
 
-	return ;
+  //
+  //	Allocate a flat array we can index into like a 3-D grid
+  //
+  int flat_size = m_GridSize.X * m_GridSize.Y * m_GridSize.Z;
+  WWASSERT((flat_size * sizeof(T)) < 16000000L);
+  m_Grid = new T[flat_size];
+
+  //
+  //	Initialize the grid cells
+  //
+  for (int index = 0; index < flat_size; index++) {
+    m_Grid[index] = inital_value;
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	Free_Grid
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-inline void
-Grid3DClass<T>::Free_Grid (void)
-{
-	if (m_Grid != NULL) {
-		delete m_Grid;
-		m_Grid = NULL;
-	}
+template <class T> inline void Grid3DClass<T>::Free_Grid(void) {
+  if (m_Grid != NULL) {
+    delete m_Grid;
+    m_Grid = NULL;
+  }
 
-	m_GridSize.Set (0, 0, 0);	
-	return ;
+  m_GridSize.Set(0, 0, 0);
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	Cell_Coord_To_Index
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-inline int
-Grid3DClass<T>::Cell_Coord_To_Index (int x, int y, int z)
-{
-	return (x + (y * m_GridSize.X) + (z * m_GridSize.X * m_GridSize.Y));
+template <class T> inline int Grid3DClass<T>::Cell_Coord_To_Index(int x, int y, int z) {
+  return (x + (y * m_GridSize.X) + (z * m_GridSize.X * m_GridSize.Y));
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	Get_At
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-inline T &
-Grid3DClass<T>::Get_At (int x, int y, int z)
-{
-	WWASSERT (m_Grid != NULL);
-	WWASSERT ((x < m_GridSize.X) && (y < m_GridSize.Y) && (z < m_GridSize.Z));
+template <class T> inline T &Grid3DClass<T>::Get_At(int x, int y, int z) {
+  WWASSERT(m_Grid != NULL);
+  WWASSERT((x < m_GridSize.X) && (y < m_GridSize.Y) && (z < m_GridSize.Z));
 
-	return m_Grid[Cell_Coord_To_Index (x, y, z)];
+  return m_Grid[Cell_Coord_To_Index(x, y, z)];
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	Set_At
 //
 //////////////////////////////////////////////////////////////////////////
-template<class T>
-inline void
-Grid3DClass<T>::Set_At (int x, int y, int z, const T &value)
-{
-	WWASSERT (m_Grid != NULL);
-	WWASSERT ((x < m_GridSize.X) && (y < m_GridSize.Y) && (z < m_GridSize.Z));
+template <class T> inline void Grid3DClass<T>::Set_At(int x, int y, int z, const T &value) {
+  WWASSERT(m_Grid != NULL);
+  WWASSERT((x < m_GridSize.X) && (y < m_GridSize.Y) && (z < m_GridSize.Z));
 
-	m_Grid[Cell_Coord_To_Index (x, y, z)] = value;
-	return ;
+  m_Grid[Cell_Coord_To_Index(x, y, z)] = value;
+  return;
 }
 
-
 #endif //__GRID_3D_H
-
-

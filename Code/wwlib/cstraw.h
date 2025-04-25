@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/cstraw.h                                           $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/cstraw.h                                           $*
+ *                                                                                             *
  *                      $Author:: Eric_c                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 4/02/99 11:59a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -40,8 +40,8 @@
 #ifndef CSTRAW_H
 #define CSTRAW_H
 
-#include	"buff.h"
-#include	"straw.h"
+#include "buff.h"
+#include "straw.h"
 
 /*
 **	This class handles transfer of data by perform regulated requests for data from the next
@@ -49,24 +49,20 @@
 **	straw chain, data throughput can be regulated. This can yield great performance increases
 **	when dealing with a file source.
 */
-class CacheStraw : public Straw
-{
-	public:
-		CacheStraw(Buffer const & buffer) : BufferPtr(buffer), Index(0), Length(0) {}
-		CacheStraw(int length=4096) : BufferPtr(length), Index(0), Length(0) {}
-		virtual int Get(void * source, int slen);
+class CacheStraw : public Straw {
+public:
+  CacheStraw(Buffer const &buffer) : BufferPtr(buffer), Index(0), Length(0) {}
+  CacheStraw(int length = 4096) : BufferPtr(length), Index(0), Length(0) {}
+  virtual int Get(void *source, int slen);
 
-	private:
-		Buffer BufferPtr;
-		int Index;
-		int Length;
+private:
+  Buffer BufferPtr;
+  int Index;
+  int Length;
 
-		bool Is_Valid(void) {return(BufferPtr.Is_Valid());}
-		CacheStraw(CacheStraw & rvalue);
-		CacheStraw & operator = (CacheStraw const & pipe);
+  bool Is_Valid(void) { return (BufferPtr.Is_Valid()); }
+  CacheStraw(CacheStraw &rvalue);
+  CacheStraw &operator=(CacheStraw const &pipe);
 };
 
-
-
 #endif
-

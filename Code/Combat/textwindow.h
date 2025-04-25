@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/textwindow.h          $*
  *                                                                                             *
@@ -49,7 +50,6 @@
 #include "rect.h"
 #include "render2d.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
@@ -63,267 +63,251 @@ class SceneClass;
 //	TextWindowClass
 //
 ////////////////////////////////////////////////////////////////
-class TextWindowClass
-{
+class TextWindowClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	TextWindowClass (void);
-	~TextWindowClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  TextWindowClass(void);
+  ~TextWindowClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Initialization
-	//
-	static void		Initialize (SceneClass *scene);
-	static void		Shutdown (void);
+  //
+  //	Initialization
+  //
+  static void Initialize(SceneClass *scene);
+  static void Shutdown(void);
 
-	//
-	//	Backdrop methods
-	//
-	void				Set_Backdrop (const char *texture_name, const RectClass &screen_rect, const Vector2 &texture_size, const RectClass &endcap_rect, const RectClass &fadeout_rect, const RectClass &textback_rect);
-	void				Set_Text_Area (const RectClass &rect)	{ TextRect = rect; }
-	
-	//
-	//	Font control
-	//
-	void				Set_Heading_Font (const char *font_name)	{ HeadingFontName = font_name; }
-	void				Set_Text_Font (const char *font_name)		{ TextFontName = font_name; }
+  //
+  //	Backdrop methods
+  //
+  void Set_Backdrop(const char *texture_name, const RectClass &screen_rect, const Vector2 &texture_size,
+                    const RectClass &endcap_rect, const RectClass &fadeout_rect, const RectClass &textback_rect);
+  void Set_Text_Area(const RectClass &rect) { TextRect = rect; }
 
-	//
-	//	Column support
-	//
-	void				Add_Column (const WCHAR *column_name, float width, const Vector3 &color);
-	bool				Remove_Column (int index);
-	void				Delete_All_Columns (void);
-	bool				Are_Columns_Displayed (void) const	{ return AreColumnsDisplayed; }
-	void				Display_Columns (bool onoff)			{ AreColumnsDisplayed = onoff; IsViewDirty = true; IsWindowDirty = true; }
+  //
+  //	Font control
+  //
+  void Set_Heading_Font(const char *font_name) { HeadingFontName = font_name; }
+  void Set_Text_Font(const char *font_name) { TextFontName = font_name; }
 
-	//
-	//	Content control
-	//
-	int				Insert_Item (int index, const WCHAR *text);	
-	bool				Set_Item_Text (int index, int col_index, const WCHAR *text);
-	bool				Set_Item_Color (int index, int col_index, const Vector3 &color);
-	bool				Set_Item_Data (int index, uint32 user_data);
-	uint32			Get_Item_Data (int index);
-	bool				Delete_Item (int index);
-	void				Delete_All_Items (void);
-	int				Get_Item_Count (void) const;
+  //
+  //	Column support
+  //
+  void Add_Column(const WCHAR *column_name, float width, const Vector3 &color);
+  bool Remove_Column(int index);
+  void Delete_All_Columns(void);
+  bool Are_Columns_Displayed(void) const { return AreColumnsDisplayed; }
+  void Display_Columns(bool onoff) {
+    AreColumnsDisplayed = onoff;
+    IsViewDirty = true;
+    IsWindowDirty = true;
+  }
 
-	//
-	//	Scrolling support
-	//
-	void				Scroll_To_Top (void);
-	void				Page_Down (void);
-	void				Page_Up (void);
+  //
+  //	Content control
+  //
+  int Insert_Item(int index, const WCHAR *text);
+  bool Set_Item_Text(int index, int col_index, const WCHAR *text);
+  bool Set_Item_Color(int index, int col_index, const Vector3 &color);
+  bool Set_Item_Data(int index, uint32 user_data);
+  uint32 Get_Item_Data(int index);
+  bool Delete_Item(int index);
+  void Delete_All_Items(void);
+  int Get_Item_Count(void) const;
 
-	//
-	//	Visibility methods
-	//
-	bool				Is_Displayed (void) const			{ return IsDisplayed; }
-	void				Display (bool onoff);
-	int				Get_Display_Count (void);
-	float				Get_Total_Display_Height (void);
-	
-	//
-	//	Rendering methods
-	//
-	void				On_Frame_Update (void);
-	void				Render (void);
+  //
+  //	Scrolling support
+  //
+  void Scroll_To_Top(void);
+  void Page_Down(void);
+  void Page_Up(void);
+
+  //
+  //	Visibility methods
+  //
+  bool Is_Displayed(void) const { return IsDisplayed; }
+  void Display(bool onoff);
+  int Get_Display_Count(void);
+  float Get_Total_Display_Height(void);
+
+  //
+  //	Rendering methods
+  //
+  void On_Frame_Update(void);
+  void Render(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Free_Backdrop(void);
+  void Free_Contents(void);
+  void Free_Renderers(void);
+  void Build_View(void);
+  void Update_View(float *total_height = NULL, bool info_only = false);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void				Free_Backdrop (void);
-	void				Free_Contents (void);
-	void				Free_Renderers (void);
-	void				Build_View (void);
-	void				Update_View (float *total_height = NULL, bool info_only = false);
+  void Update_Row(int item_index, float y_pos, float *row_height);
 
-	void				Update_Row (int item_index, float y_pos, float *row_height);
+  ////////////////////////////////////////////////////////////////
+  //	Private data types
+  ////////////////////////////////////////////////////////////////
+  typedef DynamicVectorClass<TextColumnClass *> COLUMN_LIST;
 
-	////////////////////////////////////////////////////////////////
-	//	Private data types
-	////////////////////////////////////////////////////////////////
-	typedef DynamicVectorClass<TextColumnClass *>	COLUMN_LIST;
+  ////////////////////////////////////////////////////////////////
+  //	Static member data
+  ////////////////////////////////////////////////////////////////
+  static SceneClass *Scene;
 
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  int FirstLineIndex;
+  int CurrentDisplayCount;
+  bool IsDisplayed;
+  bool AreColumnsDisplayed;
 
-	////////////////////////////////////////////////////////////////
-	//	Static member data
-	////////////////////////////////////////////////////////////////
-	static SceneClass *		Scene;
+  bool IsViewDirty;
+  bool IsWindowDirty;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	int							FirstLineIndex;
-	int							CurrentDisplayCount;
-	bool							IsDisplayed;
-	bool							AreColumnsDisplayed;
+  COLUMN_LIST Columns;
+  Render2DSentenceClass *TextRenderers[2];
 
-	bool							IsViewDirty;
-	bool							IsWindowDirty;
-	
-	COLUMN_LIST					Columns;
-	Render2DSentenceClass *	TextRenderers[2];
+  Render2DClass Backdrop;
+  RectClass TextRect;
 
-	Render2DClass				Backdrop;
-	RectClass					TextRect;
-	
-	float							ColumnHeight;
-	float							LineSpacing;
+  float ColumnHeight;
+  float LineSpacing;
 
-	StringClass					HeadingFontName;
-	StringClass					TextFontName;
+  StringClass HeadingFontName;
+  StringClass TextFontName;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	TextItemClass
 //
 ////////////////////////////////////////////////////////////////
-class TextItemClass
-{
+class TextItemClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	TextItemClass (void) :
-		Name (L""),
-		Color (1, 1, 1),
-		UserData (0)	{}
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  TextItemClass(void) : Name(L""), Color(1, 1, 1), UserData(0) {}
 
-	TextItemClass (const WCHAR *name) :
-		Name (name),
-		Color (1, 1, 1),
-		UserData (0)	{}
+  TextItemClass(const WCHAR *name) : Name(name), Color(1, 1, 1), UserData(0) {}
 
-	~TextItemClass (void) {}
+  ~TextItemClass(void) {}
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Name access
-	//
-	const WCHAR *		Get_Name (void) const			{ return Name; }
-	void					Set_Name (const WCHAR *name)	{ Name = name; }
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Color access
-	//
-	const Vector3 &	Get_Color (void) const				{ return Color; }
-	void					Set_Color (const Vector3 &color)	{ Color = color; }
+  //
+  //	Name access
+  //
+  const WCHAR *Get_Name(void) const { return Name; }
+  void Set_Name(const WCHAR *name) { Name = name; }
 
-	//
-	//	Color access
-	//
-	uint32				Get_User_Data (void) const			{ return UserData; }
-	void					Set_User_Data (uint32 user_data)	{ UserData = user_data; }
+  //
+  //	Color access
+  //
+  const Vector3 &Get_Color(void) const { return Color; }
+  void Set_Color(const Vector3 &color) { Color = color; }
+
+  //
+  //	Color access
+  //
+  uint32 Get_User_Data(void) const { return UserData; }
+  void Set_User_Data(uint32 user_data) { UserData = user_data; }
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	WideStringClass	Name;
-	Vector3				Color;
-	uint32				UserData;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  WideStringClass Name;
+  Vector3 Color;
+  uint32 UserData;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	TextColumnClass
 //
 ////////////////////////////////////////////////////////////////
-class TextColumnClass
-{
+class TextColumnClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	TextColumnClass (void) :
-		Width (0)					{ Reset_Contents (); }
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  TextColumnClass(void) : Width(0) { Reset_Contents(); }
 
-	~TextColumnClass (void)		{ Free_Data (); }
+  ~TextColumnClass(void) { Free_Data(); }
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Name access
-	//
-	const WCHAR *		Get_Name (void) const			{ return Header.Get_Name (); }
-	void					Set_Name (const WCHAR *name)	{ Header.Set_Name (name); }
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Width access
-	//
-	float					Get_Width (void) const			{ return Width; }
-	void					Set_Width (float width)			{ Width = width; }
+  //
+  //	Name access
+  //
+  const WCHAR *Get_Name(void) const { return Header.Get_Name(); }
+  void Set_Name(const WCHAR *name) { Header.Set_Name(name); }
 
-	//
-	//	Color access
-	//
-	const Vector3 &	Get_Color (void) const				{ return Header.Get_Color (); }
-	void					Set_Color (const Vector3 &color)	{ Header.Set_Color (color); }
+  //
+  //	Width access
+  //
+  float Get_Width(void) const { return Width; }
+  void Set_Width(float width) { Width = width; }
 
-	//
-	//	Item access
-	//
-	int					Insert_Item (int index, const WCHAR *item_name);
-	int					Get_Item_Count (void) const								{ return Items.Count (); }
-	bool					Delete_Item (int index);
-	void					Delete_All_Items (void);
-	
-	void					Set_Item_Text (int index, const WCHAR *text)			{ Items[index]->Set_Name (text); }
-	const WCHAR *		Get_Item_Text (int index) const							{ return Items[index]->Get_Name (); }	
-	
-	void					Set_Item_Color (int index, const Vector3 &color)	{ Items[index]->Set_Color (color); }
-	const Vector3 &	Get_Item_Color (int index) const							{ return Items[index]->Get_Color (); }
+  //
+  //	Color access
+  //
+  const Vector3 &Get_Color(void) const { return Header.Get_Color(); }
+  void Set_Color(const Vector3 &color) { Header.Set_Color(color); }
 
-	void					Set_Item_Data (int index, uint32 data)					{ Items[index]->Set_User_Data (data); }
-	uint32				Get_Item_Data (int index) const							{ return Items[index]->Get_User_Data (); }
+  //
+  //	Item access
+  //
+  int Insert_Item(int index, const WCHAR *item_name);
+  int Get_Item_Count(void) const { return Items.Count(); }
+  bool Delete_Item(int index);
+  void Delete_All_Items(void);
 
-	//
-	//	Cleanup
-	//
-	void					Reset_Contents (void);
+  void Set_Item_Text(int index, const WCHAR *text) { Items[index]->Set_Name(text); }
+  const WCHAR *Get_Item_Text(int index) const { return Items[index]->Get_Name(); }
+
+  void Set_Item_Color(int index, const Vector3 &color) { Items[index]->Set_Color(color); }
+  const Vector3 &Get_Item_Color(int index) const { return Items[index]->Get_Color(); }
+
+  void Set_Item_Data(int index, uint32 data) { Items[index]->Set_User_Data(data); }
+  uint32 Get_Item_Data(int index) const { return Items[index]->Get_User_Data(); }
+
+  //
+  //	Cleanup
+  //
+  void Reset_Contents(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Free_Data(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void					Free_Data (void);
+  ////////////////////////////////////////////////////////////////
+  //	Private data types
+  ////////////////////////////////////////////////////////////////
+  typedef DynamicVectorClass<TextItemClass *> ITEM_LIST;
 
-	////////////////////////////////////////////////////////////////
-	//	Private data types
-	////////////////////////////////////////////////////////////////
-	typedef DynamicVectorClass <TextItemClass *> ITEM_LIST;
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	TextItemClass		Header;
-	ITEM_LIST			Items;
-	float					Width;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  TextItemClass Header;
+  ITEM_LIST Items;
+  float Width;
 };
 
-
 #endif //__TEXT_WINDOW_H
-

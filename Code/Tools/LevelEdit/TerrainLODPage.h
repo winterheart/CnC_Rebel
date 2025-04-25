@@ -23,73 +23,64 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "DockableForm.H"
 #include "Resource.H"
 #include "Vector.H"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // TerrainLODPageClass dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-class TerrainLODPageClass : public DockableFormClass
-{
-	public:
+class TerrainLODPageClass : public DockableFormClass {
+public:
+  TerrainLODPageClass(void);
+  virtual ~TerrainLODPageClass(void);
 
-		TerrainLODPageClass (void);
-		virtual ~TerrainLODPageClass (void);
+  // Dialog Data
+  //{{AFX_DATA(TerrainLODPageClass)
+  enum { IDD = IDD_TERRAIN_LOD_SETTINGS };
+  CListCtrl m_LODListCtrl;
+  CSpinButtonCtrl m_LODCountSpin;
+  //}}AFX_DATA
 
-// Dialog Data
-	//{{AFX_DATA(TerrainLODPageClass)
-	enum { IDD = IDD_TERRAIN_LOD_SETTINGS };
-	CListCtrl	m_LODListCtrl;
-	CSpinButtonCtrl	m_LODCountSpin;
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generate virtual function overrides
-	//{{AFX_VIRTUAL(TerrainLODPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generate virtual function overrides
+  //{{AFX_VIRTUAL(TerrainLODPageClass)
 protected:
-	// Generated message map functions
-	//{{AFX_MSG(TerrainLODPageClass)
-	afx_msg void OnDblclkLodList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnUpdateLodCountEdit();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(TerrainLODPageClass)
+  afx_msg void OnDblclkLodList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnUpdateLodCountEdit();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ///////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-		///////////////////////////////////////////////////////
-		//	Public methods
-		///////////////////////////////////////////////////////
-		void						HandleInitDialog (void);
-		bool						Apply_Changes (void);
+  DynamicVectorClass<unsigned int> &Get_Distance_List(void) { return m_SettingsList; }
 
-		DynamicVectorClass<unsigned int> &Get_Distance_List (void)	{ return m_SettingsList; }
+protected:
+  ///////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////
+  void On_Count_Change(void);
 
-	protected:
-		
-		///////////////////////////////////////////////////////
-		//	Protected methods
-		///////////////////////////////////////////////////////
-		void						On_Count_Change (void);
-
-	private:
-
-		///////////////////////////////////////////////////////
-		//	Private member data
-		///////////////////////////////////////////////////////
-		DynamicVectorClass<unsigned int>	m_SettingsList;
-		bool										m_bFinishedInit;
+private:
+  ///////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////
+  DynamicVectorClass<unsigned int> m_SettingsList;
+  bool m_bFinishedInit;
 };
 
 //{{AFX_INSERT_LOCATION}}

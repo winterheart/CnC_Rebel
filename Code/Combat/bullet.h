@@ -16,36 +16,36 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/bullet.h                              $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 4/16/01 3:19p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 51                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/bullet.h                              $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 4/16/01 3:19p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 51                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	BULLET_H
-#define	BULLET_H
+#ifndef BULLET_H
+#define BULLET_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-class	ChunkSaveClass;
-class	ChunkLoadClass;
-class	AmmoDefinitionClass;
-class	Vector3;
-class	ArmedGameObj;
+class ChunkSaveClass;
+class ChunkLoadClass;
+class AmmoDefinitionClass;
+class Vector3;
+class ArmedGameObj;
 class DamageableGameObj;
 
 /*
@@ -54,18 +54,16 @@ class DamageableGameObj;
 class BulletManager {
 
 public:
-	static	void	Init( void );
-	static	void	Shutdown( void );
-	static	void	Update( void );
+  static void Init(void);
+  static void Shutdown(void);
+  static void Update(void);
 
-	static	bool	Save( ChunkSaveClass &csave );
-	static	bool	Load( ChunkLoadClass &cload );
+  static bool Save(ChunkSaveClass &csave);
+  static bool Load(ChunkLoadClass &cload);
 
-	static	void	Create_Bullet( const AmmoDefinitionClass * def, const Vector3 & position, 
-					const Vector3 & velocity, const ArmedGameObj * owner, float progress_time, const Vector3 & target, DamageableGameObj * target_object = NULL );
+  static void Create_Bullet(const AmmoDefinitionClass *def, const Vector3 &position, const Vector3 &velocity,
+                            const ArmedGameObj *owner, float progress_time, const Vector3 &target,
+                            DamageableGameObj *target_object = NULL);
 };
 
-
-#endif	// BULLET_H
-
-
+#endif // BULLET_H

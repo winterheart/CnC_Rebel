@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -47,168 +46,159 @@
 #include "matrix3.h"
 #include "dynamicshadowmanager.h"
 
-class	PhysControllerClass;
+class PhysControllerClass;
 class MoveablePhysDefClass;
 class DynTexProjectClass;
-
 
 /**
 ** MoveablePhysClass
 ** All objects that can be moved around in the world in some way will support this interface.
-** This interface defines basic mass and gravity settings and gives access to the object's 
+** This interface defines basic mass and gravity settings and gives access to the object's
 ** velocities.
 */
-class MoveablePhysClass : public DynamicPhysClass
-{
+class MoveablePhysClass : public DynamicPhysClass {
 
 public:
+  MoveablePhysClass(void);
+  virtual ~MoveablePhysClass(void);
 
-	MoveablePhysClass(void);
-	virtual ~MoveablePhysClass(void);
+  void Init(const MoveablePhysDefClass &definition);
+  virtual MoveablePhysClass *As_MoveablePhysClass(void) { return this; }
+  const MoveablePhysDefClass *Get_MoveablePhysDef(void) { return (MoveablePhysDefClass *)Definition; }
 
-	void Init(const MoveablePhysDefClass & definition );
-	virtual MoveablePhysClass * As_MoveablePhysClass(void)								{ return this; }
-	const MoveablePhysDefClass * Get_MoveablePhysDef(void)								{ return (MoveablePhysDefClass*)Definition; }
+  /*
+  ** DEBUGGING, re-initialize this object because our definition changed
+  */
+  virtual void Definition_Changed(void);
 
-	/*
-	** DEBUGGING, re-initialize this object because our definition changed
-	*/
-	virtual void					Definition_Changed(void);
+  /*
+  ** PhysClass interface.
+  ** Post_Timestep_Process - moveable objects update their shadows in post-timestep...
+  */
+  virtual bool Needs_Timestep(void) { return true; }
+  virtual void Post_Timestep_Process(void);
 
-	/*
-	** PhysClass interface.
-	** Post_Timestep_Process - moveable objects update their shadows in post-timestep...
-	*/
-	virtual bool					Needs_Timestep(void)											{ return true; }
-	virtual void					Post_Timestep_Process(void);
+  /*
+  ** Physical properites
+  */
+  virtual void Set_Mass(float mass) {
+    Mass = mass;
+    MassInv = 1.0f / mass;
+  }
+  float Get_Mass(void) { return Mass; }
+  float Get_Mass_Inv(void) { return MassInv; }
+  virtual void Set_Gravity_Multiplier(float grav) { GravScale = grav; }
+  float Get_Gravity_Multiplier(void) const { return GravScale; }
+  virtual void Set_Elasticity(float e) { Elasticity = e; }
+  float Get_Elasticity(void) const { return Elasticity; }
+  virtual void Get_Inertia_Inv(Matrix3 *set_I_inv);
 
-	/*
-	** Physical properites
-	*/
-	virtual void					Set_Mass(float mass)											{ Mass = mass; MassInv = 1.0f / mass; }
-	float								Get_Mass(void)													{ return Mass; }
-	float								Get_Mass_Inv(void)											{ return MassInv; }
-	virtual void					Set_Gravity_Multiplier(float grav)						{ GravScale = grav; }
-	float								Get_Gravity_Multiplier(void) const						{ return GravScale; }
-	virtual void					Set_Elasticity(float e)										{ Elasticity = e; }
-	float								Get_Elasticity(void) const									{ return Elasticity; }
-	virtual void					Get_Inertia_Inv(Matrix3 * set_I_inv);
+  /*
+  ** Teleport support
+  */
+  virtual bool Can_Teleport(const Matrix3D &new_tm, bool check_dyn_only = false,
+                            NonRefPhysListClass *result_list = NULL) {
+    return false;
+  }
+  virtual bool Can_Teleport_And_Stand(const Matrix3D &new_tm, Matrix3D *out) {
+    *out = new_tm;
+    return false;
+  }
+  virtual bool Find_Teleport_Location(const Vector3 &start, float radius, Vector3 *out) { return false; }
+  virtual bool Can_Move_To(const Matrix3D &new_tm) { return false; }
+  virtual bool Cinematic_Move_To(const Matrix3D &new_tm);
 
-	/*
-	** Teleport support
-	*/
-	virtual bool					Can_Teleport(const Matrix3D &new_tm, bool check_dyn_only = false,NonRefPhysListClass * result_list = NULL)	{ return false; }
-	virtual bool					Can_Teleport_And_Stand(const Matrix3D &new_tm, Matrix3D *out)	{ *out = new_tm; return false; }
-	virtual bool					Find_Teleport_Location(const Vector3 &start, float radius, Vector3 *out)			{ return false; }
-	virtual bool					Can_Move_To(const Matrix3D &new_tm) { return false; }
-	virtual bool					Cinematic_Move_To(const Matrix3D & new_tm);
+  /*
+  ** Controller
+  */
+  void Set_Controller(PhysControllerClass *control) { Controller = control; }
+  PhysControllerClass *Get_Controller(void) { return Controller; }
 
-	/*
-	** Controller
-	*/
-	void								Set_Controller(PhysControllerClass * control)		{ Controller = control; }	
-	PhysControllerClass *		Get_Controller(void)											{ return Controller; }
+  /*
+  ** Save-Load system
+  */
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual void On_Post_Load(void);
 
+  /*
+  ** Access to the state of the object
+  */
+  virtual void Get_Velocity(Vector3 *set_vel) const = 0;
+  virtual void Set_Velocity(const Vector3 &newvel) {}
 
-	/*
-	** Save-Load system
-	*/
-	virtual bool					Save (ChunkSaveClass &csave);
-	virtual bool					Load (ChunkLoadClass &cload);
-	virtual void					On_Post_Load (void);
-	
-	/*
-	** Access to the state of the object
-	*/
-	virtual void					Get_Velocity(Vector3 * set_vel) const					= 0;
-	virtual void					Set_Velocity(const Vector3 & newvel)					{ }
+  /*
+  ** Shadow Casting.
+  ** Get_Blob_Shadow_Bounding_Box - Should return a tight object-space aabox; used for shadow blobs
+  */
+  virtual void Get_Shadow_Blob_Box(AABoxClass *set_obj_space_box);
+  virtual bool Is_Casting_Shadow(void) { return ShadowManager.Is_Casting_Shadow(); }
 
-	/*
-	** Shadow Casting. 
-	** Get_Blob_Shadow_Bounding_Box - Should return a tight object-space aabox; used for shadow blobs
-	*/
-	virtual void					Get_Shadow_Blob_Box(AABoxClass * set_obj_space_box);
-	virtual bool					Is_Casting_Shadow(void)										{ return ShadowManager.Is_Casting_Shadow(); }
-
-	/*
-	** Rider support.  All moveable objects can be riders.
-	*/
-	virtual void					Link_To_Carrier(PhysClass * carrier,RenderObjClass * carrier_sub_obj = NULL);
-	virtual PhysClass *			Peek_Carrier_Object(void); // TSS added 08-15-01
-	virtual RenderObjClass *	Peek_Carrier_Sub_Object(void);
+  /*
+  ** Rider support.  All moveable objects can be riders.
+  */
+  virtual void Link_To_Carrier(PhysClass *carrier, RenderObjClass *carrier_sub_obj = NULL);
+  virtual PhysClass *Peek_Carrier_Object(void); // TSS added 08-15-01
+  virtual RenderObjClass *Peek_Carrier_Sub_Object(void);
 
 protected:
+  float Mass;
+  float MassInv;
+  float GravScale;
+  float Elasticity;
 
-	float								Mass;
-	float								MassInv;
-	float								GravScale;
-	float								Elasticity;
-	
-	PhysControllerClass *		Controller;
-	PhysClass *						Carrier;
-	RenderObjClass *				CarrierSubObject;
-	DynamicShadowManagerClass	ShadowManager;
+  PhysControllerClass *Controller;
+  PhysClass *Carrier;
+  RenderObjClass *CarrierSubObject;
+  DynamicShadowManagerClass ShadowManager;
 
-	// Not Implemented:
-	MoveablePhysClass(const MoveablePhysClass &);
-	MoveablePhysClass & operator = (const MoveablePhysClass &);
+  // Not Implemented:
+  MoveablePhysClass(const MoveablePhysClass &);
+  MoveablePhysClass &operator=(const MoveablePhysClass &);
 };
 
-
-inline void MoveablePhysClass::Get_Inertia_Inv(Matrix3 * set_I_inv)					
-{ 
-	set_I_inv->Make_Identity();
-	(*set_I_inv)[0][0] = MassInv;
-	(*set_I_inv)[1][1] = MassInv;
-	(*set_I_inv)[2][2] = MassInv;
+inline void MoveablePhysClass::Get_Inertia_Inv(Matrix3 *set_I_inv) {
+  set_I_inv->Make_Identity();
+  (*set_I_inv)[0][0] = MassInv;
+  (*set_I_inv)[1][1] = MassInv;
+  (*set_I_inv)[2][2] = MassInv;
 }
-
 
 /*
 ** MoveablePhysDefClass
 ** Initialization Structure/Factory/Editor Integration for a MoveablePhysClass
 */
-class MoveablePhysDefClass : public DynamicPhysDefClass
-{
+class MoveablePhysDefClass : public DynamicPhysDefClass {
 public:
-	
-	MoveablePhysDefClass(void);
-	
-	// From PhysDefClass
-	virtual const char *						Get_Type_Name(void)			{ return "MoveablePhysDef"; }
-	virtual bool								Is_Type(const char *);
+  MoveablePhysDefClass(void);
 
-	// From PersistClass
-	virtual bool								Save(ChunkSaveClass &csave);
-	virtual bool								Load(ChunkLoadClass &cload);
+  // From PhysDefClass
+  virtual const char *Get_Type_Name(void) { return "MoveablePhysDef"; }
+  virtual bool Is_Type(const char *);
 
-	// In-Game Editing (DEBUGGING/TESTING ONLY)
-	float											Get_Mass(void)					{ return Mass; }
-	float											Get_Grav_Scale(void)			{ return GravScale; }
-	void											Set_Mass(float new_mass)	{ Mass = new_mass; }
-	void											Set_Grav_Scale(float new_g){ GravScale = new_g; }
+  // From PersistClass
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
-	//	Editable interface requirements
-	DECLARE_EDITABLE(MoveablePhysDefClass,DynamicPhysDefClass);
+  // In-Game Editing (DEBUGGING/TESTING ONLY)
+  float Get_Mass(void) { return Mass; }
+  float Get_Grav_Scale(void) { return GravScale; }
+  void Set_Mass(float new_mass) { Mass = new_mass; }
+  void Set_Grav_Scale(float new_g) { GravScale = new_g; }
+
+  //	Editable interface requirements
+  DECLARE_EDITABLE(MoveablePhysDefClass, DynamicPhysDefClass);
 
 protected:
+  float Mass;
+  float GravScale;
+  float Elasticity;
 
-	float				Mass;
-	float				GravScale;
-	float				Elasticity;
+  enum { CINEMATIC_COLLISION_NONE = 0, CINEMATIC_COLLISION_STOP, CINEMATIC_COLLISION_PUSH, CINEMATIC_COLLISION_KILL };
 
-	enum { 
-		CINEMATIC_COLLISION_NONE = 0, 
-		CINEMATIC_COLLISION_STOP, 
-		CINEMATIC_COLLISION_PUSH, 
-		CINEMATIC_COLLISION_KILL 
-	};
-	
-	int				CinematicCollisionMode;
-	
-	friend class MoveablePhysClass;
+  int CinematicCollisionMode;
+
+  friend class MoveablePhysClass;
 };
-
-
 
 #endif

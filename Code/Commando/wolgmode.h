@@ -53,8 +53,7 @@ class WOLChatMgr;
 class WOLQuickMatch;
 class DlgWOLWaitEvent;
 
-namespace WWOnline
-{
+namespace WWOnline {
 class Session;
 class ChannelData;
 class UserData;
@@ -65,121 +64,112 @@ class UserEvent;
 class LadderInfoEvent;
 enum ConnectionStatus;
 class ServerError;
-}
-
+} // namespace WWOnline
 
 // Game Mode to do WWOnline (Internet) games
-class	WolGameModeClass :
-		public GameModeClass,
-		public Signaler<WolGameModeClass>,
-		public Observer<DlgWOLWaitEvent>,
-		public Observer<WWOnline::GameStartEvent>,
-		public Observer<WWOnline::GameOptionsMessage>,
-		public Observer<WWOnline::ChannelEvent>,
-		public Observer<WWOnline::UserEvent>,
-		public Observer<WWOnline::LadderInfoEvent>,
-		public Observer<WOLPagedEvent>,
-		public Observer<WWOnline::ConnectionStatus>,
-		public Observer<WWOnline::ServerError>
-	{
-	public:
-		WolGameModeClass();
-		~WolGameModeClass();
+class WolGameModeClass : public GameModeClass,
+                         public Signaler<WolGameModeClass>,
+                         public Observer<DlgWOLWaitEvent>,
+                         public Observer<WWOnline::GameStartEvent>,
+                         public Observer<WWOnline::GameOptionsMessage>,
+                         public Observer<WWOnline::ChannelEvent>,
+                         public Observer<WWOnline::UserEvent>,
+                         public Observer<WWOnline::LadderInfoEvent>,
+                         public Observer<WOLPagedEvent>,
+                         public Observer<WWOnline::ConnectionStatus>,
+                         public Observer<WWOnline::ServerError> {
+public:
+  WolGameModeClass();
+  ~WolGameModeClass();
 
-		inline const char* Name(void)
-			{return "WOL";}
+  inline const char *Name(void) { return "WOL"; }
 
-		void Init(void);
-		void Shutdown(void);
-		void Think(void);
-		void Render(void) {}
+  void Init(void);
+  void Shutdown(void);
+  void Think(void);
+  void Render(void) {}
 
-		void Create_Game(cGameData*);
-		void Leave_Game(void);
+  void Create_Game(cGameData *);
+  void Leave_Game(void);
 
-		void Start_Game(cGameData*);
-		void End_Game(void);
+  void Start_Game(cGameData *);
+  void End_Game(void);
 
-		void Accept_Actions(void);
-		void Refusal_Actions(void);
+  void Accept_Actions(void);
+  void Refusal_Actions(void);
 
-		void Init_WOL_Player(cPlayer* player);
+  void Init_WOL_Player(cPlayer *player);
 
-		RefPtr<WWOnline::UserData> Get_WOL_User_Data(const wchar_t* name);
+  RefPtr<WWOnline::UserData> Get_WOL_User_Data(const wchar_t *name);
 
-		void Page_WOL_User(const wchar_t* name, const wchar_t* msg);
-		void Reply_Last_Page(const wchar_t* msg);
+  void Page_WOL_User(const wchar_t *name, const wchar_t *msg);
+  void Reply_Last_Page(const wchar_t *msg);
 
-		void Locate_WOL_User(const wchar_t* name);
-		void Invite_WOL_User(const wchar_t* name, const wchar_t* msg);
-		void Join_WOL_User(const wchar_t* name);
+  void Locate_WOL_User(const wchar_t *name);
+  void Invite_WOL_User(const wchar_t *name, const wchar_t *msg);
+  void Join_WOL_User(const wchar_t *name);
 
-		bool Kick_Player(const wchar_t* name);
-		void Ban_Player(const wchar_t* name, unsigned long ip);
-		bool Is_Banned(const char *player_name, unsigned long ip);
-		void Read_Kick_List(void);
-		void Auto_Kick(void);
+  bool Kick_Player(const wchar_t *name);
+  void Ban_Player(const wchar_t *name, unsigned long ip);
+  bool Is_Banned(const char *player_name, unsigned long ip);
+  void Read_Kick_List(void);
+  void Auto_Kick(void);
 
-		void System_Timer_Reset(void);
+  void System_Timer_Reset(void);
 
-		inline cGameData* Get_Game(void) const
-			{return mTheGame;}
+  inline cGameData *Get_Game(void) const { return mTheGame; }
 
-		inline bool Channel_Create_OK(void)
-			{return mChannelCreateSuccessFlag;}
+  inline bool Channel_Create_OK(void) { return mChannelCreateSuccessFlag; }
 
-		void Set_Quiet_Mode(bool quiet)
-			{mQuietMode = quiet;}
+  void Set_Quiet_Mode(bool quiet) { mQuietMode = quiet; }
 
-		bool Post_Game_Check(void);
-		static void Game_Start_Timeout_Callback(void);
+  bool Post_Game_Check(void);
+  static void Game_Start_Timeout_Callback(void);
 
-	protected:
-		void Evaluate_Clans(cGameData* theGame);
-		void Update_Channel_Settings(cGameData* theGame, const RefPtr<WWOnline::ChannelData>& channel);
-		void Quit_And_Restart(void);
-		void Handle_Disconnect(void);
+protected:
+  void Evaluate_Clans(cGameData *theGame);
+  void Update_Channel_Settings(cGameData *theGame, const RefPtr<WWOnline::ChannelData> &channel);
+  void Quit_And_Restart(void);
+  void Handle_Disconnect(void);
 
-		void Game_Start_Timed_Out(void);
+  void Game_Start_Timed_Out(void);
 
-		void HandleNotification(DlgWOLWaitEvent&);
-		void HandleNotification(WWOnline::GameStartEvent&);
-		void HandleNotification(WWOnline::GameOptionsMessage&);
-		void HandleNotification(WWOnline::ChannelEvent&);
-		void HandleNotification(WWOnline::UserEvent&);
-		void HandleNotification(WWOnline::LadderInfoEvent&);
-		void HandleNotification(WOLPagedEvent&);
-		void HandleNotification(WWOnline::ServerError&);
-		void HandleNotification(WWOnline::ConnectionStatus&);
+  void HandleNotification(DlgWOLWaitEvent &);
+  void HandleNotification(WWOnline::GameStartEvent &);
+  void HandleNotification(WWOnline::GameOptionsMessage &);
+  void HandleNotification(WWOnline::ChannelEvent &);
+  void HandleNotification(WWOnline::UserEvent &);
+  void HandleNotification(WWOnline::LadderInfoEvent &);
+  void HandleNotification(WOLPagedEvent &);
+  void HandleNotification(WWOnline::ServerError &);
+  void HandleNotification(WWOnline::ConnectionStatus &);
 
-	private:
-		RefPtr<WWOnline::Session> mWOLSession;
-		WOLChatMgr* mWOLChatMgr;
-		WOLBuddyMgr* mWOLBuddyMgr;
-		WOLQuickMatch* mQuickMatch;
+private:
+  RefPtr<WWOnline::Session> mWOLSession;
+  WOLChatMgr *mWOLChatMgr;
+  WOLBuddyMgr *mWOLBuddyMgr;
+  WOLQuickMatch *mQuickMatch;
 
-		cGameData* mTheGame;
-		unsigned long mGameID;
-		bool mGameInProgress;
-		unsigned long mSendServerInfoTime;
-		bool mQuietMode;
-		bool mConnected;
-		unsigned long mLastPatchCheckTime;
-		unsigned long mStartQuitProcessTime;
-		bool mPatchAvailable;
-		bool mMonitorConnection;
+  cGameData *mTheGame;
+  unsigned long mGameID;
+  bool mGameInProgress;
+  unsigned long mSendServerInfoTime;
+  bool mQuietMode;
+  bool mConnected;
+  unsigned long mLastPatchCheckTime;
+  unsigned long mStartQuitProcessTime;
+  bool mPatchAvailable;
+  bool mMonitorConnection;
 
-		// This flag is set to true when we successfully create a game channel.
-		// Used in conjunction with signalling to indicate completion status.
-		bool mChannelCreateSuccessFlag;
+  // This flag is set to true when we successfully create a game channel.
+  // Used in conjunction with signalling to indicate completion status.
+  bool mChannelCreateSuccessFlag;
 
-		DynamicVectorClass<StringClass> KickNameList;
-		DynamicVectorClass<unsigned long> KickIPList;
+  DynamicVectorClass<StringClass> KickNameList;
+  DynamicVectorClass<unsigned long> KickIPList;
 
+  DynamicVectorClass<StringClass> IdleKickNameList;
+  DynamicVectorClass<unsigned int> IdleKickTimeList;
+};
 
-		DynamicVectorClass<StringClass> IdleKickNameList;
-		DynamicVectorClass<unsigned int> IdleKickTimeList;
-
-	};
-
-#endif	// __WOLGMODE_H__
+#endif // __WOLGMODE_H__

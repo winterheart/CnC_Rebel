@@ -37,8 +37,8 @@
 #pragma once
 #endif
 
-#ifndef	SPECIALBUILDS_H
-#define	SPECIALBUILDS_H
+#ifndef SPECIALBUILDS_H
+#define SPECIALBUILDS_H
 
 //
 // N.B. Any file that references any of the following special build defines
@@ -50,11 +50,10 @@
 //-----------------------------------------------------------------------------
 
 // Uncomment the BETASERVER define to build a BETASERVER
-// this is actually the same as a FULL build, just points to 
+// this is actually the same as a FULL build, just points to
 // different registry entries
 //
 // #define BETASERVER
-
 
 //
 // Uncomment the BETACLIENT define to omit single-player and
@@ -62,19 +61,16 @@
 //
 // #define BETACLIENT
 
-
 //
 // Uncomment the FREEDEDICATEDSERVER define to permit only dedicated
 // hosting.
 //
 // #define FREEDEDICATEDSERVER
 
-
 //
 // Uncomment the MULTIPLAYERDEMO define to build the MP demo.
 //
 // #define MULTIPLAYERDEMO
-
 
 //-----------------------------------------------------------------------------
 // COMPILE-TIME WARNINGS
@@ -126,21 +122,6 @@
 
 #endif // SPECIALBUILDS_H
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 //
 // 11/07/01 - BETASERVER define no longer needed.
@@ -153,7 +134,6 @@
 //
 //#define BETASERVER
 */
-
 
 /*
 #ifdef BETASERVER

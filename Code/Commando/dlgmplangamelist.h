@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmplangamelist.h       $*
  *                                                                                             *
@@ -41,7 +42,6 @@
 #ifndef __DLG_MP_LAN_GAME_LIST_H
 #define __DLG_MP_LAN_GAME_LIST_H
 
-
 #include "menudialog.h"
 #include "resource.h"
 #include <WWLib\Signaler.h>
@@ -53,65 +53,57 @@ class DlgPasswordPrompt;
 //	MPLanGameListMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPLanGameListMenuClass : public MenuDialogClass,
-	protected Signaler<DlgPasswordPrompt>
-{
+class MPLanGameListMenuClass : public MenuDialogClass, protected Signaler<DlgPasswordPrompt> {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPLanGameListMenuClass (void);
-	~MPLanGameListMenuClass();
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPLanGameListMenuClass(void);
+  ~MPLanGameListMenuClass();
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-	void		On_Destroy (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	bool		On_Key_Down(uint32 key_id, uint32 key_data);
-	
-	static void	Set_Update_Nickname(void)						{ UpdateNickname = true; }
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Destroy(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
 
-	
-	void		On_ListCtrl_Delete_Entry (ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
-	void		On_ListCtrl_DblClk (ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
-	void		On_EditCtrl_Change(EditCtrlClass* edit, int id);
+  static void Set_Update_Nickname(void) { UpdateNickname = true; }
 
-	//
-	//	Singleton access
-	//
-	static void								Display (void);
-	static MPLanGameListMenuClass *	Get_Instance (void)	{ return _TheInstance; }
+  void On_ListCtrl_Delete_Entry(ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
+  void On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+
+  //
+  //	Singleton access
+  //
+  static void Display(void);
+  static MPLanGameListMenuClass *Get_Instance(void) { return _TheInstance; }
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Inherited
+  //
+  void On_Last_Menu_Ending(void);
+  void On_Frame_Update(void);
 
-	//
-	//	Inherited
-	//
-	void		On_Last_Menu_Ending (void);
-	void		On_Frame_Update (void);
+  void Update_Game_List(void);
+  void Join_Game(void);
+  void ReceiveSignal(DlgPasswordPrompt &);
+  void Connect_To_Server(void);
 
-	void		Update_Game_List (void);
-	void		Join_Game (void);
-	void		ReceiveSignal(DlgPasswordPrompt&);
-	void		Connect_To_Server (void);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  int UpdateTimer;
+  static bool UpdateNickname;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	int										UpdateTimer;
-	static bool								UpdateNickname;
-
-	static MPLanGameListMenuClass *	_TheInstance;
-
+  static MPLanGameListMenuClass *_TheInstance;
 };
 
-
 #endif //__DLG_MP_LAN_GAME_LIST_H
-

@@ -29,58 +29,54 @@
 #include "resource.h"
 #include "vector.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // CWWConfigDlg
 //
 /////////////////////////////////////////////////////////////////////////////
-class CWWConfigDlg : public CDialog
-{
-// Construction
+class CWWConfigDlg : public CDialog {
+  // Construction
 public:
-	CWWConfigDlg(CWnd* pParent = NULL);	// standard constructor
+  CWWConfigDlg(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CWWConfigDlg)
-	enum { IDD = IDD_WWCONFIG_DIALOG };
-	CTabCtrl	m_TabCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(CWWConfigDlg)
+  enum { IDD = IDD_WWCONFIG_DIALOG };
+  CTabCtrl m_TabCtrl;
+  //}}AFX_DATA
 
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWWConfigDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CWWConfigDlg)
 protected:
-	HICON m_hIcon;
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CWWConfigDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	virtual void OnOK();
-	afx_msg void OnSelchangeTabCtrl(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  HICON m_hIcon;
+
+  // Generated message map functions
+  //{{AFX_MSG(CWWConfigDlg)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnPaint();
+  afx_msg HCURSOR OnQueryDragIcon();
+  virtual void OnOK();
+  afx_msg void OnSelchangeTabCtrl(NMHDR *pNMHDR, LRESULT *pResult);
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	/////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////
 
 private:
-
-	/////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////
-	DynamicVectorClass<CDialog *>		ConfigPages;
-	int										CurrentTab;
+  /////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////
+  DynamicVectorClass<CDialog *> ConfigPages;
+  int CurrentTab;
 };
 
 //{{AFX_INSERT_LOCATION}}

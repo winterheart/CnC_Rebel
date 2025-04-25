@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgevabuildingstab.h      $*
  *                                                                                             *
@@ -41,38 +42,30 @@
 #ifndef __DLG_EVA_BUILDINGS_TAB_H
 #define __DLG_EVA_BUILDINGS_TAB_H
 
-
 #include "dlgevaviewertab.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	EvaBuildingsTabClass
 //
 ////////////////////////////////////////////////////////////////
-class EvaBuildingsTabClass : public EvaViewerTabClass
-{
+class EvaBuildingsTabClass : public EvaViewerTabClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  EvaBuildingsTabClass(void) : EvaViewerTabClass(IDD_ENCYCLOPEDIA_BUILDINGS_TAB) {}
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	EvaBuildingsTabClass (void)	:
-		EvaViewerTabClass (IDD_ENCYCLOPEDIA_BUILDINGS_TAB)	{}
-
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
 protected:
-
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
 };
 
-
 #endif //__DLG_EVA_BUILDINGS_TAB_H
-

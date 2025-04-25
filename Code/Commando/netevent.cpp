@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/netevent.cpp               $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 11/10/01 1:03p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 5                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/netevent.cpp               $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 11/10/01 1:03p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 5                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "netevent.h"
@@ -39,36 +39,21 @@
 #include "cnetwork.h"
 
 //-----------------------------------------------------------------------------
-void
-cNetEvent::Init(void)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cNetEvent::Init(void) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	if (cNetwork::I_Am_Client())
-	{
-		Act();
-	}
+  if (cNetwork::I_Am_Client()) {
+    Act();
+  }
 
-	//
-	// This is a transient object. It is created, rendered, and destroyed immediately.
-	//
-	Set_Delete_Pending();
+  //
+  // This is a transient object. It is created, rendered, and destroyed immediately.
+  //
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cNetEvent::Export_Creation(BitStreamClass &packet)
-{
-	NetworkObjectClass::Export_Creation(packet);
-}
+void cNetEvent::Export_Creation(BitStreamClass &packet) { NetworkObjectClass::Export_Creation(packet); }
 
 //-----------------------------------------------------------------------------
-void
-cNetEvent::Import_Creation(BitStreamClass &packet)
-{
-	NetworkObjectClass::Import_Creation(packet);
-}
-
-
-
-
+void cNetEvent::Import_Creation(BitStreamClass &packet) { NetworkObjectClass::Import_Creation(packet); }

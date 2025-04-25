@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/PKPIPE.CPP                                $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/PKPIPE.CPP                                $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   PKPipe::Encrypted_Key_Length -- Fetch the encrypted key length.                           *
  *   PKPipe::Key -- Submit a key to enable processing of data flow.                            *
  *   PKPipe::PKPipe -- Constructor for the public key pipe object.                             *
@@ -40,11 +40,9 @@
  *   PKPipe::Put_To -- Chains one pipe to another.                                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-#include	"always.h"
-#include	"pkpipe.h"
-#include	<string.h>
-
+#include "always.h"
+#include "pkpipe.h"
+#include <string.h>
 
 /***********************************************************************************************
  * PKPipe::PKPipe -- Constructor for the public key pipe object.                               *
@@ -63,17 +61,9 @@
  * HISTORY:                                                                                    *
  *   07/11/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-PKPipe::PKPipe(CryptControl control, RandomStraw & rnd) :
-	IsGettingKey(true),
-	Rand(rnd),
-	BF((control == ENCRYPT) ? BlowPipe::ENCRYPT : BlowPipe::DECRYPT),
-	Control(control),
-	CipherKey(NULL),
-	Counter(0),
-	BytesLeft(0)
-{
-}
-
+PKPipe::PKPipe(CryptControl control, RandomStraw &rnd)
+    : IsGettingKey(true), Rand(rnd), BF((control == ENCRYPT) ? BlowPipe::ENCRYPT : BlowPipe::DECRYPT), Control(control),
+      CipherKey(NULL), Counter(0), BytesLeft(0) {}
 
 /***********************************************************************************************
  * PKPipe::Put_To -- Chains one pipe to another.                                               *
@@ -91,26 +81,24 @@ PKPipe::PKPipe(CryptControl control, RandomStraw & rnd) :
  * HISTORY:                                                                                    *
  *   07/12/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PKPipe::Put_To(Pipe * pipe)
-{
-	if (BF.ChainTo != pipe) {
-		if (pipe != NULL && pipe->ChainFrom != NULL) {
-			pipe->ChainFrom->Put_To(NULL);
-			pipe->ChainFrom = NULL;
-		}
+void PKPipe::Put_To(Pipe *pipe) {
+  if (BF.ChainTo != pipe) {
+    if (pipe != NULL && pipe->ChainFrom != NULL) {
+      pipe->ChainFrom->Put_To(NULL);
+      pipe->ChainFrom = NULL;
+    }
 
-		if (BF.ChainTo != NULL) {
-			BF.ChainTo->ChainFrom = NULL;
-		}
-		BF.ChainTo = pipe;
-		if (pipe != NULL) {
-			pipe->ChainFrom = &BF;
-		}
-		BF.ChainFrom = this;
-		ChainTo = &BF;
-	}
+    if (BF.ChainTo != NULL) {
+      BF.ChainTo->ChainFrom = NULL;
+    }
+    BF.ChainTo = pipe;
+    if (pipe != NULL) {
+      pipe->ChainFrom = &BF;
+    }
+    BF.ChainFrom = this;
+    ChainTo = &BF;
+  }
 }
-
 
 /***********************************************************************************************
  * PKPipe::Key -- Submit a key to enable processing of data flow.                              *
@@ -130,22 +118,20 @@ void PKPipe::Put_To(Pipe * pipe)
  * HISTORY:                                                                                    *
  *   07/07/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PKPipe::Key(PKey const * key)
-{
-	if (key == NULL) {
-		Flush();
-		IsGettingKey = false;
-	}
-	CipherKey = key;
+void PKPipe::Key(PKey const *key) {
+  if (key == NULL) {
+    Flush();
+    IsGettingKey = false;
+  }
+  CipherKey = key;
 
-	if (CipherKey != NULL) {
-		IsGettingKey = true;
-		if (Control == DECRYPT) {
-			Counter = BytesLeft = Encrypted_Key_Length();
-		}
-	}
+  if (CipherKey != NULL) {
+    IsGettingKey = true;
+    if (Control == DECRYPT) {
+      Counter = BytesLeft = Encrypted_Key_Length();
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * PKPipe::Put -- Submit data to the pipe for processing.                                      *
@@ -165,81 +151,79 @@ void PKPipe::Key(PKey const * key)
  * HISTORY:                                                                                    *
  *   07/07/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int PKPipe::Put(void const * source, int length)
-{
-	/*
-	**	If the parameter seem illegal, then pass the pipe request to the
-	**	next pipe in the chain and let them deal with it.
-	*/
-	if (source == NULL || length < 1 || CipherKey == NULL) {
-		return(Pipe::Put(source, length));
-	}
+int PKPipe::Put(void const *source, int length) {
+  /*
+  **	If the parameter seem illegal, then pass the pipe request to the
+  **	next pipe in the chain and let them deal with it.
+  */
+  if (source == NULL || length < 1 || CipherKey == NULL) {
+    return (Pipe::Put(source, length));
+  }
 
-	int total = 0;
+  int total = 0;
 
-	/*
-	**	Perform a special process if the this is the first part of the data flow. The special
-	**	key must be processed first. After this initial key processing, the rest of the data flow
-	**	is processed by the blowfish pipe and ignored by the PKPipe.
-	*/
-	if (IsGettingKey) {
+  /*
+  **	Perform a special process if the this is the first part of the data flow. The special
+  **	key must be processed first. After this initial key processing, the rest of the data flow
+  **	is processed by the blowfish pipe and ignored by the PKPipe.
+  */
+  if (IsGettingKey) {
 
-		/*
-		**	When encrypting, first make the key block and then pass the data through the
-		**	normal blowfish processor.
-		*/
-		if (Control == ENCRYPT) {
+    /*
+    **	When encrypting, first make the key block and then pass the data through the
+    **	normal blowfish processor.
+    */
+    if (Control == ENCRYPT) {
 
-			/*
-			**	Generate the largest blowfish key possible.
-			*/
-			char buffer[MAX_KEY_BLOCK_SIZE];
-			memset(buffer, '\0', sizeof(buffer));
-			Rand.Get(buffer, BLOWFISH_KEY_SIZE);
+      /*
+      **	Generate the largest blowfish key possible.
+      */
+      char buffer[MAX_KEY_BLOCK_SIZE];
+      memset(buffer, '\0', sizeof(buffer));
+      Rand.Get(buffer, BLOWFISH_KEY_SIZE);
 
-			/*
-			**	Encrypt the blowfish key (along with any necessary pad bytes).
-			*/
-			int didput = CipherKey->Encrypt(buffer, Plain_Key_Length(), Buffer);
-			total += Pipe::Put(Buffer, didput);
-			BF.Key(buffer, BLOWFISH_KEY_SIZE);
+      /*
+      **	Encrypt the blowfish key (along with any necessary pad bytes).
+      */
+      int didput = CipherKey->Encrypt(buffer, Plain_Key_Length(), Buffer);
+      total += Pipe::Put(Buffer, didput);
+      BF.Key(buffer, BLOWFISH_KEY_SIZE);
 
-			IsGettingKey = false;
+      IsGettingKey = false;
 
-		} else {
+    } else {
 
-			/*
-			**	First try to accumulate a full key.
-			*/
-			int toget = (BytesLeft < length) ? BytesLeft : length;
-			memmove(&Buffer[Counter-BytesLeft], source, toget);
-			length -= toget;
-			BytesLeft -= toget;
-			source = (char *)source + toget;
+      /*
+      **	First try to accumulate a full key.
+      */
+      int toget = (BytesLeft < length) ? BytesLeft : length;
+      memmove(&Buffer[Counter - BytesLeft], source, toget);
+      length -= toget;
+      BytesLeft -= toget;
+      source = (char *)source + toget;
 
-			/*
-			**	If a full key has been accumulated, then decrypt it and feed the
-			**	key to the blowfish engine.
-			*/
-			if (BytesLeft == 0) {
-				char buffer[MAX_KEY_BLOCK_SIZE];
-				CipherKey->Decrypt(Buffer, Counter, buffer);
-				BF.Key(buffer, BLOWFISH_KEY_SIZE);
+      /*
+      **	If a full key has been accumulated, then decrypt it and feed the
+      **	key to the blowfish engine.
+      */
+      if (BytesLeft == 0) {
+        char buffer[MAX_KEY_BLOCK_SIZE];
+        CipherKey->Decrypt(Buffer, Counter, buffer);
+        BF.Key(buffer, BLOWFISH_KEY_SIZE);
 
-				IsGettingKey = false;
-			}
-		}
-	}
+        IsGettingKey = false;
+      }
+    }
+  }
 
-	/*
-	**	If there are any remaining bytes to pipe through, then
-	**	pipe them through now -- they will be processed by the
-	**	blowfish engine.
-	*/
-	total += Pipe::Put(source, length);
-	return(total);
+  /*
+  **	If there are any remaining bytes to pipe through, then
+  **	pipe them through now -- they will be processed by the
+  **	blowfish engine.
+  */
+  total += Pipe::Put(source, length);
+  return (total);
 }
-
 
 /***********************************************************************************************
  * PKPipe::Encrypted_Key_Length -- Fetch the encrypted key length.                             *
@@ -257,12 +241,11 @@ int PKPipe::Put(void const * source, int length)
  * HISTORY:                                                                                    *
  *   07/11/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int PKPipe::Encrypted_Key_Length(void) const
-{
-	if (CipherKey == NULL) return(0);
-	return(CipherKey->Block_Count(BLOWFISH_KEY_SIZE) * CipherKey->Crypt_Block_Size());
+int PKPipe::Encrypted_Key_Length(void) const {
+  if (CipherKey == NULL)
+    return (0);
+  return (CipherKey->Block_Count(BLOWFISH_KEY_SIZE) * CipherKey->Crypt_Block_Size());
 }
-
 
 /***********************************************************************************************
  * PKPipe::Plain_Key_Length -- Returns the number of bytes to encrypt key.                     *
@@ -281,8 +264,8 @@ int PKPipe::Encrypted_Key_Length(void) const
  * HISTORY:                                                                                    *
  *   07/11/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int PKPipe::Plain_Key_Length(void) const
-{
-	if (CipherKey == NULL) return(0);
-	return(CipherKey->Block_Count(BLOWFISH_KEY_SIZE) * CipherKey->Plain_Block_Size());
+int PKPipe::Plain_Key_Length(void) const {
+  if (CipherKey == NULL)
+    return (0);
+  return (CipherKey->Block_Count(BLOWFISH_KEY_SIZE) * CipherKey->Plain_Block_Size());
 }

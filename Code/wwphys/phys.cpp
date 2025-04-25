@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "phys.h"
 #include "colmathaabox.h"
 #include "rendobj.h"
@@ -58,29 +57,25 @@
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 
-
-const float DEBUG_RENDER_DIST2 = (50.0f*50.0f);
-const float SUN_CHECK_DISTANCE = 50.0f;	//If a ray this long doesn't intersect, you can see the sun...
-
+const float DEBUG_RENDER_DIST2 = (50.0f * 50.0f);
+const float SUN_CHECK_DISTANCE = 50.0f; // If a ray this long doesn't intersect, you can see the sun...
 
 /*
 ** create_render_obj_from_filename
 */
-RenderObjClass * create_render_obj_from_filename( const char * filename )
-{
-	StringClass	render_obj_name(filename,true);
-	if ( ::strchr( filename, '\\' ) != 0 ) {
-		render_obj_name = ::strrchr( filename, '\\' ) + 1;
-	}
-	render_obj_name.Erase( render_obj_name.Get_Length() - 4, 4 );
+RenderObjClass *create_render_obj_from_filename(const char *filename) {
+  StringClass render_obj_name(filename, true);
+  if (::strchr(filename, '\\') != 0) {
+    render_obj_name = ::strrchr(filename, '\\') + 1;
+  }
+  render_obj_name.Erase(render_obj_name.Get_Length() - 4, 4);
 
-	RenderObjClass *model = WW3DAssetManager::Get_Instance()->Create_Render_Obj( render_obj_name );
-	if ( model == NULL ) {
-		WWDEBUG_SAY(("Failed to create %s from %s\n", (const char *)render_obj_name, filename));
-	}
-	return model;
+  RenderObjClass *model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(render_obj_name);
+  if (model == NULL) {
+    WWDEBUG_SAY(("Failed to create %s from %s\n", (const char *)render_obj_name, filename));
+  }
+  return model;
 }
-
 
 /***********************************************************************************************
 **
@@ -91,266 +86,237 @@ RenderObjClass * create_render_obj_from_filename( const char * filename )
 /*
 ** Chunk ID's used by PhysClass
 */
-enum
-{
-	PHYS_CHUNK_VARIABLES				= 0x00660055,
-	PHYS_CHUNK_MODEL,
+enum {
+  PHYS_CHUNK_VARIABLES = 0x00660055,
+  PHYS_CHUNK_MODEL,
 
-	PHYS_VARIABLE_CULLABLE_PTR		= 0x00,
-	PHYS_VARIABLE_WIDGETUSER_PTR,
-	PHYS_VARIABLE_EDITABLE_PTR,
-	PHYS_VARIABLE_FLAGS,
-	PHYS_VARIABLE_NAME,
-	PHYS_VARIABLE_OBSERVER,
-	PHYS_VARIABLE_DEFID,
-	PHYS_VARIABLE_INSTANCEID,
+  PHYS_VARIABLE_CULLABLE_PTR = 0x00,
+  PHYS_VARIABLE_WIDGETUSER_PTR,
+  PHYS_VARIABLE_EDITABLE_PTR,
+  PHYS_VARIABLE_FLAGS,
+  PHYS_VARIABLE_NAME,
+  PHYS_VARIABLE_OBSERVER,
+  PHYS_VARIABLE_DEFID,
+  PHYS_VARIABLE_INSTANCEID,
 };
 
-
-
-
-PhysClass::PhysClass(void) :
-	Flags(DEFAULT_FLAGS),
-	Model(NULL),
-	Observer(NULL),
-	Definition(NULL),
-	InstanceID(0),
-	VisObjectID(0),
-	LastVisibleFrame(0),	// JANI TEMP TEST
-	SunStatusLastUpdated(0),
-	StaticLightingCache(NULL)
+PhysClass::PhysClass(void)
+    : Flags(DEFAULT_FLAGS), Model(NULL), Observer(NULL), Definition(NULL), InstanceID(0), VisObjectID(0),
+      LastVisibleFrame(0), // JANI TEMP TEST
+      SunStatusLastUpdated(0), StaticLightingCache(NULL)
 #if (UMBRASUPPORT)
-	,UmbraObject(NULL)
+      ,
+      UmbraObject(NULL)
 #endif
 {
 #if (UMBRASUPPORT)
-	UmbraObject = new Umbra::Object(UmbraSupport::Peek_Dummy_Sphere());
-	UmbraObject->setUserPointer(this);
-	UmbraSupport::Install_Umbra_Object(this);
+  UmbraObject = new Umbra::Object(UmbraSupport::Peek_Dummy_Sphere());
+  UmbraObject->setUserPointer(this);
+  UmbraSupport::Install_Umbra_Object(this);
 #endif
 }
 
-PhysClass::~PhysClass(void)
-{
-	if (Model) {
-		Model->Release_Ref();
-		Model = NULL;
-	}
-	if (StaticLightingCache) {
-		delete StaticLightingCache;
-	}
+PhysClass::~PhysClass(void) {
+  if (Model) {
+    Model->Release_Ref();
+    Model = NULL;
+  }
+  if (StaticLightingCache) {
+    delete StaticLightingCache;
+  }
 #if (UMBRASUPPORT)
-	if (UmbraObject) {
-		UmbraSupport::Remove_Umbra_Object(this);
-		UmbraObject->release();
-		UmbraObject = NULL;
-	}
+  if (UmbraObject) {
+    UmbraSupport::Remove_Umbra_Object(this);
+    UmbraObject->release();
+    UmbraObject = NULL;
+  }
 #endif
 }
 
-void PhysClass::Init(const PhysDefClass & def)
-{
-	Definition = &def;
-	Flags = DEFAULT_FLAGS; 
-	if (!def.ModelName.Is_Empty()) {
+void PhysClass::Init(const PhysDefClass &def) {
+  Definition = &def;
+  Flags = DEFAULT_FLAGS;
+  if (!def.ModelName.Is_Empty()) {
 
-		RenderObjClass * model = NULL;
-	
-		if (::strchr(def.ModelName, '.') != NULL) {
-			model = ::create_render_obj_from_filename(def.ModelName);
-		} else {
-			model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(def.ModelName);
-		}
+    RenderObjClass *model = NULL;
 
-		if ( model == NULL ) {
-			WWDEBUG_SAY(( "***  FATAL ERROR : Failed to create model %s\n", def.ModelName ));
-		}
+    if (::strchr(def.ModelName, '.') != NULL) {
+      model = ::create_render_obj_from_filename(def.ModelName);
+    } else {
+      model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(def.ModelName);
+    }
 
-		Set_Model(model);
-		REF_PTR_RELEASE(model);
-	}
+    if (model == NULL) {
+      WWDEBUG_SAY(("***  FATAL ERROR : Failed to create model %s\n", def.ModelName));
+    }
+
+    Set_Model(model);
+    REF_PTR_RELEASE(model);
+  }
 }
 
-void PhysClass::Set_Model(RenderObjClass * model)		
-{ 
-	PhysicsSceneClass * the_scene = PhysicsSceneClass::Get_Instance();
-	bool in_scene = the_scene->Contains(this);
+void PhysClass::Set_Model(RenderObjClass *model) {
+  PhysicsSceneClass *the_scene = PhysicsSceneClass::Get_Instance();
+  bool in_scene = the_scene->Contains(this);
 
-	if (Model) {
-		// If we had an old model, copy the transform
-		if ( model ) {		
-			model->Set_Transform( Model->Get_Transform() );
-		}
-		if (in_scene) Model->Notify_Removed(the_scene);
-		Model->Release_Ref();
-	}
-	Model = model; 
-	if (Model) {
-		Model->Add_Ref(); 
-		if (in_scene) Model->Notify_Added(the_scene);
-	}
+  if (Model) {
+    // If we had an old model, copy the transform
+    if (model) {
+      model->Set_Transform(Model->Get_Transform());
+    }
+    if (in_scene)
+      Model->Notify_Removed(the_scene);
+    Model->Release_Ref();
+  }
+  Model = model;
+  if (Model) {
+    Model->Add_Ref();
+    if (in_scene)
+      Model->Notify_Added(the_scene);
+  }
 
-	if ((Definition != NULL) && (Definition->IsPreLit)) {
-		Enable_Is_Pre_Lit(true);
-	}
-	Invalidate_Static_Lighting_Cache ();
-}
-	
-void PhysClass::Set_Model_By_Name(const char * model_type_name)
-{
-	RenderObjClass * model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(model_type_name);
-	if ( model == NULL ) {
-		WWDEBUG_SAY(( "%s failed to load\n", model_type_name ));
-	}
-	WWASSERT(model);		// As above, PhysClasses cannot survive without a model...
-
-	Set_Model(model);
-	if (model) {
-		model->Release_Ref();
-	}
+  if ((Definition != NULL) && (Definition->IsPreLit)) {
+    Enable_Is_Pre_Lit(true);
+  }
+  Invalidate_Static_Lighting_Cache();
 }
 
-RenderObjClass * PhysClass::Get_Model(void)								
-{ 
-	if (Model) Model->Add_Ref(); 
-	return Model; 
+void PhysClass::Set_Model_By_Name(const char *model_type_name) {
+  RenderObjClass *model = WW3DAssetManager::Get_Instance()->Create_Render_Obj(model_type_name);
+  if (model == NULL) {
+    WWDEBUG_SAY(("%s failed to load\n", model_type_name));
+  }
+  WWASSERT(model); // As above, PhysClasses cannot survive without a model...
+
+  Set_Model(model);
+  if (model) {
+    model->Release_Ref();
+  }
 }
 
-void PhysClass::Set_Name(const char * name)
-{
-	Name=name;
+RenderObjClass *PhysClass::Get_Model(void) {
+  if (Model)
+    Model->Add_Ref();
+  return Model;
 }
 
-const char * PhysClass::Get_Name(void)
-{
-	return Name;
+void PhysClass::Set_Name(const char *name) { Name = name; }
+
+const char *PhysClass::Get_Name(void) { return Name; }
+
+void PhysClass::Get_Shadow_Blob_Box(AABoxClass *set_obj_space_box) {
+  WWASSERT(set_obj_space_box != NULL);
+  if (set_obj_space_box != NULL) {
+    Model->Get_Obj_Space_Bounding_Box(*set_obj_space_box);
+    set_obj_space_box->Extent *= 0.75f;
+  }
 }
 
-void PhysClass::Get_Shadow_Blob_Box(AABoxClass * set_obj_space_box)
-{
-	WWASSERT(set_obj_space_box != NULL);
-	if (set_obj_space_box != NULL) {
-		Model->Get_Obj_Space_Bounding_Box(*set_obj_space_box);
-		set_obj_space_box->Extent *= 0.75f;
-	}
+void PhysClass::Render(RenderInfoClass &rinfo) {
+  Push_Effects(rinfo);
+
+  if (Model) {
+    Model->Render(rinfo);
+  }
+
+  Pop_Effects(rinfo);
 }
 
-void PhysClass::Render(RenderInfoClass & rinfo)
-{ 
-	Push_Effects(rinfo);
-
-	if (Model) { 
-		Model->Render(rinfo); 
-	} 
-
-	Pop_Effects(rinfo);
+void PhysClass::Vis_Render(SpecialRenderInfoClass &rinfo) {
+  if (Model) {
+    Model->Special_Render(rinfo);
+  }
 }
 
-void PhysClass::Vis_Render(SpecialRenderInfoClass & rinfo)
-{
-	if (Model) {
-		Model->Special_Render(rinfo);
-	}
+void PhysClass::Invalidate_Static_Lighting_Cache(void) { Set_Flag(STATIC_LIGHTING_DIRTY, true); }
+
+LightEnvironmentClass *PhysClass::Get_Static_Lighting_Environment(void) {
+  if (Is_Pre_Lit()) {
+
+    /*
+    ** This object doesn't need a lighting cache, make sure it doesn't have one
+    */
+    if (StaticLightingCache != NULL) {
+      WWDEBUG_SAY(("Pre-Lit object %s has a lighting cache!\r\n", Model->Get_Name()));
+      delete StaticLightingCache;
+      StaticLightingCache = NULL;
+    }
+
+  } else if (Get_Flag(STATIC_LIGHTING_DIRTY)) {
+
+    /*
+    ** First, ensure that we have an allocated lighting cache
+    */
+    if (StaticLightingCache == NULL) {
+      StaticLightingCache = new LightEnvironmentClass;
+    }
+
+    /*
+    ** Next, update our sunlight status
+    */
+    Update_Sun_Status();
+
+    /*
+    ** Finally, ask the physics scene to re-compute our lighting cache
+    */
+    PhysicsSceneClass::Get_Instance()->Compute_Static_Lighting(StaticLightingCache, Model->Get_Bounding_Sphere().Center,
+                                                               Get_Flag(IS_IN_THE_SUN), Get_Vis_Object_ID());
+
+    Set_Flag(STATIC_LIGHTING_DIRTY, false);
+  }
+
+  /*
+  ** Return our lighting cache to the caller
+  */
+  return StaticLightingCache;
 }
 
-void PhysClass::Invalidate_Static_Lighting_Cache(void)
-{
-	Set_Flag(STATIC_LIGHTING_DIRTY,true);
+void PhysClass::Update_Sun_Status(void) {
+  // Update sun status only four times per second
+  unsigned current_time = WW3D::Get_Sync_Time();
+  if ((current_time - SunStatusLastUpdated) < 250)
+    return;
+  SunStatusLastUpdated = current_time;
+
+  PhysicsSceneClass *scene = PhysicsSceneClass::Get_Instance();
+
+  Vector3 sunlight;
+  scene->Get_Sun_Light_Vector(&sunlight);
+  Vector3 center = Model->Get_Bounding_Sphere().Center;
+
+#pragma message("(gth) Need a collision group for sun-rays")
+  CastResultStruct sunresult;
+  LineSegClass sunray(center, center - sunlight * SUN_CHECK_DISTANCE);
+  PhysRayCollisionTestClass sunraytest(sunray, &sunresult, 0, COLLISION_TYPE_PROJECTILE);
+  sunraytest.CheckStaticObjs = true;
+  sunraytest.CheckDynamicObjs = false;
+
+  Inc_Ignore_Counter();
+  scene->Cast_Ray(sunraytest);
+
+  // if the ray hits a static object which is casting a projected shadow, ignore that object
+  // and check again.
+  if ((sunresult.Fraction < 1.0f) && (sunraytest.CollidedPhysObj != NULL)) {
+    PhysClass *obj = sunraytest.CollidedPhysObj;
+    if (obj->Is_Casting_Shadow()) {
+      obj->Inc_Ignore_Counter();
+      sunresult.Reset();
+      scene->Cast_Ray(sunraytest);
+      obj->Dec_Ignore_Counter();
+    }
+  }
+  Dec_Ignore_Counter();
+
+  Enable_Is_In_The_Sun(sunresult.Fraction == 1.0f);
 }
 
-LightEnvironmentClass * PhysClass::Get_Static_Lighting_Environment(void)
-{
-	if (Is_Pre_Lit()) {
-	
-		/*
-		** This object doesn't need a lighting cache, make sure it doesn't have one
-		*/
-		if (StaticLightingCache != NULL) {
-			WWDEBUG_SAY(("Pre-Lit object %s has a lighting cache!\r\n",Model->Get_Name()));
-			delete StaticLightingCache;
-			StaticLightingCache = NULL;
-		}
-	
-	} else if (Get_Flag(STATIC_LIGHTING_DIRTY)) {
-
-		/*
-		** First, ensure that we have an allocated lighting cache
-		*/
-		if (StaticLightingCache == NULL) {
-			StaticLightingCache = new LightEnvironmentClass;
-		}
-
-		/*
-		** Next, update our sunlight status
-		*/
-		Update_Sun_Status();
-
-		/*
-		** Finally, ask the physics scene to re-compute our lighting cache
-		*/
-		PhysicsSceneClass::Get_Instance()->Compute_Static_Lighting(	StaticLightingCache,
-																						Model->Get_Bounding_Sphere().Center,
-																						Get_Flag(IS_IN_THE_SUN),
-																						Get_Vis_Object_ID() );
-										
-		Set_Flag(STATIC_LIGHTING_DIRTY,false);
-	} 
-
-	/*
-	** Return our lighting cache to the caller
-	*/
-	return StaticLightingCache;
-}
-
-void PhysClass::Update_Sun_Status(void)
-{
-	// Update sun status only four times per second
-	unsigned current_time=WW3D::Get_Sync_Time();
-	if ((current_time-SunStatusLastUpdated)<250) return;
-	SunStatusLastUpdated=current_time;
-
-	PhysicsSceneClass * scene = PhysicsSceneClass::Get_Instance();
-	
-	Vector3 sunlight;
-	scene->Get_Sun_Light_Vector(&sunlight);
-	Vector3 center = Model->Get_Bounding_Sphere().Center; 
-
-#pragma message ("(gth) Need a collision group for sun-rays")
-	CastResultStruct sunresult;
-	LineSegClass sunray(center,center - sunlight * SUN_CHECK_DISTANCE);
-	PhysRayCollisionTestClass sunraytest(sunray,&sunresult,0,COLLISION_TYPE_PROJECTILE);
-	sunraytest.CheckStaticObjs = true;
-	sunraytest.CheckDynamicObjs = false;
-
-	Inc_Ignore_Counter();
-	scene->Cast_Ray(sunraytest);
-
-	// if the ray hits a static object which is casting a projected shadow, ignore that object 
-	// and check again.
-	if (	(sunresult.Fraction < 1.0f) && 
-			(sunraytest.CollidedPhysObj != NULL) ) 
-	{ 
-		PhysClass * obj = sunraytest.CollidedPhysObj;
-		if (obj->Is_Casting_Shadow()) {
-			obj->Inc_Ignore_Counter();
-			sunresult.Reset();
-			scene->Cast_Ray(sunraytest);			
-			obj->Dec_Ignore_Counter();
-		}		
-	}	
-	Dec_Ignore_Counter();
-
-	Enable_Is_In_The_Sun(sunresult.Fraction == 1.0f);
-}
-
-void PhysClass::Push_Effects(RenderInfoClass & rinfo)
-{
-	if (!MaterialEffectsOnMe.Is_Empty()) {
-		RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
-		for ( ; !iterator.Is_Done() ; iterator.Next()) {
-			iterator.Peek_Obj()->Render_Push(rinfo,this);
-		}
-	}
+void PhysClass::Push_Effects(RenderInfoClass &rinfo) {
+  if (!MaterialEffectsOnMe.Is_Empty()) {
+    RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
+    for (; !iterator.Is_Done(); iterator.Next()) {
+      iterator.Peek_Obj()->Render_Push(rinfo, this);
+    }
+  }
 
 #if 0
 	if (!ProjectionsOnMe.Is_Empty()) {
@@ -436,279 +402,263 @@ void PhysClass::Push_Effects(RenderInfoClass & rinfo)
 		REF_PTR_RELEASE(vmtl);
 	}
 #endif
-
 }
 
-void PhysClass::Pop_Effects(RenderInfoClass & rinfo)
-{
-	if (!MaterialEffectsOnMe.Is_Empty()) {
-		RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
-	
-		while (!iterator.Is_Done()) {
+void PhysClass::Pop_Effects(RenderInfoClass &rinfo) {
+  if (!MaterialEffectsOnMe.Is_Empty()) {
+    RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
 
-			MaterialEffectClass * effect = iterator.Peek_Obj();
-			effect->Render_Pop(rinfo);
+    while (!iterator.Is_Done()) {
 
-			if (effect->Is_Auto_Remove_Enabled()) {
-				iterator.Remove_Current_Object();
-			} else {
-				iterator.Next();
-			}
-		}
-	}
+      MaterialEffectClass *effect = iterator.Peek_Obj();
+      effect->Render_Pop(rinfo);
+
+      if (effect->Is_Auto_Remove_Enabled()) {
+        iterator.Remove_Current_Object();
+      } else {
+        iterator.Next();
+      }
+    }
+  }
 }
 
+bool PhysClass::Save(ChunkSaveClass &csave) {
+  CullableClass *cullable_ptr = (CullableClass *)this;
+  WidgetUserClass *widgetuser_ptr = (WidgetUserClass *)this;
+  EditableClass *editable_ptr = (EditableClass *)this;
 
-bool PhysClass::Save (ChunkSaveClass &csave)
-{
-	CullableClass * cullable_ptr = (CullableClass *)this;
-	WidgetUserClass * widgetuser_ptr = (WidgetUserClass *)this;
-	EditableClass * editable_ptr = (EditableClass *)this;
+  csave.Begin_Chunk(PHYS_CHUNK_VARIABLES);
+  // (gth) not saving observer pointers any more!
+  WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_CULLABLE_PTR, cullable_ptr);
+  WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_WIDGETUSER_PTR, widgetuser_ptr);
+  WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_EDITABLE_PTR, editable_ptr);
+  WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_FLAGS, Flags);
+  WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_INSTANCEID, InstanceID);
+  if (Name.Get_Length() > 0) {
+    csave.Begin_Micro_Chunk(PHYS_VARIABLE_NAME);
+    WWASSERT(Name.Get_Length() + 1 < 255);
+    csave.Write(Name, Name.Get_Length() + 1);
+    csave.End_Micro_Chunk();
+  }
+  if (Definition != NULL) {
+    int defid = Definition->Get_ID();
+    WRITE_MICRO_CHUNK(csave, PHYS_VARIABLE_DEFID, defid);
+  }
+  csave.End_Chunk();
 
-	csave.Begin_Chunk(PHYS_CHUNK_VARIABLES);
-	// (gth) not saving observer pointers any more!
-	WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_CULLABLE_PTR,cullable_ptr);
-	WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_WIDGETUSER_PTR,widgetuser_ptr);
-	WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_EDITABLE_PTR,editable_ptr);
-	WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_FLAGS,Flags);
-	WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_INSTANCEID,InstanceID);	
-	if (Name.Get_Length() > 0) {
-		csave.Begin_Micro_Chunk(PHYS_VARIABLE_NAME);
-		WWASSERT(Name.Get_Length()+1 < 255);
-		csave.Write(Name,Name.Get_Length() + 1);
-		csave.End_Micro_Chunk();
-	}
-	if (Definition != NULL) {
-		int defid = Definition->Get_ID();
-		WRITE_MICRO_CHUNK(csave,PHYS_VARIABLE_DEFID,defid);
-	}
-	csave.End_Chunk();
-	
-	csave.Begin_Chunk(PHYS_CHUNK_MODEL);
-	csave.Begin_Chunk(Model->Get_Factory().Chunk_ID());
-	Model->Get_Factory().Save(csave,Model);
-	csave.End_Chunk();
-	csave.End_Chunk();
+  csave.Begin_Chunk(PHYS_CHUNK_MODEL);
+  csave.Begin_Chunk(Model->Get_Factory().Chunk_ID());
+  Model->Get_Factory().Save(csave, Model);
+  csave.End_Chunk();
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
 
-bool PhysClass::Load (ChunkLoadClass &cload)
-{
-	PersistFactoryClass * factory = NULL;
-	CullableClass * cullable_ptr = NULL;
-	WidgetUserClass * widgetuser_ptr = NULL;
-	EditableClass * editable_ptr = NULL;
-	int defid = -1;
-	char tmpstring[256];
-	tmpstring[0] = 0;
-	RenderObjClass * render_model = NULL;
+bool PhysClass::Load(ChunkLoadClass &cload) {
+  PersistFactoryClass *factory = NULL;
+  CullableClass *cullable_ptr = NULL;
+  WidgetUserClass *widgetuser_ptr = NULL;
+  EditableClass *editable_ptr = NULL;
+  int defid = -1;
+  char tmpstring[256];
+  tmpstring[0] = 0;
+  RenderObjClass *render_model = NULL;
 
-	while (cload.Open_Chunk()) {
-		
-		switch(cload.Cur_Chunk_ID()) 
-		{
-			case PHYS_CHUNK_VARIABLES:
-				while (cload.Open_Micro_Chunk()) {
-					switch(cload.Cur_Micro_Chunk_ID()) {
-						// (gth) not saving observer pointers any more!
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_CULLABLE_PTR,cullable_ptr);
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_WIDGETUSER_PTR,widgetuser_ptr);
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_EDITABLE_PTR,editable_ptr);
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_FLAGS,Flags);
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_DEFID,defid);
-						READ_MICRO_CHUNK(cload,PHYS_VARIABLE_INSTANCEID,InstanceID);
-						
-						case PHYS_VARIABLE_NAME:
-							cload.Read(tmpstring,cload.Cur_Micro_Chunk_Length());
-							break;
-					}
-					cload.Close_Micro_Chunk();	
-				}
-				break;
+  while (cload.Open_Chunk()) {
 
-			case PHYS_CHUNK_MODEL:
-				cload.Open_Chunk();
-				factory = SaveLoadSystemClass::Find_Persist_Factory(cload.Cur_Chunk_ID());
-				WWASSERT(factory != NULL);
-				if (factory != NULL) {
-					render_model = (RenderObjClass *)factory->Load(cload);
-					SET_REF_OWNER(render_model);
-				}
-				cload.Close_Chunk();
-				break;
+    switch (cload.Cur_Chunk_ID()) {
+    case PHYS_CHUNK_VARIABLES:
+      while (cload.Open_Micro_Chunk()) {
+        switch (cload.Cur_Micro_Chunk_ID()) {
+          // (gth) not saving observer pointers any more!
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_CULLABLE_PTR, cullable_ptr);
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_WIDGETUSER_PTR, widgetuser_ptr);
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_EDITABLE_PTR, editable_ptr);
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_FLAGS, Flags);
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_DEFID, defid);
+          READ_MICRO_CHUNK(cload, PHYS_VARIABLE_INSTANCEID, InstanceID);
 
-			default:
-				WWDEBUG_SAY(("Unhandled Chunk: 0x%X File: %s Line: %d\r\n",cload.Cur_Chunk_ID(),__FILE__,__LINE__));
-				break;
-		}
-		
-		if (cullable_ptr != NULL) {
-			SaveLoadSystemClass::Register_Pointer(cullable_ptr,(CullableClass *)this);
-		}
-		cload.Close_Chunk();
-	}
+        case PHYS_VARIABLE_NAME:
+          cload.Read(tmpstring, cload.Cur_Micro_Chunk_Length());
+          break;
+        }
+        cload.Close_Micro_Chunk();
+      }
+      break;
 
-	/*
-	** Set our name
-	*/
-	if (strlen(tmpstring) > 0) {
-		Set_Name(tmpstring);
-	}
+    case PHYS_CHUNK_MODEL:
+      cload.Open_Chunk();
+      factory = SaveLoadSystemClass::Find_Persist_Factory(cload.Cur_Chunk_ID());
+      WWASSERT(factory != NULL);
+      if (factory != NULL) {
+        render_model = (RenderObjClass *)factory->Load(cload);
+        SET_REF_OWNER(render_model);
+      }
+      cload.Close_Chunk();
+      break;
 
-	/*
-	** Set our definition pointer
-	*/
-	if (defid != -1) {
-		Definition = (PhysDefClass *)_TheDefinitionMgr.Find_Definition(defid);	
-	} else {
-		Definition = NULL;
-	}
+    default:
+      WWDEBUG_SAY(("Unhandled Chunk: 0x%X File: %s Line: %d\r\n", cload.Cur_Chunk_ID(), __FILE__, __LINE__));
+      break;
+    }
 
-	/*
-	** Only install the model after our definition is installed
-	*/
-	Set_Model(render_model);
-	REF_PTR_RELEASE(render_model);
+    if (cullable_ptr != NULL) {
+      SaveLoadSystemClass::Register_Pointer(cullable_ptr, (CullableClass *)this);
+    }
+    cload.Close_Chunk();
+  }
 
-	/*
-	** Ask that our Observer pointer is re-mapped
-	*/
-	if (Observer != NULL) {
-		REQUEST_POINTER_REMAP((void**)&Observer);
-	}
-	
-	/*
-	** Register all of the multiple-inheritance versions of our this pointer
-	*/
-	if (cullable_ptr != NULL) {
-		SaveLoadSystemClass::Register_Pointer(cullable_ptr,(CullableClass *)this);
-	}
-	if (widgetuser_ptr != NULL) {
-		SaveLoadSystemClass::Register_Pointer(widgetuser_ptr,(WidgetUserClass *)this);
-	}
-	if (editable_ptr != NULL) {
-		SaveLoadSystemClass::Register_Pointer(editable_ptr,(EditableClass *)this);
-	}
+  /*
+  ** Set our name
+  */
+  if (strlen(tmpstring) > 0) {
+    Set_Name(tmpstring);
+  }
 
-	/*
-	** Mark our static lighting cache dirty
-	*/
-	Invalidate_Static_Lighting_Cache();
+  /*
+  ** Set our definition pointer
+  */
+  if (defid != -1) {
+    Definition = (PhysDefClass *)_TheDefinitionMgr.Find_Definition(defid);
+  } else {
+    Definition = NULL;
+  }
 
-	/*
-	** Update our Umbra object
-	*/
+  /*
+  ** Only install the model after our definition is installed
+  */
+  Set_Model(render_model);
+  REF_PTR_RELEASE(render_model);
+
+  /*
+  ** Ask that our Observer pointer is re-mapped
+  */
+  if (Observer != NULL) {
+    REQUEST_POINTER_REMAP((void **)&Observer);
+  }
+
+  /*
+  ** Register all of the multiple-inheritance versions of our this pointer
+  */
+  if (cullable_ptr != NULL) {
+    SaveLoadSystemClass::Register_Pointer(cullable_ptr, (CullableClass *)this);
+  }
+  if (widgetuser_ptr != NULL) {
+    SaveLoadSystemClass::Register_Pointer(widgetuser_ptr, (WidgetUserClass *)this);
+  }
+  if (editable_ptr != NULL) {
+    SaveLoadSystemClass::Register_Pointer(editable_ptr, (EditableClass *)this);
+  }
+
+  /*
+  ** Mark our static lighting cache dirty
+  */
+  Invalidate_Static_Lighting_Cache();
+
+  /*
+  ** Update our Umbra object
+  */
 #if (UMBRASUPPORT)
-	UmbraSupport::Update_Umbra_Object(this);
+  UmbraSupport::Update_Umbra_Object(this);
 #endif
 
-	return true;
+  return true;
 }
 
-
 #ifdef WWDEBUG
-void PhysClass::Add_Debug_Point(const Vector3 & p,const Vector3 & color)
-{
-	if (Is_Debug_Display_Enabled()) {
-		PhysicsSceneClass::Get_Instance()->Add_Debug_Point(p,color);
-	}
+void PhysClass::Add_Debug_Point(const Vector3 &p, const Vector3 &color) {
+  if (Is_Debug_Display_Enabled()) {
+    PhysicsSceneClass::Get_Instance()->Add_Debug_Point(p, color);
+  }
 }
 #endif
 
 #ifdef WWDEBUG
-void PhysClass::Add_Debug_Vector(const Vector3 & p,const Vector3 & v,const Vector3 & color)
-{
-	if (Is_Debug_Display_Enabled() && (v.Length2() > 0.0f)) {
-		PhysicsSceneClass::Get_Instance()->Add_Debug_Vector(p,v,color);
-	}
+void PhysClass::Add_Debug_Vector(const Vector3 &p, const Vector3 &v, const Vector3 &color) {
+  if (Is_Debug_Display_Enabled() && (v.Length2() > 0.0f)) {
+    PhysicsSceneClass::Get_Instance()->Add_Debug_Vector(p, v, color);
+  }
 }
 #endif
 
 #ifdef WWDEBUG
-void PhysClass::Add_Debug_AABox(const AABoxClass & box,const Vector3 & color,float opacity)
-{
-	if (Is_Debug_Display_Enabled()) {
-		PhysicsSceneClass::Get_Instance()->Add_Debug_AABox(box,color,opacity);
-	}
+void PhysClass::Add_Debug_AABox(const AABoxClass &box, const Vector3 &color, float opacity) {
+  if (Is_Debug_Display_Enabled()) {
+    PhysicsSceneClass::Get_Instance()->Add_Debug_AABox(box, color, opacity);
+  }
 }
 #endif
 
 #ifdef WWDEBUG
-void PhysClass::Add_Debug_OBBox(const OBBoxClass & box,const Vector3 & color,float opacity)
-{
-	if (Is_Debug_Display_Enabled()) {
-		PhysicsSceneClass::Get_Instance()->Add_Debug_OBBox(box,color,opacity);
-	}
+void PhysClass::Add_Debug_OBBox(const OBBoxClass &box, const Vector3 &color, float opacity) {
+  if (Is_Debug_Display_Enabled()) {
+    PhysicsSceneClass::Get_Instance()->Add_Debug_OBBox(box, color, opacity);
+  }
 }
 #endif
 
 #ifdef WWDEBUG
-void PhysClass::Add_Debug_Axes(const Matrix3D & transform,const Vector3 & color)
-{
-	if (Is_Debug_Display_Enabled()) {
-		PhysicsSceneClass::Get_Instance()->Add_Debug_Axes(transform,color);
-	}
+void PhysClass::Add_Debug_Axes(const Matrix3D &transform, const Vector3 &color) {
+  if (Is_Debug_Display_Enabled()) {
+    PhysicsSceneClass::Get_Instance()->Add_Debug_Axes(transform, color);
+  }
 }
 #endif
 
-bool PhysClass::Is_Debug_Display_Enabled(void) const					
-{ 
-	PhysicsSceneClass * the_scene = PhysicsSceneClass::Get_Instance();
+bool PhysClass::Is_Debug_Display_Enabled(void) const {
+  PhysicsSceneClass *the_scene = PhysicsSceneClass::Get_Instance();
 
-	Vector3 pos;
-	Get_Position(&pos);
-	float dist = (pos - the_scene->Get_Last_Camera_Position()).Length2();
-	if (dist > DEBUG_RENDER_DIST2) {
-		return false;
-	}
+  Vector3 pos;
+  Get_Position(&pos);
+  float dist = (pos - the_scene->Get_Last_Camera_Position()).Length2();
+  if (dist > DEBUG_RENDER_DIST2) {
+    return false;
+  }
 
-	if (the_scene) {
-		return (((Flags & DEBUGDISPLAY) == DEBUGDISPLAY) || the_scene->Is_Debug_Display_Enabled()); 
-	} else {
-		return ((Flags & DEBUGDISPLAY) == DEBUGDISPLAY); 
-	}
+  if (the_scene) {
+    return (((Flags & DEBUGDISPLAY) == DEBUGDISPLAY) || the_scene->Is_Debug_Display_Enabled());
+  } else {
+    return ((Flags & DEBUGDISPLAY) == DEBUGDISPLAY);
+  }
 }
 
-bool PhysClass::Expire(void)
-{
-	ExpirationReactionType result = EXPIRATION_APPROVED;
-	if (Observer != NULL) {
-		result = Observer->Object_Expired(this);
-	}
-	if (result == EXPIRATION_APPROVED) {
-		PhysicsSceneClass::Get_Instance()->Delayed_Remove_Object(this);
-		return true;
-	} else {
-		return false;
-	}
+bool PhysClass::Expire(void) {
+  ExpirationReactionType result = EXPIRATION_APPROVED;
+  if (Observer != NULL) {
+    result = Observer->Object_Expired(this);
+  }
+  if (result == EXPIRATION_APPROVED) {
+    PhysicsSceneClass::Get_Instance()->Delayed_Remove_Object(this);
+    return true;
+  } else {
+    return false;
+  }
 }
 
 //
-// TSS added this... not efficient to use if you are also 
+// TSS added this... not efficient to use if you are also
 // setting position
 //
-void PhysClass::Set_Facing(float new_facing)
-{
-	Vector3 pos;
-	Get_Position(&pos);
+void PhysClass::Set_Facing(float new_facing) {
+  Vector3 pos;
+  Get_Position(&pos);
 
-	Matrix3D tm(1);
-	tm.Translate(pos);
-	tm.Rotate_Z(new_facing);
-	
-	Set_Transform(tm);
+  Matrix3D tm(1);
+  tm.Translate(pos);
+  tm.Rotate_Z(new_facing);
+
+  Set_Transform(tm);
 }
 
-bool PhysClass::Do_Any_Effects_Suppress_Shadows(void)
-{
-	RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
-	for ( ; !iterator.Is_Done() ; iterator.Next()) {
-		if (iterator.Peek_Obj()->Are_Shadows_Suppressed()) {
-			return true;
-		}
-	}
-	return false;
+bool PhysClass::Do_Any_Effects_Suppress_Shadows(void) {
+  RefMaterialEffectListIterator iterator(&MaterialEffectsOnMe);
+  for (; !iterator.Is_Done(); iterator.Next()) {
+    if (iterator.Peek_Obj()->Are_Shadows_Suppressed()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /***********************************************************************************************
@@ -720,85 +670,74 @@ bool PhysClass::Do_Any_Effects_Suppress_Shadows(void)
 **
 ***********************************************************************************************/
 
-enum 
-{
-	PHYSDEF_CHUNK_DEFINITION		= 0x055ffe07,			// parent class data.
-	PHYSDEF_CHUNK_VARIABLES,									// simple variables
+enum {
+  PHYSDEF_CHUNK_DEFINITION = 0x055ffe07, // parent class data.
+  PHYSDEF_CHUNK_VARIABLES,               // simple variables
 
-	PHYSDEF_VARIABLE_FLAGS			= 0x00,
-	PHYSDEF_VARIABLE_MODELNAME,
-	PHYSDEF_VARIABLE_ISPRELIT,
+  PHYSDEF_VARIABLE_FLAGS = 0x00,
+  PHYSDEF_VARIABLE_MODELNAME,
+  PHYSDEF_VARIABLE_ISPRELIT,
 
 };
 
-
-PhysDefClass::PhysDefClass(void) : 
-	ModelName ("NULL"),
-	IsPreLit(false)
-{
-	FILENAME_PARAM(PhysDefClass,ModelName, "Westwood 3D Files", ".w3d");
+PhysDefClass::PhysDefClass(void) : ModelName("NULL"), IsPreLit(false) {
+  FILENAME_PARAM(PhysDefClass, ModelName, "Westwood 3D Files", ".w3d");
 }
 
-bool PhysDefClass::Is_Valid_Config (StringClass &message)
-{
-	bool retval = true;
+bool PhysDefClass::Is_Valid_Config(StringClass &message) {
+  bool retval = true;
 
-	if (ModelName.Is_Empty ()) {
-		message += "ModelName is invalid!\n";
-		retval = false;
-	}
+  if (ModelName.Is_Empty()) {
+    message += "ModelName is invalid!\n";
+    retval = false;
+  }
 
-	return retval;
+  return retval;
 }
 
-bool PhysDefClass::Save(ChunkSaveClass &csave)
-{
-	csave.Begin_Chunk(PHYSDEF_CHUNK_DEFINITION);
-	DefinitionClass::Save(csave);
-	csave.End_Chunk();
+bool PhysDefClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(PHYSDEF_CHUNK_DEFINITION);
+  DefinitionClass::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk(PHYSDEF_CHUNK_VARIABLES);
-	WRITE_MICRO_CHUNK_WWSTRING(csave,PHYSDEF_VARIABLE_MODELNAME,ModelName);
-	WRITE_MICRO_CHUNK(csave,PHYSDEF_VARIABLE_ISPRELIT,IsPreLit);	
-	csave.End_Chunk();
-	return true;
-
+  csave.Begin_Chunk(PHYSDEF_CHUNK_VARIABLES);
+  WRITE_MICRO_CHUNK_WWSTRING(csave, PHYSDEF_VARIABLE_MODELNAME, ModelName);
+  WRITE_MICRO_CHUNK(csave, PHYSDEF_VARIABLE_ISPRELIT, IsPreLit);
+  csave.End_Chunk();
+  return true;
 }
 
-bool PhysDefClass::Load(ChunkLoadClass &cload)
-{
-	while (cload.Open_Chunk()) {
+bool PhysDefClass::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
 
-		switch(cload.Cur_Chunk_ID()) {			
+    switch (cload.Cur_Chunk_ID()) {
 
-			case PHYSDEF_CHUNK_DEFINITION:
-				DefinitionClass::Load(cload);
-				break;
+    case PHYSDEF_CHUNK_DEFINITION:
+      DefinitionClass::Load(cload);
+      break;
 
-			case PHYSDEF_CHUNK_VARIABLES:
-				WWASSERT(cload.Cur_Chunk_ID() == PHYSDEF_CHUNK_VARIABLES);
-				while (cload.Open_Micro_Chunk()) {
-					switch(cload.Cur_Micro_Chunk_ID()) {
-						OBSOLETE_MICRO_CHUNK(PHYSDEF_VARIABLE_FLAGS);
-						READ_MICRO_CHUNK_WWSTRING(cload,PHYSDEF_VARIABLE_MODELNAME,ModelName);
-						READ_MICRO_CHUNK(cload,PHYSDEF_VARIABLE_ISPRELIT,IsPreLit);	
-					}
-					cload.Close_Micro_Chunk();
-				}
-				break;
-		}
+    case PHYSDEF_CHUNK_VARIABLES:
+      WWASSERT(cload.Cur_Chunk_ID() == PHYSDEF_CHUNK_VARIABLES);
+      while (cload.Open_Micro_Chunk()) {
+        switch (cload.Cur_Micro_Chunk_ID()) {
+          OBSOLETE_MICRO_CHUNK(PHYSDEF_VARIABLE_FLAGS);
+          READ_MICRO_CHUNK_WWSTRING(cload, PHYSDEF_VARIABLE_MODELNAME, ModelName);
+          READ_MICRO_CHUNK(cload, PHYSDEF_VARIABLE_ISPRELIT, IsPreLit);
+        }
+        cload.Close_Micro_Chunk();
+      }
+      break;
+    }
 
-		cload.Close_Chunk();
-	}
-	return true;
+    cload.Close_Chunk();
+  }
+  return true;
 }
 
-bool PhysDefClass::Is_Type(const char * type_name)
-{
-	if (stricmp(type_name,PhysDefClass::Get_Type_Name()) == 0) {
-		return true;
-	} else {
-		return false;
-	}
+bool PhysDefClass::Is_Type(const char *type_name) {
+  if (stricmp(type_name, PhysDefClass::Get_Type_Name()) == 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
-

@@ -16,98 +16,95 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/damagezone.h                          $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 7/16/01 11:20a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 12                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/damagezone.h                          $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 7/16/01 11:20a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 12                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	DAMAGEZONE_H
-#define	DAMAGEZONE_H
+#ifndef DAMAGEZONE_H
+#define DAMAGEZONE_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
 #ifndef OBBOX_H
-	#include "obbox.h"
+#include "obbox.h"
 #endif
 
-#ifndef	BASEGAMEOBJ_H
-	#include "basegameobj.h"
+#ifndef BASEGAMEOBJ_H
+#include "basegameobj.h"
 #endif
 
 /*
 ** Damage Zone Definition
 */
-class DamageZoneGameObjDef : public BaseGameObjDef
-{
+class DamageZoneGameObjDef : public BaseGameObjDef {
 
 public:
-	DamageZoneGameObjDef( void );
+  DamageZoneGameObjDef(void);
 
-	virtual uint32								Get_Class_ID( void ) const;
-	virtual PersistClass *					Create( void ) const ;
-	virtual bool								Save( ChunkSaveClass &csave );
-	virtual bool								Load( ChunkLoadClass &cload );
-	virtual const PersistFactoryClass &	Get_Factory( void ) const;
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	DECLARE_EDITABLE( DamageZoneGameObjDef, BaseGameObjDef );
+  DECLARE_EDITABLE(DamageZoneGameObjDef, BaseGameObjDef);
 
-	const Vector3 &							Get_Color (void) const { return Color; }
+  const Vector3 &Get_Color(void) const { return Color; }
 
 protected:
-	float			DamageRate;
-	int			DamageWarhead;
+  float DamageRate;
+  int DamageWarhead;
 
-	Vector3		Color;
-	
-	friend	class								DamageZoneGameObj;
+  Vector3 Color;
+
+  friend class DamageZoneGameObj;
 };
 
 /*
-** Damage Zone 
+** Damage Zone
 */
-class DamageZoneGameObj : public BaseGameObj 
-{
+class DamageZoneGameObj : public BaseGameObj {
 
 public:
-									DamageZoneGameObj( void );
-	virtual						~DamageZoneGameObj( void );
+  DamageZoneGameObj(void);
+  virtual ~DamageZoneGameObj(void);
 
-	virtual	void				Init( void );
-	void							Init( const DamageZoneGameObjDef & definition );
-	const DamageZoneGameObjDef &	Get_Definition( void ) const;
+  virtual void Init(void);
+  void Init(const DamageZoneGameObjDef &definition);
+  const DamageZoneGameObjDef &Get_Definition(void) const;
 
-	virtual bool				Save( ChunkSaveClass & csave );
-	virtual bool				Load( ChunkLoadClass & cload );
-	virtual const PersistFactoryClass &	Get_Factory( void ) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	// Bounding Box
-	void	Set_Bounding_Box( OBBoxClass & box )			{ BoundingBox = box; }
-	const OBBoxClass & Get_Bounding_Box(void)				{ return BoundingBox; }
+  // Bounding Box
+  void Set_Bounding_Box(OBBoxClass &box) { BoundingBox = box; }
+  const OBBoxClass &Get_Bounding_Box(void) { return BoundingBox; }
 
-	virtual void				Think( void );
+  virtual void Think(void);
 
-	// Network support
-	//virtual bool				Exists_On_Client( void ) const	{ return false; }
+  // Network support
+  // virtual bool				Exists_On_Client( void ) const	{ return false; }
 
 protected:
-	OBBoxClass				BoundingBox;
-	float						DamageTimer;
-
+  OBBoxClass BoundingBox;
+  float DamageTimer;
 };
 
 #endif

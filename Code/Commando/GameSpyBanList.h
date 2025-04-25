@@ -28,55 +28,52 @@
 
 #include "bittype.h"
 
-enum GAMESPY_KICK_STATE_ENUM
-{
-	GAMESPY_KICK_STATE_INITIAL = 0,		// Just connected
-	GAMESPY_KICK_STATE_APPROVED,		// This user is not in the ban list
-	GAMESPY_KICK_STATE_BEGIN,		   	// Give them a message before we boot him
-	GAMESPY_KICK_STATE_KICKED,		   	// outta here.
-	GAMESPY_KICK_STATE_COUNT
+enum GAMESPY_KICK_STATE_ENUM {
+  GAMESPY_KICK_STATE_INITIAL = 0, // Just connected
+  GAMESPY_KICK_STATE_APPROVED,    // This user is not in the ban list
+  GAMESPY_KICK_STATE_BEGIN,       // Give them a message before we boot him
+  GAMESPY_KICK_STATE_KICKED,      // outta here.
+  GAMESPY_KICK_STATE_COUNT
 };
 
-class BanEntry : public Node<BanEntry *>  {
+class BanEntry : public Node<BanEntry *> {
 public:
-	BanEntry(const char *name = NULL, const char *ip = NULL, const char *hash_id = NULL, 
-		const char *ip_mask = NULL, bool rtype = false);
+  BanEntry(const char *name = NULL, const char *ip = NULL, const char *hash_id = NULL, const char *ip_mask = NULL,
+           bool rtype = false);
 
 protected:
-	char	hashid[33];
-	char	nickname[40];
-	ULONG	ipaddress;
-	ULONG	ipmask;
-	bool	ruletype;
+  char hashid[33];
+  char nickname[40];
+  ULONG ipaddress;
+  ULONG ipmask;
+  bool ruletype;
 
 public:
-	const char *Get_Nick_Name(void) {return (const char *)nickname;}
-	const char *Get_Hash_ID(void) {return (const char *)hashid;}
-	ULONG Get_Ip_Address(void) {return ipaddress;}
-	ULONG Get_Ip_Netmask(void) {return ipmask;}
-	bool Get_Rule_Type(void) {return ruletype;}
+  const char *Get_Nick_Name(void) { return (const char *)nickname; }
+  const char *Get_Hash_ID(void) { return (const char *)hashid; }
+  ULONG Get_Ip_Address(void) { return ipaddress; }
+  ULONG Get_Ip_Netmask(void) { return ipmask; }
+  bool Get_Rule_Type(void) { return ruletype; }
 };
 
-class cGameSpyBanList 
-{
+class cGameSpyBanList {
 
 public:
-	cGameSpyBanList();
-	~cGameSpyBanList();
+  cGameSpyBanList();
+  ~cGameSpyBanList();
 
 protected:
-	List<BanEntry *> * BanList;
-	bool Final_Player_Kick(int id);
-	bool Begin_Player_Kick(int id);
-	void Strip_Escapes(char *var);
+  List<BanEntry *> *BanList;
+  bool Final_Player_Kick(int id);
+  bool Begin_Player_Kick(int id);
+  void Strip_Escapes(char *var);
 
 public:
-	void Think(void);
-	bool Kick_Player(int id) { return Begin_Player_Kick(id);}
-	void Ban_User(const char *nickname, const char *challenge_response = NULL, 
-		ULONG ipaddress = 0xffffffff);
-	bool Is_User_Banned(const char *nickname, const char *challenge_response, ULONG ipaddress);
-	void LoadBans(void);
+  void Think(void);
+  bool Kick_Player(int id) { return Begin_Player_Kick(id); }
+  void Ban_User(const char *nickname, const char *challenge_response = NULL, ULONG ipaddress = 0xffffffff);
+  bool Is_User_Banned(const char *nickname, const char *challenge_response, ULONG ipaddress);
+  void LoadBans(void);
 };
 
 extern cGameSpyBanList GameSpyBanList;

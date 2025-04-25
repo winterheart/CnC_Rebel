@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/suicideevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:40p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/suicideevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:40p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __SUICIDEEVENT_H__
@@ -44,25 +44,23 @@
 //
 // A C->S mirrored object for player suicide.
 //
-class	cSuicideEvent : public cNetEvent
-{
+class cSuicideEvent : public cNetEvent {
 public:
-   cSuicideEvent(void);
+  cSuicideEvent(void);
 
-	void						Init(void);
+  void Init(void);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_SUICIDEEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_SUICIDEEVENT; }
 
 private:
+  virtual void Act(void); // const;
 
-	virtual void			Act(void);// const;
-
-	int						SenderId;
+  int SenderId;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __SUICIDEEVENT_H__
+#endif // __SUICIDEEVENT_H__

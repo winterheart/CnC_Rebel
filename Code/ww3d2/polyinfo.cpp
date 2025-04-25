@@ -36,50 +36,42 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "polyinfo.h"
 #include "texture.h"
 #include "vertmaterial.h"
 #include "shader.h"
 
-void PolygonInfoClass::Set_Texture(TextureClass *texture) 
-{
-	if(texture)
-		texture->Add_Ref();
-	if(Texture)
-		Texture->Release_Ref();
-	Texture = texture;
+void PolygonInfoClass::Set_Texture(TextureClass *texture) {
+  if (texture)
+    texture->Add_Ref();
+  if (Texture)
+    Texture->Release_Ref();
+  Texture = texture;
 }
-void PolygonInfoClass::Set_Vertex_Material(VertexMaterialClass *vertexMaterial) 
-{
-	if(vertexMaterial)
-		vertexMaterial->Add_Ref();
-	if(VertexMaterial)
-		VertexMaterial->Release_Ref();
+void PolygonInfoClass::Set_Vertex_Material(VertexMaterialClass *vertexMaterial) {
+  if (vertexMaterial)
+    vertexMaterial->Add_Ref();
+  if (VertexMaterial)
+    VertexMaterial->Release_Ref();
 
-	VertexMaterial = vertexMaterial;
+  VertexMaterial = vertexMaterial;
 }
 
-void PolygonInfoClass::Set_Shader(ShaderClass *shader)
-{
-	if(Shader)
-		delete Shader;
+void PolygonInfoClass::Set_Shader(ShaderClass *shader) {
+  if (Shader)
+    delete Shader;
 
-	// todo : update for refcounted shaders
-	Shader = new ShaderClass(* shader);
+  // todo : update for refcounted shaders
+  Shader = new ShaderClass(*shader);
 }
 
+PolygonInfoClass::~PolygonInfoClass() {
+  if (Texture)
+    Texture->Release_Ref();
+  if (VertexMaterial)
+    VertexMaterial->Release_Ref();
 
-PolygonInfoClass::~PolygonInfoClass()
-{
-	if(Texture)
-		Texture->Release_Ref();
-	if(VertexMaterial)
-		VertexMaterial->Release_Ref();
-
-	// todo : update for refcounted shaders	
-	if(Shader)
-		delete Shader;
+  // todo : update for refcounted shaders
+  if (Shader)
+    delete Shader;
 }
-
-

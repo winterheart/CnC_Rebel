@@ -40,338 +40,293 @@
 #include "chunkio.h"
 #include "saveload.h"
 
-
 ///////////////////////////////////////////////////////////////////////////
 //	Save/Load stuff
 ///////////////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_VARIABLES			= 0x01060654,
-	CHUNKID_PARENT
+enum { CHUNKID_VARIABLES = 0x01060654, CHUNKID_PARENT };
+
+enum { VARID_BOUNDING_BOX = 1, XXXXX_ACTION_REQUIRED, VARID_DEST_SECTOR1, VARID_DEST_SECTOR2, VARID_ID, VARID_OLD_PTR };
+
+enum {
+  ACTION_VARID_DESTINATION = 1,
+  ACTION_VARID_MECHANISM_ID,
+  ACTION_VARID_ACTION_ID,
+  ACTION_VARID_EXIT_PORTAL,
+  ACTION_VARID_ENTER_PORTAL
 };
 
-enum
-{
-	VARID_BOUNDING_BOX		= 1,
-	XXXXX_ACTION_REQUIRED,
-	VARID_DEST_SECTOR1,
-	VARID_DEST_SECTOR2,
-	VARID_ID,
-	VARID_OLD_PTR
+enum {
+  WPATH_VARID_WAYPATH_POS = 1,
 };
-
-enum
-{
-	ACTION_VARID_DESTINATION		= 1,
-	ACTION_VARID_MECHANISM_ID,
-	ACTION_VARID_ACTION_ID,
-	ACTION_VARID_EXIT_PORTAL,
-	ACTION_VARID_ENTER_PORTAL
-};
-
-enum
-{
-	WPATH_VARID_WAYPATH_POS		= 1,
-};
-
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindPortalClass::Save (ChunkSaveClass &csave)
-{	
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
-		
-		//
-		//	Write the bounding box out to the chunk
-		//
-		WRITE_MICRO_CHUNK (csave, VARID_BOUNDING_BOX,	m_BoundingBox);
-		WRITE_MICRO_CHUNK (csave, VARID_DEST_SECTOR1,	m_DestSector1);
-		WRITE_MICRO_CHUNK (csave, VARID_DEST_SECTOR2,	m_DestSector2);
-		WRITE_MICRO_CHUNK (csave, VARID_ID,					m_ID);		
-		
-		PathfindPortalClass *this_ptr = this;
-		WRITE_MICRO_CHUNK (csave, VARID_OLD_PTR, this_ptr);
+bool PathfindPortalClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
 
-	csave.End_Chunk ();
+  //
+  //	Write the bounding box out to the chunk
+  //
+  WRITE_MICRO_CHUNK(csave, VARID_BOUNDING_BOX, m_BoundingBox);
+  WRITE_MICRO_CHUNK(csave, VARID_DEST_SECTOR1, m_DestSector1);
+  WRITE_MICRO_CHUNK(csave, VARID_DEST_SECTOR2, m_DestSector2);
+  WRITE_MICRO_CHUNK(csave, VARID_ID, m_ID);
 
-	return true;
+  PathfindPortalClass *this_ptr = this;
+  WRITE_MICRO_CHUNK(csave, VARID_OLD_PTR, this_ptr);
+
+  csave.End_Chunk();
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindPortalClass::Load (ChunkLoadClass &cload)
-{
-	//
-	//	Read all the chunks...
-	//
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {			
-			
-			case CHUNKID_VARIABLES:
-				Load_Variables (cload);
-				break;
-			
-			default:
-				WWDEBUG_SAY (("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID ()));
-				break;
-		}
+bool PathfindPortalClass::Load(ChunkLoadClass &cload) {
+  //
+  //	Read all the chunks...
+  //
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-		cload.Close_Chunk ();
-	}
-	
-	return true;
+    case CHUNKID_VARIABLES:
+      Load_Variables(cload);
+      break;
+
+    default:
+      WWDEBUG_SAY(("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID()));
+      break;
+    }
+
+    cload.Close_Chunk();
+  }
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindPortalClass::Load_Variables (ChunkLoadClass &cload)
-{
-	PathfindPortalClass *old_ptr = NULL;
+bool PathfindPortalClass::Load_Variables(ChunkLoadClass &cload) {
+  PathfindPortalClass *old_ptr = NULL;
 
-	//
-	//	Read all the micro chunks...
-	//
-	while (cload.Open_Micro_Chunk ()) {		
-		switch (cload.Cur_Micro_Chunk_ID ()) {			
-			
-			READ_MICRO_CHUNK (cload, VARID_BOUNDING_BOX, m_BoundingBox);
-			READ_MICRO_CHUNK (cload, VARID_DEST_SECTOR1, m_DestSector1);
-			READ_MICRO_CHUNK (cload, VARID_DEST_SECTOR2, m_DestSector2);
-			READ_MICRO_CHUNK (cload, VARID_ID,				m_ID);
-			READ_MICRO_CHUNK (cload, VARID_OLD_PTR,		old_ptr);
+  //
+  //	Read all the micro chunks...
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
 
-			default:
-				WWDEBUG_SAY (("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID ()));
-				break;
-		}
+      READ_MICRO_CHUNK(cload, VARID_BOUNDING_BOX, m_BoundingBox);
+      READ_MICRO_CHUNK(cload, VARID_DEST_SECTOR1, m_DestSector1);
+      READ_MICRO_CHUNK(cload, VARID_DEST_SECTOR2, m_DestSector2);
+      READ_MICRO_CHUNK(cload, VARID_ID, m_ID);
+      READ_MICRO_CHUNK(cload, VARID_OLD_PTR, old_ptr);
 
-		cload.Close_Micro_Chunk ();
-	}	
-	
-	//
-	//	Register our old ptr so other objects can remap to us
-	//
-	if (old_ptr != NULL) {
-		SaveLoadSystemClass::Register_Pointer (old_ptr, this);
-	}
+    default:
+      WWDEBUG_SAY(("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID()));
+      break;
+    }
 
-	return true;
+    cload.Close_Micro_Chunk();
+  }
+
+  //
+  //	Register our old ptr so other objects can remap to us
+  //
+  if (old_ptr != NULL) {
+    SaveLoadSystemClass::Register_Pointer(old_ptr, this);
+  }
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindActionPortalClass::Save (ChunkSaveClass &csave)
-{		
-	//
-	//	Save the parent to its own chunk
-	//
-	csave.Begin_Chunk (CHUNKID_PARENT);
-		PathfindPortalClass::Save (csave);
-	csave.End_Chunk ();
+bool PathfindActionPortalClass::Save(ChunkSaveClass &csave) {
+  //
+  //	Save the parent to its own chunk
+  //
+  csave.Begin_Chunk(CHUNKID_PARENT);
+  PathfindPortalClass::Save(csave);
+  csave.End_Chunk();
 
-	//
-	//	Save each variable to its own micro-chunk
-	//
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
-		WRITE_MICRO_CHUNK (csave, ACTION_VARID_DESTINATION,	m_Destination);
-		WRITE_MICRO_CHUNK (csave, ACTION_VARID_MECHANISM_ID,	m_MechanismID);
-		WRITE_MICRO_CHUNK (csave, ACTION_VARID_ACTION_ID,		m_ActionID);
-		WRITE_MICRO_CHUNK (csave, ACTION_VARID_EXIT_PORTAL,	m_ExitPortal);
-		WRITE_MICRO_CHUNK (csave, ACTION_VARID_ENTER_PORTAL,	m_EnterPortal);
-	csave.End_Chunk ();
+  //
+  //	Save each variable to its own micro-chunk
+  //
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, ACTION_VARID_DESTINATION, m_Destination);
+  WRITE_MICRO_CHUNK(csave, ACTION_VARID_MECHANISM_ID, m_MechanismID);
+  WRITE_MICRO_CHUNK(csave, ACTION_VARID_ACTION_ID, m_ActionID);
+  WRITE_MICRO_CHUNK(csave, ACTION_VARID_EXIT_PORTAL, m_ExitPortal);
+  WRITE_MICRO_CHUNK(csave, ACTION_VARID_ENTER_PORTAL, m_EnterPortal);
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindActionPortalClass::Load (ChunkLoadClass &cload)
-{
-	//
-	//	Read all the chunks...
-	//
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {			
-			
-			case CHUNKID_PARENT:
-				PathfindPortalClass::Load (cload);
-				break;
+bool PathfindActionPortalClass::Load(ChunkLoadClass &cload) {
+  //
+  //	Read all the chunks...
+  //
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_VARIABLES:
-				Load_Variables (cload);
-				break;
-			
-			default:
-				WWASSERT (0);
-				WWDEBUG_SAY (("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID ()));
-				break;
-		}
+    case CHUNKID_PARENT:
+      PathfindPortalClass::Load(cload);
+      break;
 
-		cload.Close_Chunk ();
-	}
-	
-	return true;
+    case CHUNKID_VARIABLES:
+      Load_Variables(cload);
+      break;
+
+    default:
+      WWASSERT(0);
+      WWDEBUG_SAY(("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID()));
+      break;
+    }
+
+    cload.Close_Chunk();
+  }
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindActionPortalClass::Load_Variables (ChunkLoadClass &cload)
-{
-	//
-	//	Read all the micro chunks...
-	//
-	while (cload.Open_Micro_Chunk ()) {		
-		switch (cload.Cur_Micro_Chunk_ID ()) {			
-			
-			READ_MICRO_CHUNK (cload, ACTION_VARID_DESTINATION,		m_Destination);
-			READ_MICRO_CHUNK (cload, ACTION_VARID_MECHANISM_ID,	m_MechanismID);
-			READ_MICRO_CHUNK (cload, ACTION_VARID_ACTION_ID,		m_ActionID);
-			READ_MICRO_CHUNK (cload, ACTION_VARID_EXIT_PORTAL,		m_ExitPortal);
-			READ_MICRO_CHUNK (cload, ACTION_VARID_ENTER_PORTAL,	m_EnterPortal);
+bool PathfindActionPortalClass::Load_Variables(ChunkLoadClass &cload) {
+  //
+  //	Read all the micro chunks...
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
 
-			default:
-				WWASSERT (0);
-				WWDEBUG_SAY (("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID ()));
-				break;
-		}
+      READ_MICRO_CHUNK(cload, ACTION_VARID_DESTINATION, m_Destination);
+      READ_MICRO_CHUNK(cload, ACTION_VARID_MECHANISM_ID, m_MechanismID);
+      READ_MICRO_CHUNK(cload, ACTION_VARID_ACTION_ID, m_ActionID);
+      READ_MICRO_CHUNK(cload, ACTION_VARID_EXIT_PORTAL, m_ExitPortal);
+      READ_MICRO_CHUNK(cload, ACTION_VARID_ENTER_PORTAL, m_EnterPortal);
 
-		cload.Close_Micro_Chunk ();
-	}
-	
-	
-	//
-	//	Note:  These portals ARE ref-counted, but due to a cyclic ref-counting
-	// problem, we don't want a reference on them.  This is why we don't
-	// do a ref-counted pointer remap.
-	//
-	if (m_EnterPortal != NULL) {
-		REQUEST_POINTER_REMAP ((void **)&m_EnterPortal);
-	}
+    default:
+      WWASSERT(0);
+      WWDEBUG_SAY(("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID()));
+      break;
+    }
 
-	if (m_ExitPortal != NULL) {
-		REQUEST_POINTER_REMAP ((void **)&m_ExitPortal);
-	}
+    cload.Close_Micro_Chunk();
+  }
 
-	return true;
+  //
+  //	Note:  These portals ARE ref-counted, but due to a cyclic ref-counting
+  // problem, we don't want a reference on them.  This is why we don't
+  // do a ref-counted pointer remap.
+  //
+  if (m_EnterPortal != NULL) {
+    REQUEST_POINTER_REMAP((void **)&m_EnterPortal);
+  }
+
+  if (m_ExitPortal != NULL) {
+    REQUEST_POINTER_REMAP((void **)&m_ExitPortal);
+  }
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindWaypathPortalClass::Save (ChunkSaveClass &csave)
-{		
-	//
-	//	Save the parent to its own chunk
-	//
-	csave.Begin_Chunk (CHUNKID_PARENT);
-		PathfindPortalClass::Save (csave);
-	csave.End_Chunk ();
+bool PathfindWaypathPortalClass::Save(ChunkSaveClass &csave) {
+  //
+  //	Save the parent to its own chunk
+  //
+  csave.Begin_Chunk(CHUNKID_PARENT);
+  PathfindPortalClass::Save(csave);
+  csave.End_Chunk();
 
-	//
-	//	Save each variable to its own micro-chunk
-	//
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
-		WRITE_MICRO_CHUNK (csave, WPATH_VARID_WAYPATH_POS,	WaypathPos);
-	csave.End_Chunk ();
+  //
+  //	Save each variable to its own micro-chunk
+  //
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
+  WRITE_MICRO_CHUNK(csave, WPATH_VARID_WAYPATH_POS, WaypathPos);
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindWaypathPortalClass::Load (ChunkLoadClass &cload)
-{
-	//
-	//	Read all the chunks...
-	//
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {			
-			
-			case CHUNKID_PARENT:
-				PathfindPortalClass::Load (cload);
-				break;
+bool PathfindWaypathPortalClass::Load(ChunkLoadClass &cload) {
+  //
+  //	Read all the chunks...
+  //
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_VARIABLES:
-				Load_Variables (cload);
-				break;
-			
-			default:
-				WWASSERT (0);
-				WWDEBUG_SAY (("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID ()));
-				break;
-		}
+    case CHUNKID_PARENT:
+      PathfindPortalClass::Load(cload);
+      break;
 
-		cload.Close_Chunk ();
-	}
-	
-	return true;
+    case CHUNKID_VARIABLES:
+      Load_Variables(cload);
+      break;
+
+    default:
+      WWASSERT(0);
+      WWDEBUG_SAY(("Unknown chunk ID 0x%X", cload.Cur_Chunk_ID()));
+      break;
+    }
+
+    cload.Close_Chunk();
+  }
+
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////////
-bool
-PathfindWaypathPortalClass::Load_Variables (ChunkLoadClass &cload)
-{
-	//
-	//	Read all the micro chunks...
-	//
-	while (cload.Open_Micro_Chunk ()) {		
-		switch (cload.Cur_Micro_Chunk_ID ()) {			
-			
-			READ_MICRO_CHUNK (cload, WPATH_VARID_WAYPATH_POS,	WaypathPos);
+bool PathfindWaypathPortalClass::Load_Variables(ChunkLoadClass &cload) {
+  //
+  //	Read all the micro chunks...
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
 
-			default:
-				WWASSERT (0);
-				WWDEBUG_SAY (("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID ()));
-				break;
-		}
+      READ_MICRO_CHUNK(cload, WPATH_VARID_WAYPATH_POS, WaypathPos);
 
-		cload.Close_Micro_Chunk ();
-	}
-	
-	return true;
+    default:
+      WWASSERT(0);
+      WWDEBUG_SAY(("Unknown micro chunk ID 0x%X", cload.Cur_Micro_Chunk_ID()));
+      break;
+    }
+
+    cload.Close_Micro_Chunk();
+  }
+
+  return true;
 }
-

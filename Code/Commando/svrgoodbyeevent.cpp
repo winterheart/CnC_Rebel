@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/svrgoodbyeevent.cpp               $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 2/14/02 3:10p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 19                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/svrgoodbyeevent.cpp               $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 2/14/02 3:10p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 19                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "svrgoodbyeevent.h"
@@ -47,7 +47,7 @@
 #include "textdisplay.h"
 #include "wwaudio.h"
 #include "devoptions.h"
-//#include "helptext.h"
+// #include "helptext.h"
 #include "dlgmessagebox.h"
 #include "apppackettypes.h"
 #include "string_ids.h"
@@ -57,129 +57,98 @@
 #include "specialbuilds.h"
 #include "gamespyadmin.h"
 
-// 
+//
 // TSS2001 Problem - we have lost the unreliable multiblast effect for this message
 //
 
 DECLARE_NETWORKOBJECT_FACTORY(cSvrGoodbyeEvent, NETCLASSID_SVRGOODBYEEVENT);
 
 //-----------------------------------------------------------------------------
-cSvrGoodbyeEvent::cSvrGoodbyeEvent(void)
-{
-	IsQuickFullExitRequested = false;
+cSvrGoodbyeEvent::cSvrGoodbyeEvent(void) {
+  IsQuickFullExitRequested = false;
 
-	Set_App_Packet_Type(APPPACKETTYPE_SVRGOODBYEEVENT);
+  Set_App_Packet_Type(APPPACKETTYPE_SVRGOODBYEEVENT);
 }
 
 //-----------------------------------------------------------------------------
-void
-cSvrGoodbyeEvent::Init(bool flag)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cSvrGoodbyeEvent::Init(bool flag) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	IsQuickFullExitRequested = flag;
+  IsQuickFullExitRequested = flag;
 
-	Set_Object_Dirty_Bit(BIT_CREATION, true);
+  Set_Object_Dirty_Bit(BIT_CREATION, true);
 
-	/*
-	if (cNetwork::I_Am_Client())
-	{
-		Act();
-	}
-	*/
+  /*
+  if (cNetwork::I_Am_Client())
+  {
+          Act();
+  }
+  */
 }
 
 //-----------------------------------------------------------------------------
-void
-cSvrGoodbyeEvent::Act(void)
-{
-	if (cNetwork::I_Am_Only_Client()) {
+void cSvrGoodbyeEvent::Act(void) {
+  if (cNetwork::I_Am_Only_Client()) {
 
-		cNetwork::PClientConnection->Destroy_Connection(0);	// destroy connection to server 
-		
-		if (cGameSpyAdmin::Get_Is_Launched_From_Gamespy()) {
-			DlgMPConnectionRefused::DoDialog(TRANSLATION(IDS_MP_SERVER_SHUT_DOWN), true);
-		} else {
-			DlgMsgBox::DoDialog(TRANSLATION(IDS_MENU_SERVER_MESSAGE_TITLE), TRANSLATION(IDS_MP_SERVER_SHUT_DOWN)); 
-		}
+    cNetwork::PClientConnection->Destroy_Connection(0); // destroy connection to server
 
-		//
-		//	Close out the win screen dialog (if its up)
-		//
-		CNCWinScreenMenuClass::Close_Dialog ();
+    if (cGameSpyAdmin::Get_Is_Launched_From_Gamespy()) {
+      DlgMPConnectionRefused::DoDialog(TRANSLATION(IDS_MP_SERVER_SHUT_DOWN), true);
+    } else {
+      DlgMsgBox::DoDialog(TRANSLATION(IDS_MENU_SERVER_MESSAGE_TITLE), TRANSLATION(IDS_MP_SERVER_SHUT_DOWN));
+    }
 
-		WWAudioClass::Get_Instance()->Create_Instant_Sound("System_Message", Matrix3D(1));
+    //
+    //	Close out the win screen dialog (if its up)
+    //
+    CNCWinScreenMenuClass::Close_Dialog();
 
-      if (IsQuickFullExitRequested)
-		{
-			WWDEBUG_SAY(("Quick full exit instructed from server.\n"));
-			cDevOptions::QuickFullExit.Set(true);
-		} 
-		else 
-		{
-			//TSS090401
-			//
-			// The client needs to quit back to the game list
-			//
-			if (!cGameSpyAdmin::Get_Is_Launched_From_Gamespy()) {
-				extern bool g_client_quit;
-				g_client_quit = true;
-			}
-		}
-	}
+    WWAudioClass::Get_Instance()->Create_Instant_Sound("System_Message", Matrix3D(1));
 
-	Set_Delete_Pending();
+    if (IsQuickFullExitRequested) {
+      WWDEBUG_SAY(("Quick full exit instructed from server.\n"));
+      cDevOptions::QuickFullExit.Set(true);
+    } else {
+      // TSS090401
+      //
+      //  The client needs to quit back to the game list
+      //
+      if (!cGameSpyAdmin::Get_Is_Launched_From_Gamespy()) {
+        extern bool g_client_quit;
+        g_client_quit = true;
+      }
+    }
+  }
+
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cSvrGoodbyeEvent::Export_Creation(BitStreamClass & packet)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cSvrGoodbyeEvent::Export_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	cNetEvent::Export_Creation(packet);
+  cNetEvent::Export_Creation(packet);
 
-	packet.Add(IsQuickFullExitRequested);
+  packet.Add(IsQuickFullExitRequested);
 
-	Set_Delete_Pending();
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cSvrGoodbyeEvent::Import_Creation(BitStreamClass & packet)
-{
-	cNetEvent::Import_Creation(packet);
+void cSvrGoodbyeEvent::Import_Creation(BitStreamClass &packet) {
+  cNetEvent::Import_Creation(packet);
 
-	WWASSERT(cNetwork::I_Am_Only_Client());
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	packet.Get(IsQuickFullExitRequested);
+  packet.Get(IsQuickFullExitRequested);
 
-	Act();
+  Act();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		/*
-		else if (cGameSpyAdmin::Get_Is_Launched_From_Gamespy()) 
-		{
-			extern void Stop_Main_Loop (int);
-			Stop_Main_Loop(EXIT_SUCCESS);
-		} 
-		*/
+/*
+else if (cGameSpyAdmin::Get_Is_Launched_From_Gamespy())
+{
+        extern void Stop_Main_Loop (int);
+        Stop_Main_Loop(EXIT_SUCCESS);
+}
+*/

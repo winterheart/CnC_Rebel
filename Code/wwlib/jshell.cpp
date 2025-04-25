@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Tools/pluglib/jshell.cpp                     $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Tools/pluglib/jshell.cpp                     $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 11/07/00 2:32p                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 28                                                          $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   Fatal -- General purpose fatal error handler.                                             *
  *   Set_Bit -- Set bit in a bit array.                                                        *
  *   Get_Bit -- Fetch the bit value from a bit array.                                          *
@@ -39,8 +39,7 @@
  *   First_False_Bit -- Find the first false bit in the bit array.                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-
+#include "always.h"
 
 /***********************************************************************************************
  * Set_Bit -- Set bit in a bit array.                                                          *
@@ -61,17 +60,15 @@
  * HISTORY:                                                                                    *
  *   10/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Set_Bit(void * array, int bit, int value)
-{
-	unsigned char mask = (unsigned char)(1 << (bit % 8));
+void Set_Bit(void *array, int bit, int value) {
+  unsigned char mask = (unsigned char)(1 << (bit % 8));
 
-	if (value != 0) {
-		*((unsigned char *)array + (bit/8)) |= mask;
-	} else {
-		*((unsigned char *)array + (bit/8)) &= (unsigned char)~mask;
-	}
+  if (value != 0) {
+    *((unsigned char *)array + (bit / 8)) |= mask;
+  } else {
+    *((unsigned char *)array + (bit / 8)) &= (unsigned char)~mask;
+  }
 }
-
 
 /***********************************************************************************************
  * Get_Bit -- Fetch the bit value from a bit array.                                            *
@@ -90,12 +87,10 @@ void Set_Bit(void * array, int bit, int value)
  * HISTORY:                                                                                    *
  *   10/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int Get_Bit(void const * array, int bit)
-{
-	unsigned char mask = (unsigned char)(1 << (bit % 8));
-	return((*((unsigned char *)array + (bit/8)) & mask) != 0);
+int Get_Bit(void const *array, int bit) {
+  unsigned char mask = (unsigned char)(1 << (bit % 8));
+  return ((*((unsigned char *)array + (bit / 8)) & mask) != 0);
 }
-
 
 /***********************************************************************************************
  * First_True_Bit -- Return with the first true bit index.                                     *
@@ -114,20 +109,19 @@ int Get_Bit(void const * array, int bit)
  * HISTORY:                                                                                    *
  *   10/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int First_True_Bit(void const * array)
-{
-	int index = 0;
-	while (*((unsigned char *)array) == 0) {
-		index++;
-		array = ((char*)array) + 1;
-	}
-	int subindex;
-	for (subindex = 0; subindex < 8; subindex++) {
-		if (Get_Bit(array, subindex)) break;
-	}
-	return(index * 8 + subindex);
+int First_True_Bit(void const *array) {
+  int index = 0;
+  while (*((unsigned char *)array) == 0) {
+    index++;
+    array = ((char *)array) + 1;
+  }
+  int subindex;
+  for (subindex = 0; subindex < 8; subindex++) {
+    if (Get_Bit(array, subindex))
+      break;
+  }
+  return (index * 8 + subindex);
 }
-
 
 /***********************************************************************************************
  * First_False_Bit -- Find the first false bit in the bit array.                               *
@@ -146,17 +140,16 @@ int First_True_Bit(void const * array)
  * HISTORY:                                                                                    *
  *   10/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int First_False_Bit(void const * array)
-{
-	int index = 0;
-	while (*((unsigned char *)array) == 0xFF) {
-		index++;
-		array = ((char*)array) + 1;
-	}
-	int subindex;
-	for (subindex = 0; subindex < 8; subindex++) {
-		if (!Get_Bit(array, subindex)) break;
-	}
-	return(index * 8 + subindex);
+int First_False_Bit(void const *array) {
+  int index = 0;
+  while (*((unsigned char *)array) == 0xFF) {
+    index++;
+    array = ((char *)array) + 1;
+  }
+  int subindex;
+  for (subindex = 0; subindex < 8; subindex++) {
+    if (!Get_Bit(array, subindex))
+      break;
+  }
+  return (index * 8 + subindex);
 }
-

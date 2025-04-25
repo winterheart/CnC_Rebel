@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/inputctrl.h           $*
  *                                                                                             *
@@ -46,83 +47,77 @@
 #include "render2dsentence.h"
 #include "bittype.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Special virtual keys
 ////////////////////////////////////////////////////////////////
-#define VK_MOUSEWHEEL_UP      0x100
-#define VK_MOUSEWHEEL_DOWN    0x101
-
+#define VK_MOUSEWHEEL_UP 0x100
+#define VK_MOUSEWHEEL_DOWN 0x101
 
 ////////////////////////////////////////////////////////////////
 //
 //	InputCtrlClass
 //
 ////////////////////////////////////////////////////////////////
-class InputCtrlClass : public DialogControlClass
-{
+class InputCtrlClass : public DialogControlClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  InputCtrlClass(void);
+  virtual ~InputCtrlClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	InputCtrlClass (void);
-	virtual ~InputCtrlClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	From DialogControlClass
+  //
+  void Render(void);
 
-	//
-	//	From DialogControlClass
-	//
-	void				Render (void);
+  //
+  //	Key assignment access
+  //
+  int Get_Key_Assignment(void) const { return KeyAssignment; }
+  void Set_Key_Assignment(int game_key_id, const WideStringClass &key_name);
 
-	//
-	//	Key assignment access
-	//
-	int				Get_Key_Assignment (void) const		{ return KeyAssignment; }
-	void				Set_Key_Assignment (int game_key_id, const WideStringClass &key_name);
-
-	//
-	//	User data support
-	//
-	uint32			Get_User_Data (void)				{ return UserData; }
-	void				Set_User_Data (uint32 data)	{ UserData = data; }
+  //
+  //	User data support
+  //
+  uint32 Get_User_Data(void) { return UserData; }
+  void Set_User_Data(uint32 data) { UserData = data; }
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_LButton_Down(const Vector2 &mouse_pos);
+  void On_RButton_Down(const Vector2 &mouse_pos);
+  void On_MButton_Down(const Vector2 &mouse_pos);
+  void On_LButton_Up(const Vector2 &mouse_pos);
+  void On_Set_Cursor(const Vector2 &mouse_pos);
+  void On_Set_Focus(void);
+  void On_Kill_Focus(DialogControlClass *focus);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
+  void On_Create(void);
+  void On_Mouse_Wheel(int direction);
+  void Update_Client_Rect(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void				On_LButton_Down (const Vector2 &mouse_pos);
-	void				On_RButton_Down (const Vector2 &mouse_pos);
-	void				On_MButton_Down (const Vector2 &mouse_pos);
-	void				On_LButton_Up (const Vector2 &mouse_pos);
-	void				On_Set_Cursor (const Vector2 &mouse_pos);
-	void				On_Set_Focus (void);
-	void				On_Kill_Focus (DialogControlClass *focus);
-	bool				On_Key_Down (uint32 key_id, uint32 key_data);
-	void				On_Create (void);
-	void				On_Mouse_Wheel (int direction);
-	void				Update_Client_Rect (void);
-	
-	void				On_New_Key (int vkey_id);
+  void On_New_Key(int vkey_id);
 
-	void				Create_Control_Renderers (void);
-	void				Create_Text_Renderers (void);	
+  void Create_Control_Renderers(void);
+  void Create_Text_Renderers(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	Render2DSentenceClass	TextRenderer;
-	Render2DClass				ControlRenderer;
-	Render2DClass				HilightRenderer;
-	int							KeyAssignment;
-	int							MouseIgnoreTime;
-	uint32						UserData;	
-	int							PendingKeyID;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  Render2DSentenceClass TextRenderer;
+  Render2DClass ControlRenderer;
+  Render2DClass HilightRenderer;
+  int KeyAssignment;
+  int MouseIgnoreTime;
+  uint32 UserData;
+  int PendingKeyID;
 };
-
 
 #endif //__INPUTBOX_CTRL_H

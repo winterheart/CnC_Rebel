@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLLoginProfile.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 7 $
-*     $Modtime: 1/19/02 2:23p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLLoginProfile.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 7 $
+ *     $Modtime: 1/19/02 2:23p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLLOGINPROFILE_H__
 #define __WOLLOGINPROFILE_H__
@@ -41,94 +41,87 @@
 #include <WWLib\WideString.h>
 #include <WWOnline\WOLLadder.h>
 
-class LoginProfile :
-		public RefCountClass
-	{
-	public:
-		struct Ranking
-			{
-			unsigned int Wins;
-			unsigned int Losses;
-			unsigned int Deaths;
-			unsigned int Kills;
-			unsigned int Points;
-			unsigned int Rank;
-			};
+class LoginProfile : public RefCountClass {
+public:
+  struct Ranking {
+    unsigned int Wins;
+    unsigned int Losses;
+    unsigned int Deaths;
+    unsigned int Kills;
+    unsigned int Points;
+    unsigned int Rank;
+  };
 
-		static void EnableSaving(bool);
-		
-		static void SetCurrent(LoginProfile*);
+  static void EnableSaving(bool);
 
-		// Get the profile for the specified login.
-		static LoginProfile* Get(const wchar_t* loginName, bool createOK = false);
-		
-		// Create a login profile.
-		static LoginProfile* Create(const wchar_t* loginName);
+  static void SetCurrent(LoginProfile *);
 
-		// Delete the profile.
-		static void Delete(const wchar_t* loginName);
+  // Get the profile for the specified login.
+  static LoginProfile *Get(const wchar_t *loginName, bool createOK = false);
 
-		// Get login name
-		const wchar_t* GetName(void) const;
+  // Create a login profile.
+  static LoginProfile *Create(const wchar_t *loginName);
 
-		// Set the preferred game server
-		void SetPreferredServer(const char* name);
+  // Delete the profile.
+  static void Delete(const wchar_t *loginName);
 
-		// Get the preferred game server
-		const char* GetPreferredServer(void) const
-			{return (const char*)mServer;}
+  // Get login name
+  const wchar_t *GetName(void) const;
 
-		void SetLocale(WOL::Locale locale);
+  // Set the preferred game server
+  void SetPreferredServer(const char *name);
 
-		WOL::Locale GetLocale(void) const
-			{return mLocale;}
+  // Get the preferred game server
+  const char *GetPreferredServer(void) const { return (const char *)mServer; }
 
-		// Set the side preference
-		void SetSidePreference(int side);
+  void SetLocale(WOL::Locale locale);
 
-		int GetSidePreference(void) const
-			{return mSidePref;}
+  WOL::Locale GetLocale(void) const { return mLocale; }
 
-		void SetGamesPlayed(unsigned long);
+  // Set the side preference
+  void SetSidePreference(int side);
 
-		unsigned long GetGamesPlayed(void) const
-			{return mGamesPlayed;}
+  int GetSidePreference(void) const { return mSidePref; }
 
-		// Get cached ranking
-		const Ranking* GetRanking(WWOnline::LadderType type) const;
+  void SetGamesPlayed(unsigned long);
 
-		void SetRanking(WWOnline::LadderType type, Ranking& rank);
+  unsigned long GetGamesPlayed(void) const { return mGamesPlayed; }
 
-		// Load profile settings
-		void LoadSettings(void);
+  // Get cached ranking
+  const Ranking *GetRanking(WWOnline::LadderType type) const;
 
-		// Save profile settings
-		void SaveSettings(void);
+  void SetRanking(WWOnline::LadderType type, Ranking &rank);
 
-	protected:
-		LoginProfile();
-		virtual ~LoginProfile();
+  // Load profile settings
+  void LoadSettings(void);
 
-		bool FinalizeCreate(const wchar_t* loginName);
+  // Save profile settings
+  void SaveSettings(void);
 
-		void LoadRank(const char* valueName, Ranking& rank);
-		void SaveRank(const char* valueName, const Ranking& rank);
+protected:
+  LoginProfile();
+  virtual ~LoginProfile();
 
-	private:
-		static bool _mSaveAllowed;
-		static LoginProfile* _mCurrentProfile;
+  bool FinalizeCreate(const wchar_t *loginName);
 
-		WideStringClass mName;
-		StringClass mServer;
-		WOL::Locale mLocale;
-		int mSidePref;
-		unsigned long mGamesPlayed;
+  void LoadRank(const char *valueName, Ranking &rank);
+  void SaveRank(const char *valueName, const Ranking &rank);
 
-		Ranking mTeamRank;
-		Ranking mClanRank;
-	};
+private:
+  static bool _mSaveAllowed;
+  static LoginProfile *_mCurrentProfile;
+
+  WideStringClass mName;
+  StringClass mServer;
+  WOL::Locale mLocale;
+  int mSidePref;
+  unsigned long mGamesPlayed;
+
+  Ranking mTeamRank;
+  Ranking mClanRank;
+};
 
 class DialogBaseClass;
-void ShowProfileRanking(DialogBaseClass* dialog, const LoginProfile* profile);
+void ShowProfileRanking(DialogBaseClass *dialog, const LoginProfile *profile);
 
 #endif // __WOLLOGINPROFILE_H__

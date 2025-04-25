@@ -45,699 +45,638 @@
 #include "textfile.h"
 #include "simplevec.h"
 
+TimeCodedMorphKeysClass::TimeCodedMorphKeysClass(void) : CachedIdx(0) {}
 
+TimeCodedMorphKeysClass::~TimeCodedMorphKeysClass(void) { Free(); }
 
-TimeCodedMorphKeysClass::TimeCodedMorphKeysClass(void)
-	:	CachedIdx (0)
-{
+void TimeCodedMorphKeysClass::Free(void) {
+  Keys.Delete_All();
+  CachedIdx = 0;
 }
 
-TimeCodedMorphKeysClass::~TimeCodedMorphKeysClass(void)
-{
-	Free();
+bool TimeCodedMorphKeysClass::Load_W3D(ChunkLoadClass &cload) {
+  Free();
+  uint32 key_count = cload.Cur_Chunk_Length() / sizeof(W3dMorphAnimKeyStruct);
+
+  W3dMorphAnimKeyStruct w3dkey;
+  for (uint32 i = 0; i < key_count; i++) {
+    cload.Read(&w3dkey, sizeof(w3dkey));
+    Keys.Add(MorphKeyStruct(w3dkey.MorphFrame, w3dkey.PoseFrame));
+  }
+  CachedIdx = 0;
+  return true;
 }
 
-void TimeCodedMorphKeysClass::Free(void)
-{
-	Keys.Delete_All ();
-	CachedIdx = 0;
+bool TimeCodedMorphKeysClass::Save_W3D(ChunkSaveClass &csave) {
+  W3dMorphAnimKeyStruct w3dkey;
+  for (int i = 0; i < Keys.Count(); i++) {
+    w3dkey.MorphFrame = Keys[i].MorphFrame;
+    w3dkey.PoseFrame = Keys[i].PoseFrame;
+    csave.Write(&w3dkey, sizeof(w3dkey));
+  }
+  return true;
 }
 
-bool TimeCodedMorphKeysClass::Load_W3D(ChunkLoadClass & cload)
-{
-	Free();
-	uint32 key_count = cload.Cur_Chunk_Length() / sizeof(W3dMorphAnimKeyStruct);
-
-	W3dMorphAnimKeyStruct w3dkey;
-	for (uint32 i=0; i<key_count; i++) {
-		cload.Read(&w3dkey,sizeof(w3dkey));
-		Keys.Add (MorphKeyStruct (w3dkey.MorphFrame, w3dkey.PoseFrame));
-	}
-	CachedIdx = 0;
-	return true;
+void TimeCodedMorphKeysClass::Add_Key(uint32 morph_frame, uint32 pose_frame) {
+  Keys.Add(MorphKeyStruct(morph_frame, pose_frame));
+  return;
 }
 
-bool TimeCodedMorphKeysClass::Save_W3D(ChunkSaveClass & csave)
-{
-	W3dMorphAnimKeyStruct w3dkey;
-	for (int i=0; i<Keys.Count (); i++) {
-		w3dkey.MorphFrame = Keys[i].MorphFrame;
-		w3dkey.PoseFrame = Keys[i].PoseFrame;
-		csave.Write(&w3dkey,sizeof(w3dkey));
-	}
-	return true;
+void TimeCodedMorphKeysClass::Get_Morph_Info(float morph_frame, int *pose_frame0, int *pose_frame1, float *fraction) {
+  if (morph_frame < 0.0f) {
+    *pose_frame0 = *pose_frame1 = Keys[0].PoseFrame;
+    *fraction = 0.0f;
+    return;
+  }
+
+  if (morph_frame >= Keys[Keys.Count() - 1].MorphFrame) {
+    *pose_frame0 = *pose_frame1 = Keys[Keys.Count() - 1].PoseFrame;
+    *fraction = 0.0f;
+    return;
+  }
+
+  int key_index = get_index(morph_frame);
+
+  *pose_frame0 = Keys[key_index].PoseFrame;
+  *pose_frame1 = Keys[key_index + 1].PoseFrame;
+  *fraction =
+      (morph_frame - Keys[key_index].MorphFrame) / (Keys[key_index + 1].MorphFrame - Keys[key_index].MorphFrame);
 }
 
-void TimeCodedMorphKeysClass::Add_Key (uint32 morph_frame, uint32 pose_frame)
-{
-	Keys.Add (MorphKeyStruct (morph_frame, pose_frame));
-	return ;
+uint32 TimeCodedMorphKeysClass::get_index(float frame) {
+  assert(CachedIdx <= (uint32)Keys.Count() - 1);
+
+  float cached_frame = Keys[CachedIdx].MorphFrame;
+
+  // check if the requested time is in the cached interval or the following one
+  if (frame >= cached_frame) {
+
+    // special case for end packets
+    if (CachedIdx == (uint32)Keys.Count() - 1)
+      return (CachedIdx);
+
+    // check if the requested time is still in the cached interval
+    if (frame < Keys[CachedIdx + 1].MorphFrame)
+      return (CachedIdx);
+
+    // do one time look-ahead before reverting to a search
+    CachedIdx++;
+
+    // again, special case the end interval
+    if (CachedIdx == (uint32)Keys.Count() - 1)
+      return (CachedIdx);
+
+    // check if requested time is in this interval
+    if (frame < Keys[CachedIdx + 1].MorphFrame)
+      return (CachedIdx);
+  }
+
+  // nope, fall back to a binary search for the requested interval
+  CachedIdx = binary_search_index(frame);
+
+  return (CachedIdx);
 }
 
-void TimeCodedMorphKeysClass::Get_Morph_Info(float morph_frame,int * pose_frame0,int * pose_frame1,float * fraction)
-{
-	if (morph_frame < 0.0f) {
-		*pose_frame0 = *pose_frame1 = Keys[0].PoseFrame;
-		*fraction = 0.0f;
-		return;
-	} 
+uint32 TimeCodedMorphKeysClass::binary_search_index(float req_frame) {
+  // special case first and last packet
+  if (req_frame < Keys[0].MorphFrame)
+    return 0;
+  if (req_frame >= Keys[Keys.Count() - 1].MorphFrame)
+    return Keys.Count() - 1;
 
-	if (morph_frame >= Keys[Keys.Count ()-1].MorphFrame) {
-		*pose_frame0 = *pose_frame1 = Keys[Keys.Count ()-1].PoseFrame;
-		*fraction = 0.0f;
-		return;
-	}
+  int leftIdx = 0;
+  int rightIdx = Keys.Count();
+  int idx, dx;
 
-	int key_index = get_index(morph_frame);
+  // binary search for the desired interval
+  for (;;) {
 
-	*pose_frame0 = Keys[key_index].PoseFrame;
-	*pose_frame1 = Keys[key_index+1].PoseFrame;
-	*fraction = (morph_frame - Keys[key_index].MorphFrame) / (Keys[key_index+1].MorphFrame - Keys[key_index].MorphFrame);
+    // if we've zeroed in on the interval, return the left index
+    dx = rightIdx - leftIdx;
+    if (dx == 1) {
+      WWASSERT(req_frame >= Keys[leftIdx].MorphFrame);
+      WWASSERT(req_frame < Keys[rightIdx].MorphFrame);
+      return leftIdx;
+    }
+
+    // otherwise, split our interval in half and descend into one of them
+    dx >>= 1;
+    idx = leftIdx + dx;
+
+    if (req_frame < Keys[idx].MorphFrame) {
+      rightIdx = idx;
+    } else {
+      leftIdx = idx;
+    }
+  }
+
+  assert(0);
+  return (0);
 }
-
-
-uint32 TimeCodedMorphKeysClass::get_index(float frame)
-{
-	assert(CachedIdx <= (uint32)Keys.Count ()-1);
-
-	float	cached_frame = Keys[CachedIdx].MorphFrame;
-
-	// check if the requested time is in the cached interval or the following one
-	if (frame >= cached_frame) {
-
-		// special case for end packets
-		if (CachedIdx == (uint32)Keys.Count ()-1) return(CachedIdx);
-		
-		// check if the requested time is still in the cached interval
-		if (frame < Keys[CachedIdx + 1].MorphFrame) return(CachedIdx);
-
-		// do one time look-ahead before reverting to a search
-		CachedIdx++;
-	
-		// again, special case the end interval
-		if (CachedIdx == (uint32)Keys.Count ()-1) return(CachedIdx);
-
-		// check if requested time is in this interval
-		if (frame < Keys[CachedIdx + 1].MorphFrame) return(CachedIdx);
-	}
-
-	// nope, fall back to a binary search for the requested interval
-	CachedIdx = binary_search_index(frame);
-
-	return(CachedIdx);
-}
-
-uint32 TimeCodedMorphKeysClass::binary_search_index(float req_frame)
-{
-	// special case first and last packet
-	if (req_frame < Keys[0].MorphFrame) return 0;
-	if (req_frame >= Keys[Keys.Count ()-1].MorphFrame) return Keys.Count ()-1;
-
-	int leftIdx = 0;
-	int rightIdx = Keys.Count ();
-	int idx,dx;
-	
-	// binary search for the desired interval
-	for (;;) {
-	
-		// if we've zeroed in on the interval, return the left index
-		dx = rightIdx - leftIdx;
-		if (dx == 1) {
-			WWASSERT(req_frame >= Keys[leftIdx].MorphFrame);
-			WWASSERT(req_frame < Keys[rightIdx].MorphFrame);
-			return leftIdx;
-		}
-
-		// otherwise, split our interval in half and descend into one of them
-		dx>>=1;
-		idx = leftIdx + dx;
-
-		if (req_frame < Keys[idx].MorphFrame) {
-			rightIdx = idx;
-		} else {
-			leftIdx = idx;
-		}
-	}
-
-	assert(0);
-	return(0);
-}
-
 
 /*********************************************************************************************
-** 
+**
 ** HMorphAnimClass Implementation
 **
 *********************************************************************************************/
 
-HMorphAnimClass::HMorphAnimClass(void) :
-	FrameCount(0),
-	FrameRate(0.0f),
-	ChannelCount(0),
-	NumNodes(0),
-	PoseData(NULL),
-	MorphKeyData(NULL),
-	PivotChannel(NULL)
-{
-	memset(Name,0,sizeof(Name));
-	memset(AnimName,0,sizeof(AnimName));	
-	memset(HierarchyName,0,sizeof(HierarchyName));
+HMorphAnimClass::HMorphAnimClass(void)
+    : FrameCount(0), FrameRate(0.0f), ChannelCount(0), NumNodes(0), PoseData(NULL), MorphKeyData(NULL),
+      PivotChannel(NULL) {
+  memset(Name, 0, sizeof(Name));
+  memset(AnimName, 0, sizeof(AnimName));
+  memset(HierarchyName, 0, sizeof(HierarchyName));
 }
 
-HMorphAnimClass::~HMorphAnimClass(void)
-{
-	Free();
+HMorphAnimClass::~HMorphAnimClass(void) { Free(); }
+
+void HMorphAnimClass::Free(void) {
+  if (PoseData != NULL) {
+    for (int i = 0; i < ChannelCount; i++) {
+      REF_PTR_RELEASE(PoseData[i]);
+    }
+    delete[] PoseData;
+    PoseData = NULL;
+  }
+
+  if (MorphKeyData != NULL) {
+    delete[] MorphKeyData;
+    MorphKeyData = NULL;
+  }
+
+  if (PivotChannel != NULL) {
+    delete[] PivotChannel;
+    PivotChannel = NULL;
+  }
 }
 
-void HMorphAnimClass::Free(void)
-{
-	if (PoseData != NULL) {
-		for (int i=0; i<ChannelCount; i++) {
-			REF_PTR_RELEASE(PoseData[i]);
-		}
-		delete[] PoseData;
-		PoseData = NULL;
-	}
+static int Build_List_From_String(const char *buffer, const char *delimiter, StringClass **string_list) {
+  int count = 0;
 
-	if (MorphKeyData != NULL) {
-		delete[] MorphKeyData;
-		MorphKeyData = NULL;
-	}
+  WWASSERT(buffer != NULL);
+  WWASSERT(delimiter != NULL);
+  WWASSERT(string_list != NULL);
+  if ((buffer != NULL) && (delimiter != NULL) && (string_list != NULL)) {
+    int delim_len = ::strlen(delimiter);
 
-	if (PivotChannel != NULL) {
-		delete[] PivotChannel;
-		PivotChannel = NULL;
-	}
+    //
+    // Determine how many entries there will be in the list
+    //
+    for (const char *entry = buffer; (entry != NULL) && (entry[1] != 0); entry = ::strstr(entry, delimiter)) {
+
+      //
+      // Move past the current delimiter (if necessary)
+      //
+      if ((::strnicmp(entry, delimiter, delim_len) == 0) && (count > 0)) {
+        entry += delim_len;
+      }
+
+      // Increment the count of entries
+      count++;
+    }
+
+    if (count > 0) {
+
+      //
+      // Allocate enough StringClass objects to hold all the strings in the list
+      //
+      (*string_list) = new StringClass[count];
+
+      //
+      // Parse the string and pull out its entries.
+      //
+      count = 0;
+      for (const char *entry = buffer; (entry != NULL) && (entry[1] != 0); entry = ::strstr(entry, delimiter)) {
+
+        //
+        // Move past the current delimiter (if necessary)
+        //
+        if ((::strnicmp(entry, delimiter, delim_len) == 0) && (count > 0)) {
+          entry += delim_len;
+        }
+
+        //
+        // Copy this entry into its own string
+        //
+        StringClass entry_string = entry;
+        char *delim_start = (char *)::strstr(entry_string, delimiter);
+        if (delim_start != NULL) {
+          delim_start[0] = 0;
+        }
+
+        //
+        // Add this entry to our list
+        //
+        if ((entry_string.Get_Length() > 0) || (count == 0)) {
+          (*string_list)[count++] = entry_string;
+        }
+      }
+
+    } else if (delim_len > 0) {
+      count = 1;
+      (*string_list) = new StringClass[count];
+      (*string_list)[0] = buffer;
+    }
+  }
+
+  //
+  // Return the number of entries in our list
+  //
+  return count;
 }
 
+bool Is_Number(const char *str) {
+  bool retval = true;
 
-static int Build_List_From_String
-(
-	const char *	buffer,
-	const char *	delimiter,
-	StringClass **	string_list
-)
-{
-	int count = 0;
+  while (retval && str[0] != NULL) {
+    retval = ((str[0] >= '0' && str[0] <= '9') || str[0] == '-' || str[0] == '.');
+    str++;
+  }
 
-	WWASSERT (buffer != NULL);
-	WWASSERT (delimiter != NULL);
-	WWASSERT (string_list != NULL);
-	if ((buffer != NULL) &&
-		 (delimiter != NULL) &&
-		 (string_list != NULL))
-	{
-		int delim_len = ::strlen (delimiter);
-
-		//
-		// Determine how many entries there will be in the list
-		//
-		for (const char *entry = buffer;
-			  (entry != NULL) && (entry[1] != 0);
-			  entry = ::strstr (entry, delimiter))
-		{
-			
-			//
-			// Move past the current delimiter (if necessary)
-			//
-			if ((::strnicmp (entry, delimiter, delim_len) == 0) && (count > 0)) {
-				entry += delim_len;
-			}
-
-			// Increment the count of entries
-			count ++;
-		}
-	
-		if (count > 0) {
-
-			//
-			// Allocate enough StringClass objects to hold all the strings in the list
-			//
-			(*string_list) = new StringClass[count];
-		
-			//
-			// Parse the string and pull out its entries.
-			//
-			count = 0;
-			for (const char *entry = buffer;
-				  (entry != NULL) && (entry[1] != 0);
-				  entry = ::strstr (entry, delimiter))
-			{
-				
-				//
-				// Move past the current delimiter (if necessary)
-				//
-				if ((::strnicmp (entry, delimiter, delim_len) == 0) && (count > 0)) {
-					entry += delim_len;
-				}
-
-				//
-				// Copy this entry into its own string
-				//
-				StringClass entry_string = entry;
-				char *delim_start = (char *)::strstr (entry_string, delimiter);
-				if (delim_start != NULL) {
-					delim_start[0] = 0;
-				}
-
-				//
-				// Add this entry to our list
-				//
-				if ((entry_string.Get_Length () > 0) || (count == 0)) {
-					(*string_list)[count++] = entry_string;
-				}
-			}
-
-		} else if (delim_len > 0) {
-			count = 1;
-			(*string_list) = new StringClass[count];
-			(*string_list)[0] = buffer;
-		}
-				
-	}
-
-	//
-	// Return the number of entries in our list
-	//
-	return count;
+  return retval;
 }
 
+bool HMorphAnimClass::Import(const char *hierarchy_name, TextFileClass &text_desc) {
+  bool retval = false;
+  Free();
+  FrameCount = 0;
+  FrameRate = 30.0F;
 
-bool Is_Number (const char *str)
-{
-	bool retval = true;
+  //
+  // Copy the hierarchy name into a class variable
+  //
+  ::strncpy(HierarchyName, hierarchy_name, W3D_NAME_LEN);
+  HierarchyName[W3D_NAME_LEN - 1] = 0;
 
-	while (retval && str[0] != NULL){
-		retval = ((str[0] >= '0' && str[0] <= '9') || str[0] == '-' || str[0] == '.'); 
-		str ++;
-	}
+  //
+  // Attempt to load the new base pose
+  //
+  HTreeClass *base_pose = WW3DAssetManager::Get_Instance()->Get_HTree(HierarchyName);
+  WWASSERT(base_pose != NULL);
+  NumNodes = base_pose->Num_Pivots();
 
-	return retval;
+  //
+  // Read the header from the file
+  //
+  StringClass header;
+  bool success = text_desc.Read_Line(header);
+  if (success) {
+
+    //
+    // Get the list of comma-delimited strings from the header
+    //
+    StringClass *column_list = NULL;
+    int column_count = Build_List_From_String(header, ",", &column_list);
+
+    //
+    // The first column header should be 'Frame#', all other headers
+    // should be channel animation names.
+    //
+    ChannelCount = column_count - 1;
+
+    WWASSERT(ChannelCount > 0);
+    if (ChannelCount > 0) {
+
+      //
+      // Allocate and initialize each animation channel
+      //
+      PoseData = new HAnimClass *[ChannelCount];
+      MorphKeyData = new TimeCodedMorphKeysClass[ChannelCount];
+      for (int index = 0; index < ChannelCount; index++) {
+        StringClass channel_anim_name;
+        channel_anim_name.Format("%s.%s", HierarchyName, (const char *)column_list[index + 1]);
+        PoseData[index] = WW3DAssetManager::Get_Instance()->Get_HAnim(channel_anim_name);
+      }
+
+      //
+      // Now read the animation data for each frame
+      //
+      StringClass frame_desc;
+      while (text_desc.Read_Line(frame_desc)) {
+
+        //
+        // Get the frame descriptions from this line
+        //
+        StringClass *channel_list = NULL;
+        int list_count = Build_List_From_String(frame_desc, ",", &channel_list);
+
+        WWASSERT(list_count > 0);
+        if (list_count > 0) {
+
+          //
+          // The first column contains the morph frame number
+          //
+          int frame = ::atoi(channel_list[0]);
+
+          //
+          // Now read the animation frame number for each channel
+          //
+          for (int index = 1; index < list_count; index++) {
+            StringClass &channel_frame = channel_list[index];
+
+            //
+            // If this channel contains a valid number, then record
+            // its animation frame
+            //
+            if (::Is_Number(channel_frame)) {
+              MorphKeyData[index - 1].Add_Key(frame, ::atoi(channel_frame));
+            }
+          }
+
+          FrameCount = frame + 1;
+        }
+
+        //
+        // Cleanup
+        //
+        if (channel_list != NULL) {
+          delete[] channel_list;
+          channel_list = NULL;
+        }
+      }
+
+      //
+      // Allocate the pivot channel list
+      //
+      PivotChannel = new uint32[NumNodes];
+      Resolve_Pivot_Channels();
+    }
+
+    //
+    // Cleanup
+    //
+    if (column_list != NULL) {
+      delete[] column_list;
+      column_list = NULL;
+    }
+  }
+
+  return retval;
 }
 
+void HMorphAnimClass::Resolve_Pivot_Channels(void) {
+  WWASSERT(PivotChannel != NULL);
 
-bool HMorphAnimClass::Import(const char *hierarchy_name, TextFileClass &text_desc)
-{
-	bool retval = false;
-	Free ();
-	FrameCount = 0;
-	FrameRate = 30.0F;
+  //
+  //	Loop over all the pivots in the HTree
+  //
+  for (int pivot = 0; pivot < NumNodes; pivot++) {
+    PivotChannel[pivot] = 0;
 
-	//
-	// Copy the hierarchy name into a class variable
-	//
-	::strncpy (HierarchyName, hierarchy_name, W3D_NAME_LEN);
-	HierarchyName[W3D_NAME_LEN - 1] = 0;
-	
-	//
-	// Attempt to load the new base pose
-	//
-	HTreeClass * base_pose = WW3DAssetManager::Get_Instance()->Get_HTree(HierarchyName);
-	WWASSERT (base_pose != NULL);
-	NumNodes = base_pose->Num_Pivots();
+    //
+    // Find out which animation channel affects this pivot
+    //
+    for (int channel = 0; channel < ChannelCount; channel++) {
+      if (PoseData[channel]->Is_Node_Motion_Present(pivot)) {
+        PivotChannel[pivot] = channel;
+      }
+    }
+  }
 
-	//
-	// Read the header from the file
-	//
-	StringClass header;
-	bool success = text_desc.Read_Line (header);
-	if (success) {
-
-		//
-		// Get the list of comma-delimited strings from the header
-		//
-		StringClass *column_list = NULL;
-		int column_count = Build_List_From_String (header, ",", &column_list);
-
-		//
-		// The first column header should be 'Frame#', all other headers
-		// should be channel animation names.
-		//
-		ChannelCount = column_count - 1;
-
-		WWASSERT (ChannelCount > 0);
-		if (ChannelCount > 0) {
-			
-			//
-			// Allocate and initialize each animation channel
-			//
-			PoseData			= new HAnimClass *[ChannelCount];
-			MorphKeyData	= new TimeCodedMorphKeysClass[ChannelCount];
-			for (int index = 0; index < ChannelCount; index ++) {				
-				StringClass channel_anim_name;
-				channel_anim_name.Format ("%s.%s", HierarchyName, (const char *)column_list[index + 1]);
-				PoseData[index] = WW3DAssetManager::Get_Instance()->Get_HAnim (channel_anim_name);
-			}
-
-			//
-			// Now read the animation data for each frame
-			//
-			StringClass frame_desc;
-			while (text_desc.Read_Line (frame_desc)) {
-
-				//
-				// Get the frame descriptions from this line
-				//
-				StringClass *channel_list = NULL;
-				int list_count = Build_List_From_String (frame_desc, ",", &channel_list);
-
-				WWASSERT (list_count > 0);
-				if (list_count > 0) {
-
-					//
-					// The first column contains the morph frame number
-					//
-					int frame = ::atoi (channel_list[0]);
-
-					//
-					// Now read the animation frame number for each channel
-					//
-					for (int index = 1; index < list_count; index ++) {
-						StringClass &channel_frame = channel_list[index];
-						
-						//
-						// If this channel contains a valid number, then record
-						// its animation frame
-						//
-						if (::Is_Number (channel_frame)) {
-							MorphKeyData[index - 1].Add_Key (frame, ::atoi (channel_frame));
-						}
-					}
-
-					FrameCount = frame + 1;
-				}				
-
-				//
-				// Cleanup
-				//
-				if (channel_list != NULL) {
-					delete [] channel_list;
-					channel_list = NULL;
-				}
-			}			
-
-			//
-			// Allocate the pivot channel list
-			//
-			PivotChannel = new uint32[NumNodes];
-			Resolve_Pivot_Channels ();
-		}
-
-		//
-		// Cleanup
-		//
-		if (column_list != NULL) {
-			delete [] column_list;
-			column_list = NULL;
-		}
-	}
-
-	return retval;
+  return;
 }
 
-void HMorphAnimClass::Resolve_Pivot_Channels(void)
-{
-	WWASSERT (PivotChannel != NULL);
+void HMorphAnimClass::Set_Name(const char *name) {
+  //
+  // Copy the full name
+  //
+  ::strcpy(Name, name);
 
-	//
-	//	Loop over all the pivots in the HTree
-	//
-	for (int pivot = 0; pivot < NumNodes; pivot ++) {		
-		PivotChannel[pivot] = 0;
+  //
+  // Try to find the separator (a period)
+  //
+  StringClass full_name = name;
+  char *separator = (char *)::strchr(full_name, '.');
+  if (separator != NULL) {
 
-		//
-		// Find out which animation channel affects this pivot
-		//
-		for (int channel = 0; channel < ChannelCount; channel ++) {			
-			if (PoseData[channel]->Is_Node_Motion_Present (pivot)) {
-				PivotChannel[pivot] = channel;
-			}
-		}
-	}
+    //
+    // Null out the separator and copy the two names
+    // into our two buffers
+    //
+    separator[0] = 0;
+    ::strcpy(AnimName, separator + 1);
+    ::strcpy(HierarchyName, full_name);
+  }
 
-	return ;
+  return;
 }
 
-void HMorphAnimClass::Set_Name(const char * name)
-{
-	//
-	// Copy the full name
-	//
-	::strcpy (Name, name);
+void HMorphAnimClass::Free_Morph(void) { Free(); }
 
-	//
-	// Try to find the separator (a period)
-	//
-	StringClass full_name	= name;
-	char *separator			= (char *)::strchr (full_name, '.');
-	if (separator != NULL) {
-		
-		//
-		// Null out the separator and copy the two names
-		// into our two buffers
-		//
-		separator[0] = 0;
-		::strcpy (AnimName, separator + 1);
-		::strcpy (HierarchyName, full_name);
-	}
+int HMorphAnimClass::Create_New_Morph(const int channels, HAnimClass *anim[]) {
+  // clean out the previous instance of this class
+  Free();
 
-	return ;
+  // set the number of channels
+  ChannelCount = channels;
+
+  // read in the animation header
+  if (anim == NULL) {
+    return LOAD_ERROR;
+  }
+
+  // set up info
+  //	FrameCount = anim[0]->Get_Num_Frames();
+  //	FrameRate = anim[0]->Get_Frame_Rate();
+  FrameCount = 0;
+  FrameRate = 30.0f;
+  NumNodes = anim[0]->Get_Num_Pivots();
+
+  // Set up the anim data for all the channels
+  PoseData = new HAnimClass *[ChannelCount];
+  for (int i = 0; i < ChannelCount; i++)
+    PoseData[i] = anim[i];
+
+  // Create a timecodekey array for each channel and initialize the pivot channels
+  MorphKeyData = new TimeCodedMorphKeysClass[ChannelCount];
+  PivotChannel = new uint32[NumNodes];
+
+  // Resolve the pivots so that they correspond to the proper morphing channels
+  memset(PivotChannel, 0, NumNodes * sizeof(uint32));
+  Resolve_Pivot_Channels();
+
+  // Signal successful process
+  return OK;
 }
 
-void HMorphAnimClass::Free_Morph(void)
-{
-	Free();
+int HMorphAnimClass::Load_W3D(ChunkLoadClass &cload) {
+  Free();
+
+  // read in the animation header
+  W3dMorphAnimHeaderStruct header;
+  cload.Open_Chunk();
+  WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_HEADER);
+  cload.Read(&header, sizeof(header));
+  cload.Close_Chunk();
+
+  strncpy(AnimName, header.Name, sizeof(AnimName));
+  strncpy(HierarchyName, header.HierarchyName, sizeof(HierarchyName));
+  strcpy(Name, HierarchyName);
+  strcat(Name, ".");
+  strcat(Name, AnimName);
+
+  HTreeClass *base_pose = WW3DAssetManager::Get_Instance()->Get_HTree(HierarchyName);
+  if (base_pose == NULL) {
+    return LOAD_ERROR;
+  }
+  NumNodes = base_pose->Num_Pivots();
+
+  FrameCount = header.FrameCount;
+  FrameRate = header.FrameRate;
+  ChannelCount = header.ChannelCount;
+
+  PoseData = new HAnimClass *[ChannelCount];
+  MorphKeyData = new TimeCodedMorphKeysClass[ChannelCount];
+  PivotChannel = new uint32[NumNodes];
+  memset(PivotChannel, 0, NumNodes * sizeof(uint32));
+
+  // read in the rest of the chunks
+  int cur_channel = 0;
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
+    case W3D_CHUNK_MORPHANIM_CHANNEL:
+      read_channel(cload, cur_channel++);
+      break;
+
+    case W3D_CHUNK_MORPHANIM_PIVOTCHANNELDATA:
+      cload.Read(PivotChannel, cload.Cur_Chunk_Length());
+      break;
+    };
+    cload.Close_Chunk();
+  }
+  return OK;
 }
 
-int HMorphAnimClass::Create_New_Morph(const int channels, HAnimClass *anim[])
-{
-	// clean out the previous instance of this class
-	Free();
+void HMorphAnimClass::read_channel(ChunkLoadClass &cload, int channel) {
+  WWASSERT(channel >= 0);
+  WWASSERT(channel < ChannelCount);
 
-	// set the number of channels
-	ChannelCount = channels;
+  StringClass anim_name;
 
-	// read in the animation header
-	if (anim == NULL) {
-		return LOAD_ERROR;
-	}
-	
-	// set up info
-	//	FrameCount = anim[0]->Get_Num_Frames();
-	//	FrameRate = anim[0]->Get_Frame_Rate();
-	FrameCount = 0;
-	FrameRate = 30.0f;
-	NumNodes = anim[0]->Get_Num_Pivots();
+  cload.Open_Chunk();
+  WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_POSENAME);
+  cload.Read(anim_name.Get_Buffer(cload.Cur_Chunk_Length()), cload.Cur_Chunk_Length());
+  cload.Close_Chunk();
 
-	// Set up the anim data for all the channels
-	PoseData = new HAnimClass * [ChannelCount];
-	for(int i=0;i<ChannelCount;i++)
-		PoseData[i] = anim[i];
+  // StringClass channel_anim_name;
+  // channel_anim_name.Format ("%s.%s", HierarchyName, anim_name);
+  PoseData[channel] = WW3DAssetManager::Get_Instance()->Get_HAnim(anim_name);
+  WWASSERT(PoseData[channel] != NULL);
 
-	// Create a timecodekey array for each channel and initialize the pivot channels
-	MorphKeyData = new TimeCodedMorphKeysClass[ChannelCount];
-	PivotChannel = new uint32[NumNodes];
-
-	// Resolve the pivots so that they correspond to the proper morphing channels
-	memset(PivotChannel,0,NumNodes * sizeof(uint32));
-	Resolve_Pivot_Channels();
-	
-	// Signal successful process
-	return OK;
+  cload.Open_Chunk();
+  WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_KEYDATA);
+  MorphKeyData[channel].Load_W3D(cload);
+  cload.Close_Chunk();
 }
 
-int HMorphAnimClass::Load_W3D(ChunkLoadClass & cload)
-{
-	Free();
+int HMorphAnimClass::Save_W3D(ChunkSaveClass &csave) {
+  // W3D objects write their own wrapper chunks
+  csave.Begin_Chunk(W3D_CHUNK_MORPH_ANIMATION);
 
-	// read in the animation header
-	W3dMorphAnimHeaderStruct header;
-	cload.Open_Chunk();
-	WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_HEADER);
-	cload.Read(&header,sizeof(header));
-	cload.Close_Chunk();
+  // init the header data
+  W3dMorphAnimHeaderStruct header;
+  memset(&header, 0, sizeof(header));
+  strncpy(header.Name, AnimName, sizeof(header.Name));
+  strncpy(header.HierarchyName, HierarchyName, sizeof(header.HierarchyName));
 
-	strncpy(AnimName,header.Name,sizeof(AnimName));
-   strncpy(HierarchyName,header.HierarchyName,sizeof(HierarchyName));
-	strcpy(Name,HierarchyName);
-	strcat(Name,".");
-	strcat(Name,AnimName);
+  header.FrameCount = FrameCount;
+  header.FrameRate = FrameRate;
+  header.ChannelCount = ChannelCount;
 
-	HTreeClass * base_pose = WW3DAssetManager::Get_Instance()->Get_HTree(HierarchyName);
-	if (base_pose == NULL) {
-		return LOAD_ERROR;
-	}
-	NumNodes = base_pose->Num_Pivots();
+  // write out the animation header
+  csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_HEADER);
+  csave.Write(&header, sizeof(header));
+  csave.End_Chunk();
 
-	FrameCount = header.FrameCount;
-	FrameRate = header.FrameRate;
-	ChannelCount = header.ChannelCount;
+  // write out the morph channels
+  for (int ci = 0; ci < ChannelCount; ci++) {
+    csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_CHANNEL);
+    write_channel(csave, ci);
+    csave.End_Chunk();
+  }
 
-	PoseData = new HAnimClass * [ChannelCount];
-	MorphKeyData = new TimeCodedMorphKeysClass[ChannelCount];
-	PivotChannel = new uint32[NumNodes];
-	memset(PivotChannel,0,NumNodes * sizeof(uint32));
+  // write out the pivot attachments
+  csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_PIVOTCHANNELDATA);
+  csave.Write(PivotChannel, NumNodes * sizeof(uint32));
+  csave.End_Chunk();
 
-	// read in the rest of the chunks
-	int cur_channel = 0;
-	while (cload.Open_Chunk()) {
-		switch(cload.Cur_Chunk_ID()) 
-		{
-		case W3D_CHUNK_MORPHANIM_CHANNEL:
-			read_channel(cload,cur_channel++);
-			break;
-
-		case W3D_CHUNK_MORPHANIM_PIVOTCHANNELDATA:
-			cload.Read(PivotChannel,cload.Cur_Chunk_Length());	
-			break;
-		};
-		cload.Close_Chunk();
-	}
-	return OK;
-
+  csave.End_Chunk();
+  return OK;
 }
 
-void HMorphAnimClass::read_channel(ChunkLoadClass & cload,int channel)
-{
-	WWASSERT(channel >= 0);
-	WWASSERT(channel < ChannelCount);
+void HMorphAnimClass::write_channel(ChunkSaveClass &csave, int channel) {
+  WWASSERT(PoseData[channel] != NULL);
 
-	StringClass anim_name;
+  const char *pose_name = PoseData[channel]->Get_Name();
+  csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_POSENAME);
+  csave.Write(pose_name, strlen(pose_name) + 1);
+  csave.End_Chunk();
 
-	cload.Open_Chunk();
-	WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_POSENAME);
-	cload.Read(anim_name.Get_Buffer(cload.Cur_Chunk_Length()),cload.Cur_Chunk_Length());
-	cload.Close_Chunk();
-	
-	//StringClass channel_anim_name;
-	//channel_anim_name.Format ("%s.%s", HierarchyName, anim_name);
-	PoseData[channel] = WW3DAssetManager::Get_Instance()->Get_HAnim(anim_name);
-	WWASSERT(PoseData[channel] != NULL);
-
-	cload.Open_Chunk();
-	WWASSERT(cload.Cur_Chunk_ID() == W3D_CHUNK_MORPHANIM_KEYDATA);
-	MorphKeyData[channel].Load_W3D(cload);
-	cload.Close_Chunk();
+  csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_KEYDATA);
+  MorphKeyData[channel].Save_W3D(csave);
+  csave.End_Chunk();
 }
 
+void HMorphAnimClass::Get_Translation(Vector3 &trans, int pividx, float frame) const {
+  int channel = PivotChannel[pividx];
+  int pose_frame0, pose_frame1;
+  float fraction;
+  MorphKeyData[channel].Get_Morph_Info(frame, &pose_frame0, &pose_frame1, &fraction);
 
-int HMorphAnimClass::Save_W3D(ChunkSaveClass & csave)
-{
-	// W3D objects write their own wrapper chunks 
-	csave.Begin_Chunk(W3D_CHUNK_MORPH_ANIMATION);
-	
-	// init the header data
-	W3dMorphAnimHeaderStruct header;
-	memset(&header,0,sizeof(header));
-	strncpy(header.Name,AnimName,sizeof(header.Name));
-	strncpy(header.HierarchyName,HierarchyName,sizeof(header.HierarchyName));
-
-	header.FrameCount = FrameCount;
-	header.FrameRate = FrameRate;
-	header.ChannelCount = ChannelCount;
-
-	// write out the animation header
-	csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_HEADER);	
-	csave.Write(&header,sizeof(header));
-	csave.End_Chunk();
-
-	// write out the morph channels
-	for (int ci=0; ci<ChannelCount; ci++) {
-		csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_CHANNEL);
-		write_channel(csave,ci);
-		csave.End_Chunk();
-	}
-
-	// write out the pivot attachments
-	csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_PIVOTCHANNELDATA);
-	csave.Write(PivotChannel,NumNodes * sizeof(uint32));
-	csave.End_Chunk();
-
-	csave.End_Chunk();
-	return OK;
+  Vector3 t0;
+  PoseData[channel]->Get_Translation(t0, pividx, pose_frame0);
+  Vector3 t1;
+  PoseData[channel]->Get_Translation(t1, pividx, pose_frame1);
+  Vector3::Lerp(t0, t1, fraction, &trans);
 }
 
-void HMorphAnimClass::write_channel(ChunkSaveClass & csave,int channel)
-{
-	WWASSERT(PoseData[channel] != NULL);
+void HMorphAnimClass::Get_Orientation(Quaternion &q, int pividx, float frame) const {
+  int channel = PivotChannel[pividx];
+  int pose_frame0, pose_frame1;
+  float fraction;
+  MorphKeyData[channel].Get_Morph_Info(frame, &pose_frame0, &pose_frame1, &fraction);
 
-	const char * pose_name = PoseData[channel]->Get_Name();
-	csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_POSENAME);
-	csave.Write(pose_name,strlen(pose_name) + 1);
-	csave.End_Chunk();
-
-	csave.Begin_Chunk(W3D_CHUNK_MORPHANIM_KEYDATA);
-	MorphKeyData[channel].Save_W3D(csave);
-	csave.End_Chunk();
+  Quaternion q0;
+  PoseData[channel]->Get_Orientation(q0, pividx, pose_frame0);
+  Quaternion q1;
+  PoseData[channel]->Get_Orientation(q1, pividx, pose_frame1);
+  ::Fast_Slerp(q, q0, q1, fraction);
 }
 
+void HMorphAnimClass::Get_Transform(Matrix3D &mtx, int pividx, float frame) const {
+  int channel = PivotChannel[pividx];
+  int pose_frame0, pose_frame1;
+  float fraction;
+  MorphKeyData[channel].Get_Morph_Info(frame, &pose_frame0, &pose_frame1, &fraction);
 
-void HMorphAnimClass::Get_Translation(Vector3& trans,int pividx,float frame) const
-{
-	int channel = PivotChannel[pividx];
-	int pose_frame0,pose_frame1;
-	float fraction;
-	MorphKeyData[channel].Get_Morph_Info(frame,&pose_frame0,&pose_frame1,&fraction);
-	
-	Vector3 t0;
-	PoseData[channel]->Get_Translation(t0,pividx,pose_frame0);
-	Vector3 t1;
-	PoseData[channel]->Get_Translation(t1,pividx,pose_frame1);
-	Vector3::Lerp(t0,t1,fraction,&trans);
+  Quaternion q0;
+  PoseData[channel]->Get_Orientation(q0, pividx, pose_frame0);
+  Quaternion q1;
+  PoseData[channel]->Get_Orientation(q1, pividx, pose_frame1);
+  Quaternion q;
+  ::Fast_Slerp(q, q0, q1, fraction);
+  mtx = ::Build_Matrix3D(q);
+  Vector3 t0;
+  PoseData[channel]->Get_Translation(t0, pividx, pose_frame0);
+  Vector3 t1;
+  PoseData[channel]->Get_Translation(t1, pividx, pose_frame1);
+  Vector3 trans;
+  Vector3::Lerp(t0, t1, fraction, &trans);
+  mtx.Set_Translation(trans);
 }
 
-void HMorphAnimClass::Get_Orientation(Quaternion& q, int pividx,float frame) const
-{
-	int channel = PivotChannel[pividx];
-	int pose_frame0,pose_frame1;
-	float fraction;
-	MorphKeyData[channel].Get_Morph_Info(frame,&pose_frame0,&pose_frame1,&fraction);
-	
-	Quaternion q0;
-	PoseData[channel]->Get_Orientation(q0,pividx,pose_frame0);
-	Quaternion q1;
-	PoseData[channel]->Get_Orientation(q1,pividx,pose_frame1);
-	::Fast_Slerp(q,q0,q1,fraction);
+void HMorphAnimClass::Insert_Morph_Key(const int channel, uint32 morph_frame, uint32 pose_frame) {
+  assert(channel < ChannelCount);
+  MorphKeyData[channel].Add_Key(morph_frame, pose_frame);
+
+  // update the framecount to reflect the newly added key
+  FrameCount = WWMath::Max(morph_frame, FrameCount);
 }
 
-void HMorphAnimClass::Get_Transform(Matrix3D& mtx,int pividx,float frame) const
-{
-	int channel = PivotChannel[pividx];
-	int pose_frame0,pose_frame1;
-	float fraction;
-	MorphKeyData[channel].Get_Morph_Info(frame,&pose_frame0,&pose_frame1,&fraction);
+void HMorphAnimClass::Release_Keys(void) {
+  for (int i = 0; i < ChannelCount; i++)
+    MorphKeyData[i].Free();
 
-	Quaternion q0;
-	PoseData[channel]->Get_Orientation(q0,pividx,pose_frame0);
-	Quaternion q1;
-	PoseData[channel]->Get_Orientation(q1,pividx,pose_frame1);
-	Quaternion q;
-	::Fast_Slerp(q,q0,q1,fraction);
-	mtx=::Build_Matrix3D(q);
-	Vector3 t0;
-	PoseData[channel]->Get_Translation(t0,pividx,pose_frame0);
-	Vector3 t1;
-	PoseData[channel]->Get_Translation(t1,pividx,pose_frame1);
-	Vector3 trans;
-	Vector3::Lerp(t0,t1,fraction,&trans);
-	mtx.Set_Translation(trans);
-}
-
-
-void HMorphAnimClass::Insert_Morph_Key(const int channel, uint32 morph_frame, uint32 pose_frame)
-{
-	assert(channel<ChannelCount);
-	MorphKeyData[channel].Add_Key(morph_frame,pose_frame);
-
-	// update the framecount to reflect the newly added key
-	FrameCount = WWMath::Max(morph_frame,FrameCount);
-}
-
-void HMorphAnimClass::Release_Keys(void)
-{
-	for(int i=0;i<ChannelCount;i++)
-		MorphKeyData[i].Free();
-
-	// update the framecount as 0
-	FrameCount = 0;
+  // update the framecount as 0
+  FrameCount = 0;
 }

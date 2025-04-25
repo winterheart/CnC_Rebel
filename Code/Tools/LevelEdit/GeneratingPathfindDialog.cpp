@@ -29,117 +29,97 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // GeneratingPathfindDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
 GeneratingPathfindDialogClass::GeneratingPathfindDialogClass(CWnd *parent)
-	:	m_Cancelled (false),
-		CDialog(GeneratingPathfindDialogClass::IDD, parent)
-{
-	//{{AFX_DATA_INIT(GeneratingPathfindDialogClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    : m_Cancelled(false), CDialog(GeneratingPathfindDialogClass::IDD, parent) {
+  //{{AFX_DATA_INIT(GeneratingPathfindDialogClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
 
-	Create (GeneratingPathfindDialogClass::IDD, parent);
-	return ;
+  Create(GeneratingPathfindDialogClass::IDD, parent);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-GeneratingPathfindDialogClass::DoDataExchange (CDataExchange *pDX)
-{
-	CDialog::DoDataExchange (pDX);
-	//{{AFX_DATA_MAP(GeneratingPathfindDialogClass)
-	DDX_Control(pDX, IDC_PROGRESS_BAR, m_ProgressBar);
-	//}}AFX_DATA_MAP
-	return ;
+void GeneratingPathfindDialogClass::DoDataExchange(CDataExchange *pDX) {
+  CDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(GeneratingPathfindDialogClass)
+  DDX_Control(pDX, IDC_PROGRESS_BAR, m_ProgressBar);
+  //}}AFX_DATA_MAP
+  return;
 }
 
-
 BEGIN_MESSAGE_MAP(GeneratingPathfindDialogClass, CDialog)
-	//{{AFX_MSG_MAP(GeneratingPathfindDialogClass)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(GeneratingPathfindDialogClass)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-GeneratingPathfindDialogClass::OnInitDialog (void)
-{
-	CDialog::OnInitDialog ();
+BOOL GeneratingPathfindDialogClass::OnInitDialog(void) {
+  CDialog::OnInitDialog();
 
-	Set_State (STATE_FLOODFILL);
-	m_ProgressBar.SetRange (0, 100);
-	return TRUE;
+  Set_State(STATE_FLOODFILL);
+  m_ProgressBar.SetRange(0, 100);
+  return TRUE;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnCancel
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-GeneratingPathfindDialogClass::OnCancel (void)
-{
-	m_Cancelled = true;
+void GeneratingPathfindDialogClass::OnCancel(void) {
+  m_Cancelled = true;
 
-	::EnableWindow (::GetDlgItem (m_hWnd, IDCANCEL), FALSE);
-	CWaitCursor wait_cursor;
+  ::EnableWindow(::GetDlgItem(m_hWnd, IDCANCEL), FALSE);
+  CWaitCursor wait_cursor;
 
-	Set_Status ("Operation Cancelled!", -1);
-	return ;
+  Set_Status("Operation Cancelled!", -1);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Set_State
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-GeneratingPathfindDialogClass::Set_State (STATE state)
-{
-	if (state == STATE_FLOODFILL) {
-		::ShowWindow (::GetDlgItem (m_hWnd, IDC_FLOODFILL_MARK), SW_SHOW);
-		::ShowWindow (::GetDlgItem (m_hWnd, IDC_COMPRESSING_MARK), SW_HIDE);
-	} else if (state == STATE_COMPRESS) {
-		::ShowWindow (::GetDlgItem (m_hWnd, IDC_FLOODFILL_MARK), SW_HIDE);
-		::ShowWindow (::GetDlgItem (m_hWnd, IDC_COMPRESSING_MARK), SW_SHOW);		
-	}
+void GeneratingPathfindDialogClass::Set_State(STATE state) {
+  if (state == STATE_FLOODFILL) {
+    ::ShowWindow(::GetDlgItem(m_hWnd, IDC_FLOODFILL_MARK), SW_SHOW);
+    ::ShowWindow(::GetDlgItem(m_hWnd, IDC_COMPRESSING_MARK), SW_HIDE);
+  } else if (state == STATE_COMPRESS) {
+    ::ShowWindow(::GetDlgItem(m_hWnd, IDC_FLOODFILL_MARK), SW_HIDE);
+    ::ShowWindow(::GetDlgItem(m_hWnd, IDC_COMPRESSING_MARK), SW_SHOW);
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Set_Status
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-GeneratingPathfindDialogClass::Set_Status (LPCTSTR text, float percent)
-{
-	if (percent > 0) {
-		m_ProgressBar.SetPos (percent * 100);
-	}
-	
-	SetDlgItemText (IDC_STATUS_TEXT, text);
-	return ;
-}
+void GeneratingPathfindDialogClass::Set_Status(LPCTSTR text, float percent) {
+  if (percent > 0) {
+    m_ProgressBar.SetPos(percent * 100);
+  }
 
+  SetDlgItemText(IDC_STATUS_TEXT, text);
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -147,17 +127,11 @@ GeneratingPathfindDialogClass::Set_Status (LPCTSTR text, float percent)
 //
 /////////////////////////////////////////////////////////////////////////////
 LRESULT
-GeneratingPathfindDialogClass::WindowProc
-(
-	UINT		message,
-	WPARAM	wParam,
-	LPARAM	lParam
-)
-{
-	if (message == WM_USER + 101) {
-		::DestroyWindow (m_hWnd);
-		::PostQuitMessage (0);		
-	}
+GeneratingPathfindDialogClass::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) {
+  if (message == WM_USER + 101) {
+    ::DestroyWindow(m_hWnd);
+    ::PostQuitMessage(0);
+  }
 
-	return CDialog::WindowProc (message, wParam, lParam);
+  return CDialog::WindowProc(message, wParam, lParam);
 }

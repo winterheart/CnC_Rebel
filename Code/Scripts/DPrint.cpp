@@ -17,23 +17,23 @@
 */
 
 /****************************************************************************
-*
-* FILE
-*     DPrint.cpp
-*
-* DESCRIPTION
-*     Debug printing mechanism
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Byon_g $
-*     $Revision: 2 $
-*     $Modtime: 2/13/01 11:02a $
-*     $Archive: /Commando/Code/Scripts/DPrint.cpp $
-*
-****************************************************************************/
+ *
+ * FILE
+ *     DPrint.cpp
+ *
+ * DESCRIPTION
+ *     Debug printing mechanism
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Byon_g $
+ *     $Revision: 2 $
+ *     $Modtime: 2/13/01 11:02a $
+ *     $Archive: /Commando/Code/Scripts/DPrint.cpp $
+ *
+ ****************************************************************************/
 
 #ifdef _DEBUG
 
@@ -44,51 +44,46 @@
 #include <assert.h>
 
 #include "scriptcommands.h"
-extern ScriptCommands* Commands;
+extern ScriptCommands *Commands;
 
 #define LOGFILE_NAME "ScriptLog"
 
 /****************************************************************************
-*
-* NAME
-*     DPrint(String, ArgList...)
-*
-* DESCRIPTION
-*     Ouput debug print messages to the debugger and log file.
-*
-* INPUTS
-*     String  - String to output.
-*     ArgList - Argument list
-*
-* RESULT
-*     NONE
-*
-****************************************************************************/
+ *
+ * NAME
+ *     DPrint(String, ArgList...)
+ *
+ * DESCRIPTION
+ *     Ouput debug print messages to the debugger and log file.
+ *
+ * INPUTS
+ *     String  - String to output.
+ *     ArgList - Argument list
+ *
+ * RESULT
+ *     NONE
+ *
+ ****************************************************************************/
 
-void __cdecl DebugPrint(const char* string, ...)
-	{
-	static char _buffer[1024];
-	static char _filename[512] = "";
+void __cdecl DebugPrint(const char *string, ...) {
+  static char _buffer[1024];
+  static char _filename[512] = "";
 
-	if (string != NULL)
-		{
-		va_list	va;
+  if (string != NULL) {
+    va_list va;
 
-		// Format string
-		va_start(va, string);
-		vsprintf(&_buffer[0], string, va);
-		va_end(va);
+    // Format string
+    va_start(va, string);
+    vsprintf(&_buffer[0], string, va);
+    va_end(va);
 
-		if (Commands != NULL)
-			{
-			// Send string to commando executable
-			Commands->Debug_Message(_buffer);
-			}
-		else
-			{
-			// Send string to debugger
-			OutputDebugString(_buffer);
-			}
+    if (Commands != NULL) {
+      // Send string to commando executable
+      Commands->Debug_Message(_buffer);
+    } else {
+      // Send string to debugger
+      OutputDebugString(_buffer);
+    }
 
 #if 0
 		HANDLE file = INVALID_HANDLE_VALUE;
@@ -146,7 +141,7 @@ void __cdecl DebugPrint(const char* string, ...)
 			CloseHandle(file);
 			}
 #endif
-		}
-	}
+  }
+}
 
 #endif // _DEBUG

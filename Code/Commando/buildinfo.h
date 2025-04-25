@@ -29,11 +29,10 @@ private:
   static uint32_t version_minor;
   static uint32_t version_patch;
 
-  static const char * codename;
-  static const char * hash;
+  static const char *codename;
+  static const char *hash;
 
 public:
-
   /**
    * Get version components
    * @param major output variable for version_major
@@ -52,20 +51,19 @@ public:
    * Get human-readable build info (version, codename and build hash)
    * @return formatted string result
    */
-  static const char * Get_Build_Info_String();
+  static const char *Get_Build_Info_String();
 
   /**
    * Get hash
    * @return hash name
    */
-  static const char * Get_Hash();
+  static const char *Get_Hash();
 
   /**
    * Get codename
    * @return codename
    */
-  static const char * Get_Codename();
-
+  static const char *Get_Codename();
 };
 
 } // namespace REBEL

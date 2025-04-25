@@ -30,64 +30,58 @@
 /////////////////////////////////////////////////////////////////////////////
 class ConversationClass;
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // ConversationPickerDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class ConversationPickerDialogClass : public CDialog
-{
-// Construction
+class ConversationPickerDialogClass : public CDialog {
+  // Construction
 public:
-	ConversationPickerDialogClass(CWnd* pParent = NULL);   // standard constructor
+  ConversationPickerDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(ConversationPickerDialogClass)
-	enum { IDD = IDD_CONVERSATION_PICKER };
-	CTreeCtrl	m_TreeCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(ConversationPickerDialogClass)
+  enum { IDD = IDD_CONVERSATION_PICKER };
+  CTreeCtrl m_TreeCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ConversationPickerDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ConversationPickerDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(ConversationPickerDialogClass)
-	afx_msg void OnSelchangedConversationTree(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(ConversationPickerDialogClass)
+  afx_msg void OnSelchangedConversationTree(NMHDR *pNMHDR, LRESULT *pResult);
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	//////////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////////
-	void						Set_Conversation (ConversationClass *conversation)	{ Conversation = conversation; }
-	ConversationClass	*	Get_Conversation (void)										{ return Conversation; }
+  //////////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////////
+  void Set_Conversation(ConversationClass *conversation) { Conversation = conversation; }
+  ConversationClass *Get_Conversation(void) { return Conversation; }
 
 private:
+  //////////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////////
+  void Insert_Entry(ConversationClass *conversation);
 
-	//////////////////////////////////////////////////////////////////////
-	//	Private methods
-	//////////////////////////////////////////////////////////////////////
-	void						Insert_Entry (ConversationClass *conversation);
-
-	//////////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////////
-	ConversationClass *	Conversation;
-	HTREEITEM				GlobalsRoot;
-	HTREEITEM				LevelsRoot;
+  //////////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////////
+  ConversationClass *Conversation;
+  HTREEITEM GlobalsRoot;
+  HTREEITEM LevelsRoot;
 };
 
 //{{AFX_INSERT_LOCATION}}

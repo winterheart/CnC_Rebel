@@ -27,96 +27,87 @@
 #include <afxext.h>
 #endif
 
-
 #include "resource.h"
 #include "dockableform.h"
 #include "vector.h"
 #include "transition.h"
 
-
 // Forward declarations
 class PresetClass;
-class	RenderObjClass;
-
+class RenderObjClass;
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // PresetTransitionTabClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetTransitionTabClass : public DockableFormClass
-{
+class PresetTransitionTabClass : public DockableFormClass {
 
 public:
-	PresetTransitionTabClass (PresetClass *preset);
-	virtual ~PresetTransitionTabClass (void);
+  PresetTransitionTabClass(PresetClass *preset);
+  virtual ~PresetTransitionTabClass(void);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(PresetTransitionTabClass)
-	enum { IDD = IDD_TRANSITION_LIST };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  //{{AFX_DATA(PresetTransitionTabClass)
+  enum { IDD = IDD_TRANSITION_LIST };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetTransitionTabClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetTransitionTabClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetTransitionTabClass)
-	afx_msg void OnItemChangedTransitionList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnAddButton();
-	afx_msg void OnDeleteButton();
-	afx_msg void OnModifyButton();
-	afx_msg void OnDeleteitemTransitionList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDblclkTransitionList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(PresetTransitionTabClass)
+  afx_msg void OnItemChangedTransitionList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnAddButton();
+  afx_msg void OnDeleteButton();
+  afx_msg void OnModifyButton();
+  afx_msg void OnDeleteitemTransitionList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDblclkTransitionList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	/////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////
-	void						HandleInitDialog (void);
-	bool						Apply_Changes (void);
+  /////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-	TRANSITION_DATA_LIST *	Get_Transition_List (void) const						{ return m_TransitionList; }
-	void						Set_Transition_List (TRANSITION_DATA_LIST *list)	{ m_TransitionList = list; }
+  TRANSITION_DATA_LIST *Get_Transition_List(void) const { return m_TransitionList; }
+  void Set_Transition_List(TRANSITION_DATA_LIST *list) { m_TransitionList = list; }
 
 protected:
-
-	/////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////////////
-	void						Create_Render_Obj (void);
-	void						Insert_Transition (TransitionDataClass *transition);
+  /////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////
+  void Create_Render_Obj(void);
+  void Insert_Transition(TransitionDataClass *transition);
 
 private:
-
-	/////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////
-	PresetClass *				m_Preset;
-	RenderObjClass	*			m_RenderObj;
-	float							m_Height;
-	TRANSITION_DATA_LIST *	m_TransitionList;
+  /////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////
+  PresetClass *m_Preset;
+  RenderObjClass *m_RenderObj;
+  float m_Height;
+  TRANSITION_DATA_LIST *m_TransitionList;
 };
 
 /////////////////////////////////////////////////////////////////////////////

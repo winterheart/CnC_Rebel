@@ -26,8 +26,8 @@ uint32_t BuildInfo::version_major = REBEL_VERSION_MAJOR;
 uint32_t BuildInfo::version_minor = REBEL_VERSION_MINOR;
 uint32_t BuildInfo::version_patch = REBEL_VERSION_PATCH;
 
-const char * BuildInfo::codename = REBEL_CODENAME;
-const char * BuildInfo::hash = REBEL_HASH;
+const char *BuildInfo::codename = REBEL_CODENAME;
+const char *BuildInfo::hash = REBEL_HASH;
 
 void BuildInfo::Get_Version(uint32_t &major, uint32_t &minor, uint32_t &patch) {
   major = version_major;
@@ -35,22 +35,16 @@ void BuildInfo::Get_Version(uint32_t &major, uint32_t &minor, uint32_t &patch) {
   patch = version_patch;
 }
 
-uint32_t BuildInfo::Get_Version_Packed() {
-  return (version_major << 16) | version_minor;
+uint32_t BuildInfo::Get_Version_Packed() { return (version_major << 16) | version_minor; }
+
+const char *BuildInfo::Get_Build_Info_String() {
+  return std::format("v{0}.{1:03d}.{2}  \"{3}\" (build {4})", version_major, version_minor, version_patch, codename,
+                     hash)
+      .c_str();
 }
 
-const char * BuildInfo::Get_Build_Info_String() {
-  return std::format("v{0}.{1:03d}.{2}  \"{3}\" (build {4})",
-    version_major, version_minor, version_patch, codename, hash).c_str();
-}
+const char *BuildInfo::Get_Hash() { return hash; }
 
-const char * BuildInfo::Get_Hash() {
-  return hash;
-}
-
-const char * BuildInfo::Get_Codename() {
-  return codename;
-}
-
+const char *BuildInfo::Get_Codename() { return codename; }
 
 } // namespace REBEL

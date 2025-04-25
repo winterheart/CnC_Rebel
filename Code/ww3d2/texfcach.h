@@ -17,22 +17,22 @@
 */
 
 /* $Header: /Commando/Code/ww3d2/texfcach.h 3     3/26/01 10:45a Jani_p $ */
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : WW3D                                                         * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/ww3d2/texfcach.h                             $* 
- *                                                                                             * 
- *                      $Author:: Jani_p                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 3/23/01 11:15a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : WW3D                                                         *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/ww3d2/texfcach.h                             $*
+ *                                                                                             *
+ *                      $Author:: Jani_p                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 3/23/01 11:15a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if defined(_MSC_VER)
 #pragma once
@@ -48,164 +48,161 @@
 
 #ifdef WW3D_DX8
 
-//#include <srTextureIFace.hpp>
+// #include <srTextureIFace.hpp>
 
 class FileClass;
-//class srColorSurfaceIFace;
+// class srColorSurfaceIFace;
 
-class TextureFileCache  
-{
-	public:
-		TextureFileCache(const char *fileprefix);
-		virtual ~TextureFileCache();
+class TextureFileCache {
+public:
+  TextureFileCache(const char *fileprefix);
+  virtual ~TextureFileCache();
 
-		virtual void Reset_File();
+  virtual void Reset_File();
 
-		// Find texture in the cache.  Returns TRUE if texture found inside of cache.
-		int Texture_Exists(const char *fname);
+  // Find texture in the cache.  Returns TRUE if texture found inside of cache.
+  int Texture_Exists(const char *fname);
 
-		// Create the initial surface that is based off of the original texture.
-		// The surface is not filled in with texels since we don't convert this.
-		// This will also set TextureHandle up.
-		srColorSurfaceIFace *Load_Original_Texture_Surface(const char *texturename);
+  // Create the initial surface that is based off of the original texture.
+  // The surface is not filled in with texels since we don't convert this.
+  // This will also set TextureHandle up.
+  srColorSurfaceIFace *Load_Original_Texture_Surface(const char *texturename);
 
-		// Given a texture that has been loaded, save it in our file cache.
-		bool Save_Texture(const char *texturename, srTextureIFace::MultiRequest& mreq, srColorSurfaceIFace& origsurface);
+  // Given a texture that has been loaded, save it in our file cache.
+  bool Save_Texture(const char *texturename, srTextureIFace::MultiRequest &mreq, srColorSurfaceIFace &origsurface);
 
-		// Load texture data from cache into a multirequest structure.
-		bool Load_Texture(const char *texturename, srTextureIFace::MultiRequest& mreq);
-		//bool TextureFileCache::Load_Texture(const char *texturename, srTextureIFace::MultiRequest& mreq);
+  // Load texture data from cache into a multirequest structure.
+  bool Load_Texture(const char *texturename, srTextureIFace::MultiRequest &mreq);
+  // bool TextureFileCache::Load_Texture(const char *texturename, srTextureIFace::MultiRequest& mreq);
 
-		// Check that file is in cache, is not - load and save all mipmap levels
-		bool Validate_Texture(const char* texturename);
+  // Check that file is in cache, is not - load and save all mipmap levels
+  bool Validate_Texture(const char *texturename);
 
-		// Load a surface from the file cache, null if does not exist.
-		srColorSurfaceIFace *Get_Surface(const char *texturename, unsigned int reduce_factor);
+  // Load a surface from the file cache, null if does not exist.
+  srColorSurfaceIFace *Get_Surface(const char *texturename, unsigned int reduce_factor);
 
-	protected:
-		struct FileHeader {
-			enum {
-				// Put in date when format is changed.
-				TCF_VERSION 		= 20000814,
-			};
+protected:
+  struct FileHeader {
+    enum {
+      // Put in date when format is changed.
+      TCF_VERSION = 20000814,
+    };
 
-			// Will change whenever a new file version is made.
-			int						Version;
-		};
+    // Will change whenever a new file version is made.
+    int Version;
+  };
 
-		// The file format for each texture is as follows:
-		//		_TextureBlockHeader {...}
-		//		int	MipMap[0].Offset
-		//		...
-		//		int	MipMap[_TextureBlockHeader.NumMipMaps - 1].Offset
-		//		int	Offset of end of block to get size of last MipMap.
-		//		rawdata MipMap[0]
-		//		...
-		//		rawdata MipMap[_TextureBlockHeader.NumMipMaps - 1]
-		//		End of BLock
+  // The file format for each texture is as follows:
+  //		_TextureBlockHeader {...}
+  //		int	MipMap[0].Offset
+  //		...
+  //		int	MipMap[_TextureBlockHeader.NumMipMaps - 1].Offset
+  //		int	Offset of end of block to get size of last MipMap.
+  //		rawdata MipMap[0]
+  //		...
+  //		rawdata MipMap[_TextureBlockHeader.NumMipMaps - 1]
+  //		End of BLock
 
-		struct TextureBlockHeader 
-		{
-			// Time data stamp of file.
-			unsigned long 								FileTime;
+  struct TextureBlockHeader {
+    // Time data stamp of file.
+    unsigned long FileTime;
 
-			// Number of mip maps in texture (including first one).
-			int											NumMipMaps;
+    // Number of mip maps in texture (including first one).
+    int NumMipMaps;
 
-			// Dimensions of first mip map level saved.  This is normally the same as
-			// Source* but can be different when certain texture creation methods are done.
-			int											LargestWidth;
-			int											LargestHeight;
+    // Dimensions of first mip map level saved.  This is normally the same as
+    // Source* but can be different when certain texture creation methods are done.
+    int LargestWidth;
+    int LargestHeight;
 
-			// Dimensions of original surface/art work.
-			int											SourceWidth;
-			int											SourceHeight;
+    // Dimensions of original surface/art work.
+    int SourceWidth;
+    int SourceHeight;
 
-			// This is the pixel format used to create the sources original surface.
-			srColorSurfaceIFace::PixelFormat		SourcePixelFormat;
+    // This is the pixel format used to create the sources original surface.
+    srColorSurfaceIFace::PixelFormat SourcePixelFormat;
 
-			// Pixel format that we have saved in.
-			srColorSurfaceIFace::PixelFormat		PixelFormat;
+    // Pixel format that we have saved in.
+    srColorSurfaceIFace::PixelFormat PixelFormat;
 
-			TextureBlockHeader():NumMipMaps(-1),SourceWidth(-1),SourceHeight(-1),LargestWidth(-1),LargestHeight(-1) {}
-		};
+    TextureBlockHeader() : NumMipMaps(-1), SourceWidth(-1), SourceHeight(-1), LargestWidth(-1), LargestHeight(-1) {}
+  };
 
-		// Each texture has an offset into the file and it's size when uncompressed.
-		struct OffsetTableType
-		{
-			OffsetTableType() : Offset(0), Size (0) {}
+  // Each texture has an offset into the file and it's size when uncompressed.
+  struct OffsetTableType {
+    OffsetTableType() : Offset(0), Size(0) {}
 
-			// Offset of texture in file.  
-			int	Offset;
+    // Offset of texture in file.
+    int Offset;
 
-			// Size (uncompressed) of texture.  The size of the compressed texture
-			// is caclcuated by Texture_Size() below.
-			int	Size;
-		};
-	protected:										 
-		enum  {
-			MAX_CACHED_SURFACES = srTextureIFace::MAX_LOD,
-		};
+    // Size (uncompressed) of texture.  The size of the compressed texture
+    // is caclcuated by Texture_Size() below.
+    int Size;
+  };
 
-		// Pointer to the low level file managment.  TagBlockFile handles the seperation
-		// of the different 'texture files'.  This class deals with each seperate 'texture file'.
-		TagBlockFile					File;
+protected:
+  enum {
+    MAX_CACHED_SURFACES = srTextureIFace::MAX_LOD,
+  };
 
-		// Name of last texture loaded so we know if things need to be thrown away or not.
-		char								*CurrentTexture;
+  // Pointer to the low level file managment.  TagBlockFile handles the seperation
+  // of the different 'texture files'.  This class deals with each seperate 'texture file'.
+  TagBlockFile File;
 
-		// Handle for current texture in cache. This is created by Open_Texture_Handle().
-		TagBlockHandle					*TextureHandle;
+  // Name of last texture loaded so we know if things need to be thrown away or not.
+  char *CurrentTexture;
 
-		// Header that has been loaded by Open_Texture_Handle().
-		TextureBlockHeader			Header;
+  // Handle for current texture in cache. This is created by Open_Texture_Handle().
+  TagBlockHandle *TextureHandle;
 
-		// The offset table is loaded into memory when the file is opened.
-		OffsetTableType				*Offsets;
+  // Header that has been loaded by Open_Texture_Handle().
+  TextureBlockHeader Header;
 
-		// Cache pointers to data that has already been loaded for this texture.
-		srColorSurface *				CachedSurfaces[MAX_CACHED_SURFACES];
-																	
-		// Number of cached textures we have.
-		int								NumCachedTextures;
+  // The offset table is loaded into memory when the file is opened.
+  OffsetTableType *Offsets;
 
-	protected:
-		// Buffer to compress into and decompress out of.
-//		static char						*CompressionBuffer;
-//		static char						*EOCompressionBuffer;
+  // Cache pointers to data that has already been loaded for this texture.
+  srColorSurface *CachedSurfaces[MAX_CACHED_SURFACES];
 
-		// This keeps track of number of instances of the TextureFileCache.  
-		// This way static variables are only freed when all instances have been deleted.
-//		static int						Instances;
-																	 
-		// Access to previously cached textures so they do not have to be read off of disk.
-		void Add_Cached_Surface(srColorSurface *surface);
-		srColorSurface *Find_Cached_Surface(int size);
-		srColorSurface *Find_Smallest_Cached_Surface();
+  // Number of cached textures we have.
+  int NumCachedTextures;
 
-		int	Texture_Size(int lod)  {
-			assert(Offsets);
-			assert(lod < Header.NumMipMaps);
-			return(Offsets[lod].Size);
-		}
+protected:
+  // Buffer to compress into and decompress out of.
+  //		static char						*CompressionBuffer;
+  //		static char						*EOCompressionBuffer;
 
-		int	Compressed_Texture_Size(int lod)  {
-			assert(Offsets);
-			assert(lod < Header.NumMipMaps);
-			return(Offsets[lod + 1].Offset - Offsets[lod].Offset);
-		}
+  // This keeps track of number of instances of the TextureFileCache.
+  // This way static variables are only freed when all instances have been deleted.
+  //		static int						Instances;
 
-	 	bool	Open_Texture_Handle(const char *texturename);
-	 	void	Close_Texture_Handle();
+  // Access to previously cached textures so they do not have to be read off of disk.
+  void Add_Cached_Surface(srColorSurface *surface);
+  srColorSurface *Find_Cached_Surface(int size);
+  srColorSurface *Find_Smallest_Cached_Surface();
 
-		void	Read_Texture(int offsetidx, srColorSurface *surface);
-		srColorSurfaceIFace *Create_First_Texture_As_Surface(srColorSurfaceIFace *surftype);
+  int Texture_Size(int lod) {
+    assert(Offsets);
+    assert(lod < Header.NumMipMaps);
+    return (Offsets[lod].Size);
+  }
 
-		static char *_Create_File_Name(const char *fileprefix);
-		static char *_FileNamePtr;
+  int Compressed_Texture_Size(int lod) {
+    assert(Offsets);
+    assert(lod < Header.NumMipMaps);
+    return (Offsets[lod + 1].Offset - Offsets[lod].Offset);
+  }
+
+  bool Open_Texture_Handle(const char *texturename);
+  void Close_Texture_Handle();
+
+  void Read_Texture(int offsetidx, srColorSurface *surface);
+  srColorSurfaceIFace *Create_First_Texture_As_Surface(srColorSurfaceIFace *surftype);
+
+  static char *_Create_File_Name(const char *fileprefix);
+  static char *_FileNamePtr;
 };
 
-#endif //WW3D_DX8
+#endif // WW3D_DX8
 
-
-#endif //TEXTFCACH_H
+#endif // TEXTFCACH_H

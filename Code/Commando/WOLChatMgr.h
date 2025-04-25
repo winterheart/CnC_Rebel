@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLChatMgr.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 18 $
-*     $Modtime: 11/08/01 2:31p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLChatMgr.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 18 $
+ *     $Modtime: 11/08/01 2:31p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLCHATMGR_H__
 #define __WOLCHATMGR_H__
@@ -43,109 +43,103 @@
 #include <WWOnline\WOLSession.h>
 #include <WWOnline\WOLChatMsg.h>
 
-typedef std::vector< RefPtr<WWOnline::ChannelData> > LobbyList;
+typedef std::vector<RefPtr<WWOnline::ChannelData>> LobbyList;
 
-enum WOLChatMgrEvent
-	{
-	LobbyListChanged = 1,
-	LobbyChanged,
-	UserInListChanged,
-	UserOutListChanged,
-	MessageListChanged,
-	KickedFromChannel,
-	BannedFromChannel
-	};
+enum WOLChatMgrEvent {
+  LobbyListChanged = 1,
+  LobbyChanged,
+  UserInListChanged,
+  UserOutListChanged,
+  MessageListChanged,
+  KickedFromChannel,
+  BannedFromChannel
+};
 
-class WOLChatMgr :
-		public RefCountClass,
-		public Notifier<WOLChatMgrEvent>,
-		public Observer<WWOnline::ServerError>,
-		public Observer<WWOnline::ChannelListEvent>,
-		public Observer<WWOnline::ChannelEvent>,
-		public Observer<WWOnline::UserEvent>,
-		public Observer<WWOnline::UserList>,
-		public Observer<WWOnline::ChatMessage>
-	{
-	public:
-		static WOLChatMgr* GetInstance(bool createOK);
+class WOLChatMgr : public RefCountClass,
+                   public Notifier<WOLChatMgrEvent>,
+                   public Observer<WWOnline::ServerError>,
+                   public Observer<WWOnline::ChannelListEvent>,
+                   public Observer<WWOnline::ChannelEvent>,
+                   public Observer<WWOnline::UserEvent>,
+                   public Observer<WWOnline::UserList>,
+                   public Observer<WWOnline::ChatMessage> {
+public:
+  static WOLChatMgr *GetInstance(bool createOK);
 
-		void Start(void);
-		void Stop(void);
+  void Start(void);
+  void Stop(void);
 
-		// Lobby Methods
-		void RefreshLobbyList(void);
-		const LobbyList& GetLobbyList(void);
-		
-		const RefPtr<WWOnline::ChannelData>& GetCurrentLobby(void);
-		const RefPtr<WWOnline::ChannelData> FindLobby(const wchar_t* name);
+  // Lobby Methods
+  void RefreshLobbyList(void);
+  const LobbyList &GetLobbyList(void);
 
-		void CreateLobby(const wchar_t* name, const wchar_t* password);
-		void JoinLobby(const RefPtr<WWOnline::ChannelData>& channel);
-		void LeaveLobby(void);
-		void GetLobbyDisplayName(const RefPtr<WWOnline::ChannelData>& lobby, WideStringClass& outName);
+  const RefPtr<WWOnline::ChannelData> &GetCurrentLobby(void);
+  const RefPtr<WWOnline::ChannelData> FindLobby(const wchar_t *name);
 
-		// User Methods
-		const RefPtr<WWOnline::UserData> FindUser(const wchar_t* name);
+  void CreateLobby(const wchar_t *name, const wchar_t *password);
+  void JoinLobby(const RefPtr<WWOnline::ChannelData> &channel);
+  void LeaveLobby(void);
+  void GetLobbyDisplayName(const RefPtr<WWOnline::ChannelData> &lobby, WideStringClass &outName);
 
-		inline const WWOnline::UserList& GetUserInList(void)
-			{return mUserInList;}
+  // User Methods
+  const RefPtr<WWOnline::UserData> FindUser(const wchar_t *name);
 
-		void ClearUserInList(void);
+  inline const WWOnline::UserList &GetUserInList(void) { return mUserInList; }
 
-		inline const WWOnline::UserList& GetUserOutList(void)
-			{return mUserOutList;}
+  void ClearUserInList(void);
 
-		void ClearUserOutList(void);
+  inline const WWOnline::UserList &GetUserOutList(void) { return mUserOutList; }
 
-		bool SquelchUser(const RefPtr<WWOnline::UserData>& user, bool onoff);
-		void LocateUser(const wchar_t* name);
+  void ClearUserOutList(void);
 
-		// Message Methods
-		inline const WWOnline::ChatMessageList& GetMessageList(void)
-			{return mMessageList;}
+  bool SquelchUser(const RefPtr<WWOnline::UserData> &user, bool onoff);
+  void LocateUser(const wchar_t *name);
 
-		void ClearMessageList(void);
+  // Message Methods
+  inline const WWOnline::ChatMessageList &GetMessageList(void) { return mMessageList; }
 
-		void SendPublicMessage(const wchar_t* message, bool isAction);
-		void SendPrivateMessage(const RefPtr<WWOnline::UserData>& user, const wchar_t* message, bool isAction);
-		void SendPrivateMessage(WWOnline::UserList& users, const wchar_t* message, bool isAction);
+  void ClearMessageList(void);
 
-	protected:
-		WOLChatMgr();
-		~WOLChatMgr();
+  void SendPublicMessage(const wchar_t *message, bool isAction);
+  void SendPrivateMessage(const RefPtr<WWOnline::UserData> &user, const wchar_t *message, bool isAction);
+  void SendPrivateMessage(WWOnline::UserList &users, const wchar_t *message, bool isAction);
 
-		// Delcare here to prevent copy and assignment
-		WOLChatMgr(const WOLChatMgr&);
-		const WOLChatMgr& operator=(const WOLChatMgr&);
+protected:
+  WOLChatMgr();
+  ~WOLChatMgr();
 
-		bool FinalizeCreate(void);
+  // Delcare here to prevent copy and assignment
+  WOLChatMgr(const WOLChatMgr &);
+  const WOLChatMgr &operator=(const WOLChatMgr &);
 
-		bool IsLobbyValid(const RefPtr<WWOnline::ChannelData>& lobby);
+  bool FinalizeCreate(void);
 
-		void AddMessage(const wchar_t* sender, const wchar_t* message, bool isPrivate, bool isAction);
-		bool PassesFilters(const WWOnline::ChatMessage& msg);
+  bool IsLobbyValid(const RefPtr<WWOnline::ChannelData> &lobby);
 
-		void HandleNotification(WWOnline::ServerError&);
-		void HandleNotification(WWOnline::ChannelListEvent&);
-		void HandleNotification(WWOnline::ChannelEvent&);
-		void HandleNotification(WWOnline::UserEvent&);
-		void HandleNotification(WWOnline::UserList&);
-		void HandleNotification(WWOnline::ChatMessage&);
+  void AddMessage(const wchar_t *sender, const wchar_t *message, bool isPrivate, bool isAction);
+  bool PassesFilters(const WWOnline::ChatMessage &msg);
 
-		bool ProcessCommand(const wchar_t* message);
+  void HandleNotification(WWOnline::ServerError &);
+  void HandleNotification(WWOnline::ChannelListEvent &);
+  void HandleNotification(WWOnline::ChannelEvent &);
+  void HandleNotification(WWOnline::UserEvent &);
+  void HandleNotification(WWOnline::UserList &);
+  void HandleNotification(WWOnline::ChatMessage &);
 
-	private:
-		static WOLChatMgr* _mInstance;
-		RefPtr<WWOnline::Session> mWOLSession;
+  bool ProcessCommand(const wchar_t *message);
 
-		WideStringClass mLobbyPrefix;
-		LobbyList mLobbyList;
+private:
+  static WOLChatMgr *_mInstance;
+  RefPtr<WWOnline::Session> mWOLSession;
 
-		WWOnline::UserList mUserInList;
-		WWOnline::UserList mUserOutList;
-		WideStringClass	mLocatingUserName;
-		
-		WWOnline::ChatMessageList mMessageList;
-	};
+  WideStringClass mLobbyPrefix;
+  LobbyList mLobbyList;
+
+  WWOnline::UserList mUserInList;
+  WWOnline::UserList mUserOutList;
+  WideStringClass mLocatingUserName;
+
+  WWOnline::ChatMessageList mMessageList;
+};
 
 #endif __WOLCHATMGR_H__

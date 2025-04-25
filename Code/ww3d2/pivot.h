@@ -17,22 +17,22 @@
 */
 
 /* $Header: /Commando/Code/ww3d2/pivot.h 1     1/22/01 3:36p Greg_h $ */
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando / G 3D Library                                      * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/ww3d2/pivot.h                                $* 
- *                                                                                             * 
- *                       Author:: Greg_h                                                       * 
- *                                                                                             * 
- *                     $Modtime:: 1/08/01 10:04a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando / G 3D Library                                      *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/ww3d2/pivot.h                                $*
+ *                                                                                             *
+ *                       Author:: Greg_h                                                       *
+ *                                                                                             *
+ *                     $Modtime:: 1/08/01 10:04a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
@@ -48,46 +48,38 @@
 #include "quat.h"
 #include "w3d_file.h"
 
-
 /*
 
-	PivotClass
+        PivotClass
 
-	Each node of the hierarchy tree is represented by a 
-	PivotClass.
-	
+        Each node of the hierarchy tree is represented by a
+        PivotClass.
+
 */
 
-
-
-struct PivotClass
-{
+struct PivotClass {
 public:
+  PivotClass(void);
+  ~PivotClass(void) {}
 
-	PivotClass(void);
-	~PivotClass(void) {}
+  char Name[W3D_NAME_LEN];
+  int Index;
 
-	char					Name[W3D_NAME_LEN];
-	int					Index;
+  PivotClass *Parent;
 
-	PivotClass *		Parent;
+  // Base configuration of this pivot
+  Matrix3D BaseTransform; // base-pose transform (relative to parent).
 
-	// Base configuration of this pivot
-	Matrix3D				BaseTransform;		// base-pose transform (relative to parent).
+  Matrix3D Transform; // computed transform for this pivot
+  bool IsVisible;     // result of the visibility channel
 
-	Matrix3D				Transform;			// computed transform for this pivot
-	bool					IsVisible;			// result of the visibility channel
-	
-	// User control.  When a pivot is 'captured' animation data is ignored and the
-	// user data is used to control the pivot.
-	bool					IsCaptured;
-	Matrix3D				CapTransform;
-	bool					WorldSpaceTranslation;
+  // User control.  When a pivot is 'captured' animation data is ignored and the
+  // user data is used to control the pivot.
+  bool IsCaptured;
+  Matrix3D CapTransform;
+  bool WorldSpaceTranslation;
 
-	void Capture_Update(void);
-
+  void Capture_Update(void);
 };
-
-
 
 #endif

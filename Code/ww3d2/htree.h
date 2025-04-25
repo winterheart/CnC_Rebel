@@ -17,22 +17,22 @@
 */
 
 /* $Header: /Commando/Code/ww3d2/htree.h 6     10/01/01 5:55p Patrick $ */
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando / G 3D Library                                      * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/ww3d2/htree.h                                $* 
- *                                                                                             * 
- *                       Author:: Greg_h                                                       * 
- *                                                                                             * 
- *                     $Modtime:: 9/28/01 3:05p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 6                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando / G 3D Library                                      *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/ww3d2/htree.h                                $*
+ *                                                                                             *
+ *                       Author:: Greg_h                                                       *
+ *                                                                                             *
+ *                     $Modtime:: 9/28/01 3:05p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 6                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
@@ -58,144 +58,118 @@ class ChunkSaveClass;
 
 /*
 
-	HTreeClass
+        HTreeClass
 
-	A hierarchy of coordinate systems in an initial
-	configuration.  All motion data is applied to one
-	of these objects.  Motion is stored as deltas from
-	the hierarchy tree's initial configuration.  
+        A hierarchy of coordinate systems in an initial
+        configuration.  All motion data is applied to one
+        of these objects.  Motion is stored as deltas from
+        the hierarchy tree's initial configuration.
 
-	Normally, the user will probably not deal with
-	HTreeClasses; they are used internally
-	by the HierarchyModelClass.
+        Normally, the user will probably not deal with
+        HTreeClasses; they are used internally
+        by the HierarchyModelClass.
 
 */
-class HTreeClass
-{
+class HTreeClass {
 public:
+  enum { OK, LOAD_ERROR };
 
-	enum
-	{
-		OK,
-		LOAD_ERROR
-	};
+  HTreeClass(void);
+  HTreeClass(const HTreeClass &src);
+  ~HTreeClass(void);
 
-	HTreeClass(void);
-	HTreeClass(const HTreeClass & src);
-	~HTreeClass(void);
-	
-	int					Load_W3D(ChunkLoadClass & cload);
-	void					Init_Default(void);
+  int Load_W3D(ChunkLoadClass &cload);
+  void Init_Default(void);
 
-	WWINLINE const char *		Get_Name(void)								const { return Name; }
-	WWINLINE int					Num_Pivots(void)							const { return NumPivots; }
-	int					Get_Bone_Index(const char * name)	const;
-	const char *		Get_Bone_Name(int boneid)				const;
-	int					Get_Parent_Index(int bone_indx)		const;
+  WWINLINE const char *Get_Name(void) const { return Name; }
+  WWINLINE int Num_Pivots(void) const { return NumPivots; }
+  int Get_Bone_Index(const char *name) const;
+  const char *Get_Bone_Name(int boneid) const;
+  int Get_Parent_Index(int bone_indx) const;
 
-	void					Base_Update(const Matrix3D & root);
+  void Base_Update(const Matrix3D &root);
 
-	void					Anim_Update(		const Matrix3D &		root,
-													HAnimClass *			motion,
-													float						frame);
+  void Anim_Update(const Matrix3D &root, HAnimClass *motion, float frame);
 
-	void					Blend_Update(		const Matrix3D &		root,
-													HAnimClass *			motion0,
-													float						frame0,
-													HAnimClass *			motion1,
-													float						frame1,
-													float						percentage);
+  void Blend_Update(const Matrix3D &root, HAnimClass *motion0, float frame0, HAnimClass *motion1, float frame1,
+                    float percentage);
 
-	void					Combo_Update(		const Matrix3D &		root,
-													HAnimComboClass *		anim);
+  void Combo_Update(const Matrix3D &root, HAnimComboClass *anim);
 
-	WWINLINE const Matrix3D	&	Get_Transform(int pivot) const;
-	WWINLINE bool					Get_Visibility(int pivot) const;
+  WWINLINE const Matrix3D &Get_Transform(int pivot) const;
+  WWINLINE bool Get_Visibility(int pivot) const;
 
-	WWINLINE const Matrix3D &	Get_Root_Transform(void) const;
-	
-	// User control over a bone.  While a bone is captured, you can over-ride the
-	// animation transform used by the bone.
-	void					Capture_Bone(int boneindex);
-	void					Release_Bone(int boneindex);
-	bool					Is_Bone_Captured(int boneindex) const;
-	void					Control_Bone(int boneindex,const Matrix3D & relative_tm,bool world_space_translation = false);
-	void					Get_Bone_Control(int boneindex, Matrix3D & relative_tm) const;
+  WWINLINE const Matrix3D &Get_Root_Transform(void) const;
 
-	//
-	//	Simple pivot evaluation methods for when the caller doesn't want
-	// to update the whole animation, but needs to know the transform of
-	// a pivot at a given frame.
-	//
-	bool					Simple_Evaluate_Pivot (HAnimClass *motion, int pivot_index, float frame, const Matrix3D &obj_tm, Matrix3D *end_tm) const;
-	bool					Simple_Evaluate_Pivot (int pivot_index, const Matrix3D &obj_tm, Matrix3D *end_tm) const;
+  // User control over a bone.  While a bone is captured, you can over-ride the
+  // animation transform used by the bone.
+  void Capture_Bone(int boneindex);
+  void Release_Bone(int boneindex);
+  bool Is_Bone_Captured(int boneindex) const;
+  void Control_Bone(int boneindex, const Matrix3D &relative_tm, bool world_space_translation = false);
+  void Get_Bone_Control(int boneindex, Matrix3D &relative_tm) const;
 
-	// Scale this HTree by a constant factor:
-	void					Scale(float factor);
+  //
+  //	Simple pivot evaluation methods for when the caller doesn't want
+  // to update the whole animation, but needs to know the transform of
+  // a pivot at a given frame.
+  //
+  bool Simple_Evaluate_Pivot(HAnimClass *motion, int pivot_index, float frame, const Matrix3D &obj_tm,
+                             Matrix3D *end_tm) const;
+  bool Simple_Evaluate_Pivot(int pivot_index, const Matrix3D &obj_tm, Matrix3D *end_tm) const;
 
-	// Morph the bones on the HTree using weights from a number of other HTrees
-	static HTreeClass *	Create_Morphed( int num_morph_sources,
-													 const float morph_weights[],
-													 const HTreeClass *tree_array[] );
-	
-	// Create an HTree by Interpolating between others
-	static HTreeClass	*	Create_Interpolated( const HTreeClass * tree_a0_b0, 
-														   const HTreeClass * tree_a0_b1, 
-														   const HTreeClass * tree_a1_b0, 
-														   const HTreeClass * tree_a1_b1, 
-														   float lerp_a, float lerp_b );
+  // Scale this HTree by a constant factor:
+  void Scale(float factor);
 
-	// Create an HTree by Interpolating between others
-	static HTreeClass	*	Create_Interpolated( const HTreeClass * tree_base, 
-														   const HTreeClass * tree_a, 
-														   const HTreeClass * tree_b, 
-														   float a_scale, float b_scale );
+  // Morph the bones on the HTree using weights from a number of other HTrees
+  static HTreeClass *Create_Morphed(int num_morph_sources, const float morph_weights[], const HTreeClass *tree_array[]);
+
+  // Create an HTree by Interpolating between others
+  static HTreeClass *Create_Interpolated(const HTreeClass *tree_a0_b0, const HTreeClass *tree_a0_b1,
+                                         const HTreeClass *tree_a1_b0, const HTreeClass *tree_a1_b1, float lerp_a,
+                                         float lerp_b);
+
+  // Create an HTree by Interpolating between others
+  static HTreeClass *Create_Interpolated(const HTreeClass *tree_base, const HTreeClass *tree_a,
+                                         const HTreeClass *tree_b, float a_scale, float b_scale);
 
 private:
+  char Name[W3D_NAME_LEN];
+  int NumPivots;
+  PivotClass *Pivot;
+  float ScaleFactor;
 
-	char					Name[W3D_NAME_LEN];
-	int					NumPivots;
-	PivotClass *		Pivot;
-	float					ScaleFactor;
+  void Free(void);
+  bool read_pivots(ChunkLoadClass &cload, bool pre30);
 
-	void					Free(void);	
-	bool					read_pivots(ChunkLoadClass & cload,bool pre30);
-
-	friend class MeshClass;
+  friend class MeshClass;
 };
 
-WWINLINE const Matrix3D &	HTreeClass::Get_Root_Transform(void) const
-{
-	return Pivot[0].Transform;
+WWINLINE const Matrix3D &HTreeClass::Get_Root_Transform(void) const { return Pivot[0].Transform; }
+
+WWINLINE bool HTreeClass::Get_Visibility(int pivot) const {
+  WWASSERT(pivot >= 0);
+  WWASSERT(pivot < NumPivots);
+  return Pivot[pivot].IsVisible;
 }
 
-WWINLINE bool HTreeClass::Get_Visibility(int pivot) const
-{
-	WWASSERT(pivot >= 0);
-	WWASSERT(pivot < NumPivots);
-	return Pivot[pivot].IsVisible;
-}
-
-/*********************************************************************************************** 
- * HTreeClass::Get_Transform -- returns the transformation for the desired pivot               * 
- *                                                                                             * 
- * INPUT:                                                                                      * 
- *                                                                                             * 
- * OUTPUT:                                                                                     * 
- *                                                                                             * 
- * WARNINGS:                                                                                   * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   08/11/1997 GH  : Created.                                                                 * 
+/***********************************************************************************************
+ * HTreeClass::Get_Transform -- returns the transformation for the desired pivot               *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   08/11/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE const Matrix3D & HTreeClass::Get_Transform(int pivot) const
-{
-	assert(pivot >= 0);
-	assert(pivot < NumPivots);
+WWINLINE const Matrix3D &HTreeClass::Get_Transform(int pivot) const {
+  assert(pivot >= 0);
+  assert(pivot < NumPivots);
 
-	return Pivot[pivot].Transform;
+  return Pivot[pivot].Transform;
 }
-
-
 
 #endif

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolgamelist.h       $*
  *                                                                                             *
@@ -56,63 +57,61 @@ class DlgPasswordPrompt;
 //	MPWolGameListMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolGameListMenuClass :
-		public MenuDialogClass,
-		public Observer<WWOnline::ChannelListEvent>,
-		public Observer<WWOnline::ServerError>,
-		protected Observer<WWOnline::SquadEvent>,
-		protected Signaler<DlgPasswordPrompt>
-	{
-	public:
-		static void DoDialog(void);
+class MPWolGameListMenuClass : public MenuDialogClass,
+                               public Observer<WWOnline::ChannelListEvent>,
+                               public Observer<WWOnline::ServerError>,
+                               protected Observer<WWOnline::SquadEvent>,
+                               protected Signaler<DlgPasswordPrompt> {
+public:
+  static void DoDialog(void);
 
-	protected:
-		MPWolGameListMenuClass(void);
-		~MPWolGameListMenuClass(void);
+protected:
+  MPWolGameListMenuClass(void);
+  ~MPWolGameListMenuClass(void);
 
-		// Prevent copy and assignment
-		MPWolGameListMenuClass(const MPWolGameListMenuClass&);
-		const MPWolGameListMenuClass& operator=(const MPWolGameListMenuClass&);
-	
-		void On_Init_Dialog(void);
-		void On_Command(int id, int mesage_id, DWORD param);
-		void On_Last_Menu_Ending(void);
-		bool On_Key_Down(uint32 key_id, uint32 key_data);
+  // Prevent copy and assignment
+  MPWolGameListMenuClass(const MPWolGameListMenuClass &);
+  const MPWolGameListMenuClass &operator=(const MPWolGameListMenuClass &);
 
-		void Join_Game(void);
-		void ReceiveSignal(DlgPasswordPrompt&);
+  void On_Init_Dialog(void);
+  void On_Command(int id, int mesage_id, DWORD param);
+  void On_Last_Menu_Ending(void);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
 
-		void RequestGameList(void);
-		void SortGameChannels(int column, bool isAscending, unsigned long param);
+  void Join_Game(void);
+  void ReceiveSignal(DlgPasswordPrompt &);
 
-		void On_ListCtrl_Column_Click(ListCtrlClass* list, int id, int column);
-		void On_ListCtrl_DblClk(ListCtrlClass* list, int id, int index);
-		void On_ListCtrl_Delete_Entry(ListCtrlClass* list, int id, int index);
-		void On_ListCtrl_Sel_Change(ListCtrlClass* list, int id, int oldIndex, int newIndex);
+  void RequestGameList(void);
+  void SortGameChannels(int column, bool isAscending, unsigned long param);
 
-		void GetClanVSClanString(WOLGameInfo& gameInfo, WideStringClass& text);
+  void On_ListCtrl_Column_Click(ListCtrlClass *list, int id, int column);
+  void On_ListCtrl_DblClk(ListCtrlClass *list, int id, int index);
+  void On_ListCtrl_Delete_Entry(ListCtrlClass *list, int id, int index);
+  void On_ListCtrl_Sel_Change(ListCtrlClass *list, int id, int oldIndex, int newIndex);
 
-		void HandleNotification(WWOnline::ChannelListEvent&);
-		void UpdateChannels(ListCtrlClass* list, const WWOnline::ChannelList& chanList);
+  void GetClanVSClanString(WOLGameInfo &gameInfo, WideStringClass &text);
 
-		void HandleNotification(WWOnline::ServerError&);
-		void HandleNotification(WWOnline::SquadEvent&);
+  void HandleNotification(WWOnline::ChannelListEvent &);
+  void UpdateChannels(ListCtrlClass *list, const WWOnline::ChannelList &chanList);
 
-	protected:
-		static MPWolGameListMenuClass* _mInstance;
+  void HandleNotification(WWOnline::ServerError &);
+  void HandleNotification(WWOnline::SquadEvent &);
 
-		RefPtr<WWOnline::Session> mWOLSession;
-		RefPtr<WWOnline::ChannelData> mGameToJoin;
+protected:
+  static MPWolGameListMenuClass *_mInstance;
 
-		bool mChannelListPending;
+  RefPtr<WWOnline::Session> mWOLSession;
+  RefPtr<WWOnline::ChannelData> mGameToJoin;
 
-		int mSortColumn;
-		bool mIsSortAscending;
-		unsigned long mSortFlags;
+  bool mChannelListPending;
 
-		WOLGameInfo mSelectedGame;
+  int mSortColumn;
+  bool mIsSortAscending;
+  unsigned long mSortFlags;
 
-		PingProfile mPingProfile;
-	};
+  WOLGameInfo mSelectedGame;
+
+  PingProfile mPingProfile;
+};
 
 #endif //__DLG_MP_WOL_GAME_LIST_H

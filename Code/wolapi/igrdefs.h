@@ -22,11 +22,11 @@
 //
 // Option Bits for Options key
 //
-#define IGR_NO_AUTO_LOGIN          0x01
-#define IGR_NO_STORE_NICKS         0x02
-#define IGR_NO_RUN_REG_APP         0x04
+#define IGR_NO_AUTO_LOGIN 0x01
+#define IGR_NO_STORE_NICKS 0x02
+#define IGR_NO_RUN_REG_APP 0x04
 
-#define IGR_ALL                 IGR_NO_AUTO_LOGIN | IGR_NO_STORE_NICKS | IGR_NO_RUN_REG_APP
-#define IGR_NONE                0x00
+#define IGR_ALL IGR_NO_AUTO_LOGIN | IGR_NO_STORE_NICKS | IGR_NO_RUN_REG_APP
+#define IGR_NONE 0x00
 
 #endif // _IGDDEFS_H

@@ -39,10 +39,9 @@
  *   Windows_Message_Handler -- Handles windows message.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"vector.h"
-#include	"win.h"
-
+#include "always.h"
+#include "vector.h"
+#include "win.h"
 
 /*
 **	Tracks modeless dialog box messages by keeping a record of all active modeless dialog
@@ -51,21 +50,21 @@
 */
 static DynamicVectorClass<HWND> _ModelessDialogs;
 
-
 /*
 **	Tracks windows accelerators with this structure.
 */
 struct AcceleratorTracker {
-	AcceleratorTracker(HWND window = NULL, HACCEL accelerator = NULL) : Accelerator(accelerator), Window(window) {}
+  AcceleratorTracker(HWND window = NULL, HACCEL accelerator = NULL) : Accelerator(accelerator), Window(window) {}
 
-	int operator == (AcceleratorTracker const & acc) const {return(Accelerator == acc.Accelerator && Window == acc.Window);}
-	int operator != (AcceleratorTracker const & acc) const {return(!(*this == acc));}
+  int operator==(AcceleratorTracker const &acc) const {
+    return (Accelerator == acc.Accelerator && Window == acc.Window);
+  }
+  int operator!=(AcceleratorTracker const &acc) const { return (!(*this == acc)); }
 
-	HACCEL Accelerator;
-	HWND Window;
+  HACCEL Accelerator;
+  HWND Window;
 };
 static DynamicVectorClass<AcceleratorTracker> _Accelerators;
-
 
 /*
 **	In those cases where message intercept needs to occur but not for purposes
@@ -73,7 +72,6 @@ static DynamicVectorClass<AcceleratorTracker> _Accelerators;
 **	pointer to than message intercept handler.
 */
 bool (*Message_Intercept_Handler)(MSG &msg) = NULL;
-
 
 /***********************************************************************************************
  * Windows_Message_Handler -- Handles windows message.                                         *
@@ -94,66 +92,67 @@ bool (*Message_Intercept_Handler)(MSG &msg) = NULL;
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Windows_Message_Handler(void)
-{
-	MSG msg;
+void Windows_Message_Handler(void) {
+  MSG msg;
 
-	/*
-	**	Process windows messages until the message queue is exhuasted.
-	*/
-	while (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
-		if (!GetMessage( &msg, NULL, 0, 0 )) {
-			return;
-		}
+  /*
+  **	Process windows messages until the message queue is exhuasted.
+  */
+  while (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
+    if (!GetMessage(&msg, NULL, 0, 0)) {
+      return;
+    }
 
-		/*
-		**	Pass the message through any loaded accelerators. If the message
-		**	was processed by an accelerator, then it doesn't need to be
-		**	processed by the normal message handling procedure.
-		*/
-		bool processed = false;
-		for (int aindex = 0; aindex < _Accelerators.Count(); aindex++) {
-			if (_Accelerators[aindex].Window) {
-				if (TranslateAccelerator(_Accelerators[aindex].Window, _Accelerators[aindex].Accelerator, &msg)) {
-					processed = true;
-				}
-			}
-			break;
-		}
-		if (processed) continue;
+    /*
+    **	Pass the message through any loaded accelerators. If the message
+    **	was processed by an accelerator, then it doesn't need to be
+    **	processed by the normal message handling procedure.
+    */
+    bool processed = false;
+    for (int aindex = 0; aindex < _Accelerators.Count(); aindex++) {
+      if (_Accelerators[aindex].Window) {
+        if (TranslateAccelerator(_Accelerators[aindex].Window, _Accelerators[aindex].Accelerator, &msg)) {
+          processed = true;
+        }
+      }
+      break;
+    }
+    if (processed)
+      continue;
 
-		/*
-		**	Pass the windows message through any modeless dialogs that may
-		**	be active. If one of the dialogs processes the message, then
-		**	it must not be processed by the normal window message handler.
-		*/
-		for (int index = 0; index < _ModelessDialogs.Count(); index++) {
-			if (IsDialogMessage(_ModelessDialogs[index], &msg)) {
-				processed = true;
-				break;
-			}
-		}
-		if (processed) continue;
+    /*
+    **	Pass the windows message through any modeless dialogs that may
+    **	be active. If one of the dialogs processes the message, then
+    **	it must not be processed by the normal window message handler.
+    */
+    for (int index = 0; index < _ModelessDialogs.Count(); index++) {
+      if (IsDialogMessage(_ModelessDialogs[index], &msg)) {
+        processed = true;
+        break;
+      }
+    }
+    if (processed)
+      continue;
 
-		/*
-		**	If the message was not handled by any normal intercept handlers, then
-		**	submit the message to a custom message handler if one has been provided.
-		*/
-		if (Message_Intercept_Handler != NULL) {
-			processed = Message_Intercept_Handler(msg);
-		}
-		if (processed) continue;
+    /*
+    **	If the message was not handled by any normal intercept handlers, then
+    **	submit the message to a custom message handler if one has been provided.
+    */
+    if (Message_Intercept_Handler != NULL) {
+      processed = Message_Intercept_Handler(msg);
+    }
+    if (processed)
+      continue;
 
-		/*
-		**	If the message makes it to this point, then it must be a normal message. Process
-		**	it in the normal fashion. The message will appear in the window message handler
-		**	for the window that it was directed to.
-		*/
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+    /*
+    **	If the message makes it to this point, then it must be a normal message. Process
+    **	it in the normal fashion. The message will appear in the window message handler
+    **	for the window that it was directed to.
+    */
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+  }
 }
-
 
 /***********************************************************************************************
  * Add_Modeless_Dialog -- Adds a modeless dialog box to the message handler.                   *
@@ -173,11 +172,7 @@ void Windows_Message_Handler(void)
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Add_Modeless_Dialog(HWND dialog)
-{
-	_ModelessDialogs.Add(dialog);
-}
-
+void Add_Modeless_Dialog(HWND dialog) { _ModelessDialogs.Add(dialog); }
 
 /***********************************************************************************************
  * Remove_Modeless_Dialog -- Removes the dialog box from the message tracking handler.         *
@@ -195,11 +190,7 @@ void Add_Modeless_Dialog(HWND dialog)
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Remove_Modeless_Dialog(HWND dialog)
-{
-	_ModelessDialogs.Delete_Object(dialog);
-}
-
+void Remove_Modeless_Dialog(HWND dialog) { _ModelessDialogs.Delete_Object(dialog); }
 
 /***********************************************************************************************
  * Add_Accelerator -- Adds a keyboard accelerator to the message handler.                      *
@@ -222,11 +213,7 @@ void Remove_Modeless_Dialog(HWND dialog)
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Add_Accelerator(HWND window, HACCEL accelerator)
-{
-	_Accelerators.Add(AcceleratorTracker(window, accelerator));
-}
-
+void Add_Accelerator(HWND window, HACCEL accelerator) { _Accelerators.Add(AcceleratorTracker(window, accelerator)); }
 
 /***********************************************************************************************
  * Remove_Accelerator -- Removes an accelerator from the message processor.                    *
@@ -243,12 +230,11 @@ void Add_Accelerator(HWND window, HACCEL accelerator)
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Remove_Accelerator(HACCEL accelerator)
-{
-	for (int index = 0; index < _Accelerators.Count(); index++) {
-		if (_Accelerators[index].Accelerator == accelerator) {
-			_Accelerators.Delete(index);
-			break;
-		}
-	}
+void Remove_Accelerator(HACCEL accelerator) {
+  for (int index = 0; index < _Accelerators.Count(); index++) {
+    if (_Accelerators[index].Accelerator == accelerator) {
+      _Accelerators.Delete(index);
+      break;
+    }
+  }
 }

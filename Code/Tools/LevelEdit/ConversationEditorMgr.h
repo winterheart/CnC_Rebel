@@ -34,57 +34,48 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-
 #ifndef __CONVERSATIONEDITORMGR_H
 #define __CONVERSATIONEDITORMGR_H
-
-
 
 /////////////////////////////////////////////////////////////////////////
 //
 //	ConversationEditorMgrClass
 //
 /////////////////////////////////////////////////////////////////////////
-class ConversationEditorMgrClass
-{
-	public:
+class ConversationEditorMgrClass {
+public:
+  //////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////
 
-		//////////////////////////////////////////////////////////
-		//	Public methods
-		//////////////////////////////////////////////////////////
+  //
+  //	Database save/load
+  //
+  static void Save_Global_Database(void);
+  static void Load_Global_Database(void);
+  static void Create_Database_If_Necessary(void);
 
-		//
-		//	Database save/load
-		//
-		static void		Save_Global_Database (void);
-		static void		Load_Global_Database (void);
-		static void		Create_Database_If_Necessary (void);
+  //
+  //	Database version control
+  //
+  static bool Get_Latest_Version(void);
+  static bool Check_Out(void);
+  static bool Check_In(void);
+  static bool Undo_Check_Out(void);
 
-		//
-		//	Database version control
-		//
-		static bool		Get_Latest_Version (void);
-		static bool		Check_Out (void);
-		static bool		Check_In (void);
-		static bool		Undo_Check_Out (void);
+protected:
+  //////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////
 
-	protected:
-
-		//////////////////////////////////////////////////////////
-		//	Protected methods
-		//////////////////////////////////////////////////////////
-		
-	private:
-
-		//////////////////////////////////////////////////////////
-		//	Private member data
-		//////////////////////////////////////////////////////////
+private:
+  //////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////
 };
-
 
 #endif //__CONVERSATIONEDITORMGR_H

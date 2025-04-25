@@ -30,211 +30,200 @@
 class StringClass;
 class TextureLoadTaskClass;
 
-class TextureLoader
-{
+class TextureLoader {
 public:
-	static void Init(void);
-	static void Deinit(void);
+  static void Init(void);
+  static void Deinit(void);
 
-	// Modify given texture size to nearest valid size on current hardware.
-	static void Validate_Texture_Size(unsigned& width, unsigned& height);
+  // Modify given texture size to nearest valid size on current hardware.
+  static void Validate_Texture_Size(unsigned &width, unsigned &height);
 
-	static DX_IDirect3DTexture * Load_Thumbnail(
-		const StringClass& filename);
-//		WW3DFormat texture_format);	// Pass WW3D_FORMAT_UNKNOWN if you don't care
+  static DX_IDirect3DTexture *Load_Thumbnail(const StringClass &filename);
+  //		WW3DFormat texture_format);	// Pass WW3D_FORMAT_UNKNOWN if you don't care
 
-	static DX_IDirect3DSurface *		Load_Surface_Immediate(
-		const StringClass& filename,
-		WW3DFormat surface_format,		// Pass WW3D_FORMAT_UNKNOWN if you don't care
-		bool allow_compression);
+  static DX_IDirect3DSurface *
+  Load_Surface_Immediate(const StringClass &filename,
+                         WW3DFormat surface_format, // Pass WW3D_FORMAT_UNKNOWN if you don't care
+                         bool allow_compression);
 
-	static void	Request_Thumbnail(TextureClass* tc);
+  static void Request_Thumbnail(TextureClass *tc);
 
-	// Adds a loading task to the system. The task if processed in a separate
-	// thread as soon as possible. The task will appear in finished tasks list
-	// when it's been completed. The texture will be refreshed on the next
-	// update call after appearing to the finished tasks list.
-	static void Request_Background_Loading(TextureClass* tc);
+  // Adds a loading task to the system. The task if processed in a separate
+  // thread as soon as possible. The task will appear in finished tasks list
+  // when it's been completed. The texture will be refreshed on the next
+  // update call after appearing to the finished tasks list.
+  static void Request_Background_Loading(TextureClass *tc);
 
-	// Textures can only be created and locked by the main thread so this function sends a request to the texture
-	// handling system to load the texture immediatelly next time it enters the main thread. If this function
-	// is called from the main thread the texture is loaded immediatelly.
-	static void Request_Foreground_Loading(TextureClass* tc);
+  // Textures can only be created and locked by the main thread so this function sends a request to the texture
+  // handling system to load the texture immediatelly next time it enters the main thread. If this function
+  // is called from the main thread the texture is loaded immediatelly.
+  static void Request_Foreground_Loading(TextureClass *tc);
 
-	static void	Flush_Pending_Load_Tasks(void);
-	static void Update(void(*network_callback)(void) = NULL);
+  static void Flush_Pending_Load_Tasks(void);
+  static void Update(void (*network_callback)(void) = NULL);
 
-	// returns true if current thread of execution is allowed to make DX8 calls.
-	static bool Is_DX8_Thread(void);
+  // returns true if current thread of execution is allowed to make DX8 calls.
+  static bool Is_DX8_Thread(void);
 
-	static void Suspend_Texture_Load();
-	static void Continue_Texture_Load();
+  static void Suspend_Texture_Load();
+  static void Continue_Texture_Load();
 
 private:
-	static void Process_Foreground_Load			(TextureLoadTaskClass *task);
-	static void Process_Foreground_Thumbnail	(TextureLoadTaskClass *task);
+  static void Process_Foreground_Load(TextureLoadTaskClass *task);
+  static void Process_Foreground_Thumbnail(TextureLoadTaskClass *task);
 
-	static void Begin_Load_And_Queue				(TextureLoadTaskClass *task);
-	static void Load_Thumbnail						(TextureClass *tc);
+  static void Begin_Load_And_Queue(TextureLoadTaskClass *task);
+  static void Load_Thumbnail(TextureClass *tc);
 
-	static bool TextureLoadSuspended;
+  static bool TextureLoadSuspended;
 };
 
-class TextureLoadTaskListNodeClass
-{
-	friend class TextureLoadTaskListClass;
+class TextureLoadTaskListNodeClass {
+  friend class TextureLoadTaskListClass;
 
-	public:
-		TextureLoadTaskListNodeClass(void) : Next(0), Prev(0) { }
+public:
+  TextureLoadTaskListNodeClass(void) : Next(0), Prev(0) {}
 
-		TextureLoadTaskListClass *Get_List(void)		{ return List; }
+  TextureLoadTaskListClass *Get_List(void) { return List; }
 
-		TextureLoadTaskListNodeClass *Next;
-		TextureLoadTaskListNodeClass *Prev;
-		TextureLoadTaskListClass *		List;
+  TextureLoadTaskListNodeClass *Next;
+  TextureLoadTaskListNodeClass *Prev;
+  TextureLoadTaskListClass *List;
 };
 
+class TextureLoadTaskListClass {
+  // This class implements an unsynchronized, double-linked list of TextureLoadTaskClass
+  // objects, using an embedded list node.
 
-class TextureLoadTaskListClass
-{
-	// This class implements an unsynchronized, double-linked list of TextureLoadTaskClass 
-	// objects, using an embedded list node.
+public:
+  TextureLoadTaskListClass(void);
 
-	public:
-		TextureLoadTaskListClass(void);
+  // Returns true if list is empty, false otherwise.
+  bool Is_Empty(void) const { return (Root.Next == &Root); }
 
-		// Returns true if list is empty, false otherwise.
-		bool									Is_Empty		(void) const		{ return (Root.Next == &Root); }
+  // Add a task to beginning of list
+  void Push_Front(TextureLoadTaskClass *task);
 
-		// Add a task to beginning of list
-		void									Push_Front	(TextureLoadTaskClass *task);
+  // Add a task to end of list
+  void Push_Back(TextureLoadTaskClass *task);
 
-		// Add a task to end of list
-		void									Push_Back	(TextureLoadTaskClass *task);
+  // Remove and return a task from beginning of list, or NULL if list is empty.
+  TextureLoadTaskClass *Pop_Front(void);
 
-		// Remove and return a task from beginning of list, or NULL if list is empty.
-		TextureLoadTaskClass *			Pop_Front	(void);
+  // Remove and return a task from end of list, or NULL if list is empty
+  TextureLoadTaskClass *Pop_Back(void);
 
-		// Remove and return a task from end of list, or NULL if list is empty
-		TextureLoadTaskClass *			Pop_Back		(void);
+  // Remove specified task from list, if present
+  void Remove(TextureLoadTaskClass *task);
 
-		// Remove specified task from list, if present
-		void									Remove		(TextureLoadTaskClass *task);
-
-	private:
-		// This list is implemented using a sentinel node.
-		TextureLoadTaskListNodeClass	Root;
+private:
+  // This list is implemented using a sentinel node.
+  TextureLoadTaskListNodeClass Root;
 };
 
+class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass {
+  // This class added thread-safety to the basic TextureLoadTaskListClass.
 
-class SynchronizedTextureLoadTaskListClass : public TextureLoadTaskListClass
-{
-	// This class added thread-safety to the basic TextureLoadTaskListClass.
+public:
+  SynchronizedTextureLoadTaskListClass(void);
 
-	public:
-		SynchronizedTextureLoadTaskListClass(void);
+  // See comments above for description of member functions.
+  void Push_Front(TextureLoadTaskClass *task);
+  void Push_Back(TextureLoadTaskClass *task);
+  TextureLoadTaskClass *Pop_Front(void);
+  TextureLoadTaskClass *Pop_Back(void);
+  void Remove(TextureLoadTaskClass *task);
 
-		// See comments above for description of member functions.
-		void									Push_Front	(TextureLoadTaskClass *task);
-		void									Push_Back	(TextureLoadTaskClass *task);
-		TextureLoadTaskClass *			Pop_Front	(void);
-		TextureLoadTaskClass *			Pop_Back		(void);
-		void									Remove		(TextureLoadTaskClass *task);
-
-	private:
-		FastCriticalSectionClass		CriticalSection;
+private:
+  FastCriticalSectionClass CriticalSection;
 };
 
+class TextureLoadTaskClass : public TextureLoadTaskListNodeClass {
+public:
+  enum TaskType {
+    TASK_NONE,
+    TASK_THUMBNAIL,
+    TASK_LOAD,
+  };
 
-class TextureLoadTaskClass : public TextureLoadTaskListNodeClass
-{
-	public:
-		enum TaskType {
-			TASK_NONE,
-			TASK_THUMBNAIL,
-			TASK_LOAD,
-		};
+  enum PriorityType {
+    PRIORITY_LOW,
+    PRIORITY_HIGH,
+  };
 
-		enum PriorityType {
-			PRIORITY_LOW,
-			PRIORITY_HIGH,
-		};
+  enum StateType {
+    STATE_NONE,
 
-		enum StateType {
-			STATE_NONE,
+    STATE_LOAD_BEGUN,
+    STATE_LOAD_MIPMAP,
+    STATE_LOAD_COMPLETE,
 
-			STATE_LOAD_BEGUN,
-			STATE_LOAD_MIPMAP,
-			STATE_LOAD_COMPLETE,
+    STATE_COMPLETE,
+  };
 
-			STATE_COMPLETE,
-		};
+  TextureLoadTaskClass(void);
+  ~TextureLoadTaskClass(void);
 
+  static TextureLoadTaskClass *Create(TextureClass *tc, TaskType type, PriorityType priority);
+  void Destroy(void);
+  static void Delete_Free_Pool(void);
 
-		TextureLoadTaskClass(void);
-		~TextureLoadTaskClass(void);
+  void Init(TextureClass *tc, TaskType type, PriorityType priority);
+  void Deinit(void);
 
-		static TextureLoadTaskClass *	Create			(TextureClass *tc, TaskType type, PriorityType priority);
-		void						Destroy						(void);
-		static void				Delete_Free_Pool			(void);
+  TaskType Get_Type(void) const { return Type; }
+  PriorityType Get_Priority(void) const { return Priority; }
+  StateType Get_State(void) const { return State; }
 
-		void						Init							(TextureClass *tc, TaskType type, PriorityType priority);
-		void						Deinit						(void);
+  WW3DFormat Get_Format(void) const { return Format; }
+  unsigned int Get_Width(void) const { return Width; }
+  unsigned int Get_Height(void) const { return Height; }
+  unsigned int Get_Mip_Level_Count(void) const { return MipLevelCount; }
+  unsigned int Get_Reduction(void) const { return Reduction; }
 
-		TaskType					Get_Type						(void) const		{ return Type;				}
-		PriorityType			Get_Priority				(void) const		{ return Priority;		}
-		StateType				Get_State					(void) const		{ return State;			}
+  unsigned char *Get_Locked_Surface_Ptr(unsigned int level);
+  unsigned int Get_Locked_Surface_Pitch(unsigned int level) const;
 
-		WW3DFormat				Get_Format					(void) const		{ return Format;			}
-		unsigned int			Get_Width					(void) const		{ return Width;			}
-		unsigned int			Get_Height					(void) const		{ return Height;			}
-		unsigned int			Get_Mip_Level_Count		(void) const		{ return MipLevelCount; }
-		unsigned int			Get_Reduction				(void) const		{ return Reduction;		}
+  TextureClass *Peek_Texture(void) { return Texture; }
+  DX_IDirect3DTexture *Peek_D3D_Texture(void) { return D3DTexture; }
 
-		unsigned char *		Get_Locked_Surface_Ptr	(unsigned int level);
-		unsigned int			Get_Locked_Surface_Pitch(unsigned int level) const;
+  void Set_Type(TaskType t) { Type = t; }
+  void Set_Priority(PriorityType p) { Priority = p; }
+  void Set_State(StateType s) { State = s; }
 
-		TextureClass *			Peek_Texture				(void)				{ return Texture;			}
-		DX_IDirect3DTexture	*	Peek_D3D_Texture			(void)				{ return D3DTexture;		}
+  bool Begin_Load(void);
+  bool Load(void);
+  void End_Load(void);
+  void Finish_Load(void);
+  void Apply_Missing_Texture(void);
 
-		void						Set_Type						(TaskType t)		{ Type		= t;			}
-		void						Set_Priority				(PriorityType p)	{ Priority	= p;			}
-		void						Set_State					(StateType s)		{ State		= s;			}
+private:
+  bool Begin_Compressed_Load(void);
+  bool Begin_Uncompressed_Load(void);
 
-		bool						Begin_Load					(void);
-		bool						Load							(void);
-		void						End_Load						(void);
-		void						Finish_Load					(void);
-		void						Apply_Missing_Texture	(void);						
+  bool Load_Compressed_Mipmap(void);
+  bool Load_Uncompressed_Mipmap(void);
 
-	private:
-		bool						Begin_Compressed_Load	(void);
-		bool						Begin_Uncompressed_Load	(void);
+  void Lock_Surfaces(void);
+  void Unlock_Surfaces(void);
 
-		bool						Load_Compressed_Mipmap	(void);
-		bool						Load_Uncompressed_Mipmap(void);
+  void Apply(bool initialize);
 
-		void						Lock_Surfaces				(void);
-		void						Unlock_Surfaces			(void);
+  TextureClass *Texture;
+  DX_IDirect3DTexture *D3DTexture;
+  WW3DFormat Format;
 
-		void						Apply							(bool initialize);
-		
-		TextureClass*			Texture;
-		DX_IDirect3DTexture *	D3DTexture;
-		WW3DFormat				Format;
+  unsigned int Width;
+  unsigned int Height;
+  unsigned int MipLevelCount;
+  unsigned int Reduction;
 
-		unsigned int			Width;
-		unsigned	int			Height;
-		unsigned	int			MipLevelCount;
-		unsigned	int			Reduction;
+  unsigned char *LockedSurfacePtr[TextureClass::MIP_LEVELS_MAX];
+  unsigned int LockedSurfacePitch[TextureClass::MIP_LEVELS_MAX];
 
-		unsigned char *		LockedSurfacePtr[TextureClass::MIP_LEVELS_MAX];
-		unsigned	int			LockedSurfacePitch[TextureClass::MIP_LEVELS_MAX];
-
-		TaskType					Type;
-		PriorityType			Priority;
-		StateType				State;
+  TaskType Type;
+  PriorityType Priority;
+  StateType State;
 };
-
 
 #endif

@@ -31,69 +31,62 @@
 //////////////////////////////////////////////////////////
 class WaypointNodeClass;
 
-
 //////////////////////////////////////////////////////////
 //
 //	WaypathInfoPageClass
 //
 //////////////////////////////////////////////////////////
-class WaypathInfoPageClass : public DockableFormClass
-{
+class WaypathInfoPageClass : public DockableFormClass {
 public:
-	WaypathInfoPageClass (void);
-	WaypathInfoPageClass (WaypointNodeClass *waypoint);
-	virtual ~WaypathInfoPageClass (void);
+  WaypathInfoPageClass(void);
+  WaypathInfoPageClass(WaypointNodeClass *waypoint);
+  virtual ~WaypathInfoPageClass(void);
 
-// Dialog Data
-	//{{AFX_DATA(WaypathInfoPageClass)
-	enum { IDD = IDD_WAYPOINT_INFO };
-	CSliderCtrl	m_SpeedSlider;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(WaypathInfoPageClass)
+  enum { IDD = IDD_WAYPOINT_INFO };
+  CSliderCtrl m_SpeedSlider;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(WaypathInfoPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(WaypathInfoPageClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(WaypathInfoPageClass)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(WaypathInfoPageClass)
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  ///////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-	///////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////
-	void				HandleInitDialog (void);
-	bool				Apply_Changes (void);
-
-	///////////////////////////////////////////////////////
-	//	Inline accessors
-	///////////////////////////////////////////////////////
-	void						Set_Waypoint (WaypointNodeClass *waypoint)	{ m_Waypoint = waypoint; }
-	WaypointNodeClass *	Get_Waypoint (void)									{ return m_Waypoint; }
+  ///////////////////////////////////////////////////////
+  //	Inline accessors
+  ///////////////////////////////////////////////////////
+  void Set_Waypoint(WaypointNodeClass *waypoint) { m_Waypoint = waypoint; }
+  WaypointNodeClass *Get_Waypoint(void) { return m_Waypoint; }
 
 protected:
-
-	///////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////
-	void						Update_Enable_State (void);
+  ///////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////
+  void Update_Enable_State(void);
 
 private:
-
-	///////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////
-	WaypointNodeClass *m_Waypoint;
+  ///////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////
+  WaypointNodeClass *m_Waypoint;
 };
 
 //{{AFX_INSERT_LOCATION}}

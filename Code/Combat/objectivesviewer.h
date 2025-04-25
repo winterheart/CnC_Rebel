@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/objectivesviewer.h        $*
  *                                                                                             *
@@ -51,59 +52,50 @@
 //	ObjectivesViewerClass
 //
 ////////////////////////////////////////////////////////////////
-class ObjectivesViewerClass
-{
+class ObjectivesViewerClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	ObjectivesViewerClass (void);
-	~ObjectivesViewerClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  ObjectivesViewerClass(void);
+  ~ObjectivesViewerClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	void				Initialize (void);
-	void				Shutdown (void);
+  void Initialize(void);
+  void Shutdown(void);
 
-	//
-	//	Visibility methods
-	//
-	bool				Is_Displayed (void) const	{ return IsDisplayed; }
-	void				Display (bool onoff);
-	void				Render (void);
+  //
+  //	Visibility methods
+  //
+  bool Is_Displayed(void) const { return IsDisplayed; }
+  void Display(bool onoff);
+  void Render(void);
 
-	//
-	//	Display control
-	//
-	void				Page_Down (void);
-	void				Update (void);
+  //
+  //	Display control
+  //
+  void Page_Down(void);
+  void Update(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  static int __cdecl fnCompareObjectivesCallback(const void *elem1, const void *elem2);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	static int __cdecl	fnCompareObjectivesCallback (const void *elem1, const void *elem2);
+  ////////////////////////////////////////////////////////////////
+  //	Private data types
+  ////////////////////////////////////////////////////////////////
+  typedef enum { COL_DESC = 0, COL_STATUS, COL_MAX } COLUMNS;
 
-	////////////////////////////////////////////////////////////////
-	//	Private data types
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		COL_DESC		= 0,
-		COL_STATUS,
-		COL_MAX
-	} COLUMNS;
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	bool					IsDisplayed;
-	TextWindowClass *	TextWindow;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  bool IsDisplayed;
+  TextWindowClass *TextWindow;
 };
-
 
 #endif //__OBJECTIVES_VIEWER_H

@@ -21,7 +21,7 @@
 // Project:      Network.lib, for Commando
 // Author:       Tom Spencer-Smith
 // Date:         Dec 1998
-// Description:  
+// Description:
 //
 
 #include "gamedata.h"
@@ -35,76 +35,62 @@
 SList<cGameChannel> cGameChannelList::ChanList;
 
 //-----------------------------------------------------------------------------
-void cGameChannelList::Add_Channel(cGameData * p_game_data, const RefPtr<WWOnline::ChannelData>& p_channel)
-{
-	WWASSERT(p_game_data != NULL);
+void cGameChannelList::Add_Channel(cGameData *p_game_data, const RefPtr<WWOnline::ChannelData> &p_channel) {
+  WWASSERT(p_game_data != NULL);
 
-   cGameChannel * p_game_channel = Find_Channel(p_game_data->Get_Owner());
-	if (p_game_channel == NULL) {
-		cGameChannel * p_game_channel = new cGameChannel(p_game_data, p_channel);
-		WWASSERT(p_game_channel != NULL);
-		ChanList.Add_Tail(p_game_channel);
-   } else {
-		//
-		// Update any dynamic data
-		// 
-		p_game_channel->Get_Game_Data()->Set_Current_Players(
-			p_game_data->Get_Current_Players());
-		
-		p_game_channel->Get_Game_Data()->Set_Map_Name(
-			p_game_data->Get_Map_Name());
+  cGameChannel *p_game_channel = Find_Channel(p_game_data->Get_Owner());
+  if (p_game_channel == NULL) {
+    cGameChannel *p_game_channel = new cGameChannel(p_game_data, p_channel);
+    WWASSERT(p_game_channel != NULL);
+    ChanList.Add_Tail(p_game_channel);
+  } else {
+    //
+    // Update any dynamic data
+    //
+    p_game_channel->Get_Game_Data()->Set_Current_Players(p_game_data->Get_Current_Players());
 
-		p_game_channel->WolChannel = p_channel;
+    p_game_channel->Get_Game_Data()->Set_Map_Name(p_game_data->Get_Map_Name());
 
-		delete p_game_data;
-	}
+    p_game_channel->WolChannel = p_channel;
+
+    delete p_game_data;
+  }
 }
 
 //-----------------------------------------------------------------------------
-cGameChannel * cGameChannelList::Find_Channel(const WideStringClass & owner)
-{
-	for (
-		SLNode<cGameChannel> * objnode = ChanList.Head(); 
-		objnode; 
-		objnode = objnode->Next()) {
+cGameChannel *cGameChannelList::Find_Channel(const WideStringClass &owner) {
+  for (SLNode<cGameChannel> *objnode = ChanList.Head(); objnode; objnode = objnode->Next()) {
 
-		cGameChannel * p_channel = objnode->Data();
-		WWASSERT(p_channel != NULL);
-		if (p_channel->Get_Game_Data()->Get_Owner() == owner) {
-			return p_channel;
-		}
-	}
+    cGameChannel *p_channel = objnode->Data();
+    WWASSERT(p_channel != NULL);
+    if (p_channel->Get_Game_Data()->Get_Owner() == owner) {
+      return p_channel;
+    }
+  }
 
-	return NULL;
+  return NULL;
 }
 
 //-----------------------------------------------------------------------------
-void cGameChannelList::Remove_Channel(const WideStringClass & owner)
-{
-	cGameChannel * p_channel = Find_Channel(owner);
-	if (p_channel != NULL) {
-		ChanList.Remove(p_channel);
-		p_channel->Release_Ref ();
-		//delete p_channel;
-	}
+void cGameChannelList::Remove_Channel(const WideStringClass &owner) {
+  cGameChannel *p_channel = Find_Channel(owner);
+  if (p_channel != NULL) {
+    ChanList.Remove(p_channel);
+    p_channel->Release_Ref();
+    // delete p_channel;
+  }
 }
 
 //-----------------------------------------------------------------------------
-void cGameChannelList::Remove_All(void)
-{
-	WWDEBUG_SAY(("cGameChannelList::Remove_All\n"));
+void cGameChannelList::Remove_All(void) {
+  WWDEBUG_SAY(("cGameChannelList::Remove_All\n"));
 
-	for (
-		SLNode<cGameChannel> * objnode = ChanList.Head(); 
-		objnode; 
-		objnode = objnode->Next()) {
+  for (SLNode<cGameChannel> *objnode = ChanList.Head(); objnode; objnode = objnode->Next()) {
 
-		cGameChannel * p_channel = objnode->Data();
-		WWASSERT(p_channel != NULL);
-		p_channel->Release_Ref ();
-	}
+    cGameChannel *p_channel = objnode->Data();
+    WWASSERT(p_channel != NULL);
+    p_channel->Release_Ref();
+  }
 
-	ChanList.Remove_All();
+  ChanList.Remove_All();
 }
-
-

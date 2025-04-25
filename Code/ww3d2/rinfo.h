@@ -34,14 +34,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
 #ifndef RINFO_H
 #define RINFO_H
-
 
 #include "always.h"
 #include "bittype.h"
@@ -52,14 +50,13 @@
 #include "matrix3d.h"
 #include "matrix4.h"
 
-
 class MaterialPassClass;
 class LightEnvironmentClass;
 class VisRasterizerClass;
 class BWRenderClass;
 
-const unsigned MAX_ADDITIONAL_MATERIAL_PASSES=32;
-const unsigned MAX_OVERRIDE_FLAG_LEVEL=32;
+const unsigned MAX_ADDITIONAL_MATERIAL_PASSES = 32;
+const unsigned MAX_OVERRIDE_FLAG_LEVEL = 32;
 
 /**
 ** RenderInfoClass
@@ -69,92 +66,80 @@ const unsigned MAX_OVERRIDE_FLAG_LEVEL=32;
 **
 ** Camera - The camera being used to render the scene, contains culling code, etc
 */
-class RenderInfoClass
-{
+class RenderInfoClass {
 public:
-	RenderInfoClass(CameraClass & cam);
-	~RenderInfoClass(void);
+  RenderInfoClass(CameraClass &cam);
+  ~RenderInfoClass(void);
 
-	enum RINFO_OVERRIDE_FLAGS {
-		RINFO_OVERRIDE_DEFAULT						= 0x0000,	// No overrides
-		RINFO_OVERRIDE_FORCE_TWO_SIDED			= 0x0001,	// Override mesh settings to force no backface culling
-		RINFO_OVERRIDE_FORCE_SORTING				= 0x0002,	// Override mesh settings to force sorting
-		RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY	= 0x0004,	// Do not render base passes (only additional passes)
-		RINFO_OVERRIDE_SHADOW_RENDERING			= 0x0008		// Hint: we are rendering a shadow
-	};
+  enum RINFO_OVERRIDE_FLAGS {
+    RINFO_OVERRIDE_DEFAULT = 0x0000,                // No overrides
+    RINFO_OVERRIDE_FORCE_TWO_SIDED = 0x0001,        // Override mesh settings to force no backface culling
+    RINFO_OVERRIDE_FORCE_SORTING = 0x0002,          // Override mesh settings to force sorting
+    RINFO_OVERRIDE_ADDITIONAL_PASSES_ONLY = 0x0004, // Do not render base passes (only additional passes)
+    RINFO_OVERRIDE_SHADOW_RENDERING = 0x0008        // Hint: we are rendering a shadow
+  };
 
-	void								Push_Material_Pass(MaterialPassClass * matpass);
-	void								Pop_Material_Pass(void);
+  void Push_Material_Pass(MaterialPassClass *matpass);
+  void Pop_Material_Pass(void);
 
-	int								Additional_Pass_Count(void);
-	MaterialPassClass *			Peek_Additional_Pass(int i);
+  int Additional_Pass_Count(void);
+  MaterialPassClass *Peek_Additional_Pass(int i);
 
-	void								Push_Override_Flags(RINFO_OVERRIDE_FLAGS flg);	// Saves current override flags on stack and installs a new one
-	void								Pop_Override_Flags(void);								// Restores previous override flags from stack
-	RINFO_OVERRIDE_FLAGS &		Current_Override_Flags(void);							// Access to current override flags
+  void Push_Override_Flags(RINFO_OVERRIDE_FLAGS flg); // Saves current override flags on stack and installs a new one
+  void Pop_Override_Flags(void);                      // Restores previous override flags from stack
+  RINFO_OVERRIDE_FLAGS &Current_Override_Flags(void); // Access to current override flags
 
-	CameraClass &					Camera;
+  CameraClass &Camera;
 
-	float								fog_scale;
-	float								fog_start;
-	float								fog_end;
+  float fog_scale;
+  float fog_start;
+  float fog_end;
 
-	LightEnvironmentClass*		light_environment;
+  LightEnvironmentClass *light_environment;
 
 protected:
-	MaterialPassClass*			AdditionalMaterialPassArray[MAX_ADDITIONAL_MATERIAL_PASSES];
-	unsigned							AdditionalMaterialPassCount;
-	unsigned							RejectedMaterialPasses;
-	RINFO_OVERRIDE_FLAGS			OverrideFlag[MAX_OVERRIDE_FLAG_LEVEL];
-	unsigned							OverrideFlagLevel;
-
+  MaterialPassClass *AdditionalMaterialPassArray[MAX_ADDITIONAL_MATERIAL_PASSES];
+  unsigned AdditionalMaterialPassCount;
+  unsigned RejectedMaterialPasses;
+  RINFO_OVERRIDE_FLAGS OverrideFlag[MAX_OVERRIDE_FLAG_LEVEL];
+  unsigned OverrideFlagLevel;
 };
 
-	
 /**
 ** SpecialRenderInfoClass
 ** This structure also contains a "grab-bag" of junk for use by the Special_Render
-** function.  The first use that I have for Special_Render is to implement the 
+** function.  The first use that I have for Special_Render is to implement the
 ** visibility detection algorithm where each object is rendered in such a way
 ** that I can get the 'id' of the object which generated each pixel on the screen.
 ** Another use I have planned for Special_Render is a shadow rendering mode that
-** just draws an object in solid black from the point of view of a light source. 
+** just draws an object in solid black from the point of view of a light source.
 ** This would just need another enum for the RenderType...
-** 
+**
 ** The reason for a Special_Render function is that I didn't want to pollute
 ** the main rendering pipeline with checks for these alternate rendering operations.
-*/	
-class SpecialRenderInfoClass : public RenderInfoClass
-{	
+*/
+class SpecialRenderInfoClass : public RenderInfoClass {
 
-public:	
-	SpecialRenderInfoClass(CameraClass & cam,int render_type);
-	~SpecialRenderInfoClass(void);
+public:
+  SpecialRenderInfoClass(CameraClass &cam, int render_type);
+  ~SpecialRenderInfoClass(void);
 
-	// The following fields are only used by the Special_Render function.
-	// this is basically just a place to stick whatever information you need.
-	enum 
-	{ 
-		RENDER_VIS,
-		RENDER_SHADOW
-	};
-	int								RenderType;
+  // The following fields are only used by the Special_Render function.
+  // this is basically just a place to stick whatever information you need.
+  enum { RENDER_VIS, RENDER_SHADOW };
+  int RenderType;
 
-	// RENDER_VIS variables and methods:
-	VisRasterizerClass *			VisRasterizer;
+  // RENDER_VIS variables and methods:
+  VisRasterizerClass *VisRasterizer;
 
-	// RENDER_SHADOW variables and methods:
-	// NOTE: this is somewhat obsolete now that we have hardware render-to-texture.
-	BWRenderClass *				BWRenderer;					// Black & white non-textured renderer
+  // RENDER_SHADOW variables and methods:
+  // NOTE: this is somewhat obsolete now that we have hardware render-to-texture.
+  BWRenderClass *BWRenderer; // Black & white non-textured renderer
 
 private:
-
-	// Not implemented...
-	SpecialRenderInfoClass(const RenderInfoClass &);
-	SpecialRenderInfoClass & operator = (const RenderInfoClass &);
-
+  // Not implemented...
+  SpecialRenderInfoClass(const RenderInfoClass &);
+  SpecialRenderInfoClass &operator=(const RenderInfoClass &);
 };
-
-
 
 #endif

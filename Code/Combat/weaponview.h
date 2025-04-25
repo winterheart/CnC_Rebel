@@ -16,54 +16,54 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/weaponview.h                          $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 1/03/02 5:09p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 18                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/weaponview.h                          $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 1/03/02 5:09p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 18                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	WEAPONVIEW_H
-#define	WEAPONVIEW_H
+#ifndef WEAPONVIEW_H
+#define WEAPONVIEW_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	VECTOR3_H
-	#include "vector3.h"
+#ifndef VECTOR3_H
+#include "vector3.h"
 #endif
 
-class	ChunkSaveClass;
-class	ChunkLoadClass;
+class ChunkSaveClass;
+class ChunkLoadClass;
 
 /*
 **
 */
-class	WeaponViewClass {
+class WeaponViewClass {
 
 public:
-	static	void	Init();
-	static	void 	Shutdown();
-	static	void 	Enable( bool enable );
-	static	void 	Think();
-	static	void 	Reset();
+  static void Init();
+  static void Shutdown();
+  static void Enable(bool enable);
+  static void Think();
+  static void Reset();
 
-	static	bool	Save( ChunkSaveClass &csave );
-	static	bool	Load( ChunkLoadClass &cload );
+  static bool Save(ChunkSaveClass &csave);
+  static bool Load(ChunkLoadClass &cload);
 
-	static	Vector3	Get_Muzzle_Pos();
+  static Vector3 Get_Muzzle_Pos();
 };
 
 #endif

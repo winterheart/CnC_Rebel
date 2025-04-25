@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/RNDSTRAW.CPP                              $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/RNDSTRAW.CPP                              $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   RandomStraw::Get -- Fetch random data.                                                    *
  *   RandomStraw::RandomStraw -- Constructor for the random straw class.                       *
  *   RandomStraw::Reset -- Reset the data to known initial state.                              *
@@ -44,12 +44,11 @@
  *   RandomStraw::~RandomStraw -- Destructor for random straw class.                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"rndstraw.h"
-#include	"sha.h"
-#include	<limits.h>
-#include	<string.h>
-
+#include "always.h"
+#include "rndstraw.h"
+#include "sha.h"
+#include <limits.h>
+#include <string.h>
 
 /***********************************************************************************************
  * RandomStraw::RandomStraw -- Constructor for the random straw class.                         *
@@ -66,13 +65,7 @@
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-RandomStraw::RandomStraw(void) :
-	SeedBits(0),
-	Current(0)
-{
-	Reset();
-}
-
+RandomStraw::RandomStraw(void) : SeedBits(0), Current(0) { Reset(); }
 
 /***********************************************************************************************
  * RandomStraw::~RandomStraw -- Destructor for random straw class.                             *
@@ -89,11 +82,7 @@ RandomStraw::RandomStraw(void) :
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-RandomStraw::~RandomStraw(void)
-{
-	Reset();
-}
-
+RandomStraw::~RandomStraw(void) { Reset(); }
 
 /***********************************************************************************************
  * RandomStraw::Reset -- Reset the data to known initial state.                                *
@@ -110,13 +99,11 @@ RandomStraw::~RandomStraw(void)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Reset(void)
-{
-	SeedBits = 0;
-	Current = 0;
-	memset(Random, '\0', sizeof(Random));
+void RandomStraw::Reset(void) {
+  SeedBits = 0;
+  Current = 0;
+  memset(Random, '\0', sizeof(Random));
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Seed_Bits_Needed -- Fetches the number of seed bits needed.                    *
@@ -139,15 +126,13 @@ void RandomStraw::Reset(void)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RandomStraw::Seed_Bits_Needed(void) const
-{
-	const int total = sizeof(Random) * CHAR_BIT;
-	if (SeedBits < total) {
-		return(total - SeedBits);
-	}
-	return(0);
+int RandomStraw::Seed_Bits_Needed(void) const {
+  const int total = sizeof(Random) * CHAR_BIT;
+  if (SeedBits < total) {
+    return (total - SeedBits);
+  }
+  return (0);
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Seed_Bit -- Add a random bit to the accumulated seed value.                    *
@@ -165,21 +150,19 @@ int RandomStraw::Seed_Bits_Needed(void) const
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Seed_Bit(int seed)
-{
-	char * ptr = ((char *)&Random[0]) + ((SeedBits / CHAR_BIT) % sizeof(Random));
-	char frac = (char)(1 << (SeedBits & (CHAR_BIT-1)));
+void RandomStraw::Seed_Bit(int seed) {
+  char *ptr = ((char *)&Random[0]) + ((SeedBits / CHAR_BIT) % sizeof(Random));
+  char frac = (char)(1 << (SeedBits & (CHAR_BIT - 1)));
 
-	if (seed & 0x01) {
-		*ptr ^= frac;
-	}
-	SeedBits++;
+  if (seed & 0x01) {
+    *ptr ^= frac;
+  }
+  SeedBits++;
 
-	if (SeedBits == (sizeof(Random) * CHAR_BIT)) {
-		Scramble_Seed();
-	}
+  if (SeedBits == (sizeof(Random) * CHAR_BIT)) {
+    Scramble_Seed();
+  }
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Seed_Byte -- Submit 8 bits to the random number seed.                          *
@@ -195,14 +178,12 @@ void RandomStraw::Seed_Bit(int seed)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Seed_Byte(char seed)
-{
-	for (int index = 0; index < CHAR_BIT; index++) {
-		Seed_Bit(seed);
-		seed >>= 1;
-	}
+void RandomStraw::Seed_Byte(char seed) {
+  for (int index = 0; index < CHAR_BIT; index++) {
+    Seed_Bit(seed);
+    seed >>= 1;
+  }
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Seed_Short -- Submit 16 bits to the random number seed.                        *
@@ -218,14 +199,12 @@ void RandomStraw::Seed_Byte(char seed)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Seed_Short(short seed)
-{
-	for (int index = 0; index < (sizeof(seed)*CHAR_BIT); index++) {
-		Seed_Bit(seed);
-		seed >>= 1;
-	}
+void RandomStraw::Seed_Short(short seed) {
+  for (int index = 0; index < (sizeof(seed) * CHAR_BIT); index++) {
+    Seed_Bit(seed);
+    seed >>= 1;
+  }
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Seed_Long -- Submit 32 bits to the random number seed.                         *
@@ -241,14 +220,12 @@ void RandomStraw::Seed_Short(short seed)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Seed_Long(long seed)
-{
-	for (int index = 0; index < (sizeof(seed)*CHAR_BIT); index++) {
-		Seed_Bit(seed);
-		seed >>= 1;
-	}
+void RandomStraw::Seed_Long(long seed) {
+  for (int index = 0; index < (sizeof(seed) * CHAR_BIT); index++) {
+    Seed_Bit(seed);
+    seed >>= 1;
+  }
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Scramble_Seed -- Masks any coorelation between the seed bits.                  *
@@ -268,21 +245,19 @@ void RandomStraw::Seed_Long(long seed)
  * HISTORY:                                                                                    *
  *   07/10/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void RandomStraw::Scramble_Seed(void)
-{
-	SHAEngine sha;
+void RandomStraw::Scramble_Seed(void) {
+  SHAEngine sha;
 
-	for (int index = 0; index < sizeof(Random); index++) {
-		char digest[20];
+  for (int index = 0; index < sizeof(Random); index++) {
+    char digest[20];
 
-		sha.Hash(&Random[0], sizeof(Random));
-		sha.Result(digest);
+    sha.Hash(&Random[0], sizeof(Random));
+    sha.Result(digest);
 
-		int tocopy = sizeof(digest) < (sizeof(Random)-index) ? sizeof(digest) : (sizeof(Random)-index);
-		memmove(((char *)&Random[0]) + index, digest, tocopy);
-	}
+    int tocopy = sizeof(digest) < (sizeof(Random) - index) ? sizeof(digest) : (sizeof(Random) - index);
+    memmove(((char *)&Random[0]) + index, digest, tocopy);
+  }
 }
-
 
 /***********************************************************************************************
  * RandomStraw::Get -- Fetch random data.                                                      *
@@ -302,19 +277,18 @@ void RandomStraw::Scramble_Seed(void)
  *   07/04/1996 JLB : Created.                                                                 *
  *   07/10/1996 JLB : Revamped to make cryptographically secure.                               *
  *=============================================================================================*/
-int RandomStraw::Get(void * source, int slen)
-{
-	if (source == NULL || slen < 1) {
-		return(Straw::Get(source, slen));
-	}
+int RandomStraw::Get(void *source, int slen) {
+  if (source == NULL || slen < 1) {
+    return (Straw::Get(source, slen));
+  }
 
-	int total = 0;
-	while (slen > 0) {
-		*(char *)source = (char)(Random[Current++]());
-		Current = Current % (sizeof(Random) / sizeof(Random[0]));
-		source = (char*)source + sizeof(char);
-		slen--;
-		total++;
-	}
-	return(total);
+  int total = 0;
+  while (slen > 0) {
+    *(char *)source = (char)(Random[Current++]());
+    Current = Current % (sizeof(Random) / sizeof(Random[0]));
+    source = (char *)source + sizeof(char);
+    slen--;
+    total++;
+  }
+  return (total);
 }

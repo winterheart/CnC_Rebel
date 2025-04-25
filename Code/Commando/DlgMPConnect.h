@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* NAME
-*     $Archive: /Commando/Code/Commando/DlgMPConnect.h $
-*
-* DESCRIPTION
-*     Dialog to inform user that we are connecting to a game host.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Steve_t $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 2/14/02 2:03p $
-*
-******************************************************************************/
+ *
+ * NAME
+ *     $Archive: /Commando/Code/Commando/DlgMPConnect.h $
+ *
+ * DESCRIPTION
+ *     Dialog to inform user that we are connecting to a game host.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Steve_t $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 2/14/02 2:03p $
+ *
+ ******************************************************************************/
 
 #ifndef __DLGMPCONNECT_H__
 #define __DLGMPCONNECT_H__
@@ -41,36 +41,33 @@
 
 class cGameData;
 
-class DlgMPConnect :
-		public PopupDialogClass
-	{
-	public:
-		// Display connecting dialog.
-		//   TeamChoice - Team preference of connecting player
-		//   ClanID - ID of players clan (0 if not a clan game)
-		static bool DoDialog(int teamChoice, unsigned long clanID);
+class DlgMPConnect : public PopupDialogClass {
+public:
+  // Display connecting dialog.
+  //   TeamChoice - Team preference of connecting player
+  //   ClanID - ID of players clan (0 if not a clan game)
+  static bool DoDialog(int teamChoice, unsigned long clanID);
 
-		void Connected(cGameData* theGame);
-		void Failed_To_Connect(void);
+  void Connected(cGameData *theGame);
+  void Failed_To_Connect(void);
 
+protected:
+  DlgMPConnect(int teamChoice, unsigned long clanID);
+  virtual ~DlgMPConnect();
 
-	protected:
-		DlgMPConnect(int teamChoice, unsigned long clanID);
-		virtual ~DlgMPConnect();
+  void On_Command(int ctrl, int message, DWORD param);
+  void On_Periodic(void);
 
-		void On_Command(int ctrl, int message, DWORD param);
-		void On_Periodic(void);
+private:
+  // Prevent copy and assignment
+  DlgMPConnect(const DlgMPConnect &);
+  const DlgMPConnect &operator=(const DlgMPConnect &);
 
-	private:
-		// Prevent copy and assignment
-		DlgMPConnect(const DlgMPConnect&);
-		const DlgMPConnect& operator=(const DlgMPConnect&);
+  int mTeamChoice;
+  unsigned long mClanID;
 
-		int mTeamChoice;
-		unsigned long mClanID;
-
-		cGameData* mTheGame;
-		bool mFailed;
-	};
+  cGameData *mTheGame;
+  bool mFailed;
+};
 
 #endif // __DLGMPCONNECT_H__

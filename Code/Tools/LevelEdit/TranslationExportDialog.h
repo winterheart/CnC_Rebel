@@ -28,60 +28,55 @@
 /////////////////////////////////////////////////////////////////////////////
 // TranslationExportDialogClass dialog
 
-class TranslationExportDialogClass : public CDialog
-{
-// Construction
+class TranslationExportDialogClass : public CDialog {
+  // Construction
 public:
-	TranslationExportDialogClass(CWnd* pParent = NULL);   // standard constructor
+  TranslationExportDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(TranslationExportDialogClass)
-	enum { IDD = IDD_EXPORT_LANGUAGE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(TranslationExportDialogClass)
+  enum { IDD = IDD_EXPORT_LANGUAGE };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(TranslationExportDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(TranslationExportDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(TranslationExportDialogClass)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(TranslationExportDialogClass)
+  virtual void OnOK();
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
+  void Set_Filename(const char *filename) { Filename = filename; }
+  const char *Get_Filename(void) const { return Filename; }
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
-	void				Set_Filename (const char *filename)	{ Filename = filename; }
-	const char *	Get_Filename (void) const				{ return Filename; }
-
-	void				Set_Is_Installer (bool onoff)			{ IsInstaller = onoff; }
-	bool				Is_Installer (void) const				{ return IsInstaller; }
+  void Set_Is_Installer(bool onoff) { IsInstaller = onoff; }
+  bool Is_Installer(void) const { return IsInstaller; }
 
 private:
+  //////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////
+  void Export_Game_Strings(void);
+  void Export_Installer_Strings(void);
 
-	//////////////////////////////////////////////////////////////////
-	//	Private methods
-	//////////////////////////////////////////////////////////////////
-	void				Export_Game_Strings (void);
-	void				Export_Installer_Strings (void);
-
-	//////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////
-	CString		Filename;
-	bool			IsInstaller;
+  //////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////
+  CString Filename;
+  bool IsInstaller;
 };
 
 //{{AFX_INSERT_LOCATION}}

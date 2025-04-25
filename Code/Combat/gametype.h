@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/gametype.h                              $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 11/09/01 3:42p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/gametype.h                              $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 11/09/01 3:42p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef GAMETYPE_H
@@ -39,36 +39,33 @@
 
 //-----------------------------------------------------------------------------
 
-#define	IS_MISSION				cGameType::Is_Mission()
-#define	IS_SKIRMISH				cGameType::Is_Skirmish()
-#define	IS_MULTIPLAY			cGameType::Is_Multiplay()
-#define	IS_SOLOPLAY				cGameType::Is_Soloplay()
+#define IS_MISSION cGameType::Is_Mission()
+#define IS_SKIRMISH cGameType::Is_Skirmish()
+#define IS_MULTIPLAY cGameType::Is_Multiplay()
+#define IS_SOLOPLAY cGameType::Is_Soloplay()
 
-enum GameTypeEnum 
-{
-	GAMETYPE_NONE,				// Unassigned
-	GAMETYPE_MISSION,			// Traditional soloplay
-	GAMETYPE_SKIRMISH,		// C&C practice against AI's
-	GAMETYPE_MULTIPLAY,		// C&C against humans
+enum GameTypeEnum {
+  GAMETYPE_NONE,      // Unassigned
+  GAMETYPE_MISSION,   // Traditional soloplay
+  GAMETYPE_SKIRMISH,  // C&C practice against AI's
+  GAMETYPE_MULTIPLAY, // C&C against humans
 };
 
 //-----------------------------------------------------------------------------
-class cGameType
-{
+class cGameType {
 public:
-	static void				Set_Game_Type(GameTypeEnum game_type)	{GameType = game_type;}
-	static GameTypeEnum	Get_Game_Type(void)							{return GameType;}
+  static void Set_Game_Type(GameTypeEnum game_type) { GameType = game_type; }
+  static GameTypeEnum Get_Game_Type(void) { return GameType; }
 
-	static bool				Is_Mission(void)								{return GameType == GAMETYPE_MISSION;}
-	static bool				Is_Skirmish(void)								{return GameType == GAMETYPE_SKIRMISH;}
-	static bool				Is_Multiplay(void)							{return GameType == GAMETYPE_MULTIPLAY;}
-	static bool				Is_Soloplay(void)								{return GameType != GAMETYPE_MULTIPLAY;}
+  static bool Is_Mission(void) { return GameType == GAMETYPE_MISSION; }
+  static bool Is_Skirmish(void) { return GameType == GAMETYPE_SKIRMISH; }
+  static bool Is_Multiplay(void) { return GameType == GAMETYPE_MULTIPLAY; }
+  static bool Is_Soloplay(void) { return GameType != GAMETYPE_MULTIPLAY; }
 
 private:
-	static GameTypeEnum	GameType;
+  static GameTypeEnum GameType;
 };
 
 //-----------------------------------------------------------------------------
 
 #endif // GAMETYPE_H
-

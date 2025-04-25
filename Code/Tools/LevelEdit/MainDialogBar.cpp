@@ -31,61 +31,51 @@
 #include "mainfrm.h"
 #include "heightfieldpage.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // MainDialogBarClass dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-MainDialogBarClass::MainDialogBarClass (void)
-	:	m_iCurrentTab (0)
-{
-	//{{AFX_DATA_INIT(MainDialogBarClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+MainDialogBarClass::MainDialogBarClass(void) : m_iCurrentTab(0) {
+  //{{AFX_DATA_INIT(MainDialogBarClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
 
-	::memset (m_pTabs, 0, sizeof (m_pTabs));
-	return ;
+  ::memset(m_pTabs, 0, sizeof(m_pTabs));
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // ~MainDialogBarClass
 //
 /////////////////////////////////////////////////////////////////////////////
-MainDialogBarClass::~MainDialogBarClass (void)
-{
-	for (int index = 0; index < TAB_COUNT; index ++) {
-		SAFE_DELETE (m_pTabs[index]);
-	}
+MainDialogBarClass::~MainDialogBarClass(void) {
+  for (int index = 0; index < TAB_COUNT; index++) {
+    SAFE_DELETE(m_pTabs[index]);
+  }
 
-	return ;
+  return;
 }
 
-
-void
-MainDialogBarClass::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogBar::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(MainDialogBarClass)
-	DDX_Control(pDX, IDC_LIBRARY_TAB, m_TabCtrl);
-	//}}AFX_DATA_MAP
+void MainDialogBarClass::DoDataExchange(CDataExchange *pDX) {
+  CDialogBar::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(MainDialogBarClass)
+  DDX_Control(pDX, IDC_LIBRARY_TAB, m_TabCtrl);
+  //}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(MainDialogBarClass, CDialogBar)
-	//{{AFX_MSG_MAP(MainDialogBarClass)
-	ON_WM_SIZE()
-	ON_NOTIFY(TCN_SELCHANGE, IDC_LIBRARY_TAB, OnSelchangeLibraryTab)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(MainDialogBarClass)
+ON_WM_SIZE()
+ON_NOTIFY(TCN_SELCHANGE, IDC_LIBRARY_TAB, OnSelchangeLibraryTab)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -93,176 +83,151 @@ END_MESSAGE_MAP()
 // MainDialogBarClass message handlers
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-MainDialogBarClass::OnInitDialog (void) 
-{
-	return TRUE;
-}
-
+BOOL MainDialogBarClass::OnInitDialog(void) { return TRUE; }
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	OnSize
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-MainDialogBarClass::OnSize
-(
-	UINT	nType,
-	int	cx,
-	int	cy
-)
-{
-	CDialogBar::OnSize (nType, cx, cy);
+void MainDialogBarClass::OnSize(UINT nType, int cx, int cy) {
+  CDialogBar::OnSize(nType, cx, cy);
 
-	if (::IsWindow (m_TabCtrl) && (cx > 0) && (cy > 0)) {
-		
-		//CRect client_rect;
-		//GetClientRect (&client_rect);
-		
-		// Resize the tab control to fill the entire contents of the client area
-		m_TabCtrl.SetWindowPos (NULL, 0, 3, cx, cy - 6, SWP_NOZORDER);
+  if (::IsWindow(m_TabCtrl) && (cx > 0) && (cy > 0)) {
 
-		// Get the display rectangle of the tab control
-		CRect rect;
-		m_TabCtrl.GetWindowRect (&rect);
-		m_TabCtrl.AdjustRect (FALSE, &rect);
+    // CRect client_rect;
+    // GetClientRect (&client_rect);
 
-		// Convert the display rectangle from screen to client coords
-		ScreenToClient (&rect);
+    // Resize the tab control to fill the entire contents of the client area
+    m_TabCtrl.SetWindowPos(NULL, 0, 3, cx, cy - 6, SWP_NOZORDER);
 
-		//
-		// Loop through all the tabs in the library
-		//
-		for (int tab = 0; tab < TAB_COUNT; tab ++) {
-			if (m_pTabs[tab] != NULL) {
-				
-				//
-				// Resize this tab
-				//
-				m_pTabs[tab]->SetWindowPos (NULL, rect.left, rect.top,
-										rect.Width (), rect.Height (), SWP_NOZORDER);
-			}
-		}
-	}
-	
-	return ;
+    // Get the display rectangle of the tab control
+    CRect rect;
+    m_TabCtrl.GetWindowRect(&rect);
+    m_TabCtrl.AdjustRect(FALSE, &rect);
+
+    // Convert the display rectangle from screen to client coords
+    ScreenToClient(&rect);
+
+    //
+    // Loop through all the tabs in the library
+    //
+    for (int tab = 0; tab < TAB_COUNT; tab++) {
+      if (m_pTabs[tab] != NULL) {
+
+        //
+        // Resize this tab
+        //
+        m_pTabs[tab]->SetWindowPos(NULL, rect.left, rect.top, rect.Width(), rect.Height(), SWP_NOZORDER);
+      }
+    }
+  }
+
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnSelchangeLibraryTab
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-MainDialogBarClass::OnSelchangeLibraryTab
-(
-	NMHDR* pNMHDR,
-	LRESULT* pResult
-) 
-{
-	// Which tab is selected?
-	int newtab = m_TabCtrl.GetCurSel ();
+void MainDialogBarClass::OnSelchangeLibraryTab(NMHDR *pNMHDR, LRESULT *pResult) {
+  // Which tab is selected?
+  int newtab = m_TabCtrl.GetCurSel();
 
-	// Is this a new tab?
-	if (m_iCurrentTab != newtab) {
-		
-		// Is the old tab valid?
-		if (m_pTabs[m_iCurrentTab] != NULL) {
-			
-			// Hide the contents of the old tab
-			m_pTabs[m_iCurrentTab]->ShowWindow (SW_HIDE);
-		}
+  // Is this a new tab?
+  if (m_iCurrentTab != newtab) {
 
-		// Is the new tab valid?
-		if (m_pTabs[newtab] != NULL) {
-			
-			// Show the contents of the new tab
-			m_pTabs[newtab]->ShowWindow (SW_SHOW);
-		}
+    // Is the old tab valid?
+    if (m_pTabs[m_iCurrentTab] != NULL) {
 
-		// Remember what our new current tab is
-		m_iCurrentTab = newtab;		
-	}
+      // Hide the contents of the old tab
+      m_pTabs[m_iCurrentTab]->ShowWindow(SW_HIDE);
+    }
 
-	
-	(*pResult) = 0;
-	return ;
+    // Is the new tab valid?
+    if (m_pTabs[newtab] != NULL) {
+
+      // Show the contents of the new tab
+      m_pTabs[newtab]->ShowWindow(SW_SHOW);
+    }
+
+    // Remember what our new current tab is
+    m_iCurrentTab = newtab;
+  }
+
+  (*pResult) = 0;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Initialize
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-MainDialogBarClass::Initialize (void)
-{
-	UpdateData (FALSE);
-	
-	TC_ITEM tab_info = { 0 };
-	tab_info.mask = TCIF_TEXT;
-	tab_info.pszText = LPSTR("Presets");
-	m_TabCtrl.InsertItem (TAB_GLOBAL, &tab_info);
+void MainDialogBarClass::Initialize(void) {
+  UpdateData(FALSE);
 
-	tab_info.mask = TCIF_TEXT;
-	tab_info.pszText = LPSTR("Instances");
-	m_TabCtrl.InsertItem (TAB_INSTANCES, &tab_info);
+  TC_ITEM tab_info = {0};
+  tab_info.mask = TCIF_TEXT;
+  tab_info.pszText = LPSTR("Presets");
+  m_TabCtrl.InsertItem(TAB_GLOBAL, &tab_info);
 
-	tab_info.mask = TCIF_TEXT;
-	tab_info.pszText = LPSTR("Conversations");
-	m_TabCtrl.InsertItem (TAB_CONVERSATION, &tab_info);
+  tab_info.mask = TCIF_TEXT;
+  tab_info.pszText = LPSTR("Instances");
+  m_TabCtrl.InsertItem(TAB_INSTANCES, &tab_info);
 
-	tab_info.mask = TCIF_TEXT;
-	tab_info.pszText = LPSTR("Overlap");
-	m_TabCtrl.InsertItem (TAB_OVERLAP, &tab_info);
+  tab_info.mask = TCIF_TEXT;
+  tab_info.pszText = LPSTR("Conversations");
+  m_TabCtrl.InsertItem(TAB_CONVERSATION, &tab_info);
 
-	//
-	// Create the form's to add to the different tabs
-	//
-	m_pTabs[TAB_GLOBAL]			= new PresetsFormClass (this);
-	m_pTabs[TAB_INSTANCES]		= new InstancesPageClass (this);
-	m_pTabs[TAB_CONVERSATION]	= new ConversationPageClass (this);
-	m_pTabs[TAB_OVERLAP]			= new OverlapPageClass (this);
-	
-//#ifndef PUBLIC_EDITOR_VER  (gth) go ahead and give the heightfield away!
+  tab_info.mask = TCIF_TEXT;
+  tab_info.pszText = LPSTR("Overlap");
+  m_TabCtrl.InsertItem(TAB_OVERLAP, &tab_info);
 
-	//
-	//	Install the heightfield tab
-	//
-	tab_info.mask		= TCIF_TEXT;
-	tab_info.pszText	= LPSTR("Heightfield");
-	m_TabCtrl.InsertItem (TAB_HEIGHTFIELD, &tab_info);	
+  //
+  // Create the form's to add to the different tabs
+  //
+  m_pTabs[TAB_GLOBAL] = new PresetsFormClass(this);
+  m_pTabs[TAB_INSTANCES] = new InstancesPageClass(this);
+  m_pTabs[TAB_CONVERSATION] = new ConversationPageClass(this);
+  m_pTabs[TAB_OVERLAP] = new OverlapPageClass(this);
 
-	m_pTabs[TAB_HEIGHTFIELD] = new HeightfieldPageClass (this);
+  // #ifndef PUBLIC_EDITOR_VER  (gth) go ahead and give the heightfield away!
 
-//#endif //PUBLIC_EDITOR_VER
+  //
+  //	Install the heightfield tab
+  //
+  tab_info.mask = TCIF_TEXT;
+  tab_info.pszText = LPSTR("Heightfield");
+  m_TabCtrl.InsertItem(TAB_HEIGHTFIELD, &tab_info);
 
-	//
-	// Loop through and create the tabs
-	//
-	for (int index = 0; index < TAB_COUNT; index ++) {		
-		if (m_pTabs[index] != NULL) {
-			m_pTabs[index]->ShowWindow ((index == 0) ? SW_SHOW : SW_HIDE);
-		}
-	}
+  m_pTabs[TAB_HEIGHTFIELD] = new HeightfieldPageClass(this);
 
-	return ;
+  // #endif //PUBLIC_EDITOR_VER
+
+  //
+  // Loop through and create the tabs
+  //
+  for (int index = 0; index < TAB_COUNT; index++) {
+    if (m_pTabs[index] != NULL) {
+      m_pTabs[index]->ShowWindow((index == 0) ? SW_SHOW : SW_HIDE);
+    }
+  }
+
+  return;
 }
 
-BOOL MainDialogBarClass::PreTranslateMessage(MSG* pMsg) 
-{
-	// TODO: Add your specialized code here and/or call the base class
-	
-	/*CMainFrame *main_wnd = (CMainFrame *)::AfxGetMainWnd ();
-	if (main_wnd !=  NULL) {
-		HACCEL accel_table = main_wnd->GetDefaultAccelerator ();
-		if (::TranslateAccelerator (main_wnd->m_hWnd, accel_table, pMsg)) {
-			return 1;
-		}		
-	}*/
-	
-	return CDialogBar::PreTranslateMessage(pMsg);
+BOOL MainDialogBarClass::PreTranslateMessage(MSG *pMsg) {
+  // TODO: Add your specialized code here and/or call the base class
+
+  /*CMainFrame *main_wnd = (CMainFrame *)::AfxGetMainWnd ();
+  if (main_wnd !=  NULL) {
+          HACCEL accel_table = main_wnd->GetDefaultAccelerator ();
+          if (::TranslateAccelerator (main_wnd->m_hWnd, accel_table, pMsg)) {
+                  return 1;
+          }
+  }*/
+
+  return CDialogBar::PreTranslateMessage(pMsg);
 }

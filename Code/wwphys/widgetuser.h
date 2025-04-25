@@ -34,15 +34,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-
 #ifndef WIDGETUSER_H
 #define WIDGETUSER_H
-
 
 class Vector3;
 class Matrix3D;
@@ -50,7 +47,6 @@ class AABoxClass;
 class OBBoxClass;
 class RenderInfoClass;
 class WidgetRenderOpClass;
-
 
 /**
 ** WidgetUserClass
@@ -66,57 +62,50 @@ class WidgetRenderOpClass;
 ** check if debugging for that particular system is turned on.  Use the macros below the
 ** class definition so that all of your calls automatically disappear in the release build.
 */
-class WidgetUserClass
-{
+class WidgetUserClass {
 
 public:
+  WidgetUserClass(void);
+  ~WidgetUserClass(void);
 
-	WidgetUserClass(void);
-	~WidgetUserClass(void);	
+  /*
+  ** Debug rendering of vectors, points, boxes, etc etc.  Each frame, these objects
+  ** will be rendered during PhysClass::Render and then deleted.
+  */
 
-	/*
-	** Debug rendering of vectors, points, boxes, etc etc.  Each frame, these objects
-	** will be rendered during PhysClass::Render and then deleted.
-	*/
-	
 #ifdef WWDEBUG
-	void				Reset_Debug_Widget_List(void);
-	virtual void	Add_Debug_Point(const Vector3 & p,const Vector3 & color);
-	virtual void	Add_Debug_Vector(const Vector3 & p,const Vector3 & v,const Vector3 & color);
-	virtual void	Add_Debug_AABox(const AABoxClass & box,const Vector3 & color,float opacity = 0.25f);
-	virtual void	Add_Debug_OBBox(const OBBoxClass & box,const Vector3 & color,float opacity = 0.25f);
-	virtual void	Add_Debug_Axes(const Matrix3D & transform,const Vector3 & color);
-	void				Render_Debug_Widgets(RenderInfoClass & rinfo);
+  void Reset_Debug_Widget_List(void);
+  virtual void Add_Debug_Point(const Vector3 &p, const Vector3 &color);
+  virtual void Add_Debug_Vector(const Vector3 &p, const Vector3 &v, const Vector3 &color);
+  virtual void Add_Debug_AABox(const AABoxClass &box, const Vector3 &color, float opacity = 0.25f);
+  virtual void Add_Debug_OBBox(const OBBoxClass &box, const Vector3 &color, float opacity = 0.25f);
+  virtual void Add_Debug_Axes(const Matrix3D &transform, const Vector3 &color);
+  void Render_Debug_Widgets(RenderInfoClass &rinfo);
 #else
-	void				Reset_Debug_Widget_List(void)																	{}
-	void				Add_Debug_Point(const Vector3 & p,const Vector3 & color)								{}
-	void				Add_Debug_Vector(const Vector3 & p,const Vector3 & v,const Vector3 & color)	{}
-	void				Add_Debug_AABox(const AABoxClass & box,const Vector3 & color,float opacity = 0.25f)	{}
-	void				Add_Debug_OBBox(const OBBoxClass & box,const Vector3 & color,float opacity = 0.25f)	{}
-	void				Add_Debug_Axes(const Matrix3D & transform,const Vector3 & color)					{}
-	void				Render_Debug_Widgets(RenderInfoClass & rinfo)											{}
+  void Reset_Debug_Widget_List(void) {}
+  void Add_Debug_Point(const Vector3 &p, const Vector3 &color) {}
+  void Add_Debug_Vector(const Vector3 &p, const Vector3 &v, const Vector3 &color) {}
+  void Add_Debug_AABox(const AABoxClass &box, const Vector3 &color, float opacity = 0.25f) {}
+  void Add_Debug_OBBox(const OBBoxClass &box, const Vector3 &color, float opacity = 0.25f) {}
+  void Add_Debug_Axes(const Matrix3D &transform, const Vector3 &color) {}
+  void Render_Debug_Widgets(RenderInfoClass &rinfo) {}
 #endif
 
 protected:
-
 #ifdef WWDEBUG
-	void				Add_Debug_Widget(WidgetRenderOpClass * op);	
+  void Add_Debug_Widget(WidgetRenderOpClass *op);
 #else
-	void				Add_Debug_Widget(WidgetRenderOpClass * op)												{}
+  void Add_Debug_Widget(WidgetRenderOpClass *op) {}
 #endif
 
-	/*
-	** Debug widget rendering list
-	** This member, which only exists when WWDEBUG is enabled, handles the rendering
-	** of any debug widgets that this object needs.
-	*/
+  /*
+  ** Debug widget rendering list
+  ** This member, which only exists when WWDEBUG is enabled, handles the rendering
+  ** of any debug widgets that this object needs.
+  */
 #ifdef WWDEBUG
-	WidgetRenderOpClass *			WidgetRenderOpList;
+  WidgetRenderOpClass *WidgetRenderOpList;
 #endif
-
 };
-
-
-
 
 #endif

@@ -23,59 +23,52 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "listtypes.h"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // UpdateAssetsDialogClass dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-class UpdateAssetsDialogClass : public CDialog
-{
-// Construction
+class UpdateAssetsDialogClass : public CDialog {
+  // Construction
 public:
-	UpdateAssetsDialogClass (const CString &comments, STRING_LIST &directory_list, bool update_all, CWnd *pParent = NULL);
+  UpdateAssetsDialogClass(const CString &comments, STRING_LIST &directory_list, bool update_all, CWnd *pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(UpdateAssetsDialogClass)
-	enum { IDD = IDD_PERFORM_UPDATE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(UpdateAssetsDialogClass)
+  enum { IDD = IDD_PERFORM_UPDATE };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(UpdateAssetsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(UpdateAssetsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(UpdateAssetsDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(UpdateAssetsDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
-		
-		////////////////////////////////////////////////////////
-		//	Public methods
-		////////////////////////////////////////////////////////
-		
-	private:
+public:
+  ////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////
 
-		////////////////////////////////////////////////////////
-		//	Private member data
-		////////////////////////////////////////////////////////
-		CString					m_Comments;
-		STRING_LIST &			m_DirectoryList;
-		bool						m_UpdateAll;
+private:
+  ////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////
+  CString m_Comments;
+  STRING_LIST &m_DirectoryList;
+  bool m_UpdateAll;
 };
 
 //{{AFX_INSERT_LOCATION}}

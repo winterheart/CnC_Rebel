@@ -57,117 +57,111 @@
 //	((CCDKeyAuth *)instance)->auth_callback(localid, authenticated, errmsg);
 // }
 
-
-//generate a rand nchar challenge
-char * CCDKeyAuth::GenChallenge(int nchars)
-{
-	static char s[33];
-	if (nchars > 32) nchars = 32;
-	s[nchars] = 0;
-	while (nchars--)
-	{
-		s[nchars] = (char)('a' + rand() % 26);
-	}
-	return s;
+// generate a rand nchar challenge
+char *CCDKeyAuth::GenChallenge(int nchars) {
+  static char s[33];
+  if (nchars > 32)
+    nchars = 32;
+  s[nchars] = 0;
+  while (nchars--) {
+    s[nchars] = (char)('a' + rand() % 26);
+  }
+  return s;
 }
 
 /* Callback function to indicate whether a client has been authorized or not.
 If the client has been, then we send them a "welcome" string, representative of
 allowing them to "enter" the game. If they have not been authenticated, we dump
 them after sending an error message */
-void CCDKeyAuth::auth_callback(int localid, int authenticated, char *errmsg, void *instance)
-{
-//	client_t *clients = (client_t *)instance;
-//	char outbuf[512];
+void CCDKeyAuth::auth_callback(int localid, int authenticated, char *errmsg, void *instance) {
+  //	client_t *clients = (client_t *)instance;
+  //	char outbuf[512];
 
-	WWDEBUG_SAY(("CDKeyAuth -- %d:%d:%s\n", localid, authenticated, errmsg));
+  WWDEBUG_SAY(("CDKeyAuth -- %d:%d:%s\n", localid, authenticated, errmsg));
 
-	cPlayer * p_player = cPlayerManager::Find_Player(localid);
-	if (p_player != NULL) {
+  cPlayer *p_player = cPlayerManager::Find_Player(localid);
+  if (p_player != NULL) {
 
-		if (!authenticated) //doh.. bad!
-		{
-			// This client failed.
-			//p_player->Set_GameSpy_Auth_State(GAMESPY_AUTH_STATE_REJECTING);
-			//cGameSpyAuthMgr::Evict_Player(localid);
-			cGameSpyAuthMgr::Initiate_Auth_Rejection(localid);
+    if (!authenticated) // doh.. bad!
+    {
+      // This client failed.
+      // p_player->Set_GameSpy_Auth_State(GAMESPY_AUTH_STATE_REJECTING);
+      // cGameSpyAuthMgr::Evict_Player(localid);
+      cGameSpyAuthMgr::Initiate_Auth_Rejection(localid);
 
-	//		printf("Client %d was NOT authenticated (%s)\n",localid, errmsg);
-	//		sprintf(outbuf,"E:%s\n",errmsg);
-	//		send(clients[localid].sock, outbuf, strlen(outbuf),0);
-	//		shutdown(clients[localid].sock, 2);
-	//		closesocket(clients[localid].sock);
-	//		clients[localid].sock = INVALID_SOCKET;
-		} else
-		{
-			// This client passed.
-			p_player->Set_GameSpy_Auth_State(GAMESPY_AUTH_STATE_ACCEPTED);
-	//		printf("Client %d was authenticated (%s)\n",localid, errmsg);
-	//		sprintf(outbuf,"M:Welcome to the game, have fun! (%s)\n",errmsg);
-	//		send(clients[localid].sock, outbuf, strlen(outbuf),0);
-		}
-	}
+      //		printf("Client %d was NOT authenticated (%s)\n",localid, errmsg);
+      //		sprintf(outbuf,"E:%s\n",errmsg);
+      //		send(clients[localid].sock, outbuf, strlen(outbuf),0);
+      //		shutdown(clients[localid].sock, 2);
+      //		closesocket(clients[localid].sock);
+      //		clients[localid].sock = INVALID_SOCKET;
+    } else {
+      // This client passed.
+      p_player->Set_GameSpy_Auth_State(GAMESPY_AUTH_STATE_ACCEPTED);
+      //		printf("Client %d was authenticated (%s)\n",localid, errmsg);
+      //		sprintf(outbuf,"M:Welcome to the game, have fun! (%s)\n",errmsg);
+      //		send(clients[localid].sock, outbuf, strlen(outbuf),0);
+    }
+  }
 }
 
 void CCDKeyAuth::DisconnectUser(int localid) {
 #ifdef ENABLE_GAMESPY
-	gcd_disconnect_user(localid);
+  gcd_disconnect_user(localid);
 #endif
-
 }
 
 void CCDKeyAuth::AuthenticateUser(int localid, ULONG ip, char *challenge, char *authstring) {
 #ifdef ENABLE_GAMESPY
-	// Customize this with our playerdata struct
-	// Take the response from our challenge that we sent to the client
-	// and send it off to the Authserver along with the original challenge
+  // Customize this with our playerdata struct
+  // Take the response from our challenge that we sent to the client
+  // and send it off to the Authserver along with the original challenge
 
-	gcd_authenticate_user(localid, ip, challenge, authstring, CCDKeyAuth::auth_callback, NULL);
+  gcd_authenticate_user(localid, ip, challenge, authstring, CCDKeyAuth::auth_callback, NULL);
 #endif
-
 }
 
 void CCDKeyAuth::AuthSerial(const char *challenge, StringClass &resp) {
 
 #ifdef ENABLE_GAMESPY
-	char response[RESPONSE_SIZE];
-	StringClass sserial;
+  char response[RESPONSE_SIZE];
+  StringClass sserial;
 
-	WWASSERT(challenge);
+  WWASSERT(challenge);
 
-	GetSerialNum(sserial);
+  GetSerialNum(sserial);
 
-	const char *serial = sserial;
+  const char *serial = sserial;
 
-	char *cdkey = new char [strlen(serial)+1];
-	char *outb = cdkey;
-	const char *linep = serial;
-	char md5hash[33];
+  char *cdkey = new char[strlen(serial) + 1];
+  char *outb = cdkey;
+  const char *linep = serial;
+  char md5hash[33];
 
-	while (*linep) {
-		if (*linep >= '0' && *linep <= '9') {
-			*outb++ = *linep;
-		}
-		linep++;
-	}
-	*outb = 0;
+  while (*linep) {
+    if (*linep >= '0' && *linep <= '9') {
+      *outb++ = *linep;
+    }
+    linep++;
+  }
+  *outb = 0;
 
-	// MD5 Hash Here.
-	MD5Digest((BYTE *)cdkey, strlen(cdkey), md5hash);
+  // MD5 Hash Here.
+  MD5Digest((BYTE *)cdkey, strlen(cdkey), md5hash);
 
-	// hashserial, challenge, outbuf
-	gcd_compute_response(md5hash, challenge, response);
+  // hashserial, challenge, outbuf
+  gcd_compute_response(md5hash, challenge, response);
 
-	delete [] cdkey;
-	resp = response;
+  delete[] cdkey;
+  resp = response;
 #endif
 }
 
 void CCDKeyAuth::GetSerialNum(StringClass &serial) {
 
-	RegistryClass main_reg(APPLICATION_SUB_KEY_NAME);
-	StringClass stringval;
-	StringClass serial_out;
-	main_reg.Get_String("Serial", stringval);
-	ServerSettingsClass::Encrypt_Serial(stringval, serial, false);
+  RegistryClass main_reg(APPLICATION_SUB_KEY_NAME);
+  StringClass stringval;
+  StringClass serial_out;
+  main_reg.Get_String("Serial", stringval);
+  ServerSettingsClass::Encrypt_Serial(stringval, serial, false);
 }

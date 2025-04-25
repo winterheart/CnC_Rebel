@@ -53,104 +53,92 @@ class DistAlphaVPClass;
 
 /**
 ** PhysDecalSysClass
-** This derived DecalSystemClass provides two pools of decals.  One pool is a 
+** This derived DecalSystemClass provides two pools of decals.  One pool is a
 ** fixed size buffer of decals which are recycled when the buffer fills up.  The second
 ** pool is for "permanent" decals.
 **
 ** Saving and loading of decals is currently not possible so the external user will have
 ** to track the parameters used to create any decals that he wants to survive across
-** a save-load.  
+** a save-load.
 **
-** The decal ID used by this system is formatted in a way so that we 
+** The decal ID used by this system is formatted in a way so that we
 */
-class PhysDecalSysClass : public DecalSystemClass
-{
+class PhysDecalSysClass : public DecalSystemClass {
 public:
+  PhysDecalSysClass(PhysicsSceneClass *parent_scene);
+  virtual ~PhysDecalSysClass(void);
 
-	PhysDecalSysClass(PhysicsSceneClass * parent_scene);
-	virtual ~PhysDecalSysClass(void);
+  /*
+  ** Create_Decal - this is the interface typically used by PhysicsSceneClass to create new decals
+  ** Update_Decal_Fade_Distances - this updates the alpha fading parameters
+  */
+  void Update_Decal_Fade_Distances(const CameraClass &camera);
+  int Create_Decal(const Matrix3D &tm, const char *texture_name, float radius, bool is_permanent,
+                   bool apply_to_translucent_meshes, PhysClass *only_this_obj);
 
-	/*
-	** Create_Decal - this is the interface typically used by PhysicsSceneClass to create new decals
-	** Update_Decal_Fade_Distances - this updates the alpha fading parameters
-	*/
-	void										Update_Decal_Fade_Distances(const CameraClass & camera);
-	int										Create_Decal(		const Matrix3D &	tm,
-																		const char *		texture_name,
-																		float					radius,
-																		bool					is_permanent,
-																		bool					apply_to_translucent_meshes,
-																		PhysClass *			only_this_obj);
-	
-	bool										Remove_Decal(uint32 id);
+  bool Remove_Decal(uint32 id);
 
-	/*
-	**	Create and release DecalGenerators.  Note that this is the point at which the 
-	** decal system can track "logical" decals.  The generator will keep an internal list
-	** of all of the render objects which generated decals which you should copy if you
-	** want to track them (e.g. if you want to cap the maximum number of active decals and
-	** kill the old ones...)
-	*/
-	virtual void							Unlock_Decal_Generator(DecalGeneratorClass * generator);
+  /*
+  **	Create and release DecalGenerators.  Note that this is the point at which the
+  ** decal system can track "logical" decals.  The generator will keep an internal list
+  ** of all of the render objects which generated decals which you should copy if you
+  ** want to track them (e.g. if you want to cap the maximum number of active decals and
+  ** kill the old ones...)
+  */
+  virtual void Unlock_Decal_Generator(DecalGeneratorClass *generator);
 
-	/*
-	** When a decal-mesh is destroyed, it must inform the DecalSystem.  Otherwise, systems 
-	** which track decals can get dangling pointers.
-	*/
-	virtual void							Decal_Mesh_Destroyed(uint32 decal_id,DecalMeshClass * mesh);
+  /*
+  ** When a decal-mesh is destroyed, it must inform the DecalSystem.  Otherwise, systems
+  ** which track decals can get dangling pointers.
+  */
+  virtual void Decal_Mesh_Destroyed(uint32 decal_id, DecalMeshClass *mesh);
 
-	/*
-	** Control over the size of the temporary decal array.  When this array is filled, the
-	** oldest decals are removed as new decals are added.
-	*/
-	void										Set_Temporary_Decal_Pool_Size(int count);
-	int										Get_Temporary_Decal_Pool_Size(void);
+  /*
+  ** Control over the size of the temporary decal array.  When this array is filled, the
+  ** oldest decals are removed as new decals are added.
+  */
+  void Set_Temporary_Decal_Pool_Size(int count);
+  int Get_Temporary_Decal_Pool_Size(void);
 
 protected:
+  virtual uint32 Generate_Decal_Id(void);
+  bool is_decal_id_permanent(uint32 id);
+  bool internal_remove_decal(uint32 id, MeshClass *mesh);
 
-	virtual uint32							Generate_Decal_Id(void);
-	bool										is_decal_id_permanent(uint32 id);
-	bool										internal_remove_decal(uint32 id,MeshClass * mesh);
+  void allocate_resources(void);
+  void release_resources(void);
 
-	void										allocate_resources(void);
-	void										release_resources(void);
+  /**
+  ** LogicalDecalClass
+  ** This class is used to track all of the meshes that were affected when a
+  ** decal is generated.
+  */
+  class LogicalDecalClass : public MultiListObjectClass {
+  public:
+    LogicalDecalClass(void);
+    ~LogicalDecalClass(void);
 
+    bool operator==(const LogicalDecalClass &that) { return false; }
+    bool operator!=(const LogicalDecalClass &that) { return true; }
 
-	/**
-	** LogicalDecalClass
-	** This class is used to track all of the meshes that were affected when a 
-	** decal is generated.
-	*/
-	class LogicalDecalClass : public MultiListObjectClass
-	{
-	public:
-		LogicalDecalClass(void);
-		~LogicalDecalClass(void);
+    void Reset(void);
+    void Init(DecalGeneratorClass *gen);
 
-		bool										operator == (const LogicalDecalClass & that) { return false; }
-		bool										operator != (const LogicalDecalClass & that) { return true; }
+    uint32 DecalID;
+    SimpleDynVecClass<MeshClass *> Meshes;
+  };
 
-		void										Reset(void);
-		void										Init(DecalGeneratorClass * gen);
+  PhysicsSceneClass *ParentScene; // scene that this decal system works with
+  bool CreatePermanentDecals;     // internal setting, are we creating permanent or temporary decals
 
-		uint32									DecalID;
-		SimpleDynVecClass<MeshClass *>	Meshes;
-	};
+  uint32 NextTempDecalIndex;                         // index of the next temporary decal
+  VectorClass<LogicalDecalClass> TempDecals;         // array of logical decals for
+  MultiListClass<LogicalDecalClass> PermanentDecals; // linked list of permanent decals
 
-	PhysicsSceneClass *						ParentScene;				// scene that this decal system works with
-	bool											CreatePermanentDecals;	// internal setting, are we creating permanent or temporary decals
+  VertexMaterialClass *DecalMaterial; // material used by all decals in WWPhys
+  ShaderClass DecalShader;            // shader used by all decals in WWPhys
 
-	uint32										NextTempDecalIndex;		// index of the next temporary decal
-	VectorClass<LogicalDecalClass>		TempDecals;					// array of logical decals for 
-	MultiListClass<LogicalDecalClass>	PermanentDecals;			// linked list of permanent decals
-
-	VertexMaterialClass *					DecalMaterial;				// material used by all decals in WWPhys
-	ShaderClass									DecalShader;				// shader used by all decals in WWPhys
-
-	DistAlphaVPClass*							DecalDistAlphaVP;
+  DistAlphaVPClass *DecalDistAlphaVP;
 };
 
-
-
-#endif //PHYSDECALSYS_H
-
+#endif // PHYSDECALSYS_H

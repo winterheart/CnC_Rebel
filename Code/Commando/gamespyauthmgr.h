@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/gamespyauthmgr.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 2/22/02 4:35p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/gamespyauthmgr.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 2/22/02 4:35p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __GAMESPYAUTHMGR_H__
@@ -40,36 +40,31 @@
 #include "bittype.h"
 
 //-----------------------------------------------------------------------------
-enum GAMESPY_AUTH_STATE_ENUM
-{
-	GAMESPY_AUTH_STATE_INITIAL,			// We haven't begun yet.
-	GAMESPY_AUTH_STATE_CHALLENGED,		// We are waiting for a response from the client.
-	GAMESPY_AUTH_STATE_VALIDATING,		// We are waiting for validation from the validation server.
-	GAMESPY_AUTH_STATE_ACCEPTED,			// This client passed.
-	GAMESPY_AUTH_STATE_REJECTING,			// This client failed, we are in the process of booting him.
-	GAMESPY_AUTH_STATE_REJECTED,			// Poor bugger.
+enum GAMESPY_AUTH_STATE_ENUM {
+  GAMESPY_AUTH_STATE_INITIAL,    // We haven't begun yet.
+  GAMESPY_AUTH_STATE_CHALLENGED, // We are waiting for a response from the client.
+  GAMESPY_AUTH_STATE_VALIDATING, // We are waiting for validation from the validation server.
+  GAMESPY_AUTH_STATE_ACCEPTED,   // This client passed.
+  GAMESPY_AUTH_STATE_REJECTING,  // This client failed, we are in the process of booting him.
+  GAMESPY_AUTH_STATE_REJECTED,   // Poor bugger.
 
-	GAMESPY_AUTH_STATE_COUNT
+  GAMESPY_AUTH_STATE_COUNT
 };
 
 //-----------------------------------------------------------------------------
-class	cGameSpyAuthMgr
-{
+class cGameSpyAuthMgr {
 public:
-	static void		Think(void);
-	static void		Initiate_Auth_Rejection(int player_id);
-	static LPCSTR	Describe_Auth_State(GAMESPY_AUTH_STATE_ENUM state);
+  static void Think(void);
+  static void Initiate_Auth_Rejection(int player_id);
+  static LPCSTR Describe_Auth_State(GAMESPY_AUTH_STATE_ENUM state);
 
 private:
-	static void		Evict_Player(int player_id);
+  static void Evict_Player(int player_id);
 
-	enum				{CHALLENGE_RESPONSE_TIMEOUT_MS = 30000};
-	enum				{REJECTION_DELAY_MS = 3000};
+  enum { CHALLENGE_RESPONSE_TIMEOUT_MS = 30000 };
+  enum { REJECTION_DELAY_MS = 3000 };
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __GAMESPYAUTHMGR_H__
-
-
-
+#endif // __GAMESPYAUTHMGR_H__

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/scexplosionevent.h                        $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 1/09/02 3:12p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/scexplosionevent.h                        $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 1/09/02 3:12p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __SCEXPLOSIONEVENT_H__
@@ -45,28 +45,25 @@
 //
 // A S->C mirrored object to represent an explosion
 //
-class	cScExplosionEvent : public NetworkObjectClass
-{
+class cScExplosionEvent : public NetworkObjectClass {
 public:
-   cScExplosionEvent(void);
-	void						Init(int def_id, const Vector3 & position, int owner_id, int victim_id );
-	virtual void			Delete(void)										{delete this;}
+  cScExplosionEvent(void);
+  void Init(int def_id, const Vector3 &position, int owner_id, int victim_id);
+  virtual void Delete(void) { delete this; }
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_SCEXPLOSIONEVENT;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_SCEXPLOSIONEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						DefID;
-	Vector3					Position;
-	int						OwnerID;
-	int						VictimID;
-
+  int DefID;
+  Vector3 Position;
+  int OwnerID;
+  int VictimID;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __SCEXPLOSIONEVENT_H__
+#endif // __SCEXPLOSIONEVENT_H__

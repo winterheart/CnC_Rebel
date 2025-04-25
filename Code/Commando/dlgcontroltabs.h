@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgcontroltabs.h        $*
  *                                                                                             *
@@ -41,102 +42,85 @@
 #ifndef __DLGCONTROLTABS_H
 #define __DLGCONTROLTABS_H
 
-
 #include "dlgcontrolslisttab.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsBasicMvmtTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsBasicMvmtTabClass : public ControlsListTabClass
-{
+class ControlsBasicMvmtTabClass : public ControlsListTabClass {
 public:
-	ControlsBasicMvmtTabClass (void);
+  ControlsBasicMvmtTabClass(void);
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsMultiPlayTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsMultiPlayTabClass : public ControlsListTabClass
-{
+class ControlsMultiPlayTabClass : public ControlsListTabClass {
 public:
-	ControlsMultiPlayTabClass (void);
+  ControlsMultiPlayTabClass(void);
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsMiscTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsMiscTabClass : public ControlsListTabClass
-{
+class ControlsMiscTabClass : public ControlsListTabClass {
 public:
-	ControlsMiscTabClass (void);
-
+  ControlsMiscTabClass(void);
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsLookTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsLookTabClass : public ControlsListTabClass
-{
+class ControlsLookTabClass : public ControlsListTabClass {
 public:
-	ControlsLookTabClass (void);
+  ControlsLookTabClass(void);
 
-	void			On_Init_Dialog (void);
-	bool			On_Apply (void);
-	void			On_Reload (void);
+  void On_Init_Dialog(void);
+  bool On_Apply(void);
+  void On_Reload(void);
 
 private:
-	void			Load_Controls (void);
+  void Load_Controls(void);
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsWeaponsTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsWeaponsTabClass : public ControlsListTabClass
-{
+class ControlsWeaponsTabClass : public ControlsListTabClass {
 public:
-	ControlsWeaponsTabClass (void);
+  ControlsWeaponsTabClass(void);
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsAttackTabClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsAttackTabClass : public ControlsListTabClass
-{
+class ControlsAttackTabClass : public ControlsListTabClass {
 public:
-	ControlsAttackTabClass (void);
+  ControlsAttackTabClass(void);
 
-	void			On_Init_Dialog (void);
-	bool			On_Apply (void);
-	void			On_Reload (void);
+  void On_Init_Dialog(void);
+  bool On_Apply(void);
+  void On_Reload(void);
 
 private:
-	void			Load_Controls (void);
+  void Load_Controls(void);
 };
 
-
 #endif //__DLGCONTROLTABS_H
-

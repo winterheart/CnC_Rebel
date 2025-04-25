@@ -21,7 +21,7 @@
 // Project:      Commando
 // Author:       Tom Spencer-Smith
 // Date:         Dec 1998
-// Description:  
+// Description:
 //
 //-----------------------------------------------------------------------------
 #if defined(_MSV_VER)
@@ -42,21 +42,20 @@ class Render2DTextClass;
 class Font3DInstanceClass;
 
 //-----------------------------------------------------------------------------
-class cDiagnostics
-{
-   public:
-      static void		Init(void);
-      static void		Close(void);
-      static void		Render(void);
+class cDiagnostics {
+public:
+  static void Init(void);
+  static void Close(void);
+  static void Render(void);
 
-   private:
-		static void		Show_Object_Tally(void);
-		static void		Add_Diagnostic(LPCSTR format, ...);
+private:
+  static void Show_Object_Tally(void);
+  static void Add_Diagnostic(LPCSTR format, ...);
 
-		static Render2DTextClass	*	PRenderer;
-		static Font3DInstanceClass *	PFont;
-		static float						DiagnosticX;
-		static float						DiagnosticY;
+  static Render2DTextClass *PRenderer;
+  static Font3DInstanceClass *PFont;
+  static float DiagnosticX;
+  static float DiagnosticY;
 };
 
 //-----------------------------------------------------------------------------

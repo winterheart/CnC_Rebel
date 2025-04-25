@@ -30,61 +30,54 @@
 // AudioConfigDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class AudioConfigDialogClass : public CDialog
-{
-// Construction
+class AudioConfigDialogClass : public CDialog {
+  // Construction
 public:
-	AudioConfigDialogClass(CWnd* pParent = NULL);   // standard constructor
+  AudioConfigDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(AudioConfigDialogClass)
-	enum { IDD = IDD_AUDIO_CONFIG };
-	CSliderCtrl	m_MusicVolSlider;
-	CSliderCtrl	m_SoundVolSlider;
-	CSliderCtrl	m_DialogVolSlider;
-	CSliderCtrl	m_CinematicVolSlider;
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(AudioConfigDialogClass)
+  enum { IDD = IDD_AUDIO_CONFIG };
+  CSliderCtrl m_MusicVolSlider;
+  CSliderCtrl m_SoundVolSlider;
+  CSliderCtrl m_DialogVolSlider;
+  CSliderCtrl m_CinematicVolSlider;
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(AudioConfigDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(AudioConfigDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(AudioConfigDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(AudioConfigDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDestroy();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	/////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////
-	void			Apply_Changes (void);
+  /////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////
+  void Apply_Changes(void);
 
 private:
-	
-	/////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////
-	void			Update_Slider_Enable_State (void);
+  /////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////
+  void Update_Slider_Enable_State(void);
 
-
-	/////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////
-
+  /////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////
 };
 
 //{{AFX_INSERT_LOCATION}}

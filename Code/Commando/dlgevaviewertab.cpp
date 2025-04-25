@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgevaviewertab.cpp       $*
  *                                                                                             *
@@ -54,436 +55,387 @@
 #include "wheelvehicle.h"
 #include "string_ids.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	EvaViewerTabClass
 //
 ////////////////////////////////////////////////////////////////
-EvaViewerTabClass::EvaViewerTabClass (int resource_id)	:
-	ListCtrl (NULL),
-	DescriptionCtrl (NULL),
-	AffiliationCtrl (NULL),
-	ViewerCtrl (NULL),
-	EncyclopediaType (EncyclopediaMgrClass::TYPE_CHARACTER),
-	ChildDialogClass (resource_id)
-{
-	return ;
+EvaViewerTabClass::EvaViewerTabClass(int resource_id)
+    : ListCtrl(NULL), DescriptionCtrl(NULL), AffiliationCtrl(NULL), ViewerCtrl(NULL),
+      EncyclopediaType(EncyclopediaMgrClass::TYPE_CHARACTER), ChildDialogClass(resource_id) {
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::On_Init_Dialog (void)
-{
-	//
-	//	Generate a set of data to display to the user (from an INI)
-	//
-	Build_Object_List ();
+void EvaViewerTabClass::On_Init_Dialog(void) {
+  //
+  //	Generate a set of data to display to the user (from an INI)
+  //
+  Build_Object_List();
 
-	//
-	//	Configure the list control
-	//
-	ListCtrl->Add_Column (TRANSLATE (IDS_MENU_NAME), 1.0F, Vector3 (1, 1, 1));
+  //
+  //	Configure the list control
+  //
+  ListCtrl->Add_Column(TRANSLATE(IDS_MENU_NAME), 1.0F, Vector3(1, 1, 1));
 
-	//
-	//	Add this data to the list control
-	//
-	int total_obj_count = 0;
-	for (int index = 0; index < ObjectList.Count (); index ++) {
-		EvaViewerObjectClass &object = ObjectList[index];
+  //
+  //	Add this data to the list control
+  //
+  int total_obj_count = 0;
+  for (int index = 0; index < ObjectList.Count(); index++) {
+    EvaViewerObjectClass &object = ObjectList[index];
 
-		//
-		//	Check to see if this entry should be displayed
-		//
-		if (EncyclopediaMgrClass::Is_Object_Revealed (EncyclopediaType, object.Get_ID ())) {
+    //
+    //	Check to see if this entry should be displayed
+    //
+    if (EncyclopediaMgrClass::Is_Object_Revealed(EncyclopediaType, object.Get_ID())) {
 
-			//
-			//	Add an entry to the list control for this object
-			//
-			int item_index = ListCtrl->Insert_Entry (index, object.Get_Name ());
-			if (item_index >= 0) {
-				ListCtrl->Set_Entry_Data (item_index, 0, (uint32)&object);
+      //
+      //	Add an entry to the list control for this object
+      //
+      int item_index = ListCtrl->Insert_Entry(index, object.Get_Name());
+      if (item_index >= 0) {
+        ListCtrl->Set_Entry_Data(item_index, 0, (uint32)&object);
 
-				//
-				//	Colorize the entry
-				//
-				Vector3 color (1.0F, 1.0F, 1.0F);
-				if (object.Get_Player_Type () == PLAYERTYPE_GDI) {
-					color.Set (1.0F, 0.832F, 0.156F);
-				} else if (object.Get_Player_Type () == PLAYERTYPE_NOD) {
-					color.Set (1.0F, 0.0F, 0.0F);
-				}
-				ListCtrl->Set_Entry_Color (item_index, 0, color);
+        //
+        //	Colorize the entry
+        //
+        Vector3 color(1.0F, 1.0F, 1.0F);
+        if (object.Get_Player_Type() == PLAYERTYPE_GDI) {
+          color.Set(1.0F, 0.832F, 0.156F);
+        } else if (object.Get_Player_Type() == PLAYERTYPE_NOD) {
+          color.Set(1.0F, 0.0F, 0.0F);
+        }
+        ListCtrl->Set_Entry_Color(item_index, 0, color);
 
-				total_obj_count ++;
-			}
-		}
-	}
+        total_obj_count++;
+      }
+    }
+  }
 
-	//
-	//	Now, sort the players by rank
-	//
-	ListCtrl->Sort (ListSortCallback, 0);
+  //
+  //	Now, sort the players by rank
+  //
+  ListCtrl->Sort(ListSortCallback, 0);
 
-	//
-	//	Select and view the first entry by default
-	//
-	if (total_obj_count > 0) {
-		ListCtrl->Set_Curr_Sel (0);
-		View_Entry (0);
-	} else {
-		
-		if (AffiliationCtrl != NULL) {
-			AffiliationCtrl->Set_Text (L"");
-		}		
-	}
+  //
+  //	Select and view the first entry by default
+  //
+  if (total_obj_count > 0) {
+    ListCtrl->Set_Curr_Sel(0);
+    View_Entry(0);
+  } else {
 
-	ChildDialogClass::On_Init_Dialog ();
-	return ;
+    if (AffiliationCtrl != NULL) {
+      AffiliationCtrl->Set_Text(L"");
+    }
+  }
+
+  ChildDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Destroy_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::On_Destroy_Dialog (void)
-{
-	if (ViewerCtrl != NULL) {
-		ViewerCtrl->Set_Model ((RenderObjClass *)NULL);
-	}
+void EvaViewerTabClass::On_Destroy_Dialog(void) {
+  if (ViewerCtrl != NULL) {
+    ViewerCtrl->Set_Model((RenderObjClass *)NULL);
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Build_Object_List
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::Build_Object_List (void)
-{
-	ObjectList.Delete_All ();
+void EvaViewerTabClass::Build_Object_List(void) {
+  ObjectList.Delete_All();
 
-	//
-	//	Get the INI file which contains the data for this viewer
-	//
-	INIClass *ini_file = ::Get_INI (INIFilename);
-	if (ini_file != NULL) {
+  //
+  //	Get the INI file which contains the data for this viewer
+  //
+  INIClass *ini_file = ::Get_INI(INIFilename);
+  if (ini_file != NULL) {
 
-		//
-		//	Loop over all the sections in the INI
-		//
-		List<INISection *> &section_list = ini_file->Get_Section_List ();
-		for (	INISection *section = section_list.First ();
-				section != NULL;
-				section = section->Next_Valid ())
-		{
-			//
-			//	Read this object's data from the INI file
-			//
-			StringClass name_id (0, true);
-			StringClass description_id (0, true);
-			StringClass affiliation_id (0, true);
-			StringClass model_name (0, true);
-			StringClass anim_name (0, true);
-			StringClass definition_name (0, true);
-			StringClass player_type_str (0, true);
-			ini_file->Get_String (name_id,			section->Section, "NameID");
-			ini_file->Get_String (description_id,	section->Section, "DescriptionID");
-			ini_file->Get_String (affiliation_id,	section->Section, "AffiliationID");
-			ini_file->Get_String (model_name,		section->Section, "Model");
-			ini_file->Get_String (anim_name,			section->Section, "Anim");			
-			ini_file->Get_String (definition_name, section->Section, "DefinitionName");
-			ini_file->Get_String (player_type_str,	section->Section, "PlayerType");
-			int id			= ini_file->Get_Int (section->Section, "ID");
-			float min_dist	= ini_file->Get_Float (section->Section, "MinDist");
+    //
+    //	Loop over all the sections in the INI
+    //
+    List<INISection *> &section_list = ini_file->Get_Section_List();
+    for (INISection *section = section_list.First(); section != NULL; section = section->Next_Valid()) {
+      //
+      //	Read this object's data from the INI file
+      //
+      StringClass name_id(0, true);
+      StringClass description_id(0, true);
+      StringClass affiliation_id(0, true);
+      StringClass model_name(0, true);
+      StringClass anim_name(0, true);
+      StringClass definition_name(0, true);
+      StringClass player_type_str(0, true);
+      ini_file->Get_String(name_id, section->Section, "NameID");
+      ini_file->Get_String(description_id, section->Section, "DescriptionID");
+      ini_file->Get_String(affiliation_id, section->Section, "AffiliationID");
+      ini_file->Get_String(model_name, section->Section, "Model");
+      ini_file->Get_String(anim_name, section->Section, "Anim");
+      ini_file->Get_String(definition_name, section->Section, "DefinitionName");
+      ini_file->Get_String(player_type_str, section->Section, "PlayerType");
+      int id = ini_file->Get_Int(section->Section, "ID");
+      float min_dist = ini_file->Get_Float(section->Section, "MinDist");
 
-			//
-			//	Determine the player type
-			//
-			int player_type = PLAYERTYPE_NEUTRAL;
-			if (player_type_str.Compare_No_Case ("GDI") == 0) {
-				player_type = PLAYERTYPE_GDI;
-			} else if (player_type_str.Compare_No_Case ("NOD") == 0) {
-				player_type = PLAYERTYPE_NOD;
-			}
+      //
+      //	Determine the player type
+      //
+      int player_type = PLAYERTYPE_NEUTRAL;
+      if (player_type_str.Compare_No_Case("GDI") == 0) {
+        player_type = PLAYERTYPE_GDI;
+      } else if (player_type_str.Compare_No_Case("NOD") == 0) {
+        player_type = PLAYERTYPE_NOD;
+      }
 
-			//
-			//	Translate the data
-			//
-			const WCHAR *name				= TRANSLATE_BY_DESC(name_id);
-			const WCHAR *description	= TRANSLATE_BY_DESC(description_id);
-			const WCHAR *affiliation	= TRANSLATE_BY_DESC(affiliation_id);
+      //
+      //	Translate the data
+      //
+      const WCHAR *name = TRANSLATE_BY_DESC(name_id);
+      const WCHAR *description = TRANSLATE_BY_DESC(description_id);
+      const WCHAR *affiliation = TRANSLATE_BY_DESC(affiliation_id);
 
-			//
-			//	Configure an object that will hold this data for us
-			//
-			EvaViewerObjectClass object;
-			object.Set_ID (id);
-			object.Set_Name (name);
-			object.Set_Description (description);
-			object.Set_Affiliation (affiliation);
-			object.Set_Model_Name (model_name);
-			object.Set_Anim_Name (anim_name);
-			object.Set_Definition_Name (definition_name);
-			object.Set_Min_Distance (min_dist);
-			object.Set_Player_Type (player_type);
+      //
+      //	Configure an object that will hold this data for us
+      //
+      EvaViewerObjectClass object;
+      object.Set_ID(id);
+      object.Set_Name(name);
+      object.Set_Description(description);
+      object.Set_Affiliation(affiliation);
+      object.Set_Model_Name(model_name);
+      object.Set_Anim_Name(anim_name);
+      object.Set_Definition_Name(definition_name);
+      object.Set_Min_Distance(min_dist);
+      object.Set_Player_Type(player_type);
 
-			//
-			//	Add this object to the list
-			//
-			ObjectList.Add (object);
-		}
-		delete ini_file;
-	}
+      //
+      //	Add this object to the list
+      //
+      ObjectList.Add(object);
+    }
+    delete ini_file;
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_ListCtrl_Sel_Change
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::On_ListCtrl_Sel_Change
-(
-	ListCtrlClass *	list_ctrl,
-	int					ctrl_id,
-	int					old_index,
-	int					new_index
-)
-{
-	View_Entry (new_index);
-	return ;
+void EvaViewerTabClass::On_ListCtrl_Sel_Change(ListCtrlClass *list_ctrl, int ctrl_id, int old_index, int new_index) {
+  View_Entry(new_index);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	View_Entry
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::View_Entry (int entry_index)
-{
-	WideStringClass name;
-	WideStringClass description;
-	WideStringClass affiliation;
-	StringClass model_name;
-	StringClass anim_name;
-	StringClass	definition_name;
-	float min_dist		= 0.0F;
+void EvaViewerTabClass::View_Entry(int entry_index) {
+  WideStringClass name;
+  WideStringClass description;
+  WideStringClass affiliation;
+  StringClass model_name;
+  StringClass anim_name;
+  StringClass definition_name;
+  float min_dist = 0.0F;
 
-	//
-	//	Is there new data to display?
-	//
-	if (entry_index >= 0) {
+  //
+  //	Is there new data to display?
+  //
+  if (entry_index >= 0) {
 
-		//
-		//	Load the data for this selection
-		//
-		EvaViewerObjectClass *object = (EvaViewerObjectClass *)ListCtrl->Get_Entry_Data (entry_index, 0);
-		name			= object->Get_Name ();
-		description	= object->Get_Description ();
-		affiliation = object->Get_Affiliation ();
-		model_name	= object->Get_Model_Name ();
-		anim_name	= object->Get_Anim_Name ();
-		min_dist		= object->Get_Min_Distance ();
-		definition_name = object->Get_Definition_Name ();
-	}
+    //
+    //	Load the data for this selection
+    //
+    EvaViewerObjectClass *object = (EvaViewerObjectClass *)ListCtrl->Get_Entry_Data(entry_index, 0);
+    name = object->Get_Name();
+    description = object->Get_Description();
+    affiliation = object->Get_Affiliation();
+    model_name = object->Get_Model_Name();
+    anim_name = object->Get_Anim_Name();
+    min_dist = object->Get_Min_Distance();
+    definition_name = object->Get_Definition_Name();
+  }
 
-	//
-	//	Display the data
-	//
-	if (DescriptionCtrl != NULL) {
-		DescriptionCtrl->Set_Text (description);
-	}
+  //
+  //	Display the data
+  //
+  if (DescriptionCtrl != NULL) {
+    DescriptionCtrl->Set_Text(description);
+  }
 
-	if (AffiliationCtrl != NULL) {
-		AffiliationCtrl->Set_Text (affiliation);
-	}
+  if (AffiliationCtrl != NULL) {
+    AffiliationCtrl->Set_Text(affiliation);
+  }
 
-	if (ViewerCtrl != NULL) {
-		ViewerCtrl->Set_Camera_Min_Dist (min_dist);
+  if (ViewerCtrl != NULL) {
+    ViewerCtrl->Set_Camera_Min_Dist(min_dist);
 
-		//
-		//	Special-case vehicles so we can get the wheels to "drop"
-		//
-		if (EncyclopediaType == EncyclopediaMgrClass::TYPE_VEHICLE) {
-			
-			RenderObjClass *new_model = NULL;
+    //
+    //	Special-case vehicles so we can get the wheels to "drop"
+    //
+    if (EncyclopediaType == EncyclopediaMgrClass::TYPE_VEHICLE) {
 
-			//
-			//	Try to find the definition that this vehicle is defined by
-			//
-			DefinitionClass *definition = DefinitionMgrClass::Find_Typed_Definition (definition_name, CLASSID_GAME_OBJECTS);
-			if (definition != NULL) {
-				
-				PhysicalGameObj *game_obj = (PhysicalGameObj *)definition->Create ();
-				if (game_obj != NULL) {
-					
-					//
-					//	Is the physics object associated with this game object a vehicle?
-					//
-					PhysClass *phys_obj = game_obj->Peek_Physical_Object ();
-					if (phys_obj != NULL && phys_obj->As_VehiclePhysClass () != NULL) {
-						
-						//
-						//	Drop the wheels on this object and clone its model
-						//
-						phys_obj->As_VehiclePhysClass ()->Non_Physical_Wheel_Update (0.7F, 0);
-						new_model = phys_obj->Peek_Model ()->Clone ();
-					}
+      RenderObjClass *new_model = NULL;
 
-					//
-					//	Delete the game object
-					//
-					game_obj->Set_Delete_Pending ();
-				}
-			}
+      //
+      //	Try to find the definition that this vehicle is defined by
+      //
+      DefinitionClass *definition = DefinitionMgrClass::Find_Typed_Definition(definition_name, CLASSID_GAME_OBJECTS);
+      if (definition != NULL) {
 
-			//
-			//	Set the model we dug out of the definition, or
-			// simply create the object from its W3D
-			//
-			if (new_model != NULL) {
-				ViewerCtrl->Set_Model (new_model);
-			} else {
-				ViewerCtrl->Set_Model (model_name);
-			}
-			
-		} else {
-			ViewerCtrl->Set_Model (model_name);
-		}
+        PhysicalGameObj *game_obj = (PhysicalGameObj *)definition->Create();
+        if (game_obj != NULL) {
 
-		//
-		//	Play the animation on the object
-		//
-		ViewerCtrl->Set_Animation (anim_name);
-	}
+          //
+          //	Is the physics object associated with this game object a vehicle?
+          //
+          PhysClass *phys_obj = game_obj->Peek_Physical_Object();
+          if (phys_obj != NULL && phys_obj->As_VehiclePhysClass() != NULL) {
 
-	return ;
+            //
+            //	Drop the wheels on this object and clone its model
+            //
+            phys_obj->As_VehiclePhysClass()->Non_Physical_Wheel_Update(0.7F, 0);
+            new_model = phys_obj->Peek_Model()->Clone();
+          }
+
+          //
+          //	Delete the game object
+          //
+          game_obj->Set_Delete_Pending();
+        }
+      }
+
+      //
+      //	Set the model we dug out of the definition, or
+      // simply create the object from its W3D
+      //
+      if (new_model != NULL) {
+        ViewerCtrl->Set_Model(new_model);
+      } else {
+        ViewerCtrl->Set_Model(model_name);
+      }
+
+    } else {
+      ViewerCtrl->Set_Model(model_name);
+    }
+
+    //
+    //	Play the animation on the object
+    //
+    ViewerCtrl->Set_Animation(anim_name);
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_ViewerCtrl_Model_Loaded
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::On_ViewerCtrl_Model_Loaded
-(
-	ViewerCtrlClass *	viewer_ctrl,
-	int					ctrl_id,
-	RenderObjClass *	model
-)
-{
-	if (model != NULL) {
-		Prepare_Model (model);
+void EvaViewerTabClass::On_ViewerCtrl_Model_Loaded(ViewerCtrlClass *viewer_ctrl, int ctrl_id, RenderObjClass *model) {
+  if (model != NULL) {
+    Prepare_Model(model);
 
-		//
-		//	Start the image rotating again...
-		//
-		ViewerCtrl->Set_Interface_Mode (ViewerCtrlClass::Z_ROTATION, 45.0F);
-	}
+    //
+    //	Start the image rotating again...
+    //
+    ViewerCtrl->Set_Interface_Mode(ViewerCtrlClass::Z_ROTATION, 45.0F);
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Prepare_Model
 //
 ////////////////////////////////////////////////////////////////
-void
-EvaViewerTabClass::Prepare_Model (RenderObjClass *model)
-{
-	if (model != NULL) {
+void EvaViewerTabClass::Prepare_Model(RenderObjClass *model) {
+  if (model != NULL) {
 
-		//
-		//	Attempt to hide the muzzle flashes
-		//
-		for (int index = 0; index < model->Get_Num_Sub_Objects(); index ++) {
-			RenderObjClass *sub_obj = model->Get_Sub_Object (index);
+    //
+    //	Attempt to hide the muzzle flashes
+    //
+    for (int index = 0; index < model->Get_Num_Sub_Objects(); index++) {
+      RenderObjClass *sub_obj = model->Get_Sub_Object(index);
 
-			//
-			//	Hide the muzzle flash (if necessary)
-			//
-			if (::strstr (sub_obj->Get_Name (),"MUZZLEFLASH") != NULL)  {
-				sub_obj->Set_Hidden (true);
-			}
+      //
+      //	Hide the muzzle flash (if necessary)
+      //
+      if (::strstr(sub_obj->Get_Name(), "MUZZLEFLASH") != NULL) {
+        sub_obj->Set_Hidden(true);
+      }
 
-			//
-			//	Recurse into this sub-object
-			//
-			Prepare_Model (sub_obj);
+      //
+      //	Recurse into this sub-object
+      //
+      Prepare_Model(sub_obj);
 
-			REF_PTR_RELEASE (sub_obj);
-		}
-	}
+      REF_PTR_RELEASE(sub_obj);
+    }
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ListSortCallback
 //
 ////////////////////////////////////////////////////////////////
-int CALLBACK
-EvaViewerTabClass::ListSortCallback
-(
-	ListCtrlClass *	list_ctrl,
-	int					item_index1,
-	int					item_index2,
-	uint32				user_param
-)
-{
-	//
-	//	Lookup the data associated with these entries
-	//
-	EvaViewerObjectClass *object1 = (EvaViewerObjectClass *)list_ctrl->Get_Entry_Data (item_index1, 0);
-	EvaViewerObjectClass *object2 = (EvaViewerObjectClass *)list_ctrl->Get_Entry_Data (item_index2, 0);
+int CALLBACK EvaViewerTabClass::ListSortCallback(ListCtrlClass *list_ctrl, int item_index1, int item_index2,
+                                                 uint32 user_param) {
+  //
+  //	Lookup the data associated with these entries
+  //
+  EvaViewerObjectClass *object1 = (EvaViewerObjectClass *)list_ctrl->Get_Entry_Data(item_index1, 0);
+  EvaViewerObjectClass *object2 = (EvaViewerObjectClass *)list_ctrl->Get_Entry_Data(item_index2, 0);
 
-	int player_type1 = object1->Get_Player_Type ();
-	int player_type2 = object2->Get_Player_Type ();
-	int result = 0;
+  int player_type1 = object1->Get_Player_Type();
+  int player_type2 = object2->Get_Player_Type();
+  int result = 0;
 
-	//
-	//	Sort alphatically if the types are the same
-	//
-	if (player_type1 == player_type2) {
-		result = ::wcsicmp (object1->Get_Name (), object2->Get_Name ());
-	} else {
+  //
+  //	Sort alphatically if the types are the same
+  //
+  if (player_type1 == player_type2) {
+    result = ::wcsicmp(object1->Get_Name(), object2->Get_Name());
+  } else {
 
-		//
-		//	Sort by type...
-		//
-		if (player_type1 == PLAYERTYPE_NEUTRAL) {
-			result = -1;
-		} else if (player_type2 == PLAYERTYPE_NEUTRAL) {
-			result = 1;
-		} else if (player_type1 == PLAYERTYPE_GDI) {
-			result = -1;
-		} else if (player_type2 == PLAYERTYPE_GDI) {
-			result = 1;
-		}
-	}
+    //
+    //	Sort by type...
+    //
+    if (player_type1 == PLAYERTYPE_NEUTRAL) {
+      result = -1;
+    } else if (player_type2 == PLAYERTYPE_NEUTRAL) {
+      result = 1;
+    } else if (player_type1 == PLAYERTYPE_GDI) {
+      result = -1;
+    } else if (player_type2 == PLAYERTYPE_GDI) {
+      result = 1;
+    }
+  }
 
-	return result;
+  return result;
 }

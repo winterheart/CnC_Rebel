@@ -16,28 +16,28 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/lcw.cpp                                            $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/lcw.cpp                                            $*
+ *                                                                                             *
  *                      $Author:: Neal_k                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 10/04/99 10:25a                                             $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 4                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
- *   LCW_Comp -- Performes LCW compression on a block of data.                                 * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
+ *   LCW_Comp -- Performes LCW compression on a block of data.                                 *
  *   LCW_Uncomp -- Decompress an LCW encoded data block.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"lcw.h"
+#include "always.h"
+#include "lcw.h"
 
 /***************************************************************************
  * LCW_Uncomp -- Decompress an LCW encoded data block.                     *
@@ -72,152 +72,155 @@
  * HISTORY:                                                                *
  *    03/20/1995 IML : Created.                                            *
  *=========================================================================*/
-int LCW_Uncomp(void const * source, void * dest, unsigned long )
-{
-	unsigned char * source_ptr, * dest_ptr, * copy_ptr;
-	unsigned char op_code, data;
-	unsigned count;
-	unsigned * word_dest_ptr;
-	unsigned word_data;
+int LCW_Uncomp(void const *source, void *dest, unsigned long) {
+  unsigned char *source_ptr, *dest_ptr, *copy_ptr;
+  unsigned char op_code, data;
+  unsigned count;
+  unsigned *word_dest_ptr;
+  unsigned word_data;
 
-	/* Copy the source and destination ptrs. */
-	source_ptr = (unsigned char*) source;
-	dest_ptr   = (unsigned char*) dest;
+  /* Copy the source and destination ptrs. */
+  source_ptr = (unsigned char *)source;
+  dest_ptr = (unsigned char *)dest;
 
-	for (;;) {
+  for (;;) {
 
-		/* Read in the operation code. */
-		op_code = *source_ptr++;
+    /* Read in the operation code. */
+    op_code = *source_ptr++;
 
-		if (!(op_code & 0x80)) {
+    if (!(op_code & 0x80)) {
 
-			/* Do a short copy from destination. */
-			count = (op_code >> 4) + 3;
-			copy_ptr = dest_ptr - ((unsigned) *source_ptr++ + (((unsigned) op_code & 0x0f) << 8));
+      /* Do a short copy from destination. */
+      count = (op_code >> 4) + 3;
+      copy_ptr = dest_ptr - ((unsigned)*source_ptr++ + (((unsigned)op_code & 0x0f) << 8));
 
-			while (count--) *dest_ptr++ = *copy_ptr++;
+      while (count--)
+        *dest_ptr++ = *copy_ptr++;
 
-		} else {
+    } else {
 
-			if (!(op_code & 0x40)) {
+      if (!(op_code & 0x40)) {
 
-				if (op_code == 0x80) {
+        if (op_code == 0x80) {
 
-					/* Return # of destination bytes written. */
-					return ((unsigned long) (dest_ptr - (unsigned char*) dest));
+          /* Return # of destination bytes written. */
+          return ((unsigned long)(dest_ptr - (unsigned char *)dest));
 
-				} else {
+        } else {
 
-					/* Do a medium copy from source. */
-					count = op_code & 0x3f;
+          /* Do a medium copy from source. */
+          count = op_code & 0x3f;
 
-					while (count--) *dest_ptr++ = *source_ptr++;
-				}
+          while (count--)
+            *dest_ptr++ = *source_ptr++;
+        }
 
-			} else {
+      } else {
 
-				if (op_code == 0xfe) {
+        if (op_code == 0xfe) {
 
-					/* Do a long run. */
-					count = *source_ptr + ((unsigned) *(source_ptr + 1) << 8);
-					word_data = data = *(source_ptr + 2);
-					word_data  = (word_data << 24) + (word_data << 16) + (word_data << 8) + word_data;
-					source_ptr += 3;
+          /* Do a long run. */
+          count = *source_ptr + ((unsigned)*(source_ptr + 1) << 8);
+          word_data = data = *(source_ptr + 2);
+          word_data = (word_data << 24) + (word_data << 16) + (word_data << 8) + word_data;
+          source_ptr += 3;
 
-					copy_ptr = dest_ptr + 4 - ((unsigned) dest_ptr & 0x3);
-					count -= (copy_ptr - dest_ptr);
-					while (dest_ptr < copy_ptr) *dest_ptr++ = data;
+          copy_ptr = dest_ptr + 4 - ((unsigned)dest_ptr & 0x3);
+          count -= (copy_ptr - dest_ptr);
+          while (dest_ptr < copy_ptr)
+            *dest_ptr++ = data;
 
-					word_dest_ptr = (unsigned*) dest_ptr;
+          word_dest_ptr = (unsigned *)dest_ptr;
 
-					dest_ptr += (count & 0xfffffffc);
+          dest_ptr += (count & 0xfffffffc);
 
-					while (word_dest_ptr < (unsigned*) dest_ptr) {
-						*word_dest_ptr		= word_data;
-						*(word_dest_ptr + 1) = word_data;
-						word_dest_ptr += 2;
-					}
+          while (word_dest_ptr < (unsigned *)dest_ptr) {
+            *word_dest_ptr = word_data;
+            *(word_dest_ptr + 1) = word_data;
+            word_dest_ptr += 2;
+          }
 
-					copy_ptr = dest_ptr + (count & 0x3);
-					while (dest_ptr < copy_ptr) *dest_ptr++ = data;
+          copy_ptr = dest_ptr + (count & 0x3);
+          while (dest_ptr < copy_ptr)
+            *dest_ptr++ = data;
 
-				} else {
+        } else {
 
-					if (op_code == 0xff) {
+          if (op_code == 0xff) {
 
-						/* Do a long copy from destination. */
-						count = *source_ptr + ((unsigned) *(source_ptr + 1) << 8);
-						copy_ptr = (unsigned char*) dest + *(source_ptr + 2) + ((unsigned) *(source_ptr + 3) << 8);
-						source_ptr += 4;
+            /* Do a long copy from destination. */
+            count = *source_ptr + ((unsigned)*(source_ptr + 1) << 8);
+            copy_ptr = (unsigned char *)dest + *(source_ptr + 2) + ((unsigned)*(source_ptr + 3) << 8);
+            source_ptr += 4;
 
-						while (count--) *dest_ptr++ = *copy_ptr++;
+            while (count--)
+              *dest_ptr++ = *copy_ptr++;
 
-					} else {
+          } else {
 
-						/* Do a medium copy from destination. */
-						count = (op_code & 0x3f) + 3;
-						copy_ptr = (unsigned char*) dest + *source_ptr + ((unsigned) *(source_ptr + 1) << 8);
-						source_ptr += 2;
+            /* Do a medium copy from destination. */
+            count = (op_code & 0x3f) + 3;
+            copy_ptr = (unsigned char *)dest + *source_ptr + ((unsigned)*(source_ptr + 1) << 8);
+            source_ptr += 2;
 
-						while (count--) *dest_ptr++ = *copy_ptr++;
-					}
-				}
-			}
-		}
-	}
+            while (count--)
+              *dest_ptr++ = *copy_ptr++;
+          }
+        }
+      }
+    }
+  }
 }
-
 
 #if defined(_MSC_VER)
 
-
-/*********************************************************************************************** 
- * LCW_Comp -- Performes LCW compression on a block of data.                                   * 
- *                                                                                             * 
- *    This routine will compress a block of data using the LCW compression method. LCW has     * 
- *    the primary characteristic of very fast uncompression at the expense of very slow        * 
- *    compression times.                                                                       * 
- *                                                                                             * 
- * INPUT:   source   -- Pointer to the source data to compress.                                * 
- *                                                                                             * 
- *          dest     -- Pointer to the destination location to store the compressed data       * 
- *                      to.                                                                    * 
- *                                                                                             * 
- *          datasize -- The size (in bytes) of the source data to compress.                    * 
- *                                                                                             * 
- * OUTPUT:  Returns with the number of bytes of output data stored into the destination        * 
- *          buffer.                                                                            * 
- *                                                                                             * 
- * WARNINGS:   Be sure that the destination buffer is big enough. The maximum size required    * 
- *             for the destination buffer is (datasize + datasize/128).                        * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/20/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * LCW_Comp -- Performes LCW compression on a block of data.                                   *
+ *                                                                                             *
+ *    This routine will compress a block of data using the LCW compression method. LCW has     *
+ *    the primary characteristic of very fast uncompression at the expense of very slow        *
+ *    compression times.                                                                       *
+ *                                                                                             *
+ * INPUT:   source   -- Pointer to the source data to compress.                                *
+ *                                                                                             *
+ *          dest     -- Pointer to the destination location to store the compressed data       *
+ *                      to.                                                                    *
+ *                                                                                             *
+ *          datasize -- The size (in bytes) of the source data to compress.                    *
+ *                                                                                             *
+ * OUTPUT:  Returns with the number of bytes of output data stored into the destination        *
+ *          buffer.                                                                            *
+ *                                                                                             *
+ * WARNINGS:   Be sure that the destination buffer is big enough. The maximum size required    *
+ *             for the destination buffer is (datasize + datasize/128).                        *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/20/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 /*ARGSUSED*/
-int LCW_Comp(void const * source, void * dest, int datasize)
-{
-	int retval = 0;
+int LCW_Comp(void const *source, void *dest, int datasize) {
+  int retval = 0;
 #ifdef _WINDOWS
-	long inlen = 0;
-	long a1stdest = 0;
-	long a1stsrc = 0;
-	long lenoff = 0;
-	long ndest = 0;
-	long count = 0;
-	long matchoff = 0;
-	long end_of_data =0;
+  long inlen = 0;
+  long a1stdest = 0;
+  long a1stsrc = 0;
+  long lenoff = 0;
+  long ndest = 0;
+  long count = 0;
+  long matchoff = 0;
+  long end_of_data = 0;
 #ifdef _DEBUG
-	inlen = inlen;
-	a1stdest = a1stdest;
-	a1stsrc = a1stsrc;
-	lenoff = lenoff;
-	ndest = ndest;
-	count = count;
-	matchoff = matchoff;
-	end_of_data = end_of_data;
+  inlen = inlen;
+  a1stdest = a1stdest;
+  a1stsrc = a1stsrc;
+  lenoff = lenoff;
+  ndest = ndest;
+  count = count;
+  matchoff = matchoff;
+  end_of_data = end_of_data;
 #endif
 
+// clang-format off
 	__asm {
 		cld			// make sure all string commands are forward
 		mov	edi,[dest]
@@ -436,9 +439,8 @@ outofhere:
 		sub	eax,[a1stdest]	//; sub the first for the compressed size
 		mov	[retval],eax
 	}
+// clang-format on
 #endif
-	return(retval);
+  return (retval);
 }
 #endif
-
-

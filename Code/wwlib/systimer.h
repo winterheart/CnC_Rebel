@@ -48,44 +48,39 @@
 **
 **
 */
-class SysTimeClass
-{
+class SysTimeClass {
 
-	public:
+public:
+  /*
+  ** Get. Use everywhere you would use timeGetTime
+  */
+  __forceinline unsigned long Get(void);
+  __forceinline unsigned long operator()(void) { return (Get()); }
+  __forceinline operator unsigned long(void) { return (Get()); }
 
-		/*
-		** Get. Use everywhere you would use timeGetTime
-		*/
-		__forceinline unsigned long Get(void);
-		__forceinline unsigned long operator () (void) {return(Get());}
-		__forceinline operator unsigned long(void) {return(Get());}
+  /*
+  ** Use periodically (like every few days!) to make sure the timer doesn't wrap.
+  */
+  void Reset(void);
 
-		/*
-		** Use periodically (like every few days!) to make sure the timer doesn't wrap.
-		*/
-		void Reset(void);
+  /*
+  ** See if the timer is about to wrap.
+  */
+  bool Is_Getting_Late(void);
 
-		/*
-		** See if the timer is about to wrap.
-		*/
-		bool Is_Getting_Late(void);
+private:
+  /*
+  ** Time we were first called.
+  */
+  unsigned long StartTime;
 
-	private:
-
-		/*
-		** Time we were first called.
-		*/
-		unsigned long StartTime;
-
-		/*
-		** Time to add after timer wraps.
-		*/
-		unsigned long WrapAdd;
-
+  /*
+  ** Time to add after timer wraps.
+  */
+  unsigned long WrapAdd;
 };
 
 extern SysTimeClass SystemTime;
-
 
 /***********************************************************************************************
  * SysTimeClass::Get -- Wrapper around system timeGetTime() api call                           *
@@ -101,38 +96,33 @@ extern SysTimeClass SystemTime;
  * HISTORY:                                                                                    *
  *   10/25/2001 1:38PM ST : Created                                                            *
  *=============================================================================================*/
-__forceinline unsigned long SysTimeClass::Get(void)
-{
-	/*
-	** This has to be static here since we don't know if we will get called in a global constructor of another object before our
-	** constructor gets called. In fact, we don't even have a constructor because it's pointless.
-	*/
-	static bool is_init = false;
+__forceinline unsigned long SysTimeClass::Get(void) {
+  /*
+  ** This has to be static here since we don't know if we will get called in a global constructor of another object
+  *before our
+  ** constructor gets called. In fact, we don't even have a constructor because it's pointless.
+  */
+  static bool is_init = false;
 
-	if (!is_init) {
-		Reset();
-		is_init = true;
-	}
+  if (!is_init) {
+    Reset();
+    is_init = true;
+  }
 
-	unsigned long time = timeGetTime();
-	if (time > StartTime) {
-		return(time - StartTime);
-	}
+  unsigned long time = timeGetTime();
+  if (time > StartTime) {
+    return (time - StartTime);
+  }
 
-	/*
-	** Timer wrapped around. Eeek.
-	*/
-	return(time + WrapAdd);
+  /*
+  ** Timer wrapped around. Eeek.
+  */
+  return (time + WrapAdd);
 }
-
-
 
 #ifdef timeGetTime
 #undef timeGetTime
 #define timeGetTime SystemTime.Get
-#endif //timeGetTime
-
-
-
+#endif // timeGetTime
 
 #endif //_SYSTIMER_H

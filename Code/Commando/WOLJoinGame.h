@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLJoinGame.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 10 $
-*     $Modtime: 1/16/02 4:25p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLJoinGame.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 10 $
+ *     $Modtime: 1/16/02 4:25p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLJOINGAME_H__
 #define __WOLJOINGAME_H__
@@ -42,63 +42,60 @@
 #include <WWOnline\RefPtr.h>
 #include "DlgMPTeamSelect.h"
 
-namespace WWOnline
-{
+namespace WWOnline {
 class Session;
 class ChannelData;
 class ChannelEvent;
-}
+} // namespace WWOnline
 
 class cGameData;
 class DlgWOLWaitEvent;
 
-class WOLJoinGame :
-		public RefCountClass,
-		public Observer<WWOnline::ChannelEvent>,
-		public Observer<DlgWOLWaitEvent>,
-		public Signaler<MPChooseTeamSignal>
-	{
-	public:
-		static void JoinTheGame(const wchar_t* gameName, const wchar_t* password, bool allowTeamSelect);
+class WOLJoinGame : public RefCountClass,
+                    public Observer<WWOnline::ChannelEvent>,
+                    public Observer<DlgWOLWaitEvent>,
+                    public Signaler<MPChooseTeamSignal> {
+public:
+  static void JoinTheGame(const wchar_t *gameName, const wchar_t *password, bool allowTeamSelect);
 
-	protected:
-		WOLJoinGame();
-		~WOLJoinGame();
+protected:
+  WOLJoinGame();
+  ~WOLJoinGame();
 
-		// Prevent copy and assignment
-		WOLJoinGame(const WOLJoinGame&);
-		const WOLJoinGame& operator=(const WOLJoinGame&);
+  // Prevent copy and assignment
+  WOLJoinGame(const WOLJoinGame &);
+  const WOLJoinGame &operator=(const WOLJoinGame &);
 
-		bool FinalizeCreate(void);
+  bool FinalizeCreate(void);
 
-		cGameData* CreateGameFromChannel(const RefPtr<WWOnline::ChannelData>& channel);
-		
-		bool Join(const wchar_t* gameName, const wchar_t* password, bool allowTeamSelect);
-		void ProceedWithConnection(int teamChoice);
-		void Leave(void);
+  cGameData *CreateGameFromChannel(const RefPtr<WWOnline::ChannelData> &channel);
 
-		bool StartServerConnect(void);
-		void ConnectToServer(void);
+  bool Join(const wchar_t *gameName, const wchar_t *password, bool allowTeamSelect);
+  void ProceedWithConnection(int teamChoice);
+  void Leave(void);
 
-		void HandleNotification(WWOnline::ChannelEvent&);
-		void HandleNotification(DlgWOLWaitEvent&);
-		void ReceiveSignal(MPChooseTeamSignal&);
+  bool StartServerConnect(void);
+  void ConnectToServer(void);
 
-	private:
-		RefPtr<WWOnline::Session> mWOLSession;
-		
-		typedef enum {IDLE_STATE = 0, JOINING_STATE, FIREWALL_STATE} JoinState;
-		JoinState mJoinState;
+  void HandleNotification(WWOnline::ChannelEvent &);
+  void HandleNotification(DlgWOLWaitEvent &);
+  void ReceiveSignal(MPChooseTeamSignal &);
 
-		bool mAllowTeamSelect;
+private:
+  RefPtr<WWOnline::Session> mWOLSession;
 
-		WideStringClass mGameName;
-		WideStringClass mPassword;
+  typedef enum { IDLE_STATE = 0, JOINING_STATE, FIREWALL_STATE } JoinState;
+  JoinState mJoinState;
 
-		RefPtr<WWOnline::ChannelData> mTheChannel;
+  bool mAllowTeamSelect;
 
-		int mTeamChoice;
-		unsigned long mClanID;
-	};
+  WideStringClass mGameName;
+  WideStringClass mPassword;
+
+  RefPtr<WWOnline::ChannelData> mTheChannel;
+
+  int mTeamChoice;
+  unsigned long mClanID;
+};
 
 #endif __WOLJOINGAME_H__

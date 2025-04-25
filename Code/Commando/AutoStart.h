@@ -47,9 +47,9 @@
 #include <wwonline\wolsession.h>
 
 namespace WOL {
-	class WOLSession;
-	class ServerError;
-}
+class WOLSession;
+class ServerError;
+} // namespace WOL
 
 /*
 **
@@ -57,98 +57,89 @@ namespace WOL {
 **
 **
 */
-class AutoRestartClass : public Observer<WOLLogonAction>, public Observer<WWOnline::ServerError>, protected Signaler<WolGameModeClass>
-{
+class AutoRestartClass : public Observer<WOLLogonAction>,
+                         public Observer<WWOnline::ServerError>,
+                         protected Signaler<WolGameModeClass> {
 
-	public:
-		/*
-		** Constructor, destructor.
-		*/
-		AutoRestartClass(void);
+public:
+  /*
+  ** Constructor, destructor.
+  */
+  AutoRestartClass(void);
 
-		/*
-		** Misc public functions.
-		*/
-		void Restart_Game(void);
-		void Think(void);
-		bool Is_Active(void) {return((bool)(RestartState != STATE_DONE));}
-		void Set_Restart_Flag(bool enable);
-		bool Get_Restart_Flag(void);
-		void Cancel(void);
+  /*
+  ** Misc public functions.
+  */
+  void Restart_Game(void);
+  void Think(void);
+  bool Is_Active(void) { return ((bool)(RestartState != STATE_DONE)); }
+  void Set_Restart_Flag(bool enable);
+  bool Get_Restart_Flag(void);
+  void Cancel(void);
 
+  /*
+  ** Callbacks.
+  */
+  void HandleNotification(WOLLogonAction &);
+  void HandleNotification(WWOnline::ServerError &server_error);
+  void ReceiveSignal(WolGameModeClass &);
 
-		/*
-		** Callbacks.
-		*/
-		void HandleNotification(WOLLogonAction&);
-		void HandleNotification(WWOnline::ServerError& server_error);
-		void ReceiveSignal(WolGameModeClass&);
+  /*
+  ** Enum of steps to go through to restart a game.
+  */
+  typedef enum {
+    STATE_FIRST,
+    STATE_GAME_MODE_WAIT,
+    STATE_LOGIN,
+    STATE_CREATE_GAME,
+    STATE_CREATE_CHANNEL,
+    STATE_WAIT_CHANNEL_CREATE,
+    STATE_WAIT_CHANNEL_CREATE_RETRY,
+    STATE_START_GAME,
+    STATE_CANCELLED,
+    STATE_DONE,
+  } RestartStateType;
 
-		/*
-		** Enum of steps to go through to restart a game.
-		*/
-		typedef enum {
-			STATE_FIRST,
-			STATE_GAME_MODE_WAIT,
-			STATE_LOGIN,
-			STATE_CREATE_GAME,
-			STATE_CREATE_CHANNEL,
-			STATE_WAIT_CHANNEL_CREATE,
-			STATE_WAIT_CHANNEL_CREATE_RETRY,
-			STATE_START_GAME,
-			STATE_CANCELLED,
-			STATE_DONE,
-		} RestartStateType;
+  static const char *REG_VALUE_AUTO_RESTART_FLAG;
+  static const char *REG_VALUE_AUTO_RESTART_TYPE;
 
-		static const char *REG_VALUE_AUTO_RESTART_FLAG;
-		static const char *REG_VALUE_AUTO_RESTART_TYPE;
+private:
+  /*
+  ** WOL Login state.
+  */
+  WOLLogonAction LogonAction;
 
+  /*
+  ** Restart state.
+  */
+  RestartStateType RestartState;
 
-	private:
+  /*
+  ** Cancel request flag.
+  */
+  bool CancelRequest;
 
-		/*
-		** WOL Login state.
-		*/
-		WOLLogonAction	LogonAction;
+  /*
+  ** Game mode. 0 = LAN, 1 = internet.
+  */
+  int GameMode;
 
-		/*
-		** Restart state.
-		*/
-		RestartStateType RestartState;
+  /*
+  ** Reference pointer to WOLSession.
+  */
+  RefPtr<WWOnline::Session> WOLSession;
 
-		/*
-		** Cancel request flag.
-		*/
-		bool CancelRequest;
+  /*
+  ** Time we last tried to create the game channel.
+  */
+  unsigned long LastChannelCreateTime;
 
-		/*
-		** Game mode. 0 = LAN, 1 = internet.
-		*/
-		int GameMode;
-
-		/*
-		** Reference pointer to WOLSession.
-		*/
-		RefPtr<WWOnline::Session> WOLSession;
-
-		/*
-		** Time we last tried to create the game channel.
-		*/
-		unsigned long LastChannelCreateTime;
-
-		/*
-		** Number of times we tried to create the channel.
-		*/
-		int NumChannelCreateTries;
-
+  /*
+  ** Number of times we tried to create the channel.
+  */
+  int NumChannelCreateTries;
 };
 
-
 extern AutoRestartClass AutoRestart;
-
-
-
-
-
 
 #endif //_AUTOSTART_H

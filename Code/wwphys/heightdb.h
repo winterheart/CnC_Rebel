@@ -45,7 +45,6 @@
 #include "vector3.h"
 #include "wwdebug.h"
 
-
 /////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 /////////////////////////////////////////////////////////////////////////
@@ -59,87 +58,79 @@ class ChunkLoadClass;
 //	HeightDBClass
 //
 /////////////////////////////////////////////////////////////////////////
-class HeightDBClass
-{
+class HeightDBClass {
 public:
+  /////////////////////////////////////////////////////////////////////////
+  // Public constructors/destructors
+  /////////////////////////////////////////////////////////////////////////
+  HeightDBClass(void);
+  virtual ~HeightDBClass(void);
 
-	/////////////////////////////////////////////////////////////////////////
-	// Public constructors/destructors
-	/////////////////////////////////////////////////////////////////////////
-	HeightDBClass (void);
-	virtual ~HeightDBClass (void);
+  /////////////////////////////////////////////////////////////////////////
+  // Public methods
+  /////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////////
-	// Public methods
-	/////////////////////////////////////////////////////////////////////////
-	
-	//
-	//	Initialization
-	//
-	static void			Initialize (void);
-	static void			Shutdown (void);
+  //
+  //	Initialization
+  //
+  static void Initialize(void);
+  static void Shutdown(void);
 
-	//
-	//	Data access
-	//
-	static float		Get_Height (const Vector3 &pos);
+  //
+  //	Data access
+  //
+  static float Get_Height(const Vector3 &pos);
 
-	//
-	//	Generation
-	//
-	static void			Generate (void);
+  //
+  //	Generation
+  //
+  static void Generate(void);
 
-	//
-	// Save/load stuff
-	//
-	static bool			Save (ChunkSaveClass &csave);
-	static bool			Load (ChunkLoadClass &cload);
+  //
+  // Save/load stuff
+  //
+  static bool Save(ChunkSaveClass &csave);
+  static bool Load(ChunkLoadClass &cload);
 
 protected:
+  /////////////////////////////////////////////////////////////////////////
+  // Protected methods
+  /////////////////////////////////////////////////////////////////////////
+  static bool Load_Variables(ChunkLoadClass &cload);
+  static void Free_Data(void);
+  static float *Get_Height_Entry(int row, int col);
 
-	/////////////////////////////////////////////////////////////////////////
-	// Protected methods
-	/////////////////////////////////////////////////////////////////////////
-	static bool			Load_Variables (ChunkLoadClass &cload);
-	static void			Free_Data (void);
-	static float *		Get_Height_Entry (int row, int col);
+  static void Process_Render_Obj(RenderObjClass *render_obj);
+  static void Submit_Mesh(MeshClass &mesh);
+  static void Examine_Level_Geometry(void);
 
-	static void			Process_Render_Obj (RenderObjClass *render_obj);
-	static void			Submit_Mesh (MeshClass &mesh);
-	static void			Examine_Level_Geometry (void);
-
-
-	/////////////////////////////////////////////////////////////////////////
-	// Protected member data
-	/////////////////////////////////////////////////////////////////////////
-	static float *		m_HeightArray;
-	static int			m_NumPointsX;
-	static int			m_NumPointsY;
-	static float		m_PatchSize;
-	static Vector3		m_LevelMin;
-	static Vector3		m_LevelMax;
+  /////////////////////////////////////////////////////////////////////////
+  // Protected member data
+  /////////////////////////////////////////////////////////////////////////
+  static float *m_HeightArray;
+  static int m_NumPointsX;
+  static int m_NumPointsY;
+  static float m_PatchSize;
+  static Vector3 m_LevelMin;
+  static Vector3 m_LevelMax;
 };
-
 
 /////////////////////////////////////////////////////////////////////////
 // Get_Height_Entry
 /////////////////////////////////////////////////////////////////////////
-inline float *
-HeightDBClass::Get_Height_Entry (int row, int col)
-{
-	float *retval = NULL;
+inline float *HeightDBClass::Get_Height_Entry(int row, int col) {
+  float *retval = NULL;
 
-	//
-	//	If the row and column are valid, then return the address of the
-	// entry at this location.
-	//
-	WWASSERT (row < m_NumPointsY && col < m_NumPointsX);
-	if (row < m_NumPointsY && col < m_NumPointsX) {
-		retval = &m_HeightArray[(row * m_NumPointsX) + col];
-	}
+  //
+  //	If the row and column are valid, then return the address of the
+  // entry at this location.
+  //
+  WWASSERT(row < m_NumPointsY && col < m_NumPointsX);
+  if (row < m_NumPointsY && col < m_NumPointsX) {
+    retval = &m_HeightArray[(row * m_NumPointsX) + col];
+  }
 
-	return retval;
+  return retval;
 }
-
 
 #endif //__HEIGHT_DB_H

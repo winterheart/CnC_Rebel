@@ -28,36 +28,33 @@
 /////////////////////////////////////////////////////////////////////////////
 // NewHeightfieldDialogClass dialog
 
-class NewHeightfieldDialogClass : public CDialog
-{
-// Construction
+class NewHeightfieldDialogClass : public CDialog {
+  // Construction
 public:
-	NewHeightfieldDialogClass(CWnd* pParent = NULL);   // standard constructor
+  NewHeightfieldDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(NewHeightfieldDialogClass)
-	enum { IDD = IDD_HEIGHTFIELD_CREATE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(NewHeightfieldDialogClass)
+  enum { IDD = IDD_HEIGHTFIELD_CREATE };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(NewHeightfieldDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(NewHeightfieldDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(NewHeightfieldDialogClass)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBrowse();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(NewHeightfieldDialogClass)
+  virtual void OnOK();
+  virtual BOOL OnInitDialog();
+  afx_msg void OnBrowse();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

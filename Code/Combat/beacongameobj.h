@@ -16,35 +16,34 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/beacongameobj.h                       $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 1/04/02 2:58p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 16                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/beacongameobj.h                       $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 1/04/02 2:58p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 16                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__BEACONGAMEOBJ_H
-#define	__BEACONGAMEOBJ_H
+#ifndef __BEACONGAMEOBJ_H
+#define __BEACONGAMEOBJ_H
 
 #include "always.h"
 #include "simplegameobj.h"
 #include "timemgr.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
@@ -53,199 +52,180 @@ class BaseControllerClass;
 class WeaponDefinitionClass;
 class AudibleSoundClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	BeaconGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class BeaconGameObjDef : public SimpleGameObjDef
-{
+class BeaconGameObjDef : public SimpleGameObjDef {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  BeaconGameObjDef(void);
+  ~BeaconGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	BeaconGameObjDef (void);
-	~BeaconGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	virtual uint32								Get_Class_ID (void) const;
-	virtual PersistClass *					Create (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
+  bool Is_Nuke(void) const { return (IsNuke != 0); }
 
-	bool Is_Nuke(void) const {return (IsNuke != 0);}
-
-	DECLARE_EDITABLE (BeaconGameObjDef, SimpleGameObjDef);
+  DECLARE_EDITABLE(BeaconGameObjDef, SimpleGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void			Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Protected friends
+  ////////////////////////////////////////////////////////////////
+  friend class BeaconGameObj;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected friends
-	////////////////////////////////////////////////////////////////
-	friend class BeaconGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float BroadcastToAllTime;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float			BroadcastToAllTime;
-	
-	float			ArmTime;
-	float			DisarmTime;
-	float			PreDetonateCinematicDelay;
-	float			DetonateTime;
-	float			PostDetonateTime;
+  float ArmTime;
+  float DisarmTime;
+  float PreDetonateCinematicDelay;
+  float DetonateTime;
+  float PostDetonateTime;
 
-	int			ArmedSoundDefID;
-	
-	int			DisarmingTextID;
-	int			DisarmedTextID;
-	int			ArmingTextID;
+  int ArmedSoundDefID;
 
-	int			ArmingInterruptedTextID;
-	int			DisarmingInterruptedTextID;
+  int DisarmingTextID;
+  int DisarmedTextID;
+  int ArmingTextID;
 
-	int			PreDetonateCinematicDefID;
-	int			PostDetonateCinematicDefID;
+  int ArmingInterruptedTextID;
+  int DisarmingInterruptedTextID;
 
-	int			ExplosionDefID;
-	int			IsNuke;
+  int PreDetonateCinematicDefID;
+  int PostDetonateCinematicDefID;
 
-	StringClass	ArmingAnimationName;
+  int ExplosionDefID;
+  int IsNuke;
+
+  StringClass ArmingAnimationName;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	BeaconGameObj
 //
 ////////////////////////////////////////////////////////////////
-class BeaconGameObj : public SimpleGameObj
-{
+class BeaconGameObj : public SimpleGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  BeaconGameObj(void);
+  virtual ~BeaconGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	BeaconGameObj (void);
-	virtual ~BeaconGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const BeaconGameObjDef &definition);
+  const BeaconGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void					Init( void );
-	void								Init (const BeaconGameObjDef & definition);
-	const BeaconGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  virtual BeaconGameObj *As_BeaconGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	virtual	BeaconGameObj * As_BeaconGameObj (void)	{ return this; }
+  //
+  // Save / Load / Construction Factory
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Save / Load / Construction Factory
-	//
-	bool				Save (ChunkSaveClass & csave);
-	bool				Load (ChunkLoadClass & cload);
-	const				PersistFactoryClass & Get_Factory (void) const;
+  //
+  //	GameObj methods
+  //
+  void Think(void);
+  void Get_Information(StringClass &string);
 
-	//
-	//	GameObj methods
-	//
-	void				Think (void);
-	void				Get_Information (StringClass &string);
+  //
+  //	Beacon initialization
+  //
+  void Init_Beacon(const WeaponDefinitionClass *definiton, SoldierGameObj *owner, const Vector3 &position);
 
-	//
-	//	Beacon initialization
-	//
-	void				Init_Beacon (const WeaponDefinitionClass *definiton, SoldierGameObj *owner, const Vector3 &position);
+  //
+  //	Beacon stuff
+  //
+  bool Can_Place_Here(const Vector3 &position);
+  void On_Arming_Interrupted(void);
+  void Begin_Arming(void);
+  void On_Poked(ScriptableGameObj *poker);
 
-	//
-	//	Beacon stuff
-	//
-	bool				Can_Place_Here (const Vector3 &position);
-	void				On_Arming_Interrupted (void);
-	void				Begin_Arming (void);
-	void				On_Poked (ScriptableGameObj *poker);
+  virtual void Completely_Damaged(const OffenseObjectClass &damager);
 
-	virtual	void	Completely_Damaged( const OffenseObjectClass & damager );
+  virtual void Export_Rare(BitStreamClass &packet);
+  virtual void Import_Rare(BitStreamClass &packet);
 
-	virtual void	Export_Rare( BitStreamClass &packet );
-	virtual void	Import_Rare( BitStreamClass &packet );
-
-	SoldierGameObj *			Get_Owner (void);
+  SoldierGameObj *Get_Owner(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
+  void Stop_Armed_Sound(void);
+  void Stop_Current_Message_Sound(void);
+  void Display_Message(int text_id);
+  void Start_Owner_Animation(void);
+  void Stop_Owner_Animation(void);
+  bool Was_Owner_Interrupted(void);
+  void Start_Cinematic(int id);
+  bool Is_In_Enemy_Base(void);
+  void Create_Explosion(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void							Load_Variables (ChunkLoadClass &cload);
-	void							Stop_Armed_Sound (void);
-	void							Stop_Current_Message_Sound (void);
-	void							Display_Message (int text_id);
-	void							Start_Owner_Animation (void);
-	void							Stop_Owner_Animation (void);
-	bool							Was_Owner_Interrupted (void);
-	void							Start_Cinematic (int id);
-	bool							Is_In_Enemy_Base( void );
-	void							Create_Explosion (void);
+  //
+  //	State support
+  //
+  void Set_State(int state);
+  void Update_State(void);
+  BaseControllerClass *Get_Enemy_Base(void);
 
-	//
-	//	State support
-	//
-	void							Set_State (int state);
-	void							Update_State (void);
-	BaseControllerClass *	Get_Enemy_Base (void);
+  ////////////////////////////////////////////////////////////////
+  //	Private constants
+  ////////////////////////////////////////////////////////////////
+  enum { STATE_NULL = 0, STATE_ARMING, STATE_ARMED, STATE_DISARMED, STATE_DETONATING };
 
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  GameObjReference Owner;
+  int State;
+  float StateTimer;
+  float PreDetonateTimer;
+  float DetonateTimer;
+  float WarningTimer;
+  AudibleSoundClass *ArmedSound;
+  AudibleSoundClass *MessageSound;
+  bool IsArmed;
+  const WeaponDefinitionClass *WeaponDefinition;
 
-	////////////////////////////////////////////////////////////////
-	//	Private constants
-	////////////////////////////////////////////////////////////////
-	enum
-	{
-		STATE_NULL			= 0,
-		STATE_ARMING,
-		STATE_ARMED,
-		STATE_DISARMED,
-		STATE_DETONATING
-	};
+  GameObjReference CinematicObject;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	GameObjReference					Owner;
-	int									State;
-	float									StateTimer;
-	float									PreDetonateTimer;
-	float									DetonateTimer;
-	float									WarningTimer;
-	AudibleSoundClass *				ArmedSound;
-	AudibleSoundClass *				MessageSound;
-	bool									IsArmed;
-	const WeaponDefinitionClass *	WeaponDefinition;
-
-	GameObjReference					CinematicObject;
-
-	void *			OwnerBackup;
-	void				Restore_Owner( void );
-
+  void *OwnerBackup;
+  void Restore_Owner(void);
 };
 
-#endif	// __BEACONGAMEOBJ_H
-
-
+#endif // __BEACONGAMEOBJ_H

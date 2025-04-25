@@ -22,7 +22,7 @@
  *                                                                                             *
  *                 Project Name : WWAudio                                                      *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/WWAudio/Threads.h                                                                                                                                                                                                                                                                                                                               $Modtime:: 7/17/99 3:32p                                               $*
+ *                     $Archive:: /Commando/Code/WWAudio/Threads.h $Modtime:: 7/17/99 3:32p $*
  *                                                                                             *
  *                    $Revision:: 7                                                           $*
  *                                                                                             *
@@ -44,7 +44,6 @@
 // Forward declarations
 class RefCountClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	WWAudioThreadsClass
@@ -53,60 +52,55 @@ class RefCountClass;
 // information together.
 //
 //////////////////////////////////////////////////////////////////////////
-class WWAudioThreadsClass
-{
-	public:
+class WWAudioThreadsClass {
+public:
+  //////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////////
+  WWAudioThreadsClass(void);
+  ~WWAudioThreadsClass(void);
 
-		//////////////////////////////////////////////////////////////////////
-		//	Public constructors/destructors
-		//////////////////////////////////////////////////////////////////////
-		WWAudioThreadsClass (void);
-		~WWAudioThreadsClass (void);
+  //////////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////////
 
-		//////////////////////////////////////////////////////////////////////
-		//	Public methods
-		//////////////////////////////////////////////////////////////////////
-		
-		//
-		//	Delayed release mechanism
-		//
-		static HANDLE		Create_Delayed_Release_Thread (LPVOID param = NULL);
-		static void			End_Delayed_Release_Thread (DWORD timeout = 20000);
-		static void			Add_Delayed_Release_Object (RefCountClass *object, DWORD delay = 2000);
-		static void			Flush_Delayed_Release_Objects (void);
+  //
+  //	Delayed release mechanism
+  //
+  static HANDLE Create_Delayed_Release_Thread(LPVOID param = NULL);
+  static void End_Delayed_Release_Thread(DWORD timeout = 20000);
+  static void Add_Delayed_Release_Object(RefCountClass *object, DWORD delay = 2000);
+  static void Flush_Delayed_Release_Objects(void);
 
-	private:
+private:
+  //////////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////////
+  static void __cdecl Delayed_Release_Thread_Proc(LPVOID param);
 
-		//////////////////////////////////////////////////////////////////////
-		//	Private methods
-		//////////////////////////////////////////////////////////////////////
-		static void	__cdecl Delayed_Release_Thread_Proc (LPVOID param);
+  //////////////////////////////////////////////////////////////////////
+  //	Private data types
+  //////////////////////////////////////////////////////////////////////
+  typedef struct _DELAYED_RELEASE_INFO {
+    RefCountClass *object;
+    DWORD time;
 
-		//////////////////////////////////////////////////////////////////////
-		//	Private data types
-		//////////////////////////////////////////////////////////////////////
-		typedef struct _DELAYED_RELEASE_INFO
-		{
-			RefCountClass *	object;
-			DWORD					time;
+    _DELAYED_RELEASE_INFO *next;
+    _DELAYED_RELEASE_INFO *prev;
 
-			_DELAYED_RELEASE_INFO *next;
-			_DELAYED_RELEASE_INFO *prev;
+  } DELAYED_RELEASE_INFO;
 
-		} DELAYED_RELEASE_INFO;
+  // typedef DynamicVectorClass<DELAYED_RELEASE_INFO *>	RELEASE_LIST;
 
-		//typedef DynamicVectorClass<DELAYED_RELEASE_INFO *>	RELEASE_LIST;
-
-		//////////////////////////////////////////////////////////////////////
-		//	Private member data
-		//////////////////////////////////////////////////////////////////////
-		static HANDLE						m_hDelayedReleaseThread;
-		static HANDLE						m_hDelayedReleaseEvent;
-		static CriticalSectionClass	m_CriticalSection;
-		static DELAYED_RELEASE_INFO *	m_ReleaseListHead;
-		static CriticalSectionClass	m_ListMutex;
-		static bool							m_IsFlushing;
+  //////////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////////
+  static HANDLE m_hDelayedReleaseThread;
+  static HANDLE m_hDelayedReleaseEvent;
+  static CriticalSectionClass m_CriticalSection;
+  static DELAYED_RELEASE_INFO *m_ReleaseListHead;
+  static CriticalSectionClass m_ListMutex;
+  static bool m_IsFlushing;
 };
 
 #endif //__WWAUDIO_THREADS_H
-

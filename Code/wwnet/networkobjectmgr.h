@@ -16,58 +16,54 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/wwnet/networkobjectmgr.h                     $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 11/24/01 10:47a                                             $* 
- *                                                                                             * 
- *                    $Revision:: 14                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwnet/networkobjectmgr.h                     $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 11/24/01 10:47a                                             $*
+ *                                                                                             *
+ *                    $Revision:: 14                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__NETWORKOBJECTMGR_H
-#define	__NETWORKOBJECTMGR_H
+#ifndef __NETWORKOBJECTMGR_H
+#define __NETWORKOBJECTMGR_H
 
 #include "vector.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class NetworkObjectClass;
 
-
 ////////////////////////////////////////////////////////////////
 //	ID Ranges
 ////////////////////////////////////////////////////////////////
-enum
-{
-	NETID_DYNAMIC_OBJECT_MIN	= 1500000000,	// 600M dynamic
-	NETID_DYNAMIC_OBJECT_MAX	= 2100000000,
-	NETID_STATIC_OBJECT_MIN		= 2100000001,  // 10M static
-	NETID_STATIC_OBJECT_MAX		= 2110000000,
-	NETID_CLIENT_OBJECT_MIN		= 2110000001,  // 100K per client, 128 clients
-	//NETID_CLIENT_OBJECT_MAX		= 2113100000,
-	NETID_CLIENT_OBJECT_MAX		= 2122800001,
+enum {
+  NETID_DYNAMIC_OBJECT_MIN = 1500000000, // 600M dynamic
+  NETID_DYNAMIC_OBJECT_MAX = 2100000000,
+  NETID_STATIC_OBJECT_MIN = 2100000001, // 10M static
+  NETID_STATIC_OBJECT_MAX = 2110000000,
+  NETID_CLIENT_OBJECT_MIN = 2110000001, // 100K per client, 128 clients
+  // NETID_CLIENT_OBJECT_MAX		= 2113100000,
+  NETID_CLIENT_OBJECT_MAX = 2122800001,
 
-	//
-	// Note: INT_MAX = 2147483647
-	//
+  //
+  // Note: INT_MAX = 2147483647
+  //
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
@@ -77,84 +73,80 @@ enum
 // object state updates.
 //
 ////////////////////////////////////////////////////////////////
-class NetworkObjectMgrClass
-{
+class NetworkObjectMgrClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Object registration
-	//
-	static void							Register_Object (NetworkObjectClass *object);
-	static void							Unregister_Object (NetworkObjectClass *object);
+  //
+  //	Object registration
+  //
+  static void Register_Object(NetworkObjectClass *object);
+  static void Unregister_Object(NetworkObjectClass *object);
 
-	//
-	//	Delete registration support
-	//
-	static void							Register_Object_For_Deletion (NetworkObjectClass *object);
-	static void							Set_Is_Level_Loading (bool onoff)	{ _IsLevelLoading = onoff; }
+  //
+  //	Delete registration support
+  //
+  static void Register_Object_For_Deletion(NetworkObjectClass *object);
+  static void Set_Is_Level_Loading(bool onoff) { _IsLevelLoading = onoff; }
 
-	//
-	//	Timestep
-	//
-	static void							Think (void);
+  //
+  //	Timestep
+  //
+  static void Think(void);
 
-	//
-	//	Deletion support
-	//
-	static void							Set_All_Delete_Pending (void);//TSS092301
-	static void							Delete_Pending (void);
-	static void							Delete_Client_Objects (int client_id);
-	static void							Restore_Dirty_Bits (int client_id);
+  //
+  //	Deletion support
+  //
+  static void Set_All_Delete_Pending(void); // TSS092301
+  static void Delete_Pending(void);
+  static void Delete_Client_Objects(int client_id);
+  static void Restore_Dirty_Bits(int client_id);
 
-	//
-	//	Object enumeration
-	//
-	static int							Get_Object_Count (void)	{ return _ObjectList.Count (); }
-	static NetworkObjectClass *	Get_Object (int index)	{ return _ObjectList[index]; }
-	static int							Get_Pending_Object_Count (void)	{ return _DeletePendingList.Count (); }
+  //
+  //	Object enumeration
+  //
+  static int Get_Object_Count(void) { return _ObjectList.Count(); }
+  static NetworkObjectClass *Get_Object(int index) { return _ObjectList[index]; }
+  static int Get_Pending_Object_Count(void) { return _DeletePendingList.Count(); }
 
-	//
-	//	Object lookup
-	//
-	static NetworkObjectClass *	Find_Object (int object_id);
+  //
+  //	Object lookup
+  //
+  static NetworkObjectClass *Find_Object(int object_id);
 
-	//
-	//	ID access
-	//
-	static int							Get_New_Dynamic_ID (void);
-	static int							Get_Current_Dynamic_ID (void);
-	static void							Set_New_Dynamic_ID (int id);
+  //
+  //	ID access
+  //
+  static int Get_New_Dynamic_ID(void);
+  static int Get_Current_Dynamic_ID(void);
+  static void Set_New_Dynamic_ID(int id);
 
-	static void							Init_New_Client_ID (int client_id);
-	static int							Get_New_Client_ID (void);
+  static void Init_New_Client_ID(int client_id);
+  static int Get_New_Client_ID(void);
 
-	static void							Reset_Import_State_Counts(void);
+  static void Reset_Import_State_Counts(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  static bool Find_Object(int id_to_find, int *index);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	static bool							Find_Object (int id_to_find, int *index);
+  ////////////////////////////////////////////////////////////////
+  //	Private tyepdefs
+  ////////////////////////////////////////////////////////////////
+  typedef DynamicVectorClass<NetworkObjectClass *> OBJECT_LIST;
 
-	////////////////////////////////////////////////////////////////
-	//	Private tyepdefs
-	////////////////////////////////////////////////////////////////
-	typedef DynamicVectorClass<NetworkObjectClass *>	OBJECT_LIST;
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	static OBJECT_LIST	_ObjectList;
-	static OBJECT_LIST	_DeletePendingList;
-	static int			_NewDynamicID;
-	static int			_NewClientID;
-	static bool			_IsLevelLoading;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  static OBJECT_LIST _ObjectList;
+  static OBJECT_LIST _DeletePendingList;
+  static int _NewDynamicID;
+  static int _NewClientID;
+  static bool _IsLevelLoading;
 };
 
-
-#endif	// __NETWORKOBJECTMGR_H
+#endif // __NETWORKOBJECTMGR_H

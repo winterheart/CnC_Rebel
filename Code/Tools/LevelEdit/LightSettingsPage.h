@@ -32,97 +32,89 @@
 #include <afxext.h>
 #endif
 
-
 class LightInstanceClass;
 #include "DockableForm.H"
 #include "Vector3.H"
 #include "NodeSettingsInterface.H"
 
-
 //////////////////////////////////////////////////////////
 //
 //	LightSettingsPageClass
 //
-class LightSettingsPageClass : public DockableFormClass
-{
-	public:
-		LightSettingsPageClass (void);
-		LightSettingsPageClass (LightSettingsClass *plight);
-		virtual ~LightSettingsPageClass (void);
-
-// Form Data
+class LightSettingsPageClass : public DockableFormClass {
 public:
-	//{{AFX_DATA(LightSettingsPageClass)
-	enum { IDD = IDD_LIGHT_SETTINGS };
-	CSliderCtrl	m_IntensitySlider;
-	CSliderCtrl	m_OuterAttenSlider;
-	CSliderCtrl	m_InnerAttenSlider;
-	//}}AFX_DATA
+  LightSettingsPageClass(void);
+  LightSettingsPageClass(LightSettingsClass *plight);
+  virtual ~LightSettingsPageClass(void);
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(LightSettingsPageClass)
+  enum { IDD = IDD_LIGHT_SETTINGS };
+  CSliderCtrl m_IntensitySlider;
+  CSliderCtrl m_OuterAttenSlider;
+  CSliderCtrl m_InnerAttenSlider;
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LightSettingsPageClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LightSettingsPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(LightSettingsPageClass)
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
-	afx_msg void OnChangeInnerAttenEdit();
-	afx_msg void OnChangeOuterAttenEdit();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnKillfocusOuterAttenEdit();
-	afx_msg void OnKillfocusInnerAttenEdit();
-	afx_msg void OnAmbientButton();
-	afx_msg void OnDiffuseButton();
-	afx_msg void OnSpecularButton();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(LightSettingsPageClass)
+  afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+  afx_msg void OnChangeInnerAttenEdit();
+  afx_msg void OnChangeOuterAttenEdit();
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnKillfocusOuterAttenEdit();
+  afx_msg void OnKillfocusInnerAttenEdit();
+  afx_msg void OnAmbientButton();
+  afx_msg void OnDiffuseButton();
+  afx_msg void OnSpecularButton();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ///////////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
+  void Discard_Changes(void);
 
-		///////////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void						HandleInitDialog (void);
-		bool						Apply_Changes (void);
-		void						Discard_Changes (void);
+protected:
+  ///////////////////////////////////////////////////////
+  //
+  //	Inline accessors
+  //
 
-	protected:
-		
-		///////////////////////////////////////////////////////
-		//
-		//	Inline accessors
-		//
-
-	private:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		LightSettingsClass *	m_pLight;
-		Vector3					m_OrigAmbient;
-		Vector3					m_OrigDiffuse;
-		Vector3					m_OrigSpecular;
-		float						m_OrigIntensity;
-		float						m_OrigInnerAttenuation;
-		float						m_OrigOuterAttenuation;
+private:
+  ///////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  LightSettingsClass *m_pLight;
+  Vector3 m_OrigAmbient;
+  Vector3 m_OrigDiffuse;
+  Vector3 m_OrigSpecular;
+  float m_OrigIntensity;
+  float m_OrigInnerAttenuation;
+  float m_OrigOuterAttenuation;
 };
 
 /////////////////////////////////////////////////////////////////////////////

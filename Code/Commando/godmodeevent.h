@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/godmodeevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/25/01 8:22p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/godmodeevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/25/01 8:22p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __GODMODEEVENT_H__
@@ -44,26 +44,24 @@
 //
 // A C->S mirrored event object to inform server about changes in our god mode status
 //
-class	cGodModeEvent : public cNetEvent
-{
+class cGodModeEvent : public cNetEvent {
 public:
-   cGodModeEvent(void);
+  cGodModeEvent(void);
 
-	void						Init(StringClass & password);
+  void Init(StringClass &password);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_GODMODEEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_GODMODEEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	StringClass				Password;
+  int SenderId;
+  StringClass Password;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __GODMODEEVENT_H__
+#endif // __GODMODEEVENT_H__

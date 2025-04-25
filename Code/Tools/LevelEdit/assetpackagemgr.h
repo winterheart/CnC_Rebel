@@ -44,69 +44,63 @@
 #include "wwstring.h"
 #include "listtypes.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	AssetPackageMgrClass
 //
 //////////////////////////////////////////////////////////////////////
-class AssetPackageMgrClass
-{
+class AssetPackageMgrClass {
 public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
+  //
+  //	Initialization
+  //
+  static void Initialize(void);
+  static void Shutdown(void);
 
-	//
-	//	Initialization
-	//
-	static void				Initialize (void);
-	static void				Shutdown (void);
+  //
+  //	Current package support
+  //
+  static void Set_Current_Package(const char *name);
+  static const char *Get_Current_Package(void) { return CurrentPackageName; }
 
-	//
-	//	Current package support
-	//
-	static void				Set_Current_Package (const char *name);
-	static const char *	Get_Current_Package (void)						{ return CurrentPackageName; }
+  //
+  //	Path support
+  //
+  static const char *Get_Current_Package_Path(void) { return CurrentPackagePath; }
 
-	//
-	//	Path support
-	//
-	static const char *	Get_Current_Package_Path (void)				{ return CurrentPackagePath; }
+  //
+  //	Package creation
+  //
+  static void Create_Package(const char *name);
 
-	//
-	//	Package creation
-	//
-	static void				Create_Package (const char *name);
+  //
+  //	Package list support
+  //
+  static void Build_Package_List(STRING_LIST &list);
 
-	//
-	//	Package list support
-	//
-	static void				Build_Package_List (STRING_LIST &list);
+  //
+  //	UI support
+  //
+  static void Show_Package_Selection_UI(void);
 
-	//
-	//	UI support
-	//
-	static void				Show_Package_Selection_UI (void);
-	
 private:
-	
-	///////////////////////////////////////////////////////////////////
-	//	Private methods
-	///////////////////////////////////////////////////////////////////
-	
-	///////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////
-	static StringClass		CurrentPackageName;
-	static StringClass		CurrentPackagePath;
-};
+  ///////////////////////////////////////////////////////////////////
+  //	Private methods
+  ///////////////////////////////////////////////////////////////////
 
+  ///////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////
+  static StringClass CurrentPackageName;
+  static StringClass CurrentPackagePath;
+};
 
 #endif //__ASSETPACKAGEMGR_H

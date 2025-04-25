@@ -17,23 +17,23 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*	PRDemo.cpp
-*
-* DESCRIPTION
-*	PR Demo Scripts
-*
-* PROGRAMMER
-*     Design Team
-*
-* VERSION INFO
-*     $Author: Ryan_v $
-*     $Revision: 21 $
-*     $Modtime: 7/17/00 10:13a $
-*     $Archive: /Commando/Code/Scripts/PRDemo.cpp $
-*
-******************************************************************************/
+ *
+ * FILE
+ *	PRDemo.cpp
+ *
+ * DESCRIPTION
+ *	PR Demo Scripts
+ *
+ * PROGRAMMER
+ *     Design Team
+ *
+ * VERSION INFO
+ *     $Author: Ryan_v $
+ *     $Revision: 21 $
+ *     $Modtime: 7/17/00 10:13a $
+ *     $Archive: /Commando/Code/Scripts/PRDemo.cpp $
+ *
+ ******************************************************************************/
 
 #include "prdemo.h"
 
@@ -1109,7 +1109,7 @@ DECLARE_SCRIPT(MPR_ApacheController, "")
 
 		if ((position != mCurrentPosition) || (position != mDesiredPosition))
 		{
-			#if(0)
+#if (0)
 			
 				// If currently in the landed position we must first move to 0.0.0
 				// because the animations are relative to that.
@@ -1120,7 +1120,7 @@ DECLARE_SCRIPT(MPR_ApacheController, "")
 					Commands->Set_Position(Owner(), origin);
 					Commands->Set_Facing(Owner(), 0.0f);
 				}
-			#endif
+#endif
 
 			mDesiredPosition = position;
 			DebugPrint("Apache desired position = %d\n", mDesiredPosition);

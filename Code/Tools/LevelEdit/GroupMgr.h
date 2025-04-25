@@ -26,7 +26,6 @@
 #ifndef __GROUPMGR_H
 #define __GROUPMGR_H
 
-
 #include "utils.h"
 #include "vector3.h"
 #include "aabox.h"
@@ -37,117 +36,122 @@
 class NodeClass;
 class PresetClass;
 
-
 ///////////////////////////////////////////////////////////////
 //
 //	GroupMgrClass
 //
 //	Used to manage all items in a group.
 //
-class GroupMgrClass
-{
-	public:
+class GroupMgrClass {
+public:
+  ///////////////////////////////////////////////////
+  //
+  //	Public constructors/destructors
+  //
+  GroupMgrClass(void) : m_bHidden(false), m_bDirty(true) {}
 
-		///////////////////////////////////////////////////
-		//
-		//	Public constructors/destructors
-		//
-		GroupMgrClass (void)
-			: m_bHidden (false),
-			  m_bDirty (true) {}
+  GroupMgrClass(const GroupMgrClass &src) : m_bHidden(false), m_bDirty(true) { *this = src; }
 
-		GroupMgrClass (const GroupMgrClass &src)
-			: m_bHidden (false),
-			  m_bDirty (true) { *this = src; }
+  virtual ~GroupMgrClass(void) { Free_List(); }
 
-		virtual ~GroupMgrClass (void) { Free_List (); }
+  ///////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
 
+  //
+  //	operators
+  //
+  NodeClass *operator[](int index) { return m_GroupList[index]; }
+  const NodeClass *operator[](int index) const { return m_GroupList[index]; }
+  const GroupMgrClass &operator=(const GroupMgrClass &src);
 
-		///////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
+  //
+  //	Required enumeration methods
+  //
+  virtual int Get_Count(void) const { return m_GroupList.Count(); }
+  virtual NodeClass *Get_At(int index) const { return m_GroupList[index]; }
 
-		//
-		//	operators
-		//
-		NodeClass *				operator[] (int index)			{ return m_GroupList[index]; }
-		const NodeClass *		operator[] (int index) const	{ return m_GroupList[index]; }
-		const GroupMgrClass &operator= (const GroupMgrClass &src);
+  //
+  //	Item addition/removal methods
+  //
+  virtual void Add_Node(NodeClass *node);
+  virtual void Import_Nodes(const NODE_LIST &node_list);
+  virtual void Export_Nodes(NODE_LIST &node_list);
+  virtual void Remove_Node(NodeClass *node);
+  virtual void Reset(void);
+  virtual void Free_List(void);
+  virtual bool Is_Item_In_Group(NodeClass *node);
 
-		//
-		//	Required enumeration methods
-		//
-		virtual int				Get_Count (void) const		{ return m_GroupList.Count (); }
-		virtual NodeClass *	Get_At (int index) const	{ return m_GroupList[index]; }
+  //
+  //	Member information methods
+  //
+  virtual bool Is_Hidden(void) const { return m_bHidden; }
+  virtual void Hide(bool bhide);
 
-		//
-		//	Item addition/removal methods
-		//
-		virtual void			Add_Node (NodeClass *node);
-		virtual void			Import_Nodes (const NODE_LIST &node_list);
-		virtual void			Export_Nodes (NODE_LIST &node_list);
-		virtual void			Remove_Node (NodeClass *node);
-		virtual void			Reset (void);
-		virtual void			Free_List (void);
-		virtual bool			Is_Item_In_Group (NodeClass *node);
+  //
+  //	Type methods
+  //
+  virtual bool Is_Managed(void) const { return true; }
 
-		//
-		//	Member information methods
-		//
-		virtual bool			Is_Hidden (void) const { return m_bHidden; }
-		virtual void			Hide (bool bhide);
+  //
+  //	Information methods
+  //
+  const Vector3 &Get_Center(void) {
+    Update();
+    return m_LowZCenter;
+  }
+  const Vector3 &Get_Abs_Center(void) {
+    Update();
+    return m_AbsCenter;
+  }
+  const SphereClass &Get_Bounding_Sphere(void) {
+    Update();
+    return m_BoundingSphere;
+  }
+  const AABoxClass &Get_Bounding_Box(void) {
+    Update();
+    return m_BoundingBox;
+  }
+  const CString &Get_Name(void) const { return m_Name; }
+  void Set_Name(LPCTSTR name) { m_Name = name; }
 
-		//
-		//	Type methods
-		//
-		virtual bool			Is_Managed (void) const { return true; }
+  //
+  //	Update methods
+  //
+  void Set_Dirty(void) { m_bDirty = true; }
 
-		//
-		//	Information methods
-		//		
-		const Vector3 &		Get_Center (void) 					{ Update (); return m_LowZCenter; }
-		const Vector3 &		Get_Abs_Center (void) 				{ Update (); return m_AbsCenter; }
-		const SphereClass &	Get_Bounding_Sphere (void)			{ Update (); return m_BoundingSphere; }
-		const AABoxClass &	Get_Bounding_Box (void)				{ Update (); return m_BoundingBox; }
-		const CString &		Get_Name (void) const				{ return m_Name; }
-		void						Set_Name (LPCTSTR name)				{ m_Name = name; }
+  //
+  //	Copy methods
+  //
+  virtual void Clone_Group(void);
 
-		//
-		//	Update methods
-		//
-		void						Set_Dirty (void) { m_bDirty = true; }		
+protected:
+  ///////////////////////////////////////////////////
+  //
+  //	Protected member data
+  //
 
-		//
-		//	Copy methods
-		//
-		virtual void			Clone_Group (void);
+  virtual void Recalc_Stats(void);
+  virtual void Update(void) {
+    if (m_bDirty) {
+      Recalc_Stats();
+    }
+  }
 
-	protected:
-
-		///////////////////////////////////////////////////
-		//
-		//	Protected member data
-		//
-
-		virtual void			Recalc_Stats (void);
-		virtual void			Update (void) { if (m_bDirty) { Recalc_Stats (); } }
-
-
-		///////////////////////////////////////////////////
-		//
-		//	Protected member data
-		//
-		NODE_LIST		m_GroupList;
-		SphereClass		m_BoundingSphere;
-		AABoxClass		m_BoundingBox;
-		Vector3			m_LowZCenter;
-		Vector3			m_AbsCenter;
-		CString			m_Name;
-		bool				m_bDirty;
-		bool				m_bHidden;
+  ///////////////////////////////////////////////////
+  //
+  //	Protected member data
+  //
+  NODE_LIST m_GroupList;
+  SphereClass m_BoundingSphere;
+  AABoxClass m_BoundingBox;
+  Vector3 m_LowZCenter;
+  Vector3 m_AbsCenter;
+  CString m_Name;
+  bool m_bDirty;
+  bool m_bHidden;
 };
-
 
 ///////////////////////////////////////////////////////////////
 //
@@ -155,36 +159,32 @@ class GroupMgrClass
 //
 //	Used to manage all items in the current selection set.
 //
-class SelectionMgrClass : public GroupMgrClass
-{
-	public:
+class SelectionMgrClass : public GroupMgrClass {
+public:
+  ///////////////////////////////////////////////////
+  //
+  //	Public constructors/destructors
+  //
+  SelectionMgrClass(void) : GroupMgrClass() {}
+  virtual ~SelectionMgrClass(void) {}
 
-		///////////////////////////////////////////////////
-		//
-		//	Public constructors/destructors
-		//
-		SelectionMgrClass (void) : GroupMgrClass () {}
-		virtual ~SelectionMgrClass (void) {}
+  ///////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
 
+  //
+  //	Item addition/removal methods
+  //
+  virtual void Add_Node(NodeClass *node);
+  virtual void Remove_Node(NodeClass *node);
+  virtual void Reset(void);
 
-		///////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-
-		//
-		//	Item addition/removal methods
-		//
-		virtual void		Add_Node (NodeClass *node);		
-		virtual void		Remove_Node (NodeClass *node);
-		virtual void		Reset (void);
-
-		//
-		//	Copy methods
-		//
-		virtual void		Clone_Group (void);
+  //
+  //	Copy methods
+  //
+  virtual void Clone_Group(void);
 };
-
 
 ///////////////////////////////////////////////////////////////
 //
@@ -192,43 +192,38 @@ class SelectionMgrClass : public GroupMgrClass
 //
 //	Used to manage all nodes in a user-defined group .
 //
-class UserGroupMgrClass : public GroupMgrClass
-{
-	public:
+class UserGroupMgrClass : public GroupMgrClass {
+public:
+  ///////////////////////////////////////////////////
+  //
+  //	Public constructors/destructors
+  //
+  UserGroupMgrClass(void) : GroupMgrClass() {}
+  virtual ~UserGroupMgrClass(void);
 
-		///////////////////////////////////////////////////
-		//
-		//	Public constructors/destructors
-		//
-		UserGroupMgrClass (void) : GroupMgrClass () {}
-		virtual ~UserGroupMgrClass (void);
+  ///////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
 
+  //
+  //	Item addition/removal methods
+  //
+  virtual void Add_Node(NodeClass *node);
+  virtual void Remove_Node(NodeClass *node);
 
-		///////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
+  //
+  //	Type methods
+  //
+  virtual bool Is_Managed(void) const { return false; }
 
-		//
-		//	Item addition/removal methods
-		//
-		virtual void		Add_Node (NodeClass *node);		
-		virtual void		Remove_Node (NodeClass *node);
-
-		//
-		//	Type methods
-		//
-		virtual bool		Is_Managed (void) const { return false; }
-
-	protected:
-
-		///////////////////////////////////////////////////
-		//
-		//	Protected methods
-		//
-		virtual void		Recalc_Stats (void);
-		virtual void		Update_Global_Group_List (void);
+protected:
+  ///////////////////////////////////////////////////
+  //
+  //	Protected methods
+  //
+  virtual void Recalc_Stats(void);
+  virtual void Update_Global_Group_List(void);
 };
-
 
 #endif //__GROUPMGR_H

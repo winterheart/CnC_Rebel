@@ -60,13 +60,12 @@
 #include "camera.h"
 #include "sr.hpp"
 
-
-#define BPT_FRONT						0x01
-#define BPT_BACK						0x02
-#define BPT_ON							0x04
-#define BPT_BOTH						0x08
-#define BPT_EPSILON					0.0001f
-#define BPT_COINCIDENCE_EPSILON	0.000001f
+#define BPT_FRONT 0x01
+#define BPT_BACK 0x02
+#define BPT_ON 0x04
+#define BPT_BOTH 0x08
+#define BPT_EPSILON 0.0001f
+#define BPT_COINCIDENCE_EPSILON 0.000001f
 
 class BptVertexClass;
 class BptPolyClass;
@@ -1929,7 +1928,7 @@ void BptImpClass::Begin_Apt(void)
 void BptImpClass::Add_Polys_To_Apt(BptImpNodeClass * node)
 {
 	assert(node != NULL);
-	
+
 #if 0
 	memcpy(&(ActivePolyTable[ActivePolyCount]),&(PolyIndices[node->FirstPoly]),node->PolyCount);
 	ActivePolyCount += node->PolyCount;

@@ -27,30 +27,23 @@
 #include "statistics.h"
 #include <wwprofile.h>
 
-bool SortingRendererClass::_EnableTriangleDraw=true;
+bool SortingRendererClass::_EnableTriangleDraw = true;
 
-struct ShortVectorIStruct
-{
-	unsigned short i;
-	unsigned short j;
-	unsigned short k;
+struct ShortVectorIStruct {
+  unsigned short i;
+  unsigned short j;
+  unsigned short k;
 
-	ShortVectorIStruct(unsigned short i_,unsigned short j_,unsigned short k_) : i(i_),j(j_),k(k_) {}
-	ShortVectorIStruct() {}
+  ShortVectorIStruct(unsigned short i_, unsigned short j_, unsigned short k_) : i(i_), j(j_), k(k_) {}
+  ShortVectorIStruct() {}
 };
 
-struct TempIndexStruct
-{
-	ShortVectorIStruct tri;
-	unsigned short idx;
+struct TempIndexStruct {
+  ShortVectorIStruct tri;
+  unsigned short idx;
 
-	TempIndexStruct() {}
-	TempIndexStruct(const ShortVectorIStruct& tri_, unsigned short idx_)
-		:
-		tri(tri_),
-		idx(idx_)
-	{
-	}
+  TempIndexStruct() {}
+  TempIndexStruct(const ShortVectorIStruct &tri_, unsigned short idx_) : tri(tri_), idx(idx_) {}
 };
 
 // ----------------------------------------------------------------------------
@@ -62,26 +55,26 @@ struct TempIndexStruct
 // ----------------------------------------------------------------------------
 
 template <class T, class K>
-void InsertionSort (
-	T* array,		// array to sort
-	K* keys,			// sort keys
-	int l,			//	first item
-	int r)			//	last item
+void InsertionSort(T *array, // array to sort
+                   K *keys,  // sort keys
+                   int l,    //	first item
+                   int r)    //	last item
 {
-	for (int i = l+1; i < r; i++) {
-		K v=keys[i];
-		T tv=array[i];
-		int j=i;
+  for (int i = l + 1; i < r; i++) {
+    K v = keys[i];
+    T tv = array[i];
+    int j = i;
 
-		while (keys[j-1] > v) {
-			keys[j]=keys[j-1];
-			array[j]=array[j-1];
-			j--;
-			if (j == l) break;
-		};
-		keys[j]=v;
-		array[j]=tv;
-	}
+    while (keys[j - 1] > v) {
+      keys[j] = keys[j - 1];
+      array[j] = array[j - 1];
+      j--;
+      if (j == l)
+        break;
+    };
+    keys[j] = v;
+    array[j] = tv;
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -96,43 +89,52 @@ void InsertionSort (
 // ----------------------------------------------------------------------------
 
 template <class T, class K>
-void QuickSort (
-	T* array,		//	array to sort
-	K* keys,			// sort keys
-	int l,			// first element
-	int r)			// last element
+void QuickSort(T *array, //	array to sort
+               K *keys,  // sort keys
+               int l,    // first element
+               int r)    // last element
 {
-	if (r-l <= 8) {
-		InsertionSort(array,keys,l,r+1);
-		return;
-	}
+  if (r - l <= 8) {
+    InsertionSort(array, keys, l, r + 1);
+    return;
+  }
 
-	K t;
-	K v=keys[r];
-	T ttemp;
-	int i=l-1;
-	int j=r;
+  K t;
+  K v = keys[r];
+  T ttemp;
+  int i = l - 1;
+  int j = r;
 
-	do {
-		do { i++; } while (i<r && keys[i]<v);
-		do { j--; } while (j>0 && keys[j]>v);
-		
-		WWASSERT(j>=0);
-		WWASSERT(i<=r);
+  do {
+    do {
+      i++;
+    } while (i < r && keys[i] < v);
+    do {
+      j--;
+    } while (j > 0 && keys[j] > v);
 
-		ttemp=array[i]; array[i]=array[j]; array[j]=ttemp;
-		t=keys[i]; keys[i]=keys[j]; keys[j]=t;
-	} while (j>i);
+    WWASSERT(j >= 0);
+    WWASSERT(i <= r);
 
-	array[j]=array[i];
-	array[i]=array[r];
-	array[r]=ttemp;
-	keys[j]=keys[i];
-	keys[i]=keys[r];
-	keys[r]=t;
-	
-	if (i-1>l) QuickSort(array,keys,l,i-1);
-	if (r>i+1) QuickSort(array,keys,i+1,r);
+    ttemp = array[i];
+    array[i] = array[j];
+    array[j] = ttemp;
+    t = keys[i];
+    keys[i] = keys[j];
+    keys[j] = t;
+  } while (j > i);
+
+  array[j] = array[i];
+  array[i] = array[r];
+  array[r] = ttemp;
+  keys[j] = keys[i];
+  keys[i] = keys[r];
+  keys[r] = t;
+
+  if (i - 1 > l)
+    QuickSort(array, keys, l, i - 1);
+  if (r > i + 1)
+    QuickSort(array, keys, i + 1, r);
 }
 
 // ----------------------------------------------------------------------------
@@ -142,71 +144,79 @@ void QuickSort (
 // ----------------------------------------------------------------------------
 
 template <class T, class K>
-void Sort (
-	T* array,		// array to sort
-	K *keys,	// sort keys
-	int count)		// array element count
+void Sort(T *array,  // array to sort
+          K *keys,   // sort keys
+          int count) // array element count
 {
-	bool do_insertion = false;
+  bool do_insertion = false;
 
-	if (count<=1) return;									// only one element.. return..
+  if (count <= 1)
+    return; // only one element.. return..
 
-	int c=0;														// count number of rise pairs
-	int i;
-	for (i = 1; i < count; i++)
-	if (keys[i] >= keys[i-1]) c++;
+  int c = 0; // count number of rise pairs
+  int i;
+  for (i = 1; i < count; i++)
+    if (keys[i] >= keys[i - 1])
+      c++;
 
-	if (c+1 == count) return;								// array already sorted
-	if (c<50) do_insertion=true;							// array smaller than 50 should use insertion sort
+  if (c + 1 == count)
+    return; // array already sorted
+  if (c < 50)
+    do_insertion = true; // array smaller than 50 should use insertion sort
 
-	if (c<count/3) {											// if array is not rising
-		T tmp;
-		K tval;
+  if (c < count / 3) { // if array is not rising
+    T tmp;
+    K tval;
 
-		for (i=0;i<count/2;i++) {
-			int neg = count-1-i;
+    for (i = 0; i < count / 2; i++) {
+      int neg = count - 1 - i;
 
-			tmp=array[i]; array[i]=array[neg]; array[neg]=tmp;
-			tval=keys[i]; keys[i] = keys[neg]; keys[neg]=tval;
-		}
+      tmp = array[i];
+      array[i] = array[neg];
+      array[neg] = tmp;
+      tval = keys[i];
+      keys[i] = keys[neg];
+      keys[neg] = tval;
+    }
 
-		if (!c) return;
+    if (!c)
+      return;
 
-		do_insertion = true;
-	}
-	if (do_insertion) InsertionSort(array,keys,0,count);
-	else QuickSort(array,keys,0,count-1);			// quick sort
+    do_insertion = true;
+  }
+  if (do_insertion)
+    InsertionSort(array, keys, 0, count);
+  else
+    QuickSort(array, keys, 0, count - 1); // quick sort
 }
 
 // ----------------------------------------------------------------------------
 
-struct SortingNodeStruct : DLNodeClass<SortingNodeStruct>
-{
-	RenderStateStruct sorting_state;
+struct SortingNodeStruct : DLNodeClass<SortingNodeStruct> {
+  RenderStateStruct sorting_state;
 
-	SphereClass bounding_sphere;
+  SphereClass bounding_sphere;
 
-	Vector3 transformed_center;
-	unsigned short start_index;			// First index used in the ib
-	unsigned short polygon_count;			// Polygon count to process (3 indices = one polygon)
-	unsigned short min_vertex_index;		// First index used in the vb
-	unsigned short vertex_count;			// Number of vertices used in vb
+  Vector3 transformed_center;
+  unsigned short start_index;      // First index used in the ib
+  unsigned short polygon_count;    // Polygon count to process (3 indices = one polygon)
+  unsigned short min_vertex_index; // First index used in the vb
+  unsigned short vertex_count;     // Number of vertices used in vb
 };
 
 static DLListClass<SortingNodeStruct> sorted_list;
 static DLListClass<SortingNodeStruct> clean_list;
 static unsigned total_sorting_vertices;
 
-static SortingNodeStruct* Get_Sorting_Struct()
-{
+static SortingNodeStruct *Get_Sorting_Struct() {
 
-	SortingNodeStruct* state=clean_list.Head();
-	if (state) {
-		state->Remove();
-		return state;
-	}
-	state=new SortingNodeStruct();
-	return state;
+  SortingNodeStruct *state = clean_list.Head();
+  if (state) {
+    state->Remove();
+    return state;
+  }
+  state = new SortingNodeStruct();
+  return state;
 }
 
 // ----------------------------------------------------------------------------
@@ -215,79 +225,72 @@ static SortingNodeStruct* Get_Sorting_Struct()
 //
 // ----------------------------------------------------------------------------
 
-static float* vertex_z_array;
-static float* polygon_z_array;
-static unsigned * node_id_array;
-static unsigned * sorted_node_id_array;
-static ShortVectorIStruct* polygon_index_array;
+static float *vertex_z_array;
+static float *polygon_z_array;
+static unsigned *node_id_array;
+static unsigned *sorted_node_id_array;
+static ShortVectorIStruct *polygon_index_array;
 static unsigned vertex_z_array_count;
 static unsigned polygon_z_array_count;
 static unsigned node_id_array_count;
 static unsigned sorted_node_id_array_count;
 static unsigned polygon_index_array_count;
-TempIndexStruct* temp_index_array;
+TempIndexStruct *temp_index_array;
 unsigned temp_index_array_count;
 
-static TempIndexStruct* Get_Temp_Index_Array(unsigned count)
-{
-	if (count>temp_index_array_count) {
-		delete[] temp_index_array;
-		temp_index_array=new TempIndexStruct[count];
-		temp_index_array_count=count;
-	}
-	return temp_index_array;
+static TempIndexStruct *Get_Temp_Index_Array(unsigned count) {
+  if (count > temp_index_array_count) {
+    delete[] temp_index_array;
+    temp_index_array = new TempIndexStruct[count];
+    temp_index_array_count = count;
+  }
+  return temp_index_array;
 }
 
-static float* Get_Vertex_Z_Array(unsigned count)
-{
-	if (count>vertex_z_array_count) {
-		delete[] vertex_z_array;
-		vertex_z_array=new float[count];
-		vertex_z_array_count=count;
-	}
-	return vertex_z_array;
+static float *Get_Vertex_Z_Array(unsigned count) {
+  if (count > vertex_z_array_count) {
+    delete[] vertex_z_array;
+    vertex_z_array = new float[count];
+    vertex_z_array_count = count;
+  }
+  return vertex_z_array;
 }
 
-static float* Get_Polygon_Z_Array(unsigned count)
-{
-	if (count>polygon_z_array_count) {
-		delete[] polygon_z_array;
-		polygon_z_array=new float[count];
-		polygon_z_array_count=count;
-	}
-	return polygon_z_array;
+static float *Get_Polygon_Z_Array(unsigned count) {
+  if (count > polygon_z_array_count) {
+    delete[] polygon_z_array;
+    polygon_z_array = new float[count];
+    polygon_z_array_count = count;
+  }
+  return polygon_z_array;
 }
 
-static unsigned * Get_Node_Id_Array(unsigned count)
-{
-	if (count>node_id_array_count) {
-		delete[] node_id_array;
-		node_id_array=new unsigned[count];
-		node_id_array_count=count;
-	}
-	return node_id_array;
+static unsigned *Get_Node_Id_Array(unsigned count) {
+  if (count > node_id_array_count) {
+    delete[] node_id_array;
+    node_id_array = new unsigned[count];
+    node_id_array_count = count;
+  }
+  return node_id_array;
 }
 
-static unsigned * Get_Sorted_Node_Id_Array(unsigned count)
-{
-	if (count>sorted_node_id_array_count) {
-		delete[] sorted_node_id_array;
-		sorted_node_id_array=new unsigned[count];
-		sorted_node_id_array_count=count;
-	}
-	return sorted_node_id_array;
+static unsigned *Get_Sorted_Node_Id_Array(unsigned count) {
+  if (count > sorted_node_id_array_count) {
+    delete[] sorted_node_id_array;
+    sorted_node_id_array = new unsigned[count];
+    sorted_node_id_array_count = count;
+  }
+  return sorted_node_id_array;
 }
 
-static ShortVectorIStruct* Get_Polygon_Index_Array(unsigned count)
-{
-	if (count>polygon_index_array_count) {
-		delete[] polygon_index_array;
-		polygon_index_array=new ShortVectorIStruct[count];
-		polygon_index_array_count=count;
-	}
-	return polygon_index_array;
+static ShortVectorIStruct *Get_Polygon_Index_Array(unsigned count) {
+  if (count > polygon_index_array_count) {
+    delete[] polygon_index_array;
+    polygon_index_array = new ShortVectorIStruct[count];
+    polygon_index_array_count = count;
+  }
+  return polygon_index_array;
 }
-
 
 // ----------------------------------------------------------------------------
 //
@@ -295,85 +298,80 @@ static ShortVectorIStruct* Get_Polygon_Index_Array(unsigned count)
 //
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Insert_Triangles(
-	const SphereClass& bounding_sphere,
-	unsigned short start_index, 
-	unsigned short polygon_count,
-	unsigned short min_vertex_index,
-	unsigned short vertex_count)
-{
-	if (!WW3D::Is_Sorting_Enabled()) {
-		DX8Wrapper::Draw_Triangles(start_index,polygon_count,min_vertex_index,vertex_count);
-		return;
-	}
+void SortingRendererClass::Insert_Triangles(const SphereClass &bounding_sphere, unsigned short start_index,
+                                            unsigned short polygon_count, unsigned short min_vertex_index,
+                                            unsigned short vertex_count) {
+  if (!WW3D::Is_Sorting_Enabled()) {
+    DX8Wrapper::Draw_Triangles(start_index, polygon_count, min_vertex_index, vertex_count);
+    return;
+  }
 
-	DX8_RECORD_SORTING_RENDER(polygon_count,vertex_count);
+  DX8_RECORD_SORTING_RENDER(polygon_count, vertex_count);
 
-	SortingNodeStruct* state=Get_Sorting_Struct();
+  SortingNodeStruct *state = Get_Sorting_Struct();
 
-	DX8Wrapper::Get_Render_State(state->sorting_state);
+  DX8Wrapper::Get_Render_State(state->sorting_state);
 
- 	WWASSERT(
-		((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
-		(state->sorting_state.vertex_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING)));
+  WWASSERT(((state->sorting_state.index_buffer_type == BUFFER_TYPE_SORTING ||
+             state->sorting_state.index_buffer_type == BUFFER_TYPE_DYNAMIC_SORTING) &&
+            (state->sorting_state.vertex_buffer_type == BUFFER_TYPE_SORTING ||
+             state->sorting_state.vertex_buffer_type == BUFFER_TYPE_DYNAMIC_SORTING)));
 
-	state->bounding_sphere=bounding_sphere;
-	state->start_index=start_index;
-	state->polygon_count=polygon_count;
-	state->min_vertex_index=min_vertex_index;
-	state->vertex_count=vertex_count;
+  state->bounding_sphere = bounding_sphere;
+  state->start_index = start_index;
+  state->polygon_count = polygon_count;
+  state->min_vertex_index = min_vertex_index;
+  state->vertex_count = vertex_count;
 
-	SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffer);
-	WWASSERT(vertex_buffer);
-	WWASSERT(state->vertex_count<=vertex_buffer->Get_Vertex_Count());
+  SortingVertexBufferClass *vertex_buffer = static_cast<SortingVertexBufferClass *>(state->sorting_state.vertex_buffer);
+  WWASSERT(vertex_buffer);
+  WWASSERT(state->vertex_count <= vertex_buffer->Get_Vertex_Count());
 
-	// Transform the center point to view space for sorting
-	Matrix4 mtx = state->sorting_state.world * state->sorting_state.view;
-	Vector3 vec = state->bounding_sphere.Center;
+  // Transform the center point to view space for sorting
+  Matrix4 mtx = state->sorting_state.world * state->sorting_state.view;
+  Vector3 vec = state->bounding_sphere.Center;
 
-	DirectX::XMFLOAT4X4 dx_mtx(
-		mtx[0].X, mtx[0].Y, mtx[0].Z, mtx[0].W,
-		mtx[1].X, mtx[1].Y, mtx[1].Z, mtx[1].W,
-		mtx[2].X, mtx[2].Y, mtx[2].Z, mtx[2].W,
-		mtx[3].X, mtx[3].Y, mtx[3].Z, mtx[3].W
-	);
-	DirectX::XMFLOAT3 dx_vec(vec.X, vec.Y, vec.Z);
-	DirectX::XMVECTOR transformed_vec = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&dx_vec), DirectX::XMLoadFloat4x4(&dx_mtx));
-	DirectX::XMFLOAT4 out_transofrmed_vec;
-	
-	DirectX::XMStoreFloat4(&out_transofrmed_vec, transformed_vec);
-	state->transformed_center = Vector3(out_transofrmed_vec.x, out_transofrmed_vec.y, out_transofrmed_vec.z);
+  DirectX::XMFLOAT4X4 dx_mtx(mtx[0].X, mtx[0].Y, mtx[0].Z, mtx[0].W, mtx[1].X, mtx[1].Y, mtx[1].Z, mtx[1].W, mtx[2].X,
+                             mtx[2].Y, mtx[2].Z, mtx[2].W, mtx[3].X, mtx[3].Y, mtx[3].Z, mtx[3].W);
+  DirectX::XMFLOAT3 dx_vec(vec.X, vec.Y, vec.Z);
+  DirectX::XMVECTOR transformed_vec =
+      DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&dx_vec), DirectX::XMLoadFloat4x4(&dx_mtx));
+  DirectX::XMFLOAT4 out_transofrmed_vec;
 
-	SortingNodeStruct* node=sorted_list.Head();
-	while (node) {
-		if (state->transformed_center.Z>node->transformed_center.Z) {
-			if (sorted_list.Head()==sorted_list.Tail())
-				sorted_list.Add_Head(state);
-			else
-				state->Insert_Before(node);
-			break;
-		}
-		node=node->Succ();
-	}
-	if (!node) sorted_list.Add_Tail(state);
+  DirectX::XMStoreFloat4(&out_transofrmed_vec, transformed_vec);
+  state->transformed_center = Vector3(out_transofrmed_vec.x, out_transofrmed_vec.y, out_transofrmed_vec.z);
+
+  SortingNodeStruct *node = sorted_list.Head();
+  while (node) {
+    if (state->transformed_center.Z > node->transformed_center.Z) {
+      if (sorted_list.Head() == sorted_list.Tail())
+        sorted_list.Add_Head(state);
+      else
+        state->Insert_Before(node);
+      break;
+    }
+    node = node->Succ();
+  }
+  if (!node)
+    sorted_list.Add_Tail(state);
 
 #ifdef WWDEBUG
-	unsigned short* indices=NULL;
-	SortingIndexBufferClass* index_buffer=static_cast<SortingIndexBufferClass*>(state->sorting_state.index_buffer);
-	WWASSERT(index_buffer);
-	indices=index_buffer->index_buffer;
-	WWASSERT(indices);
-	indices+=state->start_index;
-	indices+=state->sorting_state.iba_offset;
+  unsigned short *indices = NULL;
+  SortingIndexBufferClass *index_buffer = static_cast<SortingIndexBufferClass *>(state->sorting_state.index_buffer);
+  WWASSERT(index_buffer);
+  indices = index_buffer->index_buffer;
+  WWASSERT(indices);
+  indices += state->start_index;
+  indices += state->sorting_state.iba_offset;
 
-	for (int i=0;i<state->polygon_count;++i) {
-		unsigned short idx1=indices[i*3]-state->min_vertex_index;
-		unsigned short idx2=indices[i*3+1]-state->min_vertex_index;
-		unsigned short idx3=indices[i*3+2]-state->min_vertex_index;
-		WWASSERT(idx1<state->vertex_count);
-		WWASSERT(idx2<state->vertex_count);
-		WWASSERT(idx3<state->vertex_count);
-	}
+  for (int i = 0; i < state->polygon_count; ++i) {
+    unsigned short idx1 = indices[i * 3] - state->min_vertex_index;
+    unsigned short idx2 = indices[i * 3 + 1] - state->min_vertex_index;
+    unsigned short idx3 = indices[i * 3 + 2] - state->min_vertex_index;
+    WWASSERT(idx1 < state->vertex_count);
+    WWASSERT(idx2 < state->vertex_count);
+    WWASSERT(idx3 < state->vertex_count);
+  }
 #endif
 }
 
@@ -383,14 +381,10 @@ void SortingRendererClass::Insert_Triangles(
 //
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Insert_Triangles(
-	unsigned short start_index, 
-	unsigned short polygon_count,
-	unsigned short min_vertex_index,
-	unsigned short vertex_count)
-{
-	SphereClass sphere(Vector3(0.0f,0.0f,0.0f),0.0f);
-	Insert_Triangles(sphere,start_index,polygon_count,min_vertex_index,vertex_count);
+void SortingRendererClass::Insert_Triangles(unsigned short start_index, unsigned short polygon_count,
+                                            unsigned short min_vertex_index, unsigned short vertex_count) {
+  SphereClass sphere(Vector3(0.0f, 0.0f, 0.0f), 0.0f);
+  Insert_Triangles(sphere, start_index, polygon_count, min_vertex_index, vertex_count);
 }
 
 // ----------------------------------------------------------------------------
@@ -399,343 +393,320 @@ void SortingRendererClass::Insert_Triangles(
 //
 // ----------------------------------------------------------------------------
 
-void Release_Refs(SortingNodeStruct* state)
-{
-	REF_PTR_RELEASE(state->sorting_state.vertex_buffer);
-	REF_PTR_RELEASE(state->sorting_state.index_buffer);
-	REF_PTR_RELEASE(state->sorting_state.material);
-	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
-		REF_PTR_RELEASE(state->sorting_state.Textures[i]);
-	}
+void Release_Refs(SortingNodeStruct *state) {
+  REF_PTR_RELEASE(state->sorting_state.vertex_buffer);
+  REF_PTR_RELEASE(state->sorting_state.index_buffer);
+  REF_PTR_RELEASE(state->sorting_state.material);
+  for (unsigned i = 0; i < MAX_TEXTURE_STAGES; ++i) {
+    REF_PTR_RELEASE(state->sorting_state.Textures[i]);
+  }
 }
 
 static unsigned overlapping_node_count;
 static unsigned overlapping_polygon_count;
 static unsigned overlapping_vertex_count;
-const unsigned MAX_OVERLAPPING_NODES=4096;
-static SortingNodeStruct* overlapping_nodes[MAX_OVERLAPPING_NODES];
+const unsigned MAX_OVERLAPPING_NODES = 4096;
+static SortingNodeStruct *overlapping_nodes[MAX_OVERLAPPING_NODES];
 
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Insert_To_Sorting_Pool(SortingNodeStruct* state)
-{
-	if (overlapping_node_count>=MAX_OVERLAPPING_NODES) {
-		Release_Refs(state);
-		WWASSERT(0);
-		return;
-	}
+void SortingRendererClass::Insert_To_Sorting_Pool(SortingNodeStruct *state) {
+  if (overlapping_node_count >= MAX_OVERLAPPING_NODES) {
+    Release_Refs(state);
+    WWASSERT(0);
+    return;
+  }
 
-	overlapping_nodes[overlapping_node_count]=state;
-	overlapping_vertex_count+=state->vertex_count;
-	overlapping_polygon_count+=state->polygon_count;
-	overlapping_node_count++;
+  overlapping_nodes[overlapping_node_count] = state;
+  overlapping_vertex_count += state->vertex_count;
+  overlapping_polygon_count += state->polygon_count;
+  overlapping_node_count++;
 }
 
 // ----------------------------------------------------------------------------
 
-static void Apply_Render_State(RenderStateStruct& render_state)
-{
-/*	state->sorting_state.shader.Apply();
-*/
-	DX8Wrapper::Set_Shader(render_state.shader);
+static void Apply_Render_State(RenderStateStruct &render_state) {
+  /*	state->sorting_state.shader.Apply();
+   */
+  DX8Wrapper::Set_Shader(render_state.shader);
 
-/*	if (render_state.material) render_state.material->Apply();
-*/
-	DX8Wrapper::Set_Material(render_state.material);
+  /*	if (render_state.material) render_state.material->Apply();
+   */
+  DX8Wrapper::Set_Material(render_state.material);
 
-/*	if (render_state.Textures[2]) render_state.Textures[2]->Apply();
-	if (render_state.Textures[3]) render_state.Textures[3]->Apply();
-	if (render_state.Textures[4]) render_state.Textures[4]->Apply();
-	if (render_state.Textures[5]) render_state.Textures[5]->Apply();
-	if (render_state.Textures[6]) render_state.Textures[6]->Apply();
-	if (render_state.Textures[7]) render_state.Textures[7]->Apply();
-*/
-	for (unsigned i=0;i<MAX_TEXTURE_STAGES;++i) {
-		DX8Wrapper::Set_Texture(i,render_state.Textures[i]);
-	}
+  /*	if (render_state.Textures[2]) render_state.Textures[2]->Apply();
+          if (render_state.Textures[3]) render_state.Textures[3]->Apply();
+          if (render_state.Textures[4]) render_state.Textures[4]->Apply();
+          if (render_state.Textures[5]) render_state.Textures[5]->Apply();
+          if (render_state.Textures[6]) render_state.Textures[6]->Apply();
+          if (render_state.Textures[7]) render_state.Textures[7]->Apply();
+  */
+  for (unsigned i = 0; i < MAX_TEXTURE_STAGES; ++i) {
+    DX8Wrapper::Set_Texture(i, render_state.Textures[i]);
+  }
 
-	if (render_state.LightEnable[0]) {
-		DX8Wrapper::Set_DX8_Light(0,&render_state.Lights[0]);
-		if (render_state.LightEnable[1]) {
-			DX8Wrapper::Set_DX8_Light(1,&render_state.Lights[1]);
-			if (render_state.LightEnable[2]) {
-				DX8Wrapper::Set_DX8_Light(2,&render_state.Lights[2]);
-				if (render_state.LightEnable[3]) {
-					DX8Wrapper::Set_DX8_Light(3,&render_state.Lights[3]);
-				}
-				else {
-					DX8Wrapper::Set_DX8_Light(3,NULL);
-				}
-			}
-			else {
-				DX8Wrapper::Set_DX8_Light(2,NULL);
-			}
-		}
-		else {
-			DX8Wrapper::Set_DX8_Light(1,NULL);
-		}
-	}
-	else {
-		DX8Wrapper::Set_DX8_Light(0,NULL);
-	}
+  if (render_state.LightEnable[0]) {
+    DX8Wrapper::Set_DX8_Light(0, &render_state.Lights[0]);
+    if (render_state.LightEnable[1]) {
+      DX8Wrapper::Set_DX8_Light(1, &render_state.Lights[1]);
+      if (render_state.LightEnable[2]) {
+        DX8Wrapper::Set_DX8_Light(2, &render_state.Lights[2]);
+        if (render_state.LightEnable[3]) {
+          DX8Wrapper::Set_DX8_Light(3, &render_state.Lights[3]);
+        } else {
+          DX8Wrapper::Set_DX8_Light(3, NULL);
+        }
+      } else {
+        DX8Wrapper::Set_DX8_Light(2, NULL);
+      }
+    } else {
+      DX8Wrapper::Set_DX8_Light(1, NULL);
+    }
+  } else {
+    DX8Wrapper::Set_DX8_Light(0, NULL);
+  }
 
-//	Matrix4 mtx;
-//	mtx=render_state.world.Transpose();
-//	DX8Wrapper::Set_Transform(D3DTS_WORLD,mtx);
-//	mtx=render_state.view.Transpose();
-//	DX8Wrapper::Set_Transform(D3DTS_VIEW,mtx);
+  //	Matrix4 mtx;
+  //	mtx=render_state.world.Transpose();
+  //	DX8Wrapper::Set_Transform(D3DTS_WORLD,mtx);
+  //	mtx=render_state.view.Transpose();
+  //	DX8Wrapper::Set_Transform(D3DTS_VIEW,mtx);
 
-	DX8Wrapper::_Set_DX8_Transform(D3DTS_WORLD,render_state.world);
-	DX8Wrapper::_Set_DX8_Transform(D3DTS_VIEW,render_state.view);
+  DX8Wrapper::_Set_DX8_Transform(D3DTS_WORLD, render_state.world);
+  DX8Wrapper::_Set_DX8_Transform(D3DTS_VIEW, render_state.view);
 }
 
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Flush_Sorting_Pool()
-{
-	if (!overlapping_node_count) return;
+void SortingRendererClass::Flush_Sorting_Pool() {
+  if (!overlapping_node_count)
+    return;
 
-	SNAPSHOT_SAY(("SortingSystem - Flush \n"));
+  SNAPSHOT_SAY(("SortingSystem - Flush \n"));
 
-	unsigned node_id;
-	// Fill dynamic index buffer with sorting index buffer vertices
-	unsigned * node_id_array=Get_Node_Id_Array(overlapping_polygon_count);
-	float* polygon_z_array=Get_Polygon_Z_Array(overlapping_polygon_count);
-	ShortVectorIStruct* polygon_idx_array=(ShortVectorIStruct*)Get_Polygon_Index_Array(overlapping_polygon_count);
+  unsigned node_id;
+  // Fill dynamic index buffer with sorting index buffer vertices
+  unsigned *node_id_array = Get_Node_Id_Array(overlapping_polygon_count);
+  float *polygon_z_array = Get_Polygon_Z_Array(overlapping_polygon_count);
+  ShortVectorIStruct *polygon_idx_array = (ShortVectorIStruct *)Get_Polygon_Index_Array(overlapping_polygon_count);
 
-	DynamicVBAccessClass dyn_vb_access(BUFFER_TYPE_DYNAMIC_DX8,dynamic_fvf_type,overlapping_vertex_count);
-	{
-		DynamicVBAccessClass::WriteLockClass lock(&dyn_vb_access);
-		VertexFormatXYZNDUV2* dest_verts=lock.Get_Formatted_Vertex_Array();
+  DynamicVBAccessClass dyn_vb_access(BUFFER_TYPE_DYNAMIC_DX8, dynamic_fvf_type, overlapping_vertex_count);
+  {
+    DynamicVBAccessClass::WriteLockClass lock(&dyn_vb_access);
+    VertexFormatXYZNDUV2 *dest_verts = lock.Get_Formatted_Vertex_Array();
 
-		unsigned polygon_array_offset=0;
-		unsigned vertex_array_offset=0;
-		for (node_id=0;node_id<overlapping_node_count;++node_id) {
-			SortingNodeStruct* state=overlapping_nodes[node_id];
-			float* vertex_z_array=Get_Vertex_Z_Array(state->vertex_count);
+    unsigned polygon_array_offset = 0;
+    unsigned vertex_array_offset = 0;
+    for (node_id = 0; node_id < overlapping_node_count; ++node_id) {
+      SortingNodeStruct *state = overlapping_nodes[node_id];
+      float *vertex_z_array = Get_Vertex_Z_Array(state->vertex_count);
 
-			VertexFormatXYZNDUV2* src_verts=NULL;
-			SortingVertexBufferClass* vertex_buffer=static_cast<SortingVertexBufferClass*>(state->sorting_state.vertex_buffer);
-			WWASSERT(vertex_buffer);
-			src_verts=vertex_buffer->VertexBuffer;
-			WWASSERT(src_verts);
-			src_verts+=state->sorting_state.vba_offset;
-			src_verts+=state->sorting_state.index_base_offset;
-			src_verts+=state->min_vertex_index;
+      VertexFormatXYZNDUV2 *src_verts = NULL;
+      SortingVertexBufferClass *vertex_buffer =
+          static_cast<SortingVertexBufferClass *>(state->sorting_state.vertex_buffer);
+      WWASSERT(vertex_buffer);
+      src_verts = vertex_buffer->VertexBuffer;
+      WWASSERT(src_verts);
+      src_verts += state->sorting_state.vba_offset;
+      src_verts += state->sorting_state.index_base_offset;
+      src_verts += state->min_vertex_index;
 
-			Matrix4 d3d_mtx = state->sorting_state.world * state->sorting_state.view;
-			DirectX::XMFLOAT4X4 dx_mtx(
-				d3d_mtx[0].X, d3d_mtx[0].Y, d3d_mtx[0].Z, d3d_mtx[0].W,
-				d3d_mtx[1].X, d3d_mtx[1].Y, d3d_mtx[1].Z, d3d_mtx[1].W,
-				d3d_mtx[2].X, d3d_mtx[2].Y, d3d_mtx[2].Z, d3d_mtx[2].W,
-				d3d_mtx[3].X, d3d_mtx[3].Y, d3d_mtx[3].Z, d3d_mtx[3].W
-			);
-			DirectX::XMMATRIX transformed_vec = DirectX::XMLoadFloat4x4(&dx_mtx);
-			transformed_vec = DirectX::XMMatrixTranspose(transformed_vec);
-			DirectX::XMStoreFloat4x4(&dx_mtx, transformed_vec);
+      Matrix4 d3d_mtx = state->sorting_state.world * state->sorting_state.view;
+      DirectX::XMFLOAT4X4 dx_mtx(d3d_mtx[0].X, d3d_mtx[0].Y, d3d_mtx[0].Z, d3d_mtx[0].W, d3d_mtx[1].X, d3d_mtx[1].Y,
+                                 d3d_mtx[1].Z, d3d_mtx[1].W, d3d_mtx[2].X, d3d_mtx[2].Y, d3d_mtx[2].Z, d3d_mtx[2].W,
+                                 d3d_mtx[3].X, d3d_mtx[3].Y, d3d_mtx[3].Z, d3d_mtx[3].W);
+      DirectX::XMMATRIX transformed_vec = DirectX::XMLoadFloat4x4(&dx_mtx);
+      transformed_vec = DirectX::XMMatrixTranspose(transformed_vec);
+      DirectX::XMStoreFloat4x4(&dx_mtx, transformed_vec);
 
-			for (unsigned i=0;i<state->vertex_count;++i,++src_verts) {
-				vertex_z_array[i] = (dx_mtx._31 * src_verts->x + dx_mtx._32 * src_verts->y + dx_mtx._33 * src_verts->z + dx_mtx._34);
+      for (unsigned i = 0; i < state->vertex_count; ++i, ++src_verts) {
+        vertex_z_array[i] =
+            (dx_mtx._31 * src_verts->x + dx_mtx._32 * src_verts->y + dx_mtx._33 * src_verts->z + dx_mtx._34);
 
-				//
-				// If you have a crash in here and "dest_verts" points to illegal memory area,
-				// it is because D3D is in illegal state, and the only known cure is rebooting.
-				// This illegal state is usually caused by Quake3-engine powered games such as MOHAA.
+        //
+        // If you have a crash in here and "dest_verts" points to illegal memory area,
+        // it is because D3D is in illegal state, and the only known cure is rebooting.
+        // This illegal state is usually caused by Quake3-engine powered games such as MOHAA.
 
-				*dest_verts++=*src_verts;
-			}
+        *dest_verts++ = *src_verts;
+      }
 
-			unsigned short* indices=NULL;
-			SortingIndexBufferClass* index_buffer=static_cast<SortingIndexBufferClass*>(state->sorting_state.index_buffer);
-			WWASSERT(index_buffer);
-			indices=index_buffer->index_buffer;
-			WWASSERT(indices);
-			indices+=state->start_index;
-			indices+=state->sorting_state.iba_offset;
+      unsigned short *indices = NULL;
+      SortingIndexBufferClass *index_buffer = static_cast<SortingIndexBufferClass *>(state->sorting_state.index_buffer);
+      WWASSERT(index_buffer);
+      indices = index_buffer->index_buffer;
+      WWASSERT(indices);
+      indices += state->start_index;
+      indices += state->sorting_state.iba_offset;
 
-			for (int i=0;i<state->polygon_count;++i) {
-				unsigned short idx1=indices[i*3]-state->min_vertex_index;
-				unsigned short idx2=indices[i*3+1]-state->min_vertex_index;
-				unsigned short idx3=indices[i*3+2]-state->min_vertex_index;
-				WWASSERT(idx1<state->vertex_count);
-				WWASSERT(idx2<state->vertex_count);
-				WWASSERT(idx3<state->vertex_count);
-				float z1=vertex_z_array[idx1];
-				float z2=vertex_z_array[idx2];
-				float z3=vertex_z_array[idx3];
-				float z=(z1+z2+z3)/3.0f;
-				unsigned array_index=i+polygon_array_offset;
-				WWASSERT(array_index<overlapping_polygon_count);
-				polygon_z_array[array_index]=z;
-				node_id_array[array_index]=node_id;
-				polygon_idx_array[array_index]=ShortVectorIStruct(
-					idx1+vertex_array_offset,
-					idx2+vertex_array_offset,
-					idx3+vertex_array_offset);
-			}
+      for (int i = 0; i < state->polygon_count; ++i) {
+        unsigned short idx1 = indices[i * 3] - state->min_vertex_index;
+        unsigned short idx2 = indices[i * 3 + 1] - state->min_vertex_index;
+        unsigned short idx3 = indices[i * 3 + 2] - state->min_vertex_index;
+        WWASSERT(idx1 < state->vertex_count);
+        WWASSERT(idx2 < state->vertex_count);
+        WWASSERT(idx3 < state->vertex_count);
+        float z1 = vertex_z_array[idx1];
+        float z2 = vertex_z_array[idx2];
+        float z3 = vertex_z_array[idx3];
+        float z = (z1 + z2 + z3) / 3.0f;
+        unsigned array_index = i + polygon_array_offset;
+        WWASSERT(array_index < overlapping_polygon_count);
+        polygon_z_array[array_index] = z;
+        node_id_array[array_index] = node_id;
+        polygon_idx_array[array_index] =
+            ShortVectorIStruct(idx1 + vertex_array_offset, idx2 + vertex_array_offset, idx3 + vertex_array_offset);
+      }
 
-			state->min_vertex_index=vertex_array_offset;
+      state->min_vertex_index = vertex_array_offset;
 
-			polygon_array_offset+=state->polygon_count;
-			vertex_array_offset+=state->vertex_count;
+      polygon_array_offset += state->polygon_count;
+      vertex_array_offset += state->vertex_count;
+    }
+  }
 
-		}
-	}
+  TempIndexStruct *tis = Get_Temp_Index_Array(overlapping_polygon_count);
+  for (unsigned a = 0; a < overlapping_polygon_count; ++a) {
+    tis[a] = TempIndexStruct(polygon_idx_array[a], node_id_array[a]);
+  }
+  Sort<TempIndexStruct, float>(tis, polygon_z_array, overlapping_polygon_count);
 
-	TempIndexStruct* tis=Get_Temp_Index_Array(overlapping_polygon_count);
-	for (unsigned a=0;a<overlapping_polygon_count;++a) {
-		tis[a]=TempIndexStruct(polygon_idx_array[a],node_id_array[a]);
-	}
-	Sort<TempIndexStruct,float>(tis,polygon_z_array,overlapping_polygon_count);
+  DynamicIBAccessClass dyn_ib_access(BUFFER_TYPE_DYNAMIC_DX8, overlapping_polygon_count * 3);
+  {
+    DynamicIBAccessClass::WriteLockClass lock(&dyn_ib_access);
+    ShortVectorIStruct *sorted_polygon_index_array = (ShortVectorIStruct *)lock.Get_Index_Array();
 
-	DynamicIBAccessClass dyn_ib_access(BUFFER_TYPE_DYNAMIC_DX8,overlapping_polygon_count*3);
-	{
-		DynamicIBAccessClass::WriteLockClass lock(&dyn_ib_access);
-		ShortVectorIStruct* sorted_polygon_index_array=(ShortVectorIStruct*)lock.Get_Index_Array();
+    for (unsigned a = 0; a < overlapping_polygon_count; ++a) {
+      sorted_polygon_index_array[a] = tis[a].tri;
+    }
+  }
 
-		for (unsigned a=0;a<overlapping_polygon_count;++a) {
-			sorted_polygon_index_array[a]=tis[a].tri;
-		}
-	}
+  // Set index buffer and render!
 
-	// Set index buffer and render!
+  DX8Wrapper::Set_Index_Buffer(dyn_ib_access, 0); // Override with this buffer (do something to prevent need for this!)
+  DX8Wrapper::Set_Vertex_Buffer(dyn_vb_access);   // Override with this buffer (do something to prevent need for this!)
 
-	DX8Wrapper::Set_Index_Buffer(dyn_ib_access,0); // Override with this buffer (do something to prevent need for this!)
-	DX8Wrapper::Set_Vertex_Buffer(dyn_vb_access); // Override with this buffer (do something to prevent need for this!)
+  DX8Wrapper::Apply_Render_State_Changes();
 
-	DX8Wrapper::Apply_Render_State_Changes();
+  bool enable_triangle_draw = DX8Wrapper::_Is_Triangle_Draw_Enabled();
+  DX8Wrapper::_Enable_Triangle_Draw(_Is_Triangle_Draw_Enabled());
 
-	bool enable_triangle_draw=DX8Wrapper::_Is_Triangle_Draw_Enabled();
-	DX8Wrapper::_Enable_Triangle_Draw(_Is_Triangle_Draw_Enabled());
+  unsigned count_to_render = 1;
+  unsigned start_index = 0;
+  node_id = tis[0].idx;
+  for (unsigned i = 1; i < overlapping_polygon_count; ++i) {
+    if (node_id != tis[i].idx) {
+      SortingNodeStruct *state = overlapping_nodes[node_id];
+      Apply_Render_State(state->sorting_state);
 
-	unsigned count_to_render=1;
-	unsigned start_index=0;
-	node_id=tis[0].idx;
-	for (unsigned i=1;i<overlapping_polygon_count;++i) {
-		if (node_id!=tis[i].idx) {
-			SortingNodeStruct* state=overlapping_nodes[node_id];
-			Apply_Render_State(state->sorting_state);
+      DX8Wrapper::Draw_Triangles(start_index * 3, count_to_render, state->min_vertex_index, state->vertex_count);
 
-			DX8Wrapper::Draw_Triangles(
-				start_index*3,
-				count_to_render,
-				state->min_vertex_index,
-				state->vertex_count);
+      count_to_render = 0;
+      start_index = i;
+      node_id = tis[i].idx;
+    }
+    count_to_render++;
+  }
 
-			count_to_render=0;
-			start_index=i;
-			node_id=tis[i].idx;
-		}
-		count_to_render++;
-	}
+  // Render any remaining polygons...
+  if (count_to_render) {
+    SortingNodeStruct *state = overlapping_nodes[node_id];
+    Apply_Render_State(state->sorting_state);
 
-	// Render any remaining polygons...
-	if (count_to_render) {
-		SortingNodeStruct* state=overlapping_nodes[node_id];
-		Apply_Render_State(state->sorting_state);
+    DX8Wrapper::Draw_Triangles(start_index * 3, count_to_render, state->min_vertex_index, state->vertex_count);
+  }
 
-		DX8Wrapper::Draw_Triangles(
-			start_index*3,
-			count_to_render,
-			state->min_vertex_index,
-			state->vertex_count);
-	}
+  // Release all references and return nodes back to the clean list for the frame...
+  for (node_id = 0; node_id < overlapping_node_count; ++node_id) {
+    SortingNodeStruct *state = overlapping_nodes[node_id];
+    Release_Refs(state);
+    clean_list.Add_Head(state);
+  }
+  overlapping_node_count = 0;
+  overlapping_polygon_count = 0;
+  overlapping_vertex_count = 0;
 
-	// Release all references and return nodes back to the clean list for the frame...
-	for (node_id=0;node_id<overlapping_node_count;++node_id) {
-		SortingNodeStruct* state=overlapping_nodes[node_id];
-		Release_Refs(state);
-		clean_list.Add_Head(state);
-	}
-	overlapping_node_count=0;
-	overlapping_polygon_count=0;
-	overlapping_vertex_count=0;
-
-	DX8Wrapper::_Enable_Triangle_Draw(enable_triangle_draw);
-	SNAPSHOT_SAY(("SortingSystem - Done flushing\n"));
-
+  DX8Wrapper::_Enable_Triangle_Draw(enable_triangle_draw);
+  SNAPSHOT_SAY(("SortingSystem - Done flushing\n"));
 }
 
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Flush()
-{
-	WWPROFILE("SortingRenderer::Flush");
-	Matrix4 old_view;
-	Matrix4 old_world;
-	DX8Wrapper::Get_Transform(D3DTS_VIEW,old_view);
-	DX8Wrapper::Get_Transform(D3DTS_WORLD,old_world);
+void SortingRendererClass::Flush() {
+  WWPROFILE("SortingRenderer::Flush");
+  Matrix4 old_view;
+  Matrix4 old_world;
+  DX8Wrapper::Get_Transform(D3DTS_VIEW, old_view);
+  DX8Wrapper::Get_Transform(D3DTS_WORLD, old_world);
 
-	while (SortingNodeStruct* state=sorted_list.Head()) {
-		state->Remove();
-		
-		if ((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
-			(state->sorting_state.vertex_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.vertex_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING)) {
-			Insert_To_Sorting_Pool(state);
-		}
-		else {
-			DX8Wrapper::Set_Render_State(state->sorting_state);
-			DX8Wrapper::Draw_Triangles(state->start_index,state->polygon_count,state->min_vertex_index,state->vertex_count);
-			DX8Wrapper::Release_Render_State();
-			Release_Refs(state);
-			clean_list.Add_Head(state);
-		}
-	}
+  while (SortingNodeStruct *state = sorted_list.Head()) {
+    state->Remove();
 
-	Flush_Sorting_Pool();
+    if ((state->sorting_state.index_buffer_type == BUFFER_TYPE_SORTING ||
+         state->sorting_state.index_buffer_type == BUFFER_TYPE_DYNAMIC_SORTING) &&
+        (state->sorting_state.vertex_buffer_type == BUFFER_TYPE_SORTING ||
+         state->sorting_state.vertex_buffer_type == BUFFER_TYPE_DYNAMIC_SORTING)) {
+      Insert_To_Sorting_Pool(state);
+    } else {
+      DX8Wrapper::Set_Render_State(state->sorting_state);
+      DX8Wrapper::Draw_Triangles(state->start_index, state->polygon_count, state->min_vertex_index,
+                                 state->vertex_count);
+      DX8Wrapper::Release_Render_State();
+      Release_Refs(state);
+      clean_list.Add_Head(state);
+    }
+  }
 
-	DX8Wrapper::Set_Index_Buffer(0,0);
-	DX8Wrapper::Set_Vertex_Buffer(0);
-	total_sorting_vertices=0;
+  Flush_Sorting_Pool();
 
-	DynamicIBAccessClass::_Reset(false);
-	DynamicVBAccessClass::_Reset(false);
+  DX8Wrapper::Set_Index_Buffer(0, 0);
+  DX8Wrapper::Set_Vertex_Buffer(0);
+  total_sorting_vertices = 0;
 
+  DynamicIBAccessClass::_Reset(false);
+  DynamicVBAccessClass::_Reset(false);
 
-	DX8Wrapper::Set_Transform(D3DTS_VIEW,old_view);
-	DX8Wrapper::Set_Transform(D3DTS_WORLD,old_world);
-
+  DX8Wrapper::Set_Transform(D3DTS_VIEW, old_view);
+  DX8Wrapper::Set_Transform(D3DTS_WORLD, old_world);
 }
 
 // ----------------------------------------------------------------------------
 
-void SortingRendererClass::Deinit()
-{
-	SortingNodeStruct *head = NULL;
+void SortingRendererClass::Deinit() {
+  SortingNodeStruct *head = NULL;
 
-	//
-	//	Flush the sorted list
-	//
-	while ((head = sorted_list.Head ()) != NULL) {
-		sorted_list.Remove_Head ();
-		delete head;
-	}
+  //
+  //	Flush the sorted list
+  //
+  while ((head = sorted_list.Head()) != NULL) {
+    sorted_list.Remove_Head();
+    delete head;
+  }
 
-	//
-	//	Flush the clean list
-	//
-	while ((head = clean_list.Head ()) != NULL) {
-		clean_list.Remove_Head ();
-		delete head;
-	}
+  //
+  //	Flush the clean list
+  //
+  while ((head = clean_list.Head()) != NULL) {
+    clean_list.Remove_Head();
+    delete head;
+  }
 
-	delete[] vertex_z_array;
-	vertex_z_array=NULL;
-	vertex_z_array_count=0;
-	delete[] polygon_z_array;
-	polygon_z_array=NULL;
-	polygon_z_array_count=0;
-	delete[] node_id_array;
-	node_id_array=NULL;
-	node_id_array_count=0;
-	delete[] sorted_node_id_array;
-	sorted_node_id_array=NULL;
-	sorted_node_id_array_count=0;
-	delete[] polygon_index_array;
-	polygon_index_array=NULL;
-	polygon_index_array_count=0;
-	delete[] temp_index_array;
-	temp_index_array=NULL;
-	temp_index_array_count=0;
+  delete[] vertex_z_array;
+  vertex_z_array = NULL;
+  vertex_z_array_count = 0;
+  delete[] polygon_z_array;
+  polygon_z_array = NULL;
+  polygon_z_array_count = 0;
+  delete[] node_id_array;
+  node_id_array = NULL;
+  node_id_array_count = 0;
+  delete[] sorted_node_id_array;
+  sorted_node_id_array = NULL;
+  sorted_node_id_array_count = 0;
+  delete[] polygon_index_array;
+  polygon_index_array = NULL;
+  polygon_index_array_count = 0;
+  delete[] temp_index_array;
+  temp_index_array = NULL;
+  temp_index_array_count = 0;
 }
-

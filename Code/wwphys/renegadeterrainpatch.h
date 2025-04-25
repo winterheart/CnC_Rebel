@@ -41,7 +41,6 @@
 #ifndef __RENEGADETERRAINPATCH_H
 #define __RENEGADETERRAINPATCH_H
 
-
 #include "rendobj.h"
 #include "vector.h"
 #include "shader.h"
@@ -51,400 +50,369 @@
 #include "renegadeterrainmaterialpass.h"
 #include "terrainmaterial.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////////////////
 class VertexMaterialClass;
 class MaterialPassClass;
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	RenegadeTerrainPatchClass
 //
 //////////////////////////////////////////////////////////////////////
-class RenegadeTerrainPatchClass  : public RenderObjClass
-{
+class RenegadeTerrainPatchClass : public RenderObjClass {
 public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ///////////////////////////////////////////////////////////////////
+  RenegadeTerrainPatchClass(void);
+  RenegadeTerrainPatchClass(const RenegadeTerrainPatchClass &src);
+  virtual ~RenegadeTerrainPatchClass(void);
 
-	///////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	///////////////////////////////////////////////////////////////////
-	RenegadeTerrainPatchClass (void);
-	RenegadeTerrainPatchClass (const RenegadeTerrainPatchClass &src);
-	virtual ~RenegadeTerrainPatchClass (void);
+  ///////////////////////////////////////////////////////////////////
+  //	Public operators
+  ///////////////////////////////////////////////////////////////////
+  const RenegadeTerrainPatchClass &operator=(const RenegadeTerrainPatchClass &src);
 
-	///////////////////////////////////////////////////////////////////
-	//	Public operators
-	///////////////////////////////////////////////////////////////////
-	const RenegadeTerrainPatchClass &	operator= (const RenegadeTerrainPatchClass &src);
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
+  //
+  //	Creation
+  //
+  void Allocate(int points_x, int points_y, float meters_per_point);
 
-	//
-	//	Creation
-	//
-	void					Allocate (int points_x, int points_y, float meters_per_point);
+  //
+  //	Vertex access
+  //
+  void Set_Vertex_Pos(int x, int y, const Vector3 &pos);
+  void Set_Vertex_Normal(int x, int y, const Vector3 &normal) {
+    GridNormals[Grid_Index(x, y)] = normal;
+    AreBuffersDirty = true;
+  }
 
-	//
-	//	Vertex access
-	//
-	void					Set_Vertex_Pos (int x, int y, const Vector3 &pos);
-	void					Set_Vertex_Normal (int x, int y, const Vector3 &normal)	{ GridNormals[Grid_Index (x, y)] = normal; AreBuffersDirty = true; }
+  //
+  //	Quad access
+  //
+  void Set_Quad_Flags(int quad_index, uint8 flags) { QuadFlags[quad_index] = flags; }
 
-	//
-	//	Quad access
-	//
-	void					Set_Quad_Flags (int quad_index, uint8 flags)		{ QuadFlags[quad_index] = flags; }
+  //
+  //	UV access
+  //
+  void Update_UVs(void);
+  void Update_Vertex_Render_Lists(void);
 
-	//
-	//	UV access
-	//
-	void					Update_UVs (void);
-	void					Update_Vertex_Render_Lists (void);
+  //
+  //	Informational
+  //
+  void Set_Bounding_Box_Min(const Vector3 &box_min) { BoundingBoxMin = box_min; }
+  void Set_Bounding_Box_Max(const Vector3 &box_max) { BoundingBoxMax = box_max; }
 
-	//
-	//	Informational
-	//
-	void					Set_Bounding_Box_Min (const Vector3 &box_min)	{ BoundingBoxMin = box_min; }
-	void					Set_Bounding_Box_Max (const Vector3 &box_max)	{ BoundingBoxMax = box_max; }
+  //
+  //	Save/load support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  void Load_Variables(ChunkLoadClass &cload);
+  void Load_Materials(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Save/load support
-	//	
-	bool					Save (ChunkSaveClass &csave);
-	bool					Load (ChunkLoadClass &cload);
-	void					Load_Variables (ChunkLoadClass &cload);
-	void					Load_Materials (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
+  //
+  //	Inherited
+  //
+  RenderObjClass *Clone(void) const { return new RenegadeTerrainPatchClass(*this); }
+  int Class_ID(void) const { return CLASSID_RENEGADE_TERRAIN; }
+  void Render(RenderInfoClass &rinfo);
+  void Get_Obj_Space_Bounding_Sphere(SphereClass &sphere) const;
+  void Get_Obj_Space_Bounding_Box(AABoxClass &box) const;
 
-	//
-	//	Inherited
-	//
-	RenderObjClass *	Clone (void) const							{ return new RenegadeTerrainPatchClass (*this); }
-	int					Class_ID (void) const						{ return CLASSID_RENEGADE_TERRAIN; }
-	void					Render (RenderInfoClass &rinfo);
-	void		 			Get_Obj_Space_Bounding_Sphere (SphereClass &sphere) const;
-	void					Get_Obj_Space_Bounding_Box (AABoxClass &box) const;
-	
-	//
-	//	Inherited collision detection
-	//
-	bool					Cast_Ray (RayCollisionTestClass &raytest);
-	bool					Cast_AABox (AABoxCollisionTestClass &boxtest);
-	bool					Cast_OBBox (OBBoxCollisionTestClass &boxtest);
-	bool					Intersect_AABox (AABoxIntersectionTestClass &boxtest);
-	bool					Intersect_OBBox (OBBoxIntersectionTestClass &boxtest);
+  //
+  //	Inherited collision detection
+  //
+  bool Cast_Ray(RayCollisionTestClass &raytest);
+  bool Cast_AABox(AABoxCollisionTestClass &boxtest);
+  bool Cast_OBBox(OBBoxCollisionTestClass &boxtest);
+  bool Intersect_AABox(AABoxIntersectionTestClass &boxtest);
+  bool Intersect_OBBox(OBBoxIntersectionTestClass &boxtest);
 
-	//
-	//	Material access
-	//
-	int											Add_Material (TerrainMaterialClass *material);
-	void											Reset_Material_Passes (void);
-	RenegadeTerrainMaterialPassClass *	Get_Material_Pass (int index, TerrainMaterialClass *material);
-	int											Get_Material_Count (void)			{ return MaterialPassList.Count (); }	
-	RenegadeTerrainMaterialPassClass *	Peek_Material_Pass (int index)	{ return MaterialPassList[index]; }
+  //
+  //	Material access
+  //
+  int Add_Material(TerrainMaterialClass *material);
+  void Reset_Material_Passes(void);
+  RenegadeTerrainMaterialPassClass *Get_Material_Pass(int index, TerrainMaterialClass *material);
+  int Get_Material_Count(void) { return MaterialPassList.Count(); }
+  RenegadeTerrainMaterialPassClass *Peek_Material_Pass(int index) { return MaterialPassList[index]; }
 
-	//
-	// Access to internal mesh data
-	//
-	int					Get_Vertex_Count (void) const				{ return GridPointCount; }
-	Vector3 *			Get_Vertex_Array (void) const				{ return Grid; }
-	Vector3 *			Get_Vertex_Normal_Array (void) const	{ return GridNormals; }
+  //
+  // Access to internal mesh data
+  //
+  int Get_Vertex_Count(void) const { return GridPointCount; }
+  Vector3 *Get_Vertex_Array(void) const { return Grid; }
+  Vector3 *Get_Vertex_Normal_Array(void) const { return GridNormals; }
 
-	//
-	//	Lighting support
-	//
-	bool					Is_Prelit (void) const										{ return IsPreLit; }
-	void					Set_Is_Prelit (bool onoff)									{ IsPreLit = onoff; }
-	void					Set_Vertex_Color (int index, const Vector3 &color)	{ VertexColors[index] = color; AreBuffersDirty = true; }
-	const Vector3 &	Get_Vertex_Color (int index)								{ return VertexColors[index]; }
+  //
+  //	Lighting support
+  //
+  bool Is_Prelit(void) const { return IsPreLit; }
+  void Set_Is_Prelit(bool onoff) { IsPreLit = onoff; }
+  void Set_Vertex_Color(int index, const Vector3 &color) {
+    VertexColors[index] = color;
+    AreBuffersDirty = true;
+  }
+  const Vector3 &Get_Vertex_Color(int index) { return VertexColors[index]; }
 
 protected:
-	
-	///////////////////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////////////////	
+  ///////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////////////////
 
-	//
-	//	Index utility functions
-	//
-	int						Grid_Index (int x, int y)			{ return (y * GridPointsX) + x; }
-	
-	int						Get_Quad_Index_X (float x_pos, bool clamp = true);
-	int						Get_Quad_Index_Y (float y_pos, bool clamp = true);
-	float						Get_Grid_Line_Pos_X (int grid_line_index);
-	float						Get_Grid_Line_Pos_Y (int grid_line_index);
+  //
+  //	Index utility functions
+  //
+  int Grid_Index(int x, int y) { return (y * GridPointsX) + x; }
 
-	bool						Is_Valid_Quad (int x, int y);
+  int Get_Quad_Index_X(float x_pos, bool clamp = true);
+  int Get_Quad_Index_Y(float y_pos, bool clamp = true);
+  float Get_Grid_Line_Pos_X(int grid_line_index);
+  float Get_Grid_Line_Pos_Y(int grid_line_index);
 
-	//
-	//	Matrix utility functions
-	//
-	void						Get_Inverse_Transform (Matrix3D &tm);
+  bool Is_Valid_Quad(int x, int y);
 
-	//
-	//	Misc initialization and cleanup routines
-	//
-	void						Free_Grid (void);
-	void						Free_Materials (void);
-	void						Initialize_Material (void);
-	void						Initialize (void);
-	void						Allocate_Grid (void);
+  //
+  //	Matrix utility functions
+  //
+  void Get_Inverse_Transform(Matrix3D &tm);
 
-	//
-	//	Rendering
-	//
-	void						Render_By_Texture (int texture_index, int pass_type);
-	void						Submit_Rendering_Buffers (int texture_index, int pass_type);
-	void						Update_Rendering_Buffers (void);
-	void						Free_Rendering_Buffers (void);
-	void						Build_Rendering_Buffers (int texture_index, int pass_type);
-	void						Render_Procedural_Material_Pass(MaterialPassClass * matpass);
+  //
+  //	Misc initialization and cleanup routines
+  //
+  void Free_Grid(void);
+  void Free_Materials(void);
+  void Initialize_Material(void);
+  void Initialize(void);
+  void Allocate_Grid(void);
 
-	//
-	//	Ray casting
-	//
-	bool						Cast_Vertical_Ray (RayCollisionTestClass &raytest);
-	bool						Cast_Non_Vertical_Ray (RayCollisionTestClass &raytest);
-	bool						Brute_Force_Cast_Ray (RayCollisionTestClass &raytest);
+  //
+  //	Rendering
+  //
+  void Render_By_Texture(int texture_index, int pass_type);
+  void Submit_Rendering_Buffers(int texture_index, int pass_type);
+  void Update_Rendering_Buffers(void);
+  void Free_Rendering_Buffers(void);
+  void Build_Rendering_Buffers(int texture_index, int pass_type);
+  void Render_Procedural_Material_Pass(MaterialPassClass *matpass);
 
-	bool						Collide_Quad (const LineSegClass &line_seg, int cell_x, int cell_y, CastResultStruct &result);
+  //
+  //	Ray casting
+  //
+  bool Cast_Vertical_Ray(RayCollisionTestClass &raytest);
+  bool Cast_Non_Vertical_Ray(RayCollisionTestClass &raytest);
+  bool Brute_Force_Cast_Ray(RayCollisionTestClass &raytest);
 
-	///////////////////////////////////////////////////////////////////
-	//	Protected data types
-	///////////////////////////////////////////////////////////////////
-	enum
-	{
-		QF_NORMAL		= 0,
-		QF_HIDDEN		= 1,
-	} QUAD_FLAGS;
+  bool Collide_Quad(const LineSegClass &line_seg, int cell_x, int cell_y, CastResultStruct &result);
 
-	
-	///////////////////////////////////////////////////////////////////
-	//	Protected member data
-	///////////////////////////////////////////////////////////////////
-	Vector3 *							Grid;
-	Vector3 *							GridNormals;
-	Vector3 *							VertexColors;
-	uint8 *								QuadFlags;	
-	int									GridPointsX;
-	int									GridPointsY;
-	int									GridPointCount;
-	float									Density;
-	VertexMaterialClass *			BaseMaterial;
-	ShaderClass							BaseShader;
-	VertexMaterialClass *			LayerMaterial;	
-	ShaderClass							LayerShader;
-	Vector3								BoundingBoxMin;
-	Vector3								BoundingBoxMax;
-	bool									AreBuffersDirty;
-	bool									IsPreLit;
-						
-	DynamicVectorClass<RenegadeTerrainMaterialPassClass *>	MaterialPassList;
+  ///////////////////////////////////////////////////////////////////
+  //	Protected data types
+  ///////////////////////////////////////////////////////////////////
+  enum {
+    QF_NORMAL = 0,
+    QF_HIDDEN = 1,
+  } QUAD_FLAGS;
+
+  ///////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ///////////////////////////////////////////////////////////////////
+  Vector3 *Grid;
+  Vector3 *GridNormals;
+  Vector3 *VertexColors;
+  uint8 *QuadFlags;
+  int GridPointsX;
+  int GridPointsY;
+  int GridPointCount;
+  float Density;
+  VertexMaterialClass *BaseMaterial;
+  ShaderClass BaseShader;
+  VertexMaterialClass *LayerMaterial;
+  ShaderClass LayerShader;
+  Vector3 BoundingBoxMin;
+  Vector3 BoundingBoxMax;
+  bool AreBuffersDirty;
+  bool IsPreLit;
+
+  DynamicVectorClass<RenegadeTerrainMaterialPassClass *> MaterialPassList;
 };
-
 
 //////////////////////////////////////////////////////////////////////
 //	Collide_Quad
 //////////////////////////////////////////////////////////////////////
-WWINLINE bool
-RenegadeTerrainPatchClass::Collide_Quad
-(
-	const LineSegClass &	line_seg,
-	int						cell_x,
-	int						cell_y,
-	CastResultStruct &	result
-)
-{
-	bool retval = false;
+WWINLINE bool RenegadeTerrainPatchClass::Collide_Quad(const LineSegClass &line_seg, int cell_x, int cell_y,
+                                                      CastResultStruct &result) {
+  bool retval = false;
 
-	//
-	//	Calculate the four indices into the grid that define the four
-	// corners of the quad we're testing.
-	//
-	int start_index	= Grid_Index (cell_x, cell_y);
-	int v0_index		= start_index;
-	int v1_index		= start_index + 1;
-	int v2_index		= start_index + GridPointsX + 1;
-	int v3_index		= start_index + GridPointsX;
+  //
+  //	Calculate the four indices into the grid that define the four
+  // corners of the quad we're testing.
+  //
+  int start_index = Grid_Index(cell_x, cell_y);
+  int v0_index = start_index;
+  int v1_index = start_index + 1;
+  int v2_index = start_index + GridPointsX + 1;
+  int v3_index = start_index + GridPointsX;
 
-	float min_pz = WWMath::Min (line_seg.Get_P0 ().Z, line_seg.Get_P1 ().Z);
-	float max_pz = WWMath::Max (line_seg.Get_P0 ().Z, line_seg.Get_P1 ().Z);
+  float min_pz = WWMath::Min(line_seg.Get_P0().Z, line_seg.Get_P1().Z);
+  float max_pz = WWMath::Max(line_seg.Get_P0().Z, line_seg.Get_P1().Z);
 
-	if (	Grid[v0_index].Z < min_pz &&
-			Grid[v1_index].Z < min_pz &&
-			Grid[v2_index].Z < min_pz &&
-			Grid[v3_index].Z < min_pz)
-	{
-		return false;
-	}
+  if (Grid[v0_index].Z < min_pz && Grid[v1_index].Z < min_pz && Grid[v2_index].Z < min_pz &&
+      Grid[v3_index].Z < min_pz) {
+    return false;
+  }
 
-	if (	Grid[v0_index].Z > max_pz &&
-			Grid[v1_index].Z > max_pz &&
-			Grid[v2_index].Z > max_pz &&
-			Grid[v3_index].Z > max_pz)
-	{
-		return false;
-	}
+  if (Grid[v0_index].Z > max_pz && Grid[v1_index].Z > max_pz && Grid[v2_index].Z > max_pz &&
+      Grid[v3_index].Z > max_pz) {
+    return false;
+  }
 
-	//
-	//	Compose the two triangles for the collision check
-	//
-	TriClass tri1;
-	TriClass tri2;
-	Vector3 norm1 (0, 0, 0);
-	Vector3 norm2 (0, 0, 0);
-	tri1.N = &norm1;
-	tri2.N = &norm2;
-	tri1.V[0] = &Grid[v0_index];
-	tri1.V[1] = &Grid[v2_index];
-	tri1.V[2] = &Grid[v3_index];
-	tri2.V[0] = &Grid[v2_index];
-	tri2.V[1] = &Grid[v0_index];
-	tri2.V[2] = &Grid[v1_index];
-	tri1.Compute_Normal ();
-	tri2.Compute_Normal ();
+  //
+  //	Compose the two triangles for the collision check
+  //
+  TriClass tri1;
+  TriClass tri2;
+  Vector3 norm1(0, 0, 0);
+  Vector3 norm2(0, 0, 0);
+  tri1.N = &norm1;
+  tri2.N = &norm2;
+  tri1.V[0] = &Grid[v0_index];
+  tri1.V[1] = &Grid[v2_index];
+  tri1.V[2] = &Grid[v3_index];
+  tri2.V[0] = &Grid[v2_index];
+  tri2.V[1] = &Grid[v0_index];
+  tri2.V[2] = &Grid[v1_index];
+  tri1.Compute_Normal();
+  tri2.Compute_Normal();
 
-	//
-	//	Test the two polygons that form this quad to see if the ray hit
-	//
-	retval = CollisionMath::Collide (line_seg, tri1, &result);
-	retval |= CollisionMath::Collide (line_seg, tri2, &result);
+  //
+  //	Test the two polygons that form this quad to see if the ray hit
+  //
+  retval = CollisionMath::Collide(line_seg, tri1, &result);
+  retval |= CollisionMath::Collide(line_seg, tri2, &result);
 
-	//
-	//	Determine which surface type was hit
-	//
-	if (retval && MaterialPassList.Count () > 0) {
-		int best_pass		= 0;
-		float best_alpha	= 0;
-		for (int index = 0; index < MaterialPassList.Count (); index ++) {
-			float alpha = MaterialPassList[index]->VertexAlpha[v0_index];
-			if (alpha > best_alpha && alpha != 1.0F) {
-				best_alpha	= alpha;
-				best_pass	= index;
-			}
-		}
-		if (MaterialPassList[best_pass]->Material != NULL) {
-			result.SurfaceType = MaterialPassList[best_pass]->Material->Get_Surface_Type ();
-		}
-	}
+  //
+  //	Determine which surface type was hit
+  //
+  if (retval && MaterialPassList.Count() > 0) {
+    int best_pass = 0;
+    float best_alpha = 0;
+    for (int index = 0; index < MaterialPassList.Count(); index++) {
+      float alpha = MaterialPassList[index]->VertexAlpha[v0_index];
+      if (alpha > best_alpha && alpha != 1.0F) {
+        best_alpha = alpha;
+        best_pass = index;
+      }
+    }
+    if (MaterialPassList[best_pass]->Material != NULL) {
+      result.SurfaceType = MaterialPassList[best_pass]->Material->Get_Surface_Type();
+    }
+  }
 
-	return retval;
+  return retval;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Set_Vertex_Pos
 //////////////////////////////////////////////////////////////////////
-WWINLINE void
-RenegadeTerrainPatchClass::Set_Vertex_Pos (int x, int y, const Vector3 &pos)
-{
-	//
-	//	Update the vertex position
-	//
-	Grid[Grid_Index (x, y)] = pos;
-	
-	//
-	//	Do we need to update the bounding volume of the patch?
-	//
-	if (pos.Z > BoundingBoxMax.Z) {
-		BoundingBoxMax.Z = pos.Z;		
-	}
+WWINLINE void RenegadeTerrainPatchClass::Set_Vertex_Pos(int x, int y, const Vector3 &pos) {
+  //
+  //	Update the vertex position
+  //
+  Grid[Grid_Index(x, y)] = pos;
 
-	if (pos.Z < BoundingBoxMin.Z) {
-		BoundingBoxMin.Z = pos.Z;
-	}
+  //
+  //	Do we need to update the bounding volume of the patch?
+  //
+  if (pos.Z > BoundingBoxMax.Z) {
+    BoundingBoxMax.Z = pos.Z;
+  }
 
-	Invalidate_Cached_Bounding_Volumes ();
-	AreBuffersDirty		= true;
-	return ;
+  if (pos.Z < BoundingBoxMin.Z) {
+    BoundingBoxMin.Z = pos.Z;
+  }
+
+  Invalidate_Cached_Bounding_Volumes();
+  AreBuffersDirty = true;
+  return;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Get_Quad_Index_X
 //////////////////////////////////////////////////////////////////////
-WWINLINE int
-RenegadeTerrainPatchClass::Get_Quad_Index_X (float x_pos, bool clamp)
-{
-	int quad_x = WWMath::Float_To_Int_Floor ((x_pos - BoundingBoxMin.X) / Density);
+WWINLINE int RenegadeTerrainPatchClass::Get_Quad_Index_X(float x_pos, bool clamp) {
+  int quad_x = WWMath::Float_To_Int_Floor((x_pos - BoundingBoxMin.X) / Density);
 
-	//
-	//	Clamp the index to the range of existing quad cells
-	//
-	if (clamp) {
-		quad_x = WWMath::Clamp_Int (quad_x, 0, GridPointsX - 2);
-	}
+  //
+  //	Clamp the index to the range of existing quad cells
+  //
+  if (clamp) {
+    quad_x = WWMath::Clamp_Int(quad_x, 0, GridPointsX - 2);
+  }
 
-	return quad_x;
+  return quad_x;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Get_Quad_Index_Y
 //////////////////////////////////////////////////////////////////////
-WWINLINE int
-RenegadeTerrainPatchClass::Get_Quad_Index_Y (float y_pos, bool clamp)
-{
-	int quad_y = WWMath::Float_To_Int_Floor ((y_pos - BoundingBoxMin.Y) / Density);
+WWINLINE int RenegadeTerrainPatchClass::Get_Quad_Index_Y(float y_pos, bool clamp) {
+  int quad_y = WWMath::Float_To_Int_Floor((y_pos - BoundingBoxMin.Y) / Density);
 
-	//
-	//	Clamp the index to the range of existing quad cells
-	//
-	if (clamp) {
-		quad_y = WWMath::Clamp_Int (quad_y, 0, GridPointsY - 2);
-	}
+  //
+  //	Clamp the index to the range of existing quad cells
+  //
+  if (clamp) {
+    quad_y = WWMath::Clamp_Int(quad_y, 0, GridPointsY - 2);
+  }
 
-	return quad_y;
+  return quad_y;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Get_Grid_Line_Pos_X
 //////////////////////////////////////////////////////////////////////
-WWINLINE float
-RenegadeTerrainPatchClass::Get_Grid_Line_Pos_X (int grid_line_index)
-{
-	return BoundingBoxMin.X + (grid_line_index * Density);
+WWINLINE float RenegadeTerrainPatchClass::Get_Grid_Line_Pos_X(int grid_line_index) {
+  return BoundingBoxMin.X + (grid_line_index * Density);
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Get_Grid_Line_Pos_Y
 //////////////////////////////////////////////////////////////////////
-WWINLINE float
-RenegadeTerrainPatchClass::Get_Grid_Line_Pos_Y (int grid_line_index)
-{
-	return BoundingBoxMin.Y + (grid_line_index * Density);
+WWINLINE float RenegadeTerrainPatchClass::Get_Grid_Line_Pos_Y(int grid_line_index) {
+  return BoundingBoxMin.Y + (grid_line_index * Density);
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Get_Inverse_Transform
 //////////////////////////////////////////////////////////////////////
-WWINLINE void
-RenegadeTerrainPatchClass::Get_Inverse_Transform (Matrix3D &tm)
-{
-	Get_Transform ().Get_Orthogonal_Inverse (tm);
-	return ;
+WWINLINE void RenegadeTerrainPatchClass::Get_Inverse_Transform(Matrix3D &tm) {
+  Get_Transform().Get_Orthogonal_Inverse(tm);
+  return;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Is_Valid_Quad
 //////////////////////////////////////////////////////////////////////
-WWINLINE bool
-RenegadeTerrainPatchClass::Is_Valid_Quad (int x, int y)
-{
-	bool retval = false;
+WWINLINE bool RenegadeTerrainPatchClass::Is_Valid_Quad(int x, int y) {
+  bool retval = false;
 
-	//
-	//	Simply check to see if the coordinates are inside the patch
-	//
-	if (	x >= 0 && x < (GridPointsX - 1) &&
-			y >= 0 && y < (GridPointsY - 1))
-	{
-		retval = true;
-	}
+  //
+  //	Simply check to see if the coordinates are inside the patch
+  //
+  if (x >= 0 && x < (GridPointsX - 1) && y >= 0 && y < (GridPointsY - 1)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
 
 #endif //__RENEGADETERRAINPATCH_H

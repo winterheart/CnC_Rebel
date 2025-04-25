@@ -34,11 +34,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
-
 
 #ifndef __TILE_DEFINITION_H
 #define __TILE_DEFINITION_H
@@ -53,58 +51,48 @@
 //	TileDefinitionClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-class TileDefinitionClass : public DefinitionClass
-{
+class TileDefinitionClass : public DefinitionClass {
 
 public:
+  /////////////////////////////////////////////////////////////////////
+  //	Editable interface requirements
+  /////////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(TileDefinitionClass, DefinitionClass);
 
-	/////////////////////////////////////////////////////////////////////
-	//	Editable interface requirements
-	/////////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE(TileDefinitionClass, DefinitionClass);
+  //////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////
+  TileDefinitionClass(void);
+  virtual ~TileDefinitionClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////
-	TileDefinitionClass (void);
-	virtual ~TileDefinitionClass (void);
+  // From DefinitionClass
+  virtual uint32 Get_Class_ID(void) const { return CLASSID_TILE; }
 
-	// From DefinitionClass
-	virtual uint32								Get_Class_ID (void) const { return CLASSID_TILE; }
+  // From PersistClass
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual PersistClass *Create(void) const;
 
-	// From PersistClass
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
-	virtual PersistClass *					Create (void) const;
-
-	// Tile definition specific
-	virtual int									Get_Phys_Def_ID (void) const;
+  // Tile definition specific
+  virtual int Get_Phys_Def_ID(void) const;
 
 private:
+  /////////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////////
+  bool Save_Variables(ChunkSaveClass &csave);
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	/////////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////////
-	bool											Save_Variables (ChunkSaveClass &csave);
-	bool											Load_Variables (ChunkLoadClass &cload);
-
-	//////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////
-	int											m_PhysDefID;
+  //////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////
+  int m_PhysDefID;
 };
-
 
 /////////////////////////////////////////////////////////////////////
 //	Get_Phys_Def_ID
 /////////////////////////////////////////////////////////////////////
-inline int
-TileDefinitionClass::Get_Phys_Def_ID (void) const
-{
-	return m_PhysDefID;
-}
-
+inline int TileDefinitionClass::Get_Phys_Def_ID(void) const { return m_PhysDefID; }
 
 #endif //__TILE_DEFINITION_H
-

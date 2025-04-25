@@ -18,10 +18,10 @@
 
 //
 // Filename:     msgstatlistgroup.h
-// Project:      
+// Project:
 // Author:       Tom Spencer-Smith
-// Date:         
-// Description:  Collection of msgstatlists. The server will need one 
+// Date:
+// Description:  Collection of msgstatlists. The server will need one
 //               of these to sum send and receive data to multiple clients.
 //
 //-----------------------------------------------------------------------------
@@ -39,41 +39,40 @@
 #endif
 
 //-----------------------------------------------------------------------------
-class cMsgStatListGroup
-{
-	public:
-		cMsgStatListGroup(void);
-		~cMsgStatListGroup(void);
+class cMsgStatListGroup {
+public:
+  cMsgStatListGroup(void);
+  ~cMsgStatListGroup(void);
 
-		void		Init(int num_lists, int num_stats);
+  void Init(int num_lists, int num_stats);
 
-		enum		{ALL_LISTS = -1};
-		enum		{ALL_MESSAGES = -1};
+  enum { ALL_LISTS = -1 };
+  enum { ALL_MESSAGES = -1 };
 
-		void		Increment_Num_Msg_Sent(		int list_num, int message_type, int increment = 1);
-		void		Increment_Num_Byte_Sent(	int list_num, int message_type, int increment);
-		void		Increment_Num_Msg_Recd(		int list_num, int message_type, int increment = 1);
-		void		Increment_Num_Byte_Recd(	int list_num, int message_type, int increment);
+  void Increment_Num_Msg_Sent(int list_num, int message_type, int increment = 1);
+  void Increment_Num_Byte_Sent(int list_num, int message_type, int increment);
+  void Increment_Num_Msg_Recd(int list_num, int message_type, int increment = 1);
+  void Increment_Num_Byte_Recd(int list_num, int message_type, int increment);
 
-		DWORD		Get_Num_Msg_Sent(		int list_num, int message_type) const;
-		DWORD		Get_Num_Byte_Sent(	int list_num, int message_type) const;
-		DWORD		Get_Num_Msg_Recd(		int list_num, int message_type) const;
-		DWORD		Get_Num_Byte_Recd(	int list_num, int message_type) const;
+  DWORD Get_Num_Msg_Sent(int list_num, int message_type) const;
+  DWORD Get_Num_Byte_Sent(int list_num, int message_type) const;
+  DWORD Get_Num_Msg_Recd(int list_num, int message_type) const;
+  DWORD Get_Num_Byte_Recd(int list_num, int message_type) const;
 
-		DWORD		Compute_Avg_Num_Byte_Sent(	int list_num, int message_type) const;
-		DWORD		Compute_Avg_Num_Byte_Recd(	int list_num, int message_type) const;
+  DWORD Compute_Avg_Num_Byte_Sent(int list_num, int message_type) const;
+  DWORD Compute_Avg_Num_Byte_Recd(int list_num, int message_type) const;
 
-		cMsgStatList * Get_Stat_List(int list_num);
+  cMsgStatList *Get_Stat_List(int list_num);
 
-		void		Set_Name(int message_type, LPCSTR name);
-		//LPCSTR	Get_Name(int message_type) const;
+  void Set_Name(int message_type, LPCSTR name);
+  // LPCSTR	Get_Name(int message_type) const;
 
-	private:
-      cMsgStatListGroup(const cMsgStatListGroup& source);				// disallow
-      cMsgStatListGroup& operator=(const cMsgStatListGroup& source);	// disallow
+private:
+  cMsgStatListGroup(const cMsgStatListGroup &source);            // disallow
+  cMsgStatListGroup &operator=(const cMsgStatListGroup &source); // disallow
 
-		cMsgStatList *		PStatList;
-		int					NumLists;
+  cMsgStatList *PStatList;
+  int NumLists;
 };
 
 //-----------------------------------------------------------------------------

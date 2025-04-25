@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/messagewindow.h         $*
  *                                                                                             *
@@ -53,96 +54,94 @@
 class SmartGameObj;
 class RenderObjClass;
 
-class	SimpleSceneClass;
-class	CameraClass;
-
+class SimpleSceneClass;
+class CameraClass;
 
 ////////////////////////////////////////////////////////////////
 //
 //	MessageWindowClass
 //
 ////////////////////////////////////////////////////////////////
-class MessageWindowClass
-{
+class MessageWindowClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	MessageWindowClass (void);
-	~MessageWindowClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MessageWindowClass(void);
+  ~MessageWindowClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Initialization
-	//
-	void				Initialize (void);
-	void				Shutdown (void);
+  //
+  //	Initialization
+  //
+  void Initialize(void);
+  void Shutdown(void);
 
-	//
-	//	Content control
-	//
-	void				Add_Message (const WideStringClass &message, const Vector3 &color = Vector3 (0, 0.9F, 0.2F), SmartGameObj *game_obj = NULL, float decay_time = 0);
-	void				Clear (void);
+  //
+  //	Content control
+  //
+  void Add_Message(const WideStringClass &message, const Vector3 &color = Vector3(0, 0.9F, 0.2F),
+                   SmartGameObj *game_obj = NULL, float decay_time = 0);
+  void Clear(void);
 
-	//
-	//	Render methods
-	//
-	void				On_Frame_Update (void);
-	void				Render (void);
+  //
+  //	Render methods
+  //
+  void On_Frame_Update(void);
+  void Render(void);
 
-	//
-	//	Visibility control
-	//
-	bool				Has_Data (void) const;
-	void				Force_Display (bool onoff);
-	
-	//
-	//	Display rectangle control
-	//
-	void				Update_Window_Rectangle (void);
-	void				Reset_Current_Rect (void);
-	void				Set_Window_Dirty (bool onoff)		{ IsRectangleDirty = onoff; }
+  //
+  //	Visibility control
+  //
+  bool Has_Data(void) const;
+  void Force_Display(bool onoff);
 
-	//
-	//	Decay control
-	//
-	uint32			Get_Decay_Time (void) const	{ return DecayTime; }
-	void				Set_Decay_Time (uint32 time)	{ DecayTime = time; }
+  //
+  //	Display rectangle control
+  //
+  void Update_Window_Rectangle(void);
+  void Reset_Current_Rect(void);
+  void Set_Window_Dirty(bool onoff) { IsRectangleDirty = onoff; }
 
-	//
-	//	Message log support
-	//
-	void					Clear_Log (void)				{ MessageLog.Reset_Active (); MessageLogColor.Reset_Active (); }
-	int					Get_Log_Count (void)			{ return MessageLog.Count (); }
-	const WCHAR *		Get_Log_Entry (int index)	{ return MessageLog[index]; }
-	const Vector3 &	Get_Log_Color (int index)	{ return MessageLogColor[index]; }
+  //
+  //	Decay control
+  //
+  uint32 Get_Decay_Time(void) const { return DecayTime; }
+  void Set_Decay_Time(uint32 time) { DecayTime = time; }
+
+  //
+  //	Message log support
+  //
+  void Clear_Log(void) {
+    MessageLog.Reset_Active();
+    MessageLogColor.Reset_Active();
+  }
+  int Get_Log_Count(void) { return MessageLog.Count(); }
+  const WCHAR *Get_Log_Entry(int index) { return MessageLog[index]; }
+  const Vector3 &Get_Log_Color(int index) { return MessageLogColor[index]; }
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////	
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  uint32 DecayTime;
+  TextWindowClass *TextWindow;
+  Render2DClass IconRenderer;
+  RectClass CurrentRect;
+  RenderObjClass *HeadModel;
+  SimpleSceneClass *Scene;
+  CameraClass *Camera;
+  bool IsRectangleDirty;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	uint32				DecayTime;
-	TextWindowClass *	TextWindow;
-	Render2DClass		IconRenderer;
-	RectClass			CurrentRect;
-	RenderObjClass *	HeadModel;
-	SimpleSceneClass  * Scene;
-	CameraClass			* Camera;
-	bool					IsRectangleDirty;
-	
-	DynamicVectorClass<WideStringClass>	MessageLog;
-	DynamicVectorClass<Vector3> MessageLogColor;
+  DynamicVectorClass<WideStringClass> MessageLog;
+  DynamicVectorClass<Vector3> MessageLogColor;
 };
 
-
 #endif //__MESSAGE_WINDOW_H
-

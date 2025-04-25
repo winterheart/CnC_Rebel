@@ -37,7 +37,7 @@
 #endif // MULTIPLAYERDEMO
 */
 
-#if	defined(FREEDEDICATEDSERVER)
+#if defined(FREEDEDICATEDSERVER)
 #define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\RebelFDS\\Render"
 #elif defined(MULTIPLAYERDEMO)
 #define RENEGADE_SUB_KEY_NAME_RENDER "Software\\CnC_Rebel\\RebelMPDemo\\Render"
@@ -52,80 +52,73 @@
 // VideoConfigDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class VideoConfigDialogClass : public CDialog
-{
-// Construction
+class VideoConfigDialogClass : public CDialog {
+  // Construction
 public:
-	VideoConfigDialogClass(CWnd* pParent = NULL);   // standard constructor
-	~VideoConfigDialogClass();
+  VideoConfigDialogClass(CWnd *pParent = NULL); // standard constructor
+  ~VideoConfigDialogClass();
 
-// Dialog Data
-	//{{AFX_DATA(VideoConfigDialogClass)
-	enum { IDD = IDD_VIDEO_CONFIG };
-	CSliderCtrl	m_ResSliderCtrl;
-	CListCtrl	m_DriverListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(VideoConfigDialogClass)
+  enum { IDD = IDD_VIDEO_CONFIG };
+  CSliderCtrl m_ResSliderCtrl;
+  CListCtrl m_DriverListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(VideoConfigDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(VideoConfigDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(VideoConfigDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDestroy();
-	afx_msg void OnItemchangedDriverList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchangeBitdepthCombo();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnWindowedCheck();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(VideoConfigDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDestroy();
+  afx_msg void OnItemchangedDriverList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnSelchangeBitdepthCombo();
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnWindowedCheck();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////
+  void Apply_Changes(void);
+  static VideoConfigDialogClass *Get_Instance();
 
-	/////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////
-	void			Apply_Changes (void);
-	static VideoConfigDialogClass* Get_Instance();
-
-	int Get_Current_Bit_Depth() const { return CurrentBitDepth; }
-	int Get_Current_Driver_Index() const { return CurrentDriverIndex; }
-	const DX_D3DADAPTER_IDENTIFIER& Get_Current_Adapter_Identifier() const { return CurrentAdapterIdentifier; }
-	const DX_D3DCAPS& Get_Current_Caps() const { return CurrentCaps; }
+  int Get_Current_Bit_Depth() const { return CurrentBitDepth; }
+  int Get_Current_Driver_Index() const { return CurrentDriverIndex; }
+  const DX_D3DADAPTER_IDENTIFIER &Get_Current_Adapter_Identifier() const { return CurrentAdapterIdentifier; }
+  const DX_D3DCAPS &Get_Current_Caps() const { return CurrentCaps; }
 
 private:
-	
-	/////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////
-	void			Update_Display_Settings (void);
-	void			Update_Color_Combo (void);
-	void			Update_Resolution_Slider (void);
-	void			Update_Resolution_Text (void);
-	void			Select_Default_Resolution (void);
+  /////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////
+  void Update_Display_Settings(void);
+  void Update_Color_Combo(void);
+  void Update_Resolution_Slider(void);
+  void Update_Resolution_Text(void);
+  void Select_Default_Resolution(void);
 
-
-	/////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////
-	DynamicVectorClass<ResolutionDescClass>	ResolutionList;
-	int													CurrentWidth;
-	int													CurrentHeight;
-	int													CurrentBitDepth;
-	bool													CurrentIsWindowed;
-	int													CurrentDriverIndex;
-	DX_D3DCAPS												CurrentCaps;
-	DX_D3DADAPTER_IDENTIFIER							CurrentAdapterIdentifier;
-
+  /////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////
+  DynamicVectorClass<ResolutionDescClass> ResolutionList;
+  int CurrentWidth;
+  int CurrentHeight;
+  int CurrentBitDepth;
+  bool CurrentIsWindowed;
+  int CurrentDriverIndex;
+  DX_D3DCAPS CurrentCaps;
+  DX_D3DADAPTER_IDENTIFIER CurrentAdapterIdentifier;
 };
 
 //{{AFX_INSERT_LOCATION}}

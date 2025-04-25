@@ -28,28 +28,21 @@
 #include "nodemgr.h"
 #include "presetmgr.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-enum
-{
-	COL_OBJECT		= 0,
-	COL_PRESET
-};
-
+enum { COL_OBJECT = 0, COL_PRESET };
 
 /////////////////////////////////////////////////////////////////////////////
 //	NODE_PRESET_INFO
 /////////////////////////////////////////////////////////////////////////////
 /*typedef struct _NODE_PRESET_INFO
 {
-	PresetClass *	preset;
-	NodeClass *		node;
+        PresetClass *	preset;
+        NodeClass *		node;
 } NODE_PRESET_INFO;*/
 
 /////////////////////////////////////////////////////////////////////////////
@@ -57,259 +50,234 @@ enum
 // PresetRemapDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-PresetRemapDialogClass::PresetRemapDialogClass (CWnd* pParent /*=NULL*/)
-	: CDialog(PresetRemapDialogClass::IDD, pParent)
-{
-	//{{AFX_DATA_INIT(PresetRemapDialogClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	return ;
+PresetRemapDialogClass::PresetRemapDialogClass(CWnd *pParent /*=NULL*/)
+    : CDialog(PresetRemapDialogClass::IDD, pParent) {
+  //{{AFX_DATA_INIT(PresetRemapDialogClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-PresetRemapDialogClass::DoDataExchange (CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(PresetRemapDialogClass)
-	DDX_Control(pDX, IDC_LIST_CTRL, m_ListCtrl);
-	//}}AFX_DATA_MAP
-	return ;
+void PresetRemapDialogClass::DoDataExchange(CDataExchange *pDX) {
+  CDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(PresetRemapDialogClass)
+  DDX_Control(pDX, IDC_LIST_CTRL, m_ListCtrl);
+  //}}AFX_DATA_MAP
+  return;
 }
 
-
 BEGIN_MESSAGE_MAP(PresetRemapDialogClass, CDialog)
-	//{{AFX_MSG_MAP(PresetRemapDialogClass)
-	ON_NOTIFY(NM_DBLCLK, IDC_LIST_CTRL, OnDblclkListCtrl)
-	ON_NOTIFY(LVN_DELETEITEM, IDC_LIST_CTRL, OnDeleteitemListCtrl)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(PresetRemapDialogClass)
+ON_NOTIFY(NM_DBLCLK, IDC_LIST_CTRL, OnDblclkListCtrl)
+ON_NOTIFY(LVN_DELETEITEM, IDC_LIST_CTRL, OnDeleteitemListCtrl)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-PresetRemapDialogClass::OnInitDialog (void)
-{
-	CDialog::OnInitDialog ();
+BOOL PresetRemapDialogClass::OnInitDialog(void) {
+  CDialog::OnInitDialog();
 
-	//
-	//	Configure the columns
-	//
-	m_ListCtrl.InsertColumn (COL_OBJECT, "Object");
-	m_ListCtrl.InsertColumn (COL_PRESET, "Preset");
-	m_ListCtrl.SetExtendedStyle (m_ListCtrl.GetExtendedStyle () | LVS_EX_FULLROWSELECT);
-	
-	//
-	//	Choose an appropriate size for the columns
-	//
-	CRect rect;
-	m_ListCtrl.GetClientRect (&rect);
-	rect.right -= ::GetSystemMetrics (SM_CXVSCROLL) + 2;
-	m_ListCtrl.SetColumnWidth (COL_OBJECT, rect.Width () / 2);
-	m_ListCtrl.SetColumnWidth (COL_PRESET, rect.Width () / 2);
+  //
+  //	Configure the columns
+  //
+  m_ListCtrl.InsertColumn(COL_OBJECT, "Object");
+  m_ListCtrl.InsertColumn(COL_PRESET, "Preset");
+  m_ListCtrl.SetExtendedStyle(m_ListCtrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 
-	if (CLevelEditDoc::Is_Batch_Export_Mode ()) {
+  //
+  //	Choose an appropriate size for the columns
+  //
+  CRect rect;
+  m_ListCtrl.GetClientRect(&rect);
+  rect.right -= ::GetSystemMetrics(SM_CXVSCROLL) + 2;
+  m_ListCtrl.SetColumnWidth(COL_OBJECT, rect.Width() / 2);
+  m_ListCtrl.SetColumnWidth(COL_PRESET, rect.Width() / 2);
 
-		//
-		//	Simply log the errors if we're in batch export mode
-		//
-		for (int index = 0; index < NodeList.Count (); index ++) {
-			NodeClass *node = NodeList[index];
-			if (node != NULL) {
-				StringClass name = node->Get_Name ();
-				WWDEBUG_SAY (("Unable to find preset for node: %s\n", (const char *)name));
-			}
-		}
+  if (CLevelEditDoc::Is_Batch_Export_Mode()) {
 
-		//
-		//	Close the dialog
-		//
-		EndDialog (IDOK);
+    //
+    //	Simply log the errors if we're in batch export mode
+    //
+    for (int index = 0; index < NodeList.Count(); index++) {
+      NodeClass *node = NodeList[index];
+      if (node != NULL) {
+        StringClass name = node->Get_Name();
+        WWDEBUG_SAY(("Unable to find preset for node: %s\n", (const char *)name));
+      }
+    }
 
-	} else {
-		
-		//
-		//	Add the node's into the list control
-		//
-		for (int index = 0; index < NodeList.Count (); index ++) {
-			NodeClass *node = NodeList[index];
-			if (node != NULL) {
-				StringClass name = node->Get_Name ();
-				
-				//
-				//	Add this object to the list control
-				//
-				int item_index = m_ListCtrl.InsertItem (0xFF, name);
-				if (item_index >= 0) {
-					m_ListCtrl.SetItemData (item_index, (DWORD)node);
+    //
+    //	Close the dialog
+    //
+    EndDialog(IDOK);
 
-					//
-					//	Take a best guess at a preset name for the object
-					//
-					char *separator = (char *)::strchr (name, '.');
-					if (separator != NULL) {
-						separator[0] = 0;
-						const char *candidate_preset_name = name;
-						PresetClass *candidate_preset = PresetMgrClass::Find_Preset (candidate_preset_name);
-						if (candidate_preset != NULL) {
+  } else {
 
-							//
-							//	Associate the preset with the object
-							//
-							node->Set_Preset (candidate_preset);
-							m_ListCtrl.SetItemText (item_index, COL_PRESET, candidate_preset->Get_Name ());
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	return TRUE;
+    //
+    //	Add the node's into the list control
+    //
+    for (int index = 0; index < NodeList.Count(); index++) {
+      NodeClass *node = NodeList[index];
+      if (node != NULL) {
+        StringClass name = node->Get_Name();
+
+        //
+        //	Add this object to the list control
+        //
+        int item_index = m_ListCtrl.InsertItem(0xFF, name);
+        if (item_index >= 0) {
+          m_ListCtrl.SetItemData(item_index, (DWORD)node);
+
+          //
+          //	Take a best guess at a preset name for the object
+          //
+          char *separator = (char *)::strchr(name, '.');
+          if (separator != NULL) {
+            separator[0] = 0;
+            const char *candidate_preset_name = name;
+            PresetClass *candidate_preset = PresetMgrClass::Find_Preset(candidate_preset_name);
+            if (candidate_preset != NULL) {
+
+              //
+              //	Associate the preset with the object
+              //
+              node->Set_Preset(candidate_preset);
+              m_ListCtrl.SetItemText(item_index, COL_PRESET, candidate_preset->Get_Name());
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return TRUE;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnDblclkListCtrl
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-PresetRemapDialogClass::OnDblclkListCtrl
-(
-	NMHDR *		pNMHDR,
-	LRESULT *	pResult
-)	 
-{
-	(*pResult) = 0;
+void PresetRemapDialogClass::OnDblclkListCtrl(NMHDR *pNMHDR, LRESULT *pResult) {
+  (*pResult) = 0;
 
-	//
-	//	Get the selected item
-	//
-	int item_index = m_ListCtrl.GetNextItem (-1, LVNI_SELECTED | LVNI_ALL);
-	if (item_index >= 0) {
+  //
+  //	Get the selected item
+  //
+  int item_index = m_ListCtrl.GetNextItem(-1, LVNI_SELECTED | LVNI_ALL);
+  if (item_index >= 0) {
 
-		//
-		//	Get the node from this item
-		//
-		NodeClass *node = (NodeClass *)m_ListCtrl.GetItemData (item_index);
-		if (node != NULL) {
+    //
+    //	Get the node from this item
+    //
+    NodeClass *node = (NodeClass *)m_ListCtrl.GetItemData(item_index);
+    if (node != NULL) {
 
-			//
-			//	Show a dialog to the user that will enable them to
-			// select a new preset
-			//
-			SelectPresetDialogClass dialog (this);
-			dialog.Set_Preset (node->Get_Preset ());
-			if (dialog.DoModal () == IDOK) {
-				
-				//
-				//	Get the new preset from the dialog
-				//
-				PresetClass *preset = dialog.Get_Selection ();
-				CString preset_name = preset->Get_Name ();
-			
+      //
+      //	Show a dialog to the user that will enable them to
+      // select a new preset
+      //
+      SelectPresetDialogClass dialog(this);
+      dialog.Set_Preset(node->Get_Preset());
+      if (dialog.DoModal() == IDOK) {
 
-				//
-				//	Ask the user if they want to make this change to all the nodes
-				//
-				if (MessageBox ("Would you like to propagate this preset to all other nodes of the same original preset?", "Propagate", MB_YESNO | MB_ICONQUESTION)) {
+        //
+        //	Get the new preset from the dialog
+        //
+        PresetClass *preset = dialog.Get_Selection();
+        CString preset_name = preset->Get_Name();
 
-					uint32 preset_id_to_change = node->Get_Preset_ID ();
-					int count = m_ListCtrl.GetItemCount ();
-					
-					//
-					//	Loop over all the nodes in the list
-					//
-					for (int index = 0; index < count; index ++) {
-						NodeClass *curr_node = (NodeClass *)m_ListCtrl.GetItemData (index);
-						if (curr_node != NULL && curr_node->Get_Preset_ID () == preset_id_to_change) {
-							
-							//
-							//	Associate the preset with the object
-							//
-							curr_node->Set_Preset (preset);
-							m_ListCtrl.SetItemText (index, COL_PRESET, preset_name);
-						}
-					}
+        //
+        //	Ask the user if they want to make this change to all the nodes
+        //
+        if (MessageBox("Would you like to propagate this preset to all other nodes of the same original preset?",
+                       "Propagate", MB_YESNO | MB_ICONQUESTION)) {
 
-				} else {
+          uint32 preset_id_to_change = node->Get_Preset_ID();
+          int count = m_ListCtrl.GetItemCount();
 
-					//
-					//	Associate the preset with the object
-					//
-					node->Set_Preset (preset);					
-					m_ListCtrl.SetItemText (item_index, COL_PRESET, preset_name);
-				}
-			}
-		}
-	}
-	
-	return ;
+          //
+          //	Loop over all the nodes in the list
+          //
+          for (int index = 0; index < count; index++) {
+            NodeClass *curr_node = (NodeClass *)m_ListCtrl.GetItemData(index);
+            if (curr_node != NULL && curr_node->Get_Preset_ID() == preset_id_to_change) {
+
+              //
+              //	Associate the preset with the object
+              //
+              curr_node->Set_Preset(preset);
+              m_ListCtrl.SetItemText(index, COL_PRESET, preset_name);
+            }
+          }
+
+        } else {
+
+          //
+          //	Associate the preset with the object
+          //
+          node->Set_Preset(preset);
+          m_ListCtrl.SetItemText(item_index, COL_PRESET, preset_name);
+        }
+      }
+    }
+  }
+
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnDeleteitemListCtrl
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-PresetRemapDialogClass::OnDeleteitemListCtrl
-(
-	NMHDR *	pNMHDR,
-	LRESULT* pResult
-)
-{
-	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;	
-	(*pResult) = 0;
+void PresetRemapDialogClass::OnDeleteitemListCtrl(NMHDR *pNMHDR, LRESULT *pResult) {
+  NM_LISTVIEW *pNMListView = (NM_LISTVIEW *)pNMHDR;
+  (*pResult) = 0;
 
-	//
-	//	Free our hold on this node
-	//
-	NodeClass *node = (NodeClass *)m_ListCtrl.GetItemData (pNMListView->iItem);
-	REF_PTR_RELEASE (node);
-	m_ListCtrl.SetItemData (pNMListView->iItem, 0);
+  //
+  //	Free our hold on this node
+  //
+  NodeClass *node = (NodeClass *)m_ListCtrl.GetItemData(pNMListView->iItem);
+  REF_PTR_RELEASE(node);
+  m_ListCtrl.SetItemData(pNMListView->iItem, 0);
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnOK
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-PresetRemapDialogClass::OnOK (void)
-{
-	CWaitCursor wait_cursor;	
-	
-	//
-	//	Loop over all the nodes in the list
-	//
-	int count = m_ListCtrl.GetItemCount ();
-	for (int index = 0; index < count; index ++) {
-		NodeClass *curr_node = (NodeClass *)m_ListCtrl.GetItemData (index);
-		if (curr_node->Get_Preset () != NULL) {
-			
-			//
-			//	Add this node to the world
-			//
-			curr_node->Initialize ();
-			NodeMgrClass::Add_Node (curr_node);
-		}
-	}
+void PresetRemapDialogClass::OnOK(void) {
+  CWaitCursor wait_cursor;
 
-	CDialog::OnOK ();
-	return ;
+  //
+  //	Loop over all the nodes in the list
+  //
+  int count = m_ListCtrl.GetItemCount();
+  for (int index = 0; index < count; index++) {
+    NodeClass *curr_node = (NodeClass *)m_ListCtrl.GetItemData(index);
+    if (curr_node->Get_Preset() != NULL) {
+
+      //
+      //	Add this node to the world
+      //
+      curr_node->Initialize();
+      NodeMgrClass::Add_Node(curr_node);
+    }
+  }
+
+  CDialog::OnOK();
+  return;
 }

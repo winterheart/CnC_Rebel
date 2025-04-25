@@ -18,20 +18,20 @@
 
 #ifdef WWDEBUG
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLDiags.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 1/11/02 5:43p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLDiags.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 1/11/02 5:43p $
+ *
+ ******************************************************************************/
 
 #include "WOLDiags.h"
 #include <WWOnline\WOLSession.h>
@@ -39,96 +39,68 @@
 
 using namespace WWOnline;
 
-void ShowWOLVersion(const RefPtr<Session>& session)
-	{
-	unsigned long ver = 0;
-	session->GetChatObject()->GetVersion(&ver);
-	ConsoleFunctionClass::Print("WOLAPI V%u.%u\n", (ver >> 16), (ver & 0xFFFF));
-	}
+void ShowWOLVersion(const RefPtr<Session> &session) {
+  unsigned long ver = 0;
+  session->GetChatObject()->GetVersion(&ver);
+  ConsoleFunctionClass::Print("WOLAPI V%u.%u\n", (ver >> 16), (ver & 0xFFFF));
+}
 
+void ShowServer(const RefPtr<Session> &session) {
+  const RefPtr<IRCServerData> &server = session->GetCurrentServer();
 
-void ShowServer(const RefPtr<Session>& session)
-	{
-	const RefPtr<IRCServerData>& server = session->GetCurrentServer();
+  if (server.IsValid()) {
+    WOL::Server &data = server->GetData();
+    ConsoleFunctionClass::Print("Server: %s:%s  TimeZone: %d  Position:: %f/%f\n", (const char *)data.connlabel,
+                                (const char *)data.name, data.timezone, data.longitude, data.lattitude);
+  } else {
+    ConsoleFunctionClass::Print("WOL not connected\n");
+  }
+}
 
-	if (server.IsValid())
-		{
-		WOL::Server& data = server->GetData();
-		ConsoleFunctionClass::Print("Server: %s:%s  TimeZone: %d  Position:: %f/%f\n",
-			(const char*)data.connlabel, (const char*)data.name, data.timezone, data.longitude, data.lattitude);
-		}
-	else
-		{
-		ConsoleFunctionClass::Print("WOL not connected\n");
-		}
-	}
+void ShowTopic(const RefPtr<Session> &session) {
+  ConsoleFunctionClass::Print("Channel Topic: %s\n", session->GetChannelTopic());
+}
 
+void ShowPingServers(const RefPtr<Session> &session) {
+  const PingServerList &pingServers = session->GetPingServerList();
+  unsigned int count = pingServers.size();
 
-void ShowTopic(const RefPtr<Session>& session)
-	{
-	ConsoleFunctionClass::Print("Channel Topic: %s\n", session->GetChannelTopic());
-	}
+  for (unsigned int index = 0; index < count; index++) {
+    const RefPtr<PingServerData> &ping = pingServers[index];
+    ConsoleFunctionClass::Print("%-18s %-4dms - %s\n", ping->GetHostAddress(), ping->GetPingTime(), ping->GetName());
+  }
+}
 
+struct Dispatch {
+  const char *Cmd;
+  void (*Func)(const RefPtr<Session> &);
+};
 
-void ShowPingServers(const RefPtr<Session>& session)
-	{
-	const PingServerList& pingServers = session->GetPingServerList();
-	unsigned int count = pingServers.size();
+const char *WOLConsoleFunctionClass::Get_Help(void) { return ("WOL <command> - Show WOL information"); }
 
-	for (unsigned int index = 0; index < count; index++)
-		{
-		const RefPtr<PingServerData>& ping = pingServers[index];
-		ConsoleFunctionClass::Print("%-18s %-4dms - %s\n",
-			ping->GetHostAddress(), ping->GetPingTime(), ping->GetName());
-		}
-	}
+void WOLConsoleFunctionClass::Activate(const char *input) {
+  static Dispatch _dispatch[] = {
+      {"pings", ShowPingServers}, {"server", ShowServer}, {"topic", ShowTopic}, {"ver", ShowWOLVersion}, {NULL, NULL}};
 
+  RefPtr<Session> session = Session::GetInstance(false);
 
-struct Dispatch
-	{
-	const char* Cmd;
-	void (*Func)(const RefPtr<Session>&);
-	};
+  if (!session.IsValid()) {
+    ConsoleFunctionClass::Print("Westwood Online not active\n");
+    return;
+  }
 
+  int index = 0;
+  const char *cmd = _dispatch[0].Cmd;
 
-const char* WOLConsoleFunctionClass::Get_Help(void)
-	{
-	return ("WOL <command> - Show WOL information");
-	}
+  while (cmd != NULL) {
+    if (stricmp(cmd, input) == 0) {
+      _dispatch[index].Func(session);
+      return;
+    }
 
-void WOLConsoleFunctionClass::Activate(const char* input)
-	{
-	static Dispatch _dispatch[] = 
-		{
-		{"pings", ShowPingServers},
-		{"server", ShowServer},
-		{"topic", ShowTopic},
-		{"ver", ShowWOLVersion},
-		{NULL, NULL}
-		};
-
-	RefPtr<Session> session = Session::GetInstance(false);
-
-	if (!session.IsValid())
-		{
-		ConsoleFunctionClass::Print("Westwood Online not active\n");
-		return;
-		}
-
-	int index = 0;
-	const char* cmd = _dispatch[0].Cmd;
-
-	while (cmd != NULL)
-		{
-		if (stricmp(cmd, input) == 0)
-			{
-			_dispatch[index].Func(session);
-			return;
-			}
-
-		++index;
-		cmd = _dispatch[index].Cmd;
-		}
-	}
+    ++index;
+    cmd = _dispatch[index].Cmd;
+  }
+}
 
 #endif // WWDEBUG

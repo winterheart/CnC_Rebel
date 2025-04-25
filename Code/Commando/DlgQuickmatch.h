@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* NAME
-*     $Archive: /Commando/Code/Commando/DlgQuickmatch.h $
-*
-* DESCRIPTION
-*     Quick match dialog
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 8 $
-*     $Modtime: 8/23/01 8:30a $
-*
-******************************************************************************/
+ *
+ * NAME
+ *     $Archive: /Commando/Code/Commando/DlgQuickmatch.h $
+ *
+ * DESCRIPTION
+ *     Quick match dialog
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 8 $
+ *     $Modtime: 8/23/01 8:30a $
+ *
+ ******************************************************************************/
 
 #ifndef __DLGQUICKMATCH_H__
 #define __DLGQUICKMATCH_H__
@@ -45,41 +45,37 @@
 class WaitCondition;
 class DlgMsgBoxEvent;
 
-class DlgQuickMatch :
-		public MenuDialogClass,
-		public Observer<QuickMatchEvent>,
-		public Observer<DlgMsgBoxEvent>
-	{
-	public:
-		static bool DoDialog(void);
+class DlgQuickMatch : public MenuDialogClass, public Observer<QuickMatchEvent>, public Observer<DlgMsgBoxEvent> {
+public:
+  static bool DoDialog(void);
 
-	protected:
-		DlgQuickMatch();
-		virtual ~DlgQuickMatch();
+protected:
+  DlgQuickMatch();
+  virtual ~DlgQuickMatch();
 
-		bool FinalizeCreate(void);
+  bool FinalizeCreate(void);
 
-		void On_Init_Dialog(void);
-		void On_Frame_Update(void);
-		void On_Command(int ctrl, int message, DWORD param);
+  void On_Init_Dialog(void);
+  void On_Frame_Update(void);
+  void On_Command(int ctrl, int message, DWORD param);
 
-		void Connect(void);
-		void SendMatchingInfo(void);
+  void Connect(void);
+  void SendMatchingInfo(void);
 
-		void OutputMessage(int messageID);
-		void OutputMessage(const WCHAR* message);
+  void OutputMessage(int messageID);
+  void OutputMessage(const WCHAR *message);
 
-		void HandleNotification(QuickMatchEvent&);
-		void HandleNotification(DlgMsgBoxEvent&);
+  void HandleNotification(QuickMatchEvent &);
+  void HandleNotification(DlgMsgBoxEvent &);
 
-	private:
-		DlgQuickMatch(const DlgQuickMatch&);
-		const DlgQuickMatch& operator=(const DlgQuickMatch&);
+private:
+  DlgQuickMatch(const DlgQuickMatch &);
+  const DlgQuickMatch &operator=(const DlgQuickMatch &);
 
-		WOLQuickMatch* mQuickMatch;
-		RefPtr<WaitCondition> mConnectWait;
-		DWORD mTimeoutTime;
-		DWORD mResendTime;
-		};
+  WOLQuickMatch *mQuickMatch;
+  RefPtr<WaitCondition> mConnectWait;
+  DWORD mTimeoutTime;
+  DWORD mResendTime;
+};
 
 #endif // __DLGQUICKMATCH_H__

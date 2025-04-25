@@ -33,51 +33,48 @@ class LightClass;
 /////////////////////////////////////////////////////////////////////////////
 // SunlightDialogClass dialog
 
-class SunlightDialogClass : public CDialog
-{
-// Construction
+class SunlightDialogClass : public CDialog {
+  // Construction
 public:
-	SunlightDialogClass(CWnd* pParent = NULL);   // standard constructor
-	~SunlightDialogClass (void);
+  SunlightDialogClass(CWnd *pParent = NULL); // standard constructor
+  ~SunlightDialogClass(void);
 
-// Dialog Data
-	//{{AFX_DATA(SunlightDialogClass)
-	enum { IDD = IDD_SUNLIGHT };
-	CSliderCtrl	m_YawSlider;
-	CSliderCtrl	m_PitchSlider;
-	CSliderCtrl	m_IntensitySlider;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(SunlightDialogClass)
+  enum { IDD = IDD_SUNLIGHT };
+  CSliderCtrl m_YawSlider;
+  CSliderCtrl m_PitchSlider;
+  CSliderCtrl m_IntensitySlider;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(SunlightDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(SunlightDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(SunlightDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnColor();
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
-	afx_msg void OnUpdatePitchEdit();
-	afx_msg void OnKillfocusPitchEdit();
-	afx_msg void OnKillfocusYawEdit();
-	afx_msg void OnUpdateYawEdit();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(SunlightDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnColor();
+  afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+  afx_msg void OnUpdatePitchEdit();
+  afx_msg void OnKillfocusPitchEdit();
+  afx_msg void OnKillfocusYawEdit();
+  afx_msg void OnUpdateYawEdit();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	private:
-		Vector3					m_Color;
-		LightClass *			m_pSunlight;
-		float						m_Yaw;
-		float						m_Pitch;
-		float						m_Intensity;
+private:
+  Vector3 m_Color;
+  LightClass *m_pSunlight;
+  float m_Yaw;
+  float m_Pitch;
+  float m_Intensity;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/clientpingmanager.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 10/15/01 4:34p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/clientpingmanager.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 10/15/01 4:34p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CLIENTPINGMANAGER_H__
@@ -40,32 +40,28 @@
 #include "bittype.h"
 
 //-----------------------------------------------------------------------------
-class	cClientPingManager
-{
+class cClientPingManager {
 public:
-	static void		Init(void);
-	static void		Think(void);
-	static DWORD	Get_Last_Round_Trip_Ping_Ms(void);
-	static DWORD	Get_Avg_Round_Trip_Ping_Ms(void);
-	static void		Response_Received(int ping_number);
+  static void Init(void);
+  static void Think(void);
+  static DWORD Get_Last_Round_Trip_Ping_Ms(void);
+  static DWORD Get_Avg_Round_Trip_Ping_Ms(void);
+  static void Response_Received(int ping_number);
 
 private:
-	static void		Compute_Average_Round_Trip_Ping_Ms(void);
+  static void Compute_Average_Round_Trip_Ping_Ms(void);
 
-	enum				{MAX_SAMPLES			= 3};
-	enum				{MIN_PING_DELAY_MS	= 1000};
+  enum { MAX_SAMPLES = 3 };
+  enum { MIN_PING_DELAY_MS = 1000 };
 
-	static int		PingNumber;
-	static DWORD	TimeSentMs;
-	static DWORD	LastRoundTripPingMs;
-	static DWORD	AvgRoundTripPingMs;
-	static bool		IsAwaitingResponse;
-	static DWORD	RoundTripPingSamplesMs[MAX_SAMPLES];
+  static int PingNumber;
+  static DWORD TimeSentMs;
+  static DWORD LastRoundTripPingMs;
+  static DWORD AvgRoundTripPingMs;
+  static bool IsAwaitingResponse;
+  static DWORD RoundTripPingSamplesMs[MAX_SAMPLES];
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CLIENTPINGMANAGER_H__
-
-
-
+#endif // __CLIENTPINGMANAGER_H__

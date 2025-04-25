@@ -62,6 +62,7 @@ target_include_directories(Scripts PUBLIC
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/Combat
+        ${PROJECT_SOURCE_DIR}/Code/WWMath
 )
 target_link_libraries(Scripts PRIVATE
     WWDebug

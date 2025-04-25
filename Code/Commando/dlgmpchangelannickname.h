@@ -17,39 +17,36 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/dlgmpchangelannickname.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Tom
-*
-* VERSION INFO
-*     $Revision: 1 $
-*     $Modtime: 1/04/02 3:09p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/dlgmpchangelannickname.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Tom
+ *
+ * VERSION INFO
+ *     $Revision: 1 $
+ *     $Modtime: 1/04/02 3:09p $
+ *
+ ******************************************************************************/
 
 #include "Resource.h"
 #include <WWUI\PopupDialog.h>
 
-class DlgMpChangeLanNickname : public PopupDialogClass
-{
+class DlgMpChangeLanNickname : public PopupDialogClass {
 public:
-	static bool DoDialog(void);
+  static bool DoDialog(void);
 
 protected:
-	DlgMpChangeLanNickname();
-	~DlgMpChangeLanNickname();
+  DlgMpChangeLanNickname();
+  ~DlgMpChangeLanNickname();
 
-	void On_Init_Dialog(void);
-	void On_Command(int ctrlID, int mesage, DWORD param);
-	void On_EditCtrl_Change(EditCtrlClass* edit, int id);
-	void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int id);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrlID, int mesage, DWORD param);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int id);
 
-	static int DialogCount;
+  static int DialogCount;
 };
-
-

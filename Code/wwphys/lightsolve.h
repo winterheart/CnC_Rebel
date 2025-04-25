@@ -54,23 +54,17 @@ class LightSolveProgressClass;
 ** solves for the scene or a subset of the scene.
 */
 
-class LightSolveClass
-{
+class LightSolveClass {
 public:
-
-static void		Generate_Static_Light_Solve(LightSolveContextClass & context);
-static void		Generate_Static_Light_Solve(LightSolveContextClass & context,RefPhysListClass & obj_list);
+  static void Generate_Static_Light_Solve(LightSolveContextClass &context);
+  static void Generate_Static_Light_Solve(LightSolveContextClass &context, RefPhysListClass &obj_list);
 
 private:
-
-static void		Compute_Solve(LightSolveContextClass & context,RefPhysListClass & obj_list);
-static void		Compute_Solve(LightSolveContextClass & context,StaticPhysClass * phys_obj);
-static void		Compute_Solve(LightSolveContextClass & context,RenderObjClass * model,NonRefPhysListClass & light_list);
-static bool		Does_Obj_Get_Static_Light_Solve(StaticPhysClass * obj);
-static bool		Does_Model_Get_Static_Light_Solve(RenderObjClass * model);
-
+  static void Compute_Solve(LightSolveContextClass &context, RefPhysListClass &obj_list);
+  static void Compute_Solve(LightSolveContextClass &context, StaticPhysClass *phys_obj);
+  static void Compute_Solve(LightSolveContextClass &context, RenderObjClass *model, NonRefPhysListClass &light_list);
+  static bool Does_Obj_Get_Static_Light_Solve(StaticPhysClass *obj);
+  static bool Does_Model_Get_Static_Light_Solve(RenderObjClass *model);
 };
 
-
-#endif //LIGHTSOLVE_H
-
+#endif // LIGHTSOLVE_H

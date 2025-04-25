@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLErrorUtil.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 2 $
-*     $Modtime: 7/12/01 4:26p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLErrorUtil.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 2 $
+ *     $Modtime: 7/12/01 4:26p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLERROR_H__
 #define __WOLERROR_H__
@@ -39,10 +39,10 @@
 
 namespace WWOnline {
 
-const char* const GetChatErrorString(HRESULT hr);
-const char* const GetNetUtilErrorString(HRESULT hr);
-const char* const GetDownloadErrorString(HRESULT hr);
+const char *const GetChatErrorString(HRESULT hr);
+const char *const GetNetUtilErrorString(HRESULT hr);
+const char *const GetDownloadErrorString(HRESULT hr);
 
-}
+} // namespace WWOnline
 
 #endif // __WOLERROR_H__

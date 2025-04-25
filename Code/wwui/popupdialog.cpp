@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/popupdialog.cpp         $*
  *                                                                                             *
@@ -42,173 +43,154 @@
 #include "texture.h"
 #include "stylemgr.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Local constants
 ////////////////////////////////////////////////////////////////
-const int	TITLE_BORDER_WIDTH	= 10;
-const int	TITLE_BORDER_HEIGHT	= 8;
-
+const int TITLE_BORDER_WIDTH = 10;
+const int TITLE_BORDER_HEIGHT = 8;
 
 ////////////////////////////////////////////////////////////////
 //
 //	PopupDialogClass
 //
 ////////////////////////////////////////////////////////////////
-PopupDialogClass::PopupDialogClass (int res_id)	:
-	DialogBaseClass (res_id)
-{
-	//
-	//	Configure the renderers
-	//
-	StyleMgrClass::Configure_Renderer (&BackgroundRenderer);
-	StyleMgrClass::Configure_Renderer (&BlackoutRenderer);
-	StyleMgrClass::Assign_Font (&TextRenderer, StyleMgrClass::FONT_HEADER);
+PopupDialogClass::PopupDialogClass(int res_id) : DialogBaseClass(res_id) {
+  //
+  //	Configure the renderers
+  //
+  StyleMgrClass::Configure_Renderer(&BackgroundRenderer);
+  StyleMgrClass::Configure_Renderer(&BlackoutRenderer);
+  StyleMgrClass::Assign_Font(&TextRenderer, StyleMgrClass::FONT_HEADER);
 
-	//
-	//	Force this renderer to always render
-	//
-	BlackoutRenderer.Get_Shader ()->Set_Depth_Compare (ShaderClass::PASS_ALWAYS);
+  //
+  //	Force this renderer to always render
+  //
+  BlackoutRenderer.Get_Shader()->Set_Depth_Compare(ShaderClass::PASS_ALWAYS);
 
-	//
-	// By default, popup backgrounds are dark
-	//
-	IsBackgroundDarkened = true;
+  //
+  // By default, popup backgrounds are dark
+  //
+  IsBackgroundDarkened = true;
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	~PopupDialogClass
 //
 ////////////////////////////////////////////////////////////////
-PopupDialogClass::~PopupDialogClass (void)
-{
-	return ;
+PopupDialogClass::~PopupDialogClass(void) { return; }
+
+void PopupDialogClass::Set_Title(const WCHAR *title) {
+  DialogBaseClass::Set_Title(title);
+  Build_Background_Renderers();
 }
-
-
-void PopupDialogClass::Set_Title(const WCHAR* title)
-	{
-	DialogBaseClass::Set_Title(title);
-	Build_Background_Renderers();
-	}
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-PopupDialogClass::On_Init_Dialog (void)
-{
-	//
-	//	Generate the backdrop
-	//
-	Build_Background_Renderers ();
+void PopupDialogClass::On_Init_Dialog(void) {
+  //
+  //	Generate the backdrop
+  //
+  Build_Background_Renderers();
 
-	DialogBaseClass::On_Init_Dialog ();
+  DialogBaseClass::On_Init_Dialog();
 
-	//
-	//	Play the sound effect
-	//
-	StyleMgrClass::Play_Sound (StyleMgrClass::EVENT_POPUP);
-	return ;
+  //
+  //	Play the sound effect
+  //
+  StyleMgrClass::Play_Sound(StyleMgrClass::EVENT_POPUP);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Build_Background_Renderers
 //
 ////////////////////////////////////////////////////////////////
-void
-PopupDialogClass::Build_Background_Renderers (void)
-{
-	//
-	//	Configure this renderer
-	//
-	TextRenderer.Reset();
-	BackgroundRenderer.Reset ();
-	BlackoutRenderer.Reset ();
-	BackgroundRenderer.Enable_Texturing (false);
-	BlackoutRenderer.Enable_Texturing (false);
+void PopupDialogClass::Build_Background_Renderers(void) {
+  //
+  //	Configure this renderer
+  //
+  TextRenderer.Reset();
+  BackgroundRenderer.Reset();
+  BlackoutRenderer.Reset();
+  BackgroundRenderer.Enable_Texturing(false);
+  BlackoutRenderer.Enable_Texturing(false);
 
-	//
-	//	Darken the background if IsBackgroundDarkened is set
-	//
-	if (IsBackgroundDarkened) {
-		BlackoutRenderer.Add_Quad (Render2DClass::Get_Screen_Resolution(), RGBA_TO_INT32 (0, 0, 0, 236));
-	}
+  //
+  //	Darken the background if IsBackgroundDarkened is set
+  //
+  if (IsBackgroundDarkened) {
+    BlackoutRenderer.Add_Quad(Render2DClass::Get_Screen_Resolution(), RGBA_TO_INT32(0, 0, 0, 236));
+  }
 
-	//
-	//	Determine which color to draw the outline in
-	//
-	int color	= StyleMgrClass::Get_Line_Color ();
-	int bkcolor	= StyleMgrClass::Get_Bk_Color ();
+  //
+  //	Determine which color to draw the outline in
+  //
+  int color = StyleMgrClass::Get_Line_Color();
+  int bkcolor = StyleMgrClass::Get_Bk_Color();
 
-	//
-	//	Draw the control outline
-	//
-	RectClass rect = Rect;
-	BackgroundRenderer.Add_Rect (rect, 1.0F, color, bkcolor);
+  //
+  //	Draw the control outline
+  //
+  RectClass rect = Rect;
+  BackgroundRenderer.Add_Rect(rect, 1.0F, color, bkcolor);
 
-	if (Title.Get_Length () > 0) {
+  if (Title.Get_Length() > 0) {
 
-		//
-		//	Determine what scale to use
-		//
-		float scale_x = Render2DClass::Get_Screen_Resolution().Width () / 800;
-		float scale_y = Render2DClass::Get_Screen_Resolution().Height () / 600;
+    //
+    //	Determine what scale to use
+    //
+    float scale_x = Render2DClass::Get_Screen_Resolution().Width() / 800;
+    float scale_y = Render2DClass::Get_Screen_Resolution().Height() / 600;
 
-		//
-		//	Calculate the title bar rectangle
-		//
-		Vector2 text_extent = TextRenderer.Get_Text_Extents (Title);
-		if (text_extent != Vector2(0,0)) {
-			RectClass text_rect;
-			text_rect.Left		= Rect.Left;
-			text_rect.Right	= Rect.Left + int(text_extent.X + (TITLE_BORDER_WIDTH * 2 * scale_x));
-			text_rect.Top		= Rect.Top - int(text_extent.Y + (TITLE_BORDER_HEIGHT * 2 * scale_y));
-			text_rect.Bottom	= Rect.Top;
+    //
+    //	Calculate the title bar rectangle
+    //
+    Vector2 text_extent = TextRenderer.Get_Text_Extents(Title);
+    if (text_extent != Vector2(0, 0)) {
+      RectClass text_rect;
+      text_rect.Left = Rect.Left;
+      text_rect.Right = Rect.Left + int(text_extent.X + (TITLE_BORDER_WIDTH * 2 * scale_x));
+      text_rect.Top = Rect.Top - int(text_extent.Y + (TITLE_BORDER_HEIGHT * 2 * scale_y));
+      text_rect.Bottom = Rect.Top;
 
-			//
-			//	Draw the title bar
-			//
-			BackgroundRenderer.Add_Rect (text_rect, 1.0F, color, bkcolor);
+      //
+      //	Draw the title bar
+      //
+      BackgroundRenderer.Add_Rect(text_rect, 1.0F, color, bkcolor);
 
-			//
-			//	Draw the title text
-			//
-			StyleMgrClass::Render_Text (Title, &TextRenderer, text_rect, true, true, StyleMgrClass::CENTER_JUSTIFY);
-		}
-	}
+      //
+      //	Draw the title text
+      //
+      StyleMgrClass::Render_Text(Title, &TextRenderer, text_rect, true, true, StyleMgrClass::CENTER_JUSTIFY);
+    }
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Render
 //
 ////////////////////////////////////////////////////////////////
-void
-PopupDialogClass::Render (void)
-{
-	//
-	//	Render the backdrop
-	//
-	BlackoutRenderer.Render ();
-	BackgroundRenderer.Render ();
-	TextRenderer.Render ();
+void PopupDialogClass::Render(void) {
+  //
+  //	Render the backdrop
+  //
+  BlackoutRenderer.Render();
+  BackgroundRenderer.Render();
+  TextRenderer.Render();
 
-	//
-	//	Render the controls
-	//
-	DialogBaseClass::Render ();
-	return ;
+  //
+  //	Render the controls
+  //
+  DialogBaseClass::Render();
+  return;
 }

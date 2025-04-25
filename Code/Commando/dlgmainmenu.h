@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmainmenu.h         $*
  *                                                                                             *
@@ -41,77 +42,69 @@
 #ifndef __DLG_MAIN_MENU_H
 #define __DLG_MAIN_MENU_H
 
-
 #include "menudialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class RenderObjClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	MainMenuDialogClass
 //
 ////////////////////////////////////////////////////////////////
-class MainMenuDialogClass : public MenuDialogClass
-{
+class MainMenuDialogClass : public MenuDialogClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MainMenuDialogClass(void);
+  ~MainMenuDialogClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	MainMenuDialogClass (void);
-	~MainMenuDialogClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Notifications
+  //
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
-	//
-	//	Notifications
-	//
-	void			On_Command (int ctrl_id, int mesage_id, DWORD param);
+  //
+  //	Transition support
+  //
+  DialogTransitionClass *Get_Transition_In(DialogBaseClass *prev_dlg);
+  DialogTransitionClass *Get_Transition_Out(DialogBaseClass *next_dlg);
 
-	//
-	//	Transition support
-	//
-	DialogTransitionClass *	Get_Transition_In (DialogBaseClass *prev_dlg);
-	DialogTransitionClass *	Get_Transition_Out (DialogBaseClass *next_dlg);
-
-	//
-	//	Singleton access
-	//
-	static void							Display (void);
-	static MainMenuDialogClass *	Get_Instance (void)	{ return _TheInstance; }
+  //
+  //	Singleton access
+  //
+  static void Display(void);
+  static MainMenuDialogClass *Get_Instance(void) { return _TheInstance; }
 
 protected:
-
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void			On_Init_Dialog (void);
-	void			On_Menu_Activate (bool onoff);
-	void			Update_Version_Number (void);
-	StringClass	Choose_Skirmish_Map (void);
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Menu_Activate(bool onoff);
+  void Update_Version_Number(void);
+  StringClass Choose_Skirmish_Map(void);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  RenderObjClass *LogoModel;
+  RenderObjClass *TitleTransModel;
+  RenderObjClass *GizmoModel;
+  bool IsStartingPractice;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	RenderObjClass *	LogoModel;
-	RenderObjClass *	TitleTransModel;
-	RenderObjClass *	GizmoModel;
-	bool					IsStartingPractice;
+  static bool Animated;
 
-	static bool			Animated;
-
-	static MainMenuDialogClass *	_TheInstance;
+  static MainMenuDialogClass *_TheInstance;
 };
-
 
 #endif //__DLG_MAIN_MENU_H

@@ -36,7 +36,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -49,7 +48,6 @@
 #include "wwdebug.h"
 #include "physlist.h"
 
-
 class VisTableClass;
 class CameraClass;
 class VisRenderContextClass;
@@ -57,113 +55,95 @@ class VisSampleClass;
 class ChunkLoadClass;
 class ChunkSaveClass;
 
-
 /*
 ** StaticAABTreeCullClass
 ** This is a derived axis-aligned bounding box tree for culling static objects.
 ** It adds the visibility code to the basic AAB-Tree culling system
 */
-class StaticAABTreeCullClass : public PhysAABTreeCullClass
-{
+class StaticAABTreeCullClass : public PhysAABTreeCullClass {
 
 public:
+  StaticAABTreeCullClass(PhysicsSceneClass *pscene);
+  ~StaticAABTreeCullClass(void);
 
-	StaticAABTreeCullClass(PhysicsSceneClass * pscene);
-	~StaticAABTreeCullClass(void);
+  /*
+  ** StaticAABTreeCullClass over-rides the add and remove methods in order to add
+  ** vis-data support.
+  ** NOTE: the objects added should be derived from StaticPhysClass's.  This is
+  ** asserted internally.
+  */
+  virtual void Add_Object(PhysClass *obj, int cull_node_id = -1);
+  virtual void Remove_Object(PhysClass *obj);
+  virtual void Update_Culling(CullableClass *obj);
 
-	/*
-	** StaticAABTreeCullClass over-rides the add and remove methods in order to add
-	** vis-data support.
-	** NOTE: the objects added should be derived from StaticPhysClass's.  This is
-	** asserted internally.
-	*/
-	virtual void		Add_Object(PhysClass * obj,int cull_node_id = -1);
-	virtual void		Remove_Object(PhysClass * obj);
-	virtual void		Update_Culling(CullableClass * obj);
+  /*
+  ** PhysAABTreeCullClass adds a new collect function which takes the pvs data
+  ** into account.  It also puts objects into one of two lists, separating
+  ** world-space-meshes from the other objects.
+  */
+  void Collect_Visible_Objects(const FrustumClass &frustum, VisTableClass *pvs, RefPhysListClass &visobjlist,
+                               RefPhysListClass &wsmeshlist);
 
-	/*
-	** PhysAABTreeCullClass adds a new collect function which takes the pvs data
-	** into account.  It also puts objects into one of two lists, separating
-	** world-space-meshes from the other objects.
-	*/
-	void					Collect_Visible_Objects(		const FrustumClass & frustum,
-																	VisTableClass * pvs,
-																	RefPhysListClass & visobjlist,
-																	RefPhysListClass & wsmeshlist		);
+  /*
+  ** Save/Load system.
+  */
+  virtual void Save_Static_Data(ChunkSaveClass &csave);
+  virtual void Load_Static_Data(ChunkLoadClass &cload);
 
-	/*
-	** Save/Load system.
-	*/
-	virtual void		Save_Static_Data(ChunkSaveClass & csave);
-	virtual void		Load_Static_Data(ChunkLoadClass & cload);
-	
 protected:
+  /*
+  ** VisObjCollectContextClass - this object is passed into the recursive function that collects
+  ** the visible objects each frame.
+  */
+  class VisObjCollectContextClass {
+  public:
+    VisObjCollectContextClass(const FrustumClass &frustum, VisTableClass &pvs, RefPhysListClass &visobjlist,
+                              RefPhysListClass &wsmeshlist)
+        : Frustum(frustum), PVS(pvs), VisObjList(visobjlist), WSMeshList(wsmeshlist), PlanesPassed(0) {}
 
-	/*
-	** VisObjCollectContextClass - this object is passed into the recursive function that collects
-	** the visible objects each frame.
-	*/
-	class VisObjCollectContextClass
-	{
-	public:
+    const FrustumClass &Frustum;
+    VisTableClass &PVS;
+    RefPhysListClass &VisObjList;
+    RefPhysListClass &WSMeshList;
+    int PlanesPassed;
+  };
 
-		VisObjCollectContextClass
-		(
-			const FrustumClass & frustum,
-			VisTableClass & pvs,
-			RefPhysListClass & visobjlist,
-			RefPhysListClass & wsmeshlist
-		) :
-			Frustum(frustum),
-			PVS(pvs),
-			VisObjList(visobjlist),
-			WSMeshList(wsmeshlist),
-			PlanesPassed(0)
-		{
-		}
-		
-		const FrustumClass & Frustum;
-		VisTableClass &		PVS;
-		RefPhysListClass &	VisObjList;
-		RefPhysListClass &	WSMeshList;
-		int						PlanesPassed;
-	};
+  /*
+  ** Run-time visiblity support
+  */
+  void Collect_Visible_Objects_Recursive(AABTreeNodeClass *node, VisObjCollectContextClass &context);
+  void Collect_Visible_Objects_No_HVis_Recursive(AABTreeNodeClass *node, VisObjCollectContextClass &context);
 
-	/*
-	** Run-time visiblity support
-	*/
-	void					Collect_Visible_Objects_Recursive(AABTreeNodeClass * node,VisObjCollectContextClass & context);
-	void					Collect_Visible_Objects_No_HVis_Recursive(AABTreeNodeClass * node,VisObjCollectContextClass & context); 
+  int Get_Vis_Sector_ID(const Vector3 &sample_point);
+  StaticPhysClass *Find_Vis_Tile(const Vector3 &sample_point);
 
-	int					Get_Vis_Sector_ID(const Vector3 & sample_point);
-	StaticPhysClass *	Find_Vis_Tile(const Vector3 & sample_point);
+  /*
+  ** Visibility Preprocessing support
+  */
+  void Assign_Vis_IDs(void);
 
-	/*
-	** Visibility Preprocessing support
-	*/
-	void					Assign_Vis_IDs(void);
-	
-	void					Evaluate_Occluder_Visibility(VisRenderContextClass & context,VisSampleClass & sample);
-	void					Evaluate_Non_Occluder_Visibility(VisRenderContextClass & context,VisSampleClass & sample);
-		
-	void					Render_Occluders(AABTreeNodeClass * node,VisRenderContextClass & context);
-	void					Collect_Non_Occluders(AABTreeNodeClass * node,VisRenderContextClass & context,RefPhysListClass & non_occluder_list);
+  void Evaluate_Occluder_Visibility(VisRenderContextClass &context, VisSampleClass &sample);
+  void Evaluate_Non_Occluder_Visibility(VisRenderContextClass &context, VisSampleClass &sample);
 
-	void					Propogate_Hierarchical_Visibility(VisTableClass * pvs);
-	void					Propogate_Hierarchical_Visibility_Recursive(AABTreeNodeClass * node,VisTableClass * pvs);
-	bool					Is_Child_Visible(AABTreeNodeClass * node,VisTableClass * pvs);
+  void Render_Occluders(AABTreeNodeClass *node, VisRenderContextClass &context);
+  void Collect_Non_Occluders(AABTreeNodeClass *node, VisRenderContextClass &context,
+                             RefPhysListClass &non_occluder_list);
 
-	/*
-	** Visibility Optimization support (preprocessing still)
-	*/
-	void					Merge_Vis_Object_IDs(uint32 id0,uint32 id1);
-	void					Merge_Vis_Sector_IDs(uint32 id0,uint32 id1);
+  void Propogate_Hierarchical_Visibility(VisTableClass *pvs);
+  void Propogate_Hierarchical_Visibility_Recursive(AABTreeNodeClass *node, VisTableClass *pvs);
+  bool Is_Child_Visible(AABTreeNodeClass *node, VisTableClass *pvs);
 
-	/*
-	** Making Physics Scene a friend so that some of the more ugly vis-system interfaces
-	** can be accessed by it without exposing them to everyone else...
-	*/
-	friend class PhysicsSceneClass;
+  /*
+  ** Visibility Optimization support (preprocessing still)
+  */
+  void Merge_Vis_Object_IDs(uint32 id0, uint32 id1);
+  void Merge_Vis_Sector_IDs(uint32 id0, uint32 id1);
+
+  /*
+  ** Making Physics Scene a friend so that some of the more ugly vis-system interfaces
+  ** can be accessed by it without exposing them to everyone else...
+  */
+  friend class PhysicsSceneClass;
 };
 
-#endif //STATICAABTREECULL_H
+#endif // STATICAABTREECULL_H

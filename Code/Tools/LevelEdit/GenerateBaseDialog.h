@@ -28,41 +28,38 @@
 /////////////////////////////////////////////////////////////////////////////
 // GenerateBaseDialogClass dialog
 
-class GenerateBaseDialogClass : public CDialog
-{
-// Construction
+class GenerateBaseDialogClass : public CDialog {
+  // Construction
 public:
-	GenerateBaseDialogClass(CWnd* pParent = NULL);   // standard constructor
+  GenerateBaseDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GenerateBaseDialogClass)
-	enum { IDD = IDD_GENERATE_BASE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GenerateBaseDialogClass)
+  enum { IDD = IDD_GENERATE_BASE };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GenerateBaseDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GenerateBaseDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GenerateBaseDialogClass)
-	virtual void OnOK();
-	afx_msg void OnUpdatePresetName();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GenerateBaseDialogClass)
+  virtual void OnOK();
+  afx_msg void OnUpdatePresetName();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
-		const CString &		Get_Preset_Name (void) const { return m_PresetName; }
+public:
+  const CString &Get_Preset_Name(void) const { return m_PresetName; }
 
-	private:
-		CString					m_PresetName;
+private:
+  CString m_PresetName;
 };
 
 //{{AFX_INSERT_LOCATION}}

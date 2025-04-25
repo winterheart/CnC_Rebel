@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : combat																		  *
+ *                 Project Name : combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/cheatmgr.cpp          $*
  *                                                                                             *
@@ -37,37 +38,27 @@
 #include "cheatmgr.h"
 #include "always.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //	Static member initialization
 //////////////////////////////////////////////////////////////////////
-CheatMgrClass *	CheatMgrClass::_TheInstance	 = NULL;
-
-
+CheatMgrClass *CheatMgrClass::_TheInstance = NULL;
 
 //////////////////////////////////////////////////////////////////////
 //
 //	CheatMgrClass
 //
 //////////////////////////////////////////////////////////////////////
-CheatMgrClass::CheatMgrClass (void)	:
-	Flags (0),
-	HistoryFlags (0)
-{
-	_TheInstance = this;
-	return ;
+CheatMgrClass::CheatMgrClass(void) : Flags(0), HistoryFlags(0) {
+  _TheInstance = this;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	~CheatMgrClass
 //
 //////////////////////////////////////////////////////////////////////
-CheatMgrClass::~CheatMgrClass (void)
-{
-	_TheInstance = NULL;
-	return ;
+CheatMgrClass::~CheatMgrClass(void) {
+  _TheInstance = NULL;
+  return;
 }
-
-

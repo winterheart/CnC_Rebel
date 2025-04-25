@@ -22,29 +22,28 @@
 class ScriptFactory;
 class ScriptImpClass;
 
-class ScriptRegistrar
-	{
-	public:
-		// Add ScriptFactory with the registrar
-		static void RegisterScript(ScriptFactory* factory);
+class ScriptRegistrar {
+public:
+  // Add ScriptFactory with the registrar
+  static void RegisterScript(ScriptFactory *factory);
 
-		// Remove ScriptFactory from the registrar
-		static void UnregisterScript(ScriptFactory* factory);
-		
-		// Create an instance of a script
-		static ScriptImpClass* CreateScript(const char* name);
+  // Remove ScriptFactory from the registrar
+  static void UnregisterScript(ScriptFactory *factory);
 
-		// Get ScriptFactory with the specified name
-		static ScriptFactory* GetScriptFactory(const char* name);
+  // Create an instance of a script
+  static ScriptImpClass *CreateScript(const char *name);
 
-		// Get the ScriptFactory at the specified index
-		static ScriptFactory* GetScriptFactory(int index);
+  // Get ScriptFactory with the specified name
+  static ScriptFactory *GetScriptFactory(const char *name);
 
-		// Retrieve the number of registered ScriptFactories
-		static int Count(void);
+  // Get the ScriptFactory at the specified index
+  static ScriptFactory *GetScriptFactory(int index);
 
-	private:
-		static ScriptFactory* mScriptFactories;
-	};
+  // Retrieve the number of registered ScriptFactories
+  static int Count(void);
+
+private:
+  static ScriptFactory *mScriptFactories;
+};
 
 #endif // _SCRIPTREGISTRAR_H_

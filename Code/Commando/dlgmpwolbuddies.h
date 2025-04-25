@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolbuddies.h      $*
  *                                                                                             *
@@ -46,58 +47,55 @@
 #include "WOLBuddyMgr.h"
 #include "DlgMessageBox.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolBuddiesMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolBuddiesMenuClass :
-	public MenuDialogClass,
-	public Observer<WOLBuddyMgrEvent>,
-	public Observer<DlgMsgBoxEvent>
-{
+class MPWolBuddiesMenuClass : public MenuDialogClass,
+                              public Observer<WOLBuddyMgrEvent>,
+                              public Observer<DlgMsgBoxEvent> {
 public:
-	static void Display(void);
-	
+  static void Display(void);
+
 protected:
-	MPWolBuddiesMenuClass(void);
-	~MPWolBuddiesMenuClass();
+  MPWolBuddiesMenuClass(void);
+  ~MPWolBuddiesMenuClass();
 
-	// Prevent copy and assignment
-	MPWolBuddiesMenuClass(const MPWolBuddiesMenuClass&);
-	const MPWolBuddiesMenuClass& operator=(const MPWolBuddiesMenuClass&);
+  // Prevent copy and assignment
+  MPWolBuddiesMenuClass(const MPWolBuddiesMenuClass &);
+  const MPWolBuddiesMenuClass &operator=(const MPWolBuddiesMenuClass &);
 
-	void On_Init_Dialog(void);
-	void On_Command(int ctrl_id, int mesage_id, DWORD param);
-	void On_Frame_Update(void);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_Frame_Update(void);
 
-	void Adjust_Buttons_For_Buddy_Location(int location);
+  void Adjust_Buttons_For_Buddy_Location(int location);
 
-	// Notifications
-	void HandleNotification(WOLBuddyMgrEvent &event);
-	void HandleNotification(DlgMsgBoxEvent &event);
-	void On_ComboBoxCtrl_Sel_Change(ComboBoxCtrlClass* combo, int id, int oldsel, int newsel);
-	void On_ListCtrl_Sel_Change(ListCtrlClass* list, int id, int oldsel, int newsel);
-	void On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
+  // Notifications
+  void HandleNotification(WOLBuddyMgrEvent &event);
+  void HandleNotification(DlgMsgBoxEvent &event);
+  void On_ComboBoxCtrl_Sel_Change(ComboBoxCtrlClass *combo, int id, int oldsel, int newsel);
+  void On_ListCtrl_Sel_Change(ListCtrlClass *list, int id, int oldsel, int newsel);
+  void On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctrl_id, int item_index);
 
-	void Update_Buddy_Info(int index, const RefPtr<WWOnline::UserData>& user);
-	void Update_Buddy_Ranking(int index, const RefPtr<WWOnline::UserData>& user);
-	void Refresh_Buddy_List(void);
-	void Update_Buddy_List (void);
-	void Get_Selected_Buddy(WideStringClass &buddy_name);
+  void Update_Buddy_Info(int index, const RefPtr<WWOnline::UserData> &user);
+  void Update_Buddy_Ranking(int index, const RefPtr<WWOnline::UserData> &user);
+  void Refresh_Buddy_List(void);
+  void Update_Buddy_List(void);
+  void Get_Selected_Buddy(WideStringClass &buddy_name);
 
-	void Page_Selected_User(void);
+  void Page_Selected_User(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	static MPWolBuddiesMenuClass* _mInstance;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  static MPWolBuddiesMenuClass *_mInstance;
 
-	WOLBuddyMgr* mBuddyMgr;
-	RefPtr<WWOnline::UserData> mPendingJoin;
-	bool mBuddyListChanged;
-	bool mBuddyInfoChanged;
+  WOLBuddyMgr *mBuddyMgr;
+  RefPtr<WWOnline::UserData> mPendingJoin;
+  bool mBuddyListChanged;
+  bool mBuddyInfoChanged;
 };
 
 #endif //__DLG_MP_WOL_BUDDIES_H

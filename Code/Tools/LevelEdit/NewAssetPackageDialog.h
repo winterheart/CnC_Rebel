@@ -25,64 +25,57 @@
 
 #include "resource.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // NewAssetPackageDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class NewAssetPackageDialogClass : public CDialog
-{
-// Construction
+class NewAssetPackageDialogClass : public CDialog {
+  // Construction
 public:
-	NewAssetPackageDialogClass(CWnd* pParent = NULL);   // standard constructor
+  NewAssetPackageDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(NewAssetPackageDialogClass)
-	enum { IDD = IDD_NEW_PACKAGE_NAME };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(NewAssetPackageDialogClass)
+  enum { IDD = IDD_NEW_PACKAGE_NAME };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(NewAssetPackageDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(NewAssetPackageDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(NewAssetPackageDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(NewAssetPackageDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	//////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////
-	void					Set_Package_Name (const char *name)	{ PackageName = name; }
-	const CString &	Get_Package_Name (void)	const			{ return PackageName; }
+  //////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////
+  void Set_Package_Name(const char *name) { PackageName = name; }
+  const CString &Get_Package_Name(void) const { return PackageName; }
 
 protected:
-	
-	//////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////
-	bool					Is_Duplicate_Name (const CString &name);
-	bool					Is_Valid_Name (const CString &name);
+  //////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////
+  bool Is_Duplicate_Name(const CString &name);
+  bool Is_Valid_Name(const CString &name);
 
 private:
-
-	//////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////
-	CString			PackageName;
+  //////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////
+  CString PackageName;
 };
 
 //{{AFX_INSERT_LOCATION}}

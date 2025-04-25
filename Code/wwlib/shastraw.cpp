@@ -16,30 +16,28 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/SHASTRAW.CPP                              $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/SHASTRAW.CPP                              $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   SHAStraw::Get -- Fetch data from the straw and process the SHA with the data.             *
  *   SHAStraw::Result -- Fetches the current SHA digest.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-#include	"always.h"
-#include	"shastraw.h"
-
+#include "always.h"
+#include "shastraw.h"
 
 /***********************************************************************************************
  * SHAStraw::Get -- Fetch data from the straw and process the SHA with the data.               *
@@ -61,19 +59,17 @@
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int SHAStraw::Get(void * source, int slen)
-{
-	if (source == NULL || slen < 1) {
-		return(0);
-	}
+int SHAStraw::Get(void *source, int slen) {
+  if (source == NULL || slen < 1) {
+    return (0);
+  }
 
-	int counter = Straw::Get(source, slen);
-	if (!IsDisabled) {
-		SHA.Hash(source, counter);
-	}
-	return(counter);
+  int counter = Straw::Get(source, slen);
+  if (!IsDisabled) {
+    SHA.Hash(source, counter);
+  }
+  return (counter);
 }
-
 
 /***********************************************************************************************
  * SHAStraw::Result -- Fetches the current SHA digest.                                         *
@@ -92,7 +88,4 @@ int SHAStraw::Get(void * source, int slen)
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int SHAStraw::Result(void * result) const
-{
-	return(SHA.Result(result));
-}
+int SHAStraw::Result(void *result) const { return (SHA.Result(result)); }

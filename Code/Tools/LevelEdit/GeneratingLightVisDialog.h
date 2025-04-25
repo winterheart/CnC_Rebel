@@ -28,68 +28,65 @@
 /////////////////////////////////////////////////////////////////////////////
 // GeneratingLightVisDialogClass dialog
 
-class GeneratingLightVisDialogClass : public CDialog
-{
-// Construction
+class GeneratingLightVisDialogClass : public CDialog {
+  // Construction
 public:
-	GeneratingLightVisDialogClass(CWnd* pParent = NULL);   // standard constructor
+  GeneratingLightVisDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GeneratingLightVisDialogClass)
-	enum { IDD = IDD_GENERATING_LIGHT_VIS };
-	CProgressCtrl	m_ProgressCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GeneratingLightVisDialogClass)
+  enum { IDD = IDD_GENERATING_LIGHT_VIS };
+  CProgressCtrl m_ProgressCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GeneratingLightVisDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GeneratingLightVisDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GeneratingLightVisDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GeneratingLightVisDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Public methods
-		/////////////////////////////////////////////////////////////////////////////////
-		void			Set_Farm_Mode (int index, int total) { m_ProcessorIndex = index; m_TotalProcessors = total; m_FarmMode = true; }
+public:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////////
+  void Set_Farm_Mode(int index, int total) {
+    m_ProcessorIndex = index;
+    m_TotalProcessors = total;
+    m_FarmMode = true;
+  }
 
-	protected:
+protected:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////////////////
+  void Update_Status(int cur_light);
 
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Protected methods
-		/////////////////////////////////////////////////////////////////////////////////
-		void			Update_Status (int cur_light);
+private:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////////
+  bool m_IsCancelled;
+  DWORD m_StartTicks;
+  int m_CurrentLight;
+  int m_FirstLight;
+  int m_LastLight;
 
-	private:
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Private member data
-		/////////////////////////////////////////////////////////////////////////////////
-		bool			m_IsCancelled;
-		DWORD			m_StartTicks;
-		int			m_CurrentLight;
-		int			m_FirstLight;
-		int			m_LastLight;
-
-		bool			m_FarmMode;
-		int			m_TotalProcessors;
-		int			m_ProcessorIndex;
-		CString		m_StatusFilename;
-		CString		m_StatusSection;
-		
+  bool m_FarmMode;
+  int m_TotalProcessors;
+  int m_ProcessorIndex;
+  CString m_StatusFilename;
+  CString m_StatusSection;
 };
 
 //{{AFX_INSERT_LOCATION}}

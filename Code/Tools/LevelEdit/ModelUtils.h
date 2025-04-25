@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -42,20 +41,16 @@
 #ifndef __MODEL_UTILS_H
 #define __MODEL_UTILS_H
 
-
 /////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 /////////////////////////////////////////////////////////////////////////
 class RenderObjClass;
-
 
 /////////////////////////////////////////////////////////////////////////
 //
 //	Prototypes
 //
 /////////////////////////////////////////////////////////////////////////
-void	Set_Model_Collision_Type (RenderObjClass *model, int collision_type);
-
+void Set_Model_Collision_Type(RenderObjClass *model, int collision_type);
 
 #endif //__MODEL_UTILS_H
-

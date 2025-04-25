@@ -42,132 +42,117 @@
 #include "matpass.h"
 #include "assetmgr.h"
 
-
 /**
 ** Resources that the physics resource manager can allocate-on-demand
 */
-static TextureClass *			_ShadowBlobTexture = NULL;		
-static MaterialPassClass *		_HighlightMaterialPass = NULL;
-static TextureClass *			_StealthTexture = NULL;		
-static TextureClass *			_GridTexture = NULL;
+static TextureClass *_ShadowBlobTexture = NULL;
+static MaterialPassClass *_HighlightMaterialPass = NULL;
+static TextureClass *_StealthTexture = NULL;
+static TextureClass *_GridTexture = NULL;
 
+void PhysResourceMgrClass::Init(void) {}
 
-
-void PhysResourceMgrClass::Init(void)
-{
+void PhysResourceMgrClass::Shutdown(void) {
+  REF_PTR_RELEASE(_ShadowBlobTexture);
+  REF_PTR_RELEASE(_HighlightMaterialPass);
+  REF_PTR_RELEASE(_StealthTexture);
 }
 
-void PhysResourceMgrClass::Shutdown(void)
-{
-	REF_PTR_RELEASE(_ShadowBlobTexture);
-	REF_PTR_RELEASE(_HighlightMaterialPass);
-	REF_PTR_RELEASE(_StealthTexture);
+bool PhysResourceMgrClass::Set_Shadow_Blob_Texture(const char *texname) {
+  if (texname == NULL)
+    return false;
+
+  TextureClass *tex = WW3DAssetManager::Get_Instance()->Get_Texture(texname);
+  if (tex == NULL)
+    return false;
+
+  REF_PTR_SET(_ShadowBlobTexture, tex);
+  tex->Release_Ref();
+
+  _ShadowBlobTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+  _ShadowBlobTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+  return true;
 }
 
-bool PhysResourceMgrClass::Set_Shadow_Blob_Texture(const char * texname)
-{
-	if (texname == NULL) return false;
-	
-	TextureClass * tex = WW3DAssetManager::Get_Instance()->Get_Texture(texname);
-	if (tex == NULL) return false;
-
-	REF_PTR_SET(_ShadowBlobTexture,tex);
-	tex->Release_Ref();
-
-	_ShadowBlobTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-	_ShadowBlobTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-	return true;
+TextureClass *PhysResourceMgrClass::Get_Shadow_Blob_Texture(void) {
+  if (_ShadowBlobTexture == NULL) {
+    _ShadowBlobTexture = WW3DAssetManager::Get_Instance()->Get_Texture("shadowblob.tga");
+    _ShadowBlobTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+    _ShadowBlobTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
+  }
+  WWASSERT(_ShadowBlobTexture != NULL);
+  _ShadowBlobTexture->Add_Ref();
+  return _ShadowBlobTexture;
 }
 
-TextureClass *	PhysResourceMgrClass::Get_Shadow_Blob_Texture(void)
-{
-	if (_ShadowBlobTexture == NULL) {
-		_ShadowBlobTexture = WW3DAssetManager::Get_Instance()->Get_Texture("shadowblob.tga");
-		_ShadowBlobTexture->Set_U_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-		_ShadowBlobTexture->Set_V_Addr_Mode(TextureClass::TEXTURE_ADDRESS_CLAMP);
-	}
-	WWASSERT(_ShadowBlobTexture != NULL);
-	_ShadowBlobTexture->Add_Ref();
-	return _ShadowBlobTexture;
+MaterialPassClass *PhysResourceMgrClass::Get_Highlight_Material_Pass(void) {
+  // If we haven't initialized the highlight material, do it now.
+  if (_HighlightMaterialPass == NULL) {
+
+    // otherwise, create and initialize it
+    _HighlightMaterialPass = NEW_REF(MaterialPassClass, ());
+
+    VertexMaterialClass *vmtl = NEW_REF(VertexMaterialClass, ());
+    vmtl->Set_Ambient(0, 0, 0);
+    vmtl->Set_Diffuse(0, 0, 0);
+    vmtl->Set_Specular(0, 0, 0);
+    vmtl->Set_Emissive(0.2f, 1.0f, 0.2f);
+    vmtl->Set_Opacity(1.0f);
+    vmtl->Set_Shininess(0.0f);
+    vmtl->Set_Lighting(true);
+
+    _HighlightMaterialPass->Set_Material(vmtl);
+
+    REF_PTR_RELEASE(vmtl);
+  }
+
+  ShaderClass shader = ShaderClass::_PresetOpaqueShader;
+  shader.Set_Texturing(ShaderClass::TEXTURING_DISABLE);
+  shader.Set_Depth_Compare(ShaderClass::PASS_ALWAYS);
+  _HighlightMaterialPass->Set_Shader(shader);
+
+  _HighlightMaterialPass->Add_Ref();
+  return _HighlightMaterialPass;
 }
 
-MaterialPassClass * PhysResourceMgrClass::Get_Highlight_Material_Pass(void)
-{
-	// If we haven't initialized the highlight material, do it now.
-	if (_HighlightMaterialPass == NULL) {
-	
-		// otherwise, create and initialize it
-		_HighlightMaterialPass = NEW_REF(MaterialPassClass,());
-
-		VertexMaterialClass * vmtl = NEW_REF(VertexMaterialClass,());
-		vmtl->Set_Ambient(0,0,0);
-		vmtl->Set_Diffuse(0,0,0);
-		vmtl->Set_Specular(0,0,0);
-		vmtl->Set_Emissive(0.2f,1.0f,0.2f);
-		vmtl->Set_Opacity(1.0f);
-		vmtl->Set_Shininess(0.0f);
-		vmtl->Set_Lighting(true);
-		
-		_HighlightMaterialPass->Set_Material(vmtl);
-
-		REF_PTR_RELEASE(vmtl);
-
-	}
-
-	ShaderClass shader = ShaderClass::_PresetOpaqueShader;
-	shader.Set_Texturing(ShaderClass::TEXTURING_DISABLE);
-	shader.Set_Depth_Compare(ShaderClass::PASS_ALWAYS);
-	_HighlightMaterialPass->Set_Shader(shader);
-
-	_HighlightMaterialPass->Add_Ref();
-	return _HighlightMaterialPass;
+TextureClass *PhysResourceMgrClass::Get_Stealth_Texture(void) {
+  TextureClass *tex = Peek_Stealth_Texture();
+  if (tex) {
+    tex->Add_Ref();
+  }
+  return tex;
 }
 
-TextureClass * PhysResourceMgrClass::Get_Stealth_Texture(void)
-{
-	TextureClass * tex = Peek_Stealth_Texture();
-	if (tex) {
-		tex->Add_Ref();
-	}
-	return tex;
+TextureClass *PhysResourceMgrClass::Peek_Stealth_Texture(void) {
+  if (_StealthTexture == NULL) {
+    _StealthTexture = WW3DAssetManager::Get_Instance()->Get_Texture("stealth_effect.tga");
+  }
+  return _StealthTexture;
 }
 
-TextureClass * PhysResourceMgrClass::Peek_Stealth_Texture(void)
-{
-	if (_StealthTexture == NULL) {
-		_StealthTexture = WW3DAssetManager::Get_Instance()->Get_Texture("stealth_effect.tga");
-	}
-	return _StealthTexture;
+VertexMaterialClass *PhysResourceMgrClass::Create_Emissive_Material(void) {
+  VertexMaterialClass *vmtl = NEW_REF(VertexMaterialClass, ());
+  vmtl->Set_Ambient(0, 0, 0);
+  vmtl->Set_Diffuse(0, 0, 0);
+  vmtl->Set_Specular(0, 0, 0);
+  vmtl->Set_Emissive(1.0f, 1.0f, 1.0f);
+  vmtl->Set_Opacity(1.0f);
+  vmtl->Set_Shininess(0.0f);
+  vmtl->Set_Lighting(true);
+  return vmtl;
 }
 
-
-VertexMaterialClass * PhysResourceMgrClass::Create_Emissive_Material(void)
-{
-	VertexMaterialClass * vmtl = NEW_REF(VertexMaterialClass,());
-	vmtl->Set_Ambient(0,0,0);
-	vmtl->Set_Diffuse(0,0,0);
-	vmtl->Set_Specular(0,0,0);
-	vmtl->Set_Emissive(1.0f,1.0f,1.0f);
-	vmtl->Set_Opacity(1.0f);
-	vmtl->Set_Shininess(0.0f);
-	vmtl->Set_Lighting(true);
-	return vmtl;
+TextureClass *PhysResourceMgrClass::Get_Grid_Texture(void) {
+  TextureClass *tex = Peek_Grid_Texture();
+  if (tex != NULL) {
+    tex->Add_Ref();
+  }
+  return tex;
 }
 
-TextureClass * PhysResourceMgrClass::Get_Grid_Texture(void)
-{
-	TextureClass * tex = Peek_Grid_Texture();
-	if (tex != NULL) {
-		tex->Add_Ref();
-	}
-	return tex;
+TextureClass *PhysResourceMgrClass::Peek_Grid_Texture(void) {
+  if (_GridTexture == NULL) {
+    _GridTexture = WW3DAssetManager::Get_Instance()->Get_Texture("grid_effect.tga");
+  }
+  return _GridTexture;
 }
-
-TextureClass * PhysResourceMgrClass::Peek_Grid_Texture(void)
-{
-	if (_GridTexture == NULL) {
-		_GridTexture = WW3DAssetManager::Get_Instance()->Get_Texture("grid_effect.tga");
-	}
-	return _GridTexture;
-}
-

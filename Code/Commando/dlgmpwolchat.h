@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolchat.h        $*
  *                                                                                             *
@@ -45,81 +46,78 @@
 #include "resource.h"
 #include "WOLChatMgr.h"
 
-namespace WWOnline
-{
+namespace WWOnline {
 class UserEvent;
 class ChannelData;
-}
+} // namespace WWOnline
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolChatMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolChatMenuClass :
-	public MenuDialogClass,
-	public Observer<WOLChatMgrEvent>,
-	public Observer<WWOnline::UserEvent>
-{
+class MPWolChatMenuClass : public MenuDialogClass,
+                           public Observer<WOLChatMgrEvent>,
+                           public Observer<WWOnline::UserEvent> {
 public:
-	static void DoDialog(const RefPtr<WWOnline::ChannelData>& channel = NULL);
+  static void DoDialog(const RefPtr<WWOnline::ChannelData> &channel = NULL);
 
-	//
-	//	Debug methods
-	//
-	void		Refresh_Dialog (void);
+  //
+  //	Debug methods
+  //
+  void Refresh_Dialog(void);
 
 protected:
-	MPWolChatMenuClass (void);
-	~MPWolChatMenuClass (void);
+  MPWolChatMenuClass(void);
+  ~MPWolChatMenuClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog(void);
-	void		On_Destroy(void);
-	void		On_Frame_Update(void);
-	void		On_Last_Menu_Ending(void);
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Destroy(void);
+  void On_Frame_Update(void);
+  void On_Last_Menu_Ending(void);
 
-	void		Refresh_Lobby_List(void);
-	void		SelectLobbyFromChannel(const RefPtr<WWOnline::ChannelData>& channel);
-	void		UpdateLobbyUserCount(ListCtrlClass* list, int listIndex);
-	void		UpdateCurrentLobbyUserCount(void);
-	void		Update_Current_Channel(void);
+  void Refresh_Lobby_List(void);
+  void SelectLobbyFromChannel(const RefPtr<WWOnline::ChannelData> &channel);
+  void UpdateLobbyUserCount(ListCtrlClass *list, int listIndex);
+  void UpdateCurrentLobbyUserCount(void);
+  void Update_Current_Channel(void);
 
-	void		Send_Message(bool is_emot);
-	void		Add_Message(const WCHAR* text);
-	void		Refresh_Message_List(void);
-	void		Update_Message_Color(void);
+  void Send_Message(bool is_emot);
+  void Add_Message(const WCHAR *text);
+  void Refresh_Message_List(void);
+  void Update_Message_Color(void);
 
-	void		Add_Users(void);
-	void		Remove_Users(void);
-	void		Toggle_Squelch(void);
-	void		Refresh_User_List(void);
-	void		Update_User_Status(ListCtrlClass* list, int index, const RefPtr<WWOnline::UserData>& user);
+  void Add_Users(void);
+  void Remove_Users(void);
+  void Toggle_Squelch(void);
+  void Refresh_User_List(void);
+  void Update_User_Status(ListCtrlClass *list, int index, const RefPtr<WWOnline::UserData> &user);
 
-	void		Set_Focus_To_Chat_Edit_Ctrl(void);
+  void Set_Focus_To_Chat_Edit_Ctrl(void);
 
-	void		On_Command(int ctrl_id, int mesage_id, DWORD param);
-	void		On_ListCtrl_Sel_Change(ListCtrlClass *list_ctrl, int ctrl_id, int old_index, int new_index);
-	void		On_ListCtrl_Mouse_Over(ListCtrlClass *list_ctrl, int ctrl_id, int index);
-	void		On_EditCtrl_Enter_Pressed (EditCtrlClass *edit_ctrl, int ctrl_id);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_ListCtrl_Sel_Change(ListCtrlClass *list_ctrl, int ctrl_id, int old_index, int new_index);
+  void On_ListCtrl_Mouse_Over(ListCtrlClass *list_ctrl, int ctrl_id, int index);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit_ctrl, int ctrl_id);
 
-	void HandleNotification(WOLChatMgrEvent&);
-	void HandleNotification(WWOnline::UserEvent&);
+  void HandleNotification(WOLChatMgrEvent &);
+  void HandleNotification(WWOnline::UserEvent &);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	static MPWolChatMenuClass *_TheInstance;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  static MPWolChatMenuClass *_TheInstance;
 
-	WOLChatMgr* mChatMgr;
+  WOLChatMgr *mChatMgr;
 
-	bool mLobbyListChanged;
-	bool mLobbyChanged;
-	bool mUserInListChanged;
-	bool mUserOutListChanged;
-	bool mMessageListChanged;
+  bool mLobbyListChanged;
+  bool mLobbyChanged;
+  bool mUserInListChanged;
+  bool mUserOutListChanged;
+  bool mMessageListChanged;
 };
 
 #endif //__DLG_MP_WOL_CHAT_H

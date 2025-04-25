@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/DlgDownload.cpp $
-*
-* DESCRIPTION
-*     File download dialog.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Steve_t $
-*
-* VERSION INFO
-*     $Revision: 11 $
-*     $Modtime: 1/12/02 2:53p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/DlgDownload.cpp $
+ *
+ * DESCRIPTION
+ *     File download dialog.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Steve_t $
+ *
+ * VERSION INFO
+ *     $Revision: 11 $
+ *     $Modtime: 1/12/02 2:53p $
+ *
+ ******************************************************************************/
 
 #include "DlgDownload.h"
 #include "DlgMessageBox.h"
@@ -46,489 +46,432 @@
 #include "consolemode.h"
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include "systimer.h"
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 using namespace WWOnline;
 
-static void PrintableSize(unsigned long size, WideStringClass& printable);
-static void PrintableTime(unsigned long seconds, WideStringClass& printable);
+static void PrintableSize(unsigned long size, WideStringClass &printable);
+static void PrintableTime(unsigned long seconds, WideStringClass &printable);
 
 bool DlgDownload::mQuietMode = false;
 
+/******************************************************************************
+ *
+ * NAME
+ *     DlgDownload::DoDialog
+ *
+ * DESCRIPTION
+ *     Start download dialog
+ *
+ * INPUTS
+ *     Title - Dialog title
+ *     Files - List of files to download
+ *
+ * RESULT
+ *     Success - True if dialog successfully started.
+ *
+ ******************************************************************************/
+
+bool DlgDownload::DoDialog(const WCHAR *title, const DownloadList &files, bool quiet) {
+  if (!files.empty()) {
+    mQuietMode = quiet;
+    DlgDownload *popup = new DlgDownload;
+
+    if (popup) {
+      if (popup->FinalizeCreate(files)) {
+        popup->Start_Dialog();
+        popup->Set_Title(title);
+      }
+
+      popup->Release_Ref();
+    }
+
+    return (popup != NULL);
+  }
+
+  return false;
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::DoDialog
-*
-* DESCRIPTION
-*     Start download dialog
-*
-* INPUTS
-*     Title - Dialog title
-*     Files - List of files to download
-*
-* RESULT
-*     Success - True if dialog successfully started.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::DlgDownload
+ *
+ * DESCRIPTION
+ *     Constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-bool DlgDownload::DoDialog(const WCHAR* title, const DownloadList& files, bool quiet)
-	{
-	if (!files.empty())
-		{
-		mQuietMode = quiet;
-		DlgDownload* popup = new DlgDownload;
-
-		if (popup)
-			{
-			if (popup->FinalizeCreate(files))
-				{
-				popup->Start_Dialog();
-				popup->Set_Title(title);
-				}
-
-			popup->Release_Ref();
-			}
-
-		return (popup != NULL);
-		}
-
-	return false;
-	}
-
+DlgDownload::DlgDownload() : PopupDialogClass(IDD_WOL_DOWNLOAD), mDownloading(false) {
+  WWDEBUG_SAY(("DlgDownload: Instantiated\n"));
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::DlgDownload
-*
-* DESCRIPTION
-*     Constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::~DlgDownload
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-DlgDownload::DlgDownload() :
-		PopupDialogClass(IDD_WOL_DOWNLOAD),
-		mDownloading(false)
-	{
-	WWDEBUG_SAY(("DlgDownload: Instantiated\n"));
-	}
-
+DlgDownload::~DlgDownload() { WWDEBUG_SAY(("DlgDownload: Destructing\n")); }
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::~DlgDownload
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::FinalizeCreate
+ *
+ * DESCRIPTION
+ *     Finalize the dialog creation.
+ *
+ * INPUTS
+ *     Files - List of files to download.
+ *
+ * RESULT
+ *     True if successful.
+ *
+ ******************************************************************************/
 
-DlgDownload::~DlgDownload()
-	{
-	WWDEBUG_SAY(("DlgDownload: Destructing\n"));
-	}
-
-
-/******************************************************************************
-*
-* NAME
-*     DlgDownload::FinalizeCreate
-*
-* DESCRIPTION
-*     Finalize the dialog creation.
-*
-* INPUTS
-*     Files - List of files to download.
-*
-* RESULT
-*     True if successful.
-*
-******************************************************************************/
-
-bool DlgDownload::FinalizeCreate(const DownloadList& files)
-	{
-	mWait = DownloadWait::Create(files);
-	return mWait.IsValid();
-	}
-
+bool DlgDownload::FinalizeCreate(const DownloadList &files) {
+  mWait = DownloadWait::Create(files);
+  return mWait.IsValid();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::On_Init_Dialog
-*
-* DESCRIPTION
-*     One time dialog initialization.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::On_Init_Dialog
+ *
+ * DESCRIPTION
+ *     One time dialog initialization.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgDownload::On_Init_Dialog(void)
-	{
-	// Set estimated time and read / total
-	WideStringClass text(0, true);
-	text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_TIME), 0, 0, 0);
-	Set_Dlg_Item_Text(IDC_PROGRESSTEXT, text);
+void DlgDownload::On_Init_Dialog(void) {
+  // Set estimated time and read / total
+  WideStringClass text(0, true);
+  text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_TIME), 0, 0, 0);
+  Set_Dlg_Item_Text(IDC_PROGRESSTEXT, text);
 
-	// Update transfer rate.
-	text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE), 0);
-	Set_Dlg_Item_Text(IDC_TRANSFERTEXT, text);
+  // Update transfer rate.
+  text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE), 0);
+  Set_Dlg_Item_Text(IDC_TRANSFERTEXT, text);
 
-	// Start the wait condition
-	mWait->SetCallback(DlgDownload::HandleCallback, (unsigned long)this);
-	mWait->WaitBeginning();
+  // Start the wait condition
+  mWait->SetCallback(DlgDownload::HandleCallback, (unsigned long)this);
+  mWait->WaitBeginning();
 
-	PopupDialogClass::On_Init_Dialog();
-	}
-
+  PopupDialogClass::On_Init_Dialog();
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::On_Command
-*
-* DESCRIPTION
-*     Process command message
-*
-* INPUTS
-*     Ctrl    - ID of control
-*     Message -
-*     Param   -
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::On_Command
+ *
+ * DESCRIPTION
+ *     Process command message
+ *
+ * INPUTS
+ *     Ctrl    - ID of control
+ *     Message -
+ *     Param   -
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgDownload::On_Command(int ctrl, int message, DWORD param)
-	{
-	if (ctrl == IDCANCEL)
-		{
-		WWDEBUG_SAY(("DlgDownload: User Aborted\n"));
-		mWait->EndWait(WaitCondition::UserCancel, TRANSLATE(IDS_WOL_CANCELED));
-		}
+void DlgDownload::On_Command(int ctrl, int message, DWORD param) {
+  if (ctrl == IDCANCEL) {
+    WWDEBUG_SAY(("DlgDownload: User Aborted\n"));
+    mWait->EndWait(WaitCondition::UserCancel, TRANSLATE(IDS_WOL_CANCELED));
+  }
 
-	PopupDialogClass::On_Command(ctrl, message, param);
-	}
-
+  PopupDialogClass::On_Command(ctrl, message, param);
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::On_Periodic
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::On_Periodic
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgDownload::On_Periodic(void)
-	{
-	PopupDialogClass::On_Periodic();
+void DlgDownload::On_Periodic(void) {
+  PopupDialogClass::On_Periodic();
 
-	// Check the status of the wait condition
-	WaitCondition::WaitResult waitStatus = mWait->GetResult();
+  // Check the status of the wait condition
+  WaitCondition::WaitResult waitStatus = mWait->GetResult();
 
-	// If we are no longer waiting then process the result.
-	if (waitStatus != WaitCondition::Waiting)
-		{
-		if (waitStatus == WaitCondition::ConditionMet)
-			{
-			if (mQuietMode)
-				{
-				ConsoleBox.Print("Restarting....\n");
-				Stop_Main_Loop(RESTART_EXITCODE);
-				}
-			else
-				{
-				DlgRestart::DoDialog();
-				}
-			}
-		else
-			{
-			// If the download was aborted or errored then show a message dialog
-			// describing the failure.
-			DlgMsgBox::DoDialog(TRANSLATE(IDS_WOL_DOWNLOADERROR), mWait->GetResultText());
-			}
+  // If we are no longer waiting then process the result.
+  if (waitStatus != WaitCondition::Waiting) {
+    if (waitStatus == WaitCondition::ConditionMet) {
+      if (mQuietMode) {
+        ConsoleBox.Print("Restarting....\n");
+        Stop_Main_Loop(RESTART_EXITCODE);
+      } else {
+        DlgRestart::DoDialog();
+      }
+    } else {
+      // If the download was aborted or errored then show a message dialog
+      // describing the failure.
+      DlgMsgBox::DoDialog(TRANSLATE(IDS_WOL_DOWNLOADERROR), mWait->GetResultText());
+    }
 
-		End_Dialog();
-		}
-	}
-
+    End_Dialog();
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::UpdateProgress
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::UpdateProgress
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgDownload::UpdateProgress(DownloadEvent& event)
-	{
-	const RefPtr<Download>& download = event.GetDownload();
+void DlgDownload::UpdateProgress(DownloadEvent &event) {
+  const RefPtr<Download> &download = event.GetDownload();
 
-	switch (event.GetEvent())
-		{
-		case DownloadEvent::DOWNLOAD_STATUS:
-			Set_Dlg_Item_Text(IDC_STATUSTEXT, download->GetStatusText());
-			break;
+  switch (event.GetEvent()) {
+  case DownloadEvent::DOWNLOAD_STATUS:
+    Set_Dlg_Item_Text(IDC_STATUSTEXT, download->GetStatusText());
+    break;
 
-		case DownloadEvent::DOWNLOAD_PROGRESS:
-			{
-			int read = 0;
-			int size = 0;
-			int elapsed = 0;
-			int remaining = 0;
-			download->GetProgress(read, size, elapsed, remaining);
+  case DownloadEvent::DOWNLOAD_PROGRESS: {
+    int read = 0;
+    int size = 0;
+    int elapsed = 0;
+    int remaining = 0;
+    download->GetProgress(read, size, elapsed, remaining);
 
-			if (ConsoleBox.Is_Exclusive())
-				{
+    if (ConsoleBox.Is_Exclusive()) {
 
-				if (!mDownloading)
-					{
-					mStartTime = TIMEGETTIME();
-					mDownloading = true;
-					}
+      if (!mDownloading) {
+        mStartTime = TIMEGETTIME();
+        mDownloading = true;
+      }
 
-				// Calculate the transfer rate
-				unsigned long transferRate = read;
-				unsigned long elapsedTime = ((TIMEGETTIME() - mStartTime) / 1000);
-				if (elapsedTime > 0)
-					{
-					transferRate = (read / elapsedTime);
-					}
+      // Calculate the transfer rate
+      unsigned long transferRate = read;
+      unsigned long elapsedTime = ((TIMEGETTIME() - mStartTime) / 1000);
+      if (elapsedTime > 0) {
+        transferRate = (read / elapsedTime);
+      }
 
-				ConsoleBox.Print("Got %d Kb of %d at %d Kb per second       \r", read/1024, size/1024, transferRate / 1024);
-				}
-			else
-				{
-				// Update progress bar
-				ProgressCtrlClass* progress = (ProgressCtrlClass*)Get_Dlg_Item(IDC_PROGRESS);
+      ConsoleBox.Print("Got %d Kb of %d at %d Kb per second       \r", read / 1024, size / 1024, transferRate / 1024);
+    } else {
+      // Update progress bar
+      ProgressCtrlClass *progress = (ProgressCtrlClass *)Get_Dlg_Item(IDC_PROGRESS);
 
-				if (progress)
-					{
-					// If we have just begun downloading then set the progress bar range
-					// for the size of the new file.
-					if (!mDownloading)
-						{
-						progress->Set_Range(0, size);
-						mStartTime = TIMEGETTIME();
-						mDownloading = true;
-						}
+      if (progress) {
+        // If we have just begun downloading then set the progress bar range
+        // for the size of the new file.
+        if (!mDownloading) {
+          progress->Set_Range(0, size);
+          mStartTime = TIMEGETTIME();
+          mDownloading = true;
+        }
 
-					progress->Set_Position(read);
-					}
+        progress->Set_Position(read);
+      }
 
-				//-----------------------------------------------------------------------
-				// Update download statistics
-				//-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      // Update download statistics
+      //-----------------------------------------------------------------------
 
-				// Calculate the transfer rate
-				unsigned long transferRate = read;
-				unsigned long elapsedTime = ((TIMEGETTIME() - mStartTime) / 1000);
+      // Calculate the transfer rate
+      unsigned long transferRate = read;
+      unsigned long elapsedTime = ((TIMEGETTIME() - mStartTime) / 1000);
 
-				if (elapsedTime > 0)
-					{
-					transferRate = (read / elapsedTime);
-					}
+      if (elapsedTime > 0) {
+        transferRate = (read / elapsedTime);
+      }
 
-				// Update transfer rate.
-				WideStringClass sizetext(64, true);
-				PrintableSize(transferRate, sizetext);
+      // Update transfer rate.
+      WideStringClass sizetext(64, true);
+      PrintableSize(transferRate, sizetext);
 
-				WideStringClass text(0, true);
-				text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_PER_SEC), (const WCHAR*)sizetext);
-				Set_Dlg_Item_Text(IDC_TRANSFERTEXT, text);
+      WideStringClass text(0, true);
+      text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_PER_SEC), (const WCHAR *)sizetext);
+      Set_Dlg_Item_Text(IDC_TRANSFERTEXT, text);
 
-				// Calculate estimated time based on the current transfer rate.
-				unsigned long estimatedTime = 0;
+      // Calculate estimated time based on the current transfer rate.
+      unsigned long estimatedTime = 0;
 
-				if (transferRate > 0)
-					{
-					estimatedTime = ((size - read) / transferRate);
-					}
+      if (transferRate > 0) {
+        estimatedTime = ((size - read) / transferRate);
+      }
 
-				// Update estimated time and read / total
-				WideStringClass timetext(64,true);
-				PrintableTime(estimatedTime, timetext);
+      // Update estimated time and read / total
+      WideStringClass timetext(64, true);
+      PrintableTime(estimatedTime, timetext);
 
-				WideStringClass readtext(64, true);
-				PrintableSize(read, readtext);
+      WideStringClass readtext(64, true);
+      PrintableSize(read, readtext);
 
-				PrintableSize(size, sizetext);
+      PrintableSize(size, sizetext);
 
-				text.Format(TRANSLATE(IDS_MENU_TRANSFER_TIME_LEFT),
-					(const WCHAR*)timetext, (const WCHAR*)readtext, (const WCHAR*)sizetext);
+      text.Format(TRANSLATE(IDS_MENU_TRANSFER_TIME_LEFT), (const WCHAR *)timetext, (const WCHAR *)readtext,
+                  (const WCHAR *)sizetext);
 
-				Set_Dlg_Item_Text(IDC_PROGRESSTEXT, text);
-				}
-			}
-			break;
+      Set_Dlg_Item_Text(IDC_PROGRESSTEXT, text);
+    }
+  } break;
 
-		case DownloadEvent::DOWNLOAD_BEGIN:
-			if (ConsoleBox.Is_Exclusive())
-				{
-				ConsoleBox.Print("\n");
-				}
-			break;
+  case DownloadEvent::DOWNLOAD_BEGIN:
+    if (ConsoleBox.Is_Exclusive()) {
+      ConsoleBox.Print("\n");
+    }
+    break;
 
-		case DownloadEvent::DOWNLOAD_END:
-			if (ConsoleBox.Is_Exclusive())
-				{
-				ConsoleBox.Print("\nDownload complete\n");
-				}
-			WWDEBUG_SAY(("DlgDownload: Successful '%s' Elapsed time: %ld ms\n",
-				download->GetFilename(), (TIMEGETTIME() - mStartTime)));
+  case DownloadEvent::DOWNLOAD_END:
+    if (ConsoleBox.Is_Exclusive()) {
+      ConsoleBox.Print("\nDownload complete\n");
+    }
+    WWDEBUG_SAY(
+        ("DlgDownload: Successful '%s' Elapsed time: %ld ms\n", download->GetFilename(), (TIMEGETTIME() - mStartTime)));
 
-			mDownloading = false;
-			break;
+    mDownloading = false;
+    break;
 
-		case DownloadEvent::DOWNLOAD_STOPPED:
-			WWDEBUG_SAY(("DlgDownload: Stopped '%s'\n", download->GetFilename()));
-			mDownloading = false;
-			break;
+  case DownloadEvent::DOWNLOAD_STOPPED:
+    WWDEBUG_SAY(("DlgDownload: Stopped '%s'\n", download->GetFilename()));
+    mDownloading = false;
+    break;
 
-		case DownloadEvent::DOWNLOAD_ERROR:
-			WWDEBUG_SAY(("DlgDownload: Error '%s'\n", download->GetFilename()));
-			mDownloading = false;
-			break;
+  case DownloadEvent::DOWNLOAD_ERROR:
+    WWDEBUG_SAY(("DlgDownload: Error '%s'\n", download->GetFilename()));
+    mDownloading = false;
+    break;
 
-		default:
-			break;
-		}
-	}
-
+  default:
+    break;
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     DlgDownload::HandleCallback
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     DlgDownload::HandleCallback
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void DlgDownload::HandleCallback(DownloadEvent& event, unsigned long userdata)
-	{
-	DlgDownload* dialog = (DlgDownload*)userdata;
+void DlgDownload::HandleCallback(DownloadEvent &event, unsigned long userdata) {
+  DlgDownload *dialog = (DlgDownload *)userdata;
 
-	if (dialog)
-		{
-		dialog->UpdateProgress(event);
-		}
-	}
-
+  if (dialog) {
+    dialog->UpdateProgress(event);
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     PrintableSize
-*
-* DESCRIPTION
-*     Get filesize in a printable format.
-*
-* INPUTS
-*     Size -
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PrintableSize
+ *
+ * DESCRIPTION
+ *     Get filesize in a printable format.
+ *
+ * INPUTS
+ *     Size -
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void PrintableSize(unsigned long size, WideStringClass& printable)
-	{
-	float value = ((float)size / (float)(1024 * 1024));
+void PrintableSize(unsigned long size, WideStringClass &printable) {
+  float value = ((float)size / (float)(1024 * 1024));
 
-	if (value >= 1.0)
-		{
-		printable.Format(TRANSLATE(IDS_MENU_TRANSFER_MB_FORMAT), value);
-		return;
-		}
+  if (value >= 1.0) {
+    printable.Format(TRANSLATE(IDS_MENU_TRANSFER_MB_FORMAT), value);
+    return;
+  }
 
-	value = ((float)size / 1024.0);
+  value = ((float)size / 1024.0);
 
-	if (value >= 1.0)
-		{
-		printable.Format(TRANSLATE(IDS_MENU_TRANSFER_KB_FORMAT), value);
-		return;
-		}
+  if (value >= 1.0) {
+    printable.Format(TRANSLATE(IDS_MENU_TRANSFER_KB_FORMAT), value);
+    return;
+  }
 
-	printable.Format(TRANSLATE(IDS_MENU_TRANSFER_BYTE_FORMAT), size);
-	}
-
+  printable.Format(TRANSLATE(IDS_MENU_TRANSFER_BYTE_FORMAT), size);
+}
 
 /******************************************************************************
-*
-* NAME
-*     PrintableTime
-*
-* DESCRIPTION
-*     Get time in a printable format.
-*
-* INPUTS
-*     Size -
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PrintableTime
+ *
+ * DESCRIPTION
+ *     Get time in a printable format.
+ *
+ * INPUTS
+ *     Size -
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void PrintableTime(unsigned long time, WideStringClass& printable)
-	{
-	unsigned long minutes = (time / 60);
-	unsigned long seconds = (time % 60);
+void PrintableTime(unsigned long time, WideStringClass &printable) {
+  unsigned long minutes = (time / 60);
+  unsigned long seconds = (time % 60);
 
-	if (minutes > 0)
-		{
-		printable.Format(TRANSLATE(IDS_MENU_TRANSFER_MIN_SEC_FORMAT), minutes, seconds);
-		}
-	else
-		{
-		seconds = max<unsigned long>(seconds, 1);
-		printable.Format(TRANSLATE(IDS_MENU_TRANSFER_SEC_FORMAT), seconds);
-		}
-	}
+  if (minutes > 0) {
+    printable.Format(TRANSLATE(IDS_MENU_TRANSFER_MIN_SEC_FORMAT), minutes, seconds);
+  } else {
+    seconds = max<unsigned long>(seconds, 1);
+    printable.Format(TRANSLATE(IDS_MENU_TRANSFER_SEC_FORMAT), seconds);
+  }
+}

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/orator.cpp          $*
  *                                                                                             *
@@ -34,260 +35,215 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "orator.h"
 #include "chunkio.h"
 #include "activeconversation.h"
 #include "physicalgameobj.h"
 #include "oratortypes.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Constants
 ////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_VARIABLES			= 0x11060315,
-	CHUNKID_GAMEOBJ
-	
+enum {
+  CHUNKID_VARIABLES = 0x11060315,
+  CHUNKID_GAMEOBJ
+
 };
 
-enum
-{
-	VARID_ID						= 1,	
-	VARID_OLD_PTR,
-	VARID_CONVERSATION,
-	VARID_POSITION,
-	VARID_HASARRIVED,
-	VARID_FLAGS,
-	XXX_VARID_PLAYER_TYPE,
-	VARID_ORATOR_TYPE,
-	VARID_IS_INVISIBLE,
-	VARID_LOOK_AT_OBJID
+enum {
+  VARID_ID = 1,
+  VARID_OLD_PTR,
+  VARID_CONVERSATION,
+  VARID_POSITION,
+  VARID_HASARRIVED,
+  VARID_FLAGS,
+  XXX_VARID_PLAYER_TYPE,
+  VARID_ORATOR_TYPE,
+  VARID_IS_INVISIBLE,
+  VARID_LOOK_AT_OBJID
 };
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	OratorClass
 //
 //////////////////////////////////////////////////////////////////////////////
-OratorClass::OratorClass (void) :	
-	Conversation (NULL),
-	GameObj (NULL),
-	Position (0, 0, 0),
-	HasArrived (false),
-	Flags (0),
-	ID (-1),
-	OratorType (0),
-	IsInvisible (false),
-	LookAtObjID (0)
-{
-	return ;
+OratorClass::OratorClass(void)
+    : Conversation(NULL), GameObj(NULL), Position(0, 0, 0), HasArrived(false), Flags(0), ID(-1), OratorType(0),
+      IsInvisible(false), LookAtObjID(0) {
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	~OratorClass
 //
 //////////////////////////////////////////////////////////////////////////////
-OratorClass::~OratorClass (void)
-{
-	return ;
-}
-
+OratorClass::~OratorClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Initialize
 //
 //////////////////////////////////////////////////////////////////////////////
-void
-OratorClass::Initialize (PhysicalGameObj *game_obj)
-{
-	GameObj = game_obj;
-	return ;
+void OratorClass::Initialize(PhysicalGameObj *game_obj) {
+  GameObj = game_obj;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Set_Flags
 //
 //////////////////////////////////////////////////////////////////////////////
-void
-OratorClass::Set_Flags (int flags)
-{
-	Flags = flags;
+void OratorClass::Set_Flags(int flags) {
+  Flags = flags;
 
-	if (Flags & FLAG_DONT_MOVE) {
-		HasArrived = true;
-	}
+  if (Flags & FLAG_DONT_MOVE) {
+    HasArrived = true;
+  }
 
-	return ;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Set_Flag
 //
 //////////////////////////////////////////////////////////////////////////////
-void
-OratorClass::Set_Flag (int flag, bool onoff)
-{
-	Flags &= ~flag;
-	if (onoff) {
-		Flags |= flag;
-	}
+void OratorClass::Set_Flag(int flag, bool onoff) {
+  Flags &= ~flag;
+  if (onoff) {
+    Flags |= flag;
+  }
 
-	if (Flags & FLAG_DONT_MOVE) {
-		HasArrived = true;
-	}
+  if (Flags & FLAG_DONT_MOVE) {
+    HasArrived = true;
+  }
 
-	return ;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Flag
 //
 //////////////////////////////////////////////////////////////////////////////
-bool
-OratorClass::Get_Flag (int flag)
-{
-	return bool((Flags & flag) == flag);
-}
-
+bool OratorClass::Get_Flag(int flag) { return bool((Flags & flag) == flag); }
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Game_Obj
 //
 //////////////////////////////////////////////////////////////////////////////
-PhysicalGameObj *
-OratorClass::Get_Game_Obj (void) const
-{
-	PhysicalGameObj *game_obj = NULL;
+PhysicalGameObj *OratorClass::Get_Game_Obj(void) const {
+  PhysicalGameObj *game_obj = NULL;
 
-	//
-	//	Do some RTTI to see if we can return the soldier pointer
-	//
-	if (GameObj != NULL) {
-		game_obj = GameObj.Get_Ptr ()->As_PhysicalGameObj ();
-	}
+  //
+  //	Do some RTTI to see if we can return the soldier pointer
+  //
+  if (GameObj != NULL) {
+    game_obj = GameObj.Get_Ptr()->As_PhysicalGameObj();
+  }
 
-	return game_obj;
+  return game_obj;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 //////////////////////////////////////////////////////////////////////////////
-bool
-OratorClass::Save (ChunkSaveClass &csave)
-{
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
+bool OratorClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
 
-		WRITE_MICRO_CHUNK (csave, VARID_ID,					ID);
-		WRITE_MICRO_CHUNK (csave, VARID_CONVERSATION,	Conversation);
-		WRITE_MICRO_CHUNK (csave, VARID_POSITION,			Position);
-		WRITE_MICRO_CHUNK (csave, VARID_HASARRIVED,		HasArrived);
-		WRITE_MICRO_CHUNK (csave, VARID_FLAGS,				Flags);
-		WRITE_MICRO_CHUNK (csave, VARID_ORATOR_TYPE,		OratorType);
-		WRITE_MICRO_CHUNK (csave, VARID_IS_INVISIBLE,	IsInvisible);
-		WRITE_MICRO_CHUNK (csave, VARID_LOOK_AT_OBJID,	LookAtObjID);		
-		
-		//
-		//	Save our current pointer so we can remap it on load
-		//
-		OratorClass *old_ptr = this;
-		WRITE_MICRO_CHUNK (csave, VARID_OLD_PTR, old_ptr);
+  WRITE_MICRO_CHUNK(csave, VARID_ID, ID);
+  WRITE_MICRO_CHUNK(csave, VARID_CONVERSATION, Conversation);
+  WRITE_MICRO_CHUNK(csave, VARID_POSITION, Position);
+  WRITE_MICRO_CHUNK(csave, VARID_HASARRIVED, HasArrived);
+  WRITE_MICRO_CHUNK(csave, VARID_FLAGS, Flags);
+  WRITE_MICRO_CHUNK(csave, VARID_ORATOR_TYPE, OratorType);
+  WRITE_MICRO_CHUNK(csave, VARID_IS_INVISIBLE, IsInvisible);
+  WRITE_MICRO_CHUNK(csave, VARID_LOOK_AT_OBJID, LookAtObjID);
 
-	csave.End_Chunk ();
+  //
+  //	Save our current pointer so we can remap it on load
+  //
+  OratorClass *old_ptr = this;
+  WRITE_MICRO_CHUNK(csave, VARID_OLD_PTR, old_ptr);
 
-	csave.Begin_Chunk (CHUNKID_GAMEOBJ);
-		GameObj.Save (csave);
-	csave.End_Chunk ();
+  csave.End_Chunk();
 
-	return true;
+  csave.Begin_Chunk(CHUNKID_GAMEOBJ);
+  GameObj.Save(csave);
+  csave.End_Chunk();
+
+  return true;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 //////////////////////////////////////////////////////////////////////////////
-bool
-OratorClass::Load (ChunkLoadClass &cload)
-{
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {
+bool OratorClass::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_GAMEOBJ:
-				GameObj.Load (cload);
-				break;
+    case CHUNKID_GAMEOBJ:
+      GameObj.Load(cload);
+      break;
 
-			case CHUNKID_VARIABLES:
-				Load_Variables (cload);
-				break;
-		}
+    case CHUNKID_VARIABLES:
+      Load_Variables(cload);
+      break;
+    }
 
-		cload.Close_Chunk ();
-	}
+    cload.Close_Chunk();
+  }
 
-	return true;
+  return true;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 ///////////////////////////////////////////////////////////////////////
-void
-OratorClass::Load_Variables (ChunkLoadClass &cload)
-{
-	OratorClass *old_ptr = NULL;
+void OratorClass::Load_Variables(ChunkLoadClass &cload) {
+  OratorClass *old_ptr = NULL;
 
-	//
-	//	Loop through all the microchunks that define the variables
-	//
-	while (cload.Open_Micro_Chunk ()) {
-		switch (cload.Cur_Micro_Chunk_ID ()) {
+  //
+  //	Loop through all the microchunks that define the variables
+  //
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
 
-			READ_MICRO_CHUNK (cload, VARID_ID,					ID);
-			READ_MICRO_CHUNK (cload, VARID_CONVERSATION,		Conversation);
-			READ_MICRO_CHUNK (cload, VARID_POSITION,			Position);
-			READ_MICRO_CHUNK (cload, VARID_HASARRIVED,		HasArrived);
-			READ_MICRO_CHUNK (cload, VARID_FLAGS,				Flags);
-			READ_MICRO_CHUNK (cload, VARID_OLD_PTR,			old_ptr);
-			READ_MICRO_CHUNK (cload, VARID_ORATOR_TYPE,		OratorType);
-			READ_MICRO_CHUNK (cload, VARID_IS_INVISIBLE,		IsInvisible);
-			READ_MICRO_CHUNK (cload, VARID_LOOK_AT_OBJID,	LookAtObjID);
-		}
+      READ_MICRO_CHUNK(cload, VARID_ID, ID);
+      READ_MICRO_CHUNK(cload, VARID_CONVERSATION, Conversation);
+      READ_MICRO_CHUNK(cload, VARID_POSITION, Position);
+      READ_MICRO_CHUNK(cload, VARID_HASARRIVED, HasArrived);
+      READ_MICRO_CHUNK(cload, VARID_FLAGS, Flags);
+      READ_MICRO_CHUNK(cload, VARID_OLD_PTR, old_ptr);
+      READ_MICRO_CHUNK(cload, VARID_ORATOR_TYPE, OratorType);
+      READ_MICRO_CHUNK(cload, VARID_IS_INVISIBLE, IsInvisible);
+      READ_MICRO_CHUNK(cload, VARID_LOOK_AT_OBJID, LookAtObjID);
+    }
 
-		cload.Close_Micro_Chunk ();
-	}
+    cload.Close_Micro_Chunk();
+  }
 
-	//
-	//	Fixup the pointer
-	//
-	if (Conversation != NULL) {
-		REQUEST_REF_COUNTED_POINTER_REMAP ((RefCountClass **)&Conversation);
+  //
+  //	Fixup the pointer
+  //
+  if (Conversation != NULL) {
+    REQUEST_REF_COUNTED_POINTER_REMAP((RefCountClass **)&Conversation);
+  }
 
-	}
-
-	//
-	//	Register our old pointer so other objects can safely remap to it
-	//
-	WWASSERT (old_ptr != NULL);
-	SaveLoadSystemClass::Register_Pointer (old_ptr, this);
-	return ;
+  //
+  //	Register our old pointer so other objects can safely remap to it
+  //
+  WWASSERT(old_ptr != NULL);
+  SaveLoadSystemClass::Register_Pointer(old_ptr, this);
+  return;
 }
-

@@ -27,65 +27,59 @@
 #include "stringpickerdialog.h"
 #include "conversationremark.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // EditConversationRemarkDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class EditConversationRemarkDialogClass : public CDialog
-{
-// Construction
+class EditConversationRemarkDialogClass : public CDialog {
+  // Construction
 public:
-	EditConversationRemarkDialogClass(CWnd* pParent = NULL);   // standard constructor
+  EditConversationRemarkDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(EditConversationRemarkDialogClass)
-	enum { IDD = IDD_EDIT_CONVERSATION_REMARK };
-	CSpinButtonCtrl	m_OratorIDSpin;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(EditConversationRemarkDialogClass)
+  enum { IDD = IDD_EDIT_CONVERSATION_REMARK };
+  CSpinButtonCtrl m_OratorIDSpin;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(EditConversationRemarkDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(EditConversationRemarkDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(EditConversationRemarkDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(EditConversationRemarkDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  //////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////////////
+  void Set_Remark(const ConversationRemarkClass &remark) { Remark = remark; }
+  const ConversationRemarkClass &Get_Remark(void) const { return Remark; }
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////////////
-	void										Set_Remark (const ConversationRemarkClass &remark)	{ Remark = remark; }
-	const ConversationRemarkClass &	Get_Remark (void) const										{ return Remark; }
-
-	void			Set_Orator_Bitmask (int mask = 0x00000001)	{ m_OratorBitmask = mask; }
+  void Set_Orator_Bitmask(int mask = 0x00000001) { m_OratorBitmask = mask; }
 
 protected:
+  //////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////////////
+  int m_OratorBitmask;
+  ConversationRemarkClass Remark;
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////////////
-	int							m_OratorBitmask;
-	ConversationRemarkClass	Remark;
-
-	StringPickerDialogClass StringPicker;
+  StringPickerDialogClass StringPicker;
 };
 
 //{{AFX_INSERT_LOCATION}}

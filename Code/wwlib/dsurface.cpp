@@ -32,16 +32,16 @@
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
- *   DSurface::Blit_From -- Blit from one surface to this one.                                 * 
+ *   DSurface::Blit_From -- Blit from one surface to this one.                                 *
  *   DSurface::Blit_From -- Blit graphic memory from one rectangle to another.                 *
- *   DSurface::Build_Hicolor_Pixel -- Construct a hicolor pixel according to the surface pixel * 
- *   DSurface::Build_Remap_Table -- Build a highcolor remap table.                             * 
+ *   DSurface::Build_Hicolor_Pixel -- Construct a hicolor pixel according to the surface pixel *
+ *   DSurface::Build_Remap_Table -- Build a highcolor remap table.                             *
  *   DSurface::Bytes_Per_Pixel -- Fetches the bytes per pixel of the surface.                  *
  *   DSurface::Create_Primary -- Creates a primary (visible) surface.                          *
  *   DSurface::DSurface -- Create a surface attached to specified DDraw Surface Object.        *
  *   DSurface::DSurface -- Default constructor for surface object.                             *
  *   DSurface::DSurface -- Off screen direct draw surface constructor.                         *
- *   DSurface::Fill_Rect -- Fills a rectangle with clipping control.                           * 
+ *   DSurface::Fill_Rect -- Fills a rectangle with clipping control.                           *
  *   DSurface::Fill_Rect -- This routine will fill the specified rectangle.                    *
  *   DSurface::Lock -- Fetches a working pointer into surface memory.                          *
  *   DSurface::Restore_Check -- Checks for and restores surface memory if necessary.           *
@@ -50,12 +50,12 @@
  *   DSurface::~DSurface -- Destructor for a direct draw surface object.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"dsurface.h"
-#include	<assert.h>
+#include "always.h"
+#include "dsurface.h"
+#include <assert.h>
 
-extern	LPDIRECTDRAW	DirectDrawObject;	//pointer to direct draw object
-extern	LPDIRECTDRAWSURFACE	PaletteSurface;
+extern LPDIRECTDRAW DirectDrawObject; // pointer to direct draw object
+extern LPDIRECTDRAWSURFACE PaletteSurface;
 
 /*
 **	Clipper object (for primary surface).
@@ -74,7 +74,6 @@ unsigned short DSurface::QuarterbrightMask = 0;
 unsigned short DSurface::EighthbrightMask = 0;
 
 DDPIXELFORMAT DSurface::PixelFormat;
-
 
 /***********************************************************************************************
  * DSurface::DSurface -- Off screen direct draw surface constructor.                           *
@@ -97,105 +96,99 @@ DDPIXELFORMAT DSurface::PixelFormat;
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pixform) :
-	XSurface(width, height),
-	BytesPerPixel(0),
-	LockPtr(NULL),
-	IsPrimary(false),
-	IsVideoRam(false),
-	SurfacePtr(NULL),
-	Description(NULL),
-	DCUnlockCount(0)
-{
-	Description = new DDSURFACEDESC;
-	if (Description != NULL) {
-		memset(Description, '\0', sizeof(DDSURFACEDESC));
-		Description->dwSize = sizeof(DDSURFACEDESC);
-		Description->dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH;
-		Description->dwWidth = width;
-		Description->dwHeight = height;
+DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pixform)
+    : XSurface(width, height), BytesPerPixel(0), LockPtr(NULL), IsPrimary(false), IsVideoRam(false), SurfacePtr(NULL),
+      Description(NULL), DCUnlockCount(0) {
+  Description = new DDSURFACEDESC;
+  if (Description != NULL) {
+    memset(Description, '\0', sizeof(DDSURFACEDESC));
+    Description->dwSize = sizeof(DDSURFACEDESC);
+    Description->dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH;
+    Description->dwWidth = width;
+    Description->dwHeight = height;
 
-		Description->ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
+    Description->ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
 
-		if (system_memory == true)
-			Description->ddsCaps.dwCaps |= DDSCAPS_SYSTEMMEMORY;
+    if (system_memory == true)
+      Description->ddsCaps.dwCaps |= DDSCAPS_SYSTEMMEMORY;
 
-		/*
-		** Was a custom (non-display-depth) pixel format specified?
-		*/
-		if (pixform)
-		{
-			Description->ddpfPixelFormat=*pixform;
-			Description->dwFlags |= DDSD_PIXELFORMAT;
-		}
+    /*
+    ** Was a custom (non-display-depth) pixel format specified?
+    */
+    if (pixform) {
+      Description->ddpfPixelFormat = *pixform;
+      Description->dwFlags |= DDSD_PIXELFORMAT;
+    }
 
+    DirectDrawObject->CreateSurface(Description, &SurfacePtr, NULL);
 
-		DirectDrawObject->CreateSurface(Description, &SurfacePtr, NULL);
+    /*
+    **	Get a description of the surface that was just allocated.
+    */
+    if (SurfacePtr != NULL) {
+      memset(Description, '\0', sizeof(DDSURFACEDESC));
+      Description->dwSize = sizeof(DDSURFACEDESC);
+      SurfacePtr->GetSurfaceDesc(Description);
+      BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount + 7) / 8;
+      IsVideoRam = ((Description->ddsCaps.dwCaps & DDSCAPS_VIDEOMEMORY) != 0);
 
-		/*
-		**	Get a description of the surface that was just allocated.
-		*/
-		if (SurfacePtr != NULL) {
-			memset(Description, '\0', sizeof(DDSURFACEDESC));
-			Description->dwSize = sizeof(DDSURFACEDESC);
-			SurfacePtr->GetSurfaceDesc(Description);
-			BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount+7)/8;
-			IsVideoRam = ((Description->ddsCaps.dwCaps & DDSCAPS_VIDEOMEMORY) != 0);
+      /*
+      **	If this is a hicolor surface, then build the shift values for
+      **	building and extracting the colors from the hicolor pixel.
+      */
+      if (BytesPerPixel == 2) {
+        int index;
+        int shift = Description->ddpfPixelFormat.dwRBitMask;
+        ThisRedRight = 0;
+        ThisRedLeft = 0;
+        for (index = 0; index < 16; index++) {
+          if (shift & 0x01)
+            break;
+          shift >>= 1;
+          ThisRedRight++;
+        }
+        for (index = 0; index < 8; index++) {
+          if (shift & 0x80)
+            break;
+          shift <<= 1;
+          ThisRedLeft++;
+        }
 
+        shift = Description->ddpfPixelFormat.dwGBitMask;
+        ThisGreenRight = 0;
+        ThisGreenLeft = 0;
+        for (index = 0; index < 16; index++) {
+          if (shift & 0x01)
+            break;
+          ThisGreenRight++;
+          shift >>= 1;
+        }
+        for (index = 0; index < 8; index++) {
+          if (shift & 0x80)
+            break;
+          ThisGreenLeft++;
+          shift <<= 1;
+        }
 
-			/*
-			**	If this is a hicolor surface, then build the shift values for
-			**	building and extracting the colors from the hicolor pixel.
-			*/
-			if (BytesPerPixel == 2) {
-				int index;
-				int shift = Description->ddpfPixelFormat.dwRBitMask;
-				ThisRedRight = 0;
-				ThisRedLeft = 0;
-				for (index = 0; index < 16; index++) {
-					if (shift & 0x01) break;
-					shift >>= 1;
-					ThisRedRight++;
-				}
-				for (index = 0; index < 8; index++) {
-					if (shift & 0x80) break;
-					shift <<= 1;
-					ThisRedLeft++;
-				}
-
-				shift = Description->ddpfPixelFormat.dwGBitMask;
-				ThisGreenRight = 0;
-				ThisGreenLeft = 0;
-				for (index = 0; index < 16; index++) {
-					if (shift & 0x01) break;
-					ThisGreenRight++;
-					shift >>= 1;
-				}
-				for (index = 0; index < 8; index++) {
-					if (shift & 0x80) break;
-					ThisGreenLeft++;
-					shift <<= 1;
-				}
-
-				shift = Description->ddpfPixelFormat.dwBBitMask;
-				ThisBlueRight = 0;
-				ThisBlueLeft = 0;
-				for (index = 0; index < 16; index++) {
-					if (shift & 0x01) break;
-					ThisBlueRight++;
-					shift >>= 1;
-				}
-				for (index = 0; index < 8; index++) {
-					if (shift & 0x80) break;
-					ThisBlueLeft++;
-					shift <<= 1;
-				}
-
-			}
-		}
-	}
+        shift = Description->ddpfPixelFormat.dwBBitMask;
+        ThisBlueRight = 0;
+        ThisBlueLeft = 0;
+        for (index = 0; index < 16; index++) {
+          if (shift & 0x01)
+            break;
+          ThisBlueRight++;
+          shift >>= 1;
+        }
+        for (index = 0; index < 8; index++) {
+          if (shift & 0x80)
+            break;
+          ThisBlueLeft++;
+          shift <<= 1;
+        }
+      }
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * DSurface::~DSurface -- Destructor for a direct draw surface object.                         *
@@ -211,30 +204,28 @@ DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pix
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::~DSurface(void)
-{
-	/*
-	**	If this is the primary surface, then the clipper must be detached from
-	**	this surface and the clipper object deleted.
-	*/
-	if (IsPrimary && SurfacePtr != NULL && Clipper != NULL) {
-		SurfacePtr->SetClipper(NULL);
-		Clipper->Release();
-		Clipper = NULL;
-	}
+DSurface::~DSurface(void) {
+  /*
+  **	If this is the primary surface, then the clipper must be detached from
+  **	this surface and the clipper object deleted.
+  */
+  if (IsPrimary && SurfacePtr != NULL && Clipper != NULL) {
+    SurfacePtr->SetClipper(NULL);
+    Clipper->Release();
+    Clipper = NULL;
+  }
 
-	/*
-	**	Delete the description of the surface.
-	*/
-	delete Description;
-	Description = NULL;
+  /*
+  **	Delete the description of the surface.
+  */
+  delete Description;
+  Description = NULL;
 
-	if (SurfacePtr != NULL)  {
-		SurfacePtr->Release();
-	}
-	SurfacePtr = NULL;
+  if (SurfacePtr != NULL) {
+    SurfacePtr->Release();
+  }
+  SurfacePtr = NULL;
 }
-
 
 /***********************************************************************************************
  * DSurface::DSurface -- Default constructor for surface object.                               *
@@ -253,19 +244,11 @@ DSurface::~DSurface(void)
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::DSurface(void) :
-	BytesPerPixel(0), 
-	LockPtr(NULL), 
-	SurfacePtr(NULL), 
-	Description(NULL),
-	DCUnlockCount(0)
-{
-	Description = new DDSURFACEDESC;
-	memset(Description, '\0', sizeof(DDSURFACEDESC));
-	Description->dwSize = sizeof(DDSURFACEDESC);
+DSurface::DSurface(void) : BytesPerPixel(0), LockPtr(NULL), SurfacePtr(NULL), Description(NULL), DCUnlockCount(0) {
+  Description = new DDSURFACEDESC;
+  memset(Description, '\0', sizeof(DDSURFACEDESC));
+  Description->dwSize = sizeof(DDSURFACEDESC);
 }
-
-
 
 /***********************************************************************************************
  * DSurface::GetDC -- Get the windows device context from our surface                          *
@@ -279,40 +262,35 @@ DSurface::DSurface(void) :
  * HISTORY:                                                                                    *
  *   06/21/2000 NAK : Created.                                                                 *
  *=============================================================================================*/
-HDC DSurface::GetDC(void)
-{
-	HDC hdc = NULL;
-	HRESULT hr;
+HDC DSurface::GetDC(void) {
+  HDC hdc = NULL;
+  HRESULT hr;
 
+  // We have to remove all current locks to get the device context unfortunately...
+  while (LockCount) {
+    Unlock();
+    DCUnlockCount++;
+  }
 
-	// We have to remove all current locks to get the device context unfortunately...
-	while (LockCount) {
-		Unlock();
-		DCUnlockCount++;
-	}
+  hr = SurfacePtr->GetDC(&hdc);
+  if (hr != DD_OK) {
+    while (DCUnlockCount) // restore the lock state
+    {
+      Lock();
+      DCUnlockCount--;
+    }
+    return (NULL);
+  }
 
+  // GetDC() locks the surface internally, so we need to reflect that here
+  if (hr == DD_OK) {
+    LockCount++;
+  } else {
+    hdc = NULL;
+  }
 
-	hr = SurfacePtr->GetDC(&hdc);
-	if (hr != DD_OK)
-	{
-		while(DCUnlockCount)  // restore the lock state
-		{
-			Lock();
-			DCUnlockCount--;
-		}
-		return(NULL);
-	}
-
-	// GetDC() locks the surface internally, so we need to reflect that here
-	if (hr == DD_OK) {
-		LockCount++;
-	}else{
-		hdc = NULL;
-	}
-
-	return (hdc);
+  return (hdc);
 }
-
 
 /***********************************************************************************************
  * DSurface::ReleaseDC -- Release the windows device context from our surface                  *
@@ -326,29 +304,25 @@ HDC DSurface::GetDC(void)
  * HISTORY:                                                                                    *
  *   06/21/2000 NAK : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::ReleaseDC(HDC hdc)
-{
-	HRESULT hr;
+int DSurface::ReleaseDC(HDC hdc) {
+  HRESULT hr;
 
-	hr = SurfacePtr->ReleaseDC(hdc);
-	assert(hr == DD_OK);
+  hr = SurfacePtr->ReleaseDC(hdc);
+  assert(hr == DD_OK);
 
-	// ReleaseDC() unlocks the surface internally, so we need to reflect that here.
-	if ((hr == DD_OK) && (LockCount > 0)) {
-		LockCount--;
-	}
+  // ReleaseDC() unlocks the surface internally, so we need to reflect that here.
+  if ((hr == DD_OK) && (LockCount > 0)) {
+    LockCount--;
+  }
 
-	while(DCUnlockCount)  // restore the lock state
-	{
-		Lock();
-		DCUnlockCount--;
-	}
+  while (DCUnlockCount) // restore the lock state
+  {
+    Lock();
+    DCUnlockCount--;
+  }
 
-	return (1);
+  return (1);
 }
-
-
-
 
 /***********************************************************************************************
  * DSurface::Create_Primary -- Creates a primary (visible) surface.                            *
@@ -370,137 +344,140 @@ int DSurface::ReleaseDC(HDC hdc)
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface * DSurface::Create_Primary(DSurface ** backsurface1)
-{
-	DSurface * surface = new DSurface();
-	int backcount = (backsurface1 != NULL) ? 1 : 0;
+DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
+  DSurface *surface = new DSurface();
+  int backcount = (backsurface1 != NULL) ? 1 : 0;
 
-	/*
-	**	Setup parameter for creating the primary surface. This will
-	**	always be the visible surface plus optional back buffers of identical
-	**	dimensions.
-	*/
-	surface->Description->dwFlags = DDSD_CAPS;
-	surface->Description->ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-	if (backcount > 0) {
-		surface->Description->ddsCaps.dwCaps |= DDSCAPS_FLIP | DDSCAPS_COMPLEX;
-		surface->Description->dwFlags |= DDSD_BACKBUFFERCOUNT;
-		surface->Description->dwBackBufferCount = backcount;
-	}
-	HRESULT result = DirectDrawObject->CreateSurface(surface->Description, &surface->SurfacePtr, NULL);
+  /*
+  **	Setup parameter for creating the primary surface. This will
+  **	always be the visible surface plus optional back buffers of identical
+  **	dimensions.
+  */
+  surface->Description->dwFlags = DDSD_CAPS;
+  surface->Description->ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+  if (backcount > 0) {
+    surface->Description->ddsCaps.dwCaps |= DDSCAPS_FLIP | DDSCAPS_COMPLEX;
+    surface->Description->dwFlags |= DDSD_BACKBUFFERCOUNT;
+    surface->Description->dwBackBufferCount = backcount;
+  }
+  HRESULT result = DirectDrawObject->CreateSurface(surface->Description, &surface->SurfacePtr, NULL);
 
-	/*
-	**	If the primary surface object was created, then fetch a pointer to the
-	**	back buffer if there is one present.
-	*/
-	if (result == DD_OK) {
-		if (backcount > 0) {
-			LPDIRECTDRAWSURFACE back;
-			DDSCAPS caps;
-			caps.dwCaps = DDSCAPS_BACKBUFFER;
-			result = surface->SurfacePtr->GetAttachedSurface(&caps, &back);
-			if (result == DD_OK) {
-				*backsurface1 = new DSurface(back);
-			}
-		}
+  /*
+  **	If the primary surface object was created, then fetch a pointer to the
+  **	back buffer if there is one present.
+  */
+  if (result == DD_OK) {
+    if (backcount > 0) {
+      LPDIRECTDRAWSURFACE back;
+      DDSCAPS caps;
+      caps.dwCaps = DDSCAPS_BACKBUFFER;
+      result = surface->SurfacePtr->GetAttachedSurface(&caps, &back);
+      if (result == DD_OK) {
+        *backsurface1 = new DSurface(back);
+      }
+    }
 
-		/*
-		**	Get a description of the surface that was just allocated.
-		*/
-		memset(surface->Description, '\0', sizeof(DDSURFACEDESC));
-		surface->Description->dwSize = sizeof(DDSURFACEDESC);
-		surface->SurfacePtr->GetSurfaceDesc(surface->Description);
-		surface->BytesPerPixel = (surface->Description->ddpfPixelFormat.dwRGBBitCount+7)/8;
-		surface->IsPrimary = true;
+    /*
+    **	Get a description of the surface that was just allocated.
+    */
+    memset(surface->Description, '\0', sizeof(DDSURFACEDESC));
+    surface->Description->dwSize = sizeof(DDSURFACEDESC);
+    surface->SurfacePtr->GetSurfaceDesc(surface->Description);
+    surface->BytesPerPixel = (surface->Description->ddpfPixelFormat.dwRGBBitCount + 7) / 8;
+    surface->IsPrimary = true;
 
-//		surface->Window.Set(Rect(0, 0, surface->Description->dwWidth, surface->Description->dwHeight));
-		surface->Width = surface->Description->dwWidth;
-		surface->Height = surface->Description->dwHeight;
-		PaletteSurface = surface->SurfacePtr;
+    //		surface->Window.Set(Rect(0, 0, surface->Description->dwWidth, surface->Description->dwHeight));
+    surface->Width = surface->Description->dwWidth;
+    surface->Height = surface->Description->dwHeight;
+    PaletteSurface = surface->SurfacePtr;
 
-		/*
-		**	Attach a clipper object to the surface so that it can cooperate
-		**	with the system GDI. This only comes into play if there are going
-		**	to be GDI graphical elements on top of the surface (normally this
-		**	isn't the case for full screen games). It doesn't hurt to attach
-		**	a clipper object anyway -- just in case.
-		*/
-		if (DirectDrawObject->CreateClipper(0, &Clipper, NULL) == DD_OK) {
-			if (Clipper->SetHWnd(0, GetActiveWindow()) == DD_OK) {
-				surface->SurfacePtr->SetClipper(Clipper);
-			}
-		}
+    /*
+    **	Attach a clipper object to the surface so that it can cooperate
+    **	with the system GDI. This only comes into play if there are going
+    **	to be GDI graphical elements on top of the surface (normally this
+    **	isn't the case for full screen games). It doesn't hurt to attach
+    **	a clipper object anyway -- just in case.
+    */
+    if (DirectDrawObject->CreateClipper(0, &Clipper, NULL) == DD_OK) {
+      if (Clipper->SetHWnd(0, GetActiveWindow()) == DD_OK) {
+        surface->SurfacePtr->SetClipper(Clipper);
+      }
+    }
 
-		/*
-		**	Fetch the pixel format for the surface.
-		*/
-		memcpy(&PixelFormat, &surface->Description->ddpfPixelFormat, sizeof(DDPIXELFORMAT));
+    /*
+    **	Fetch the pixel format for the surface.
+    */
+    memcpy(&PixelFormat, &surface->Description->ddpfPixelFormat, sizeof(DDPIXELFORMAT));
 
-		/*
-		**	If this is a hicolor surface, then build the shift values for
-		**	building and extracting the colors from the hicolor pixel.
-		*/
-		if (surface->Bytes_Per_Pixel() == 2) {
-			int index;
-			int shift = PixelFormat.dwRBitMask;
-			RedRight = 0;
-			RedLeft = 0;
-			for (index = 0; index < 16; index++) {
-				if (shift & 0x01) break;
-				shift >>= 1;
-				RedRight++;
-			}
-			for (index = 0; index < 8; index++) {
-				if (shift & 0x80) break;
-				shift <<= 1;
-				RedLeft++;
-			}
+    /*
+    **	If this is a hicolor surface, then build the shift values for
+    **	building and extracting the colors from the hicolor pixel.
+    */
+    if (surface->Bytes_Per_Pixel() == 2) {
+      int index;
+      int shift = PixelFormat.dwRBitMask;
+      RedRight = 0;
+      RedLeft = 0;
+      for (index = 0; index < 16; index++) {
+        if (shift & 0x01)
+          break;
+        shift >>= 1;
+        RedRight++;
+      }
+      for (index = 0; index < 8; index++) {
+        if (shift & 0x80)
+          break;
+        shift <<= 1;
+        RedLeft++;
+      }
 
-			shift = PixelFormat.dwGBitMask;
-			GreenRight = 0;
-			GreenLeft = 0;
-			for (index = 0; index < 16; index++) {
-				if (shift & 0x01) break;
-				GreenRight++;
-				shift >>= 1;
-			}
-			for (index = 0; index < 8; index++) {
-				if (shift & 0x80) break;
-				GreenLeft++;
-				shift <<= 1;
-			}
+      shift = PixelFormat.dwGBitMask;
+      GreenRight = 0;
+      GreenLeft = 0;
+      for (index = 0; index < 16; index++) {
+        if (shift & 0x01)
+          break;
+        GreenRight++;
+        shift >>= 1;
+      }
+      for (index = 0; index < 8; index++) {
+        if (shift & 0x80)
+          break;
+        GreenLeft++;
+        shift <<= 1;
+      }
 
-			shift = PixelFormat.dwBBitMask;
-			BlueRight = 0;
-			BlueLeft = 0;
-			for (index = 0; index < 16; index++) {
-				if (shift & 0x01) break;
-				BlueRight++;
-				shift >>= 1;
-			}
-			for (index = 0; index < 8; index++) {
-				if (shift & 0x80) break;
-				BlueLeft++;
-				shift <<= 1;
-			}
+      shift = PixelFormat.dwBBitMask;
+      BlueRight = 0;
+      BlueLeft = 0;
+      for (index = 0; index < 16; index++) {
+        if (shift & 0x01)
+          break;
+        BlueRight++;
+        shift >>= 1;
+      }
+      for (index = 0; index < 8; index++) {
+        if (shift & 0x80)
+          break;
+        BlueLeft++;
+        shift <<= 1;
+      }
 
+      /*
+      **	Create the halfbright mask.
+      */
+      HalfbrightMask = (unsigned short)Build_Hicolor_Pixel(127, 127, 127);
+      QuarterbrightMask = (unsigned short)Build_Hicolor_Pixel(63, 63, 63);
+      EighthbrightMask = (unsigned short)Build_Hicolor_Pixel(31, 31, 31);
+    }
 
-			/*
-			**	Create the halfbright mask.
-			*/
-			HalfbrightMask = (unsigned short)Build_Hicolor_Pixel(127, 127, 127);
-			QuarterbrightMask = (unsigned short)Build_Hicolor_Pixel(63, 63, 63);
-			EighthbrightMask = (unsigned short)Build_Hicolor_Pixel(31, 31, 31);
-		}
+  } else {
+    delete surface;
+    surface = NULL;
+  }
 
-	} else {
-		delete surface;
-		surface = NULL;
-	}
-
-	return(surface);
+  return (surface);
 }
-
 
 /***********************************************************************************************
  * DSurface::DSurface -- Create a surface attached to specified DDraw Surface Object.          *
@@ -517,26 +494,21 @@ DSurface * DSurface::Create_Primary(DSurface ** backsurface1)
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::DSurface(LPDIRECTDRAWSURFACE surfaceptr) :
-	BytesPerPixel(0),
-	LockPtr(NULL),
-	SurfacePtr(surfaceptr),
-	Description(NULL)
-{
-	if (SurfacePtr != NULL) {
-		Description = new DDSURFACEDESC;
-		memset(Description, '\0', sizeof(DDSURFACEDESC));
-		Description->dwSize = sizeof(DDSURFACEDESC);
-		HRESULT result = SurfacePtr->GetSurfaceDesc(Description);
-		if (result == DD_OK) {
-			BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount+7)/8;
-//			Window.Set(Rect(0, 0, Description->dwWidth, Description->dwHeight));
-			Width = Description->dwWidth;
-			Height = Description->dwHeight;
-		}
-	}
+DSurface::DSurface(LPDIRECTDRAWSURFACE surfaceptr)
+    : BytesPerPixel(0), LockPtr(NULL), SurfacePtr(surfaceptr), Description(NULL) {
+  if (SurfacePtr != NULL) {
+    Description = new DDSURFACEDESC;
+    memset(Description, '\0', sizeof(DDSURFACEDESC));
+    Description->dwSize = sizeof(DDSURFACEDESC);
+    HRESULT result = SurfacePtr->GetSurfaceDesc(Description);
+    if (result == DD_OK) {
+      BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount + 7) / 8;
+      //			Window.Set(Rect(0, 0, Description->dwWidth, Description->dwHeight));
+      Width = Description->dwWidth;
+      Height = Description->dwHeight;
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * DSurface::Bytes_Per_Pixel -- Fetches the bytes per pixel of the surface.                    *
@@ -553,11 +525,7 @@ DSurface::DSurface(LPDIRECTDRAWSURFACE surfaceptr) :
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::Bytes_Per_Pixel(void) const
-{
-	return(BytesPerPixel);
-}
-
+int DSurface::Bytes_Per_Pixel(void) const { return (BytesPerPixel); }
 
 /***********************************************************************************************
  * DSurface::Stride -- Fetches the bytes between rows.                                         *
@@ -575,11 +543,7 @@ int DSurface::Bytes_Per_Pixel(void) const
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::Stride(void) const
-{
-	return(Description->lPitch);
-}
-
+int DSurface::Stride(void) const { return (Description->lPitch); }
 
 /***********************************************************************************************
  * DSurface::Lock -- Fetches a working pointer into surface memory.                            *
@@ -602,23 +566,22 @@ int DSurface::Stride(void) const
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * DSurface::Lock(Point2D point) const
-{
-	Restore_Check();
-	if (LockCount == 0) {
-		DDSURFACEDESC desc;
-		memset(&desc, '\0', sizeof(desc));
-		desc.dwSize = sizeof(desc);
-		HRESULT result = SurfacePtr->Lock(NULL, &desc, DDLOCK_SURFACEMEMORYPTR|DDLOCK_WAIT, NULL);
-   	if (result != DD_OK) return(NULL);
-		memcpy(Description, &desc, sizeof(DDSURFACEDESC));
-		BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount+7)/8;
-		LockPtr = Description->lpSurface;
-	}
-	XSurface::Lock();
-	return(((char*)LockPtr) + point.Y * Stride() + point.X * Bytes_Per_Pixel());
+void *DSurface::Lock(Point2D point) const {
+  Restore_Check();
+  if (LockCount == 0) {
+    DDSURFACEDESC desc;
+    memset(&desc, '\0', sizeof(desc));
+    desc.dwSize = sizeof(desc);
+    HRESULT result = SurfacePtr->Lock(NULL, &desc, DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT, NULL);
+    if (result != DD_OK)
+      return (NULL);
+    memcpy(Description, &desc, sizeof(DDSURFACEDESC));
+    BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount + 7) / 8;
+    LockPtr = Description->lpSurface;
+  }
+  XSurface::Lock();
+  return (((char *)LockPtr) + point.Y * Stride() + point.X * Bytes_Per_Pixel());
 }
-
 
 /***********************************************************************************************
  * DSurface::Unlock -- Unlock a previously locked surface.                                     *
@@ -636,20 +599,18 @@ void * DSurface::Lock(Point2D point) const
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Unlock(void) const
-{
-	Restore_Check();
-	if (LockCount > 0) {
-		XSurface::Unlock();
-		if (LockCount == 0) {
-			SurfacePtr->Unlock(LockPtr);
-			LockPtr = NULL;
-		}
-		return(true);
-	}
-	return(false);
+bool DSurface::Unlock(void) const {
+  Restore_Check();
+  if (LockCount > 0) {
+    XSurface::Unlock();
+    if (LockCount == 0) {
+      SurfacePtr->Unlock(LockPtr);
+      LockPtr = NULL;
+    }
+    return (true);
+  }
+  return (false);
 }
-
 
 /***********************************************************************************************
  * DSurface::Restore_Check -- Checks for and restores surface memory if necessary.             *
@@ -666,21 +627,19 @@ bool DSurface::Unlock(void) const
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void DSurface::Restore_Check(void) const
-{
-	if (SurfacePtr->IsLost() == DDERR_SURFACELOST) {
-		SurfacePtr->Restore();
-		if (LockCount > 0 && SurfacePtr->IsLost() != DDERR_SURFACELOST) {
-			int oldlockcount = LockCount;
-			LockCount = 0;
-			Lock();
-			LockCount++;
-			Unlock();
-			LockCount = oldlockcount;
-		}
-	}
+void DSurface::Restore_Check(void) const {
+  if (SurfacePtr->IsLost() == DDERR_SURFACELOST) {
+    SurfacePtr->Restore();
+    if (LockCount > 0 && SurfacePtr->IsLost() != DDERR_SURFACELOST) {
+      int oldlockcount = LockCount;
+      LockCount = 0;
+      Lock();
+      LockCount++;
+      Unlock();
+      LockCount = oldlockcount;
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * DSurface::Blit_From -- Blit graphic memory from one rectangle to another.                   *
@@ -704,82 +663,81 @@ void DSurface::Restore_Check(void) const
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Blit_From(Rect const & destrect, Surface const & ssource, Rect const & sourcerect, bool trans)
-{
-	return(Blit_From(Get_Rect(), destrect, ssource, ssource.Get_Rect(), sourcerect, trans));
+bool DSurface::Blit_From(Rect const &destrect, Surface const &ssource, Rect const &sourcerect, bool trans) {
+  return (Blit_From(Get_Rect(), destrect, ssource, ssource.Get_Rect(), sourcerect, trans));
 }
 
-
-/*********************************************************************************************** 
- * DSurface::Blit_From -- Blit from one surface to this one.                                   * 
- *                                                                                             * 
- *    Use this routine to blit a rectangle from the specified surface to this surface while    * 
- *    performing clipping upon the blit rectangles specified.                                  * 
- *                                                                                             * 
- * INPUT:   dcliprect   -- The clipping rectangle to use for this surface.                     * 
- *                                                                                             * 
- *          destrect    -- The destination rectangle of the blit. The is relative to the       * 
- *                         dcliprect parameter.                                                * 
- *                                                                                             * 
- *          ssource     -- The source surface of the blit.                                     * 
- *                                                                                             * 
- *          scliprect   -- The source clipping rectangle.                                      * 
- *                                                                                             * 
- *          sourcrect   -- The source rectangle of the blit. This rectangle is relative to     * 
- *                         the source clipping rectangle.                                      * 
- *                                                                                             * 
- *          trans       -- Is this a transparent blit request?                                 * 
- *                                                                                             * 
- * OUTPUT:  bool; Was there a blit performed? A 'false' return value would indicate that the   * 
- *                blit was clipped into nothing.                                               * 
- *                                                                                             * 
- * WARNINGS:   none                                                                            * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/27/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * DSurface::Blit_From -- Blit from one surface to this one.                                   *
+ *                                                                                             *
+ *    Use this routine to blit a rectangle from the specified surface to this surface while    *
+ *    performing clipping upon the blit rectangles specified.                                  *
+ *                                                                                             *
+ * INPUT:   dcliprect   -- The clipping rectangle to use for this surface.                     *
+ *                                                                                             *
+ *          destrect    -- The destination rectangle of the blit. The is relative to the       *
+ *                         dcliprect parameter.                                                *
+ *                                                                                             *
+ *          ssource     -- The source surface of the blit.                                     *
+ *                                                                                             *
+ *          scliprect   -- The source clipping rectangle.                                      *
+ *                                                                                             *
+ *          sourcrect   -- The source rectangle of the blit. This rectangle is relative to     *
+ *                         the source clipping rectangle.                                      *
+ *                                                                                             *
+ *          trans       -- Is this a transparent blit request?                                 *
+ *                                                                                             *
+ * OUTPUT:  bool; Was there a blit performed? A 'false' return value would indicate that the   *
+ *                blit was clipped into nothing.                                               *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/27/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Blit_From(Rect const & dcliprect, Rect const & destrect, Surface const & ssource, Rect const & scliprect, Rect const & sourcerect, bool trans)
-{
-	if (!dcliprect.Is_Valid() || !scliprect.Is_Valid() || !destrect.Is_Valid() || !sourcerect.Is_Valid()) return(false);
+bool DSurface::Blit_From(Rect const &dcliprect, Rect const &destrect, Surface const &ssource, Rect const &scliprect,
+                         Rect const &sourcerect, bool trans) {
+  if (!dcliprect.Is_Valid() || !scliprect.Is_Valid() || !destrect.Is_Valid() || !sourcerect.Is_Valid())
+    return (false);
 
-	/*
-	**	For non-direct draw surfaces, perform a manual blit operation. This is also
-	**	necessary if any of the surfaces are currently locked. It is also necessary if the
-	**	blit regions overlap and the blitter cannot handle overlapped regions.
-	**
-	** NOTE: Its legal to blit to a locked surface but not from a locked surface.
-	** 	 	ST - 4/23/97 1:03AM
-	*/
-	if (!ssource.Is_Direct_Draw() || ((DSurface&)ssource).Is_Locked() || trans || Bytes_Per_Pixel() != ssource.Bytes_Per_Pixel()) {
-		return(XSurface::Blit_From(destrect, ssource, sourcerect, trans));
-	}
+  /*
+  **	For non-direct draw surfaces, perform a manual blit operation. This is also
+  **	necessary if any of the surfaces are currently locked. It is also necessary if the
+  **	blit regions overlap and the blitter cannot handle overlapped regions.
+  **
+  ** NOTE: Its legal to blit to a locked surface but not from a locked surface.
+  ** 	 	ST - 4/23/97 1:03AM
+  */
+  if (!ssource.Is_Direct_Draw() || ((DSurface &)ssource).Is_Locked() || trans ||
+      Bytes_Per_Pixel() != ssource.Bytes_Per_Pixel()) {
+    return (XSurface::Blit_From(destrect, ssource, sourcerect, trans));
+  }
 
-	Restore_Check();
-	DSurface const & source = (DSurface const &)ssource;
+  Restore_Check();
+  DSurface const &source = (DSurface const &)ssource;
 
-	Rect drect = destrect;
-	Rect srect = sourcerect;
-	Rect swindow = scliprect.Intersect(ssource.Get_Rect());
-	Rect dwindow = dcliprect.Intersect(Get_Rect());
-	if (Blit_Clip(drect, dwindow, srect, swindow)) {
-		RECT xdestrect;
-		xdestrect.left = drect.X+dwindow.X;
-		xdestrect.top = drect.Y+dwindow.Y;
-		xdestrect.right = drect.X+dwindow.X+drect.Width;
-		xdestrect.bottom = drect.Y+dwindow.Y+drect.Height;
+  Rect drect = destrect;
+  Rect srect = sourcerect;
+  Rect swindow = scliprect.Intersect(ssource.Get_Rect());
+  Rect dwindow = dcliprect.Intersect(Get_Rect());
+  if (Blit_Clip(drect, dwindow, srect, swindow)) {
+    RECT xdestrect;
+    xdestrect.left = drect.X + dwindow.X;
+    xdestrect.top = drect.Y + dwindow.Y;
+    xdestrect.right = drect.X + dwindow.X + drect.Width;
+    xdestrect.bottom = drect.Y + dwindow.Y + drect.Height;
 
-		RECT xsrcrect;
-		xsrcrect.left = srect.X+swindow.X;
-		xsrcrect.top = srect.Y+swindow.Y;
-		xsrcrect.right = srect.X+swindow.X+srect.Width;
-		xsrcrect.bottom = srect.Y+swindow.Y+srect.Height;
+    RECT xsrcrect;
+    xsrcrect.left = srect.X + swindow.X;
+    xsrcrect.top = srect.Y + swindow.Y;
+    xsrcrect.right = srect.X + swindow.X + srect.Width;
+    xsrcrect.bottom = srect.Y + swindow.Y + srect.Height;
 
-		HRESULT result = SurfacePtr->Blt(&xdestrect, source.SurfacePtr, &xsrcrect, DDBLT_WAIT, NULL);
-		return(result == DD_OK);
-	}
-	return(false);
+    HRESULT result = SurfacePtr->Blt(&xdestrect, source.SurfacePtr, &xsrcrect, DDBLT_WAIT, NULL);
+    return (result == DD_OK);
+  }
+  return (false);
 }
-
 
 /***********************************************************************************************
  * DSurface::Fill_Rect -- This routine will fill the specified rectangle.                      *
@@ -797,135 +755,127 @@ bool DSurface::Blit_From(Rect const & dcliprect, Rect const & destrect, Surface 
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Fill_Rect(Rect const & fillrect, int color)
-{
-	return(DSurface::Fill_Rect(Get_Rect(), fillrect, color));
-}
+bool DSurface::Fill_Rect(Rect const &fillrect, int color) { return (DSurface::Fill_Rect(Get_Rect(), fillrect, color)); }
 
-
-/*********************************************************************************************** 
- * DSurface::Fill_Rect -- Fills a rectangle with clipping control.                             * 
- *                                                                                             * 
- *    This routine will fill a rectangle on this surface, but will clip the request against    * 
- *    a clipping rectangle first.                                                              * 
- *                                                                                             * 
- * INPUT:   cliprect -- The clipping rectangle to use for this surface.                        * 
- *                                                                                             * 
- *          fillrect -- The rectangle to fill with the specified color. The rectangle is       * 
- *                      relative to the clipping rectangle.                                    * 
- *                                                                                             * 
- *          color    -- The color (surface dependant format) to use when filling the rectangle * 
- *                      pixels.                                                                * 
- *                                                                                             * 
- * OUTPUT:  bool; Was a fill operation performed? A 'false' return value would mean that the   * 
- *                fill request was clipped into nothing.                                       * 
- *                                                                                             * 
- * WARNINGS:   none                                                                            * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/27/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * DSurface::Fill_Rect -- Fills a rectangle with clipping control.                             *
+ *                                                                                             *
+ *    This routine will fill a rectangle on this surface, but will clip the request against    *
+ *    a clipping rectangle first.                                                              *
+ *                                                                                             *
+ * INPUT:   cliprect -- The clipping rectangle to use for this surface.                        *
+ *                                                                                             *
+ *          fillrect -- The rectangle to fill with the specified color. The rectangle is       *
+ *                      relative to the clipping rectangle.                                    *
+ *                                                                                             *
+ *          color    -- The color (surface dependant format) to use when filling the rectangle *
+ *                      pixels.                                                                *
+ *                                                                                             *
+ * OUTPUT:  bool; Was a fill operation performed? A 'false' return value would mean that the   *
+ *                fill request was clipped into nothing.                                       *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/27/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Fill_Rect(Rect const & cliprect, Rect const & fillrect, int color)
-{
-	if (!fillrect.Is_Valid()) return(false);
-	
-	/*
-	**	If the buffer is locked, then using the blitter to perform the fill is not possible.
-	**	In such a case, perform a manual fill of the region.
-	*/
-	if (Is_Locked()) {
-		return(XSurface::Fill_Rect(cliprect, fillrect, color));
-	}
+bool DSurface::Fill_Rect(Rect const &cliprect, Rect const &fillrect, int color) {
+  if (!fillrect.Is_Valid())
+    return (false);
 
-	Restore_Check();
+  /*
+  **	If the buffer is locked, then using the blitter to perform the fill is not possible.
+  **	In such a case, perform a manual fill of the region.
+  */
+  if (Is_Locked()) {
+    return (XSurface::Fill_Rect(cliprect, fillrect, color));
+  }
 
-	/*
-	**	Ensure that the clipping rectangle is legal.
-	*/
-	Rect crect = cliprect.Intersect(Get_Rect());
+  Restore_Check();
 
-	/*
-	**	Bias the fill rect to the clipping rectangle.
-	*/
-	Rect frect = fillrect.Bias_To(cliprect);
+  /*
+  **	Ensure that the clipping rectangle is legal.
+  */
+  Rect crect = cliprect.Intersect(Get_Rect());
 
-	/*
-	**	Find the region that should be filled after being clipped by the 
-	**	clipping rectangle. This could result in no fill operation being performed
-	**	if the desired fill rectangle has been completely clipped away.
-	*/
-	frect = frect.Intersect(crect);
-	if (!frect.Is_Valid()) return(false);
+  /*
+  **	Bias the fill rect to the clipping rectangle.
+  */
+  Rect frect = fillrect.Bias_To(cliprect);
 
-	RECT rect;
-	rect.left = frect.X;
-	rect.top = frect.Y;
-	rect.right = rect.left + frect.Width;
-	rect.bottom = rect.top + frect.Height;
+  /*
+  **	Find the region that should be filled after being clipped by the
+  **	clipping rectangle. This could result in no fill operation being performed
+  **	if the desired fill rectangle has been completely clipped away.
+  */
+  frect = frect.Intersect(crect);
+  if (!frect.Is_Valid())
+    return (false);
 
-	DDBLTFX fx;
-	memset(&fx, '\0', sizeof(fx));
-	fx.dwSize = sizeof(fx);
-	fx.dwFillColor = color;
-	HRESULT result = SurfacePtr->Blt(&rect, NULL, NULL, DDBLT_WAIT|DDBLT_COLORFILL, &fx);
-	return(result == DD_OK);
+  RECT rect;
+  rect.left = frect.X;
+  rect.top = frect.Y;
+  rect.right = rect.left + frect.Width;
+  rect.bottom = rect.top + frect.Height;
+
+  DDBLTFX fx;
+  memset(&fx, '\0', sizeof(fx));
+  fx.dwSize = sizeof(fx);
+  fx.dwFillColor = color;
+  HRESULT result = SurfacePtr->Blt(&rect, NULL, NULL, DDBLT_WAIT | DDBLT_COLORFILL, &fx);
+  return (result == DD_OK);
 }
 
-
-/*********************************************************************************************** 
- * DSurface::Build_Hicolor_Pixel -- Construct a hicolor pixel according to the surface pixel f * 
- *                                                                                             * 
- *    This routine will construct a pixel according to the highcolor pixel format for this     * 
- *    surface.                                                                                 * 
- *                                                                                             * 
- * INPUT:   red   -- The red component of the color (0..255).                                  * 
- *                                                                                             * 
- *          green -- The green component of the color (0..255).                                * 
- *                                                                                             * 
- *          blue  -- The blue component of the color (0..255).                                 * 
- *                                                                                             * 
- * OUTPUT:  Returns with a screen format pixel number that most closesly matches the color     * 
- *          specified.                                                                         * 
- *                                                                                             * 
- * WARNINGS:   The return value is card dependant and only applies to hicolor displays.        * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/27/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * DSurface::Build_Hicolor_Pixel -- Construct a hicolor pixel according to the surface pixel f *
+ *                                                                                             *
+ *    This routine will construct a pixel according to the highcolor pixel format for this     *
+ *    surface.                                                                                 *
+ *                                                                                             *
+ * INPUT:   red   -- The red component of the color (0..255).                                  *
+ *                                                                                             *
+ *          green -- The green component of the color (0..255).                                *
+ *                                                                                             *
+ *          blue  -- The blue component of the color (0..255).                                 *
+ *                                                                                             *
+ * OUTPUT:  Returns with a screen format pixel number that most closesly matches the color     *
+ *          specified.                                                                         *
+ *                                                                                             *
+ * WARNINGS:   The return value is card dependant and only applies to hicolor displays.        *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/27/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::Build_Hicolor_Pixel(int red, int green, int blue)
-{
-	return(((red >> RedLeft) << RedRight) | ((green >> GreenLeft) << GreenRight) | ((blue >> BlueLeft) << BlueRight));
+int DSurface::Build_Hicolor_Pixel(int red, int green, int blue) {
+  return (((red >> RedLeft) << RedRight) | ((green >> GreenLeft) << GreenRight) | ((blue >> BlueLeft) << BlueRight));
 }
 
-
-/*********************************************************************************************** 
- * DSurface::Build_Remap_Table -- Build a highcolor remap table.                               * 
- *                                                                                             * 
- *    This will build a complete hicolor remap table for the palette specified. This table     * 
- *    can then be used to quickly fetch a pixel that matches the color index of the palette.   * 
- *                                                                                             * 
- * INPUT:   table -- The location to store the hicolor table. The buffer must be 256*2 bytes   * 
- *                   long.                                                                     * 
- *                                                                                             * 
- *          palette  -- The palette to use to create the remap table.                          * 
- *                                                                                             * 
- * OUTPUT:  none                                                                               * 
- *                                                                                             * 
- * WARNINGS:   none                                                                            * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   05/27/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * DSurface::Build_Remap_Table -- Build a highcolor remap table.                               *
+ *                                                                                             *
+ *    This will build a complete hicolor remap table for the palette specified. This table     *
+ *    can then be used to quickly fetch a pixel that matches the color index of the palette.   *
+ *                                                                                             *
+ * INPUT:   table -- The location to store the hicolor table. The buffer must be 256*2 bytes   *
+ *                   long.                                                                     *
+ *                                                                                             *
+ *          palette  -- The palette to use to create the remap table.                          *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   05/27/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void DSurface::Build_Remap_Table(unsigned short * table, PaletteClass const & palette)
-{
-	assert(table != NULL);
+void DSurface::Build_Remap_Table(unsigned short *table, PaletteClass const &palette) {
+  assert(table != NULL);
 
-	/*
-	**	Build the hicolor index table according to the palette.
-	*/
-	for (int index = 0; index < 256; index++) {
-		table[index] = (unsigned short)Build_Hicolor_Pixel(palette[index].Get_Red(), palette[index].Get_Green(), palette[index].Get_Blue());
-	}
+  /*
+  **	Build the hicolor index table according to the palette.
+  */
+  for (int index = 0; index < 256; index++) {
+    table[index] = (unsigned short)Build_Hicolor_Pixel(palette[index].Get_Red(), palette[index].Get_Green(),
+                                                       palette[index].Get_Blue());
+  }
 }
-
-
