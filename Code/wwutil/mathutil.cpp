@@ -26,8 +26,8 @@
 //-----------------------------------------------------------------------------
 #include "mathutil.h" // I WANNA BE FIRST!
 
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "wwmath.h"
 #include "miscutil.h"
 #include "wwdebug.h"
