@@ -24,10 +24,9 @@
 // Description:  Minimal bit encoding
 //
 
+#include <cstring> // for memset
+
 #include "bitpacker.h"
-
-#include <string.h> // for memset
-
 #include "wwdebug.h"
 
 //-----------------------------------------------------------------------------
