@@ -37,7 +37,7 @@
 
 #include "StdAfx.h"
 #include "NvDXTLib.h"
-#include "Targa.h"
+#include "targa.h"
 #include "TGAToDXT.H"
 #include <io.h>
 #include <stdlib.h>

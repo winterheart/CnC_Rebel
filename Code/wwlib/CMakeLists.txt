@@ -1,9 +1,8 @@
 set(SOURCES
-    gnu_regex.c
+    #gnu_regex.c
     Except.cpp
     FastAllocator.cpp
-    LaunchWeb.cpp
-    TARGA.CPP
+    #LaunchWeb.cpp
     WWCOMUtil.cpp
     #_convert.cpp
     #_mono.cpp
@@ -12,37 +11,37 @@ set(SOURCES
     b64pipe.cpp
     b64straw.cpp
     base64.cpp
-    blit.cpp
-    blowfish.cpp
+    #blit.cpp
+    #blowfish.cpp
     #blowpipe.cpp
     #blwstraw.cpp
     buff.cpp
     bufffile.cpp
     chunkio.cpp
-    convert.cpp
+    #convert.cpp
     cpudetect.cpp
     crc.cpp
     #crcpipe.cpp
     #crcstraw.cpp
     #critsection.cpp
     cstraw.cpp
-    data.cpp
-    ddraw.cpp
+    #data.cpp
+    #ddraw.cpp
     #dib.cpp
     #draw.cpp
-    dsurface.cpp
+    #dsurface.cpp
     ffactory.cpp
     #fixed.cpp
     gcd_lcm.cpp
     hash.cpp
-    hsv.cpp
+    #hsv.cpp
     ini.cpp
     int.cpp
     jshell.cpp
-    keyboard.cpp
-    lcw.cpp
+    #keyboard.cpp
+    #lcw.cpp
     #lcwpipe.cpp
-    load.cpp
+    #load.cpp
     lzo.cpp
     lzo1x_c.cpp
     lzo1x_d.cpp
@@ -58,8 +57,8 @@ set(SOURCES
     mutex.cpp
     nstrdup.cpp
     #obscure.cpp
-    palette.cpp
-    pcx.cpp
+    #palette.cpp
+    #pcx.cpp
     pipe.cpp
     pk.cpp
     #pkpipe.cpp
@@ -68,29 +67,30 @@ set(SOURCES
     ramfile.cpp
     random.cpp
     rawfile.cpp
-    rc4.cpp
+    #rc4.cpp
     rcfile.cpp
     readline.cpp
     realcrc.cpp
     refcount.cpp
-    regexpr.cpp
+    #regexpr.cpp
     registry.cpp
-    rgb.cpp
-    rle.cpp
+    #rgb.cpp
+    #rle.cpp
     #rndstraw.cpp
     rndstrng.cpp
-    sampler.cpp
-    sha.cpp
+    #sampler.cpp
+    #sha.cpp
     #shapipe.cpp
     #shastraw.cpp
     slnode.cpp
-    srandom.cpp
-    stimer.cpp
+    #srandom.cpp
+    #stimer.cpp
     straw.cpp
-    strtok_r.cpp
+    #strtok_r.cpp
     #surface.cpp
     systimer.cpp
     tagblock.cpp
+    targa.cpp
     textfile.cpp
     thread.cpp
     trim.cpp
@@ -99,12 +99,12 @@ set(SOURCES
     widestring.cpp
     win.cpp
     wwfile.cpp
-    wwfont.cpp
+    #wwfont.cpp
     #wwmouse.cpp
     wwstring.cpp
     xpipe.cpp
     xstraw.cpp
-    xsurface.cpp
+    #xsurface.cpp
 )
 
 add_library(WWLib STATIC ${SOURCES})
