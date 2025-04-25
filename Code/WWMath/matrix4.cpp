@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,8 +38,9 @@
  *   Matrix4::Multiply -- Multiply a Matrix4 * Matrix3D                                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+
 #include "matrix4.h"
-#include <assert.h>
 
 /***********************************************************************************************
  * Matrix4::Multiply -- Multiply two Matrix4's together                                        *

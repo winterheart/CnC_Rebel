@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -48,15 +49,13 @@
  *   Cached_Slerp -- Quaternion slerping, optimized with cached values                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdlib>
+#include <cassert>
+
 #include "quat.h"
 #include "matrix3d.h"
 #include "matrix4.h"
 #include "wwmath.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <assert.h>
 
 #define SLERP_EPSILON 0.001
 
@@ -163,9 +162,6 @@ Quaternion Trackball(float x0, float y0, float x1, float y1, float sphsize) {
   Vector3 a;
   Vector3 p1;
   Vector3 p2;
-  Vector3 d;
-
-  float phi, t;
 
   if ((x0 == x1) && (y0 == y1)) {
     return Quaternion(0.0f, 0.0f, 0.0f, 1.0f); // Zero rotation
@@ -185,15 +181,15 @@ Quaternion Trackball(float x0, float y0, float x1, float y1, float sphsize) {
   Vector3::Cross_Product(p2, p1, &a);
 
   // Compute how much to rotate
-  d = p1 - p2;
-  t = d.Length() / (2.0f * sphsize);
+  Vector3 d = p1 - p2;
+  float t = d.Length() / (2.0f * sphsize);
 
   // Avoid problems with out of control values
   if (t > 1.0f)
     t = 1.0f;
   if (t < -1.0f)
     t = -1.0f;
-  phi = 2.0f * WWMath::Asin(t);
+  float phi = 2.0f * WWMath::Asin(t);
 
   return Axis_To_Quat(a, phi);
 }
@@ -432,7 +428,6 @@ void __cdecl Fast_Slerp(Quaternion &res, const Quaternion &p, const Quaternion &
   float beta;  // complementary interploation parameter
   float theta; // angle between p and q
   float cos_t; // sine, cosine of theta
-  float oo_sin_t;
   int qflip; // use flip of q?
 
   // cos theta = dot product of p and q
@@ -456,7 +451,7 @@ void __cdecl Fast_Slerp(Quaternion &res, const Quaternion &p, const Quaternion &
 
     theta = WWMath::Fast_Acos(cos_t);
     float sin_t = WWMath::Fast_Sin(theta);
-    oo_sin_t = 1.0f / sin_t;
+    float oo_sin_t = 1.0f / sin_t;
     beta = WWMath::Fast_Sin(theta - alpha * theta) * oo_sin_t;
     alpha = WWMath::Fast_Sin(alpha * theta) * oo_sin_t;
   }
@@ -533,7 +528,7 @@ void Slerp(Quaternion &res, const Quaternion &p, const Quaternion &q, float alph
 void Slerp_Setup(const Quaternion &p, const Quaternion &q, SlerpInfoStruct *slerpinfo) {
   float cos_t;
 
-  assert(slerpinfo != NULL);
+  assert(slerpinfo != nullptr);
 
   // cos theta = dot product of p and q
   cos_t = p.X * q.X + p.Y * q.Y + p.Z * q.Z + p.W * q.W;
@@ -883,7 +878,7 @@ float project_to_sphere(float r, float x, float y) {
   return z;
 }
 
-void Quaternion::Randomize(void) {
+void Quaternion::Randomize() {
   X = ((float)(rand() & 0xFFFF)) / 65536.0f;
   Y = ((float)(rand() & 0xFFFF)) / 65536.0f;
   Z = ((float)(rand() & 0xFFFF)) / 65536.0f;

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef WWMATH_H
 #define WWMATH_H
@@ -103,8 +102,8 @@ class WWMath {
 public:
   // Initialization and Shutdown.  Other math sub-systems which require initialization and
   // shutdown processing will be handled in these functions
-  static void Init(void);
-  static void Shutdown(void);
+  static void Init();
+  static void Shutdown();
 
   // These are meant to be a collection of small math utility functions to be optimized at some point.
   static WWINLINE float Fabs(float val) {
@@ -128,7 +127,7 @@ public:
   static long Float_To_Long(float f);
 #endif
 
-  static WWINLINE float Inv_Sqrt(float a);
+  static WWINLINE float Inv_Sqrt(float val);
 
   static WWINLINE float Fast_Sin(float val);
   static WWINLINE float Fast_Inv_Sin(float val);
@@ -147,7 +146,7 @@ public:
   static float Floor(float val) { return floorf(val); }
   static bool Fast_Is_Float_Positive(const float &val);
 
-  static float Random_Float(void);
+  static float Random_Float();
   static float Random_Float(float min, float max);
   static float Clamp(float val, float min = 0.0f, float max = 1.0f);
   static double Clamp(double val, double min = 0.0f, double max = 1.0f);

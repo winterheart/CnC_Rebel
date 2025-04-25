@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -184,7 +185,6 @@ void Find_Turn_Arc(const Matrix3D &transform, float radius, const Vector3 &prev_
   Vector3 rel_center;
   Matrix3D::Inverse_Transform_Vector(transform, *arc_center, &rel_center);
   (*is_right_turn) = (rel_center.Y > 0);
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -228,7 +228,6 @@ void Find_Tangents(float radius, const Vector3 &prev_pt, const Vector3 &curr_pt,
     (*angle_out_delta) = 0;
   }
 
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -236,7 +235,7 @@ void Find_Tangents(float radius, const Vector3 &prev_pt, const Vector3 &curr_pt,
 //	Update_Arc_List
 //
 //////////////////////////////////////////////////////////////////////
-void VehicleCurveClass::Update_Arc_List(void) {
+void VehicleCurveClass::Update_Arc_List() {
   WWMEMLOG(MEM_PATHFIND);
   m_ArcList.Delete_All();
 
@@ -373,7 +372,6 @@ void VehicleCurveClass::Update_Arc_List(void) {
   }
 
   m_IsDirty = false;
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -509,10 +507,9 @@ void VehicleCurveClass::Evaluate(float time, Vector3 *set_val) {
   //	Our Z value is just a linear interpolation
   //
   set_val->Z = Keys[index0].Point.Z + (Keys[index1].Point.Z - Keys[index0].Point.Z) * seg_time;
-  return;
 }
 
-const PersistFactoryClass &VehicleCurveClass::Get_Factory(void) const { return _VehicleCurveFactory; }
+const PersistFactoryClass &VehicleCurveClass::Get_Factory() const { return _VehicleCurveFactory; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -597,5 +594,4 @@ void VehicleCurveClass::Load_Variables(ChunkLoadClass &cload) {
     cload.Close_Micro_Chunk();
   }
 
-  return;
 }

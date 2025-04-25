@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef __VEHICLE_CURVE_H
 #define __VEHICLE_CURVE_H
@@ -58,7 +57,7 @@ public:
   ///////////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   ///////////////////////////////////////////////////////////////////////////
-  VehicleCurveClass(void)
+  VehicleCurveClass()
       : m_IsDirty(true), m_Radius(0), m_LastTime(0), m_Sharpness(0), m_SharpnessPos(0, 0, 0), Curve3DClass() {}
 
   VehicleCurveClass(float radius)
@@ -82,7 +81,7 @@ public:
   void Set_Key(int i, const Vector3 &point);
   int Add_Key(const Vector3 &point, float t);
   void Remove_Key(int i);
-  void Clear_Keys(void);
+  void Clear_Keys();
 
   //
   //	Vehicle curve specific
@@ -91,12 +90,12 @@ public:
     *position = m_SharpnessPos;
     return m_Sharpness;
   }
-  float Get_Last_Eval_Time(void) const { return m_LastTime; }
+  float Get_Last_Eval_Time() const { return m_LastTime; }
 
   //
   // Save-load support
   //
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 
@@ -104,7 +103,7 @@ protected:
   ///////////////////////////////////////////////////////////////////////////
   //	Protected methods
   ///////////////////////////////////////////////////////////////////////////
-  void Update_Arc_List(void);
+  void Update_Arc_List();
   void Load_Variables(ChunkLoadClass &cload);
 
   ///////////////////////////////////////////////////////////////////////////
@@ -119,12 +118,12 @@ protected:
     float angle_in_delta;
     float angle_out_delta;
 
-    _ArcInfoStruct(void)
+    _ArcInfoStruct()
         : center(0, 0, 0), point_in(0, 0, 0), point_out(0, 0, 0), point_angle(0), radius(0), angle_in_delta(0),
           angle_out_delta(0) {}
 
-    bool operator==(const _ArcInfoStruct &src) { return false; }
-    bool operator!=(const _ArcInfoStruct &src) { return true; }
+    bool operator==(const _ArcInfoStruct &src) const { return false; }
+    bool operator!=(const _ArcInfoStruct &src) const { return true; }
 
   } ArcInfoStruct;
 
@@ -148,7 +147,6 @@ protected:
 inline void VehicleCurveClass::Set_Key(int i, const Vector3 &point) {
   m_IsDirty = true;
   Curve3DClass::Set_Key(i, point);
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -165,16 +163,14 @@ inline int VehicleCurveClass::Add_Key(const Vector3 &point, float t) {
 inline void VehicleCurveClass::Remove_Key(int i) {
   m_IsDirty = true;
   Curve3DClass::Remove_Key(i);
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //	Clear_Keys
 ///////////////////////////////////////////////////////////////////////////
-inline void VehicleCurveClass::Clear_Keys(void) {
+inline void VehicleCurveClass::Clear_Keys() {
   m_IsDirty = true;
   Curve3DClass::Clear_Keys();
-  return;
 }
 
 #endif //__VEHICLE_CURVE_H

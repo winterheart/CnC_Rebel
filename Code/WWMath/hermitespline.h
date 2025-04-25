@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,7 +51,7 @@
 */
 class HermiteSpline3DClass : public Curve3DClass {
 public:
-  HermiteSpline3DClass(void) : TangentsDirty(true) {}
+  HermiteSpline3DClass() : TangentsDirty(true) {}
 
   HermiteSpline3DClass(const HermiteSpline3DClass &that) : TangentsDirty(true) { (*this) = that; }
 
@@ -63,15 +64,15 @@ public:
   virtual void Set_Key(int i, const Vector3 &point);
   virtual int Add_Key(const Vector3 &point, float t);
   virtual void Remove_Key(int i);
-  virtual void Clear_Keys(void);
+  virtual void Clear_Keys();
 
   virtual void Set_Tangents(int i, const Vector3 &in_tan, const Vector3 &out_tan);
   virtual void Get_Tangents(int i, Vector3 *set_in, Vector3 *set_out);
 
-  virtual void Update_Tangents(void) { TangentsDirty = false; }
+  virtual void Update_Tangents() { TangentsDirty = false; }
 
   // save-load support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 
@@ -97,7 +98,7 @@ protected:
 */
 class HermiteSpline1DClass : public Curve1DClass {
 public:
-  HermiteSpline1DClass(void) : TangentsDirty(true) {}
+  HermiteSpline1DClass() : TangentsDirty(true) {}
 
   virtual void Evaluate(float time, float *set_val);
   virtual void Set_Looping(bool onoff);
@@ -105,13 +106,13 @@ public:
   virtual void Set_Key(int i, float point, unsigned int extra = 0);
   virtual int Add_Key(float point, float t, unsigned int extra = 0);
   virtual void Remove_Key(int i);
-  virtual void Clear_Keys(void);
+  virtual void Clear_Keys();
 
   virtual void Set_Tangents(int i, float in_tan, float out_tan);
   virtual void Get_Tangents(int i, float *set_in, float *set_out);
 
   // save-load support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 
@@ -126,7 +127,7 @@ protected:
     bool operator!=(const TangentsClass &that) { return !TangentsClass::operator==(that); }
   };
 
-  virtual void Update_Tangents(void) { TangentsDirty = false; }
+  virtual void Update_Tangents() { TangentsDirty = false; }
 
   bool TangentsDirty;
   DynamicVectorClass<TangentsClass> Tangents;

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -66,15 +67,15 @@ enum {
 LookupTableClass::LookupTableClass(int sample_count)
     : MinInputValue(0.0f), MaxInputValue(0.0f), OutputSamples(sample_count) {}
 
-LookupTableClass::~LookupTableClass(void) {}
+LookupTableClass::~LookupTableClass() {}
 
 void LookupTableClass::Init(const char *name, Curve1DClass *curve) {
   // copy the name
   Name = name;
 
   // Store the min and max input values for the table
-  curve->Get_Key(0, NULL, &MinInputValue, NULL);
-  curve->Get_Key(curve->Key_Count() - 1, NULL, &MaxInputValue, NULL);
+  curve->Get_Key(0, nullptr, &MinInputValue, nullptr);
+  curve->Get_Key(curve->Key_Count() - 1, nullptr, &MaxInputValue, nullptr);
   OOMaxMinusMin = 1.0f / (MaxInputValue - MinInputValue);
 
   // Sample the curve and store the output values
@@ -91,7 +92,7 @@ void LookupTableClass::Init(const char *name, Curve1DClass *curve) {
 ** LookupTableManager Implementation
 **
 ***********************************************************************************************/
-void LookupTableMgrClass::Init(void) {
+void LookupTableMgrClass::Init() {
   // create a default table that the user can use in an emergency
   LookupTableClass *default_table = NEW_REF(LookupTableClass, (2));
   LinearCurve1DClass *default_curve = new LinearCurve1DClass;
@@ -105,10 +106,10 @@ void LookupTableMgrClass::Init(void) {
   default_table->Release_Ref();
 }
 
-void LookupTableMgrClass::Shutdown(void) { Reset(); }
+void LookupTableMgrClass::Shutdown() { Reset(); }
 
-void LookupTableMgrClass::Reset(void) {
-  while (Tables.Peek_Head() != NULL) {
+void LookupTableMgrClass::Reset() {
+  while (Tables.Peek_Head() != nullptr) {
     Tables.Release_Head();
   }
 }
@@ -127,7 +128,7 @@ LookupTableClass *LookupTableMgrClass::Get_Table(const char *name, bool try_to_l
   }
 
   // otherwise we can try to load it.
-  LookupTableClass *new_table = NULL;
+  LookupTableClass *new_table = nullptr;
   if (try_to_load) {
 
     FileClass *file = _TheFileFactory->Get_File(name);
@@ -135,9 +136,9 @@ LookupTableClass *LookupTableMgrClass::Get_Table(const char *name, bool try_to_l
 
       ChunkLoadClass cload(file);
 
-      Curve1DClass *curve = NULL;
+      Curve1DClass *curve = nullptr;
       Load_Table_Desc(cload, &curve);
-      if (curve != NULL) {
+      if (curve != nullptr) {
         new_table = NEW_REF(LookupTableClass, ());
         new_table->Init(name, curve);
         Add_Table(new_table);
@@ -170,7 +171,7 @@ void LookupTableMgrClass::Save_Table_Desc(ChunkSaveClass &csave, Curve1DClass *c
 
 void LookupTableMgrClass::Load_Table_Desc(ChunkLoadClass &cload, Curve1DClass **curve_ptr, Vector2 *set_min_corner,
                                           Vector2 *set_max_corner) {
-  *curve_ptr = NULL;
+  *curve_ptr = nullptr;
   PersistFactoryClass *factory;
 
   float xmin, xmax;
@@ -182,8 +183,8 @@ void LookupTableMgrClass::Load_Table_Desc(ChunkLoadClass &cload, Curve1DClass **
     case LOOKUPTABLE_CHUNK_CURVE:
       cload.Open_Chunk();
       factory = SaveLoadSystemClass::Find_Persist_Factory(cload.Cur_Chunk_ID());
-      WWASSERT(factory != NULL);
-      if (factory != NULL) {
+      WWASSERT(factory != nullptr);
+      if (factory != nullptr) {
         *curve_ptr = (Curve1DClass *)factory->Load(cload);
       }
       cload.Close_Chunk();
@@ -202,10 +203,10 @@ void LookupTableMgrClass::Load_Table_Desc(ChunkLoadClass &cload, Curve1DClass **
     cload.Close_Chunk();
   }
 
-  if (set_min_corner != NULL) {
+  if (set_min_corner != nullptr) {
     set_min_corner->Set(xmin, ymin);
   }
-  if (set_max_corner != NULL) {
+  if (set_max_corner != nullptr) {
     set_max_corner->Set(xmax, ymax);
   }
 }

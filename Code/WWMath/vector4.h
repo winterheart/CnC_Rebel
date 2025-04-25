@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -44,16 +45,13 @@
  *   Vector4::Is_Valid -- Vector4::Is_Valid                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef VECTOR4_H
 #define VECTOR4_H
 
 #include "always.h"
 #include "wwmath.h"
-#include <math.h>
 
 /*
 ** Vector4 - 4 dimensional vectors
@@ -67,7 +65,7 @@ public:
   float W;
 
   // Constructors
-  WWINLINE Vector4(void) {};
+  WWINLINE Vector4() {};
   WWINLINE Vector4(const Vector4 &v) {
     X = v.X;
     Y = v.Y;
@@ -107,12 +105,12 @@ public:
   WWINLINE const float &operator[](int i) const { return (&X)[i]; }
 
   // normalize, compute length
-  void Normalize(void);
-  WWINLINE float Length(void) const;
-  WWINLINE float Length2(void) const;
+  void Normalize();
+  WWINLINE float Length() const;
+  WWINLINE float Length2() const;
 
   // unary operators
-  WWINLINE Vector4 operator-() const { return (Vector4(-X, -Y, -Z, -W)); }
+  WWINLINE Vector4 operator-() const { return {-X, -Y, -Z, -W}; }
   WWINLINE Vector4 operator+() const { return *this; }
 
   WWINLINE Vector4 &operator+=(const Vector4 &v) {
@@ -167,7 +165,7 @@ public:
   static void Lerp(const Vector4 &a, const Vector4 &b, float alpha, Vector4 *set_result);
 
   // verify that none of the members of this vector are invalid floats
-  WWINLINE bool Is_Valid(void) const;
+  WWINLINE bool Is_Valid() const;
 };
 
 /**************************************************************************
@@ -182,7 +180,7 @@ public:
  * HISTORY:                                                               *
  *   02/24/1997 GH  : Created.                                            *
  *========================================================================*/
-WWINLINE Vector4 operator*(const Vector4 &a, float k) { return Vector4((a.X * k), (a.Y * k), (a.Z * k), (a.W * k)); }
+WWINLINE Vector4 operator*(const Vector4 &a, float k) { return {(a.X * k), (a.Y * k), (a.Z * k), (a.W * k)}; }
 
 WWINLINE Vector4 operator*(float k, const Vector4 &a) { return a * k; }
 
@@ -199,7 +197,7 @@ WWINLINE Vector4 operator*(float k, const Vector4 &a) { return a * k; }
  *========================================================================*/
 WWINLINE Vector4 operator/(const Vector4 &a, float k) {
   float ook = 1.0f / k;
-  return Vector4((a[0] * ook), (a[1] * ook), (a[2] * ook), (a[3] * ook));
+  return {(a[0] * ook), (a[1] * ook), (a[2] * ook), (a[3] * ook)};
 }
 
 /**************************************************************************
@@ -215,7 +213,7 @@ WWINLINE Vector4 operator/(const Vector4 &a, float k) {
  *   02/24/1997 GH  : Created.                                            *
  *========================================================================*/
 WWINLINE Vector4 operator+(const Vector4 &a, const Vector4 &b) {
-  return Vector4(a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]);
+  return {a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]};
 }
 
 /**************************************************************************
@@ -231,7 +229,7 @@ WWINLINE Vector4 operator+(const Vector4 &a, const Vector4 &b) {
  *   02/24/1997 GH  : Created.                                            *
  *========================================================================*/
 WWINLINE Vector4 operator-(const Vector4 &a, const Vector4 &b) {
-  return Vector4(a[0] - b[0], a[1] - b[1], a[2] - b[2], a[3] - b[3]);
+  return {a[0] - b[0], a[1] - b[1], a[2] - b[2], a[3] - b[3]};
 }
 
 /**************************************************************************
@@ -309,7 +307,7 @@ WWINLINE Vector4 Normalize(const Vector4 &vec) {
     float oolen = WWMath::Inv_Sqrt(len2);
     return vec * oolen;
   }
-  return Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+  return {0.0f, 0.0f, 0.0f, 0.0f};
 }
 
 /**************************************************************************
@@ -369,13 +367,13 @@ WWINLINE void Swap(Vector4 &a, Vector4 &b) {
  *   01/14/1999 NH  : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE Vector4 Lerp(const Vector4 &a, const Vector4 &b, float alpha) {
-  return Vector4((a.X + (b.X - a.X) * alpha), (a.Y + (b.Y - a.Y) * alpha), (a.Z + (b.Z - a.Z) * alpha),
-                 (a.W + (b.W - a.W) * alpha));
+  return {(a.X + (b.X - a.X) * alpha), (a.Y + (b.Y - a.Y) * alpha), (a.Z + (b.Z - a.Z) * alpha),
+                 (a.W + (b.W - a.W) * alpha)};
 }
 
 WWINLINE Vector4 Vector4::Lerp(const Vector4 &a, const Vector4 &b, float alpha) {
-  return Vector4((a.X + (b.X - a.X) * alpha), (a.Y + (b.Y - a.Y) * alpha), (a.Z + (b.Z - a.Z) * alpha),
-                 (a.W + (b.W - a.W) * alpha));
+  return {(a.X + (b.X - a.X) * alpha), (a.Y + (b.Y - a.Y) * alpha), (a.Z + (b.Z - a.Z) * alpha),
+                 (a.W + (b.W - a.W) * alpha)};
 }
 
 WWINLINE void Vector4::Lerp(const Vector4 &a, const Vector4 &b, float alpha, Vector4 *set_result) {
@@ -400,7 +398,7 @@ WWINLINE void Vector4::Lerp(const Vector4 &a, const Vector4 &b, float alpha, Vec
  * HISTORY:                                                                                    *
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool Vector4::Is_Valid(void) const {
+WWINLINE bool Vector4::Is_Valid() const {
   return (WWMath::Is_Valid_Float(X) && WWMath::Is_Valid_Float(Y) && WWMath::Is_Valid_Float(Z) &&
           WWMath::Is_Valid_Float(W));
 }

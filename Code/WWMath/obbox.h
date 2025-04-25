@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -38,9 +39,7 @@
  *   OBBoxClass::Compute_Axis_Aligned_Extent -- computes extent of an AABox enclosing this box *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef OBBOX_H
 #define OBBOX_H
@@ -71,24 +70,24 @@ class PlaneClass;
 */
 class OBBoxClass {
 public:
-  OBBoxClass(void) {}
+  OBBoxClass() = default;
 
   OBBoxClass(const OBBoxClass &that) : Basis(that.Basis), Center(that.Center), Extent(that.Extent) {}
 
-  OBBoxClass(const Vector3 &center, const Vector3 &extent) : Basis(1), Center(center), Extent(extent) {}
+  OBBoxClass(const Vector3 &center, const Vector3 &extent) : Basis(true), Center(center), Extent(extent) {}
 
   OBBoxClass(const Vector3 &center, const Vector3 &extent, const Matrix3 &basis)
       : Basis(basis), Center(center), Extent(extent) {}
 
   OBBoxClass(const Vector3 *points, int num_points);
 
-  bool operator==(const OBBoxClass &src);
-  bool operator!=(const OBBoxClass &src);
+  bool operator==(const OBBoxClass &src) const;
+  bool operator!=(const OBBoxClass &src) const;
 
   void Init_From_Box_Points(Vector3 *points, int num_points);
   void Init_Random(float min_extent = 0.5f, float max_extent = 1.0f);
   float Project_To_Axis(const Vector3 &axis) const;
-  float Volume(void) const { return 2.0 * Extent.X * 2.0 * Extent.Y * 2.0 * Extent.Z; }
+  float Volume() const { return 2.0 * Extent.X * 2.0 * Extent.Y * 2.0 * Extent.Z; }
   void Compute_Point(float params[3], Vector3 *set_point) const;
   void Compute_Axis_Aligned_Extent(Vector3 *set_extent) const;
 
@@ -187,7 +186,7 @@ inline void OBBoxClass::Compute_Point(float params[3], Vector3 *set_point) const
  *   11/15/99   gth : Created.                                                                 *
  *=============================================================================================*/
 inline void OBBoxClass::Compute_Axis_Aligned_Extent(Vector3 *set_extent) const {
-  WWASSERT(set_extent != NULL);
+  WWASSERT(set_extent != nullptr);
 
   // x extent is the box projected onto the x axis
   set_extent->X = WWMath::Fabs(Extent[0] * Basis[0][0]) + WWMath::Fabs(Extent[1] * Basis[0][1]) +
@@ -212,7 +211,7 @@ inline void OBBoxClass::Compute_Axis_Aligned_Extent(Vector3 *set_extent) const {
  * HISTORY:                                                                                    *
  *   6/21/00    PDS : Created.                                                                 *
  *=============================================================================================*/
-inline bool OBBoxClass::operator==(const OBBoxClass &src) {
+inline bool OBBoxClass::operator==(const OBBoxClass &src) const {
   return (Center == src.Center) && (Extent == src.Extent) && (Basis == src.Basis);
 }
 
@@ -228,7 +227,7 @@ inline bool OBBoxClass::operator==(const OBBoxClass &src) {
  * HISTORY:                                                                                    *
  *   6/21/00    PDS : Created.                                                                 *
  *=============================================================================================*/
-inline bool OBBoxClass::operator!=(const OBBoxClass &src) {
+inline bool OBBoxClass::operator!=(const OBBoxClass &src) const {
   return (Center != src.Center) || (Extent != src.Extent) && (Basis == src.Basis);
 }
 

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -52,9 +53,7 @@
  *   Matrix4::operator /= -- "divide equals" operator                                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef MATRIX4_H
 #define MATRIX4_H
@@ -69,7 +68,7 @@ public:
   /*
   ** Constructors
   */
-  Matrix4(void) {};
+  Matrix4() = default;
   Matrix4(const Matrix4 &m);
 
   WWINLINE explicit Matrix4(bool identity);
@@ -77,7 +76,7 @@ public:
   WWINLINE explicit Matrix4(const Matrix3 &m);
   WWINLINE explicit Matrix4(const Vector4 &v0, const Vector4 &v1, const Vector4 &v2, const Vector4 &v3);
 
-  WWINLINE void Make_Identity(void);
+  WWINLINE void Make_Identity();
   WWINLINE void Init(const Matrix3D &m);
   WWINLINE void Init(const Matrix3 &m);
   WWINLINE void Init(const Vector4 &v0, const Vector4 &v1, const Vector4 &v2, const Vector4 &v3);
@@ -99,8 +98,8 @@ public:
   /*
   ** Transpose and Inverse
   */
-  WWINLINE Matrix4 Transpose(void) const;
-  WWINLINE Matrix4 Inverse(void) const;
+  WWINLINE Matrix4 Transpose() const;
+  WWINLINE Matrix4 Inverse() const;
 
   /*
   ** Assignment operators
@@ -254,7 +253,7 @@ WWINLINE Matrix4::Matrix4(const Vector4 &r0, const Vector4 &r1, const Vector4 &r
  * HISTORY:                                                                                    *
  *   11/5/99    gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE void Matrix4::Make_Identity(void) {
+WWINLINE void Matrix4::Make_Identity() {
   Row[0].Set(1.0, 0.0, 0.0, 0.0);
   Row[1].Set(0.0, 1.0, 0.0, 0.0);
   Row[2].Set(0.0, 0.0, 1.0, 0.0);
@@ -456,13 +455,13 @@ WWINLINE Matrix4 Matrix4::Inverse() const // Gauss-Jordan elimination with parti
 
   Matrix4 a(*this); // As a evolves from original mat into identity
   Matrix4 b(true);  // b evolves from identity into inverse(a)
-  int i, j, i1;
+  int i;
 
   // Loop over cols of a from left to right, eliminating above and below diagonal
-  for (j = 0; j < 4; j++) {
+  for (int j = 0; j < 4; j++) {
 
     // Find largest pivot in column j among rows j..3
-    i1 = j;
+    int i1 = j;
     for (i = j + 1; i < 4; i++) {
       if (WWMath::Fabs(a[i][j]) > WWMath::Fabs(a[i1][j])) {
         i1 = i;

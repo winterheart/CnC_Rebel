@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -63,19 +64,15 @@
  *   Vector3::Is_Valid -- Verifies that each component of this vector is a valid float         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
+#include <cassert>
+
 #include "always.h"
 #include "wwmath.h"
-#include <assert.h>
-#ifdef _UNIX
-#include "osdep.h"
-#endif
 
 /*
 ** Vector3 - 3-Dimensional Vectors
@@ -88,7 +85,7 @@ public:
   float Z;
 
   // Constructors
-  WWINLINE Vector3(void) {};
+  WWINLINE Vector3() {};
   WWINLINE Vector3(const Vector3 &v) {
     X = v.X;
     Y = v.Y;
@@ -128,10 +125,10 @@ public:
   WWINLINE const float &operator[](int i) const { return (&X)[i]; }
 
   // normalize, compute length
-  void Normalize(void);
-  WWINLINE float Length(void) const;
-  WWINLINE float Length2(void) const;
-  float Quick_Length(void) const;
+  void Normalize();
+  WWINLINE float Length() const;
+  WWINLINE float Length2() const;
+  float Quick_Length() const;
   void Scale(const Vector3 &scale);
 
   // rotation, (warning, modifies this vector!)
@@ -215,7 +212,7 @@ public:
   WWINLINE void Cap_Absolute_To(const Vector3 &a);
 
   // verify that none of the members of this vector are invalid floats
-  WWINLINE bool Is_Valid(void) const;
+  WWINLINE bool Is_Valid() const;
 
   static WWINLINE float Quick_Distance(const Vector3 &p1, const Vector3 &p2);
   static WWINLINE float Distance(const Vector3 &p1, const Vector3 &p2);
@@ -224,8 +221,8 @@ public:
   static void Lerp(const Vector3 &a, const Vector3 &b, float alpha, Vector3 *set_result);
 
   // Color Conversion
-  WWINLINE unsigned long Convert_To_ABGR(void) const;
-  WWINLINE unsigned long Convert_To_ARGB(void) const;
+  WWINLINE unsigned long Convert_To_ABGR() const;
+  WWINLINE unsigned long Convert_To_ARGB() const;
 };
 
 /**************************************************************************
@@ -441,7 +438,7 @@ WWINLINE float Vector3::Length2() const { return X * X + Y * Y + Z * Z; }
  * HISTORY:                                                                                    *
  *   7/15/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE float Vector3::Quick_Length(void) const {
+WWINLINE float Vector3::Quick_Length() const {
   // this method of approximating the length comes from Graphics Gems 1 and
   // supposedly gives an error of +/- 8%
   float max = WWMath::Fabs(X);
@@ -515,14 +512,14 @@ WWINLINE Vector3 Lerp(const Vector3 &a, const Vector3 &b, float alpha) {
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void Lerp(const Vector3 &a, const Vector3 &b, float alpha, Vector3 *set_result) {
-  assert(set_result != NULL);
+  assert(set_result != nullptr);
   set_result->X = (a.X + (b.X - a.X) * alpha);
   set_result->Y = (a.Y + (b.Y - a.Y) * alpha);
   set_result->Z = (a.Z + (b.Z - a.Z) * alpha);
 }
 
 WWINLINE void Vector3::Lerp(const Vector3 &a, const Vector3 &b, float alpha, Vector3 *set_result) {
-  assert(set_result != NULL);
+  assert(set_result != nullptr);
   set_result->X = (a.X + (b.X - a.X) * alpha);
   set_result->Y = (a.Y + (b.Y - a.Y) * alpha);
   set_result->Z = (a.Z + (b.Z - a.Z) * alpha);
@@ -541,7 +538,7 @@ WWINLINE void Vector3::Lerp(const Vector3 &a, const Vector3 &b, float alpha, Vec
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void Vector3::Add(const Vector3 &a, const Vector3 &b, Vector3 *set_result) {
-  assert(set_result != NULL);
+  assert(set_result != nullptr);
   set_result->X = a.X + b.X;
   set_result->Y = a.Y + b.Y;
   set_result->Z = a.Z + b.Z;
@@ -560,7 +557,7 @@ WWINLINE void Vector3::Add(const Vector3 &a, const Vector3 &b, Vector3 *set_resu
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void Vector3::Subtract(const Vector3 &a, const Vector3 &b, Vector3 *set_result) {
-  assert(set_result != NULL);
+  assert(set_result != nullptr);
   set_result->X = a.X - b.X;
   set_result->Y = a.Y - b.Y;
   set_result->Z = a.Z - b.Z;
@@ -778,7 +775,7 @@ WWINLINE void Vector3::Rotate_Z(float s_angle, float c_angle) {
  * HISTORY:                                                                                    *
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool Vector3::Is_Valid(void) const {
+WWINLINE bool Vector3::Is_Valid() const {
   return (WWMath::Is_Valid_Float(X) && WWMath::Is_Valid_Float(Y) && WWMath::Is_Valid_Float(Z));
 }
 
@@ -840,7 +837,7 @@ WWINLINE float Vector3::Quick_Distance(const Vector3 &p1, const Vector3 &p2) {
  * HISTORY:                                                                                    *
  *   11/29/1999MLL: Created.                                                                   *
  *=============================================================================================*/
-WWINLINE unsigned long Vector3::Convert_To_ABGR(void) const {
+WWINLINE unsigned long Vector3::Convert_To_ABGR() const {
   return (unsigned(255) << 24) | (unsigned(Z * 255.0f) << 16) | (unsigned(Y * 255.0f) << 8) | (unsigned(X * 255.0f));
 }
 
@@ -853,7 +850,7 @@ WWINLINE unsigned long Vector3::Convert_To_ABGR(void) const {
  * HISTORY:                                                                                    *
  *   11/29/1999MLL: Created.                                                                   *
  *=============================================================================================*/
-WWINLINE unsigned long Vector3::Convert_To_ARGB(void) const {
+WWINLINE unsigned long Vector3::Convert_To_ARGB() const {
   return (unsigned(255) << 24) | (unsigned(X * 255.0f) << 16) | (unsigned(Y * 255.0f) << 8) | (unsigned(Z * 255.0f));
 }
 

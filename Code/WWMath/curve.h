@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef CURVE_H
 #define CURVE_H
@@ -53,31 +52,29 @@
 #include "vector3.h"
 #endif
 
-#ifndef PERSIST_H
-#include "persist.h"
-#endif
+#include "persistfactory.h"
 
 class ChunkLoadClass;
 class ChunkSaveClass;
 
 class Curve3DClass : public PersistClass {
 public:
-  Curve3DClass(void);
+  Curve3DClass();
   Curve3DClass(const Curve3DClass &that);
-  virtual ~Curve3DClass(void);
+  virtual ~Curve3DClass();
   Curve3DClass &operator=(const Curve3DClass &that);
 
   virtual void Evaluate(float time, Vector3 *set_val) = 0;
-  virtual bool Is_Looping(void);
+  virtual bool Is_Looping();
   virtual void Set_Looping(bool onoff);
-  virtual int Key_Count(void);
+  virtual int Key_Count();
   virtual void Get_Key(int i, Vector3 *set_point, float *set_t);
   virtual void Set_Key(int i, const Vector3 &point);
   virtual int Add_Key(const Vector3 &point, float t);
   virtual void Remove_Key(int i);
-  virtual void Clear_Keys(void);
-  float Get_Start_Time(void);
-  float Get_End_Time(void);
+  virtual void Clear_Keys();
+  float Get_Start_Time();
+  float Get_End_Time();
 
   // persistant object support
   virtual bool Save(ChunkSaveClass &csave);
@@ -103,7 +100,7 @@ public:
   virtual void Evaluate(float time, Vector3 *set_val);
 
   // persistant object support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 };
@@ -113,22 +110,22 @@ public:
 */
 class Curve1DClass : public PersistClass {
 public:
-  Curve1DClass(void);
+  Curve1DClass();
   Curve1DClass(const Curve1DClass &that);
-  virtual ~Curve1DClass(void);
+  virtual ~Curve1DClass();
   Curve1DClass &operator=(const Curve1DClass &that);
 
   virtual void Evaluate(float time, float *set_val) = 0;
-  virtual bool Is_Looping(void);
+  virtual bool Is_Looping();
   virtual void Set_Looping(bool onoff);
-  virtual int Key_Count(void);
-  virtual void Get_Key(int i, float *set_point, float *set_t, unsigned int *extra = NULL);
+  virtual int Key_Count();
+  virtual void Get_Key(int i, float *set_point, float *set_t, unsigned int *extra = nullptr);
   virtual void Set_Key(int i, float point, unsigned int extra = 0);
   virtual int Add_Key(float point, float t, unsigned int extra = 0);
   virtual void Remove_Key(int i);
-  virtual void Clear_Keys(void);
-  float Get_Start_Time(void);
-  float Get_End_Time(void);
+  virtual void Clear_Keys();
+  float Get_Start_Time();
+  float Get_End_Time();
 
   // persistant object support
   virtual bool Save(ChunkSaveClass &csave);
@@ -157,7 +154,7 @@ public:
   virtual void Evaluate(float time, float *set_val);
 
   // persistant object support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 };

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -116,7 +117,7 @@ enum {
 ** avoid re-generating a difficult to find bug that I had)
 */
 struct BTCollisionStruct {
-  BTCollisionStruct(void) {}
+  BTCollisionStruct() {}
 
   void Init(const AABoxClass &box, const Vector3 &move, const TriClass &tri, const Vector3 &trimove) {
     StartBad = true;       // true until an axis clears it
@@ -190,7 +191,7 @@ static BTCollisionStruct CollisionContext;
  *   4/8/99     GTH : Created.                                                                 *
  *   7/12/99    GTH : Converted original OBBox code to AABox                                   *
  *=============================================================================================*/
-static inline bool aabtri_separation_test(float lp, float leb0, float leb1) {
+static bool aabtri_separation_test(float lp, float leb0, float leb1) {
   /*
   ** - If (I'm no more than 'EPSILON' embedded in the wall)
   **   - not startbad
@@ -252,7 +253,7 @@ static inline bool aabtri_separation_test(float lp, float leb0, float leb1) {
  *   4/8/99     GTH : Created.                                                                 *
  *   7/12/99    GTH : converted to AABox                                                       *
  *=============================================================================================*/
-static inline bool aabtri_check_axis(void) {
+static bool aabtri_check_axis() {
   float dist;     // separation along the axis
   float axismove; // size of the move along the axis.
   float leb0;     // initial coordinate of the leading edge of the box
@@ -308,7 +309,7 @@ static inline bool aabtri_check_axis(void) {
  * HISTORY:                                                                                    *
  *   4/8/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_check_cross_axis(float dp, int dpi, float leb0) {
+static bool aabtri_check_cross_axis(float dp, int dpi, float leb0) {
   float p0;       // distance from box center to vertex 0
   float axismove; // size of the move along the axis.
   float leb1;     // final coordinate of the leading edge of the box
@@ -359,7 +360,7 @@ static inline bool aabtri_check_cross_axis(float dp, int dpi, float leb0) {
  * HISTORY:                                                                                    *
  *   4/8/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_check_basis_axis(float leb0, float dp1, float dp2) {
+static bool aabtri_check_basis_axis(float leb0, float dp1, float dp2) {
   float dist;     // separation along the axis
   float axismove; // size of the move along the axis.
   float leb1;     // final coordinate of the leading edge of the box
@@ -414,7 +415,7 @@ static inline bool aabtri_check_basis_axis(float leb0, float dp1, float dp2) {
  * HISTORY:                                                                                    *
  *   4/8/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_check_normal_axis(void) {
+static bool aabtri_check_normal_axis() {
   float dist;     // separation along the axis
   float axismove; // size of the move along the axis.
   float leb0;     // initial coordinate of the leading edge of the box
@@ -456,7 +457,7 @@ static inline bool aabtri_check_normal_axis(void) {
  * HISTORY:                                                                                    *
  *   4/8/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline float eval_side(float val, int side) {
+static float eval_side(float val, int side) {
   if (val > 0.0f) {
     return side;
   } else if (val < 0.0f) {
@@ -478,7 +479,7 @@ static inline float eval_side(float val, int side) {
  * HISTORY:                                                                                    *
  *   4/8/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline void aabtri_compute_contact_normal(Vector3 &set_norm) {
+static void aabtri_compute_contact_normal(Vector3 &set_norm) {
 #if 1
   switch (CollisionContext.AxisId) {
   case INTERSECTION:
@@ -851,7 +852,7 @@ exit:
 ** avoid re-generating a difficult to find bug that I had)
 */
 struct AABTIntersectStruct {
-  AABTIntersectStruct(void) : Box(NULL), Tri(NULL) {}
+  AABTIntersectStruct() : Box(nullptr), Tri(nullptr) {}
 
   void Init(const AABoxClass &box, const TriClass &tri) {
     Box = &box;
@@ -897,7 +898,7 @@ static AABTIntersectStruct IntersectContext;
  * HISTORY:                                                                                    *
  *   5/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_intersect_cross_axis(Vector3 &axis, float dp, float leb0) {
+static bool aabtri_intersect_cross_axis(Vector3 &axis, float dp, float leb0) {
   float p0; // distance from box center to vertex 0
   float lp; // leading edge of the polygon.
 
@@ -934,7 +935,7 @@ static inline bool aabtri_intersect_cross_axis(Vector3 &axis, float dp, float le
  * HISTORY:                                                                                    *
  *   5/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_intersect_basis_axis(Vector3 &axis, float leb0, float dp1, float dp2) {
+static bool aabtri_intersect_basis_axis(Vector3 &axis, float leb0, float dp1, float dp2) {
   float dist; // separation along the axis
   float lp;   // leading edge of the polygon.
 
@@ -975,7 +976,7 @@ static inline bool aabtri_intersect_basis_axis(Vector3 &axis, float leb0, float 
  * HISTORY:                                                                                    *
  *   5/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-static inline bool aabtri_intersect_normal_axis(Vector3 &axis) {
+static bool aabtri_intersect_normal_axis(Vector3 &axis) {
   float dist; // separation along the axis
   float leb0; // initial coordinate of the leading edge of the box
   float lp;   // leading edge of the polygon.

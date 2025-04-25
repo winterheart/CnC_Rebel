@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef TCBSPLINE_H
 #define TCBSPLINE_H
@@ -51,15 +50,15 @@ class TCBSpline3DClass : public HermiteSpline3DClass {
 public:
   virtual int Add_Key(const Vector3 &point, float t);
   virtual void Remove_Key(int i);
-  virtual void Clear_Keys(void);
+  virtual void Clear_Keys();
 
   virtual void Set_TCB_Params(int i, float tension, float continuity, float bias);
   virtual void Get_TCB_Params(int i, float *tension, float *continuity, float *bias);
 
-  void Update_Tangents(void);
+  void Update_Tangents();
 
   // save-load support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 
@@ -69,10 +68,10 @@ protected:
     float Tension;
     float Continuity;
     float Bias;
-    bool operator==(const TCBClass &that) {
+    bool operator==(const TCBClass &that) const {
       return ((Tension == that.Tension) && (Continuity == that.Continuity) && (Bias == that.Bias));
     }
-    bool operator!=(const TCBClass &that) { return !TCBClass::operator==(that); }
+    bool operator!=(const TCBClass &that) const { return !TCBClass::operator==(that); }
   };
 
   DynamicVectorClass<TCBClass> Params;

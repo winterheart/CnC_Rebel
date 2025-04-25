@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef RECT_H
 #define RECT_H
@@ -51,7 +50,7 @@ public:
   float Bottom;
 
   // Constructors
-  RectClass(void) {};
+  RectClass() {};
   RectClass(const RectClass &r) {
     Left = r.Left;
     Top = r.Top;
@@ -99,14 +98,14 @@ public:
   }
 
   // Access
-  float Width(void) const { return Right - Left; }
-  float Height(void) const { return Bottom - Top; }
-  Vector2 Center(void) const { return Vector2((Left + Right) / 2, (Top + Bottom) / 2); }
-  Vector2 Extent(void) const { return Vector2((Right - Left) / 2, (Bottom - Top) / 2); }
-  Vector2 Upper_Left(void) const { return Vector2(Left, Top); }
-  Vector2 Lower_Right(void) const { return Vector2(Right, Bottom); }
-  Vector2 Upper_Right(void) const { return Vector2(Right, Top); }
-  Vector2 Lower_Left(void) const { return Vector2(Left, Bottom); }
+  float Width() const { return Right - Left; }
+  float Height() const { return Bottom - Top; }
+  Vector2 Center() const { return {(Left + Right) / 2, (Top + Bottom) / 2}; }
+  Vector2 Extent() const { return {(Right - Left) / 2, (Bottom - Top) / 2}; }
+  Vector2 Upper_Left() const { return {Left, Top}; }
+  Vector2 Lower_Right() const { return {Right, Bottom}; }
+  Vector2 Upper_Right() const { return {Right, Top}; }
+  Vector2 Lower_Left() const { return {Left, Bottom}; }
 
   // Scaling
   RectClass &operator*=(float k) { return Scale(k); }

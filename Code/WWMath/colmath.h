@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef COLMATH_H
 #define COLMATH_H
@@ -205,8 +204,8 @@ public:
   // Note that these functions will only work if you have stat tracking enabled
   ////////////////////////////////////////////////////////////////////////////////////////
   struct ColmathStatsStruct {
-    ColmathStatsStruct(void);
-    void Reset(void);
+    ColmathStatsStruct();
+    void Reset();
 
     int TotalCollisionCount;
     int TotalCollisionHitCount;
@@ -227,8 +226,8 @@ public:
     int CollisionOBBoxOBBoxHitCount;
   };
 
-  static void Reset_Stats(void) { Stats.Reset(); }
-  static const ColmathStatsStruct &Get_Current_Stats(void) { return Stats; }
+  static void Reset_Stats() { Stats.Reset(); }
+  static const ColmathStatsStruct &Get_Current_Stats() { return Stats; }
 
 private:
   static OverlapType eval_overlap_mask(int mask);

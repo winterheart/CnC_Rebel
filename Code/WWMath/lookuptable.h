@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -58,12 +59,12 @@ class ChunkLoadClass;
 class LookupTableClass : public RefCountClass, public MultiListObjectClass {
 public:
   LookupTableClass(int sample_count = 256);
-  virtual ~LookupTableClass(void);
+  virtual ~LookupTableClass();
 
   void Init(const char *name, Curve1DClass *curve);
   float Get_Value(float input);
   float Get_Value_Quick(float input);
-  const char *Get_Name(void) { return Name; }
+  const char *Get_Name() { return Name; }
 
 protected:
   StringClass Name; // name of this table, if it came from a file, this is also the filename
@@ -118,12 +119,12 @@ inline float LookupTableClass::Get_Value_Quick(float input) {
 */
 class LookupTableMgrClass {
 public:
-  LookupTableMgrClass(void);
-  ~LookupTableMgrClass(void);
+  LookupTableMgrClass();
+  ~LookupTableMgrClass();
 
   // init and shutdown are automatically called from WWMath::Init, WWMath::Shutdown...
-  static void Init(void);
-  static void Shutdown(void);
+  static void Init();
+  static void Shutdown();
 
   static bool Add_Table(LookupTableClass *table);
   static bool Remove_Table(LookupTableClass *table);
@@ -131,10 +132,10 @@ public:
 
   static void Save_Table_Desc(ChunkSaveClass &csave, Curve1DClass *curve, const Vector2 &min, const Vector2 &max);
 
-  static void Load_Table_Desc(ChunkLoadClass &cload, Curve1DClass **curve_ptr, Vector2 *set_min = NULL,
-                              Vector2 *set_max = NULL);
+  static void Load_Table_Desc(ChunkLoadClass &cload, Curve1DClass **curve_ptr, Vector2 *set_min = nullptr,
+                              Vector2 *set_max = nullptr);
 
-  static void Reset(void);
+  static void Reset();
 
 protected:
   static RefMultiListClass<LookupTableClass> Tables;

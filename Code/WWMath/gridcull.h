@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -51,9 +52,9 @@
  *   GridCullSystemClass::VolumeStruct::Split -- split this volume                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
+
+#include <cstring>
 
 #include "cullsys.h"
 #include "mempool.h"
@@ -61,7 +62,6 @@
 #include "aabox.h"
 #include "lineseg.h"
 #include "obbox.h"
-#include <string.h>
 
 class ChunkLoadClass;
 class ChunkSaveClass;
@@ -85,8 +85,8 @@ class ChunkSaveClass;
 class GridCullSystemClass : public CullSystemClass {
 
 public:
-  GridCullSystemClass(void);
-  ~GridCullSystemClass(void);
+  GridCullSystemClass();
+  ~GridCullSystemClass();
 
   virtual void Collect_Objects(const Vector3 &point);
   virtual void Collect_Objects(const AABoxClass &box);
@@ -99,7 +99,7 @@ public:
   virtual void Load(ChunkLoadClass &cload);
   virtual void Save(ChunkSaveClass &csave);
 
-  virtual int Get_Object_Count(void) const { return ObjCount; }
+  virtual int Get_Object_Count() const { return ObjCount; }
 
   /*
   ** Statistics
@@ -111,17 +111,17 @@ public:
     int NodesRejected;
   };
 
-  void Reset_Statistics(void);
-  const StatsStruct &Get_Statistics(void);
+  void Reset_Statistics();
+  const StatsStruct &Get_Statistics();
 
   void Get_Min_Cell_Size(Vector3 &size) const { size = MinCellSize; }
   void Set_Min_Cell_Size(const Vector3 &size) { MinCellSize = size; }
 
-  int Get_Termination_Count(void) const { return TerminationCellCount; }
+  int Get_Termination_Count() const { return TerminationCellCount; }
   void Set_Termination_Count(int count) { TerminationCellCount = count; }
 
 protected:
-  void Collect_And_Unlink_All(void);
+  void Collect_And_Unlink_All();
   void Add_Object_Internal(CullableClass *obj);
   void Remove_Object_Internal(CullableClass *obj);
 
@@ -156,10 +156,10 @@ protected:
   // Structure used to define a volume in the grid.  The volume spans from the cell indexed
   // by Min[0],Min[1],Min[2] to the cell indexed by Max[0]-1,Max[1]-1,Max[2]-1.
   struct VolumeStruct {
-    VolumeStruct(void);
+    VolumeStruct();
     VolumeStruct(int i0, int j0, int k0, int i1, int j1, int k1);
-    bool Is_Leaf(void) const;
-    bool Is_Empty(void) const;
+    bool Is_Leaf() const;
+    bool Is_Empty() const;
     void Split(VolumeStruct &v0, VolumeStruct &v1) const;
 
     int Min[3];
@@ -177,7 +177,7 @@ protected:
   WWINLINE int map_indices_to_address(int i, int j, int k);
   void clamp_indices_to_grid(int *i, int *j, int *k);
 
-  int total_cell_count(void);
+  int total_cell_count();
   void compute_box(int i, int j, int k, AABoxClass *set_box);
   void compute_box(const VolumeStruct &area, AABoxClass *set_box);
 
@@ -223,7 +223,7 @@ public:
   virtual void Add_Object(T *obj) { Add_Object_Internal(obj); }
   virtual void Remove_Object(T *obj) { Remove_Object_Internal(obj); }
 
-  T *Get_First_Collected_Object(void) { return (T *)Get_First_Collected_Object_Internal(); }
+  T *Get_First_Collected_Object() { return (T *)Get_First_Collected_Object_Internal(); }
   T *Get_Next_Collected_Object(T *obj) { return (T *)Get_Next_Collected_Object_Internal(obj); }
 };
 
@@ -236,7 +236,7 @@ public:
 class GridLinkClass : public CullLinkClass, public AutoPoolClass<GridLinkClass, 256> {
 public:
   GridLinkClass(GridCullSystemClass *system);
-  virtual ~GridLinkClass(void);
+  virtual ~GridLinkClass();
 
   int GridAddress;     // address in the grid.
   CullableClass *Prev; // prev object in this cell
@@ -258,26 +258,26 @@ public:
     Head = head;
     CurObj = head;
   }
-  void First(void) { CurObj = Head; }
-  void Next(void) {
+  void First() { CurObj = Head; }
+  void Next() {
     if (CurObj) {
       CurObj = ((GridLinkClass *)CurObj->Get_Cull_Link())->Next;
     }
   }
-  void Prev(void) {
+  void Prev() {
     if (CurObj) {
       CurObj = ((GridLinkClass *)CurObj->Get_Cull_Link())->Prev;
     }
   }
-  bool Is_Done(void) { return (CurObj == NULL); }
+  bool Is_Done() { return (CurObj == nullptr); }
 
-  CullableClass *Get_Obj(void) {
+  CullableClass *Get_Obj() {
     if (CurObj) {
       CurObj->Add_Ref();
     }
     return CurObj;
   }
-  CullableClass *Peek_Obj(void) { return CurObj; }
+  CullableClass *Peek_Obj() { return CurObj; }
 
 private:
   CullableClass *Head;   // head of the list we're working in
@@ -389,7 +389,7 @@ WWINLINE int GridCullSystemClass::map_indices_to_address(int i, int j, int k) {
  * HISTORY:                                                                                    *
  *   3/30/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE int GridCullSystemClass::total_cell_count(void) { return CellCount[0] * CellCount[1] * CellCount[2]; }
+WWINLINE int GridCullSystemClass::total_cell_count() { return CellCount[0] * CellCount[1] * CellCount[2]; }
 
 /***********************************************************************************************
  * GridCullSystemClass::compute_box -- computes the bounding box for a grid cell               *
@@ -404,7 +404,7 @@ WWINLINE int GridCullSystemClass::total_cell_count(void) { return CellCount[0] *
  *   3/30/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void GridCullSystemClass::compute_box(int i, int j, int k, AABoxClass *set_box) {
-  WWASSERT(set_box != NULL);
+  WWASSERT(set_box != nullptr);
   WWASSERT((i >= 0) && (j >= 0) && (k >= 0));
   WWASSERT((i < CellCount[0]) && (j < CellCount[1]) && (k < CellCount[2]));
 
@@ -434,7 +434,7 @@ WWINLINE void GridCullSystemClass::compute_box(int i, int j, int k, AABoxClass *
  *   3/30/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void GridCullSystemClass::compute_box(const GridCullSystemClass::VolumeStruct &vol, AABoxClass *set_box) {
-  WWASSERT(set_box != NULL);
+  WWASSERT(set_box != nullptr);
   WWASSERT((vol.Min[0] >= 0) && (vol.Min[1] >= 0) && (vol.Min[2] >= 0));
   WWASSERT((vol.Max[0] <= CellCount[0]) && (vol.Max[1] <= CellCount[1]) && (vol.Max[2] <= CellCount[2]));
 
@@ -576,7 +576,7 @@ WWINLINE void GridCullSystemClass::init_volume(const FrustumClass &frustum, Volu
  *                                                                                             *
  * HISTORY:                                                                                    *
  *=============================================================================================*/
-WWINLINE GridCullSystemClass::VolumeStruct::VolumeStruct(void) {}
+WWINLINE GridCullSystemClass::VolumeStruct::VolumeStruct() {}
 
 /***********************************************************************************************
  * GridCullSystemClass::VolumeStruct::VolumeStruct -- constructor                              *
@@ -614,7 +614,7 @@ WWINLINE GridCullSystemClass::VolumeStruct::VolumeStruct(int i0, int j0, int k0,
  * HISTORY:                                                                                    *
  *   3/30/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool GridCullSystemClass::VolumeStruct::Is_Leaf(void) const {
+WWINLINE bool GridCullSystemClass::VolumeStruct::Is_Leaf() const {
   return ((Max[0] - Min[0] == 1) && (Max[1] - Min[1] == 1) && (Max[2] - Min[2] == 1));
 }
 
@@ -630,7 +630,7 @@ WWINLINE bool GridCullSystemClass::VolumeStruct::Is_Leaf(void) const {
  * HISTORY:                                                                                    *
  *   3/30/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool GridCullSystemClass::VolumeStruct::Is_Empty(void) const {
+WWINLINE bool GridCullSystemClass::VolumeStruct::Is_Empty() const {
   return ((Max[0] - Min[0] <= 0) || (Max[1] - Min[1] <= 0) || (Max[2] - Min[2] <= 0));
 }
 

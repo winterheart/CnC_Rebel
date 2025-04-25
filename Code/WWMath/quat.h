@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef QUAT_H
 #define QUAT_H
@@ -58,7 +57,7 @@ public:
   float W;
 
 public:
-  WWINLINE Quaternion(void) {};
+  WWINLINE Quaternion() {};
   WWINLINE explicit Quaternion(bool init) {
     if (init) {
       X = 0.0f;
@@ -82,7 +81,7 @@ public:
     Z = c;
     W = d;
   }
-  WWINLINE void Make_Identity(void) { Set(); };
+  WWINLINE void Make_Identity() { Set(); };
   WWINLINE void Scale(float s) {
     X = (float)(s * X);
     Y = (float)(s * Y);
@@ -105,13 +104,13 @@ public:
   Quaternion &Make_Closest(const Quaternion &qto);
 
   // Square of the magnitude of the quaternion
-  WWINLINE float Length2(void) const { return (X * X + Y * Y + Z * Z + W * W); }
+  WWINLINE float Length2() const { return (X * X + Y * Y + Z * Z + W * W); }
 
   // Magnitude of the quaternion
-  WWINLINE float Length(void) const { return WWMath::Sqrt(Length2()); }
+  WWINLINE float Length() const { return WWMath::Sqrt(Length2()); }
 
   // Make the quaternion unit length
-  void Normalize(void);
+  void Normalize();
 
   // post-concatenate rotations about the coordinate axes
   void Rotate_X(float theta);
@@ -119,14 +118,14 @@ public:
   void Rotate_Z(float theta);
 
   // initialize this quaternion randomly (creates a random *unit* quaternion)
-  void Randomize(void);
+  void Randomize();
 
   // transform (rotate) a vector with this quaternion
   WWINLINE Vector3 Rotate_Vector(const Vector3 &v) const;
   WWINLINE void Rotate_Vector(const Vector3 &v, Vector3 *set_result) const;
 
   // verify that none of the members of this quaternion are invalid floats
-  bool Is_Valid(void) const;
+  bool Is_Valid() const;
 };
 
 // Inverse of the quaternion (1/q)
@@ -226,7 +225,7 @@ WWINLINE Vector3 Quaternion::Rotate_Vector(const Vector3 &v) const {
 }
 
 WWINLINE void Quaternion::Rotate_Vector(const Vector3 &v, Vector3 *result) const {
-  assert(result != NULL);
+  assert(result != nullptr);
 
   float x = W * v.X + (Y * v.Z - v.Y * Z);
   float y = W * v.Y - (X * v.Z - v.X * Z);
@@ -238,7 +237,7 @@ WWINLINE void Quaternion::Rotate_Vector(const Vector3 &v, Vector3 *result) const
   result->Z = w * (-Z) + W * z + (x * (-Y) - (-X) * y);
 }
 
-WWINLINE bool Quaternion::Is_Valid(void) const {
+WWINLINE bool Quaternion::Is_Valid() const {
   return (WWMath::Is_Valid_Float(X) && WWMath::Is_Valid_Float(Y) && WWMath::Is_Valid_Float(Z) &&
           WWMath::Is_Valid_Float(W));
 }
