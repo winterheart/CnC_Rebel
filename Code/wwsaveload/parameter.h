@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,16 +35,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#ifndef __PARAMETER_H
-#define __PARAMETER_H
+#include <cstdlib>
 
 #include "always.h"
-#include <string.h>
-#include <stdlib.h>
 #include "parametertypes.h"
 #include "vector.h"
 #include "wwstring.h"
@@ -98,9 +94,9 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////////////
-  ParameterClass(void);
+  ParameterClass();
   ParameterClass(const ParameterClass &src);
-  virtual ~ParameterClass(void);
+  virtual ~ParameterClass();
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -113,22 +109,22 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // RTTI
-  virtual DefParameterClass *As_DefParameterClass(void) { return NULL; }
+  virtual DefParameterClass *As_DefParameterClass() { return nullptr; }
 
   // Type identification (see paramtypes.h in wwsaveload)
-  virtual Type Get_Type(void) const = 0;
+  virtual Type Get_Type() const = 0;
   virtual bool Is_Type(Type type) const { return false; }
 
   // Modification
-  virtual bool Is_Modifed(void) const { return IsModified; }
+  virtual bool Is_Modifed() const { return IsModified; }
   virtual void Set_Modified(bool onoff = true) { IsModified = onoff; }
 
   // Display name methods
-  virtual const char *Get_Name(void) const;
+  virtual const char *Get_Name() const;
   virtual void Set_Name(const char *new_name);
 
   // Units display methods
-  virtual const char *Get_Units_Name(void) const;
+  virtual const char *Get_Units_Name() const;
   virtual void Set_Units_Name(const char *units_name);
 
   // Copy methods
@@ -153,23 +149,17 @@ private:
 //////////////////////////////////////////////////////////////////////////////////
 //	ParameterClass
 //////////////////////////////////////////////////////////////////////////////////
-inline ParameterClass::ParameterClass(void) : m_Name(NULL), IsModified(false) { return; }
+inline ParameterClass::ParameterClass() : m_Name(nullptr), IsModified(false) {}
 
 //////////////////////////////////////////////////////////////////////////////////
 //	ParameterClass
 //////////////////////////////////////////////////////////////////////////////////
-inline ParameterClass::ParameterClass(const ParameterClass &src) : m_Name(NULL), IsModified(false) {
-  (*this) = src;
-  return;
-}
+inline ParameterClass::ParameterClass(const ParameterClass &src) : m_Name(nullptr), IsModified(false) { (*this) = src; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	~ParameterClass
 //////////////////////////////////////////////////////////////////////////////////
-inline ParameterClass::~ParameterClass(void) {
-  Set_Name(NULL);
-  return;
-}
+inline ParameterClass::~ParameterClass() { Set_Name(nullptr); }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	operator=
@@ -183,36 +173,31 @@ inline const ParameterClass &ParameterClass::operator=(const ParameterClass &src
 //////////////////////////////////////////////////////////////////////////////////
 //	Get_Name
 //////////////////////////////////////////////////////////////////////////////////
-inline const char *ParameterClass::Get_Name(void) const { return m_Name; }
+inline const char *ParameterClass::Get_Name() const { return m_Name; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Set_Name
 //////////////////////////////////////////////////////////////////////////////////
 inline void ParameterClass::Set_Name(const char *new_name) {
-  if (m_Name != NULL) {
+  if (m_Name != nullptr) {
     ::free((void *)m_Name);
-    m_Name = NULL;
+    m_Name = nullptr;
   }
 
-  if (new_name != NULL) {
+  if (new_name != nullptr) {
     m_Name = ::strdup(new_name);
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Get_Units_Name
 //////////////////////////////////////////////////////////////////////////////////
-inline const char *ParameterClass::Get_Units_Name(void) const { return m_UnitsName; }
+inline const char *ParameterClass::Get_Units_Name() const { return m_UnitsName; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Set_Units_Name
 //////////////////////////////////////////////////////////////////////////////////
-inline void ParameterClass::Set_Units_Name(const char *new_name) {
-  m_UnitsName = new_name;
-  return;
-}
+inline void ParameterClass::Set_Units_Name(const char *new_name) { m_UnitsName = new_name; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -226,7 +211,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   StringParameterClass(StringClass *string);
   StringParameterClass(const StringParameterClass &src);
-  virtual ~StringParameterClass(void) {}
+  virtual ~StringParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -240,11 +225,11 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_STRING; }
+  virtual Type Get_Type() const { return TYPE_STRING; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_STRING) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
-  virtual const char *Get_String(void) const;
+  virtual const char *Get_String() const;
   virtual void Set_String(const char *string);
 
   // Copy methods
@@ -269,31 +254,31 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   FilenameParameterClass(StringClass *string);
   FilenameParameterClass(const FilenameParameterClass &src);
-  virtual ~FilenameParameterClass(void) {}
+  virtual ~FilenameParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
   //////////////////////////////////////////////////////////////////////////////
   const FilenameParameterClass &operator=(const FilenameParameterClass &src);
-  bool operator==(const FilenameParameterClass &src);
-  bool operator==(const ParameterClass &src);
+  bool operator==(const FilenameParameterClass &src) const;
+  bool operator==(const ParameterClass &src) const;
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public methods
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_FILENAME; }
+  virtual Type Get_Type() const { return TYPE_FILENAME; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_FILENAME) || StringParameterClass::Is_Type(type); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
 
   virtual void Set_Extension(const char *extension) { m_Extension = extension; }
-  virtual const char *Get_Extension(void) const { return m_Extension; }
+  virtual const char *Get_Extension() const { return m_Extension; }
 
   virtual void Set_Description(const char *desc) { m_Description = desc; }
-  virtual const char *Get_Description(void) const { return m_Description; }
+  virtual const char *Get_Description() const { return m_Description; }
 
 protected:
   //////////////////////////////////////////////////////////////////////////////
@@ -315,7 +300,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   SoundFilenameParameterClass(StringClass *string);
   SoundFilenameParameterClass(const SoundFilenameParameterClass &src);
-  virtual ~SoundFilenameParameterClass(void) {}
+  virtual ~SoundFilenameParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -328,7 +313,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_SOUND_FILENAME; }
+  virtual Type Get_Type() const { return TYPE_SOUND_FILENAME; }
   virtual bool Is_Type(Type type) const {
     return (type == TYPE_SOUND_FILENAME) || FilenameParameterClass::Is_Type(type);
   }
@@ -346,7 +331,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   EnumParameterClass(int *value);
   EnumParameterClass(const EnumParameterClass &src);
-  virtual ~EnumParameterClass(void) {}
+  virtual ~EnumParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -360,13 +345,13 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_ENUM; }
+  virtual Type Get_Type() const { return TYPE_ENUM; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_ENUM) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
   virtual void __cdecl Add_Values(const char *first_name, int first_value, ...);
   virtual void Add_Value(const char *display_name, int value);
-  virtual int Get_Count(void) const { return m_List.Count(); }
+  virtual int Get_Count() const { return m_List.Count(); }
   virtual const char *Get_Entry_Name(int index) const { return m_List[index].name; }
   virtual int Get_Entry_Value(int index) const { return m_List[index].value; }
 
@@ -374,7 +359,7 @@ public:
     (*m_Value) = value;
     Set_Modified();
   }
-  virtual int Get_Selected_Value(void) const { return (*m_Value); }
+  virtual int Get_Selected_Value() const { return (*m_Value); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -387,7 +372,7 @@ protected:
     StringClass name;
     int value;
 
-    _ENUM_VALUE(const char *_name = NULL, int _value = 0) : name(_name), value(_value) {}
+    _ENUM_VALUE(const char *_name = nullptr, int _value = 0) : name(_name), value(_value) {}
     bool operator==(const _ENUM_VALUE &) { return false; }
     bool operator!=(const _ENUM_VALUE &) { return true; }
   } ENUM_VALUE;
@@ -411,7 +396,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   PhysDefParameterClass(int *id);
   PhysDefParameterClass(const PhysDefParameterClass &src);
-  virtual ~PhysDefParameterClass(void) {}
+  virtual ~PhysDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -425,7 +410,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_PHYSDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_PHYSDEFINITIONID; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_PHYSDEFINITIONID) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
@@ -433,9 +418,9 @@ public:
     (*m_Value) = id;
     Set_Modified();
   }
-  virtual int Get_Value(void) const { return (*m_Value); }
+  virtual int Get_Value() const { return (*m_Value); }
   virtual void Set_Base_Class(const char *name) { m_BaseClass = name; }
-  virtual const char *Get_Base_Class(void) const { return m_BaseClass; }
+  virtual const char *Get_Base_Class() const { return m_BaseClass; }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -460,7 +445,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   ModelDefParameterClass(int *id);
   ModelDefParameterClass(const ModelDefParameterClass &src);
-  virtual ~ModelDefParameterClass(void) {}
+  virtual ~ModelDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -474,7 +459,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_MODELDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_MODELDEFINITIONID; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_MODELDEFINITIONID) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
@@ -482,9 +467,9 @@ public:
     (*m_Value) = id;
     Set_Modified();
   }
-  virtual int Get_Value(void) const { return (*m_Value); }
+  virtual int Get_Value() const { return (*m_Value); }
   virtual void Set_Base_Class(const char *name) { m_BaseClass = name; }
-  virtual const char *Get_Base_Class(void) const { return m_BaseClass; }
+  virtual const char *Get_Base_Class() const { return m_BaseClass; }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -509,7 +494,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   DefParameterClass(int *id);
   DefParameterClass(const DefParameterClass &src);
-  virtual ~DefParameterClass(void) {}
+  virtual ~DefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -523,14 +508,14 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   //	RTTI
-  virtual DefParameterClass *As_DefParameterClass(void) { return this; }
+  virtual DefParameterClass *As_DefParameterClass() { return this; }
 
   // Data manipulation
   virtual void Set_Value(int id) {
     (*m_Value) = id;
     Set_Modified();
   }
-  virtual int Get_Value(void) const { return (*m_Value); }
+  virtual int Get_Value() const { return (*m_Value); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -554,7 +539,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   GenericDefParameterClass(int *id);
   GenericDefParameterClass(const GenericDefParameterClass &src);
-  virtual ~GenericDefParameterClass(void) {}
+  virtual ~GenericDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -568,7 +553,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_GENERICDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_GENERICDEFINITIONID; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_GENERICDEFINITIONID) || ParameterClass::Is_Type(type); }
 
   // Class ID control
@@ -576,7 +561,7 @@ public:
     m_ClassID = class_id;
     Set_Modified();
   }
-  virtual int Get_Class_ID(void) const { return m_ClassID; }
+  virtual int Get_Class_ID() const { return m_ClassID; }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -600,7 +585,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   GameObjDefParameterClass(int *id);
   GameObjDefParameterClass(const GameObjDefParameterClass &src);
-  virtual ~GameObjDefParameterClass(void) {}
+  virtual ~GameObjDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -614,7 +599,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_GAMEOBJDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_GAMEOBJDEFINITIONID; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_GAMEOBJDEFINITIONID) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
@@ -622,7 +607,7 @@ public:
     m_BaseClass = name;
     Set_Modified();
   }
-  virtual const char *Get_Base_Class(void) const { return m_BaseClass; }
+  virtual const char *Get_Base_Class() const { return m_BaseClass; }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -646,7 +631,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   AmmoObjDefParameterClass(int *id);
   AmmoObjDefParameterClass(const AmmoObjDefParameterClass &src);
-  virtual ~AmmoObjDefParameterClass(void) {}
+  virtual ~AmmoObjDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -660,7 +645,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_AMMOOBJDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_AMMOOBJDEFINITIONID; }
   virtual bool Is_Type(Type type) const {
     return (type == TYPE_AMMOOBJDEFINITIONID) || GameObjDefParameterClass::Is_Type(type);
   }
@@ -681,7 +666,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   WeaponObjDefParameterClass(int *id);
   WeaponObjDefParameterClass(const WeaponObjDefParameterClass &src);
-  virtual ~WeaponObjDefParameterClass(void) {}
+  virtual ~WeaponObjDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -695,7 +680,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_WEAPONOBJDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_WEAPONOBJDEFINITIONID; }
   virtual bool Is_Type(Type type) const {
     return (type == TYPE_WEAPONOBJDEFINITIONID) || GameObjDefParameterClass::Is_Type(type);
   }
@@ -716,7 +701,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   ExplosionObjDefParameterClass(int *id);
   ExplosionObjDefParameterClass(const ExplosionObjDefParameterClass &src);
-  virtual ~ExplosionObjDefParameterClass(void) {}
+  virtual ~ExplosionObjDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -730,7 +715,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_EXPLOSIONDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_EXPLOSIONDEFINITIONID; }
   virtual bool Is_Type(Type type) const {
     return (type == TYPE_EXPLOSIONDEFINITIONID) || GameObjDefParameterClass::Is_Type(type);
   }
@@ -751,7 +736,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   SoundDefParameterClass(int *id);
   SoundDefParameterClass(const SoundDefParameterClass &src);
-  virtual ~SoundDefParameterClass(void) {}
+  virtual ~SoundDefParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -765,7 +750,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_SOUNDDEFINITIONID; }
+  virtual Type Get_Type() const { return TYPE_SOUNDDEFINITIONID; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_SOUNDDEFINITIONID) || ParameterClass::Is_Type(type); }
 };
 
@@ -781,7 +766,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   ScriptParameterClass(StringClass *name, StringClass *params);
   ScriptParameterClass(const ScriptParameterClass &src);
-  virtual ~ScriptParameterClass(void) {}
+  virtual ~ScriptParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -795,7 +780,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_SCRIPT; }
+  virtual Type Get_Type() const { return TYPE_SCRIPT; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_SCRIPT) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
@@ -803,12 +788,12 @@ public:
     (*m_ScriptName) = name;
     Set_Modified();
   }
-  virtual const char *Get_Script_Name(void) const { return (*m_ScriptName); }
+  virtual const char *Get_Script_Name() const { return (*m_ScriptName); }
   virtual void Set_Params(const char *params) {
     (*m_ScriptParams) = params;
     Set_Modified();
   }
-  virtual const char *Get_Params(void) const { return (*m_ScriptParams); }
+  virtual const char *Get_Params() const { return (*m_ScriptParams); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -833,7 +818,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   DefIDListParameterClass(DynamicVectorClass<int> *list);
   DefIDListParameterClass(const DefIDListParameterClass &src);
-  virtual ~DefIDListParameterClass(void) {}
+  virtual ~DefIDListParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -847,16 +832,16 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_DEFINITIONIDLIST; }
+  virtual Type Get_Type() const { return TYPE_DEFINITIONIDLIST; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_DEFINITIONIDLIST) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
   virtual void Set_Selected_Class_ID(uint32 *id) { m_SelectedClassID = id; }
-  virtual uint32 *Get_Selected_Class_ID(void) const { return m_SelectedClassID; }
+  virtual uint32 *Get_Selected_Class_ID() const { return m_SelectedClassID; }
   virtual void Set_Class_ID(uint32 id) { m_ClassID = id; }
-  virtual uint32 Get_Class_ID(void) const { return m_ClassID; }
+  virtual uint32 Get_Class_ID() const { return m_ClassID; }
 
-  virtual DynamicVectorClass<int> &Get_List(void) const { return (*m_IDList); }
+  virtual DynamicVectorClass<int> &Get_List() const { return (*m_IDList); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -882,7 +867,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   ZoneParameterClass(OBBoxClass *box);
   ZoneParameterClass(const ZoneParameterClass &src);
-  virtual ~ZoneParameterClass(void) {}
+  virtual ~ZoneParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -896,7 +881,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_ZONE; }
+  virtual Type Get_Type() const { return TYPE_ZONE; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_ZONE) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
@@ -904,7 +889,7 @@ public:
     (*m_OBBox) = box;
     Set_Modified();
   }
-  virtual const OBBoxClass &Get_Zone(void) const { return (*m_OBBox); }
+  virtual const OBBoxClass &Get_Zone() const { return (*m_OBBox); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -928,7 +913,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   FilenameListParameterClass(DynamicVectorClass<StringClass> *list);
   FilenameListParameterClass(const FilenameListParameterClass &src);
-  virtual ~FilenameListParameterClass(void) {}
+  virtual ~FilenameListParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -942,11 +927,11 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_FILENAMELIST; }
+  virtual Type Get_Type() const { return TYPE_FILENAMELIST; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_FILENAMELIST) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
-  virtual DynamicVectorClass<StringClass> &Get_List(void) const { return (*m_FilenameList); }
+  virtual DynamicVectorClass<StringClass> &Get_List() const { return (*m_FilenameList); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -970,7 +955,7 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   ScriptListParameterClass(DynamicVectorClass<StringClass> *name_list, DynamicVectorClass<StringClass> *param_list);
   ScriptListParameterClass(const ScriptListParameterClass &src);
-  virtual ~ScriptListParameterClass(void) {}
+  virtual ~ScriptListParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -984,12 +969,12 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_SCRIPTLIST; }
+  virtual Type Get_Type() const { return TYPE_SCRIPTLIST; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_SCRIPTLIST) || ParameterClass::Is_Type(type); }
 
   // Data manipulation
-  virtual DynamicVectorClass<StringClass> &Get_Name_List(void) const { return (*m_NameList); }
-  virtual DynamicVectorClass<StringClass> &Get_Param_List(void) const { return (*m_ParamList); }
+  virtual DynamicVectorClass<StringClass> &Get_Name_List() const { return (*m_NameList); }
+  virtual DynamicVectorClass<StringClass> &Get_Param_List() const { return (*m_ParamList); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
@@ -1017,9 +1002,9 @@ public:
   //////////////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////////////
-  SeparatorParameterClass(void) {}
+  SeparatorParameterClass() {}
   SeparatorParameterClass(const SeparatorParameterClass &src);
-  virtual ~SeparatorParameterClass(void) {}
+  virtual ~SeparatorParameterClass() {}
 
   //////////////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -1033,11 +1018,9 @@ public:
   //////////////////////////////////////////////////////////////////////////////
 
   // Type identification
-  virtual Type Get_Type(void) const { return TYPE_SEPARATOR; }
+  virtual Type Get_Type() const { return TYPE_SEPARATOR; }
   virtual bool Is_Type(Type type) const { return (type == TYPE_SEPARATOR) || ParameterClass::Is_Type(type); }
 
   // Copy methods
   virtual void Copy_Value(const ParameterClass &src);
 };
-
-#endif //__PARAMETER_H

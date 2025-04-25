@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,9 +37,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef WWSAVELOAD_H
 #define WWSAVELOAD_H
@@ -50,8 +49,8 @@
 
 class WWSaveLoad {
 public:
-  static void Init(void);
-  static void Shutdown(void);
+  static void Init();
+  static void Shutdown();
 };
 
 #endif

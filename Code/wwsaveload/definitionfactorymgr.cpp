@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,18 +35,16 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "definitionfactorymgr.h"
 #include "definitionfactory.h"
 #include "wwdebug.h"
-#include <string.h>
-#ifdef _UNIX
-#include "osdep.h"
-#endif
 
 ////////////////////////////////////////////////////////////////////////////
 //	Static member initialization
 ////////////////////////////////////////////////////////////////////////////
-DefinitionFactoryClass *DefinitionFactoryMgrClass::_FactoryListHead = 0;
+DefinitionFactoryClass *DefinitionFactoryMgrClass::_FactoryListHead = nullptr;
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -53,13 +52,13 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::_FactoryListHead = 0;
 //
 ////////////////////////////////////////////////////////////////////////////
 DefinitionFactoryClass *DefinitionFactoryMgrClass::Find_Factory(uint32 class_id) {
-  DefinitionFactoryClass *factory = 0;
+  DefinitionFactoryClass *factory = nullptr;
 
   //
   //	Loop through all the factories and see if we can
   // find the one who owns the corresponding class-id.
   //
-  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == 0) && (curr_factory != 0);
+  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == nullptr) && (curr_factory != nullptr);
        curr_factory = curr_factory->m_NextFactory) {
 
     //
@@ -79,13 +78,13 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::Find_Factory(uint32 class_id)
 //
 ////////////////////////////////////////////////////////////////////////////
 DefinitionFactoryClass *DefinitionFactoryMgrClass::Find_Factory(const char *name) {
-  DefinitionFactoryClass *factory = 0;
+  DefinitionFactoryClass *factory = nullptr;
 
   //
   //	Loop through all the factories and see if we can
   // find the one who owns the corresponding class-id.
   //
-  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == 0) && (curr_factory != 0);
+  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == nullptr) && (curr_factory != nullptr);
        curr_factory = curr_factory->m_NextFactory) {
 
     //
@@ -105,13 +104,13 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::Find_Factory(const char *name
 //
 ////////////////////////////////////////////////////////////////////////////
 DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_First(uint32 superclass_id) {
-  DefinitionFactoryClass *factory = 0;
+  DefinitionFactoryClass *factory = nullptr;
 
   //
   //	Loop through all the factories and see if we can
   // find the next one that belongs to the given superclass
   //
-  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == 0) && (curr_factory != 0);
+  for (DefinitionFactoryClass *curr_factory = _FactoryListHead; (factory == nullptr) && (curr_factory != nullptr);
        curr_factory = curr_factory->m_NextFactory) {
 
     //
@@ -132,13 +131,13 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_First(uint32 superclass_i
 ////////////////////////////////////////////////////////////////////////////
 DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_Next(DefinitionFactoryClass *curr_factory,
                                                             uint32 superclass_id) {
-  DefinitionFactoryClass *factory = 0;
+  DefinitionFactoryClass *factory = nullptr;
 
   //
   //	Loop through all the factories and see if we can
   // find the next one that belongs to the given superclass
   //
-  while ((factory == NULL) && ((curr_factory = curr_factory->m_NextFactory) != NULL)) {
+  while ((factory == nullptr) && ((curr_factory = curr_factory->m_NextFactory) != nullptr)) {
 
     //
     //	Is this the factory we were looking for?
@@ -156,20 +155,20 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_Next(DefinitionFactoryCla
 //	Get_First
 //
 ////////////////////////////////////////////////////////////////////////////
-DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_First(void) { return _FactoryListHead; }
+DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_First() { return _FactoryListHead; }
 
 ////////////////////////////////////////////////////////////////////////////
 //
 //	Get_Next
 //
 ////////////////////////////////////////////////////////////////////////////
-DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_Next(DefinitionFactoryClass *curr_factory) {
-  DefinitionFactoryClass *factory = 0;
+DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_Next(const DefinitionFactoryClass *curr_factory) {
+  DefinitionFactoryClass *factory = nullptr;
 
   //
   //	Simply return the next factory in the chain
   //
-  if (curr_factory != NULL) {
+  if (curr_factory != nullptr) {
     factory = curr_factory->m_NextFactory;
   }
 
@@ -182,10 +181,9 @@ DefinitionFactoryClass *DefinitionFactoryMgrClass::Get_Next(DefinitionFactoryCla
 //
 ////////////////////////////////////////////////////////////////////////////
 void DefinitionFactoryMgrClass::Register_Factory(DefinitionFactoryClass *factory) {
-  WWASSERT(factory->m_NextFactory == 0);
-  WWASSERT(factory->m_PrevFactory == 0);
+  WWASSERT(factory->m_NextFactory == nullptr);
+  WWASSERT(factory->m_PrevFactory == nullptr);
   Link_Factory(factory);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -194,9 +192,8 @@ void DefinitionFactoryMgrClass::Register_Factory(DefinitionFactoryClass *factory
 //
 ////////////////////////////////////////////////////////////////////////////
 void DefinitionFactoryMgrClass::Unregister_Factory(DefinitionFactoryClass *factory) {
-  WWASSERT(factory != 0);
+  WWASSERT(factory != nullptr);
   Unlink_Factory(factory);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -205,20 +202,19 @@ void DefinitionFactoryMgrClass::Unregister_Factory(DefinitionFactoryClass *facto
 //
 ////////////////////////////////////////////////////////////////////////////
 void DefinitionFactoryMgrClass::Link_Factory(DefinitionFactoryClass *factory) {
-  WWASSERT(factory->m_NextFactory == 0);
-  WWASSERT(factory->m_PrevFactory == 0);
+  WWASSERT(factory->m_NextFactory == nullptr);
+  WWASSERT(factory->m_PrevFactory == nullptr);
 
   // Adding this factory in front of the current head of the list
   factory->m_NextFactory = _FactoryListHead;
 
   // If the list wasn't empty, link the next factory back to this factory
-  if (factory->m_NextFactory != 0) {
+  if (factory->m_NextFactory != nullptr) {
     factory->m_NextFactory->m_PrevFactory = factory;
   }
 
   // Point the head of the list at this factory now
   _FactoryListHead = factory;
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -227,10 +223,10 @@ void DefinitionFactoryMgrClass::Link_Factory(DefinitionFactoryClass *factory) {
 //
 ////////////////////////////////////////////////////////////////////////////
 void DefinitionFactoryMgrClass::Unlink_Factory(DefinitionFactoryClass *factory) {
-  WWASSERT(factory != 0);
+  WWASSERT(factory != nullptr);
 
   // Handle the factory's prev pointer:
-  if (factory->m_PrevFactory == 0) {
+  if (factory->m_PrevFactory == nullptr) {
 
     // this factory is the head
     WWASSERT(_FactoryListHead == factory);
@@ -243,13 +239,12 @@ void DefinitionFactoryMgrClass::Unlink_Factory(DefinitionFactoryClass *factory) 
   }
 
   // Handle the factory's next pointer if its not at the end of the list:
-  if (factory->m_NextFactory != 0) {
+  if (factory->m_NextFactory != nullptr) {
 
     factory->m_NextFactory->m_PrevFactory = factory->m_PrevFactory;
   }
 
   // factory is now un-linked
-  factory->m_NextFactory = 0;
-  factory->m_PrevFactory = 0;
-  return;
+  factory->m_NextFactory = nullptr;
+  factory->m_PrevFactory = nullptr;
 }

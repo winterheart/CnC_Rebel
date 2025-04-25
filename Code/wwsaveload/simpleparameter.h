@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __SIMPLE_PARAMETER_H
-#define __SIMPLE_PARAMETER_H
 
 #include "always.h"
 #include "parameter.h"
@@ -47,7 +43,6 @@
 #include "vector3.h"
 #include "matrix3d.h"
 #include "rect.h"
-#include <float.h>
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -69,11 +64,11 @@ public:
   ///////////////////////////////////////////////////////////////////////
   //	Public methods
   ///////////////////////////////////////////////////////////////////////
-  const T &Get_Value(void) const;
+  const T &Get_Value() const;
   void Set_Value(const T &new_value);
 
   // From Parameter class
-  ParameterClass::Type Get_Type(void) const;
+  ParameterClass::Type Get_Type() const;
   void Copy_Value(const ParameterClass &src);
 
 private:
@@ -92,14 +87,13 @@ template <class T, ParameterClass::Type type>
 inline SimpleParameterClass<T, type>::SimpleParameterClass(void *data, const char *name) {
   Set_Name(name);
   m_Data = (T *)data;
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Get_Value
 //////////////////////////////////////////////////////////////////////////////////
 template <class T, ParameterClass::Type type>
-inline bool SimpleParameterClass<T, type>::operator==(const ParameterClass &src) {
+bool SimpleParameterClass<T, type>::operator==(const ParameterClass &src) {
   bool retval = false;
   if (src.Get_Type() == Get_Type()) {
     retval = ((*m_Data) == *(((const SimpleParameterClass &)src).m_Data));
@@ -111,7 +105,7 @@ inline bool SimpleParameterClass<T, type>::operator==(const ParameterClass &src)
 //////////////////////////////////////////////////////////////////////////////////
 //	Get_Value
 //////////////////////////////////////////////////////////////////////////////////
-template <class T, ParameterClass::Type type> inline const T &SimpleParameterClass<T, type>::Get_Value(void) const {
+template <class T, ParameterClass::Type type> inline const T &SimpleParameterClass<T, type>::Get_Value() const {
   return (*m_Data);
 }
 
@@ -121,14 +115,12 @@ template <class T, ParameterClass::Type type> inline const T &SimpleParameterCla
 template <class T, ParameterClass::Type type> inline void SimpleParameterClass<T, type>::Set_Value(const T &new_value) {
   (*m_Data) = new_value;
   Set_Modified();
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Get_Type
 //////////////////////////////////////////////////////////////////////////////////
-template <class T, ParameterClass::Type type>
-inline ParameterClass::Type SimpleParameterClass<T, type>::Get_Type(void) const {
+template <class T, ParameterClass::Type type> ParameterClass::Type SimpleParameterClass<T, type>::Get_Type() const {
   return type;
 }
 
@@ -136,13 +128,12 @@ inline ParameterClass::Type SimpleParameterClass<T, type>::Get_Type(void) const 
 //	Copy_Value
 //////////////////////////////////////////////////////////////////////////////////
 template <class T, ParameterClass::Type type>
-inline void SimpleParameterClass<T, type>::Copy_Value(const ParameterClass &src) {
+void SimpleParameterClass<T, type>::Copy_Value(const ParameterClass &src) {
   if (Get_Type() == src.Get_Type()) {
     (*m_Data) = ((SimpleParameterClass<T, type> &)src).Get_Value();
   }
 
   ParameterClass::Copy_Value(src);
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -179,8 +170,8 @@ public:
     m_Min = min;
     m_Max = max;
   }
-  const T &Get_Min(void) const { return m_Min; }
-  const T &Get_Max(void) const { return m_Max; }
+  const T &Get_Min() const { return m_Min; }
+  const T &Get_Max() const { return m_Max; }
 
 private:
   ///////////////////////////////////////////////////////////////////////
@@ -221,5 +212,3 @@ public:
     Set_Range(0.0F, 6.283185307F);
   }
 };
-
-#endif //__SIMPLE_PARAMETER_H

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,12 +51,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 class PostLoadableClass {
 public:
-  PostLoadableClass(void) : IsPostLoadRegistered(false) {}
-  virtual ~PostLoadableClass(void) {}
+  PostLoadableClass() : IsPostLoadRegistered(false) {}
+  virtual ~PostLoadableClass() = default;
 
-  virtual void On_Post_Load(void) {}
+  virtual void On_Post_Load() {}
 
-  bool Is_Post_Load_Registered(void) { return IsPostLoadRegistered; }
+  bool Is_Post_Load_Registered() const { return IsPostLoadRegistered; }
   void Set_Post_Load_Registered(bool onoff) { IsPostLoadRegistered = onoff; }
 
 private:

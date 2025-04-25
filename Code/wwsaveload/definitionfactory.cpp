@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -42,9 +43,8 @@
 //	DefinitionFactoryClass
 //
 /////////////////////////////////////////////////////////
-DefinitionFactoryClass::DefinitionFactoryClass(void) : m_NextFactory(0), m_PrevFactory(0) {
+DefinitionFactoryClass::DefinitionFactoryClass() : m_NextFactory(nullptr), m_PrevFactory(nullptr) {
   DefinitionFactoryMgrClass::Register_Factory(this);
-  return;
 }
 
 /////////////////////////////////////////////////////////
@@ -52,7 +52,6 @@ DefinitionFactoryClass::DefinitionFactoryClass(void) : m_NextFactory(0), m_PrevF
 //	~DefinitionFactoryClass
 //
 /////////////////////////////////////////////////////////
-DefinitionFactoryClass::~DefinitionFactoryClass(void) {
+DefinitionFactoryClass::~DefinitionFactoryClass() {
   DefinitionFactoryMgrClass::Unregister_Factory(this);
-  return;
 }

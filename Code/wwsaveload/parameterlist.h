@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __PARAMETER_LIST_H
-#define __PARAMETER_LIST_H
 
 #include "always.h"
 #include "vector.h"
@@ -56,7 +52,7 @@ public:
   /////////////////////////////////////////////////////////////////////
   // Public constructurs/destructors
   /////////////////////////////////////////////////////////////////////
-  ~ParameterListClass(void);
+  ~ParameterListClass();
 
   /////////////////////////////////////////////////////////////////////
   // Public methods
@@ -68,7 +64,7 @@ protected:
   /////////////////////////////////////////////////////////////////////
   // Protected methods
   /////////////////////////////////////////////////////////////////////
-  void Free_Parameters(void);
+  void Free_Parameters();
 
 private:
   /////////////////////////////////////////////////////////////////////
@@ -80,10 +76,7 @@ private:
 /////////////////////////////////////////////////////////////////////
 // ~ParameterListClass
 /////////////////////////////////////////////////////////////////////
-inline ParameterListClass::~ParameterListClass(void) {
-  Free_Parameters();
-  return;
-}
+inline ParameterListClass::~ParameterListClass() { Free_Parameters(); }
 
 /////////////////////////////////////////////////////////////////////
 // Add
@@ -97,12 +90,10 @@ inline void ParameterListClass::Add(void *data, const char *param_name, Paramete
   //
   //	Add the new paramter object to our list
   //
-  WWASSERT(new_param != NULL);
-  if (new_param != NULL) {
+  WWASSERT(new_param != nullptr);
+  if (new_param != nullptr) {
     DynamicVectorClass<ParameterClass *>::Add(new_param);
   }
-
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -112,30 +103,23 @@ inline void ParameterListClass::Add(ParameterClass *new_param) {
   //
   //	Add the new paramter object to our list
   //
-  if (new_param != NULL) {
+  if (new_param != nullptr) {
     DynamicVectorClass<ParameterClass *>::Add(new_param);
   }
-
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////
 // Free_Parameters
 /////////////////////////////////////////////////////////////////////
-inline void ParameterListClass::Free_Parameters(void) {
+inline void ParameterListClass::Free_Parameters() {
   for (int index = 0; index < Count(); index++) {
     ParameterClass *param = Vector[index];
 
     //
     //	Free the parameter object
     //
-    if (param != NULL) {
-      delete param;
-    }
+    delete param;
   }
 
   m_Parameters.Delete_All();
-  return;
 }
-
-#endif //__PARAMETER_LIST_H

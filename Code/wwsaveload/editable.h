@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __EDITABLE_H
-#define __EDITABLE_H
 
 #include "always.h"
 #include "persist.h"
@@ -62,7 +58,7 @@ public:
   // by the DECLARE_EDITABLE macro.
   //
   /////////////////////////////////////////////////////////////////////
-  virtual int Get_Parameter_Count(void) const;
+  virtual int Get_Parameter_Count() const;
   virtual ParameterClass *Lock_Parameter(int i);
   virtual void Unlock_Parameter(int i);
 };
@@ -70,20 +66,20 @@ public:
 /////////////////////////////////////////////////////////////////////
 //	Get_Parameter_Count
 /////////////////////////////////////////////////////////////////////
-inline int EditableClass::Get_Parameter_Count(void) const { return 0; }
+inline int EditableClass::Get_Parameter_Count() const { return 0; }
 
 /////////////////////////////////////////////////////////////////////
 //	Get_Parameter
 /////////////////////////////////////////////////////////////////////
 inline ParameterClass *EditableClass::Lock_Parameter(int i) {
   WWASSERT(0);
-  return NULL;
+  return nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////
 //	Set_Parameter
 /////////////////////////////////////////////////////////////////////
-inline void EditableClass::Unlock_Parameter(int i) { return; }
+inline void EditableClass::Unlock_Parameter(int i) {}
 
 // #define	PARAM_EDITING_ON
 #ifdef PARAM_EDITING_ON
@@ -317,5 +313,3 @@ inline void EditableClass::Unlock_Parameter(int i) { return; }
 #define GENERIC_DEFID_PARAM(_class, data, root_class_id)
 
 #endif // PARAM_EDITING_ON
-
-#endif //__EDITABLE_H

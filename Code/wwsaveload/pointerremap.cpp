@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,21 +41,21 @@
 
 const int POINTER_TABLES_GROWTH_STEP = 4096;
 
-PointerRemapClass::PointerRemapClass(void) {
+PointerRemapClass::PointerRemapClass() {
   PointerPairTable.Set_Growth_Step(POINTER_TABLES_GROWTH_STEP);
   PointerRequestTable.Set_Growth_Step(POINTER_TABLES_GROWTH_STEP);
   RefCountRequestTable.Set_Growth_Step(POINTER_TABLES_GROWTH_STEP);
 }
 
-PointerRemapClass::~PointerRemapClass(void) {}
+PointerRemapClass::~PointerRemapClass() = default;
 
-void PointerRemapClass::Reset(void) {
+void PointerRemapClass::Reset() {
   PointerPairTable.Delete_All();
   PointerRequestTable.Delete_All();
   RefCountRequestTable.Delete_All();
 }
 
-void PointerRemapClass::Process(void) {
+void PointerRemapClass::Process() {
   if (PointerPairTable.Count() > 0) {
     qsort(&PointerPairTable[0], PointerPairTable.Count(), sizeof(PointerPairTable[0]), ptr_pair_compare_function);
   }
@@ -106,7 +107,7 @@ void PointerRemapClass::Process_Request_Table(DynamicVectorClass<PtrRemapStruct>
       // warn the user, set pointer to NULL, reset index to the pre_search_index.
       // If this happens, things could be going very wrong.  (find out why its happening!)
       pair_index = pre_search_index;
-      *request_table[pointer_index].PointerToRemap = NULL;
+      *request_table[pointer_index].PointerToRemap = nullptr;
 #ifdef WWDEBUG
       const char *file = request_table[pointer_index].File;
       int line = request_table[pointer_index].Line;

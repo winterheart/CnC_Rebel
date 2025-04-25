@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -71,28 +72,27 @@ SimplePersistFactoryClass<TwiddlerClass, CHUNKID_TWIDDLER> _TwiddlerPersistFacto
 //	TwiddlerClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-TwiddlerClass::TwiddlerClass(void)
+TwiddlerClass::TwiddlerClass()
     : m_IndirectClassID(0)
 
 {
   CLASSID_DEFIDLIST_PARAM(TwiddlerClass, m_DefinitionList, 0, m_IndirectClassID, "Preset List");
-  return;
-}
+  }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	~TwiddlerClass
 //
 //////////////////////////////////////////////////////////////////////////////////
-TwiddlerClass::~TwiddlerClass(void) { return; }
+TwiddlerClass::~TwiddlerClass() { return; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	Twiddle
 //
 //////////////////////////////////////////////////////////////////////////////////
-DefinitionClass *TwiddlerClass::Twiddle(void) const {
-  DefinitionClass *definition = NULL;
+DefinitionClass *TwiddlerClass::Twiddle() const {
+  DefinitionClass *definition = nullptr;
 
   if (m_DefinitionList.Count() > 0) {
 
@@ -117,14 +117,14 @@ DefinitionClass *TwiddlerClass::Twiddle(void) const {
 //	Create
 //
 //////////////////////////////////////////////////////////////////////////////////
-PersistClass *TwiddlerClass::Create(void) const {
-  PersistClass *retval = NULL;
+PersistClass *TwiddlerClass::Create() const {
+  PersistClass *retval = nullptr;
 
   //
   //	Pick a random definition
   //
   DefinitionClass *definition = Twiddle();
-  if (definition != NULL) {
+  if (definition != nullptr) {
 
     //
     //	Indirect the creation to the definition we randomly selected
@@ -140,7 +140,7 @@ PersistClass *TwiddlerClass::Create(void) const {
 //	Get_Factory
 //
 //////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &TwiddlerClass::Get_Factory(void) const { return _TwiddlerPersistFactory; }
+const PersistFactoryClass &TwiddlerClass::Get_Factory() const { return _TwiddlerPersistFactory; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //

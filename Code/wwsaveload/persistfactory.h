@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef PERSISTFACTORY_H
 #define PERSISTFACTORY_H
@@ -58,10 +57,10 @@
 
 class PersistFactoryClass {
 public:
-  PersistFactoryClass(void);
-  virtual ~PersistFactoryClass(void);
+  PersistFactoryClass();
+  virtual ~PersistFactoryClass();
 
-  virtual uint32 Chunk_ID(void) const = 0;
+  virtual uint32 Chunk_ID() const = 0;
   virtual PersistClass *Load(ChunkLoadClass &cload) const = 0;
   virtual void Save(ChunkSaveClass &csave, PersistClass *obj) const = 0;
 
@@ -78,7 +77,7 @@ private:
 */
 template <class T, int CHUNKID> class SimplePersistFactoryClass : public PersistFactoryClass {
 public:
-  virtual uint32 Chunk_ID(void) const { return CHUNKID; }
+  virtual uint32 Chunk_ID() const { return CHUNKID; }
   virtual PersistClass *Load(ChunkLoadClass &cload) const;
   virtual void Save(ChunkSaveClass &csave, PersistClass *obj) const;
 
@@ -90,7 +89,7 @@ public:
 
 template <class T, int CHUNKID> PersistClass *SimplePersistFactoryClass<T, CHUNKID>::Load(ChunkLoadClass &cload) const {
   T *new_obj = new T;
-  T *old_obj = NULL;
+  T *old_obj = nullptr;
 
   cload.Open_Chunk();
   WWASSERT(cload.Cur_Chunk_ID() == SIMPLEFACTORY_CHUNKID_OBJPOINTER);

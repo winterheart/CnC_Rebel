@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -57,7 +58,7 @@ class ChunkLoadClass;
 //////////////////////////////////////////////////////////////////////////////////
 class PersistClass : public PostLoadableClass {
 public:
-  virtual const PersistFactoryClass &Get_Factory(void) const = 0;
+  virtual const PersistFactoryClass &Get_Factory() const = 0;
   virtual bool Save(ChunkSaveClass &csave) { return true; }
   virtual bool Load(ChunkLoadClass &cload) { return true; }
 };

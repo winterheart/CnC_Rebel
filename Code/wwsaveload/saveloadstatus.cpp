@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,8 +40,8 @@ void SaveLoadStatus::Get_Status_Text(StringClass &text, int id) {
 }
 
 static int status_count;
-void SaveLoadStatus::Reset_Status_Count(void) { status_count = 0; }
+void SaveLoadStatus::Reset_Status_Count() { status_count = 0; }
 
-void SaveLoadStatus::Inc_Status_Count(void) { status_count++; }
+void SaveLoadStatus::Inc_Status_Count() { status_count++; }
 
-int SaveLoadStatus::Get_Status_Count(void) { return status_count; }
+int SaveLoadStatus::Get_Status_Count() { return status_count; }
