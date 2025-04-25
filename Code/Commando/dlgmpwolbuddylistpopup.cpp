@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolbuddylistpopup.cpp   $*
  *                                                                                             *
@@ -34,138 +35,116 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "dlgmpwolbuddylistpopup.h"
 #include "dlgmpwolpagebuddy.h"
 #include "WOLBuddyMgr.h"
 #include "listctrl.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolBuddyListPopupClass
 //
 ////////////////////////////////////////////////////////////////
-MPWolBuddyListPopupClass::MPWolBuddyListPopupClass (void)	:
-	Observer (NULL),
-	PopupDialogClass (IDD_MP_WOL_BUDDY_LIST_POPUP)
-{
-	return ;
+MPWolBuddyListPopupClass::MPWolBuddyListPopupClass(void)
+    : Observer(NULL), PopupDialogClass(IDD_MP_WOL_BUDDY_LIST_POPUP) {
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolBuddyListPopupClass::On_Init_Dialog (void)
-{	
-	//
-	//	Configure the list ctrl
-	//
-	ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item (IDC_BUDDY_LIST_CTRL);
-	if (list_ctrl != NULL) {
-		list_ctrl->Add_Column (L"", 1.0F, Vector3 (1, 1, 1));		
+void MPWolBuddyListPopupClass::On_Init_Dialog(void) {
+  //
+  //	Configure the list ctrl
+  //
+  ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item(IDC_BUDDY_LIST_CTRL);
+  if (list_ctrl != NULL) {
+    list_ctrl->Add_Column(L"", 1.0F, Vector3(1, 1, 1));
 
-		//
-		//	Loop over all the buddies
-		//
-		WOLBuddyMgr* buddyMgr = WOLBuddyMgr::GetInstance(false);
+    //
+    //	Loop over all the buddies
+    //
+    WOLBuddyMgr *buddyMgr = WOLBuddyMgr::GetInstance(false);
 
-		if (buddyMgr) {
-			const WWOnline::UserList& list = buddyMgr->GetBuddyList();
-			const unsigned int count = list.size();
-			
-			for (unsigned int index = 0; index < count; ++index) {
-				const RefPtr<WWOnline::UserData>& user = list[index];
+    if (buddyMgr) {
+      const WWOnline::UserList &list = buddyMgr->GetBuddyList();
+      const unsigned int count = list.size();
 
-				if (user->GetLocation() != WWOnline::USERLOCATION_OFFLINE) {
-					list_ctrl->Insert_Entry(index, user->GetName());
-				}
-			}
+      for (unsigned int index = 0; index < count; ++index) {
+        const RefPtr<WWOnline::UserData> &user = list[index];
 
-			buddyMgr->Release_Ref();
-		}
-	}
+        if (user->GetLocation() != WWOnline::USERLOCATION_OFFLINE) {
+          list_ctrl->Insert_Entry(index, user->GetName());
+        }
+      }
 
-	PopupDialogClass::On_Init_Dialog ();
-	return ;
+      buddyMgr->Release_Ref();
+    }
+  }
+
+  PopupDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolBuddyListPopupClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id)
-	{
-		case IDC_SELECT_BUTTON:
-			On_Select ();
-			break;
-	}
+void MPWolBuddyListPopupClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  case IDC_SELECT_BUTTON:
+    On_Select();
+    break;
+  }
 
-	PopupDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_ListCtrl_DblClk
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolBuddyListPopupClass::On_ListCtrl_DblClk
-(
-	ListCtrlClass *list_ctrl,
-	int				ctrl_id,
-	int				item_index
-)
-{
-	On_Select ();
-	return ;
+void MPWolBuddyListPopupClass::On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctrl_id, int item_index) {
+  On_Select();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Select
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolBuddyListPopupClass::On_Select (void)
-{
-	ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item (IDC_BUDDY_LIST_CTRL);
-	if (list_ctrl == NULL) {
-		return ;
-	}
+void MPWolBuddyListPopupClass::On_Select(void) {
+  ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item(IDC_BUDDY_LIST_CTRL);
+  if (list_ctrl == NULL) {
+    return;
+  }
 
-	//
-	//	Get the currently selected entry from the list control
-	//	
-	int curr_sel = list_ctrl->Get_Curr_Sel ();
-	if (curr_sel != -1) {
+  //
+  //	Get the currently selected entry from the list control
+  //
+  int curr_sel = list_ctrl->Get_Curr_Sel();
+  if (curr_sel != -1) {
 
-		//
-		//	Record the name of the entry
-		//
-		SelectedUserName = list_ctrl->Get_Entry_Text (curr_sel, 0);
-		
-		//
-		//	Notify the observer (if necessary)
-		//
-		if (Observer != NULL) {
-			Observer->Set_Buddy_Name(SelectedUserName);
-		}
-						
-		End_Dialog ();
-	}
-	
-	return ;
+    //
+    //	Record the name of the entry
+    //
+    SelectedUserName = list_ctrl->Get_Entry_Text(curr_sel, 0);
+
+    //
+    //	Notify the observer (if necessary)
+    //
+    if (Observer != NULL) {
+      Observer->Set_Buddy_Name(SelectedUserName);
+    }
+
+    End_Dialog();
+  }
+
+  return;
 }

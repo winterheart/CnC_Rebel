@@ -17,24 +17,23 @@
 */
 
 /* $Header: /Commando/Code/ww3d2/htreemgr.h 2     9/19/01 6:17p Jani_p $ */
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando / G 3D Library                                      * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/ww3d2/htreemgr.h                             $* 
- *                                                                                             * 
- *                       Author:: Greg_h                                                       * 
- *                                                                                             * 
- *                     $Modtime:: 9/13/01 7:22p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando / G 3D Library                                      *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/ww3d2/htreemgr.h                             $*
+ *                                                                                             *
+ *                       Author:: Greg_h                                                       *
+ *                                                                                             *
+ *                     $Modtime:: 9/13/01 7:22p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #if defined(_MSC_VER)
 #pragma once
@@ -54,43 +53,36 @@ class StringClass;
 
 /*
 
-	HTreeManagerClass
+        HTreeManagerClass
 
-	This class is used to keep track of all of the hierarchy trees.
-	A hierarchy tree is the base pose for a hierarchy model.
+        This class is used to keep track of all of the hierarchy trees.
+        A hierarchy tree is the base pose for a hierarchy model.
 
 */
-class HTreeManagerClass
-{
+class HTreeManagerClass {
 
 public:
+  HTreeManagerClass(void);
+  ~HTreeManagerClass(void);
 
-	HTreeManagerClass(void);
-	~HTreeManagerClass(void);
+  int Load_Tree(ChunkLoadClass &cload);
+  int Num_Trees(void) { return NumTrees; }
+  HTreeClass *Get_Tree(const char *name);
+  HTreeClass *Get_Tree(int id);
+  uint32 Get_Tree_Handle(char *name);
+  void Free_All_Trees(void);
 
-	int							Load_Tree(ChunkLoadClass & cload);
-	int							Num_Trees(void) { return NumTrees; }
-	HTreeClass *				Get_Tree(const char * name);
-	HTreeClass *				Get_Tree(int id);
-	uint32						Get_Tree_Handle(char * name);
-	void							Free_All_Trees(void);
-
-	int							Get_Tree_ID(const char * name);
-   char *						Get_Tree_Name(const int id);
+  int Get_Tree_ID(const char *name);
+  char *Get_Tree_Name(const int id);
 
 private:
+  enum { MAX_TREES = 4096 };
 
-	enum {
-		MAX_TREES = 4096
-	};
+  void Free(void);
 
-	void Free(void);
-
-	int							NumTrees;
-	HTreeClass *				TreePtr[MAX_TREES];		// TODO: no no! make this dynamic...
-	HashTemplateClass<StringClass,HTreeClass*> TreeHash;
-
+  int NumTrees;
+  HTreeClass *TreePtr[MAX_TREES]; // TODO: no no! make this dynamic...
+  HashTemplateClass<StringClass, HTreeClass *> TreeHash;
 };
-
 
 #endif

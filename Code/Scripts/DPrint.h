@@ -17,39 +17,37 @@
 */
 
 /****************************************************************************
-*
-* FILE
-*     DPrint.h
-*
-* DESCRIPTION
-*     Debug printing mechanism
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Denzil_l $
-*     $Revision: 1 $
-*     $Modtime: 3/24/00 1:27p $
-*     $Archive: /Commando/Code/Scripts/DPrint.h $
-*
-****************************************************************************/
+ *
+ * FILE
+ *     DPrint.h
+ *
+ * DESCRIPTION
+ *     Debug printing mechanism
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Denzil_l $
+ *     $Revision: 1 $
+ *     $Modtime: 3/24/00 1:27p $
+ *     $Archive: /Commando/Code/Scripts/DPrint.h $
+ *
+ ****************************************************************************/
 
 #ifndef _DPRINT_H_
 #define _DPRINT_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifdef _DEBUG
 //! Ouput debug print messages to the debugger and log file.
-void __cdecl DebugPrint(const char* string, ...);
+void __cdecl DebugPrint(const char *string, ...);
 #else
 #define DebugPrint
 #endif
-
 
 #ifdef __cplusplus
 }

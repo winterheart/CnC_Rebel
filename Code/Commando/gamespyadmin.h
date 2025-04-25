@@ -32,55 +32,50 @@
 #include <WWOnline\RefPtr.h>
 // #include <WWLib\RefCount.h>
 
-
 class WideStringClass;
 
 //-----------------------------------------------------------------------------
-class cGameSpyAdmin :
-public Observer<DlgWOLWaitEvent>
+class cGameSpyAdmin : public Observer<DlgWOLWaitEvent>
 //, public RefCountClass
 
 {
 public:
-	static void					Think(void);
-	static void					Reset(void);
+  static void Think(void);
+  static void Reset(void);
 
-	static void					Set_Is_Under_Gamespy_Menuing(bool flag)				{IsUnderGamespyMenuing = flag;}
-	static bool					Get_Is_Under_Gamespy_Menuing(void)						{return IsUnderGamespyMenuing;}
-	static void					Set_Is_Launch_From_Gamespy_Requested(bool flag)		{IsLaunchFromGamespyRequested = flag;}
-	static bool					Get_Is_Launch_From_Gamespy_Requested(void)			{return IsLaunchFromGamespyRequested;}
-	static void					Set_Is_Launched_From_Gamespy(bool flag)				{IsLaunchedFromGamespy = flag;}
-	static bool					Get_Is_Launched_From_Gamespy(void)						{return IsLaunchedFromGamespy;}
-	static void					Set_Is_Server_Gamespy_Listed(bool flag)				{IsServerGamespyListed = flag;}
-	static bool					Get_Is_Server_Gamespy_Listed(void)						{return IsServerGamespyListed;}
-	static void					Set_Game_Host_Ip(ULONG ip);
-	static void					Set_Game_Host_Port(USHORT port);
-	static bool					Is_Gamespy_Game(void);
-	static bool					Is_Nickname_Collision(WideStringClass & nickname);
-	static void					Set_Password_Attempt(WideStringClass & password)	{PasswordAttempt = password;}
-	static WideStringClass & Get_Password_Attempt(void)								{return PasswordAttempt;}
+  static void Set_Is_Under_Gamespy_Menuing(bool flag) { IsUnderGamespyMenuing = flag; }
+  static bool Get_Is_Under_Gamespy_Menuing(void) { return IsUnderGamespyMenuing; }
+  static void Set_Is_Launch_From_Gamespy_Requested(bool flag) { IsLaunchFromGamespyRequested = flag; }
+  static bool Get_Is_Launch_From_Gamespy_Requested(void) { return IsLaunchFromGamespyRequested; }
+  static void Set_Is_Launched_From_Gamespy(bool flag) { IsLaunchedFromGamespy = flag; }
+  static bool Get_Is_Launched_From_Gamespy(void) { return IsLaunchedFromGamespy; }
+  static void Set_Is_Server_Gamespy_Listed(bool flag) { IsServerGamespyListed = flag; }
+  static bool Get_Is_Server_Gamespy_Listed(void) { return IsServerGamespyListed; }
+  static void Set_Game_Host_Ip(ULONG ip);
+  static void Set_Game_Host_Port(USHORT port);
+  static bool Is_Gamespy_Game(void);
+  static bool Is_Nickname_Collision(WideStringClass &nickname);
+  static void Set_Password_Attempt(WideStringClass &password) { PasswordAttempt = password; }
+  static WideStringClass &Get_Password_Attempt(void) { return PasswordAttempt; }
 
 private:
-	void						HandleNotification(DlgWOLWaitEvent& event);
-	static void					Join_Server(void);
-	static void					Connect_To_Game_Server(void);
+  void HandleNotification(DlgWOLWaitEvent &event);
+  static void Join_Server(void);
+  static void Connect_To_Game_Server(void);
 
-	static bool					DetectingBandwidth;
-	static bool					IsUnderGamespyMenuing;
-	static bool					IsLaunchFromGamespyRequested;
-	static bool					IsLaunchedFromGamespy;
-	static bool					IsServerGamespyListed;
-	static ULONG				GameHostIp;
-	static USHORT				GameHostPort;
-	static WideStringClass	PasswordAttempt;
+  static bool DetectingBandwidth;
+  static bool IsUnderGamespyMenuing;
+  static bool IsLaunchFromGamespyRequested;
+  static bool IsLaunchedFromGamespy;
+  static bool IsServerGamespyListed;
+  static ULONG GameHostIp;
+  static USHORT GameHostPort;
+  static WideStringClass PasswordAttempt;
 };
 
 //-----------------------------------------------------------------------------
 
 #endif // __GAMESPY_H__
 
-
-
-
-	//static WideStringClass	PlayerNickname;
-	//static void					Set_Player_Nickname(WideStringClass & nickname);
+// static WideStringClass	PlayerNickname;
+// static void					Set_Player_Nickname(WideStringClass & nickname);

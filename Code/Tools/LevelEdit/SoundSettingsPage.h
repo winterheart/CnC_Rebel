@@ -27,88 +27,79 @@
 #include <afxext.h>
 #endif
 
-
 #include "dockableform.h"
-
 
 //////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////
 class AudibleSoundDefinitionClass;
 
-
 //////////////////////////////////////////////////////////
 //
 //	SoundSettingsPageClass
 //
 //////////////////////////////////////////////////////////
-class SoundSettingsPageClass : public DockableFormClass
-{
-	public:
-		SoundSettingsPageClass (void);
-		virtual ~SoundSettingsPageClass (void);
-
-// Form Data
+class SoundSettingsPageClass : public DockableFormClass {
 public:
-	//{{AFX_DATA(SoundSettingsPageClass)
-	enum { IDD = IDD_SOUND_SETTINGS };
-	CSliderCtrl	m_VolumeSlider;
-	//}}AFX_DATA
+  SoundSettingsPageClass(void);
+  virtual ~SoundSettingsPageClass(void);
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(SoundSettingsPageClass)
+  enum { IDD = IDD_SOUND_SETTINGS };
+  CSliderCtrl m_VolumeSlider;
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(SoundSettingsPageClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(SoundSettingsPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(SoundSettingsPageClass)
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnChangeVolumeEdit();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(SoundSettingsPageClass)
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnChangeVolumeEdit();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  ///////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
+  void Discard_Changes(void);
 
-	///////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////
-	void			HandleInitDialog (void);
-	bool			Apply_Changes (void);
-	void			Discard_Changes (void);
-
-	//
-	//	Accessors
-	//
-	void			Set_Definition (AudibleSoundDefinitionClass *definition)	{ Definition = definition; }
+  //
+  //	Accessors
+  //
+  void Set_Definition(AudibleSoundDefinitionClass *definition) { Definition = definition; }
 
 protected:
-	
-	///////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////
-	void			Update_Enable_State (void);
+  ///////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////
+  void Update_Enable_State(void);
 
 private:
-
-	///////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////
-	AudibleSoundDefinitionClass *	Definition;
+  ///////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////
+  AudibleSoundDefinitionClass *Definition;
 };
 
 /////////////////////////////////////////////////////////////////////////////

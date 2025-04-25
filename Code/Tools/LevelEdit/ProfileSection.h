@@ -16,20 +16,19 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : LevelEdit                                                    * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Tools/LevelEdit/ProfileSection.h                                                                                                                                        $Author:: Patrick_s                                                    * 
- *                                                                                             * 
- *                     $Modtime:: 4/15/99 6:30p                                                                                                                                                                             $Revision:: 1                                                            * 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : LevelEdit                                                    *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Tools/LevelEdit/ProfileSection.h $Author:: Patrick_s *
+ *                                                                                             *
+ *                     $Modtime:: 4/15/99 6:30p $Revision:: 1 *
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #if defined(_MSC_VER)
 #pragma once
@@ -38,48 +37,40 @@
 #ifndef __PROFILE_SECTION_CLASS_H
 #define __PROFILE_SECTION_CLASS_H
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // ProfileSectionClass
 //
-class ProfileSectionClass
-{
-	public:
+class ProfileSectionClass {
+public:
+  ///////////////////////////////////////////////////
+  //
+  //	Public constructors/destructors
+  //
+  ProfileSectionClass(LPCTSTR section_data) : m_pszSectionData(section_data) { Before_First(); }
 
-		///////////////////////////////////////////////////
-		//
-		//	Public constructors/destructors
-		//
-		ProfileSectionClass (LPCTSTR section_data)
-			: m_pszSectionData (section_data) { Before_First (); }
+  virtual ~ProfileSectionClass(void) {}
 
-		virtual ~ProfileSectionClass (void) {}
+  ///////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void Before_First(void) { m_pszCurrentKey = m_pszSectionData; }
+  bool Get_Next_Key(CString *key_name, CString *key_value);
 
+private:
+  ///////////////////////////////////////////////////
+  //
+  //	Private constructors/destructors
+  //
+  ProfileSectionClass(void) {}
 
-		///////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void				Before_First (void) { m_pszCurrentKey = m_pszSectionData; }
-		bool				Get_Next_Key (CString *key_name, CString *key_value);
-
-	private:
-
-		///////////////////////////////////////////////////
-		//
-		//	Private constructors/destructors
-		//
-		ProfileSectionClass (void) {}
-
-		
-		///////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		LPCTSTR m_pszSectionData;
-		LPCTSTR m_pszCurrentKey;
+  ///////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  LPCTSTR m_pszSectionData;
+  LPCTSTR m_pszCurrentKey;
 };
-
 
 #endif //__PROFILE_SECTION_CLASS_H

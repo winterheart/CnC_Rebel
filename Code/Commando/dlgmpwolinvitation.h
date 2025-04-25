@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolinvitation.h       $*
  *                                                                                             *
@@ -52,19 +53,18 @@ class WOLBuddyMgr;
 //	MPWolInvitationPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolInvitationPopupClass : public PopupDialogClass
-{
+class MPWolInvitationPopupClass : public PopupDialogClass {
 public:
-	MPWolInvitationPopupClass(const RefPtr<WWOnline::UserData>&, const WCHAR*);
-	~MPWolInvitationPopupClass();
+  MPWolInvitationPopupClass(const RefPtr<WWOnline::UserData> &, const WCHAR *);
+  ~MPWolInvitationPopupClass();
 
-	void On_Init_Dialog(void);
-	void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
 protected:
-	RefPtr<WWOnline::UserData> mHost;
-	WideStringClass mInviteMessage;
-	WOLBuddyMgr* mBuddyMgr;
+  RefPtr<WWOnline::UserData> mHost;
+  WideStringClass mInviteMessage;
+  WOLBuddyMgr *mBuddyMgr;
 };
 
 #endif //__DLG_MP_WOL_INVITATION_H

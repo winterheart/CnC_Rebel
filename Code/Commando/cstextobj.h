@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/cstextobj.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:42p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/cstextobj.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:42p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CSTEXTOBJ_H__
@@ -47,28 +47,26 @@
 //
 // A C->S mirrored object for ingame text communications.
 //
-class	cCsTextObj : public cNetEvent
-{
+class cCsTextObj : public cNetEvent {
 public:
-   cCsTextObj(void);
+  cCsTextObj(void);
 
-	void						Init(WideStringClass & text, TextMessageEnum type, int sender_id, int recipient);
+  void Init(WideStringClass &text, TextMessageEnum type, int sender_id, int recipient);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CSTEXTOBJ;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CSTEXTOBJ; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	TextMessageEnum		Type;
-	WideStringClass		Text;
-	int						Recipient;
+  int SenderId;
+  TextMessageEnum Type;
+  WideStringClass Text;
+  int Recipient;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CSTEXTOBJ_H__
+#endif // __CSTEXTOBJ_H__

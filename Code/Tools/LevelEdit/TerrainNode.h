@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -55,153 +54,141 @@
 class PresetClass;
 class CollectionClass;
 
-
 ////////////////////////////////////////////////////////////////////////////
 //
 //	TerrainSectionNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class TerrainSectionNodeClass : public TileNodeClass
-{
+class TerrainSectionNodeClass : public TileNodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	TerrainSectionNodeClass (void)	:
-		Terrain (NULL)						{}
-	~TerrainSectionNodeClass (void)	{}
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  TerrainSectionNodeClass(void) : Terrain(NULL) {}
+  ~TerrainSectionNodeClass(void) {}
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// From NodeClass
-	//
-	NodeClass *	Clone (void)											{ return NULL; }
-	void			Initialize (void)										{}
-	NODE_TYPE	Get_Type (void) const								{ return NODE_TYPE_TERRAIN_SECTION; }
-	int			Get_Icon_Index (void) const						{ return TERRAIN_ICON; }
-	void			Set_Transform (const Matrix3D &tm);
-	void			Special_Set_Transform (const Matrix3D &tm)	{ NodeClass::Set_Transform (tm); }
-	void			Pre_Export (void)		{}
-	void			Post_Export (void)	{}
+  //
+  // From NodeClass
+  //
+  NodeClass *Clone(void) { return NULL; }
+  void Initialize(void) {}
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_TERRAIN_SECTION; }
+  int Get_Icon_Index(void) const { return TERRAIN_ICON; }
+  void Set_Transform(const Matrix3D &tm);
+  void Special_Set_Transform(const Matrix3D &tm) { NodeClass::Set_Transform(tm); }
+  void Pre_Export(void) {}
+  void Post_Export(void) {}
 
-	//
-	// Terrain Section specific
-	//
-	void						Create (RenderObjClass *render_obj);
-	TerrainNodeClass *	Peek_Terrain (void) const						{ return Terrain; }
-	void						Set_Terrain (TerrainNodeClass *terrain)	{ Terrain = terrain; }
+  //
+  // Terrain Section specific
+  //
+  void Create(RenderObjClass *render_obj);
+  TerrainNodeClass *Peek_Terrain(void) const { return Terrain; }
+  void Set_Terrain(TerrainNodeClass *terrain) { Terrain = terrain; }
 
 private:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////
-	TerrainNodeClass	*	Terrain;
+  //////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////
+  TerrainNodeClass *Terrain;
 };
-
 
 ////////////////////////////////////////////////////////////////////////////
 //
 //	TerrainNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class TerrainNodeClass : public NodeClass
-{
+class TerrainNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	TerrainNodeClass (PresetClass *preset = NULL);
-	~TerrainNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  TerrainNodeClass(PresetClass *preset = NULL);
+  ~TerrainNodeClass(void);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	void											On_Post_Load (void);
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  void On_Post_Load(void);
 
-	//
-	//	RTTI
-	//
-	TerrainNodeClass *As_TerrainNodeClass (void)					{ return this; }
-	
-	//
-	// From NodeClass
-	//
-	NodeClass *	Clone (void)						{ return NULL; }
-	void			Initialize (void);
-	NODE_TYPE	Get_Type (void) const			{ return NODE_TYPE_TERRAIN; }
-	int			Get_Icon_Index (void) const	{ return TERRAIN_ICON; }
-	void			Add_To_Scene (void);
-	void			Remove_From_Scene (void);
-	void			Set_Transform (const Matrix3D &tm);
-	Matrix3D		Get_Transform (void) { return Transform; }
-	PhysClass *	Peek_Physics_Obj (void)	const	{ return NULL; }
-	bool			Is_Static (void) const			{ return true; }
-	void			Add_Vis_Points (VisPointGeneratorClass &generator, RenderObjClass *render_obj = NULL);
-	void			Hide (bool hide);
-	bool			Is_Hidden (void) const;
-	void			Update_Cached_Vis_IDs (void);
-	void			Reload (void);
-	void			Pre_Export (void);
-	void			Post_Export (void);
-	bool			Is_A_Child_Node (NodeClass *node) const;
+  //
+  //	RTTI
+  //
+  TerrainNodeClass *As_TerrainNodeClass(void) { return this; }
 
+  //
+  // From NodeClass
+  //
+  NodeClass *Clone(void) { return NULL; }
+  void Initialize(void);
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_TERRAIN; }
+  int Get_Icon_Index(void) const { return TERRAIN_ICON; }
+  void Add_To_Scene(void);
+  void Remove_From_Scene(void);
+  void Set_Transform(const Matrix3D &tm);
+  Matrix3D Get_Transform(void) { return Transform; }
+  PhysClass *Peek_Physics_Obj(void) const { return NULL; }
+  bool Is_Static(void) const { return true; }
+  void Add_Vis_Points(VisPointGeneratorClass &generator, RenderObjClass *render_obj = NULL);
+  void Hide(bool hide);
+  bool Is_Hidden(void) const;
+  void Update_Cached_Vis_IDs(void);
+  void Reload(void);
+  void Pre_Export(void);
+  void Post_Export(void);
+  bool Is_A_Child_Node(NodeClass *node) const;
 
-	// Terrain specific
-	int			Get_Sub_Node_Count (void) const	{ return m_Sections.Count (); }
-	NodeClass *	Get_Sub_Node (int index)			{ return m_Sections[index]; }
+  // Terrain specific
+  int Get_Sub_Node_Count(void) const { return m_Sections.Count(); }
+  NodeClass *Get_Sub_Node(int index) { return m_Sections[index]; }
 
-	void			Special_Set_Transform (const Matrix3D &tm);
+  void Special_Set_Transform(const Matrix3D &tm);
 
-	//
-	//	From PersistClass
-	//
-	bool			Save (ChunkSaveClass &csave);
-	bool			Load (ChunkLoadClass &cload);
+  //
+  //	From PersistClass
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
+  void Free_Sections(void);
+  void Assign_Section_IDs(void);
+  void Build_Section_ID_List(void);
+  bool Load_Variables(ChunkLoadClass &cload);
+  void Create_Proxies(DynamicVectorClass<ProxyClass> &proxy_list);
+  void Create_Lights(void);
+  void Free_Section_Data(void);
+  PresetClass *Find_Proxy_Preset(const char *preset_name);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	void			Free_Sections (void);
-	void			Assign_Section_IDs (void);
-	void			Build_Section_ID_List (void);
-	bool			Load_Variables (ChunkLoadClass &cload);
-	void			Create_Proxies (DynamicVectorClass<ProxyClass> &proxy_list);
-	void			Create_Lights (void);
-	void			Free_Section_Data (void);
-	PresetClass *Find_Proxy_Preset (const char *preset_name);
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  DynamicVectorClass<NodeClass *> m_Sections;
+  TerrainSectionPersistListClass m_TerrainSectionInfo;
 
+  friend TerrainSectionPersistClass;
+  friend TerrainSectionPersistListClass;
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	DynamicVectorClass<NodeClass *>	m_Sections;
-	TerrainSectionPersistListClass	m_TerrainSectionInfo;			
-
-	friend TerrainSectionPersistClass;
-	friend TerrainSectionPersistListClass;
-
-	Matrix3D Transform;
-	Matrix3D LoadedTransform;
+  Matrix3D Transform;
+  Matrix3D LoadedTransform;
 };
-
 
 /////////////////////////////////////////////////////////////
 //	Get_Transform
@@ -209,10 +196,7 @@ protected:
 /*inline Matrix3D
 TerrainNodeClass::Get_Transform (void)
 {
-	return Matrix3D (1);
+        return Matrix3D (1);
 }*/
 
-
-
 #endif //__TERRAIN_NODE_H
-

@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLPing.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 3 $
-*     $Modtime: 8/28/01 2:25p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLPing.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 3 $
+ *     $Modtime: 8/28/01 2:25p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLPING_H__
 #define __WOLPING_H__
@@ -39,44 +39,31 @@
 
 namespace WWOnline {
 
-class RawPing
-	{
-	public:
-		RawPing(const char* host, unsigned long ip, int time) :
-				mHostAddress(host),
-				mIP(ip),
-				mTime(time),
-				mHandle(-1)
-			{}
+class RawPing {
+public:
+  RawPing(const char *host, unsigned long ip, int time) : mHostAddress(host), mIP(ip), mTime(time), mHandle(-1) {}
 
-		inline const char* GetHostAddress(void) const
-			{return mHostAddress.Peek_Buffer();}
+  inline const char *GetHostAddress(void) const { return mHostAddress.Peek_Buffer(); }
 
-		inline void SetIPAddress(unsigned long ip)
-			{mIP = ip;}
+  inline void SetIPAddress(unsigned long ip) { mIP = ip; }
 
-		inline unsigned long GetIPAddress(void) const
-			{return mIP;}
+  inline unsigned long GetIPAddress(void) const { return mIP; }
 
-		inline void SetTime(int time)
-			{mTime = time;}
+  inline void SetTime(int time) { mTime = time; }
 
-		inline int GetTime(void) const
-			{return mTime;}
+  inline int GetTime(void) const { return mTime; }
 
-		inline void SetHandle(int handle)
-			{mHandle = handle;}
+  inline void SetHandle(int handle) { mHandle = handle; }
 
-		inline int GetHandle(void) const
-			{return mHandle;}
+  inline int GetHandle(void) const { return mHandle; }
 
-	private:
-		StringClass mHostAddress;
-		unsigned long mIP;
-		int mTime;
-		int mHandle;
-	};
+private:
+  StringClass mHostAddress;
+  unsigned long mIP;
+  int mTime;
+  int mHandle;
+};
 
-}
+} // namespace WWOnline
 
 #endif // __WOLPING_H__

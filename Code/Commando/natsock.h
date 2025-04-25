@@ -39,14 +39,14 @@
 #ifndef NATSOCK_H
 #define NATSOCK_H
 
-#include	"always.h"
-#include	"assert.h"
-#include	"vector.h"
+#include "always.h"
+#include "assert.h"
+#include "vector.h"
 
-#include	<winsock.h>
+#include <winsock.h>
 
 #ifndef DebugString
-#include	"wwdebug.h"
+#include "wwdebug.h"
 #ifdef WWDEBUG_SAY
 #define DebugString WWDEBUG_SAY
 #endif
@@ -55,14 +55,14 @@
 #ifdef WWASSERT
 #ifndef fw_assert
 #define fw_assert WWASSERT
-#endif //fw_assert
-#else //WWASSERT
+#endif // fw_assert
+#else  // WWASSERT
 #define fw_assert assert
-#endif //WWASSERT
+#endif // WWASSERT
 
 #ifdef errno
 #undef errno
-#endif	//errno
+#endif // errno
 
 #define errno (WSAGetLastError())
 #define LAST_ERROR errno
@@ -72,163 +72,157 @@
 /*
 ** Length of winsocks internal buffer.
 */
-#define SOCKET_BUFFER_SIZE	1024*512
+#define SOCKET_BUFFER_SIZE 1024 * 512
 
 /*
 ** Length of our temporary receive buffer. Needs to be more that the max packet size which is about 550 bytes.
 */
-#define RECEIVE_BUFFER_LEN	640
+#define RECEIVE_BUFFER_LEN 640
 
 /*
 ** Number of statically allocated packet buffers for the class
 */
-#define MAX_STATIC_BUFFERS	32
+#define MAX_STATIC_BUFFERS 32
 
-
-//#define PACKET_LOSS_PERCENTAGE 15
+// #define PACKET_LOSS_PERCENTAGE 15
 
 /*
 ** Class to manage low level comms for talking to Mangler Servers.
 **
 ** Can't use the Renegade packet comms since the packet format is different - Mangler servers expect C&C packet format.
 */
-class SocketHandlerClass
-{
-	public:
+class SocketHandlerClass {
+public:
+  /*
+  ** Constructor, destructor.
+  */
+  SocketHandlerClass(void);
+  ~SocketHandlerClass(void);
 
-		/*
-		** Constructor, destructor.
-		*/
-		SocketHandlerClass(void);
-		~SocketHandlerClass(void);
+  /*
+  ** Startup, shutdown.
+  */
+  bool Open(int inport, int outport);
+  void Close(void);
+  void Discard_In_Buffers(void);
+  void Discard_Out_Buffers(void);
 
-		/*
-		** Startup, shutdown.
-		*/
-		bool Open(int inport, int outport);
-		void Close(void);
-		void Discard_In_Buffers(void);
-		void Discard_Out_Buffers(void);
+  /*
+  ** Read, write.
+  */
+  int Peek(void *buffer, int buffer_len, void *address, unsigned short *port, int packetnum = 0);
+  int Read(void *buffer, int buffer_len, void *address, unsigned short *port, int packetnum = 0);
+  void Write(void *buffer, int buffer_len, void *address, unsigned short port = 0);
 
-		/*
-		** Read, write.
-		*/
-		int Peek(void *buffer, int buffer_len, void *address, unsigned short *port, int packetnum = 0);
-		int Read(void *buffer, int buffer_len, void *address, unsigned short *port, int packetnum = 0);
-		void Write(void *buffer, int buffer_len, void *address, unsigned short port = 0);
+  /*
+  ** Service.
+  */
+  void Service(void);
+  static void Service_All(void);
+  inline void Service_Never(void) { CanService = false; };
 
-		/*
-		** Service.
-		*/
-		void Service(void);
-		static void Service_All(void);
-		inline void Service_Never(void) {CanService = false;};
+  /*
+  ** Error handling.
+  */
+  void Clear_Socket_Error(void);
 
-		/*
-		** Error handling.
-		*/
-		void Clear_Socket_Error(void);
+  /*
+  ** Query functions.
+  */
+  int Get_Num_Queued_Receive_Packets(void) { return (InBuffers.Count()); };
+  int Get_Num_Queued_Outgoing_Packets(void) { return (OutBuffers.Count()); };
+  int Get_Num_Local_Addresses(void) { return (LocalAddresses.Count()); };
+  unsigned char *Get_Local_Address(int a) { return (LocalAddresses[a]); };
+  int Get_Incoming_Port(void) { return (IncomingPort); };
+  SOCKET Get_Socket(void) { return (Socket); };
 
-		/*
-		** Query functions.
-		*/
-		int Get_Num_Queued_Receive_Packets(void) {return(InBuffers.Count());};
-		int Get_Num_Queued_Outgoing_Packets(void) {return(OutBuffers.Count());};
-		int Get_Num_Local_Addresses(void) {return (LocalAddresses.Count());};
-		unsigned char * Get_Local_Address (int a) {return (LocalAddresses[a]);};
-		int Get_Incoming_Port(void) {return(IncomingPort);};
-		SOCKET Get_Socket(void) {return(Socket);};
+private:
+  /*
+  ** The socket associated with this class.
+  */
+  SOCKET Socket;
 
+  /*
+  ** The port that this class listens on.
+  */
+  int IncomingPort;
 
-	private:
+  /*
+  ** The port that the class writes to.
+  */
+  int OutgoingPort;
 
-		/*
-		** The socket associated with this class.
-		*/
-		SOCKET Socket;
+  /*
+  ** List of local addresses.
+  */
+  DynamicVectorClass<unsigned char *> LocalAddresses;
 
-		/*
-		** The port that this class listens on.
-		*/
-		int IncomingPort;
+  /*
+  ** This struct contains the information needed for each incoming and outgoing packet.
+  ** It acts as a temporary control for these packets.
+  */
+  struct WinsockBufferType {
+    unsigned char Address[4];                 // Address. IN_ADDR
+    int BufferLen;                            // Length of data in buffer
+    bool IsBroadcast;                         // Flag to broadcast this packet
+    bool InUse;                               // Useage state of buffer
+    bool IsAllocated;                         // false means statically allocated.
+    unsigned short Port;                      // Override port. Send to this port if not 0. Save incoming port number.
+    unsigned long CRC;                        // CRC of packet for extra sanity.
+    unsigned char Buffer[RECEIVE_BUFFER_LEN]; // Buffer to store packet in.
+  };
 
-		/*
-		** The port that the class writes to.
-		*/
-		int OutgoingPort;
+  /*
+  ** Packet buffer allocation.
+  */
+  void *Get_New_Out_Buffer(void);
+  void *Get_New_In_Buffer(void);
 
-		/*
-		** List of local addresses.
-		*/
-		DynamicVectorClass <unsigned char *> LocalAddresses;
+  /*
+  ** Packet CRCs.
+  */
+  void Add_CRC(unsigned long *crc, unsigned long val);
+  virtual void Build_Packet_CRC(WinsockBufferType *packet);
+  virtual bool Passes_CRC_Check(WinsockBufferType *packet);
 
-		/*
-		** This struct contains the information needed for each incoming and outgoing packet.
-		** It acts as a temporary control for these packets.
-		*/
-		struct WinsockBufferType {
-			unsigned char		Address[4];		// Address. IN_ADDR
-			int					BufferLen;		// Length of data in buffer
-			bool					IsBroadcast;	// Flag to broadcast this packet
-			bool					InUse;			// Useage state of buffer
-			bool					IsAllocated;	// false means statically allocated.
-			unsigned short		Port;				// Override port. Send to this port if not 0. Save incoming port number.
-			unsigned long		CRC;				// CRC of packet for extra sanity.
-			unsigned char		Buffer[RECEIVE_BUFFER_LEN];	// Buffer to store packet in.
-		};
+  /*
+  ** Array of buffers to temporarily store incoming and outgoing packets.
+  */
+  DynamicVectorClass<WinsockBufferType *> InBuffers;
+  DynamicVectorClass<WinsockBufferType *> OutBuffers;
 
-		/*
-		** Packet buffer allocation.
-		*/
-		void *Get_New_Out_Buffer(void);
-		void *Get_New_In_Buffer(void);
+  /*
+  ** Array of buffers that are always available for incoming packets.
+  */
+  WinsockBufferType StaticInBuffers[MAX_STATIC_BUFFERS];
+  WinsockBufferType StaticOutBuffers[MAX_STATIC_BUFFERS];
 
-		/*
-		** Packet CRCs.
-		*/
-		void Add_CRC(unsigned long *crc, unsigned long val);
-		virtual void Build_Packet_CRC(WinsockBufferType *packet);
-		virtual bool Passes_CRC_Check(WinsockBufferType *packet);
+  /*
+  ** Pointers to allow circular use of the buffer arrays.
+  */
+  int InBufferArrayPos;
+  int OutBufferArrayPos;
 
-		/*
-		** Array of buffers to temporarily store incoming and outgoing packets.
-		*/
-		DynamicVectorClass<WinsockBufferType*> InBuffers;
-		DynamicVectorClass<WinsockBufferType*> OutBuffers;
+  /*
+  ** Usage count for each array.
+  */
+  int InBuffersUsed;
+  int OutBuffersUsed;
 
-		/*
-		** Array of buffers that are always available for incoming packets.
-		*/
-		WinsockBufferType StaticInBuffers[MAX_STATIC_BUFFERS];
-		WinsockBufferType StaticOutBuffers[MAX_STATIC_BUFFERS];
+  /*
+  ** Temporary receive buffer to use when querying Winsock for incoming packets.
+  */
+  unsigned char ReceiveBuffer[RECEIVE_BUFFER_LEN];
 
-		/*
-		** Pointers to allow circular use of the buffer arrays.
-		*/
-		int InBufferArrayPos;
-		int OutBufferArrayPos;
+  /*
+  ** All instances of this class.
+  */
+  static DynamicVectorClass<SocketHandlerClass *> AllSocketHandlers;
 
-		/*
-		** Usage count for each array.
-		*/
-		int InBuffersUsed;
-		int OutBuffersUsed;
-
-		/*
-		** Temporary receive buffer to use when querying Winsock for incoming packets.
-		*/
-		unsigned char ReceiveBuffer[RECEIVE_BUFFER_LEN];
-
-		/*
-		** All instances of this class.
-		*/
-		static DynamicVectorClass<SocketHandlerClass*> AllSocketHandlers;
-
-		/*
-		** Can the regular service code be called for this class?
-		*/
-		bool CanService;
+  /*
+  ** Can the regular service code be called for this class?
+  */
+  bool CanService;
 };
 
-
-#endif //NATSOCK_H
+#endif // NATSOCK_H

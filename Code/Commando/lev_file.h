@@ -41,7 +41,7 @@
 #ifndef LEV_FILE_H
 #define LEV_FILE_H
 
-#if 0 //OBSOLETE!!!
+#if 0 // OBSOLETE!!!
 
 /*
 
@@ -78,4 +78,3 @@ enum {
 #endif 0 // OBSOLETE!!!
 
 #endif
-

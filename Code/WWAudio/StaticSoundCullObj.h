@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -183,6 +182,6 @@ StaticSoundCullObjClass::Get_Bounding_Box (void) const
 	m_AABox.Center = m_Transform.Get_Translation ();
 	return m_AABox;
 }
-#endif //0
+#endif // 0
 
 #endif //__STATICSOUNDCULLOBJ_H

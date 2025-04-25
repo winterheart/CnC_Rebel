@@ -28,38 +28,36 @@
 /////////////////////////////////////////////////////////////////////////////
 // CheckinStyleDialogClass dialog
 
-class CheckinStyleDialogClass : public CDialog
-{
-// Construction
+class CheckinStyleDialogClass : public CDialog {
+  // Construction
 public:
-	CheckinStyleDialogClass(CWnd* pParent = NULL);   // standard constructor
+  CheckinStyleDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CheckinStyleDialogClass)
-	enum { IDD = IDD_CHECKIN_STYLE };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(CheckinStyleDialogClass)
+  enum { IDD = IDD_CHECKIN_STYLE };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CheckinStyleDialogClass)
+public:
+  virtual int DoModal();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CheckinStyleDialogClass)
-	public:
-	virtual int DoModal();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CheckinStyleDialogClass)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(CheckinStyleDialogClass)
+  virtual void OnOK();
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/commando/winevent.h                      $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 11/12/01 3:20p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 9                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/commando/winevent.h                      $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 11/12/01 3:20p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 9                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __WINEVENT_H__
@@ -44,28 +44,25 @@
 //
 // A S->C mirrored object to represent win notification
 //
-class	cWinEvent : public cNetEvent
-{
+class cWinEvent : public cNetEvent {
 public:
-   cWinEvent(void);
+  cWinEvent(void);
 
-	void						Init(int winner, int loser, bool is_cycle_over);
+  void Init(int winner, int loser, bool is_cycle_over);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_WIN;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_WIN; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						HostedGameNumber;
-	int						Winner;
-	int						Loser;
-	bool						IsMapCycleOver;
+  int HostedGameNumber;
+  int Winner;
+  int Loser;
+  bool IsMapCycleOver;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __WINEVENT_H__
-
+#endif // __WINEVENT_H__

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : wwtranslatedb																  *
+ *                 Project Name : wwtranslatedb
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwtranslatedb/translateobj.cpp      $*
  *                                                                                             *
@@ -42,398 +43,329 @@
 #include "translatedb.h"
 #include "tdbcategories.h"
 
-
 //////////////////////////////////////////////////////////////////////////////
 //	Persist factory
 //////////////////////////////////////////////////////////////////////////////
 SimplePersistFactoryClass<TDBObjClass, CHUNKID_TRANSLATE_OBJ> _TranslateObjPersistFactory;
 
-
 //////////////////////////////////////////////////////////////////////////////
 //	Constants
 //////////////////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_VARIABLES			= 0x06141108,
-	CHUNKID_BASE_CLASS,
-	CHUNKID_ENGLISH_STRING,
-	CHUNKID_TRANSLATED_STRING
-};
+enum { CHUNKID_VARIABLES = 0x06141108, CHUNKID_BASE_CLASS, CHUNKID_ENGLISH_STRING, CHUNKID_TRANSLATED_STRING };
 
-enum
-{
-	VARID_ID							= 0x01,
-	VARID_ID_DESC,
-	VARID_STRING,
-	VARID_ENGLISH_STRING,
-	VARID_SOUND_ID,
-	VARID_ANIMATION_NAME,
-	VARID_CATEGORY_ID
+enum {
+  VARID_ID = 0x01,
+  VARID_ID_DESC,
+  VARID_STRING,
+  VARID_ENGLISH_STRING,
+  VARID_SOUND_ID,
+  VARID_ANIMATION_NAME,
+  VARID_CATEGORY_ID
 };
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::TDBObjClass (void)	:
-	ID (0),
-	SoundID (-1),
-	CategoryID (CATEGORY_DEFAULT)
-{
-	return ;
-}
-
+TDBObjClass::TDBObjClass(void) : ID(0), SoundID(-1), CategoryID(CATEGORY_DEFAULT) { return; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::TDBObjClass (const TDBObjClass &src)	:
-	ID (0),
-	SoundID (-1),
-	CategoryID (CATEGORY_DEFAULT)
-{
-	(*this) = src;
-	return ;
+TDBObjClass::TDBObjClass(const TDBObjClass &src) : ID(0), SoundID(-1), CategoryID(CATEGORY_DEFAULT) {
+  (*this) = src;
+  return;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	~TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::~TDBObjClass (void)
-{
-	return ;
-}
-
+TDBObjClass::~TDBObjClass(void) { return; }
 
 /////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////
-const TDBObjClass &	
-TDBObjClass::operator= (const TDBObjClass &src)
-{
-	TranslatedStrings	= src.TranslatedStrings;
-	EnglishString		= src.EnglishString;
-	IDDesc				= src.IDDesc;
-	ID						= src.ID;
-	SoundID				= src.SoundID;
-	AnimationName		= src.AnimationName;
-	CategoryID			= src.CategoryID;
+const TDBObjClass &TDBObjClass::operator=(const TDBObjClass &src) {
+  TranslatedStrings = src.TranslatedStrings;
+  EnglishString = src.EnglishString;
+  IDDesc = src.IDDesc;
+  ID = src.ID;
+  SoundID = src.SoundID;
+  AnimationName = src.AnimationName;
+  CategoryID = src.CategoryID;
 
-	return *this;
+  return *this;
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Get_Factory
 //
 ///////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &
-TDBObjClass::Get_Factory (void) const
-{
-	return _TranslateObjPersistFactory;
-}
-
+const PersistFactoryClass &TDBObjClass::Get_Factory(void) const { return _TranslateObjPersistFactory; }
 
 /////////////////////////////////////////////////////////////////
 //
 //	Save
 //
 /////////////////////////////////////////////////////////////////
-bool
-TDBObjClass::Save (ChunkSaveClass &csave)
-{
-	csave.Begin_Chunk (CHUNKID_BASE_CLASS);
-		PersistClass::Save (csave);
-	csave.End_Chunk ();	
+bool TDBObjClass::Save(ChunkSaveClass &csave) {
+  csave.Begin_Chunk(CHUNKID_BASE_CLASS);
+  PersistClass::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk (CHUNKID_VARIABLES);
-		Save_Variables (csave);
-	csave.End_Chunk ();
+  csave.Begin_Chunk(CHUNKID_VARIABLES);
+  Save_Variables(csave);
+  csave.End_Chunk();
 
-	//
-	//	Write the english string to its own chunk
-	//
-	WRITE_WWSTRING_CHUNK (csave, CHUNKID_ENGLISH_STRING, EnglishString);
+  //
+  //	Write the english string to its own chunk
+  //
+  WRITE_WWSTRING_CHUNK(csave, CHUNKID_ENGLISH_STRING, EnglishString);
 
-	//
-	//	Are we saving all the translations or just the current one?
-	//
-	if (TranslateDBClass::Is_Single_Language_Export_Enabled ()) {
-		
-		//
-		//	If we don't have the requested language, save the english
-		//
-		int lang_id = TranslateDBClass::Get_Current_Language ();
-		if (lang_id >= TranslatedStrings.Count ()) {
-			lang_id = TranslateDBClass::LANGID_ENGLISH;
-		}
-		
-		//
-		//	Save the string
-		//
-		const WideStringClass &string = TranslatedStrings[lang_id];
-		WRITE_WIDESTRING_CHUNK (csave, CHUNKID_TRANSLATED_STRING, string);
+  //
+  //	Are we saving all the translations or just the current one?
+  //
+  if (TranslateDBClass::Is_Single_Language_Export_Enabled()) {
 
-	} else {
-	
-		//
-		//	Write each translated string to its own chunk
-		//
-		for (int index = 0; index < TranslatedStrings.Count (); index ++) {
-			const WideStringClass &string = TranslatedStrings[index];
-			WRITE_WIDESTRING_CHUNK(csave, CHUNKID_TRANSLATED_STRING, string);;
-		}
-	}
+    //
+    //	If we don't have the requested language, save the english
+    //
+    int lang_id = TranslateDBClass::Get_Current_Language();
+    if (lang_id >= TranslatedStrings.Count()) {
+      lang_id = TranslateDBClass::LANGID_ENGLISH;
+    }
 
-	return true;
+    //
+    //	Save the string
+    //
+    const WideStringClass &string = TranslatedStrings[lang_id];
+    WRITE_WIDESTRING_CHUNK(csave, CHUNKID_TRANSLATED_STRING, string);
+
+  } else {
+
+    //
+    //	Write each translated string to its own chunk
+    //
+    for (int index = 0; index < TranslatedStrings.Count(); index++) {
+      const WideStringClass &string = TranslatedStrings[index];
+      WRITE_WIDESTRING_CHUNK(csave, CHUNKID_TRANSLATED_STRING, string);
+      ;
+    }
+  }
+
+  return true;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Load
 //
 /////////////////////////////////////////////////////////////////
-bool
-TDBObjClass::Load (ChunkLoadClass &cload)
-{
-	while (cload.Open_Chunk ()) {		
-		switch (cload.Cur_Chunk_ID ()) {
+bool TDBObjClass::Load(ChunkLoadClass &cload) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			READ_WWSTRING_CHUNK (cload, CHUNKID_ENGLISH_STRING, EnglishString);
+      READ_WWSTRING_CHUNK(cload, CHUNKID_ENGLISH_STRING, EnglishString);
 
-			case CHUNKID_TRANSLATED_STRING:
-			{
-				//
-				//	Load the translated string from its chunk
-				//
-				WideStringClass string;
-				cload.Read (string.Get_Buffer((cload.Cur_Chunk_Length () + 1) / 2), cload.Cur_Chunk_Length ());
+    case CHUNKID_TRANSLATED_STRING: {
+      //
+      //	Load the translated string from its chunk
+      //
+      WideStringClass string;
+      cload.Read(string.Get_Buffer((cload.Cur_Chunk_Length() + 1) / 2), cload.Cur_Chunk_Length());
 
-				//
-				//	Add the translated string to our list
-				//
-				TranslatedStrings.Add (string);
-			}
-			break;
-			
-			case CHUNKID_BASE_CLASS:
-				PersistClass::Load (cload);
-				break;
-			
-			case CHUNKID_VARIABLES:
-				Load_Variables (cload);
-				break;
-		}
+      //
+      //	Add the translated string to our list
+      //
+      TranslatedStrings.Add(string);
+    } break;
 
-		cload.Close_Chunk ();
-	}
+    case CHUNKID_BASE_CLASS:
+      PersistClass::Load(cload);
+      break;
 
-	return true;
+    case CHUNKID_VARIABLES:
+      Load_Variables(cload);
+      break;
+    }
+
+    cload.Close_Chunk();
+  }
+
+  return true;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Save_Variables
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Save_Variables (ChunkSaveClass &csave)
-{	
-	//
-	//	Save each variable to its own micro chunk
-	//
-	WRITE_MICRO_CHUNK					(csave, VARID_ID,					ID);
-	WRITE_MICRO_CHUNK					(csave, VARID_SOUND_ID,			SoundID);	
-	WRITE_MICRO_CHUNK					(csave, VARID_CATEGORY_ID,		CategoryID);
-	WRITE_MICRO_CHUNK_WWSTRING		(csave, VARID_ID_DESC,			IDDesc);
-	WRITE_MICRO_CHUNK_WWSTRING		(csave, VARID_ANIMATION_NAME,	AnimationName);	
-	return ;
+void TDBObjClass::Save_Variables(ChunkSaveClass &csave) {
+  //
+  //	Save each variable to its own micro chunk
+  //
+  WRITE_MICRO_CHUNK(csave, VARID_ID, ID);
+  WRITE_MICRO_CHUNK(csave, VARID_SOUND_ID, SoundID);
+  WRITE_MICRO_CHUNK(csave, VARID_CATEGORY_ID, CategoryID);
+  WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_ID_DESC, IDDesc);
+  WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_ANIMATION_NAME, AnimationName);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Load_Variables
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Load_Variables (ChunkLoadClass &cload)
-{	
-	while (cload.Open_Micro_Chunk ()) {
-		switch (cload.Cur_Micro_Chunk_ID ()) {			
-			READ_MICRO_CHUNK					(cload, VARID_ID,					ID);
-			READ_MICRO_CHUNK					(cload, VARID_SOUND_ID,			SoundID);	
-			READ_MICRO_CHUNK					(cload, VARID_CATEGORY_ID,		CategoryID);
-			READ_MICRO_CHUNK_WWSTRING		(cload, VARID_ID_DESC,			IDDesc);
-			READ_MICRO_CHUNK_WWSTRING		(cload, VARID_ENGLISH_STRING,	EnglishString);
-			READ_MICRO_CHUNK_WWSTRING		(cload, VARID_ANIMATION_NAME,	AnimationName);
+void TDBObjClass::Load_Variables(ChunkLoadClass &cload) {
+  while (cload.Open_Micro_Chunk()) {
+    switch (cload.Cur_Micro_Chunk_ID()) {
+      READ_MICRO_CHUNK(cload, VARID_ID, ID);
+      READ_MICRO_CHUNK(cload, VARID_SOUND_ID, SoundID);
+      READ_MICRO_CHUNK(cload, VARID_CATEGORY_ID, CategoryID);
+      READ_MICRO_CHUNK_WWSTRING(cload, VARID_ID_DESC, IDDesc);
+      READ_MICRO_CHUNK_WWSTRING(cload, VARID_ENGLISH_STRING, EnglishString);
+      READ_MICRO_CHUNK_WWSTRING(cload, VARID_ANIMATION_NAME, AnimationName);
 
-			case VARID_STRING:
-			{
-				//
-				//	Load the translated string from its chunk
-				//
-				WideStringClass string;
-				cload.Read (string.Get_Buffer((cload.Cur_Micro_Chunk_Length () + 1) / 2), cload.Cur_Micro_Chunk_Length ());
+    case VARID_STRING: {
+      //
+      //	Load the translated string from its chunk
+      //
+      WideStringClass string;
+      cload.Read(string.Get_Buffer((cload.Cur_Micro_Chunk_Length() + 1) / 2), cload.Cur_Micro_Chunk_Length());
 
-				//
-				//	Add the translated string to our list
-				//
-				TranslatedStrings.Add (string);
-			}
-			break;
-		}
+      //
+      //	Add the translated string to our list
+      //
+      TranslatedStrings.Add(string);
+    } break;
+    }
 
-		cload.Close_Micro_Chunk ();
-	}
+    cload.Close_Micro_Chunk();
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Set_English_String
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Set_English_String (const TCHAR *string)
-{
-	EnglishString = string;
+void TDBObjClass::Set_English_String(const TCHAR *string) {
+  EnglishString = string;
 
-	//
-	//	Grow the translated string array out large enough so
-	// we can index into the english string
-	//
-	while (TranslatedStrings.Count () <= TranslateDBClass::LANGID_ENGLISH) {
-		TranslatedStrings.Add (WideStringClass (L""));
-	}
+  //
+  //	Grow the translated string array out large enough so
+  // we can index into the english string
+  //
+  while (TranslatedStrings.Count() <= TranslateDBClass::LANGID_ENGLISH) {
+    TranslatedStrings.Add(WideStringClass(L""));
+  }
 
-	TranslatedStrings[TranslateDBClass::LANGID_ENGLISH].Convert_From (string);
-	return ;
+  TranslatedStrings[TranslateDBClass::LANGID_ENGLISH].Convert_From(string);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Set_ID
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Set_ID (uint32 id)
-{
-	ID = id;
-	return ;
+void TDBObjClass::Set_ID(uint32 id) {
+  ID = id;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Set_ID_Desc
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Set_ID_Desc (const TCHAR *desc)
-{
-	IDDesc = desc;
-	return ;
+void TDBObjClass::Set_ID_Desc(const TCHAR *desc) {
+  IDDesc = desc;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Get_String
 //
 /////////////////////////////////////////////////////////////////
-const WideStringClass &
-TDBObjClass::Get_String (void)
-{
-	//
-	//	Lookup the translated string based on the current language
-	//
-	return Get_String (TranslateDBClass::Get_Current_Language ());
+const WideStringClass &TDBObjClass::Get_String(void) {
+  //
+  //	Lookup the translated string based on the current language
+  //
+  return Get_String(TranslateDBClass::Get_Current_Language());
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Get_String
 //
 /////////////////////////////////////////////////////////////////
-const WideStringClass &
-TDBObjClass::Get_String (uint32 lang_id)
-{
-	//
-	//	Default to english on error
-	//
-	if (lang_id >= (uint32)TranslatedStrings.Count ()) {
-		lang_id = TranslateDBClass::LANGID_ENGLISH;
-	}
+const WideStringClass &TDBObjClass::Get_String(uint32 lang_id) {
+  //
+  //	Default to english on error
+  //
+  if (lang_id >= (uint32)TranslatedStrings.Count()) {
+    lang_id = TranslateDBClass::LANGID_ENGLISH;
+  }
 
-	return TranslatedStrings[lang_id];
+  return TranslatedStrings[lang_id];
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Set_String
 //
 /////////////////////////////////////////////////////////////////
-void
-TDBObjClass::Set_String (uint32 lang_id, const WCHAR *string)
-{
-	//
-	//	Grow the translated strings array until we have enough
-	// to cover the requested language
-	//
-	while ((uint32)TranslatedStrings.Count () <= lang_id) {
-		TranslatedStrings.Add (WideStringClass (L""));
-	}
+void TDBObjClass::Set_String(uint32 lang_id, const WCHAR *string) {
+  //
+  //	Grow the translated strings array until we have enough
+  // to cover the requested language
+  //
+  while ((uint32)TranslatedStrings.Count() <= lang_id) {
+    TranslatedStrings.Add(WideStringClass(L""));
+  }
 
-	//
-	//	Set the string
-	//
-	TranslatedStrings[lang_id] = string;
+  //
+  //	Set the string
+  //
+  TranslatedStrings[lang_id] = string;
 
-	//
-	//	Keep a copy of the english string (if necessary)
-	//
-	if (lang_id == TranslateDBClass::LANGID_ENGLISH) {
-		TranslatedStrings[lang_id].Convert_To (EnglishString);
-	}
+  //
+  //	Keep a copy of the english string (if necessary)
+  //
+  if (lang_id == TranslateDBClass::LANGID_ENGLISH) {
+    TranslatedStrings[lang_id].Convert_To(EnglishString);
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////
 //
 //	Contains_Translation
 //
 /////////////////////////////////////////////////////////////////
-bool
-TDBObjClass::Contains_Translation (uint32 lang_id)
-{
-	bool retval = false;
+bool TDBObjClass::Contains_Translation(uint32 lang_id) {
+  bool retval = false;
 
-	//
-	//	Simply check to see if the string contains any data
-	//
-	if (TranslatedStrings.Count () > (int)lang_id) {
-		retval = (TranslatedStrings[lang_id].Get_Length () > 0);
-	}
-	
-	return retval;
+  //
+  //	Simply check to see if the string contains any data
+  //
+  if (TranslatedStrings.Count() > (int)lang_id) {
+    retval = (TranslatedStrings[lang_id].Get_Length() > 0);
+  }
+
+  return retval;
 }

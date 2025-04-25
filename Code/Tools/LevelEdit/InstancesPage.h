@@ -35,105 +35,97 @@
 #include "bittype.h"
 #include "vector.h"
 
-
 // Forward declarations
 class NodeClass;
 class DefinitionFactoryClass;
-
 
 //////////////////////////////////////////////////////////
 //
 //	InstancesPageClass
 //
 //////////////////////////////////////////////////////////
-class InstancesPageClass : public CDialog
-{
+class InstancesPageClass : public CDialog {
 public:
-	InstancesPageClass (CWnd *parent_wnd);
-	virtual ~InstancesPageClass (void);
+  InstancesPageClass(CWnd *parent_wnd);
+  virtual ~InstancesPageClass(void);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(InstancesPageClass)
-	enum { IDD = IDD_INSTANCES_FORM };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  //{{AFX_DATA(InstancesPageClass)
+  enum { IDD = IDD_INSTANCES_FORM };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(InstancesPageClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(InstancesPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Implementation
 protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(InstancesPageClass)
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnDestroy();
-	afx_msg void OnEdit();
-	afx_msg void OnGoto();
-	afx_msg void OnShowAll();
-	afx_msg void OnSelect();
-	afx_msg void OnDelete();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDeleteitemInstanceList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDblclkInstanceList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnItemchangedInstanceList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(InstancesPageClass)
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnDestroy();
+  afx_msg void OnEdit();
+  afx_msg void OnGoto();
+  afx_msg void OnShowAll();
+  afx_msg void OnSelect();
+  afx_msg void OnDelete();
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDeleteitemInstanceList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDblclkInstanceList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnItemchangedInstanceList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	///////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////
-	void					Add_Node (NodeClass *node);
-	void					Remove_Node (NodeClass *node);
-	void					Reset_List (void);
+  ///////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////
+  void Add_Node(NodeClass *node);
+  void Remove_Node(NodeClass *node);
+  void Reset_List(void);
 
 protected:
-	
-	///////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////
-	void					Set_Node_Check (int index, bool bcheck = true);
+  ///////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////
+  void Set_Node_Check(int index, bool bcheck = true);
 
-	void					Insert_Factory (LPCTSTR name, int class_id);
-	void					Insert_Node (NodeClass *node);
-	void					Insert_Navigator (void);
-	NodeClass *			Get_Item_Node (int index);
+  void Insert_Factory(LPCTSTR name, int class_id);
+  void Insert_Node(NodeClass *node);
+  void Insert_Navigator(void);
+  NodeClass *Get_Item_Node(int index);
 
-	void					Populate_List (uint32 class_id);
-	void					Populate_List (NodeClass *node);
+  void Populate_List(uint32 class_id);
+  void Populate_List(NodeClass *node);
 
-	void					Hide_Nodes (int index, bool hide);
-	void					Hide_Node (NodeClass *node, uint32 class_id, bool hide);
-	void					Update_Button_States (void);
-	bool					Does_Factory_Have_Children (uint32 factory_id);
-	void					Update_Overlays (void);
+  void Hide_Nodes(int index, bool hide);
+  void Hide_Node(NodeClass *node, uint32 class_id, bool hide);
+  void Update_Button_States(void);
+  bool Does_Factory_Have_Children(uint32 factory_id);
+  void Update_Overlays(void);
 
 private:
-
-	///////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////
-	DialogToolbarClass			m_Toolbar;
-	uint32							m_ClassID;
-	DynamicVectorClass<uint32>	m_ClassIDStack;
+  ///////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////
+  DialogToolbarClass m_Toolbar;
+  uint32 m_ClassID;
+  DynamicVectorClass<uint32> m_ClassIDStack;
 };
 
 /////////////////////////////////////////////////////////////////////////////

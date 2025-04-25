@@ -28,73 +28,63 @@
 class LightSolveContextClass;
 class LightSolveProgressClass;
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // LightSolveProgressDialog dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-class LightSolveProgressDialog : public CDialog
-{
-// Construction
+class LightSolveProgressDialog : public CDialog {
+  // Construction
 public:
-	LightSolveProgressDialog(LightSolveContextClass & context,CWnd* pParent = NULL);   // standard constructor
+  LightSolveProgressDialog(LightSolveContextClass &context, CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(LightSolveProgressDialog)
-	enum { IDD = IDD_GENERATING_LIGHT_SOLVE };
-	CProgressCtrl	m_ProgressBar;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(LightSolveProgressDialog)
+  enum { IDD = IDD_GENERATING_LIGHT_SOLVE };
+  CProgressCtrl m_ProgressBar;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LightSolveProgressDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LightSolveProgressDialog)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(LightSolveProgressDialog)
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(LightSolveProgressDialog)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////
+  bool Was_Cancelled(void) const { return m_Cancelled; }
+  void Set_Finished(void);
+  void Update_Stats(void);
 
-	/////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////
-	bool			Was_Cancelled (void) const	{ return m_Cancelled; }
-	void			Set_Finished (void);
-	void			Update_Stats (void);
-
-	/////////////////////////////////////////////////////////////
-	//	Static methods
-	/////////////////////////////////////////////////////////////
-	static void	Solve (LightSolveContextClass & context,CWnd * parent);
+  /////////////////////////////////////////////////////////////
+  //	Static methods
+  /////////////////////////////////////////////////////////////
+  static void Solve(LightSolveContextClass &context, CWnd *parent);
 
 private:
+  /////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////
-	bool								m_Cancelled;
-	LightSolveContextClass &	m_SolveContext;
-
+  /////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////
+  bool m_Cancelled;
+  LightSolveContextClass &m_SolveContext;
 };
-
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

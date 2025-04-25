@@ -203,7 +203,6 @@ Assert_State_Valid();
 }
 #endif
 
-
 /*
 ** This was a version of Timestep which used a binary search through time to try
 ** and find the "exact" time of collision.  What a collosal waste of time!
@@ -234,7 +233,7 @@ void RigidBodyClass::Timestep(float dt)
 	int collisions = 0;
 	float remaining_time = dt;
 	float timestep;
-	
+
 #ifdef RBODY_DEBUGGING
 	WWDEBUG_SAY(("clock counter begin:\r\n"));
 #endif
@@ -283,7 +282,7 @@ void RigidBodyClass::Timestep(float dt)
 			/*
 			** Assert that our start point was not intersecting.
 			*/
-#ifdef WWDEBUG			
+#ifdef WWDEBUG
 #ifdef RBODY_DEBUGGING
 			WWDEBUG_SAY(("Prev Position: %f %f %f\r\n",oldstate.Position.X,oldstate.Position.Y,oldstate.Position.Z));
 			WWDEBUG_SAY(("New Position: %f %f %f\r\n",State.Position.X,State.Position.Y,State.Position.Z));
@@ -361,7 +360,7 @@ void RigidBodyClass::Timestep(float dt)
 #ifdef RBODY_DEBUGGING
 //			WWDEBUG_SAY(("Position: %f %f %f\r\n",State.Position.X,State.Position.Y,State.Position.Z));
 //			WWDEBUG_SAY(("Orientation: %f %f %f %f\r\n",State.Orientation.X,State.Orientation.Y,State.Orientation.Z,State.Orientation.W));
-			WWASSERT(!ContactBox->Is_Intersecting());	
+			WWASSERT(!ContactBox->Is_Intersecting());
 #endif
 
 			/*
@@ -369,8 +368,7 @@ void RigidBodyClass::Timestep(float dt)
 			*/
 			ContactBox->Compute_Contacts();
 
-
-#if 0   // Compute an impulse for the worst contact
+#if 0 // Compute an impulse for the worst contact
 
 			Vector3 point;
 			Vector3 normal;
@@ -393,7 +391,7 @@ void RigidBodyClass::Timestep(float dt)
 			WWDEBUG_SAY(("Applied Impulse: %f %f %f\r\n",impulse.X,impulse.Y,impulse.Z));
 #endif
 #endif
-#if 1		// Simultaneously compute impulses for all contacts
+#if 1 // Simultaneously compute impulses for all contacts
 
 			if (ContactBox->Get_Contact_Count() > 0) {
 
@@ -419,8 +417,8 @@ void RigidBodyClass::Timestep(float dt)
 				}
 			}
 
-#endif	
-#if 0		// Repeatedly compute impulses until the object is happy.
+#endif
+#if 0 // Repeatedly compute impulses until the object is happy.
 
 			int cur_contact = 0;
 			int impact_count = 0;
@@ -475,4 +473,4 @@ void RigidBodyClass::Timestep(float dt)
 	Model->Set_Transform(Matrix3D(Rotation,State.Position));
 	Update_Cull_Box();
 }
-#endif //0
+#endif // 0

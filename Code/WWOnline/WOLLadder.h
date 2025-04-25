@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLLadder.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 6 $
-*     $Modtime: 1/25/02 11:51a $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLLadder.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 6 $
+ *     $Modtime: 1/25/02 11:51a $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLLADDER_H__
 #define __WOLLADDER_H__
@@ -40,102 +40,82 @@
 #include "RefCounted.h"
 #include "RefPtr.h"
 
-namespace WOL
-{
+namespace WOL {
 #include <wolapi\wolapi.h>
 }
 
 namespace WWOnline {
 
-typedef enum
-	{
-	LadderType_Individual = (1<<16L),
-	LadderType_Clan = (1<<23L),
-	LadderType_Team = (1<<24L)
-	} LadderType;
+typedef enum {
+  LadderType_Individual = (1 << 16L),
+  LadderType_Clan = (1 << 23L),
+  LadderType_Team = (1 << 24L)
+} LadderType;
 
 #define LADDERTYPE_MASK (LadderType_Individual | LadderType_Clan | LadderType_Team)
 
-class LadderData :
-		public RefCounted
-	{
-	public:
-		static RefPtr<LadderData> Create(const WOL::Ladder& ladder, long time);
+class LadderData : public RefCounted {
+public:
+  static RefPtr<LadderData> Create(const WOL::Ladder &ladder, long time);
 
-		bool UpdateData(const WOL::Ladder& ladder, long time);
+  bool UpdateData(const WOL::Ladder &ladder, long time);
 
-		const char* GetName(void) const
-			{return (const char*)mData.login_name;}
+  const char *GetName(void) const { return (const char *)mData.login_name; }
 
-		unsigned int GetWins(void) const
-			{return mData.wins;}
-			
-		unsigned int GetLosses(void) const
-			{return mData.losses;}
+  unsigned int GetWins(void) const { return mData.wins; }
 
-		unsigned int GetPoints(void) const
-			{return mData.points;}
+  unsigned int GetLosses(void) const { return mData.losses; }
 
-		unsigned int GetKills(void) const
-			{return mData.kills;}
+  unsigned int GetPoints(void) const { return mData.points; }
 
-		unsigned int GetRung(void) const
-			{return mData.rung;}
+  unsigned int GetKills(void) const { return mData.kills; }
 
-		unsigned int GetReserved1(void) const
-			{return mData.reserved1;}
+  unsigned int GetRung(void) const { return mData.rung; }
 
-		unsigned int GetReserved2(void) const
-			{return mData.reserved2;}
+  unsigned int GetReserved1(void) const { return mData.reserved1; }
 
-		long GetTimeStamp(void) const
-			{return mTimeStamp;}
+  unsigned int GetReserved2(void) const { return mData.reserved2; }
 
-		WOL::Ladder& GetData()
-			{return mData;}
+  long GetTimeStamp(void) const { return mTimeStamp; }
 
-	protected:
-		LadderData(const WOL::Ladder& ladder, long time);
-		virtual ~LadderData();
+  WOL::Ladder &GetData() { return mData; }
 
-		WOL::Ladder mData;
-		long mTimeStamp;
-	};
+protected:
+  LadderData(const WOL::Ladder &ladder, long time);
+  virtual ~LadderData();
 
-class LadderInfoEvent
-	{
-	public:
-		LadderInfoEvent(const wchar_t* requested, const WOL::Ladder& ladder, long time);
+  WOL::Ladder mData;
+  long mTimeStamp;
+};
 
-		virtual ~LadderInfoEvent()
-			{}
+class LadderInfoEvent {
+public:
+  LadderInfoEvent(const wchar_t *requested, const WOL::Ladder &ladder, long time);
 
-		bool IsRanked(void) const;
+  virtual ~LadderInfoEvent() {}
 
-		LadderType GetLadderType(void) const;
+  bool IsRanked(void) const;
 
-		const wchar_t* GetRequestedName(void) const
-			{return mRequestedName;}
+  LadderType GetLadderType(void) const;
 
-		const char* GetReceivedName(void) const
-			{return (const char*)mWOLLadder.login_name;}
+  const wchar_t *GetRequestedName(void) const { return mRequestedName; }
 
-		const WOL::Ladder& GetWOLLadder(void) const
-			{return mWOLLadder;}
+  const char *GetReceivedName(void) const { return (const char *)mWOLLadder.login_name; }
 
-		long GetTimeStamp(void) const
-			{return mTimeStamp;}
+  const WOL::Ladder &GetWOLLadder(void) const { return mWOLLadder; }
 
-	protected:
-		// Prevent copy and assignment
-		LadderInfoEvent(const LadderInfoEvent&);
-		const LadderInfoEvent& operator=(const LadderInfoEvent&);
+  long GetTimeStamp(void) const { return mTimeStamp; }
 
-		const wchar_t* mRequestedName;
-		const WOL::Ladder& mWOLLadder;
-		long mTimeStamp;
-	};
+protected:
+  // Prevent copy and assignment
+  LadderInfoEvent(const LadderInfoEvent &);
+  const LadderInfoEvent &operator=(const LadderInfoEvent &);
 
-}
+  const wchar_t *mRequestedName;
+  const WOL::Ladder &mWOLLadder;
+  long mTimeStamp;
+};
+
+} // namespace WWOnline
 
 #endif // __WOLLADDER_H__

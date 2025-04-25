@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/wwlib/win.h                                  $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwlib/win.h                                  $*
+ *                                                                                             *
  *                      $Author:: Ian_l                                                       $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 10/16/01 2:42p                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 11                                                          $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -45,7 +45,7 @@
 **	to occur around this process, they are performed here. Typically, certain warnings will need
 **	to be disabled since the Windows headers are repleat with illegal and dangerous constructs.
 **
-**	Within the windows headers themselves, Microsoft has disabled the warnings 4290, 4514, 
+**	Within the windows headers themselves, Microsoft has disabled the warnings 4290, 4514,
 **	4069, 4200, 4237, 4103, 4001, 4035, 4164. Makes you wonder, eh?
 */
 
@@ -59,19 +59,19 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#include	<windows.h>
-//#include <mmsystem.h>
-//#include	<windowsx.h>
-//#include	<winnt.h>
-//#include	<winuser.h>
+#include <windows.h>
+// #include <mmsystem.h>
+// #include	<windowsx.h>
+// #include	<winnt.h>
+// #include	<winuser.h>
 
 #if (_MSC_VER >= 1200)
 #pragma warning(pop)
 #endif
 
 #ifdef _WINDOWS
-extern HINSTANCE	ProgramInstance;
-extern HWND			MainWindow;
+extern HINSTANCE ProgramInstance;
+extern HWND MainWindow;
 extern bool GameInFocus;
 
 #ifdef _DEBUG
@@ -84,8 +84,8 @@ void __cdecl Print_Win32Error(unsigned long win32Error);
 
 #endif // _DEBUG
 
-#else // _WINDOWS
-//#include <unistd.h>
+#else  // _WINDOWS
+// #include <unistd.h>
 #endif // _WINDOWS
 
 #endif // WIN_H

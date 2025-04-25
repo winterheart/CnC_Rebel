@@ -40,64 +40,59 @@ class PresetClass;
 // PresetGeneralTabClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetGeneralTabClass : public DockableFormClass
-{
+class PresetGeneralTabClass : public DockableFormClass {
 
 public:
-	PresetGeneralTabClass (PresetClass *preset);
-	virtual ~PresetGeneralTabClass (void);
+  PresetGeneralTabClass(PresetClass *preset);
+  virtual ~PresetGeneralTabClass(void);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(PresetGeneralTabClass)
-	enum { IDD = IDD_PRESET_GENERAL_TAB };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  //{{AFX_DATA(PresetGeneralTabClass)
+  enum { IDD = IDD_PRESET_GENERAL_TAB };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetGeneralTabClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetGeneralTabClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetGeneralTabClass)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(PresetGeneralTabClass)
+  // NOTE - the ClassWizard will add and remove member functions here.
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////////////
-	void						HandleInitDialog (void);
-	bool						Apply_Changes (void);
-
-	bool						Is_Read_Only (void) const	{ return m_IsReadOnly; }
-	void						Set_Read_Only (bool onoff)	{ m_IsReadOnly = onoff; }
+  bool Is_Read_Only(void) const { return m_IsReadOnly; }
+  void Set_Read_Only(bool onoff) { m_IsReadOnly = onoff; }
 
 private:
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////////////
-	PresetClass *			m_Preset;
-	bool						m_IsReadOnly;
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////
+  PresetClass *m_Preset;
+  bool m_IsReadOnly;
 };
 
 /////////////////////////////////////////////////////////////////////////////

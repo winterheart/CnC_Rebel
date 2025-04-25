@@ -28,61 +28,55 @@
 #include "filepicker.h"
 #include "stringpicker.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // LevelSettingsDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class LevelSettingsDialogClass : public CDialog
-{
-// Construction
+class LevelSettingsDialogClass : public CDialog {
+  // Construction
 public:
-	LevelSettingsDialogClass(CWnd* pParent = NULL);   // standard constructor
+  LevelSettingsDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(LevelSettingsDialogClass)
-	enum { IDD = IDD_LEVEL_SETTINGS };
-	CComboBox	RestartScriptCombo;
-	CComboBox	RespawnScriptCombo;
-	CSpinButtonCtrl	MapScaleYSpin;
-	CSpinButtonCtrl	MapScaleXSpin;
-	CSpinButtonCtrl	MapOffsetYSpin;
-	CSpinButtonCtrl	MapOffsetXSpin;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(LevelSettingsDialogClass)
+  enum { IDD = IDD_LEVEL_SETTINGS };
+  CComboBox RestartScriptCombo;
+  CComboBox RespawnScriptCombo;
+  CSpinButtonCtrl MapScaleYSpin;
+  CSpinButtonCtrl MapScaleXSpin;
+  CSpinButtonCtrl MapOffsetYSpin;
+  CSpinButtonCtrl MapOffsetXSpin;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LevelSettingsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LevelSettingsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(LevelSettingsDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(LevelSettingsDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 protected:
+  ///////////////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////////////
+  void Fill_Script_Combobox(int ctrl_id, const char *default_name);
 
-	///////////////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////////////
-	void			Fill_Script_Combobox (int ctrl_id, const char *default_name);
-
-	///////////////////////////////////////////////////////////////
-	//	Protected member data
-	///////////////////////////////////////////////////////////////
-	FilePickerClass		FilePicker;
-	StringPickerClass		StringPicker;
+  ///////////////////////////////////////////////////////////////
+  //	Protected member data
+  ///////////////////////////////////////////////////////////////
+  FilePickerClass FilePicker;
+  StringPickerClass StringPicker;
 };
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

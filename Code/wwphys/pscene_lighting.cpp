@@ -47,7 +47,6 @@
  *   PhysicsSceneClass::Invalidate_Lighting_Caches -- invalidate lighting caches in the given  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "pscene.h"
 #include "rendobj.h"
 #include "phys.h"
@@ -58,7 +57,6 @@
 #include "lightphys.h"
 #include "light.h"
 #include "lightcull.h"
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Set_Lighting_LOD_Cutoff -- Sets the LOD cutoff for lighting              *
@@ -74,11 +72,9 @@
  * HISTORY:                                                                                    *
  *   8/10/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Set_Lighting_LOD_Cutoff(float intensity)				
-{ 
-	LightEnvironmentClass::Set_Lighting_LOD_Cutoff(intensity); 
+void PhysicsSceneClass::Set_Lighting_LOD_Cutoff(float intensity) {
+  LightEnvironmentClass::Set_Lighting_LOD_Cutoff(intensity);
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Get_Lighting_LOD_Cutoff -- returns the LOD cutoff for lighting           *
@@ -94,11 +90,7 @@ void PhysicsSceneClass::Set_Lighting_LOD_Cutoff(float intensity)
  * HISTORY:                                                                                    *
  *   8/10/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-float PhysicsSceneClass::Get_Lighting_LOD_Cutoff(void)
-{ 
-	return LightEnvironmentClass::Get_Lighting_LOD_Cutoff(); 
-}
-
+float PhysicsSceneClass::Get_Lighting_LOD_Cutoff(void) { return LightEnvironmentClass::Get_Lighting_LOD_Cutoff(); }
 
 /***********************************************************************************************
  * PhysicsSceneClass::Is_Sun_Light_Enabled -- Returns true if the sun-light is enabled         *
@@ -112,11 +104,7 @@ float PhysicsSceneClass::Get_Lighting_LOD_Cutoff(void)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-bool PhysicsSceneClass::Is_Sun_Light_Enabled(void)
-{
-	return UseSun;
-}
-
+bool PhysicsSceneClass::Is_Sun_Light_Enabled(void) { return UseSun; }
 
 /***********************************************************************************************
  * PhysicsSceneClass::Enable_Sun_Light -- Enable/Disable the sun-light                         *
@@ -130,11 +118,7 @@ bool PhysicsSceneClass::Is_Sun_Light_Enabled(void)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Enable_Sun_Light(bool onoff)
-{
-	UseSun = onoff;
-}
-
+void PhysicsSceneClass::Enable_Sun_Light(bool onoff) { UseSun = onoff; }
 
 /***********************************************************************************************
  * PhysicsSceneClass::Get_Sun_Light -- Returns pointer to the sun-light object                 *
@@ -148,13 +132,11 @@ void PhysicsSceneClass::Enable_Sun_Light(bool onoff)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-LightClass * PhysicsSceneClass::Get_Sun_Light(void)
-{
-	WWASSERT(SunLight);
-	SunLight->Add_Ref();
-	return SunLight;
+LightClass *PhysicsSceneClass::Get_Sun_Light(void) {
+  WWASSERT(SunLight);
+  SunLight->Add_Ref();
+  return SunLight;
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Set_Sun_Light_Orientation -- Set the orientation of the sun-ligth        *
@@ -168,19 +150,17 @@ LightClass * PhysicsSceneClass::Get_Sun_Light(void)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Set_Sun_Light_Orientation(float yaw,float pitch)
-{
-	SunYaw = yaw;
-	SunPitch = pitch;
+void PhysicsSceneClass::Set_Sun_Light_Orientation(float yaw, float pitch) {
+  SunYaw = yaw;
+  SunPitch = pitch;
 
-	Matrix3D tm(1);
-	tm.Rotate_Z(yaw);
-	tm.Rotate_Y(DEG_TO_RADF(90.0f) - pitch);
-	tm.Rotate_X(DEG_TO_RADF(180.0f));
-		
-	SunLight->Set_Transform(tm);
+  Matrix3D tm(1);
+  tm.Rotate_Z(yaw);
+  tm.Rotate_Y(DEG_TO_RADF(90.0f) - pitch);
+  tm.Rotate_X(DEG_TO_RADF(180.0f));
+
+  SunLight->Set_Transform(tm);
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Get_Sun_Light_Orientation -- returns the sun-light orientation           *
@@ -194,12 +174,10 @@ void PhysicsSceneClass::Set_Sun_Light_Orientation(float yaw,float pitch)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Get_Sun_Light_Orientation(float * set_yaw,float * set_pitch)
-{
-	*set_yaw = SunYaw;
-	*set_pitch = SunPitch;
+void PhysicsSceneClass::Get_Sun_Light_Orientation(float *set_yaw, float *set_pitch) {
+  *set_yaw = SunYaw;
+  *set_pitch = SunPitch;
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Get_Sun_Light_Vector -- returns the sun-light vector                     *
@@ -213,13 +191,11 @@ void PhysicsSceneClass::Get_Sun_Light_Orientation(float * set_yaw,float * set_pi
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Get_Sun_Light_Vector(Vector3 * set_vector)
-{
-	WWASSERT(set_vector != NULL);
-	const Matrix3D & tm = SunLight->Get_Transform();
-	*set_vector = tm * Vector3(0,0,1);
+void PhysicsSceneClass::Get_Sun_Light_Vector(Vector3 *set_vector) {
+  WWASSERT(set_vector != NULL);
+  const Matrix3D &tm = SunLight->Get_Transform();
+  *set_vector = tm * Vector3(0, 0, 1);
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Reset_Sun_Light -- Resets the sun-light to default settings              *
@@ -233,18 +209,16 @@ void PhysicsSceneClass::Get_Sun_Light_Vector(Vector3 * set_vector)
  * HISTORY:                                                                                    *
  *   7/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Reset_Sun_Light(void)
-{
-	UseSun = false;
-	SunLight->Set_Transform(Matrix3D(1));
-	SunLight->Set_Ambient(Vector3(0,0,0));
-	SunLight->Set_Diffuse(Vector3(1,1,1));
-	SunLight->Set_Specular(Vector3(0,0,0));
-	SunLight->Set_Flag(LightClass::NEAR_ATTENUATION,false);
-	SunLight->Set_Flag(LightClass::FAR_ATTENUATION,false);
-	Set_Sun_Light_Orientation(DEG_TO_RADF(0.0f),DEG_TO_RADF(70.0f));
+void PhysicsSceneClass::Reset_Sun_Light(void) {
+  UseSun = false;
+  SunLight->Set_Transform(Matrix3D(1));
+  SunLight->Set_Ambient(Vector3(0, 0, 0));
+  SunLight->Set_Diffuse(Vector3(1, 1, 1));
+  SunLight->Set_Specular(Vector3(0, 0, 0));
+  SunLight->Set_Flag(LightClass::NEAR_ATTENUATION, false);
+  SunLight->Set_Flag(LightClass::FAR_ATTENUATION, false);
+  Set_Sun_Light_Orientation(DEG_TO_RADF(0.0f), DEG_TO_RADF(70.0f));
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Compute_Static_Lighting -- Compute the static lighting approximation     *
@@ -258,42 +232,35 @@ void PhysicsSceneClass::Reset_Sun_Light(void)
  * HISTORY:                                                                                    *
  *   9/25/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Compute_Static_Lighting
-(
-	LightEnvironmentClass * light_env,
-	const Vector3 & obj_center,
-	bool use_sun,
-	int vis_object_id
-)
-{
-	WWASSERT(light_env != NULL);
-	light_env->Reset(obj_center,Get_Ambient_Light());
+void PhysicsSceneClass::Compute_Static_Lighting(LightEnvironmentClass *light_env, const Vector3 &obj_center,
+                                                bool use_sun, int vis_object_id) {
+  WWASSERT(light_env != NULL);
+  light_env->Reset(obj_center, Get_Ambient_Light());
 
-	/*
-	** Add in the sun
-	*/
-	if (use_sun) {
-		light_env->Add_Light(*SunLight);
-	}
-		
-	/*
-	** Add in the static lights affecting this object
-	*/
-	StaticLightingSystem->Reset_Collection();
-	StaticLightingSystem->Collect_Objects(obj_center);
-	LightPhysClass * light = StaticLightingSystem->Get_First_Collected_Object();
-	while (light != NULL) {
+  /*
+  ** Add in the sun
+  */
+  if (use_sun) {
+    light_env->Add_Light(*SunLight);
+  }
 
-		if ((light->Is_Disabled() == false) && (light->Is_Vis_Object_Visible(vis_object_id))) {
+  /*
+  ** Add in the static lights affecting this object
+  */
+  StaticLightingSystem->Reset_Collection();
+  StaticLightingSystem->Collect_Objects(obj_center);
+  LightPhysClass *light = StaticLightingSystem->Get_First_Collected_Object();
+  while (light != NULL) {
 
-			LightClass * light_obj = (LightClass *)light->Peek_Model();
-			light_env->Add_Light(*light_obj);
-		}
-		
-		light = StaticLightingSystem->Get_Next_Collected_Object(light);
-	}
+    if ((light->Is_Disabled() == false) && (light->Is_Vis_Object_Visible(vis_object_id))) {
+
+      LightClass *light_obj = (LightClass *)light->Peek_Model();
+      light_env->Add_Light(*light_obj);
+    }
+
+    light = StaticLightingSystem->Get_Next_Collected_Object(light);
+  }
 }
-
 
 /***********************************************************************************************
  * PhysicsSceneClass::Invalidate_Lighting_Caches -- invalidate lighting caches in the given bo *
@@ -312,16 +279,15 @@ void PhysicsSceneClass::Compute_Static_Lighting
  * HISTORY:                                                                                    *
  *   9/26/2000  gth : Created.                                                                 *
  *=============================================================================================*/
-void PhysicsSceneClass::Invalidate_Lighting_Caches(const AABoxClass & box)
-{
-	NonRefPhysListClass list;
-	Collect_Objects(box,true,true,&list);
+void PhysicsSceneClass::Invalidate_Lighting_Caches(const AABoxClass &box) {
+  NonRefPhysListClass list;
+  Collect_Objects(box, true, true, &list);
 
-	NonRefPhysListIterator it(&list);
-	for (it.First(); !it.Is_Done(); it.Next()) {
-		PhysClass * obj = it.Peek_Obj();
-		if (!obj->Is_Pre_Lit()) {
-			obj->Invalidate_Static_Lighting_Cache();
-		}
-	}
+  NonRefPhysListIterator it(&list);
+  for (it.First(); !it.Is_Done(); it.Next()) {
+    PhysClass *obj = it.Peek_Obj();
+    if (!obj->Is_Pre_Lit()) {
+      obj->Invalidate_Static_Lighting_Cache();
+    }
+  }
 }

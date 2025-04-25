@@ -22,7 +22,7 @@
 
 // Defining some aliases to make transition between DirectX versions easer
 
-#if(DIRECT3D_VERSION < 0x0900)
+#if (DIRECT3D_VERSION < 0x0900)
 
 #include <d3d8types.h>
 #include <d3dx8core.h>

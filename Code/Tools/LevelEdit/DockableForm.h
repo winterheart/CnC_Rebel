@@ -25,7 +25,6 @@
 // DockableFormClass.h : header file
 //
 
-
 #ifndef __AFXEXT_H__
 #include <afxext.h>
 #endif
@@ -34,70 +33,62 @@
 //
 //	DockableFormClass form view
 //
-class DockableFormClass : public CWnd
-{
-	public:
-		DockableFormClass (UINT nIDTemplate);
-		virtual ~DockableFormClass ();
-        
-
-// Attributes
+class DockableFormClass : public CWnd {
 public:
+  DockableFormClass(UINT nIDTemplate);
+  virtual ~DockableFormClass();
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(DockableFormClass)
+protected:
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(DockableFormClass)
-	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(DockableFormClass)
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-// Implementation
-protected:	
+protected:
+  ////////////////////////////////////////////////////////////////
+  //
+  //	Protected methods
+  //
+  BOOL Create(LPCTSTR /*lpszClassName*/, LPCTSTR /*lpszWindowName*/, DWORD dwRequestedStyle, const RECT &rect,
+              CWnd *pParentWnd, UINT nID, CCreateContext *pContext);
 
-	// Generated message map functions
-	//{{AFX_MSG(DockableFormClass)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+public:
+  ////////////////////////////////////////////////////////////////
+  //
+  //	Public Methods
+  //
+  BOOL Create(CWnd *pCParentWnd, UINT uiID) {
+    return Create(NULL, NULL, WS_CHILD | WS_VISIBLE, CRect(0, 0, 100, 100), pCParentWnd, uiID, NULL);
+  }
+  virtual void HandleInitDialog(void) {}
+  virtual bool Apply_Changes(void) { return true; }
+  virtual void Discard_Changes(void) {}
 
-	protected:
+  //
+  //	Inline accessors
+  //
+  const CRect &Get_Form_Rect(void) const { return m_rectForm; }
 
-		////////////////////////////////////////////////////////////////
-		//
-		//	Protected methods
-		//
-		BOOL Create(LPCTSTR /*lpszClassName*/, LPCTSTR /*lpszWindowName*/,
-						DWORD dwRequestedStyle, const RECT& rect, CWnd* pParentWnd, UINT nID,
-						CCreateContext* pContext);
-
-	public:
-
-		////////////////////////////////////////////////////////////////
-		//
-		//	Public Methods
-		//
-		BOOL				Create (CWnd *pCParentWnd, UINT uiID)	{ return Create (NULL, NULL, WS_CHILD | WS_VISIBLE, CRect (0, 0, 100, 100), pCParentWnd, uiID, NULL); }
-		virtual void	HandleInitDialog (void) {}
-		virtual bool	Apply_Changes (void) { return true; }
-		virtual void	Discard_Changes (void) {}
-
-		//
-		//	Inline accessors
-		//
-		const CRect &	Get_Form_Rect (void) const
-			{ return m_rectForm; }
-
-	private:
-
-		////////////////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		UINT m_uiTemplateID;
-		CRect m_rectForm;
+private:
+  ////////////////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  UINT m_uiTemplateID;
+  CRect m_rectForm;
 };
 
 /////////////////////////////////////////////////////////////////////////////

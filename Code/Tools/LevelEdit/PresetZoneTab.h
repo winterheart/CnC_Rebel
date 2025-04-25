@@ -33,86 +33,78 @@
 #include "zone.h"
 #include "listtypes.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 /////////////////////////////////////////////////////////////////////////////
 class PresetClass;
-class	PhysClass;
-
+class PhysClass;
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // PresetZoneTabClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetZoneTabClass : public DockableFormClass
-{
+class PresetZoneTabClass : public DockableFormClass {
 
 public:
-	PresetZoneTabClass (PresetClass *preset);
-	virtual ~PresetZoneTabClass (void);
+  PresetZoneTabClass(PresetClass *preset);
+  virtual ~PresetZoneTabClass(void);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(PresetZoneTabClass)
-	enum { IDD = IDD_ZONE_LIST };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  //{{AFX_DATA(PresetZoneTabClass)
+  enum { IDD = IDD_ZONE_LIST };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetZoneTabClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetZoneTabClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetZoneTabClass)
-	afx_msg void OnDblclkZoneList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(PresetZoneTabClass)
+  afx_msg void OnDblclkZoneList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	/////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////
-	void						HandleInitDialog (void);
-	bool						Apply_Changes (void);
+  /////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-	ZONE_PARAM_LIST *		Get_Zone_Param_List (void) const					{ return m_ZoneList; }
-	void						Set_Zone_Param_List (ZONE_PARAM_LIST *list)	{ m_ZoneList = list; }
+  ZONE_PARAM_LIST *Get_Zone_Param_List(void) const { return m_ZoneList; }
+  void Set_Zone_Param_List(ZONE_PARAM_LIST *list) { m_ZoneList = list; }
 
 protected:
-
-	/////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////////////
-	void						Create_Phys_Obj (void);
-	void						Modify_Selected_Zone (void);
+  /////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////
+  void Create_Phys_Obj(void);
+  void Modify_Selected_Zone(void);
 
 private:
-
-	/////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////
-	PresetClass *			m_Preset;
-	PhysClass	*			m_PhysObj;
-	ZONE_PARAM_LIST *		m_ZoneList;
+  /////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////
+  PresetClass *m_Preset;
+  PhysClass *m_PhysObj;
+  ZONE_PARAM_LIST *m_ZoneList;
 };
 
 /////////////////////////////////////////////////////////////////////////////

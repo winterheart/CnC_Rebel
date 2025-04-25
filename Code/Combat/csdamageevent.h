@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/csdamageevent.h                             $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 11/24/01 10:34a                                             $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/csdamageevent.h                             $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 11/24/01 10:34a                                             $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CSDAMAGEEVENT_H__
@@ -44,35 +44,33 @@
 //
 // A C->S reliably mirrored event for client authoritative damage
 //
-class	cCsDamageEvent : public NetworkObjectClass
-{
+class cCsDamageEvent : public NetworkObjectClass {
 public:
-   cCsDamageEvent(void);
+  cCsDamageEvent(void);
 
-	void						Init( int damager_go_id, int damagee_go_id, float damage, int warhead );
+  void Init(int damager_go_id, int damagee_go_id, float damage, int warhead);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CSDAMAGEEVENT;}
-	virtual void			Delete(void)										{delete this;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CSDAMAGEEVENT; }
+  virtual void Delete(void) { delete this; }
 
-	static void				Set_Are_Clients_Trusted(bool flag)			{AreClientsTrusted = flag;}
-	static bool				Get_Are_Clients_Trusted(void)					{return AreClientsTrusted;}
+  static void Set_Are_Clients_Trusted(bool flag) { AreClientsTrusted = flag; }
+  static bool Get_Are_Clients_Trusted(void) { return AreClientsTrusted; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
+  int SenderId;
+  int DamagerGOID;
+  int DamageeGOID;
+  float Damage;
+  int Warhead;
 
-	int						SenderId;
-	int						DamagerGOID;
-	int						DamageeGOID;
-	float						Damage;
-	int						Warhead;
-
-	static bool				AreClientsTrusted;
+  static bool AreClientsTrusted;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CSDAMAGEEVENT_H__
+#endif // __CSDAMAGEEVENT_H__

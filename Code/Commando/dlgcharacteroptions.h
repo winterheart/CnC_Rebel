@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgcharacteroptions.h      $*
  *                                                                                             *
@@ -41,57 +42,50 @@
 #ifndef __DLGOPTIONSCHARACTER_H
 #define __DLGOPTIONSCHARACTER_H
 
-
 #include "menudialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	CharacterOptionsMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class CharacterOptionsMenuClass : public MenuDialogClass
-{
+class CharacterOptionsMenuClass : public MenuDialogClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	CharacterOptionsMenuClass (void);
-	~CharacterOptionsMenuClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  CharacterOptionsMenuClass(void);
+  ~CharacterOptionsMenuClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Inherited
-	//
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	void		On_ComboBoxCtrl_Sel_Change (ComboBoxCtrlClass *combo_ctrl, int ctrl_id, int old_sel, int new_sel);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+
+  //
+  //	Inherited
+  //
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_ComboBoxCtrl_Sel_Change(ComboBoxCtrlClass *combo_ctrl, int ctrl_id, int old_sel, int new_sel);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Fill_Character_Combobox(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void		Fill_Character_Combobox (void);
-	
-	void		On_Character_Selected (int index);
-	
-	void		Display_Model (const char *model_name);
-	void		Display_Default_Model (int definition_id);
+  void On_Character_Selected(int index);
 
-	void		Ensure_Definitions_Are_Loaded (void);
+  void Display_Model(const char *model_name);
+  void Display_Default_Model(int definition_id);
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	bool		UnloadDefs;
+  void Ensure_Definitions_Are_Loaded(void);
+
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  bool UnloadDefs;
 };
 
-
 #endif //__DLGOPTIONSCHARACTER_H
-

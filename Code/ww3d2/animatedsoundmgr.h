@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : ww3d2																		  *
+ *                 Project Name : ww3d2
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/ww3d2/animatedsoundmgr.h                     $*
  *                                                                                             *
@@ -45,7 +46,6 @@
 #include "vector.h"
 #include "hashtemplate.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////////////////
@@ -53,56 +53,50 @@ class HTreeClass;
 class HAnimClass;
 class Matrix3D;
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	AnimatedSoundMgrClass
 //
 //////////////////////////////////////////////////////////////////////
-class AnimatedSoundMgrClass
-{
+class AnimatedSoundMgrClass {
 public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
+  //
+  //	Initialization and shutdown
+  //
+  static void Initialize(const char *ini_filename = NULL);
+  static void Shutdown(void);
 
-	//
-	//	Initialization and shutdown
-	//
-	static void		Initialize (const char *ini_filename = NULL);
-	static void		Shutdown (void);
+  //
+  //	Sound playback
+  //
+  static bool Does_Animation_Have_Embedded_Sounds(HAnimClass *anim);
+  static float Trigger_Sound(HAnimClass *anim, float old_frame, float new_frame, const Matrix3D &tm);
 
-	//
-	//	Sound playback
-	//
-	static bool		Does_Animation_Have_Embedded_Sounds (HAnimClass *anim);
-	static float	Trigger_Sound (HAnimClass *anim, float old_frame, float new_frame, const Matrix3D &tm);
-	
 private:
+  ///////////////////////////////////////////////////////////////////
+  //	Private data types
+  ///////////////////////////////////////////////////////////////////
+  typedef struct {
+    int Frame;
+    int SoundDefinitionID;
+  } ANIM_SOUND_INFO;
 
-	///////////////////////////////////////////////////////////////////
-	//	Private data types
-	///////////////////////////////////////////////////////////////////
-	typedef struct
-	{
-		int		Frame;
-		int		SoundDefinitionID;
-	} ANIM_SOUND_INFO;
+  typedef SimpleDynVecClass<ANIM_SOUND_INFO> ANIM_SOUND_LIST;
 
-	typedef SimpleDynVecClass<ANIM_SOUND_INFO>	ANIM_SOUND_LIST;
-	
-	///////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////
-	static HashTemplateClass<StringClass, ANIM_SOUND_LIST *> AnimationNameHash;
-	static DynamicVectorClass<ANIM_SOUND_LIST *>					AnimSoundLists;
+  ///////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////
+  static HashTemplateClass<StringClass, ANIM_SOUND_LIST *> AnimationNameHash;
+  static DynamicVectorClass<ANIM_SOUND_LIST *> AnimSoundLists;
 
-	///////////////////////////////////////////////////////////////////
-	//	Private methods
-	///////////////////////////////////////////////////////////////////
-	static ANIM_SOUND_LIST *	Find_Sound_List (HAnimClass *anim);
+  ///////////////////////////////////////////////////////////////////
+  //	Private methods
+  ///////////////////////////////////////////////////////////////////
+  static ANIM_SOUND_LIST *Find_Sound_List(HAnimClass *anim);
 };
-
 
 #endif //__ANIMATEDSOUNDMGR_H

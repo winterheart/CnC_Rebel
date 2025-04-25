@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/donateevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 12/06/01 5:13p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/donateevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 12/06/01 5:13p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __DONATEEVENT_H__
@@ -44,30 +44,28 @@
 //
 // A C->S mirrored object for money donations to teammates.
 //
-class	cDonateEvent : public cNetEvent
-{
+class cDonateEvent : public cNetEvent {
 public:
-   cDonateEvent(void);
+  cDonateEvent(void);
 
-	void						Init(int amount, int	recipient_id);
+  void Init(int amount, int recipient_id);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_DONATEEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_DONATEEVENT; }
 
-	static const int		Get_Minimum_Acceptable_Donation(void)		{return MinimumAcceptableDonation;}
+  static const int Get_Minimum_Acceptable_Donation(void) { return MinimumAcceptableDonation; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	int						Amount;
-	int						RecipientId;
-	static const int		MinimumAcceptableDonation;
+  int SenderId;
+  int Amount;
+  int RecipientId;
+  static const int MinimumAcceptableDonation;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __DONATEEVENT_H__
+#endif // __DONATEEVENT_H__

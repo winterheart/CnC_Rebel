@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/DlgMPTeamSelect.h $
-*
-* DESCRIPTION
-*     Multiplayer team selection dialog.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 8 $
-*     $Modtime: 2/11/02 11:28a $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/DlgMPTeamSelect.h $
+ *
+ * DESCRIPTION
+ *     Multiplayer team selection dialog.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 8 $
+ *     $Modtime: 2/11/02 11:28a $
+ *
+ ******************************************************************************/
 
 #ifndef __DLGMPTEAMSELECT_H__
 #define __DLGMPTEAMSELECT_H__
@@ -44,69 +44,66 @@
 #include <WWOnline\RefPtr.h>
 #include "WOLGameInfo.h"
 
-namespace WWOnline
-{
+namespace WWOnline {
 class Session;
 class ChannelEvent;
 class UserEvent;
 class GameOptionsMessage;
-};
+}; // namespace WWOnline
 
 class cPlayer;
 
 typedef TypedEventPair<bool, int> MPChooseTeamSignal;
 
-class DlgMPTeamSelect :
-		public MenuDialogClass,
-		protected Signaler<MPChooseTeamSignal>,
-		protected Observer<WWOnline::ChannelEvent>,
-		protected Observer<WWOnline::UserEvent>,
-		protected Observer<WWOnline::GameOptionsMessage>,
-		protected Observer<PlayerMgrEvent>
-	{
-	public:
-		static void DoDialog(Signaler<MPChooseTeamSignal>& target);
+class DlgMPTeamSelect : public MenuDialogClass,
+                        protected Signaler<MPChooseTeamSignal>,
+                        protected Observer<WWOnline::ChannelEvent>,
+                        protected Observer<WWOnline::UserEvent>,
+                        protected Observer<WWOnline::GameOptionsMessage>,
+                        protected Observer<PlayerMgrEvent> {
+public:
+  static void DoDialog(Signaler<MPChooseTeamSignal> &target);
 
-	protected:
-		DlgMPTeamSelect(void);
-		~DlgMPTeamSelect();
+protected:
+  DlgMPTeamSelect(void);
+  ~DlgMPTeamSelect();
 
-		bool FinalizeCreate(void);
+  bool FinalizeCreate(void);
 
-		void On_Init_Dialog(void);
-		void On_Frame_Update(void);
-		void On_Command(int ctrlID, int message, DWORD param);
-		void On_Last_Menu_Ending(void);
+  void On_Init_Dialog(void);
+  void On_Frame_Update(void);
+  void On_Command(int ctrlID, int message, DWORD param);
+  void On_Last_Menu_Ending(void);
 
-		void InitSideChoice(int sidePref);
-		void SelectSideChoice(int side);
-		int GetSideChoice(void);
+  void InitSideChoice(int sidePref);
+  void SelectSideChoice(int side);
+  int GetSideChoice(void);
 
-		void RequestWOLGameInfo(void);
+  void RequestWOLGameInfo(void);
 
-		void ShowTimeRemaining(float remainingSecond);
-		bool FindPlayerInListCtrl(const WCHAR* name, ListCtrlClass*& outList, int& outIndex);
+  void ShowTimeRemaining(float remainingSecond);
+  bool FindPlayerInListCtrl(const WCHAR *name, ListCtrlClass *&outList, int &outIndex);
 
-		void HandleNotification(WWOnline::ChannelEvent&);
-		void HandleNotification(WWOnline::UserEvent&);
-		void HandleNotification(WWOnline::GameOptionsMessage&);
-		void HandleNotification(PlayerMgrEvent&);
+  void HandleNotification(WWOnline::ChannelEvent &);
+  void HandleNotification(WWOnline::UserEvent &);
+  void HandleNotification(WWOnline::GameOptionsMessage &);
+  void HandleNotification(PlayerMgrEvent &);
 
-		static void ProcessWOLGameInfo(DlgMPTeamSelect& dialog, const char* data);
-		static void ProcessWOLTeamInfo(DlgMPTeamSelect& dialog, const char* data);
-		static void ProcessWOLPlayerInfo(DlgMPTeamSelect& dialog, const char* data);
+  static void ProcessWOLGameInfo(DlgMPTeamSelect &dialog, const char *data);
+  static void ProcessWOLTeamInfo(DlgMPTeamSelect &dialog, const char *data);
+  static void ProcessWOLPlayerInfo(DlgMPTeamSelect &dialog, const char *data);
 
-		void PopulateWithLANPlayers(void);
-		void AddLANPlayerInfo(cPlayer* lanPlayer);
-		void RemoveLANPlayerInfo(cPlayer* lanPlayer);
+  void PopulateWithLANPlayers(void);
+  void AddLANPlayerInfo(cPlayer *lanPlayer);
+  void RemoveLANPlayerInfo(cPlayer *lanPlayer);
 
-	protected:
-		bool mWOLGame;
-		bool mCanChoose;
-		float mTimeRemaining;
+protected:
+  bool mWOLGame;
+  bool mCanChoose;
+  float mTimeRemaining;
 
-		RefPtr<WWOnline::Session> mWOLSession;
-		WOLGameInfo mGameInfo;
-	};
+  RefPtr<WWOnline::Session> mWOLSession;
+  WOLGameInfo mGameInfo;
+};
 
 #endif // __DLGMPTEAMSELECT_H__

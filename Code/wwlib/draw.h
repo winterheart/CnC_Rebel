@@ -16,32 +16,35 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/Draw.h                                    $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/Draw.h                                    $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef DRAW_H
 #define DRAW_H
 
-#include	"convert.h"
-#include	"point.h"
-#include	"shapeset.h"
+#include "convert.h"
+#include "point.h"
+#include "shapeset.h"
 
-void Draw_Shape(Surface & surface, ConvertClass & convert, ShapeSet const * shapefile, int shapenum, Point2D const & point, Rect const & window, ShapeFlags_Type flags = SHAPE_NORMAL, unsigned char const * remap = NULL);
-void Blit_Block(Surface & surface, ConvertClass & convert, Surface const & source, Rect const & sourcerect, Point2D const & point, Rect const & clipwindow, unsigned char const * remap = NULL, Blitter const * blitter = NULL);
+void Draw_Shape(Surface &surface, ConvertClass &convert, ShapeSet const *shapefile, int shapenum, Point2D const &point,
+                Rect const &window, ShapeFlags_Type flags = SHAPE_NORMAL, unsigned char const *remap = NULL);
+void Blit_Block(Surface &surface, ConvertClass &convert, Surface const &source, Rect const &sourcerect,
+                Point2D const &point, Rect const &clipwindow, unsigned char const *remap = NULL,
+                Blitter const *blitter = NULL);
 
 #endif

@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -47,4 +46,3 @@
 extern WWAudioClass *_pTheAudioManager;
 
 #endif //__LEVELED_WWAUDIO_H
-

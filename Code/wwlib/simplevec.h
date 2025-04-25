@@ -44,7 +44,7 @@
  *   SimpleDynVecClass<T>::Add -- Add an item to the end of the array                          *
  *   SimpleDynVecClass<T>::Delete -- Delete an item from the array                             *
  *   SimpleDynVecClass<T>::Delete_Range -- delete several items from the array                 *
- *   SimpleDynVecClass<T>::Delete_All -- delete all items from the array                       * 
+ *   SimpleDynVecClass<T>::Delete_All -- delete all items from the array                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
@@ -56,41 +56,46 @@
 
 #include "always.h"
 #include <assert.h>
-#include <string.h>		// for memmove
-
+#include <string.h> // for memmove
 
 #if (_MSC_VER >= 1200)
-#pragma warning (push)
-#pragma warning (disable:4702)	// disabling the "unreachable code" warning.
+#pragma warning(push)
+#pragma warning(disable : 4702) // disabling the "unreachable code" warning.
 #endif
 
-/** 
+/**
 ** SimpleVecClass
 ** This is a template similar to VectorClass (found in Vector.h) except that it is designed
-** specifically to work with data types that are "memcopy-able".  
+** specifically to work with data types that are "memcopy-able".
 ** DON'T USE THIS TEMPLATE IF YOUR CLASS REQUIRES A DESTRUCTOR!!!
 */
-template <class T> class SimpleVecClass
-{
+template <class T> class SimpleVecClass {
 public:
+  SimpleVecClass(int size = 0);
+  virtual ~SimpleVecClass(void);
 
-	SimpleVecClass(int size = 0);
-	virtual ~SimpleVecClass(void);
+  T &operator[](int index) {
+    assert(index < VectorMax);
+    return (Vector[index]);
+  }
+  T const &operator[](int index) const {
+    assert(index < VectorMax);
+    return (Vector[index]);
+  }
 
-	T & operator[](int index)					{ assert(index < VectorMax); return(Vector[index]); } 
-	T const & operator[](int index) const	{ assert(index < VectorMax); return(Vector[index]); }
-
-	int				Length(void) const		{ return VectorMax; }
-	virtual bool	Resize(int newsize);
-	virtual bool	Uninitialised_Grow(int newsize);
-	void				Zero_Memory(void)			{ if (Vector != NULL) { memset(Vector,0,VectorMax * sizeof(T)); } }
+  int Length(void) const { return VectorMax; }
+  virtual bool Resize(int newsize);
+  virtual bool Uninitialised_Grow(int newsize);
+  void Zero_Memory(void) {
+    if (Vector != NULL) {
+      memset(Vector, 0, VectorMax * sizeof(T));
+    }
+  }
 
 protected:
-	
-	T *				Vector;
-	int				VectorMax;
+  T *Vector;
+  int VectorMax;
 };
-
 
 /***********************************************************************************************
  * SimpleVecClass<T>::SimpleVecClass -- Constructor                                            *
@@ -105,16 +110,12 @@ protected:
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline SimpleVecClass<T>::SimpleVecClass(int size) :
-	Vector(NULL),
-	VectorMax(0)
-{
-	if (size > 0) {
-		Resize(size);
-	}
+template <class T> inline SimpleVecClass<T>::SimpleVecClass(int size) : Vector(NULL), VectorMax(0) {
+  if (size > 0) {
+    Resize(size);
+  }
 }
-	
+
 /***********************************************************************************************
  * SimpleVecClass<T>::~SimpleVecClass -- Destructor                                            *
  *                                                                                             *
@@ -127,14 +128,12 @@ inline SimpleVecClass<T>::SimpleVecClass(int size) :
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline SimpleVecClass<T>::~SimpleVecClass(void)
-{
-	if (Vector != NULL) {
-		delete[] Vector;
-		Vector = NULL;
-		VectorMax = 0;
-	}
+template <class T> inline SimpleVecClass<T>::~SimpleVecClass(void) {
+  if (Vector != NULL) {
+    delete[] Vector;
+    Vector = NULL;
+    VectorMax = 0;
+  }
 }
 
 /***********************************************************************************************
@@ -149,58 +148,56 @@ inline SimpleVecClass<T>::~SimpleVecClass(void)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleVecClass<T>::Resize(int newsize)
-{
-	if (newsize == VectorMax) {
-		return true;
-	}
-	
-	if (newsize > 0) {
+template <class T> inline bool SimpleVecClass<T>::Resize(int newsize) {
+  if (newsize == VectorMax) {
+    return true;
+  }
 
-		/*
-		**	Allocate a new vector of the size specified. The default constructor
-		**	will be called for every object in this vector.
-		*/
-		T * newptr = new T[newsize];
+  if (newsize > 0) {
 
-		/*
-		**	If there is an old vector, then it must be copied (as much as is feasible)
-		**	to the new vector.
-		*/
-		if (Vector != NULL) {
+    /*
+    **	Allocate a new vector of the size specified. The default constructor
+    **	will be called for every object in this vector.
+    */
+    T *newptr = new T[newsize];
 
-			/*
-			**	Mem copy as much of the old vector into the new vector as possible.
-			*/
-			int copycount = (newsize < VectorMax) ? newsize : VectorMax;
-			memcpy(newptr,Vector,copycount * sizeof(T));
+    /*
+    **	If there is an old vector, then it must be copied (as much as is feasible)
+    **	to the new vector.
+    */
+    if (Vector != NULL) {
 
-			/*
-			**	Delete the old vector.
-			*/
-			delete[] Vector;
-			Vector = NULL;
-		}
+      /*
+      **	Mem copy as much of the old vector into the new vector as possible.
+      */
+      int copycount = (newsize < VectorMax) ? newsize : VectorMax;
+      memcpy(newptr, Vector, copycount * sizeof(T));
 
-		/*
-		**	Assign the new vector data to this class.
-		*/
-		Vector = newptr;
-		VectorMax = newsize;
+      /*
+      **	Delete the old vector.
+      */
+      delete[] Vector;
+      Vector = NULL;
+    }
 
-	} else {
+    /*
+    **	Assign the new vector data to this class.
+    */
+    Vector = newptr;
+    VectorMax = newsize;
 
-		/*
-		** Delete entire vector and reset counts
-		*/
-		VectorMax = 0;
-		if (Vector != NULL) {
-			delete[] Vector;
-			Vector = NULL;
-		}
-	}
-	return true;
+  } else {
+
+    /*
+    ** Delete entire vector and reset counts
+    */
+    VectorMax = 0;
+    if (Vector != NULL) {
+      delete[] Vector;
+      Vector = NULL;
+    }
+  }
+  return true;
 }
 
 /***********************************************************************************************
@@ -217,26 +214,23 @@ inline bool SimpleVecClass<T>::Resize(int newsize)
  * HISTORY:                                                                                    *
  *   6/6/00    jani : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleVecClass<T>::Uninitialised_Grow(int newsize)
-{
-	if (newsize <= VectorMax) {
-		return true;
-	}
-	
-	if (newsize > 0) {
+template <class T> inline bool SimpleVecClass<T>::Uninitialised_Grow(int newsize) {
+  if (newsize <= VectorMax) {
+    return true;
+  }
 
-		/*
-		**	Allocate a new vector of the size specified. The default constructor
-		**	will be called for every object in this vector.
-		*/
-		delete[] Vector;
-		Vector = new T[newsize];
-		VectorMax=newsize;
-	}
-	return true;
+  if (newsize > 0) {
+
+    /*
+    **	Allocate a new vector of the size specified. The default constructor
+    **	will be called for every object in this vector.
+    */
+    delete[] Vector;
+    Vector = new T[newsize];
+    VectorMax = newsize;
+  }
+  return true;
 }
-
 
 /**
 ** SimpleDynVecClass
@@ -252,43 +246,45 @@ inline bool SimpleVecClass<T>::Uninitialised_Grow(int newsize)
 ** objects.  This will cause it to resize to at least that size if it needs to resize.  Just
 ** leave the parameter at its default value for default behavior.
 */
-template <class T> class SimpleDynVecClass : public SimpleVecClass<T>
-{
+template <class T> class SimpleDynVecClass : public SimpleVecClass<T> {
 public:
+  SimpleDynVecClass(int size = 0);
+  virtual ~SimpleDynVecClass(void);
 
-	SimpleDynVecClass(int size = 0);
-	virtual ~SimpleDynVecClass(void);
+  // Array-like access (does not grow)
+  int Count(void) const { return (ActiveCount); }
+  T &operator[](int index) {
+    assert(index < ActiveCount);
+    return (this->Vector[index]);
+  }
+  T const &operator[](int index) const {
+    assert(index < ActiveCount);
+    return (this->Vector[index]);
+  }
 
-	// Array-like access (does not grow)
-	int				Count(void) const						{ return(ActiveCount); }
-	T &				operator[](int index)				{ assert(index < ActiveCount); return(this->Vector[index]); }
-	T const &		operator[](int index) const		{ assert(index < ActiveCount); return(this->Vector[index]); }
+  // Change maximum size of vector
+  virtual bool Resize(int newsize);
 
-	// Change maximum size of vector
-	virtual bool	Resize(int newsize);
+  // Add object to vector (growing as necessary).
+  bool Add(T const &object, int new_size_hint = 0);
 
-	// Add object to vector (growing as necessary).
-	bool				Add(T const & object,int new_size_hint = 0);
+  // Add room for multiple object to vector. Pointer to first slot added is returned.
+  T *Add_Multiple(int number_to_add);
 
-	// Add room for multiple object to vector. Pointer to first slot added is returned.
-	T * 				Add_Multiple( int number_to_add );
-
-	// Delete objects from the vector
-	bool				Delete(int index,bool allow_shrink = true);
-	bool				Delete(T const & object,bool allow_shrink = true);
-	bool				Delete_Range(int start,int count,bool allow_shrink = true);
-	void				Delete_All(bool allow_shrink = true);
+  // Delete objects from the vector
+  bool Delete(int index, bool allow_shrink = true);
+  bool Delete(T const &object, bool allow_shrink = true);
+  bool Delete_Range(int start, int count, bool allow_shrink = true);
+  void Delete_All(bool allow_shrink = true);
 
 protected:
+  bool Grow(int new_size_hint);
+  bool Shrink(void);
 
-	bool				Grow(int new_size_hint);
-	bool				Shrink(void);
+  int Find_Index(T const &object);
 
-	int				Find_Index(T const & object);
-
-	int				ActiveCount;
+  int ActiveCount;
 };
-
 
 /***********************************************************************************************
  * SimpleDynVecClass<T>::SimpleDynVecClass -- Constructor                                      *
@@ -303,12 +299,7 @@ protected:
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline SimpleDynVecClass<T>::SimpleDynVecClass(int size) :
-	SimpleVecClass<T>(size),
-	ActiveCount(0)
-{
-}
+template <class T> inline SimpleDynVecClass<T>::SimpleDynVecClass(int size) : SimpleVecClass<T>(size), ActiveCount(0) {}
 
 /***********************************************************************************************
  * SimpleDynVecClass<T>::~SimpleDynVecClass -- Destructor                                      *
@@ -322,13 +313,11 @@ inline SimpleDynVecClass<T>::SimpleDynVecClass(int size) :
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline SimpleDynVecClass<T>::~SimpleDynVecClass(void)
-{
-	if (this->Vector != NULL) {
-		delete[] this->Vector;
-		this->Vector = NULL;
-	}
+template <class T> inline SimpleDynVecClass<T>::~SimpleDynVecClass(void) {
+  if (this->Vector != NULL) {
+    delete[] this->Vector;
+    this->Vector = NULL;
+  }
 }
 
 /***********************************************************************************************
@@ -344,14 +333,13 @@ inline SimpleDynVecClass<T>::~SimpleDynVecClass(void)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Resize(int newsize)
-{
-	if (SimpleVecClass<T>::Resize(newsize)) {
-		if (this->Length() < ActiveCount) ActiveCount = this->Length();
-		return(true);
-	}
-	return(false);
+template <class T> inline bool SimpleDynVecClass<T>::Resize(int newsize) {
+  if (SimpleVecClass<T>::Resize(newsize)) {
+    if (this->Length() < ActiveCount)
+      ActiveCount = this->Length();
+    return (true);
+  }
+  return (false);
 }
 
 /***********************************************************************************************
@@ -367,56 +355,51 @@ inline bool SimpleDynVecClass<T>::Resize(int newsize)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Add(T const & object,int new_size_hint)
-{
-	if (ActiveCount >= this->VectorMax) {
-		
-		/*
-		** We are out of space so tell the vector to grow
-		*/
-		if (!Grow(new_size_hint)) {
-			return false;
-		}
+template <class T> inline bool SimpleDynVecClass<T>::Add(T const &object, int new_size_hint) {
+  if (ActiveCount >= this->VectorMax) {
 
-	}
+    /*
+    ** We are out of space so tell the vector to grow
+    */
+    if (!Grow(new_size_hint)) {
+      return false;
+    }
+  }
 
-	/*
-	**	There is room for the new object now. Add it to the end of the object vector.
-	*/
-	(*this)[ActiveCount++] = object;
-	return true;
+  /*
+  **	There is room for the new object now. Add it to the end of the object vector.
+  */
+  (*this)[ActiveCount++] = object;
+  return true;
 }
 
 /***********************************************************************************************
- * SimpleDynVecClass<T>::Add_Multiple -- Add room for multiple object to vector.					  *
+ * SimpleDynVecClass<T>::Add_Multiple -- Add room for multiple object to vector. *
  *                                                                                             *
  * INPUT: number of object slots to add                                                        *
  *                                                                                             *
- * OUTPUT: pointer to first slot added is returned.														  *
+ * OUTPUT: pointer to first slot added is returned.
+ **
  *                                                                                             *
  * WARNINGS:                                                                                   *
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   1/25/01    bmg : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline T *  SimpleDynVecClass<T>::Add_Multiple( int number_to_add )
-{
-	int index = ActiveCount;
-	ActiveCount += number_to_add;
+template <class T> inline T *SimpleDynVecClass<T>::Add_Multiple(int number_to_add) {
+  int index = ActiveCount;
+  ActiveCount += number_to_add;
 
-	if (ActiveCount >= this->VectorMax) {
-		
-		/*
-		** We are out of space so tell the vector to grow
-		*/
-		Grow( ActiveCount );
-	}
+  if (ActiveCount >= this->VectorMax) {
 
-	return &this->Vector[index];
+    /*
+    ** We are out of space so tell the vector to grow
+    */
+    Grow(ActiveCount);
+  }
+
+  return &this->Vector[index];
 }
-
 
 /***********************************************************************************************
  * SimpleDynVecClass<T>::Delete -- Delete an item from the array                               *
@@ -434,29 +417,27 @@ inline T *  SimpleDynVecClass<T>::Add_Multiple( int number_to_add )
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Delete(int index,bool allow_shrink)
-{
-	assert(index < ActiveCount);
+template <class T> inline bool SimpleDynVecClass<T>::Delete(int index, bool allow_shrink) {
+  assert(index < ActiveCount);
 
-	/*
-	**	If there are any objects past the index that was deleted, memcopy
-	** those objects to collapse the array.  NOTE: again, this template
-	** cannot be used for classes that cannot be memcopied!!
-	*/
-	if (index < ActiveCount-1) {
-		memmove(&(this->Vector[index]),&(this->Vector[index+1]),(ActiveCount - index - 1) * sizeof(T));
-	}
-	ActiveCount--;
+  /*
+  **	If there are any objects past the index that was deleted, memcopy
+  ** those objects to collapse the array.  NOTE: again, this template
+  ** cannot be used for classes that cannot be memcopied!!
+  */
+  if (index < ActiveCount - 1) {
+    memmove(&(this->Vector[index]), &(this->Vector[index + 1]), (ActiveCount - index - 1) * sizeof(T));
+  }
+  ActiveCount--;
 
-	/*
-	** We deleted something so we may need to shrink
-	*/
-	if (allow_shrink) {
-		Shrink();
-	}
+  /*
+  ** We deleted something so we may need to shrink
+  */
+  if (allow_shrink) {
+    Shrink();
+  }
 
-	return true;
+  return true;
 }
 
 /***********************************************************************************************
@@ -475,14 +456,12 @@ inline bool SimpleDynVecClass<T>::Delete(int index,bool allow_shrink)
  * HISTORY:                                                                                    *
  *   03/10/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Delete(T const & object,bool allow_shrink)
-{
-	int id = Find_Index(object);
-	if (id != -1) {
-		return(Delete(id),allow_shrink);
-	}
-	return(false);
+template <class T> inline bool SimpleDynVecClass<T>::Delete(T const &object, bool allow_shrink) {
+  int id = Find_Index(object);
+  if (id != -1) {
+    return (Delete(id), allow_shrink);
+  }
+  return (false);
 }
 
 /***********************************************************************************************
@@ -502,31 +481,29 @@ inline bool SimpleDynVecClass<T>::Delete(T const & object,bool allow_shrink)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Delete_Range(int start,int count,bool allow_shrink)
-{
-	assert(start >= 0);
-	assert(start <= ActiveCount - count);
+template <class T> inline bool SimpleDynVecClass<T>::Delete_Range(int start, int count, bool allow_shrink) {
+  assert(start >= 0);
+  assert(start <= ActiveCount - count);
 
-	/*
-	**	If there are any objects past the index that was deleted, memcopy
-	** those objects to collapse the array.  NOTE: again, this template
-	** cannot be used for classes that cannot be memcopied!!
-	*/
-	if (start < ActiveCount - count) {
-		memmove(&(this->Vector[start]),&(this->Vector[start + count]),(ActiveCount - start - count) * sizeof(T));
-	}
+  /*
+  **	If there are any objects past the index that was deleted, memcopy
+  ** those objects to collapse the array.  NOTE: again, this template
+  ** cannot be used for classes that cannot be memcopied!!
+  */
+  if (start < ActiveCount - count) {
+    memmove(&(this->Vector[start]), &(this->Vector[start + count]), (ActiveCount - start - count) * sizeof(T));
+  }
 
-	ActiveCount -= count;
+  ActiveCount -= count;
 
-	/*
-	** We deleted something so we may need to shrink
-	*/
-	if (allow_shrink) {
-		Shrink();
-	}
-	
-	return true;
+  /*
+  ** We deleted something so we may need to shrink
+  */
+  if (allow_shrink) {
+    Shrink();
+  }
+
+  return true;
 }
 
 /***********************************************************************************************
@@ -543,17 +520,15 @@ inline bool SimpleDynVecClass<T>::Delete_Range(int start,int count,bool allow_sh
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline void SimpleDynVecClass<T>::Delete_All(bool allow_shrink)
-{
-	ActiveCount = 0;
+template <class T> inline void SimpleDynVecClass<T>::Delete_All(bool allow_shrink) {
+  ActiveCount = 0;
 
-	/*
-	** We deleted something so we may need to shrink
-	*/
-	if (allow_shrink) {
-		Shrink();
-	}
+  /*
+  ** We deleted something so we may need to shrink
+  */
+  if (allow_shrink) {
+    Shrink();
+  }
 }
 
 /***********************************************************************************************
@@ -570,17 +545,15 @@ inline void SimpleDynVecClass<T>::Delete_All(bool allow_shrink)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Grow(int new_size_hint)
-{
-	/*
-	** Vector should grow to 25% bigger, grow at least 4 elements,
-	** and grow at least up to the user's new_size_hint
-	*/
-	int new_size = MAX(this->Length() + this->Length()/4,this->Length() + 4);
-	new_size = MAX(new_size,new_size_hint);
-	
-	return Resize(new_size);
+template <class T> inline bool SimpleDynVecClass<T>::Grow(int new_size_hint) {
+  /*
+  ** Vector should grow to 25% bigger, grow at least 4 elements,
+  ** and grow at least up to the user's new_size_hint
+  */
+  int new_size = MAX(this->Length() + this->Length() / 4, this->Length() + 4);
+  new_size = MAX(new_size, new_size_hint);
+
+  return Resize(new_size);
 }
 
 /***********************************************************************************************
@@ -597,18 +570,15 @@ inline bool SimpleDynVecClass<T>::Grow(int new_size_hint)
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline bool SimpleDynVecClass<T>::Shrink(void)
-{
-	/*
-	** Shrink the array if it is wasting more than 25%
-	*/
-	if (ActiveCount < this->VectorMax/4) {
-		return Resize(ActiveCount);
-	}
-	return true;
+template <class T> inline bool SimpleDynVecClass<T>::Shrink(void) {
+  /*
+  ** Shrink the array if it is wasting more than 25%
+  */
+  if (ActiveCount < this->VectorMax / 4) {
+    return Resize(ActiveCount);
+  }
+  return true;
 }
-
 
 /***********************************************************************************************
  * SimpleDynVecClass<T>::Find_Index -- Find matching value in the dynamic vector.              *
@@ -628,18 +598,16 @@ inline bool SimpleDynVecClass<T>::Shrink(void)
  * HISTORY:                                                                                    *
  *   03/13/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-template<class T>
-inline int SimpleDynVecClass<T>::Find_Index(T const & object)
-{
-	for (int index = 0; index < Count(); index++) {
-		if ((*this)[index] == object) return(index);
-	}
-	return(-1);
+template <class T> inline int SimpleDynVecClass<T>::Find_Index(T const &object) {
+  for (int index = 0; index < Count(); index++) {
+    if ((*this)[index] == object)
+      return (index);
+  }
+  return (-1);
 }
 
 #if (_MSC_VER >= 1200)
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 #endif // SIMPLEVEC_H
-

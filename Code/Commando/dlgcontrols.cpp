@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgcontrols.cpp        $*
  *                                                                                             *
@@ -34,7 +35,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "dlgcontrols.h"
 #include "dlgcontroltabs.h"
 #include "dlgcontrolsaveload.h"
@@ -43,135 +43,115 @@
 #include "dialogresource.h"
 #include "inputconfigmgr.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Static member initialization
 ////////////////////////////////////////////////////////////////
-ControlsMenuClass *	ControlsMenuClass::_TheInstance	= NULL;
-
+ControlsMenuClass *ControlsMenuClass::_TheInstance = NULL;
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsMenuClass
 //
 ////////////////////////////////////////////////////////////////
-ControlsMenuClass::ControlsMenuClass (void)	:
-	MenuDialogClass (IDD_MENU_CONTROLS)
-{
-	_TheInstance = this;
-	return ;
+ControlsMenuClass::ControlsMenuClass(void) : MenuDialogClass(IDD_MENU_CONTROLS) {
+  _TheInstance = this;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	~ControlsMenuClass
 //
 ////////////////////////////////////////////////////////////////
-ControlsMenuClass::~ControlsMenuClass (void)
-{
-	_TheInstance = NULL;
-	return ;
+ControlsMenuClass::~ControlsMenuClass(void) {
+  _TheInstance = NULL;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-ControlsMenuClass::On_Init_Dialog (void)
-{
-	TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item (IDC_CONTROL_TABCTRL);
-	if (tab_ctrl != NULL) {
-		
-		//
-		//	Add the tabs to the control
-		//
-		TABCTRL_ADD_TAB (tab_ctrl, ControlsBasicMvmtTabClass);
-		TABCTRL_ADD_TAB (tab_ctrl, ControlsAttackTabClass);
-		TABCTRL_ADD_TAB (tab_ctrl, ControlsWeaponsTabClass);
-		TABCTRL_ADD_TAB (tab_ctrl, ControlsLookTabClass);
-		TABCTRL_ADD_TAB (tab_ctrl, ControlsMultiPlayTabClass);
-	}
+void ControlsMenuClass::On_Init_Dialog(void) {
+  TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item(IDC_CONTROL_TABCTRL);
+  if (tab_ctrl != NULL) {
 
-	MenuDialogClass::On_Init_Dialog ();
-	return ;
+    //
+    //	Add the tabs to the control
+    //
+    TABCTRL_ADD_TAB(tab_ctrl, ControlsBasicMvmtTabClass);
+    TABCTRL_ADD_TAB(tab_ctrl, ControlsAttackTabClass);
+    TABCTRL_ADD_TAB(tab_ctrl, ControlsWeaponsTabClass);
+    TABCTRL_ADD_TAB(tab_ctrl, ControlsLookTabClass);
+    TABCTRL_ADD_TAB(tab_ctrl, ControlsMultiPlayTabClass);
+  }
+
+  MenuDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void
-ControlsMenuClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id)
-	{
-		case IDCANCEL:
-		case IDC_MENU_BACK_BUTTON:
-			Apply_Changes ();
-			break;
+void ControlsMenuClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  case IDCANCEL:
+  case IDC_MENU_BACK_BUTTON:
+    Apply_Changes();
+    break;
 
-		case IDC_DEFAULTS_BUTTON:
-			InputConfigMgrClass::Load_Default_Configuration ();
-			break;
+  case IDC_DEFAULTS_BUTTON:
+    InputConfigMgrClass::Load_Default_Configuration();
+    break;
 
-		case IDC_SAVELOAD_BUTTON:
-			START_DIALOG (ControlSaveLoadMenuClass);
-			break;
-	}
+  case IDC_SAVELOAD_BUTTON:
+    START_DIALOG(ControlSaveLoadMenuClass);
+    break;
+  }
 
-	MenuDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  MenuDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Apply_Changes
 //
 ////////////////////////////////////////////////////////////////
-void
-ControlsMenuClass::Apply_Changes (void)
-{
-	//
-	//	Apply the changes on each tab
-	//
-	TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item (IDC_CONTROL_TABCTRL);
-	if (tab_ctrl != NULL) {
-		if (tab_ctrl->Apply_Changes_On_Tabs ()) {
-			
-			//
-			//	Save the changes
-			//
-			InputConfigMgrClass::Save_Current_Configuration ();
-		}
-	}
+void ControlsMenuClass::Apply_Changes(void) {
+  //
+  //	Apply the changes on each tab
+  //
+  TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item(IDC_CONTROL_TABCTRL);
+  if (tab_ctrl != NULL) {
+    if (tab_ctrl->Apply_Changes_On_Tabs()) {
 
-	return; 
+      //
+      //	Save the changes
+      //
+      InputConfigMgrClass::Save_Current_Configuration();
+    }
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Reload
 //
 ////////////////////////////////////////////////////////////////
-void
-ControlsMenuClass::Reload (void)
-{
-	//
-	//	Ask each tab to reload its data
-	//
-	TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item (IDC_CONTROL_TABCTRL);
-	if (tab_ctrl != NULL) {
-		tab_ctrl->Reload_Tabs ();
-	}
-	
-	return ;
-}
+void ControlsMenuClass::Reload(void) {
+  //
+  //	Ask each tab to reload its data
+  //
+  TabCtrlClass *tab_ctrl = (TabCtrlClass *)Get_Dlg_Item(IDC_CONTROL_TABCTRL);
+  if (tab_ctrl != NULL) {
+    tab_ctrl->Reload_Tabs();
+  }
 
+  return;
+}

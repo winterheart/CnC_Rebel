@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/LOAD.CPP                                  $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/LOAD.CPP                                  $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   Load_Uncompress -- Load and uncompress the given file.                *
  *   Uncompress_Data -- Uncompress standard CPS buffer.                    *
  *   Load_Data -- Loads a data file from disk.                             *
@@ -40,11 +40,10 @@
  *   Uncompress_Data -- Uncompresses data from one buffer to another.      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"iff.h"
-#include	"lcw.h"
-#include	<string.h>
-
+#include "always.h"
+#include "iff.h"
+#include "lcw.h"
+#include <string.h>
 
 /***************************************************************************
  * Uncompress_Data -- Uncompresses data from one buffer to another.        *
@@ -65,48 +64,45 @@
  * HISTORY:                                                                *
  *   09/17/1993 JLB : Created.                                             *
  *=========================================================================*/
-unsigned long __cdecl Uncompress_Data(void const *src, void *dst)
-{
-	unsigned int					skip;			// Number of leading data to skip.
-	CompressionType	method;		// Compression method used.
-	unsigned long					uncomp_size;
+unsigned long __cdecl Uncompress_Data(void const *src, void *dst) {
+  unsigned int skip;      // Number of leading data to skip.
+  CompressionType method; // Compression method used.
+  unsigned long uncomp_size;
 
-	if (!src || !dst) return(NULL);
+  if (!src || !dst)
+    return (NULL);
 
-	/*
-	**	Interpret the data block header structure to determine
-	**	compression method, size, and skip data amount.
-	*/
-	uncomp_size = ((CompHeaderType*)src)->Size;
-	#if(AMIGA)
-		uncomp_size = Reverse_Long(uncomp_size);
-	#endif
-	skip = ((CompHeaderType*)src)->Skip;
-	#if(AMIGA)
-		skip = Reverse_Word(skip);
-	#endif
-	method = (CompressionType) ((CompHeaderType*)src)->Method;
-	src = ((char*)src) + (long)sizeof(CompHeaderType) + (long)skip;
-//	src = Add_Long_To_Pointer((void *)src, (long)sizeof(CompHeaderType) + (long)skip);
+  /*
+  **	Interpret the data block header structure to determine
+  **	compression method, size, and skip data amount.
+  */
+  uncomp_size = ((CompHeaderType *)src)->Size;
+#if (AMIGA)
+  uncomp_size = Reverse_Long(uncomp_size);
+#endif
+  skip = ((CompHeaderType *)src)->Skip;
+#if (AMIGA)
+  skip = Reverse_Word(skip);
+#endif
+  method = (CompressionType)((CompHeaderType *)src)->Method;
+  src = ((char *)src) + (long)sizeof(CompHeaderType) + (long)skip;
+  //	src = Add_Long_To_Pointer((void *)src, (long)sizeof(CompHeaderType) + (long)skip);
 
-	switch (method) {
+  switch (method) {
 
-		default:
-		case NOCOMPRESS:
-			memmove(dst, (void *) src, uncomp_size);
-//			Mem_Copy((void *) src, dst, uncomp_size);
-			break;
+  default:
+  case NOCOMPRESS:
+    memmove(dst, (void *)src, uncomp_size);
+    //			Mem_Copy((void *) src, dst, uncomp_size);
+    break;
 
-		case HORIZONTAL:
-			break;
+  case HORIZONTAL:
+    break;
 
-		case LCW:
-			LCW_Uncomp((void *) src, (void *) dst, (unsigned long) uncomp_size);
-			break;
+  case LCW:
+    LCW_Uncomp((void *)src, (void *)dst, (unsigned long)uncomp_size);
+    break;
+  }
 
-	}
-
-	return(uncomp_size);
+  return (uncomp_size);
 }
-
-

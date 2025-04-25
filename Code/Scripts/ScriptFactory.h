@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Byon_g $
-*     $Revision: 5 $
-*     $Modtime: 10/30/00 6:49p $
-*     $Archive: /Commando/Code/Scripts/ScriptFactory.h $
-*
-******************************************************************************/
+ *
+ * FILE
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Byon_g $
+ *     $Revision: 5 $
+ *     $Modtime: 10/30/00 6:49p $
+ *     $Archive: /Commando/Code/Scripts/ScriptFactory.h $
+ *
+ ******************************************************************************/
 
 #ifndef _SCRIPTFACTORY_H_
 #define _SCRIPTFACTORY_H_
@@ -39,35 +39,34 @@
 class ScriptImpClass;
 class ScriptRegistrar;
 
-class ScriptFactory
-	{
-	public:
-		virtual ~ScriptFactory();
+class ScriptFactory {
+public:
+  virtual ~ScriptFactory();
 
-		// Retrieve the name of this ScriptFactory
-		const char* GetName(void);
+  // Retrieve the name of this ScriptFactory
+  const char *GetName(void);
 
-		// Retrieve the parameter description for this ScriptFactory
-		const char* GetParamDescription(void);
+  // Retrieve the parameter description for this ScriptFactory
+  const char *GetParamDescription(void);
 
-		// Create and instance of this Script
-		virtual ScriptImpClass* Create(void) = 0;
+  // Create and instance of this Script
+  virtual ScriptImpClass *Create(void) = 0;
 
-	protected:
-		friend class ScriptRegistrar;
+protected:
+  friend class ScriptRegistrar;
 
-		ScriptFactory(const char* name, const char* param);
+  ScriptFactory(const char *name, const char *param);
 
-		// Retrieve next node
-		ScriptFactory* GetNext(void) const;
+  // Retrieve next node
+  ScriptFactory *GetNext(void) const;
 
-		// Set next node
-		void SetNext(ScriptFactory* link);
+  // Set next node
+  void SetNext(ScriptFactory *link);
 
-	private:
-		ScriptFactory* mNext;
-		const char * ScriptName;
-		const char * ParamDescription;
-	};
+private:
+  ScriptFactory *mNext;
+  const char *ScriptName;
+  const char *ParamDescription;
+};
 
 #endif // _SCRIPTFACTORY_H_

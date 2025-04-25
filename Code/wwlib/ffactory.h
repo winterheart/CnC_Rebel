@@ -52,70 +52,54 @@
 /*
 **
 */
-class	FileClass;
+class FileClass;
 
 /*
 ** FileFactoryClass is a pure virtual class used to
 ** create FileClasses.
 */
-class	FileFactoryClass {
+class FileFactoryClass {
 
 public:
-	virtual ~FileFactoryClass(void){};
-	virtual FileClass * Get_File( char const *filename ) = 0;
-	virtual void Return_File( FileClass *file ) = 0;
+  virtual ~FileFactoryClass(void) {};
+  virtual FileClass *Get_File(char const *filename) = 0;
+  virtual void Return_File(FileClass *file) = 0;
 };
-
-
-
 
 //
 // Handy auto pointer class.  Prevents you from having to call Return_File manually
 //
-class file_auto_ptr
-{
+class file_auto_ptr {
 public:
-	explicit	file_auto_ptr(FileFactoryClass *fac, const char *filename);
-				~file_auto_ptr();
+  explicit file_auto_ptr(FileFactoryClass *fac, const char *filename);
+  ~file_auto_ptr();
 
-	operator FileClass*(void) const
-		{return (get()); }
+  operator FileClass *(void) const { return (get()); }
 
-	FileClass& operator*() const
-		{return (*get()); }
+  FileClass &operator*() const { return (*get()); }
 
-	FileClass *operator->() const
-		{return (get()); }
+  FileClass *operator->() const { return (get()); }
 
-	FileClass *get() const
-		{return (_Ptr); }
+  FileClass *get() const { return (_Ptr); }
 
 private:
-	// prevent these from getting auto-generated or used
-						file_auto_ptr(const file_auto_ptr &other);
-	file_auto_ptr	&operator=(const file_auto_ptr &other);
+  // prevent these from getting auto-generated or used
+  file_auto_ptr(const file_auto_ptr &other);
+  file_auto_ptr &operator=(const file_auto_ptr &other);
 
-
-	FileClass			*_Ptr;
-	FileFactoryClass	*_Fac;
+  FileClass *_Ptr;
+  FileFactoryClass *_Fac;
 };
-
-
-
-
-
-
 
 /*
 ** RawFileFactoryClass is a derived FileFactoryClass which
 ** gives RawFileClass objects
 */
-class	RawFileFactoryClass : public FileFactoryClass {
+class RawFileFactoryClass : public FileFactoryClass {
 public:
-	virtual FileClass * Get_File( char const *filename );
-	virtual void Return_File( FileClass *file );
+  virtual FileClass *Get_File(char const *filename);
+  virtual void Return_File(FileClass *file);
 };
-
 
 /*
 ** SimpleFileFactoryClass is a slightly more capable derivative of
@@ -124,32 +108,31 @@ public:
 ** it currently creates BufferedFileClass objects instead of RawFileClass
 ** objects.
 */
-class	SimpleFileFactoryClass : public FileFactoryClass {
+class SimpleFileFactoryClass : public FileFactoryClass {
 
 public:
-	SimpleFileFactoryClass( void );
-	~SimpleFileFactoryClass( void )	{}
+  SimpleFileFactoryClass(void);
+  ~SimpleFileFactoryClass(void) {}
 
-	virtual FileClass *	Get_File( char const *filename );
-	virtual void			Return_File( FileClass *file );
+  virtual FileClass *Get_File(char const *filename);
+  virtual void Return_File(FileClass *file);
 
-	// sub_directory may be a semicolon seperated search path.  New files will always
-	//   go in the last dir in the path.
-	void						Get_Sub_Directory( StringClass& new_dir ) const;
-	void						Set_Sub_Directory( const char * sub_directory );
-	void						Prepend_Sub_Directory( const char * sub_directory );
-	void						Append_Sub_Directory( const char * sub_directory );
-	bool						Get_Strip_Path( void ) const								{ return IsStripPath; }
-	void						Set_Strip_Path( bool set )									{ IsStripPath = set; }
+  // sub_directory may be a semicolon seperated search path.  New files will always
+  //   go in the last dir in the path.
+  void Get_Sub_Directory(StringClass &new_dir) const;
+  void Set_Sub_Directory(const char *sub_directory);
+  void Prepend_Sub_Directory(const char *sub_directory);
+  void Append_Sub_Directory(const char *sub_directory);
+  bool Get_Strip_Path(void) const { return IsStripPath; }
+  void Set_Strip_Path(bool set) { IsStripPath = set; }
 
 protected:
-	StringClass				SubDirectory;
-	bool						IsStripPath;
+  StringClass SubDirectory;
+  bool IsStripPath;
 
-	// Mutex must be mutable because const functions lock on it.
-	mutable CriticalSectionClass	Mutex;
+  // Mutex must be mutable because const functions lock on it.
+  mutable CriticalSectionClass Mutex;
 };
-
 
 /*
 ** TheFileFactory is a static pointer to the single file factory (only one
@@ -160,8 +143,8 @@ protected:
 ** other class which is not a derivative of SimpleFileFactoryClass then
 ** TheSimpleFileFactory should be set to NULL).
 */
-extern FileFactoryClass	*	_TheFileFactory;
-extern FileFactoryClass	*	_TheWritingFileFactory;
-extern SimpleFileFactoryClass	*	_TheSimpleFileFactory;
+extern FileFactoryClass *_TheFileFactory;
+extern FileFactoryClass *_TheWritingFileFactory;
+extern SimpleFileFactoryClass *_TheSimpleFileFactory;
 
 #endif

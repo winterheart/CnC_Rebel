@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpingameteamchat.h       $*
  *                                                                                             *
@@ -44,23 +45,19 @@
 #include "popupdialog.h"
 #include "resource.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	MPIngameTeamChatPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPIngameTeamChatPopupClass : public PopupDialogClass
-{
+class MPIngameTeamChatPopupClass : public PopupDialogClass {
 public:
-	MPIngameTeamChatPopupClass (void)	:
-		PopupDialogClass (IDD_MULTIPLAY_INGAME_TEAM_CHAT)	{}
+  MPIngameTeamChatPopupClass(void) : PopupDialogClass(IDD_MULTIPLAY_INGAME_TEAM_CHAT) {}
 
-	void	On_Init_Dialog (void);
-	bool	On_Key_Down (uint32 key_id, uint32 key_data);
+  void On_Init_Dialog(void);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
 
 private:
 };
-
 
 #endif //__DLGMPINGAMETEAMCHAT_H__

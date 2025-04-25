@@ -17,60 +17,58 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/PingProfile.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 3 $
-*     $Modtime: 11/09/01 6:12p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/PingProfile.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 3 $
+ *     $Modtime: 11/09/01 6:12p $
+ *
+ ******************************************************************************/
 
 #ifndef __PINGPROFILE_H__
 #define __PINGPROFILE_H__
 
 #include <WWOnline\WaitCondition.h>
 
-namespace WWOnline
-{
+namespace WWOnline {
 class RawPing;
 class Session;
-}
+} // namespace WWOnline
 
-typedef struct {unsigned char Pings[8];} PingProfile;
+typedef struct {
+  unsigned char Pings[8];
+} PingProfile;
 
-const PingProfile& GetLocalPingProfile(void);
-long ComparePingProfile(const PingProfile& ping1, const PingProfile& ping2);
-int EncodePingProfile(const PingProfile& pings, char* buffer);
-void DecodePingProfile(const char* buffer, PingProfile& pings);
+const PingProfile &GetLocalPingProfile(void);
+long ComparePingProfile(const PingProfile &ping1, const PingProfile &ping2);
+int EncodePingProfile(const PingProfile &pings, char *buffer);
+void DecodePingProfile(const char *buffer, PingProfile &pings);
 
-class PingProfileWait :
-		public SingleWait,
-		protected Observer<WWOnline::RawPing>
-	{
-	public:
-		static RefPtr<PingProfileWait> Create(void);
+class PingProfileWait : public SingleWait, protected Observer<WWOnline::RawPing> {
+public:
+  static RefPtr<PingProfileWait> Create(void);
 
-		void WaitBeginning(void);
+  void WaitBeginning(void);
 
-	protected:
-		PingProfileWait();
-		virtual ~PingProfileWait();
+protected:
+  PingProfileWait();
+  virtual ~PingProfileWait();
 
-		PingProfileWait(const PingProfileWait&);
-		const PingProfileWait& operator=(const PingProfileWait&);
+  PingProfileWait(const PingProfileWait &);
+  const PingProfileWait &operator=(const PingProfileWait &);
 
-		void HandleNotification(WWOnline::RawPing& ping);
+  void HandleNotification(WWOnline::RawPing &ping);
 
-	private:
-		RefPtr<WWOnline::Session> mWOLSession;
-		unsigned int mCount;
-	};
+private:
+  RefPtr<WWOnline::Session> mWOLSession;
+  unsigned int mCount;
+};
 
 #endif // __PINGPROFILE_H__

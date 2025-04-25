@@ -25,184 +25,158 @@
 #include "utils.h"
 #include "filemgr.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // EditFilenameListDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-EditFilenameListDialogClass::EditFilenameListDialogClass(CWnd* pParent /*=NULL*/)
-	: CDialog(EditFilenameListDialogClass::IDD, pParent)
-{
-	//{{AFX_DATA_INIT(EditFilenameListDialogClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	return ;
+EditFilenameListDialogClass::EditFilenameListDialogClass(CWnd *pParent /*=NULL*/)
+    : CDialog(EditFilenameListDialogClass::IDD, pParent) {
+  //{{AFX_DATA_INIT(EditFilenameListDialogClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // DoDataExchange
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-EditFilenameListDialogClass::DoDataExchange (CDataExchange *pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(EditFilenameListDialogClass)
-	DDX_Control(pDX, IDC_FILENAME_LIST_CTRL, m_ListCtrl);
-	//}}AFX_DATA_MAP
-	return ;
+void EditFilenameListDialogClass::DoDataExchange(CDataExchange *pDX) {
+  CDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(EditFilenameListDialogClass)
+  DDX_Control(pDX, IDC_FILENAME_LIST_CTRL, m_ListCtrl);
+  //}}AFX_DATA_MAP
+  return;
 }
 
-
 BEGIN_MESSAGE_MAP(EditFilenameListDialogClass, CDialog)
-	//{{AFX_MSG_MAP(EditFilenameListDialogClass)
-	ON_BN_CLICKED(IDC_ADD, OnAdd)
-	ON_NOTIFY(LVN_KEYDOWN, IDC_FILENAME_LIST_CTRL, OnKeydownFilenameListCtrl)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(EditFilenameListDialogClass)
+ON_BN_CLICKED(IDC_ADD, OnAdd)
+ON_NOTIFY(LVN_KEYDOWN, IDC_FILENAME_LIST_CTRL, OnKeydownFilenameListCtrl)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnAdd
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-EditFilenameListDialogClass::OnAdd (void)
-{
-	CFileDialog dialog (	TRUE,
-								".w3d",
-								NULL,
-								OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER | OFN_ALLOWMULTISELECT,
-								"Westwood 3D Files (*.w3d)|*.w3d|Texture Files (*.tga)|*.tga|Sound Files (*.wav,*.mp3)|*.wav;*.mp3|All Files|*.*||",
-								this);
+void EditFilenameListDialogClass::OnAdd(void) {
+  CFileDialog dialog(TRUE, ".w3d", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER | OFN_ALLOWMULTISELECT,
+                     "Westwood 3D Files (*.w3d)|*.w3d|Texture Files (*.tga)|*.tga|Sound Files "
+                     "(*.wav,*.mp3)|*.wav;*.mp3|All Files|*.*||",
+                     this);
 
-    TCHAR filename_list[MAX_PATH*20] = { 0 };
-    dialog.m_ofn.lpstrFile	= filename_list;
-    dialog.m_ofn.nMaxFile	= sizeof (filename_list);
+  TCHAR filename_list[MAX_PATH * 20] = {0};
+  dialog.m_ofn.lpstrFile = filename_list;
+  dialog.m_ofn.nMaxFile = sizeof(filename_list);
 
-	//
-	//	Start the user off in the assets directory
-	//
-	dialog.m_ofn.lpstrInitialDir = ::Get_File_Mgr ()->Get_Base_Path ();
+  //
+  //	Start the user off in the assets directory
+  //
+  dialog.m_ofn.lpstrInitialDir = ::Get_File_Mgr()->Get_Base_Path();
 
-	//
-	// Ask the user to select the files
-	//
-	if (dialog.DoModal () == IDOK) {
-		
-      //
-		// Add all the new filenames to the list
-		//
-		POSITION pos = dialog.GetStartPosition (); 
-		while (pos != NULL) {			
-			CString full_path = (LPCTSTR)dialog.GetNextPathName (pos);
-			if (::Get_File_Mgr ()->Is_Path_Valid (full_path)) {
-				m_ListCtrl.InsertItem (0xFF, (LPCTSTR)::Get_File_Mgr ()->Make_Relative_Path (full_path));
-			}
-		}
-	}
-			
-	return ;
+  //
+  // Ask the user to select the files
+  //
+  if (dialog.DoModal() == IDOK) {
+
+    //
+    // Add all the new filenames to the list
+    //
+    POSITION pos = dialog.GetStartPosition();
+    while (pos != NULL) {
+      CString full_path = (LPCTSTR)dialog.GetNextPathName(pos);
+      if (::Get_File_Mgr()->Is_Path_Valid(full_path)) {
+        m_ListCtrl.InsertItem(0xFF, (LPCTSTR)::Get_File_Mgr()->Make_Relative_Path(full_path));
+      }
+    }
+  }
+
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnKeydownFilenameListCtrl
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-EditFilenameListDialogClass::OnKeydownFilenameListCtrl
-(
-	NMHDR *pNMHDR,
-	LRESULT *pResult
-) 
-{
-	LV_KEYDOWN* pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
-	(*pResult) = 0;
+void EditFilenameListDialogClass::OnKeydownFilenameListCtrl(NMHDR *pNMHDR, LRESULT *pResult) {
+  LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN *)pNMHDR;
+  (*pResult) = 0;
 
+  if (pLVKeyDow->wVKey == VK_DELETE) {
 
-	if (pLVKeyDow->wVKey == VK_DELETE) {
-		
-		//
-		//	Delete all the selected items
-		//
-		int index = -1;
-		while ((index = m_ListCtrl.GetNextItem (-1, LVNI_SELECTED | LVNI_ALL)) >= 0) {
-			m_ListCtrl.DeleteItem (index);
-		}
-	}
+    //
+    //	Delete all the selected items
+    //
+    int index = -1;
+    while ((index = m_ListCtrl.GetNextItem(-1, LVNI_SELECTED | LVNI_ALL)) >= 0) {
+      m_ListCtrl.DeleteItem(index);
+    }
+  }
 
-	return ;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnInitDialog
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL
-EditFilenameListDialogClass::OnInitDialog (void)
-{
-	CDialog::OnInitDialog ();
+BOOL EditFilenameListDialogClass::OnInitDialog(void) {
+  CDialog::OnInitDialog();
 
-	//
-	//	Add a single column to the list control
-	//
-	m_ListCtrl.InsertColumn (0, "Filename");
-	
-	//
-	//	Size the column
-	//
-	CRect rect;
-	m_ListCtrl.GetClientRect (&rect);
-	rect.right -= ::GetSystemMetrics (SM_CXVSCROLL);
-	m_ListCtrl.SetColumnWidth(0, rect.Width ());
+  //
+  //	Add a single column to the list control
+  //
+  m_ListCtrl.InsertColumn(0, "Filename");
 
-	//
-	//	Add all the initial filenames to the list control
-	//
-	for (int index = 0; index < m_List.Count (); index ++) {
-		m_ListCtrl.InsertItem (0xFF, m_List[index]);
-	}
+  //
+  //	Size the column
+  //
+  CRect rect;
+  m_ListCtrl.GetClientRect(&rect);
+  rect.right -= ::GetSystemMetrics(SM_CXVSCROLL);
+  m_ListCtrl.SetColumnWidth(0, rect.Width());
 
-	return TRUE;
+  //
+  //	Add all the initial filenames to the list control
+  //
+  for (int index = 0; index < m_List.Count(); index++) {
+    m_ListCtrl.InsertItem(0xFF, m_List[index]);
+  }
+
+  return TRUE;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OnOK
 //
 /////////////////////////////////////////////////////////////////////////////
-void
-EditFilenameListDialogClass::OnOK (void)
-{
-	//
-	//	Start fresh
-	//
-	m_List.Delete_All ();
+void EditFilenameListDialogClass::OnOK(void) {
+  //
+  //	Start fresh
+  //
+  m_List.Delete_All();
 
-	//
-	//	Rebuild the list from the user's entries in the list control	
-	//
-	for (int index = 0; index < m_ListCtrl.GetItemCount (); index ++) {
-		StringClass filename = (LPCTSTR)m_ListCtrl.GetItemText (index, 0);
-		m_List.Add (filename);
-	}
+  //
+  //	Rebuild the list from the user's entries in the list control
+  //
+  for (int index = 0; index < m_ListCtrl.GetItemCount(); index++) {
+    StringClass filename = (LPCTSTR)m_ListCtrl.GetItemText(index, 0);
+    m_List.Add(filename);
+  }
 
-	CDialog::OnOK ();
-	return ;
+  CDialog::OnOK();
+  return;
 }

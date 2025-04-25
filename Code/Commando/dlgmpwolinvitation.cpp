@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolinvitation.cpp     $*
  *                                                                                             *
@@ -46,75 +47,66 @@
 //	MPWolInvitationPopupClass
 //
 ////////////////////////////////////////////////////////////////
-MPWolInvitationPopupClass::MPWolInvitationPopupClass(const RefPtr<WWOnline::UserData>& host, const WCHAR* invite) :
-		PopupDialogClass(IDD_MP_WOL_INVITATION_REPLY),
-		mHost(host),
-		mInviteMessage(invite)
-{
-	WWDEBUG_SAY(("MPWolInvitationPopupClass: Instantiated\n"));
-	mBuddyMgr = WOLBuddyMgr::GetInstance(false);
-	WWASSERT_PRINT(mBuddyMgr, "WOLBuddyMgr not instantiated!");
+MPWolInvitationPopupClass::MPWolInvitationPopupClass(const RefPtr<WWOnline::UserData> &host, const WCHAR *invite)
+    : PopupDialogClass(IDD_MP_WOL_INVITATION_REPLY), mHost(host), mInviteMessage(invite) {
+  WWDEBUG_SAY(("MPWolInvitationPopupClass: Instantiated\n"));
+  mBuddyMgr = WOLBuddyMgr::GetInstance(false);
+  WWASSERT_PRINT(mBuddyMgr, "WOLBuddyMgr not instantiated!");
 }
 
+MPWolInvitationPopupClass::~MPWolInvitationPopupClass() {
+  WWDEBUG_SAY(("MPWolInvitationPopupClass: Destroyed\n"));
 
-MPWolInvitationPopupClass::~MPWolInvitationPopupClass()
-{
-	WWDEBUG_SAY(("MPWolInvitationPopupClass: Destroyed\n"));
-
-	if (mBuddyMgr) {
-		mBuddyMgr->Release_Ref();
-	}
+  if (mBuddyMgr) {
+    mBuddyMgr->Release_Ref();
+  }
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void MPWolInvitationPopupClass::On_Init_Dialog(void)
-{
-	Set_Dlg_Item_Text(IDC_INVITATION_TEXT, mInviteMessage);
-	PopupDialogClass::On_Init_Dialog();
+void MPWolInvitationPopupClass::On_Init_Dialog(void) {
+  Set_Dlg_Item_Text(IDC_INVITATION_TEXT, mInviteMessage);
+  PopupDialogClass::On_Init_Dialog();
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void MPWolInvitationPopupClass::On_Command(int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id) {
-		// Join the user
-		case IDC_JOIN_BUTTON:
-			mBuddyMgr->JoinUser(mHost);
-			End_Dialog();
-			break;
+void MPWolInvitationPopupClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  // Join the user
+  case IDC_JOIN_BUTTON:
+    mBuddyMgr->JoinUser(mHost);
+    End_Dialog();
+    break;
 
-		// Decline the invitation
-		case IDC_DECLINE_BUTTON:
-			mBuddyMgr->DeclineInvitation(mHost->GetName());
-			End_Dialog();
-			break;
+  // Decline the invitation
+  case IDC_DECLINE_BUTTON:
+    mBuddyMgr->DeclineInvitation(mHost->GetName());
+    End_Dialog();
+    break;
 
-		// Start a conversation with the user
-		case IDC_PAGE_BUTTON: {
-			// Show the dialog
-			MPWolPageBuddyPopupClass* dialog = new MPWolPageBuddyPopupClass;
+  // Start a conversation with the user
+  case IDC_PAGE_BUTTON: {
+    // Show the dialog
+    MPWolPageBuddyPopupClass *dialog = new MPWolPageBuddyPopupClass;
 
-			if (dialog) {
-				dialog->Start_Dialog();
-				dialog->Set_Buddy_Name(mHost->GetName());
-				dialog->Release_Ref();
-			}
+    if (dialog) {
+      dialog->Start_Dialog();
+      dialog->Set_Buddy_Name(mHost->GetName());
+      dialog->Release_Ref();
+    }
 
-			// Close this dialog
-			End_Dialog();
-			break;
-		}
-	}
+    // Close this dialog
+    End_Dialog();
+    break;
+  }
+  }
 
-	PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
 }

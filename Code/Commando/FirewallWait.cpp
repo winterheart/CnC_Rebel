@@ -17,41 +17,40 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/FirewallWait.cpp $
-*
-* DESCRIPTION
-*     Firewall negotiation wait condition.
-*
-* PROGRAMMER
-*     $Author: Tom_s $
-*
-* VERSION INFO
-*     $Revision: 16 $
-*     $Modtime: 3/04/02 11:45a $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/FirewallWait.cpp $
+ *
+ * DESCRIPTION
+ *     Firewall negotiation wait condition.
+ *
+ * PROGRAMMER
+ *     $Author: Tom_s $
+ *
+ * VERSION INFO
+ *     $Revision: 16 $
+ *     $Modtime: 3/04/02 11:45a $
+ *
+ ******************************************************************************/
 
 #include "always.h"
 #include "FirewallWait.h"
 #include "nat.h"
-#include	"string_ids.h"
+#include "string_ids.h"
 #include "translatedb.h"
 #include "natter.h"
 #include <WWOnline\WOLSession.h>
 #include <WWDebug\WWDebug.h>
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include "systimer.h"
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
-
 
 /*
 ** Wait code for firewall/NAT detection.
@@ -60,259 +59,193 @@
 **
 */
 
-RefPtr<FirewallDetectWait> FirewallDetectWait::Create(void)
-	{
-	return new FirewallDetectWait();
-	}
+RefPtr<FirewallDetectWait> FirewallDetectWait::Create(void) { return new FirewallDetectWait(); }
 
+FirewallDetectWait::FirewallDetectWait(void)
+    : SingleWait(TRANSLATION(IDS_FIREWALL_NEGOTIATING_FIREWALL), 60000), mEvent(NULL), mPingsRemaining(UINT_MAX) {
+  mWOLSession = WWOnline::Session::GetInstance(false);
+  assert(mWOLSession.IsValid());
+}
 
-FirewallDetectWait::FirewallDetectWait(void) :
-		SingleWait(TRANSLATION(IDS_FIREWALL_NEGOTIATING_FIREWALL), 60000),
-		mEvent(NULL),
-		mPingsRemaining(UINT_MAX)
-	{
-	mWOLSession = WWOnline::Session::GetInstance(false);
-	assert(mWOLSession.IsValid());
-	}
+FirewallDetectWait::~FirewallDetectWait() {
+  WWDEBUG_SAY(("FirewallDetectWait: End - %S\n", mEndText));
 
+  mWOLSession->EnablePinging(true);
 
-FirewallDetectWait::~FirewallDetectWait()
-	{
-	WWDEBUG_SAY(("FirewallDetectWait: End - %S\n", mEndText));
+  if (mEvent) {
+    CloseHandle(mEvent);
+  }
+}
 
-	mWOLSession->EnablePinging(true);
+void FirewallDetectWait::WaitBeginning(void) {
+  WWDEBUG_SAY(("FirewallDetectWait: Beginning\n"));
 
-	if (mEvent)
-		{
-		CloseHandle(mEvent);
-		}
-	}
+  mEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
+  if (mEvent == NULL) {
+    WWDEBUG_SAY(("FirewallDetectWait: Can't create event\n"));
+    EndWait(Error, TRANSLATION(IDS_FIREWALL_CREATE_EVENT_FAILED));
+  } else {
+    mWOLSession->EnablePinging(false);
+    mTimeout = 15000;
+  }
+}
 
-void FirewallDetectWait::WaitBeginning(void)
-	{
-	WWDEBUG_SAY(("FirewallDetectWait: Beginning\n"));
+WaitCondition::WaitResult FirewallDetectWait::GetResult(void) {
+  if (mEndResult == Waiting) {
+    // Wait for pending pings to finish first
+    unsigned int pingsWaiting = mWOLSession->GetPendingPingCount();
 
-	mEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    if (mPingsRemaining != pingsWaiting) {
+      mPingsRemaining = pingsWaiting;
+      mTimeout = 60000;
+      FirewallHelper.Detect_Firewall(mEvent);
+    }
 
-	if (mEvent == NULL)
-		{
-		WWDEBUG_SAY(("FirewallDetectWait: Can't create event\n"));
-		EndWait(Error, TRANSLATION(IDS_FIREWALL_CREATE_EVENT_FAILED));
-		}
-	else
-		{
-		mWOLSession->EnablePinging(false);
-		mTimeout = 15000;
-		}
-	}
+    if (mPingsRemaining == 0) {
+      DWORD result = WaitForSingleObject(mEvent, 0);
 
+      if (result == WAIT_OBJECT_0) {
+        WWDEBUG_SAY(("FirewallDetectWait: ConditionMet\n"));
+        WOLNATInterface.Save_Firewall_Info_To_Registry();
+        EndWait(ConditionMet, TRANSLATION(IDS_FIREWALL_NEGOTIATION_COMPLETE));
+      } else if (result == WAIT_FAILED) {
+        WWDEBUG_SAY(("FirewallDetectWait: WAIT_FAILED\n"));
+        EndWait(Error, TRANSLATION(IDS_FIREWALL_NEGOTIATION_FAILED));
+      }
+    }
+  }
 
-WaitCondition::WaitResult FirewallDetectWait::GetResult(void)
-	{
-	if (mEndResult == Waiting)
-		{
-		// Wait for pending pings to finish first
-		unsigned int pingsWaiting = mWOLSession->GetPendingPingCount();
+  if (mEndResult != Waiting) {
+    mWOLSession->EnablePinging(true);
+  }
 
-		if (mPingsRemaining != pingsWaiting)
-			{
-			mPingsRemaining = pingsWaiting;
-			mTimeout = 60000;
-			FirewallHelper.Detect_Firewall(mEvent);
-			}
-
-		if (mPingsRemaining == 0)
-			{
-			DWORD result = WaitForSingleObject(mEvent, 0);
-
-			if (result == WAIT_OBJECT_0)
-				{
-				WWDEBUG_SAY(("FirewallDetectWait: ConditionMet\n"));
-				WOLNATInterface.Save_Firewall_Info_To_Registry();
-				EndWait(ConditionMet, TRANSLATION(IDS_FIREWALL_NEGOTIATION_COMPLETE));
-				}
-			else if (result == WAIT_FAILED)
-				{
-				WWDEBUG_SAY(("FirewallDetectWait: WAIT_FAILED\n"));
-				EndWait(Error, TRANSLATION(IDS_FIREWALL_NEGOTIATION_FAILED));
-				}
-			}
-		}
-
-	if (mEndResult != Waiting)
-		{
-		mWOLSession->EnablePinging(true);
-		}
-
-	return mEndResult;
-	}
-
+  return mEndResult;
+}
 
 /*
 ** Wait code for clients when trying to open up a firewall for a server connection.
 **
 */
-RefPtr<FirewallConnectWait> FirewallConnectWait::Create(void)
-	{
-	return new FirewallConnectWait;
-	}
+RefPtr<FirewallConnectWait> FirewallConnectWait::Create(void) { return new FirewallConnectWait; }
 
+FirewallConnectWait::FirewallConnectWait(void)
+    : SingleWait(TRANSLATION(IDS_FIREWALL_NEGOTIATING_WITH_SERVER)), mEvent(NULL), mCancelEvent(NULL),
+      mSuccessFlag(FirewallHelperClass::FW_RESULT_UNKNOWN), mQueueCount(0), mLastQueueCount(0),
+      mPingsRemaining(UINT_MAX) {
+  mWOLSession = WWOnline::Session::GetInstance(false);
+  assert(mWOLSession.IsValid());
+}
 
-FirewallConnectWait::FirewallConnectWait(void) :
-		SingleWait(TRANSLATION(IDS_FIREWALL_NEGOTIATING_WITH_SERVER)),
-		mEvent(NULL),
-		mCancelEvent(NULL),
-		mSuccessFlag(FirewallHelperClass::FW_RESULT_UNKNOWN),
-		mQueueCount(0),
-		mLastQueueCount(0),
-		mPingsRemaining(UINT_MAX)
-	{
-	mWOLSession = WWOnline::Session::GetInstance(false);
-	assert(mWOLSession.IsValid());
-	}
+FirewallConnectWait::~FirewallConnectWait() {
+  WWDEBUG_SAY(("FirewallConnectWait: End - %S\n", mEndText));
 
+  mWOLSession->EnablePinging(true);
 
-FirewallConnectWait::~FirewallConnectWait()
-	{
-	WWDEBUG_SAY(("FirewallConnectWait: End - %S\n", mEndText));
+  if (mEvent) {
+    CloseHandle(mEvent);
+  }
 
-	mWOLSession->EnablePinging(true);
+  if (mCancelEvent) {
+    CloseHandle(mCancelEvent);
+  }
+}
 
-	if (mEvent)
-		{
-		CloseHandle(mEvent);
-		}
+void FirewallConnectWait::WaitBeginning(void) {
+  WWDEBUG_SAY(("FirewallConnectWait: Beginning\n"));
 
-	if (mCancelEvent)
-		{
-		CloseHandle(mCancelEvent);
-		}
-	}
+  mEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+  mCancelEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
+  if (mEvent == NULL) {
+    WWDEBUG_SAY(("FirewallConnectWait: Can't create event\n"));
+    EndWait(Error, TRANSLATION(IDS_FIREWALL_CREATE_EVENT_FAILED));
+  } else {
+    mWOLSession->EnablePinging(false);
+    WOLNATInterface.Tell_Server_That_Client_Is_In_Channel();
+    mTimeout = 15000;
+    mStartTime = TIMEGETTIME();
+  }
+}
 
-void FirewallConnectWait::WaitBeginning(void)
-	{
-	WWDEBUG_SAY(("FirewallConnectWait: Beginning\n"));
+WaitCondition::WaitResult FirewallConnectWait::GetResult(void) {
+  if (mEndResult == Waiting) {
+    // Wait for pending pings to finish first
+    unsigned int pingsWaiting = mWOLSession->GetPendingPingCount();
 
-	mEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-	mCancelEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    if (mPingsRemaining != pingsWaiting) {
+      mPingsRemaining = pingsWaiting;
 
-	if (mEvent == NULL)
-		{
-		WWDEBUG_SAY(("FirewallConnectWait: Can't create event\n"));
-		EndWait(Error, TRANSLATION(IDS_FIREWALL_CREATE_EVENT_FAILED));
-		}
-	else
-		{
-		mWOLSession->EnablePinging(false);
-		WOLNATInterface.Tell_Server_That_Client_Is_In_Channel();
-		mTimeout = 15000;
-		mStartTime = TIMEGETTIME();
-		}
-	}
+      if (mPingsRemaining == 0) {
+        FirewallHelper.Set_Client_Connect_Event(mEvent, mCancelEvent, &mSuccessFlag, (int *)&mQueueCount);
+        mTimeout = 32000;
+        mStartTime = TIMEGETTIME();
+      }
+    }
 
+    if (mPingsRemaining == 0) {
+      if ((TIMEGETTIME() - mStartTime) > mTimeout) {
+        EndWait(TimeOut, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_TIMEOUT));
+      } else {
+        // Maybe change the wait text if there are players queued in front of us.
+        if (mQueueCount != mLastQueueCount) {
+          const size_t array_size = 256;
+          wchar_t temp[array_size];
+          swprintf(temp, array_size, TRANSLATION(IDS_FIREWALL_QUEUE_NOTIFICATION), mQueueCount);
+          WideStringClass text(temp, true);
+          SetWaitText(text);
+          mLastQueueCount = mQueueCount;
+          mTimeout = max((unsigned)32000, ((mQueueCount * 32000) + 32000));
+          mStartTime = TIMEGETTIME();
+        }
 
-WaitCondition::WaitResult FirewallConnectWait::GetResult(void)
-	{
-	if (mEndResult == Waiting)
-		{
-		// Wait for pending pings to finish first
-		unsigned int pingsWaiting = mWOLSession->GetPendingPingCount();
+        DWORD result = WaitForSingleObject(mEvent, 0);
 
-		if (mPingsRemaining != pingsWaiting)
-			{
-			mPingsRemaining = pingsWaiting;
+        if (result == WAIT_OBJECT_0) {
+          if (mSuccessFlag == FirewallHelperClass::FW_RESULT_SUCCEEDED) {
+            WWDEBUG_SAY(("FirewallConnectWait: ConditionMet\n"));
+            EndWait(ConditionMet, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_COMPLETE));
+          } else {
+            assert(mSuccessFlag == FirewallHelperClass::FW_RESULT_FAILED);
+            WWDEBUG_SAY(("FirewallConnectWait: ConditionMet\n"));
+            EndWait(Error, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_FAILED));
+          }
+        } else if (result == WAIT_FAILED) {
+          WWDEBUG_SAY(("FirewallConnectWait: WAIT_FAILED\n"));
+          EndWait(Error, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_FAILED));
+        }
+      }
+    }
+  }
 
-			if (mPingsRemaining == 0)
-				{
-				FirewallHelper.Set_Client_Connect_Event(mEvent, mCancelEvent, &mSuccessFlag, (int*)&mQueueCount);
-				mTimeout = 32000;
-				mStartTime = TIMEGETTIME();
-				}
-			}
+  if (mEndResult != Waiting) {
+    mWOLSession->EnablePinging(true);
+  }
 
-		if (mPingsRemaining == 0)
-			{
-			if ((TIMEGETTIME() - mStartTime) > mTimeout)
-				{
-				EndWait(TimeOut, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_TIMEOUT));
-				}
-			else
-				{
-				// Maybe change the wait text if there are players queued in front of us.
-				if (mQueueCount != mLastQueueCount)
-					{
-					const size_t array_size = 256;
-					wchar_t temp[array_size];
-					swprintf(temp, array_size, TRANSLATION(IDS_FIREWALL_QUEUE_NOTIFICATION), mQueueCount);
-					WideStringClass text(temp, true);
-					SetWaitText(text);
-					mLastQueueCount = mQueueCount;
-					mTimeout = max((unsigned)32000, ((mQueueCount * 32000) + 32000));
-					mStartTime = TIMEGETTIME();
-					}
-
-				DWORD result = WaitForSingleObject(mEvent, 0);
-
-				if (result == WAIT_OBJECT_0)
-					{
-					if (mSuccessFlag == FirewallHelperClass::FW_RESULT_SUCCEEDED)
-						{
-						WWDEBUG_SAY(("FirewallConnectWait: ConditionMet\n"));
-						EndWait(ConditionMet, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_COMPLETE));
-						}
-					else
-						{
-						assert(mSuccessFlag == FirewallHelperClass::FW_RESULT_FAILED);
-						WWDEBUG_SAY(("FirewallConnectWait: ConditionMet\n"));
-						EndWait(Error, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_FAILED));
-						}
-					}
-				else if (result == WAIT_FAILED)
-					{
-					WWDEBUG_SAY(("FirewallConnectWait: WAIT_FAILED\n"));
-					EndWait(Error, TRANSLATION(IDS_FIREWALL_PORT_NEGOTIATION_FAILED));
-					}
-				}
-			}
-		}
-
-	if (mEndResult != Waiting)
-		{
-		mWOLSession->EnablePinging(true);
-		}
-
-	return mEndResult;
-	}
-
-
+  return mEndResult;
+}
 
 //
 // Override base class end wait to check for cancel being pressed.
 //
-void FirewallConnectWait::EndWait(WaitResult result, const wchar_t* endText)
-	{
-	WWDEBUG_SAY(("FirewallConnectWait: EndWait\n"));
+void FirewallConnectWait::EndWait(WaitResult result, const wchar_t *endText) {
+  WWDEBUG_SAY(("FirewallConnectWait: EndWait\n"));
 
-	if (result == UserCancel || result == TimeOut)
-		{
-		// Tell the firewall negotiation code to give up.
-		SetEvent(mCancelEvent);
-		}
+  if (result == UserCancel || result == TimeOut) {
+    // Tell the firewall negotiation code to give up.
+    SetEvent(mCancelEvent);
+  }
 
-		// Give the firewall code a little time to respond then remove it's cancel event anyway. It'll figure it out.
-		for (int i=0 ; i<100 ; i++)
-			{
-			if (mSuccessFlag == FirewallHelperClass::FW_RESULT_CANCELLED)
-				{
-				break;
-				}
+  // Give the firewall code a little time to respond then remove it's cancel event anyway. It'll figure it out.
+  for (int i = 0; i < 100; i++) {
+    if (mSuccessFlag == FirewallHelperClass::FW_RESULT_CANCELLED) {
+      break;
+    }
 
-			Sleep(1);
-			}
+    Sleep(1);
+  }
 
-	FirewallHelper.Set_Client_Connect_Event(NULL, NULL, NULL, NULL);
+  FirewallHelper.Set_Client_Connect_Event(NULL, NULL, NULL, NULL);
 
-	SingleWait::EndWait(result, endText);
-	}
+  SingleWait::EndWait(result, endText);
+}

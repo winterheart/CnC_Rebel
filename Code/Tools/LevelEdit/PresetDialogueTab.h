@@ -44,72 +44,66 @@ class DialogueClass;
 // PresetDialogueTabClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetDialogueTabClass : public DockableFormClass
-{
+class PresetDialogueTabClass : public DockableFormClass {
 
 public:
-	PresetDialogueTabClass (PresetClass *preset);
-	virtual ~PresetDialogueTabClass (void);
+  PresetDialogueTabClass(PresetClass *preset);
+  virtual ~PresetDialogueTabClass(void);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(PresetDialogueTabClass)
-	enum { IDD = IDD_PRESET_DIALOGUE_TAB };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  //{{AFX_DATA(PresetDialogueTabClass)
+  enum { IDD = IDD_PRESET_DIALOGUE_TAB };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetDialogueTabClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetDialogueTabClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetDialogueTabClass)
-	afx_msg void OnDblclkDialogueList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(PresetDialogueTabClass)
+  afx_msg void OnDblclkDialogueList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////////////
-	void						HandleInitDialog (void);
-	bool						Apply_Changes (void);
-
-	bool						Is_Read_Only (void) const	{ return m_IsReadOnly; }
-	void						Set_Read_Only (bool onoff)	{ m_IsReadOnly = onoff; }
+  bool Is_Read_Only(void) const { return m_IsReadOnly; }
+  void Set_Read_Only(bool onoff) { m_IsReadOnly = onoff; }
 
 protected:
-	
-	/////////////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////////////////////
-	void						Update_Entry (int index);
+  /////////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////////////
+  void Update_Entry(int index);
 
 private:
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////////////////
-	DialogueClass *		m_DialogueList;
-	SoldierGameObjDef *	m_Definition;
-	bool						m_IsReadOnly;
+  /////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////
+  DialogueClass *m_DialogueList;
+  SoldierGameObjDef *m_Definition;
+  bool m_IsReadOnly;
 };
 
 /////////////////////////////////////////////////////////////////////////////

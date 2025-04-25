@@ -25,41 +25,36 @@
 // UIThread.h : header file
 //
 
-
-
 /////////////////////////////////////////////////////////////////////////////
 // UIThreadClass thread
 
-class UIThreadClass : public CWinThread
-{
-	DECLARE_DYNCREATE(UIThreadClass)
+class UIThreadClass : public CWinThread {
+  DECLARE_DYNCREATE(UIThreadClass)
 protected:
-	UIThreadClass();           // protected constructor used by dynamic creation
+  UIThreadClass(); // protected constructor used by dynamic creation
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(UIThreadClass)
+public:
+  virtual BOOL InitInstance();
+  virtual int ExitInstance();
+  //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(UIThreadClass)
-	public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Implementation
 protected:
-	virtual ~UIThreadClass();
+  virtual ~UIThreadClass();
 
-	// Generated message map functions
-	//{{AFX_MSG(UIThreadClass)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
+  // Generated message map functions
+  //{{AFX_MSG(UIThreadClass)
+  // NOTE - the ClassWizard will add and remove member functions here.
+  //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

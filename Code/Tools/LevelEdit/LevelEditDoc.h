@@ -27,217 +27,204 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-
 #include "Vector3.H"
 #include "Matrix3D.h"
-
 
 ///////////////////////////////////////////////////////////
 //
 //	Constants
 //
 ///////////////////////////////////////////////////////////
-const int	MODE_MOD_DROP_TO_GROUND			= 0x000000001;
-
-
+const int MODE_MOD_DROP_TO_GROUND = 0x000000001;
 
 ///////////////////////////////////////////////////////////
 //
 //	CLevelEditDoc
 //
 ///////////////////////////////////////////////////////////
-class CLevelEditDoc : public CDocument
-{
+class CLevelEditDoc : public CDocument {
 protected: // create from serialization only
-	CLevelEditDoc();
-	DECLARE_DYNCREATE(CLevelEditDoc)
+  CLevelEditDoc();
+  DECLARE_DYNCREATE(CLevelEditDoc)
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CLevelEditDoc)
-	public:
-	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
-	virtual void PreCloseFrame( CFrameWnd* pFrame );
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CLevelEditDoc)
 public:
-	virtual ~CLevelEditDoc();
+  virtual BOOL OnNewDocument();
+  virtual void Serialize(CArchive &ar);
+  virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+  virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+  virtual void PreCloseFrame(CFrameWnd *pFrame);
+  //}}AFX_VIRTUAL
+
+  // Implementation
+public:
+  virtual ~CLevelEditDoc();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
 protected:
-
-// Generated message map functions
+  // Generated message map functions
 protected:
-	//{{AFX_MSG(CLevelEditDoc)
-	afx_msg void OnFileSave();
-	afx_msg void OnFileSaveAs();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CLevelEditDoc)
+  afx_msg void OnFileSave();
+  afx_msg void OnFileSaveAs();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ///////////////////////////////////////////////
+  //
+  //	Public data types
+  //
+  typedef enum {
+    RESTRICT_NONE = 0,
+    RESTRICT_X,
+    RESTRICT_Y,
+    RESTRICT_Z
 
-		///////////////////////////////////////////////
-		//
-		//	Public data types
-		//
-		typedef enum {
-			RESTRICT_NONE	= 0,
-			RESTRICT_X,
-			RESTRICT_Y,
-			RESTRICT_Z
-			
-		} AXIS_RESTRICTION;
+  } AXIS_RESTRICTION;
 
+  typedef enum {
+    COORD_WORLD = 0,
+    COORD_OBJECT,
+    COORD_VIEW
 
-		typedef enum {
-			COORD_WORLD	= 0,
-			COORD_OBJECT,
-			COORD_VIEW
-			
-		} COORD_SYSTEM;
+  } COORD_SYSTEM;
 
-	
-		///////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void								Init_Scene (void);
-		class SceneEditorClass *	Get_Scene (void) const { return m_pScene; }
-		
-		//
-		//	Save methods
-		//
-		void								Set_Current_Path (const char *path);
+  ///////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void Init_Scene(void);
+  class SceneEditorClass *Get_Scene(void) const { return m_pScene; }
 
-		//
-		//	Operation modifiers
-		//
-		AXIS_RESTRICTION				Get_Axis_Restriction (void) const { return m_AxisRestriction; }
-		void								Set_Axis_Restriction (AXIS_RESTRICTION	restriction) { m_AxisRestriction = restriction; }
-		COORD_SYSTEM					Get_Coord_System (void) const { return m_CoordSystem; }
-		void								Set_Coord_System (COORD_SYSTEM system) { m_CoordSystem = system; }
-		Matrix3D							Get_Coord_System_Transform (class NodeClass *node);
+  //
+  //	Save methods
+  //
+  void Set_Current_Path(const char *path);
 
-		//
-		//	Mode modifiers
-		//
-		int								Get_Mode_Modifiers () const { return m_ModeModifiers; }
-		void								Set_Mode_Modifiers (int modifiers) { m_ModeModifiers = modifiers; }
-		
-		//
-		//	Cleanup routines
-		//
-		void								CleanupResources (void);
+  //
+  //	Operation modifiers
+  //
+  AXIS_RESTRICTION Get_Axis_Restriction(void) const { return m_AxisRestriction; }
+  void Set_Axis_Restriction(AXIS_RESTRICTION restriction) { m_AxisRestriction = restriction; }
+  COORD_SYSTEM Get_Coord_System(void) const { return m_CoordSystem; }
+  void Set_Coord_System(COORD_SYSTEM system) { m_CoordSystem = system; }
+  Matrix3D Get_Coord_System_Transform(class NodeClass *node);
 
-		//
-		//	Performance sampling methods		
-		//
-		bool								Is_Performance_Sampling_On (void) const { return m_bPerformanceSampling; }
-		void								Performance_Sampling_On (bool sampling_on) { m_bPerformanceSampling = sampling_on; }
+  //
+  //	Mode modifiers
+  //
+  int Get_Mode_Modifiers() const { return m_ModeModifiers; }
+  void Set_Mode_Modifiers(int modifiers) { m_ModeModifiers = modifiers; }
 
-		//
-		//	Snap points methods
-		//
-		bool								Are_Snap_Points_Active (void) const { return m_bSnapPointsActive; }
-		void								Activate_Snap_Points (bool bactive) { m_bSnapPointsActive = bactive; }
+  //
+  //	Cleanup routines
+  //
+  void CleanupResources(void);
 
-		//
-		//	'Dirty' methods
-		//
-		void								Need_RePartition (void) { m_bNeedRepartition = true; }
-		void								Repartition_If_Necessary (void);
+  //
+  //	Performance sampling methods
+  //
+  bool Is_Performance_Sampling_On(void) const { return m_bPerformanceSampling; }
+  void Performance_Sampling_On(bool sampling_on) { m_bPerformanceSampling = sampling_on; }
 
-		//
-		//	File methods
-		//
-		class FileMgrClass *			Get_File_Mgr (void) { return m_pFileMgr; }
-		bool								Change_Base_Path (void);
-		void								Update_Core_Files (void);
-		void								Update_Asset_Tree (void);
-		void								Update_Assets_For_Mod_Tree (void);
+  //
+  //	Snap points methods
+  //
+  bool Are_Snap_Points_Active(void) const { return m_bSnapPointsActive; }
+  void Activate_Snap_Points(bool bactive) { m_bSnapPointsActive = bactive; }
 
-		//
-		//	Light methods
-		//
-		bool								Are_Lights_On (void) const { return m_bLightsOn; }
-		void								Turn_Lights_On (bool onoff);
+  //
+  //	'Dirty' methods
+  //
+  void Need_RePartition(void) { m_bNeedRepartition = true; }
+  void Repartition_If_Necessary(void);
 
-		//
-		//	Pathfind Debug methods
-		//
-		bool								Is_Path_Web_Displayed (void) const	{ return m_DisplayPathWeb; }
-		void								Display_Path_Web (bool onoff)			{ m_DisplayPathWeb = onoff; }
+  //
+  //	File methods
+  //
+  class FileMgrClass *Get_File_Mgr(void) { return m_pFileMgr; }
+  bool Change_Base_Path(void);
+  void Update_Core_Files(void);
+  void Update_Asset_Tree(void);
+  void Update_Assets_For_Mod_Tree(void);
 
-		bool								Are_Full_Paths_Displayed (void) const	{ return m_DisplayFullPaths; }
-		void								Display_Full_Paths (bool onoff)			{ m_DisplayFullPaths = onoff; }
+  //
+  //	Light methods
+  //
+  bool Are_Lights_On(void) const { return m_bLightsOn; }
+  void Turn_Lights_On(bool onoff);
 
-		//
-		//	Debug methods
-		//
-		void								Set_Debug_Script_Mode (bool onoff);
-		bool								Get_Debug_Script_Mode (void) const	{ return m_DebugScriptsMode; }
-		
-		//
-		//	Preload methods
-		//
-		void								Preload_Assets (void);
-		void								Preload_Human_Data (void);
-		void								Preload_Tool_Assets (void);
+  //
+  //	Pathfind Debug methods
+  //
+  bool Is_Path_Web_Displayed(void) const { return m_DisplayPathWeb; }
+  void Display_Path_Web(bool onoff) { m_DisplayPathWeb = onoff; }
 
-		//
-		//	Batch export information
-		//
-		static bool						Is_Batch_Export_Mode (void)				{ return IsBatchExportMode; }
-		static void						Set_Is_Batch_Export_Mode (bool onoff)	{ IsBatchExportMode = onoff; }
+  bool Are_Full_Paths_Displayed(void) const { return m_DisplayFullPaths; }
+  void Display_Full_Paths(bool onoff) { m_DisplayFullPaths = onoff; }
 
-	protected:		
+  //
+  //	Debug methods
+  //
+  void Set_Debug_Script_Mode(bool onoff);
+  bool Get_Debug_Script_Mode(void) const { return m_DebugScriptsMode; }
 
-		//
-		//	VSS methods
-		//
-		bool								Initialize_VSS (void);
-		bool								Do_Version_Check (void);
+  //
+  //	Preload methods
+  //
+  void Preload_Assets(void);
+  void Preload_Human_Data(void);
+  void Preload_Tool_Assets(void);
 
-		//
-		//	Export methods
-		//
-		void								Save_Level_File (const char *full_path);
-		bool								Pick_Save_Path (CString &save_path);
+  //
+  //	Batch export information
+  //
+  static bool Is_Batch_Export_Mode(void) { return IsBatchExportMode; }
+  static void Set_Is_Batch_Export_Mode(bool onoff) { IsBatchExportMode = onoff; }
 
-	private:
+protected:
+  //
+  //	VSS methods
+  //
+  bool Initialize_VSS(void);
+  bool Do_Version_Check(void);
 
-		/////////////////////////////////////////////////////////////////
-		//	Private member data
-		/////////////////////////////////////////////////////////////////
-		class SceneEditorClass *	m_pScene;
-		class FileMgrClass *			m_pFileMgr;
-		COORD_SYSTEM					m_CoordSystem;
-		AXIS_RESTRICTION				m_AxisRestriction;
-		int								m_ModeModifiers;
-		bool								m_bPerformanceSampling;
-		bool								m_bSnapPointsActive;
-		bool								m_bNeedRepartition;
-		bool								m_bLightsOn;
+  //
+  //	Export methods
+  //
+  void Save_Level_File(const char *full_path);
+  bool Pick_Save_Path(CString &save_path);
 
-		bool								m_DisplayPathWeb;
-		bool								m_DisplayFullPaths;
+private:
+  /////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////
+  class SceneEditorClass *m_pScene;
+  class FileMgrClass *m_pFileMgr;
+  COORD_SYSTEM m_CoordSystem;
+  AXIS_RESTRICTION m_AxisRestriction;
+  int m_ModeModifiers;
+  bool m_bPerformanceSampling;
+  bool m_bSnapPointsActive;
+  bool m_bNeedRepartition;
+  bool m_bLightsOn;
 
-		bool								m_DebugScriptsMode;
+  bool m_DisplayPathWeb;
+  bool m_DisplayFullPaths;
 
-		static bool						IsBatchExportMode;
+  bool m_DebugScriptsMode;
+
+  static bool IsBatchExportMode;
 };
 
 /////////////////////////////////////////////////////////////////////////////

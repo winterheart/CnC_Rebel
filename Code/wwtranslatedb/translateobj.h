@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : wwtranslatedb																  *
+ *                 Project Name : wwtranslatedb
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwtranslatedb/translateobj.h       $*
  *                                                                                             *
@@ -33,7 +34,6 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #if defined(_MSC_VER)
 #pragma once
@@ -48,7 +48,6 @@
 #include "widestring.h"
 #include "vector.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 //////////////////////////////////////////////////////////////////////////
@@ -56,94 +55,88 @@ class ChunkSaveClass;
 class ChunkLoadClass;
 class StringTwiddlerClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	TDBObjClass
 //
 //////////////////////////////////////////////////////////////////////////
-class TDBObjClass : public PersistClass
-{
+class TDBObjClass : public PersistClass {
 public:
-	
-	//////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////
-	TDBObjClass (void);
-	TDBObjClass (const TDBObjClass &src);
-	virtual ~TDBObjClass (void);
+  //////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////
+  TDBObjClass(void);
+  TDBObjClass(const TDBObjClass &src);
+  virtual ~TDBObjClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const TDBObjClass &	operator= (const TDBObjClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const TDBObjClass &operator=(const TDBObjClass &src);
 
-	//////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////
 
-	//
-	//	RTTI
-	//
-	virtual StringTwiddlerClass *	As_StringTwiddlerClass (void)		{ return NULL; }
-	
-	//
-	// From PersistClass
-	//
-	const PersistFactoryClass &	Get_Factory (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
+  //
+  //	RTTI
+  //
+  virtual StringTwiddlerClass *As_StringTwiddlerClass(void) { return NULL; }
 
-	//
-	// Copy methods
-	//
-	virtual TDBObjClass *				Clone (void) const					{ return new TDBObjClass (*this); }
+  //
+  // From PersistClass
+  //
+  const PersistFactoryClass &Get_Factory(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
-	//
-	// TranslateObj specific
-	//
-	virtual const WideStringClass &	Get_String (uint32 lang_id);
-	virtual const WideStringClass &	Get_String (void);
-	virtual const StringClass &		Get_English_String (void)			{ return EnglishString; }
-	virtual uint32							Get_ID (void)							{ return ID; }
-	virtual const StringClass &		Get_ID_Desc (void)					{ return IDDesc; }
-	virtual uint32							Get_Sound_ID (void)					{ return SoundID; }
-	virtual const StringClass &		Get_Animation_Name (void)			{ return AnimationName; }
-	virtual uint32							Get_Category_ID (void)				{ return CategoryID; }
-	
-	virtual void							Set_String (uint32 lang_id, const WCHAR *string);
-	virtual void							Set_English_String (const TCHAR *string);
-	virtual void							Set_ID (uint32 id);
-	virtual void							Set_ID_Desc (const TCHAR *desc);
-	virtual void							Set_Animation_Name (const TCHAR *name)	{ AnimationName = name; }
-	virtual void							Set_Sound_ID (uint32 id)					{ SoundID = id; }
-	virtual void							Set_Category_ID (uint32 id)				{ CategoryID = id; }
+  //
+  // Copy methods
+  //
+  virtual TDBObjClass *Clone(void) const { return new TDBObjClass(*this); }
 
-	//
-	//	Informational
-	//
-	virtual bool							Contains_Translation (uint32 lang_id);
-	
+  //
+  // TranslateObj specific
+  //
+  virtual const WideStringClass &Get_String(uint32 lang_id);
+  virtual const WideStringClass &Get_String(void);
+  virtual const StringClass &Get_English_String(void) { return EnglishString; }
+  virtual uint32 Get_ID(void) { return ID; }
+  virtual const StringClass &Get_ID_Desc(void) { return IDDesc; }
+  virtual uint32 Get_Sound_ID(void) { return SoundID; }
+  virtual const StringClass &Get_Animation_Name(void) { return AnimationName; }
+  virtual uint32 Get_Category_ID(void) { return CategoryID; }
+
+  virtual void Set_String(uint32 lang_id, const WCHAR *string);
+  virtual void Set_English_String(const TCHAR *string);
+  virtual void Set_ID(uint32 id);
+  virtual void Set_ID_Desc(const TCHAR *desc);
+  virtual void Set_Animation_Name(const TCHAR *name) { AnimationName = name; }
+  virtual void Set_Sound_ID(uint32 id) { SoundID = id; }
+  virtual void Set_Category_ID(uint32 id) { CategoryID = id; }
+
+  //
+  //	Informational
+  //
+  virtual bool Contains_Translation(uint32 lang_id);
+
 protected:
+  //////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////
+  void Save_Variables(ChunkSaveClass &csave);
+  void Load_Variables(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////
-	void								Save_Variables (ChunkSaveClass &csave);
-	void								Load_Variables (ChunkLoadClass &cload);
-
-	//////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////
-	StringClass									EnglishString;
-	StringClass									IDDesc;
-	uint32										ID;
-	uint32										SoundID;
-	uint32										CategoryID;
-	StringClass									AnimationName;
-	DynamicVectorClass<WideStringClass>	TranslatedStrings;
+  //////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////
+  StringClass EnglishString;
+  StringClass IDDesc;
+  uint32 ID;
+  uint32 SoundID;
+  uint32 CategoryID;
+  StringClass AnimationName;
+  DynamicVectorClass<WideStringClass> TranslatedStrings;
 };
 
-
 #endif //__TRANSLATE_OBJ_H
-

@@ -16,72 +16,70 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/persistentgameobjobserver.h           $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 11/28/01 5:18p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/persistentgameobjobserver.h           $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 11/28/01 5:18p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	PERSISTENTGAMEOBJOBSERVER_H
-#define	PERSISTENTGAMEOBJOBSERVER_H
+#ifndef PERSISTENTGAMEOBJOBSERVER_H
+#define PERSISTENTGAMEOBJOBSERVER_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	GAMEOBJOBSERVER_H
-	#include "gameobjobserver.h"
+#ifndef GAMEOBJOBSERVER_H
+#include "gameobjobserver.h"
 #endif
 
-#ifndef	PERSIST_H
-	#include "persist.h"
+#ifndef PERSIST_H
+#include "persist.h"
 #endif
 
-#ifndef	VECTOR_H
-	#include "vector.h"
+#ifndef VECTOR_H
+#include "vector.h"
 #endif
-
 
 /*
 ** PersistentGameObjObserverClass
 */
-class	PersistentGameObjObserverClass : public PersistClass, public GameObjObserverClass {
+class PersistentGameObjObserverClass : public PersistClass, public GameObjObserverClass {
 public:
-				 PersistentGameObjObserverClass( void );
-	virtual	~PersistentGameObjObserverClass( void );
+  PersistentGameObjObserverClass(void);
+  virtual ~PersistentGameObjObserverClass(void);
 
-	virtual	bool	Save( ChunkSaveClass & csave );
-	virtual	bool	Load( ChunkLoadClass & cload );
-
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 };
 
 /*
 ** class	PersistentGameObjObserverManager
 */
-class	PersistentGameObjObserverManager {
+class PersistentGameObjObserverManager {
 public:
-	static	void	Add( PersistentGameObjObserverClass * observer );
-	static	void	Remove( PersistentGameObjObserverClass * observer );
+  static void Add(PersistentGameObjObserverClass *observer);
+  static void Remove(PersistentGameObjObserverClass *observer);
 
-	static	bool	Save( ChunkSaveClass & csave );
-	static	bool	Load( ChunkLoadClass & cload );
+  static bool Save(ChunkSaveClass &csave);
+  static bool Load(ChunkLoadClass &cload);
 
-	static	void	Reset( void );
+  static void Reset(void);
 
 private:
-	static	DynamicVectorClass<PersistentGameObjObserverClass *>	ObserverList;
+  static DynamicVectorClass<PersistentGameObjObserverClass *> ObserverList;
 };
 
-#endif	//	PERSISTENTGAMEOBJOBSERVER_H
+#endif //	PERSISTENTGAMEOBJOBSERVER_H

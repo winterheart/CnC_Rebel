@@ -42,233 +42,206 @@
 #include "ffactory.h"
 #include "wwfile.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	ModPackageClass
 //
 //////////////////////////////////////////////////////////////////////
-ModPackageClass::ModPackageClass (void)	:
-	FileCRC (0)
-{
-	return ;
-}
-
+ModPackageClass::ModPackageClass(void) : FileCRC(0) { return; }
 
 //////////////////////////////////////////////////////////////////////
 //
 //	~ModPackageClass
 //
 //////////////////////////////////////////////////////////////////////
-ModPackageClass::~ModPackageClass (void)
-{
-	return ;
-}
-
+ModPackageClass::~ModPackageClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Set_Package_Filename
 //
 //////////////////////////////////////////////////////////////////////
-void
-ModPackageClass::Set_Package_Filename (const char *name)
-{
-	PackageFilename = name;
+void ModPackageClass::Set_Package_Filename(const char *name) {
+  PackageFilename = name;
 
-	//
-	//	Name the package from its filename minus the file extension.
-	//
-	StringClass temp_str = name;
-	char *extension		= ::strrchr (temp_str.Peek_Buffer (), '.');
-	if (extension != NULL) {
-		extension[0]	= 0;
-		Name				= temp_str;
-	} else {
-		Name = name;
-	}
+  //
+  //	Name the package from its filename minus the file extension.
+  //
+  StringClass temp_str = name;
+  char *extension = ::strrchr(temp_str.Peek_Buffer(), '.');
+  if (extension != NULL) {
+    extension[0] = 0;
+    Name = temp_str;
+  } else {
+    Name = name;
+  }
 
-	return ;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Build_Level_List
 //
 //////////////////////////////////////////////////////////////////////
-void
-ModPackageClass::Build_Level_List (DynamicVectorClass<StringClass> &list) const
-{
-	MixFileFactoryClass factory (PackageFilename, &RenegadeBaseFileFactory);
+void ModPackageClass::Build_Level_List(DynamicVectorClass<StringClass> &list) const {
+  MixFileFactoryClass factory(PackageFilename, &RenegadeBaseFileFactory);
 
-	//
-	//	Get a list of all the files in this mix file
-	//
-	DynamicVectorClass<StringClass> files_in_mix;
-	files_in_mix.Set_Growth_Step (1000);
-	factory.Build_Filename_List (files_in_mix);
+  //
+  //	Get a list of all the files in this mix file
+  //
+  DynamicVectorClass<StringClass> files_in_mix;
+  files_in_mix.Set_Growth_Step(1000);
+  factory.Build_Filename_List(files_in_mix);
 
-	//
-	//	Now, add any files that match the supplied wildcard to our master list
-	//
-	for (int file_index = 0; file_index < files_in_mix.Count (); file_index ++) {
-		const char *filename = files_in_mix[file_index];
-		StringClass temp_str (filename, true);
-		::strlwr (temp_str.Peek_Buffer ());
+  //
+  //	Now, add any files that match the supplied wildcard to our master list
+  //
+  for (int file_index = 0; file_index < files_in_mix.Count(); file_index++) {
+    const char *filename = files_in_mix[file_index];
+    StringClass temp_str(filename, true);
+    ::strlwr(temp_str.Peek_Buffer());
 
-		//
-		//	Add this file to our list if it matches the mask
-		//
-		if (::strstr (filename, ".lsd") != 0) {
-			list.Add (filename);
-		}
-	}
+    //
+    //	Add this file to our list if it matches the mask
+    //
+    if (::strstr(filename, ".lsd") != 0) {
+      list.Add(filename);
+    }
+  }
 
-	return ;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Find_Map_From_CRC
 //
 //////////////////////////////////////////////////////////////////////
-bool
-ModPackageClass::Find_Map_From_CRC (uint32 crc, StringClass *map_name) const
-{
-	bool retval = false;
+bool ModPackageClass::Find_Map_From_CRC(uint32 crc, StringClass *map_name) const {
+  bool retval = false;
 
-	//
-	//	Build a list of levels inside this mod
-	//
-	DynamicVectorClass<StringClass> list;
-	Build_Level_List (list);
+  //
+  //	Build a list of levels inside this mod
+  //
+  DynamicVectorClass<StringClass> list;
+  Build_Level_List(list);
 
-	//
-	//	Check each level filename until we've found the one that
-	//	matches the CRC
-	//
-	for (int index = 0; index < list.Count (); index ++) {
-		if (::CRC_Stringi (list[index]) == crc) {
-			(*map_name) = list[index];
-			retval = true;
-		}
-	}
+  //
+  //	Check each level filename until we've found the one that
+  //	matches the CRC
+  //
+  for (int index = 0; index < list.Count(); index++) {
+    if (::CRC_Stringi(list[index]) == crc) {
+      (*map_name) = list[index];
+      retval = true;
+    }
+  }
 
-	return retval;
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Compute_CRC
 //
 //////////////////////////////////////////////////////////////////////
-void
-ModPackageClass::Compute_CRC (void)
-{
-	FileCRC = 0;
-	
-	//
-	//	Get a file object for the package
-	//
-	FileClass *file = _TheFileFactory->Get_File (PackageFilename);
-	if (file != NULL) {
+void ModPackageClass::Compute_CRC(void) {
+  FileCRC = 0;
 
-		//
-		//	Open the file
-		//
-		if (file->Is_Available ()) {
-			file->Open (FileClass::READ);
+  //
+  //	Get a file object for the package
+  //
+  FileClass *file = _TheFileFactory->Get_File(PackageFilename);
+  if (file != NULL) {
 
-			CRCEngine crc_engine;
+    //
+    //	Open the file
+    //
+    if (file->Is_Available()) {
+      file->Open(FileClass::READ);
 
-			//
-			//	Crc the contents of the file
-			//
-			int file_size = file->Size ();
-			uint8 buffer[4096];
-			while (file_size > 0) {
-				
-				//
-				//	Read the data from the source file
-				//
-				int bytes			= min (file_size, (int)sizeof (buffer));
-				int copied_size	= file->Read (buffer, bytes);
-				file_size			-= copied_size;
-				if (copied_size <= 0) {
-					break;
-				}
+      CRCEngine crc_engine;
 
-				//
-				//	Add this data to the CRC engine
-				//
-				crc_engine (buffer, copied_size);
-			}
+      //
+      //	Crc the contents of the file
+      //
+      int file_size = file->Size();
+      uint8 buffer[4096];
+      while (file_size > 0) {
 
-			//
-			//	Get the accumulated CRC result from the CRC engine
-			//
-			FileCRC = crc_engine ();
+        //
+        //	Read the data from the source file
+        //
+        int bytes = min(file_size, (int)sizeof(buffer));
+        int copied_size = file->Read(buffer, bytes);
+        file_size -= copied_size;
+        if (copied_size <= 0) {
+          break;
+        }
 
-			//
-			//	Close the file
-			//
-			file->Close ();
-		}
-		
-		//
-		//	Return the file
-		//
-		_TheFileFactory->Return_File (file);
-	}	
+        //
+        //	Add this data to the CRC engine
+        //
+        crc_engine(buffer, copied_size);
+      }
 
-	return ;
+      //
+      //	Get the accumulated CRC result from the CRC engine
+      //
+      FileCRC = crc_engine();
+
+      //
+      //	Close the file
+      //
+      file->Close();
+    }
+
+    //
+    //	Return the file
+    //
+    _TheFileFactory->Return_File(file);
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Get_CRC
 //
 //////////////////////////////////////////////////////////////////////
-uint32
-ModPackageClass::Get_CRC (void)
-{
-	if (FileCRC == 0) {
-		Compute_CRC ();
-	}
+uint32 ModPackageClass::Get_CRC(void) {
+  if (FileCRC == 0) {
+    Compute_CRC();
+  }
 
-	return FileCRC;
+  return FileCRC;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Get_Map_Index
 //
 //////////////////////////////////////////////////////////////////////
-int
-ModPackageClass::Get_Map_Index (const char *map_name)
-{
-	int retval = 0;
+int ModPackageClass::Get_Map_Index(const char *map_name) {
+  int retval = 0;
 
-	//
-	//	Build the list of all maps in this mod
-	//
-	DynamicVectorClass<StringClass> list;
-	Build_Level_List (list);
+  //
+  //	Build the list of all maps in this mod
+  //
+  DynamicVectorClass<StringClass> list;
+  Build_Level_List(list);
 
-	//
-	//	Try to find the map in the list
-	//
-	for (int index = 0; index < list.Count (); index ++) {
-		if (list[index].Compare_No_Case (map_name) == 0) {
-			retval = index;
-			break;
-		}
-	}
+  //
+  //	Try to find the map in the list
+  //
+  for (int index = 0; index < list.Count(); index++) {
+    if (list[index].Compare_No_Case(map_name) == 0) {
+      retval = index;
+      break;
+    }
+  }
 
-	return retval;
+  return retval;
 }

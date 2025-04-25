@@ -35,76 +35,68 @@
 class ZoneInstanceClass;
 #include "DockableForm.H"
 
-
 //////////////////////////////////////////////////////////
 //
 //	ZoneInfoPageClass
 //
-class ZoneInfoPageClass : public DockableFormClass
-{
-	public:
-		ZoneInfoPageClass ();
-		ZoneInfoPageClass (ZoneInstanceClass *pzone);
-		virtual ~ZoneInfoPageClass ();
-
-// Form Data
+class ZoneInfoPageClass : public DockableFormClass {
 public:
-	//{{AFX_DATA(ZoneInfoPageClass)
-	enum { IDD = IDD_ZONE_INFO };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  ZoneInfoPageClass();
+  ZoneInfoPageClass(ZoneInstanceClass *pzone);
+  virtual ~ZoneInfoPageClass();
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(ZoneInfoPageClass)
+  enum { IDD = IDD_ZONE_INFO };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ZoneInfoPageClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ZoneInfoPageClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Implementation
 protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(ZoneInfoPageClass)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(ZoneInfoPageClass)
+  // NOTE - the ClassWizard will add and remove member functions here.
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ///////////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void HandleInitDialog(void);
+  bool Apply_Changes(void);
 
-		///////////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void						HandleInitDialog (void);
-		bool						Apply_Changes (void);
+  ///////////////////////////////////////////////////////
+  //
+  //	Inline accessors
+  //
+  void Set_Zone(ZoneInstanceClass *pzone) { m_pZone = pzone; }
+  ZoneInstanceClass *Get_Zone(void) { return m_pZone; }
 
-
-		///////////////////////////////////////////////////////
-		//
-		//	Inline accessors
-		//
-		void						Set_Zone (ZoneInstanceClass *pzone) { m_pZone = pzone; }
-		ZoneInstanceClass *	Get_Zone (void) { return m_pZone; }
-
-
-	private:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		ZoneInstanceClass *m_pZone;
+private:
+  ///////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  ZoneInstanceClass *m_pZone;
 };
 
 /////////////////////////////////////////////////////////////////////////////

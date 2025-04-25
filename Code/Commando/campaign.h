@@ -16,64 +16,64 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/campaign.h                          $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 12/01/01 12:02p                                             $* 
- *                                                                                             * 
- *                    $Revision:: 8                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/campaign.h                          $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 12/01/01 12:02p                                             $*
+ *                                                                                             *
+ *                    $Revision:: 8                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	CAMPAIGN_H
-#define	CAMPAIGN_H
+#ifndef CAMPAIGN_H
+#define CAMPAIGN_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-class	ChunkSaveClass;
-class	ChunkLoadClass;
+class ChunkSaveClass;
+class ChunkLoadClass;
 
 /*
 ** CampaignManager is responsible for controlling the flow of missions and sub-states through
 ** the playing of a campaign.  It also is the main entry point for single mission, and multi-play sessions.
 */
-class	CampaignManager {
+class CampaignManager {
 
 public:
-	static	void	Init( void );
-	static	void	Shutdown( void );
+  static void Init(void);
+  static void Shutdown(void);
 
-	static	bool	Save(ChunkSaveClass & csave);
-	static	bool	Load(ChunkLoadClass &cload);
+  static bool Save(ChunkSaveClass &csave);
+  static bool Load(ChunkLoadClass &cload);
 
-	static	void	Start_Campaign( int difficulty );
-	static	void	Continue( bool success = true );
+  static void Start_Campaign(int difficulty);
+  static void Continue(bool success = true);
 
-	static	void	Reset();
+  static void Reset();
 
-	// Backdrop Descriptions
-	static	int	Get_Backdrop_Description_Count( void );
-	static	const char * Get_Backdrop_Description( int index );
+  // Backdrop Descriptions
+  static int Get_Backdrop_Description_Count(void);
+  static const char *Get_Backdrop_Description(int index);
 
-	static	void	Select_Backdrop_Number( int state_number );
-	static	void	Select_Backdrop_Number_By_MP_Type( int type );
+  static void Select_Backdrop_Number(int state_number);
+  static void Select_Backdrop_Number_By_MP_Type(int type);
 
-	static	void	Replay_Level( const char * mission_name, int difficulty );
+  static void Replay_Level(const char *mission_name, int difficulty);
 
 private:
-	static	int	State;
-	static	int	BackdropIndex;
+  static int State;
+  static int BackdropIndex;
 };
 
 #endif

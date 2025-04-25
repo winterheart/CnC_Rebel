@@ -28,53 +28,48 @@
 /////////////////////////////////////////////////////////////////////////////
 // ImportTranslationDialogClass dialog
 
-class ImportTranslationDialogClass : public CDialog
-{
-// Construction
+class ImportTranslationDialogClass : public CDialog {
+  // Construction
 public:
-	ImportTranslationDialogClass(CWnd* pParent = NULL);   // standard constructor
+  ImportTranslationDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(ImportTranslationDialogClass)
-	enum { IDD = IDD_IMPORT_TRANSLATION };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(ImportTranslationDialogClass)
+  enum { IDD = IDD_IMPORT_TRANSLATION };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ImportTranslationDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ImportTranslationDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(ImportTranslationDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(ImportTranslationDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
+  void Set_Filename(const char *filename) { Filename = filename; }
+  const char *Get_Filename(void) const { return Filename; }
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
-	void				Set_Filename (const char *filename)	{ Filename = filename; }
-	const char *	Get_Filename (void) const				{ return Filename; }
-
-	void				Set_Is_For_Export (bool onoff)		{ IsForExport = onoff; }
+  void Set_Is_For_Export(bool onoff) { IsForExport = onoff; }
 
 private:
-
-	//////////////////////////////////////////////////////////////////
-	//	Private methods
-	//////////////////////////////////////////////////////////////////
-	CString		Filename;
-	bool			IsForExport;
+  //////////////////////////////////////////////////////////////////
+  //	Private methods
+  //////////////////////////////////////////////////////////////////
+  CString Filename;
+  bool IsForExport;
 };
 
 //{{AFX_INSERT_LOCATION}}

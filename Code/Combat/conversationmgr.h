@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/conversationmgr.h        $*
  *                                                                                             *
@@ -44,7 +45,6 @@
 #include "saveloadsubsystem.h"
 #include "vector.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
@@ -58,189 +58,178 @@ class OratorClass;
 ////////////////////////////////////////////////////////////////
 //	Singleton instance
 ////////////////////////////////////////////////////////////////
-extern class ConversationMgrClass	_ConversationMgrSaveLoad;
-
+extern class ConversationMgrClass _ConversationMgrSaveLoad;
 
 ////////////////////////////////////////////////////////////////
 //	Typedefs
 ////////////////////////////////////////////////////////////////
-typedef DynamicVectorClass<ConversationClass *>			CONVERSATION_LIST;
-typedef DynamicVectorClass<ActiveConversationClass *>	ACTIVE_CONVERSATION_LIST;
-
+typedef DynamicVectorClass<ConversationClass *> CONVERSATION_LIST;
+typedef DynamicVectorClass<ActiveConversationClass *> ACTIVE_CONVERSATION_LIST;
 
 ////////////////////////////////////////////////////////////////
 //
 //	ConversationMgrClass
 //
 ////////////////////////////////////////////////////////////////
-class ConversationMgrClass : public SaveLoadSubSystemClass
-{
+class ConversationMgrClass : public SaveLoadSubSystemClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum { CATEGORY_GLOBAL = 0, CATEGORY_LEVEL, CATEGORY_MAX } CATEGORY;
 
-	////////////////////////////////////////////////////////////////
-	//	Public constants
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		CATEGORY_GLOBAL	= 0,
-		CATEGORY_LEVEL,
-		CATEGORY_MAX
-	} CATEGORY;
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	ConversationMgrClass (void);
-	virtual ~ConversationMgrClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  ConversationMgrClass(void);
+  virtual ~ConversationMgrClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Initialization
-	//
-	static void								Initialize (void)	{}
-	static void								Shutdown (void)	{ Reset (); }
+  //
+  //	Initialization
+  //
+  static void Initialize(void) {}
+  static void Shutdown(void) { Reset(); }
 
+  //
+  //	Conversation editing
+  //
+  static void Add_Conversation(ConversationClass *conversation);
+  static int Get_Conversation_Count(void);
+  static int Get_Conversation_Count(int category_index) { return ConversationList[category_index].Count(); }
+  static ConversationClass *Peek_Conversation(int index);
+  static ConversationClass *Peek_Conversation(int category_index, int index) {
+    return ConversationList[category_index][index];
+  }
+  static void Remove_Conversation(ConversationClass *conversation);
 
-	//
-	//	Conversation editing
-	//
-	static void								Add_Conversation (ConversationClass *conversation);
-	static int								Get_Conversation_Count (void);
-	static int								Get_Conversation_Count (int category_index)			{ return ConversationList[category_index].Count (); }
-	static ConversationClass *			Peek_Conversation (int index);
-	static ConversationClass *			Peek_Conversation (int category_index, int index)	{ return ConversationList[category_index][index]; }
-	static void								Remove_Conversation (ConversationClass *conversation);
+  //
+  //	Runtime conversation access
+  //
+  static ActiveConversationClass *Create_New_Conversation(ConversationClass *conversation,
+                                                          DynamicVectorClass<PhysicalGameObj *> &buddy_list);
+  static ActiveConversationClass *Create_New_Conversation(ConversationClass *conversation);
 
-	//
-	//	Runtime conversation access
-	//
-	static ActiveConversationClass *	Create_New_Conversation (ConversationClass *conversation, DynamicVectorClass<PhysicalGameObj *> &buddy_list);
-	static ActiveConversationClass *	Create_New_Conversation (ConversationClass *conversation);
+  static void Start_Conversation(PhysicalGameObj *orator);
+  static ActiveConversationClass *Start_Conversation(PhysicalGameObj *orator, const char *conversation_name,
+                                                     bool force = false);
+  static ActiveConversationClass *Start_Conversation(PhysicalGameObj *orator, int conversation_id, bool force = false);
+  static ActiveConversationClass *Start_Conversation(PhysicalGameObj *orator, ConversationClass *conversation,
+                                                     bool force = false);
+  static ConversationClass *Pick_Conversation(PhysicalGameObj *initiator,
+                                              const DynamicVectorClass<PhysicalGameObj *> &available_orator_list,
+                                              DynamicVectorClass<PhysicalGameObj *> &orator_list);
 
-	static void								Start_Conversation (PhysicalGameObj *orator);
-	static ActiveConversationClass *	Start_Conversation (PhysicalGameObj *orator, const char *conversation_name, bool force = false);
-	static ActiveConversationClass *	Start_Conversation (PhysicalGameObj *orator, int conversation_id, bool force = false);
-	static ActiveConversationClass *	Start_Conversation (PhysicalGameObj *orator, ConversationClass *conversation, bool force = false);
-	static ConversationClass *			Pick_Conversation (PhysicalGameObj *initiator, const DynamicVectorClass<PhysicalGameObj *> &available_orator_list, DynamicVectorClass<PhysicalGameObj *> &orator_list);
-	
-	static ConversationClass *			Find_Conversation (const char *conversation_name);
-	static ConversationClass *			Find_Conversation (int conversation_id);
-	static ActiveConversationClass *	Find_Active_Conversation (int id);
+  static ConversationClass *Find_Conversation(const char *conversation_name);
+  static ConversationClass *Find_Conversation(int conversation_id);
+  static ActiveConversationClass *Find_Active_Conversation(int id);
 
-	static void								Reset_All_Other_Conversations (ActiveConversationClass *active_conversation);
-	static bool								Is_Key_Conversation_Playing (void);
-	
-	static int								Get_Active_Conversation_Count (void) { return ActiveConversationList.Count (); }
-	static void								Think (void);
-	
-	//
-	//	State access
-	//
-	static void								Reset (void);
-	static void								Reset_Conversations (int category_index, bool reset_start_id = false);
-	static void								Reset_Active_Conversations (void);
-	static void								Set_Category_To_Save (CATEGORY category_index) { SaveCategoryID = category_index; }
+  static void Reset_All_Other_Conversations(ActiveConversationClass *active_conversation);
+  static bool Is_Key_Conversation_Playing(void);
 
-	//
-	//	EmotIcon control
-	//
-	static bool								Are_Emot_Icons_Displayed (void)	{ return DisplayEmotIcons; }
-	static void								Display_Emot_Icons (bool onoff)	{ DisplayEmotIcons = onoff; }
+  static int Get_Active_Conversation_Count(void) { return ActiveConversationList.Count(); }
+  static void Think(void);
 
-	//
-	//	From SaveLoadSubSystemClass
-	//
-	uint32									Chunk_ID (void) const;
+  //
+  //	State access
+  //
+  static void Reset(void);
+  static void Reset_Conversations(int category_index, bool reset_start_id = false);
+  static void Reset_Active_Conversations(void);
+  static void Set_Category_To_Save(CATEGORY category_index) { SaveCategoryID = category_index; }
+
+  //
+  //	EmotIcon control
+  //
+  static bool Are_Emot_Icons_Displayed(void) { return DisplayEmotIcons; }
+  static void Display_Emot_Icons(bool onoff) { DisplayEmotIcons = onoff; }
+
+  //
+  //	From SaveLoadSubSystemClass
+  //
+  uint32 Chunk_ID(void) const;
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  static void Build_Buddy_List(PhysicalGameObj *orator, DynamicVectorClass<PhysicalGameObj *> &list,
+                               bool include_soldier);
+  static bool Test_Conversation(PhysicalGameObj *initiator, ConversationClass *conversation,
+                                DynamicVectorClass<PhysicalGameObj *> &buddy_list, bool force = false);
+  static bool Test_Orator(ConversationClass *conversation, OratorClass *orator, PhysicalGameObj *game_obj);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	static void				Build_Buddy_List (PhysicalGameObj *orator, DynamicVectorClass<PhysicalGameObj *> &list, bool include_soldier);
-	static bool				Test_Conversation (PhysicalGameObj *initiator, ConversationClass *conversation, DynamicVectorClass<PhysicalGameObj *> &buddy_list, bool force = false);
-	static bool				Test_Orator (ConversationClass *conversation, OratorClass *orator, PhysicalGameObj *game_obj);
-	
-	//
-	//	From SaveLoadSubSystemClass
-	//
-	bool						Contains_Data (void) const			{ return true; }
-	const char *			Name (void) const						{ return "ConversationMgrClass"; }
-	bool						Save (ChunkSaveClass &csave);
-	bool						Load (ChunkLoadClass &cload);
-	void						Load_Variables (ChunkLoadClass &cload);
-	bool						Load_Conversations (ChunkLoadClass &cload, int category_id);
+  //
+  //	From SaveLoadSubSystemClass
+  //
+  bool Contains_Data(void) const { return true; }
+  const char *Name(void) const { return "ConversationMgrClass"; }
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  void Load_Variables(ChunkLoadClass &cload);
+  bool Load_Conversations(ChunkLoadClass &cload, int category_id);
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////	
-	static CONVERSATION_LIST			ConversationList[CATEGORY_MAX];
-	static ACTIVE_CONVERSATION_LIST	ActiveConversationList;
-	static int								NextActiveConversationID;
-	static int								NextGlobalConversationID;
-	static int								NextLevelConversationID;
-	static CATEGORY						SaveCategoryID;
-	static bool								DisplayEmotIcons;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  static CONVERSATION_LIST ConversationList[CATEGORY_MAX];
+  static ACTIVE_CONVERSATION_LIST ActiveConversationList;
+  static int NextActiveConversationID;
+  static int NextGlobalConversationID;
+  static int NextLevelConversationID;
+  static CATEGORY SaveCategoryID;
+  static bool DisplayEmotIcons;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //	Get_Conversation_Count
-////////////////////////////////////////////////////////////////	
-inline int
-ConversationMgrClass::Get_Conversation_Count (void)
-{
-	int total = 0;
-	for (int index = 0; index < CATEGORY_MAX; index ++) {
-		total += ConversationList[index].Count ();
-	}
+////////////////////////////////////////////////////////////////
+inline int ConversationMgrClass::Get_Conversation_Count(void) {
+  int total = 0;
+  for (int index = 0; index < CATEGORY_MAX; index++) {
+    total += ConversationList[index].Count();
+  }
 
-	return total;
+  return total;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //	Peek_Conversation
-////////////////////////////////////////////////////////////////	
-inline ConversationClass *
-ConversationMgrClass::Peek_Conversation (int index_to_find)
-{
-	ConversationClass *conversation = NULL;	
+////////////////////////////////////////////////////////////////
+inline ConversationClass *ConversationMgrClass::Peek_Conversation(int index_to_find) {
+  ConversationClass *conversation = NULL;
 
-	//
-	//	Loop over all the categories
-	//
-	for (int index = 0; index < CATEGORY_MAX; index ++) {
-		
-		//
-		//	Is the specified index inside of this category?
-		//
-		int curr_count = ConversationList[index].Count ();
-		if (index_to_find < curr_count) {
-			
-			//
-			//	Index into this category to find the conversation
-			//
-			conversation = ConversationList[index][index_to_find];
-			break;
-		} else {
+  //
+  //	Loop over all the categories
+  //
+  for (int index = 0; index < CATEGORY_MAX; index++) {
 
-			//
-			//	Adjust the specified index to be within the range
-			// of the next category
-			//
-			index_to_find -= curr_count;
-		}
-	}
+    //
+    //	Is the specified index inside of this category?
+    //
+    int curr_count = ConversationList[index].Count();
+    if (index_to_find < curr_count) {
 
-	return conversation;
+      //
+      //	Index into this category to find the conversation
+      //
+      conversation = ConversationList[index][index_to_find];
+      break;
+    } else {
+
+      //
+      //	Adjust the specified index to be within the range
+      // of the next category
+      //
+      index_to_find -= curr_count;
+    }
+  }
+
+  return conversation;
 }
 
-
 #endif //__CONVERSATION_MGR_H
-

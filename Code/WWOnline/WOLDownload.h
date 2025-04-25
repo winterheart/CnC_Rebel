@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLDownload.h $
-*
-* DESCRIPTION
-*     This class specifies patch files to be downloaded from the server.
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 5 $
-*     $Modtime: 1/11/02 5:17p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLDownload.h $
+ *
+ * DESCRIPTION
+ *     This class specifies patch files to be downloaded from the server.
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 5 $
+ *     $Modtime: 1/11/02 5:17p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLDOWNLOAD_H__
 #define __WOLDOWNLOAD_H__
@@ -41,8 +41,7 @@
 #include "RefPtr.h"
 #include "WaitCondition.h"
 
-namespace WOL 
-{
+namespace WOL {
 #include <WOLAPI\wolapi.h>
 }
 
@@ -51,199 +50,168 @@ namespace WWOnline {
 class Session;
 class DownloadEvent;
 
-class Download :
-		public RefCounted,
-		public WOL::IDownloadEvent,
-		public Notifier<DownloadEvent>
-	{
-	public:
-		static RefPtr<Download> Create(const WOL::Update& patch);
+class Download : public RefCounted, public WOL::IDownloadEvent, public Notifier<DownloadEvent> {
+public:
+  static RefPtr<Download> Create(const WOL::Update &patch);
 
-		bool Start(void);
-		void Stop(void);
-		bool IsDone(void) const;
-		void Process(void);
+  bool Start(void);
+  void Stop(void);
+  bool IsDone(void) const;
+  void Process(void);
 
-		unsigned long GetSKU(void) const
-			{return mWOLUpdate.SKU;}
+  unsigned long GetSKU(void) const { return mWOLUpdate.SKU; }
 
-		unsigned long GetVersion(void) const
-			{return mWOLUpdate.version;}
+  unsigned long GetVersion(void) const { return mWOLUpdate.version; }
 
-		bool IsRequired(void) const
-			{return (mWOLUpdate.required != 0);}
+  bool IsRequired(void) const { return (mWOLUpdate.required != 0); }
 
-		const char* GetServerName(void) const
-			{return (const char*)mWOLUpdate.server;}
+  const char *GetServerName(void) const { return (const char *)mWOLUpdate.server; }
 
-		const char* GetLoginName(void) const
-			{return (const char*)mWOLUpdate.login;}
+  const char *GetLoginName(void) const { return (const char *)mWOLUpdate.login; }
 
-		const char* GetPassword(void) const
-			{return (const char*)mWOLUpdate.password;}
+  const char *GetPassword(void) const { return (const char *)mWOLUpdate.password; }
 
-		const char* GetDownloadPath(void) const
-			{return (const char*)mWOLUpdate.patchpath;}
+  const char *GetDownloadPath(void) const { return (const char *)mWOLUpdate.patchpath; }
 
-		const char* GetFilename(void) const
-			{return (const char*)mWOLUpdate.patchfile;}
+  const char *GetFilename(void) const { return (const char *)mWOLUpdate.patchfile; }
 
-		const char* GetLocalPath(void) const
-			{return (const char*)mWOLUpdate.localpath;}
+  const char *GetLocalPath(void) const { return (const char *)mWOLUpdate.localpath; }
 
-		int GetStatusCode(void) const
-			{return mStatusCode;}
+  int GetStatusCode(void) const { return mStatusCode; }
 
-		const wchar_t* GetStatusText(void) const;
+  const wchar_t *GetStatusText(void) const;
 
-		int GetErrorCode(void) const
-			{return mErrorCode;}
+  int GetErrorCode(void) const { return mErrorCode; }
 
-		const wchar_t* GetErrorText(void) const;
+  const wchar_t *GetErrorText(void) const;
 
-		void GetProgress(int& bytesRead, int& totalSize, int& timeElapsed, int& timeRemaining) const;
+  void GetProgress(int &bytesRead, int &totalSize, int &timeElapsed, int &timeRemaining) const;
 
-		DECLARE_NOTIFIER(DownloadEvent)
+  DECLARE_NOTIFIER(DownloadEvent)
 
-	protected:
-		typedef enum {DLError = 0, DLPending, DLDownloading, DLAborted, DLComplete} DLState;
+protected:
+  typedef enum { DLError = 0, DLPending, DLDownloading, DLAborted, DLComplete } DLState;
 
-		Download(const WOL::Update& patch);
-		~Download();
+  Download(const WOL::Update &patch);
+  ~Download();
 
-		bool CreateDownloadObject(void);
-		void ReleaseDownloadObject(void);
+  bool CreateDownloadObject(void);
+  void ReleaseDownloadObject(void);
 
-		void SetError(int errorCode, const char* errorText);
-		const char* GetOnErrorText(int onErrorCode) const;
+  void SetError(int errorCode, const char *errorText);
+  const char *GetOnErrorText(int onErrorCode) const;
 
-		// Prevent copy and assignment.
-		Download(const Download&);
-		const Download& operator=(const Download&);
+  // Prevent copy and assignment.
+  Download(const Download &);
+  const Download &operator=(const Download &);
 
-		WOL::Update mWOLUpdate;
+  WOL::Update mWOLUpdate;
 
-		CComPtr<WOL::IDownload> mDownloadObject;
-		unsigned long mDownloadCookie;
+  CComPtr<WOL::IDownload> mDownloadObject;
+  unsigned long mDownloadCookie;
 
-		DLState mState;
+  DLState mState;
 
-		// Status / Error
-		int mStatusCode;
-		int mErrorCode;
-		const char* mErrorText;
+  // Status / Error
+  int mStatusCode;
+  int mErrorCode;
+  const char *mErrorText;
 
-		// Progress
-		int mBytesRead;
-		int mTotalSize;
-		int mTimeElapsed;
-		int mTimeRemaining;
+  // Progress
+  int mBytesRead;
+  int mTotalSize;
+  int mTimeElapsed;
+  int mTimeRemaining;
 
-	//---------------------------------------------------------------------------
-	// IUnknown methods
-	//---------------------------------------------------------------------------
-	protected:
-		virtual HRESULT STDMETHODCALLTYPE QueryInterface(const IID& iid, void** ppv);
-		virtual ULONG STDMETHODCALLTYPE AddRef(void);
-		virtual ULONG STDMETHODCALLTYPE Release(void);
+  //---------------------------------------------------------------------------
+  // IUnknown methods
+  //---------------------------------------------------------------------------
+protected:
+  virtual HRESULT STDMETHODCALLTYPE QueryInterface(const IID &iid, void **ppv);
+  virtual ULONG STDMETHODCALLTYPE AddRef(void);
+  virtual ULONG STDMETHODCALLTYPE Release(void);
 
-	//---------------------------------------------------------------------------
-	// IDownloadEvent Methods
-	//---------------------------------------------------------------------------
-	protected:
-		STDMETHOD(OnEnd)(void);
-		STDMETHOD(OnError)(int error);
-		STDMETHOD(OnProgressUpdate)(int bytesRead, int totalSize, int timeElapsed, int timeRemaining);
-		STDMETHOD(OnQueryResume)(void);
-		STDMETHOD(OnStatusUpdate)(int status);
-	};
+  //---------------------------------------------------------------------------
+  // IDownloadEvent Methods
+  //---------------------------------------------------------------------------
+protected:
+  STDMETHOD(OnEnd)(void);
+  STDMETHOD(OnError)(int error);
+  STDMETHOD(OnProgressUpdate)(int bytesRead, int totalSize, int timeElapsed, int timeRemaining);
+  STDMETHOD(OnQueryResume)(void);
+  STDMETHOD(OnStatusUpdate)(int status);
+};
 
+typedef std::vector<RefPtr<Download>> DownloadList;
 
-typedef std::vector< RefPtr<Download> > DownloadList;
+class DownloadEvent {
+public:
+  enum Event {
+    DOWNLOAD_ERROR = -1,
+    DOWNLOAD_STATUS,
+    DOWNLOAD_BEGIN,
+    DOWNLOAD_PROGRESS,
+    DOWNLOAD_END,
+    DOWNLOAD_STOPPED,
+    DOWNLOAD_RESUME
+  };
 
+  Event GetEvent(void) const { return mEvent; }
 
-class DownloadEvent
-	{
-	public:
-		enum Event
-			{
-			DOWNLOAD_ERROR = -1,
-			DOWNLOAD_STATUS,
-			DOWNLOAD_BEGIN,
-			DOWNLOAD_PROGRESS,
-			DOWNLOAD_END,
-			DOWNLOAD_STOPPED,
-			DOWNLOAD_RESUME
-			};
+  const RefPtr<Download> &GetDownload(void) const { return mDownload; }
 
-		Event GetEvent(void) const
-			{return mEvent;}
+  DownloadEvent(Event event, const RefPtr<Download> &download) : mEvent(event), mDownload(download) {}
 
-		const RefPtr<Download>& GetDownload(void) const
-			{return mDownload;}
+  ~DownloadEvent() {}
 
-		DownloadEvent(Event event, const RefPtr<Download>& download) :
-				mEvent(event),
-				mDownload(download)
-			{}
+protected:
+  // Prevent copy and assignment.
+  DownloadEvent(const DownloadEvent &);
+  const DownloadEvent &operator=(const DownloadEvent &);
 
-		~DownloadEvent()
-			{}
+  Event mEvent;
+  const RefPtr<Download> mDownload;
+};
 
-	protected:
-		// Prevent copy and assignment.
-		DownloadEvent(const DownloadEvent&);
-		const DownloadEvent& operator=(const DownloadEvent&);
+typedef void (*DownloadWaitCallback)(DownloadEvent &event, unsigned long userdata);
 
-		Event mEvent;
-		const RefPtr<Download> mDownload;
-	};
+class DownloadWait : public SingleWait, public Observer<DownloadEvent> {
+public:
+  static RefPtr<DownloadWait> Create(const DownloadList &files);
 
+  void WaitBeginning(void);
 
-typedef void (*DownloadWaitCallback)(DownloadEvent& event, unsigned long userdata);
+  WaitResult GetResult(void);
 
-class DownloadWait :
-		public SingleWait,
-		public Observer<DownloadEvent>
-	{
-	public:
-		static RefPtr<DownloadWait> Create(const DownloadList& files);
+  void EndWait(WaitResult, const wchar_t *);
 
-		void WaitBeginning(void);
-		
-		WaitResult GetResult(void);
+  void SetCallback(DownloadWaitCallback callback, unsigned long userdata);
 
-		void EndWait(WaitResult, const wchar_t*);
+  unsigned int GetDownloadCount(void) const { return mFiles.size(); }
 
-		void SetCallback(DownloadWaitCallback callback, unsigned long userdata);
+  const RefPtr<Download> &GetCurrentDownload(void) const { return mCurrentDownload; }
 
-		unsigned int GetDownloadCount(void) const
-			{return mFiles.size();}
+protected:
+  DownloadWait(const DownloadList &files);
+  virtual ~DownloadWait();
 
-		const RefPtr<Download>& GetCurrentDownload(void) const
-			{return mCurrentDownload;}
+  // Prevent copy and assignment
+  DownloadWait(const DownloadWait &);
+  const DownloadWait &operator=(const DownloadWait &);
 
-	protected:
-		DownloadWait(const DownloadList& files);
-		virtual ~DownloadWait();
+  void DoCallback(DownloadEvent &event);
 
-		// Prevent copy and assignment
-		DownloadWait(const DownloadWait&);
-		const DownloadWait& operator=(const DownloadWait&);
+  void HandleNotification(DownloadEvent &);
 
-		void DoCallback(DownloadEvent& event);
+protected:
+  const DownloadList &mFiles;
 
-		void HandleNotification(DownloadEvent&);
+  int mFileIndex;
+  RefPtr<Download> mCurrentDownload;
 
-	protected:
-		const DownloadList& mFiles;
-
-		int mFileIndex;
-		RefPtr<Download> mCurrentDownload;
-
-		DownloadWaitCallback mCallback;
-		unsigned long mUserdata;
-	};
+  DownloadWaitCallback mCallback;
+  unsigned long mUserdata;
+};
 
 } // namespace WWOnline
 

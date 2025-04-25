@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/pathaction.h          $*
  *                                                                                             *
@@ -44,7 +45,6 @@
 #include "elevator.h"
 #include "vector3.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,140 +53,129 @@ class PathClass;
 class ChunkSaveClass;
 class ChunkLoadClass;
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	PathActionClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-class PathActionClass
-{
+class PathActionClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum {
+    STATE_FINISHED = 0,
+    STATE_WAITING,
+    STATE_MOVING
 
-	////////////////////////////////////////////////////////////////
-	//	Public constants
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		STATE_FINISHED						= 0,
-		STATE_WAITING,
-		STATE_MOVING
-	
-	}	STATE;
+  } STATE;
 
-	typedef enum
-	{
-		TYPE_UNKNOWN						= 0,
-		TYPE_JUMPING,
-		TYPE_ELEVATOR,
-		TYPE_DOOR,
-		TYPE_LADDER
-	
-	}	TYPE;
+  typedef enum {
+    TYPE_UNKNOWN = 0,
+    TYPE_JUMPING,
+    TYPE_ELEVATOR,
+    TYPE_DOOR,
+    TYPE_LADDER
 
+  } TYPE;
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	PathActionClass (void);
-	~PathActionClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  PathActionClass(void);
+  ~PathActionClass(void);
 
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Configuration
-	//
-	void				Initialize (TYPE type, PathClass *path, SmartGameObj *game_obj, StaticPhysClass *mechanism = NULL);
-	void				Set_Ladder_Index (int index)	{ LadderIndex = index; }
-	void				Reset (void);
+  //
+  //	Configuration
+  //
+  void Initialize(TYPE type, PathClass *path, SmartGameObj *game_obj, StaticPhysClass *mechanism = NULL);
+  void Set_Ladder_Index(int index) { LadderIndex = index; }
+  void Reset(void);
 
-	//
-	//	Run-time interface
-	//
-	bool				Process (void);
-	STATE				Get_State (void) const			{ return State; }
-	const Vector3 &Get_Destination (void) const	{ return Destination; }
+  //
+  //	Run-time interface
+  //
+  bool Process(void);
+  STATE Get_State(void) const { return State; }
+  const Vector3 &Get_Destination(void) const { return Destination; }
 
-	//
-	//	Save/Load support
-	//
-	void				Save (ChunkSaveClass &csave);
-	void				Load (ChunkLoadClass &cload);	
+  //
+  //	Save/Load support
+  //
+  void Save(ChunkSaveClass &csave);
+  void Load(ChunkLoadClass &cload);
 
-	//
-	//	Ladder occupant access
-	//
-	static ScriptableGameObj	*	Get_Ladder_Occupant (int ladder_index);
-	static void							Set_Ladder_Occupant (int ladder_index, ScriptableGameObj	*object);
+  //
+  //	Ladder occupant access
+  //
+  static ScriptableGameObj *Get_Ladder_Occupant(int ladder_index);
+  static void Set_Ladder_Occupant(int ladder_index, ScriptableGameObj *object);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Handle_Jump(void);
+  void Handle_Ladder(void);
+  void Handle_Door(void);
+  void Handle_Elevator(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void				Handle_Jump (void);
-	void				Handle_Ladder (void);
-	void				Handle_Door (void);
-	void				Handle_Elevator (void);
+  bool Has_Arrived(void);
+  void Get_Elevator_Zone_Pos(ELEVATOR_ZONE zone_id, Vector3 *position);
 
-	bool				Has_Arrived (void);
-	void				Get_Elevator_Zone_Pos (ELEVATOR_ZONE zone_id, Vector3 *position);
+  void Load_Variables(ChunkLoadClass &cload);
 
-	void				Load_Variables (ChunkLoadClass &cload);
+  void Set_Finished(void);
 
-	void				Set_Finished (void);
+  ////////////////////////////////////////////////////////////////
+  //	Private constants
+  ////////////////////////////////////////////////////////////////
+  typedef enum {
+    ELEVATOR_STATE_NONE = 0,
+    ELEVATOR_STATE_WAITING,
+    ELEVATOR_STATE_RIDING,
+    ELEVATOR_STATE_ENTERING,
+    ELEVATOR_STATE_EXITING,
 
-	////////////////////////////////////////////////////////////////
-	//	Private constants
-	////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		ELEVATOR_STATE_NONE				= 0,
-		ELEVATOR_STATE_WAITING,
-		ELEVATOR_STATE_RIDING,
-		ELEVATOR_STATE_ENTERING,
-		ELEVATOR_STATE_EXITING,
-	
-	}	ELEVATOR_STATE;
+  } ELEVATOR_STATE;
 
-	typedef enum
-	{
-		DOOR_STATE_NONE						= 0,
-		DOOR_STATE_GETTING_IN_POSITION,
-		DOOR_STATE_WAITING,
-		DOOR_STATE_ENTERING
-	
-	}	DOOR_STATE;
+  typedef enum {
+    DOOR_STATE_NONE = 0,
+    DOOR_STATE_GETTING_IN_POSITION,
+    DOOR_STATE_WAITING,
+    DOOR_STATE_ENTERING
 
-	typedef enum
-	{
-		LADDER_STATE_NONE						= 0,
-		LADDER_STATE_WAITING,
-		LADDER_STATE_GETTING_ON,
-		LADDER_STATE_CLIMBING
-	
-	}	LADDER_STATE;
+  } DOOR_STATE;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	ELEVATOR_STATE			ElevatorState;
-	DOOR_STATE				DoorState;
-	LADDER_STATE			LadderState;
-	STATE						State;
-	TYPE						Type;
-	PathClass *				Path;
-	StaticPhysClass *		Mechanism;
-	SmartGameObj *			GameObj;
-	Vector3					Destination;
-	Vector3					FacePos;
-	float						Timer;
-	int						LadderIndex;
-	
-	static DynamicVectorClass<GameObjReference>	LadderList;
+  typedef enum {
+    LADDER_STATE_NONE = 0,
+    LADDER_STATE_WAITING,
+    LADDER_STATE_GETTING_ON,
+    LADDER_STATE_CLIMBING
+
+  } LADDER_STATE;
+
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  ELEVATOR_STATE ElevatorState;
+  DOOR_STATE DoorState;
+  LADDER_STATE LadderState;
+  STATE State;
+  TYPE Type;
+  PathClass *Path;
+  StaticPhysClass *Mechanism;
+  SmartGameObj *GameObj;
+  Vector3 Destination;
+  Vector3 FacePos;
+  float Timer;
+  int LadderIndex;
+
+  static DynamicVectorClass<GameObjReference> LadderList;
 };
 
 #endif //__PATHACTION_H

@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLGame.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Steve_t $
-*
-* VERSION INFO
-*     $Revision: 6 $
-*     $Modtime: 8/21/02 12:31p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLGame.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Steve_t $
+ *
+ * VERSION INFO
+ *     $Revision: 6 $
+ *     $Modtime: 8/21/02 12:31p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLGAME_H__
 #define __WOLGAME_H__
@@ -44,68 +44,55 @@ namespace WWOnline {
 
 class ChannelData;
 
-class GameStartEvent
-	{
-	public:
-		const RefPtr<ChannelData>& GetChannel(void) const
-			{return mChannel;}
+class GameStartEvent {
+public:
+  const RefPtr<ChannelData> &GetChannel(void) const { return mChannel; }
 
-		const UserList& GetPlayers(void) const
-			{return mPlayers;}
+  const UserList &GetPlayers(void) const { return mPlayers; }
 
-		const unsigned long GetGameID(void) const
-			{return mGameID;}
+  const unsigned long GetGameID(void) const { return mGameID; }
 
-		bool IsSuccess(void) const
-			{return SUCCEEDED(mResult);}
+  bool IsSuccess(void) const { return SUCCEEDED(mResult); }
 
-		const char* GetErrorDescription(void) const;
+  const char *GetErrorDescription(void) const;
 
-		GameStartEvent(HRESULT result) :
-				mResult(result),
-				mGameID(0)
-			{}
+  GameStartEvent(HRESULT result) : mResult(result), mGameID(0) {}
 
-		GameStartEvent(const RefPtr<ChannelData>& channel, const UserList& users, unsigned long gameID);
-		~GameStartEvent()
-			{}
+  GameStartEvent(const RefPtr<ChannelData> &channel, const UserList &users, unsigned long gameID);
+  ~GameStartEvent() {}
 
-	protected:
-		GameStartEvent(const GameStartEvent&);
-		const GameStartEvent operator=(const GameStartEvent&);
+protected:
+  GameStartEvent(const GameStartEvent &);
+  const GameStartEvent operator=(const GameStartEvent &);
 
-	private:
-		HRESULT mResult;
-		RefPtr<ChannelData> mChannel;
-		UserList mPlayers;
-		unsigned long mGameID;
-	};
+private:
+  HRESULT mResult;
+  RefPtr<ChannelData> mChannel;
+  UserList mPlayers;
+  unsigned long mGameID;
+};
 
+class GameStartWait : public SingleWait, public Observer<GameStartEvent> {
+public:
+  static RefPtr<GameStartWait> Create(const UserList &players, void (*callback)(void) = NULL);
 
-class GameStartWait :
-		public SingleWait,
-		public Observer<GameStartEvent>
-	{
-	public:
-		static RefPtr<GameStartWait> Create(const UserList& players, void(*callback)(void) = NULL);
+  void WaitBeginning(void);
 
-		void WaitBeginning(void);
+protected:
+  GameStartWait(const UserList &players, void (*callback)(void) = NULL);
+  virtual ~GameStartWait();
 
-	protected:
-		GameStartWait(const UserList& players, void(*callback)(void) = NULL);
-		virtual ~GameStartWait();
+  // Prevent copy and assignment
+  GameStartWait(const GameStartWait &);
+  const GameStartWait &operator=(const GameStartWait &);
 
-		// Prevent copy and assignment
-		GameStartWait(const GameStartWait&);
-		const GameStartWait& operator=(const GameStartWait&);
+  void HandleNotification(GameStartEvent &);
+  void EndWait(WaitResult result, const wchar_t *endText);
 
-		void HandleNotification(GameStartEvent&);
-		void EndWait(WaitResult result, const wchar_t* endText);
+  void (*mTimeoutCallback)(void);
+  NativeWOLUserList mPlayers;
+};
 
-		void (*mTimeoutCallback)(void);
-		NativeWOLUserList mPlayers;
-	};
-
-}
+} // namespace WWOnline
 
 #endif // __WOLGAME_H__

@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/GameResField.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 2 $
-*     $Modtime: 8/15/01 5:49p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/GameResField.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 2 $
+ *     $Modtime: 8/15/01 5:49p $
+ *
+ ******************************************************************************/
 
 #pragma once
 
@@ -44,47 +44,47 @@ class GameResPacket;
 #define GAMERESFIELD_HEADER_SIZE (sizeof(GameResField) - (sizeof(void *) * 2))
 
 class GameResField {
-	public:
-		enum Type {
-			TYPE_CHAR = 1,
-			TYPE_UNSIGNED_CHAR,
-			TYPE_SHORT,
-			TYPE_UNSIGNED_SHORT,
-			TYPE_LONG,
-			TYPE_UNSIGNED_LONG,
-			TYPE_STRING,
-			TYPE_CHUNK = 20
-			};
+public:
+  enum Type {
+    TYPE_CHAR = 1,
+    TYPE_UNSIGNED_CHAR,
+    TYPE_SHORT,
+    TYPE_UNSIGNED_SHORT,
+    TYPE_LONG,
+    TYPE_UNSIGNED_LONG,
+    TYPE_STRING,
+    TYPE_CHUNK = 20
+  };
 
-		friend class GameResPacket;
+  friend class GameResPacket;
 
-		// Define constructors to be able to create all the different kinds
-		// of fields.
-		GameResField(void) {};
-		GameResField(const char *id, char data);
-		GameResField(const char *id, unsigned char data);
-		GameResField(const char *id, short data);
-		GameResField(const char *id, unsigned short data);
-		GameResField(const char *id, long data);
-		GameResField(const char *id, unsigned long data);
-		GameResField(const char *id, const char *data);
-		GameResField(const char *id, void *data, int length);
+  // Define constructors to be able to create all the different kinds
+  // of fields.
+  GameResField(void) {};
+  GameResField(const char *id, char data);
+  GameResField(const char *id, unsigned char data);
+  GameResField(const char *id, short data);
+  GameResField(const char *id, unsigned short data);
+  GameResField(const char *id, long data);
+  GameResField(const char *id, unsigned long data);
+  GameResField(const char *id, const char *data);
+  GameResField(const char *id, void *data, int length);
 
-		~GameResField();
+  ~GameResField();
 
-		void Host_To_Net(void);
-		void Net_To_Host(void);
+  void Host_To_Net(void);
+  void Net_To_Host(void);
 
-		#ifdef _DEBUG
-		void DebugDump(void);
-		#endif
+#ifdef _DEBUG
+  void DebugDump(void);
+#endif
 
-	private:
-		char mID[4];
-		unsigned short mDataType;
-		unsigned short mSize;
-		void* mData;
-		GameResField* mNext;
+private:
+  char mID[4];
+  unsigned short mDataType;
+  unsigned short mSize;
+  void *mData;
+  GameResField *mNext;
 };
 
 } // namespace WWOnline

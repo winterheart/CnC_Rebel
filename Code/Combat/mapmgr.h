@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/mapmgr.h           $*
  *                                                                                             *
@@ -48,255 +49,235 @@
 #include "saveloadsubsystem.h"
 #include "combatchunkid.h"
 
-
 ///////////////////////////////////////////////////////////////////////
 // Global singleton instance
 ///////////////////////////////////////////////////////////////////////
 extern class MapMgrClass _TheMapMgrSaveLoadSubsystem;
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MapMgrClass
 //
 ////////////////////////////////////////////////////////////////
-class MapMgrClass : public SaveLoadSubSystemClass
-{
+class MapMgrClass : public SaveLoadSubSystemClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constants
+  ////////////////////////////////////////////////////////////////
+  enum {
+    CLOUD_WIDTH = 20,
+    CLOUD_HEIGHT = 20,
+    CLOUD_VECTOR_SIZE = ((CLOUD_WIDTH * CLOUD_HEIGHT) / 32) + 1,
+  };
 
-	////////////////////////////////////////////////////////////////
-	//	Public constants
-	////////////////////////////////////////////////////////////////
-	enum
-	{
-		CLOUD_WIDTH			= 20,
-		CLOUD_HEIGHT		= 20,
-		CLOUD_VECTOR_SIZE	= ((CLOUD_WIDTH * CLOUD_HEIGHT) / 32) + 1,
-	};
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	This is the texture that will be used to display the map
+  //
+  static void Set_Map_Texture(const char *filename);
+  static void Get_Map_Texture_Filename(StringClass &filename);
+  static const char *Get_Map_Texture_Pathname(void) { return MapTextureName; }
 
-	//
-	//	This is the texture that will be used to display the map
-	//
-	static void					Set_Map_Texture (const char *filename);
-	static void					Get_Map_Texture_Filename (StringClass &filename);
-	static const char *		Get_Map_Texture_Pathname (void)			{ return MapTextureName; }
-	
-	//
-	//	Map centering and scale.
-	//
-	//		Note:	The scale means "how many pixels (of map) per meter (of world space)".
-	//				This value can differ in the X and Y axes.
-	//
-	//				The map center is the pixel position (x,y) where world space (0, 0, 0) is.
-	//
+  //
+  //	Map centering and scale.
+  //
+  //		Note:	The scale means "how many pixels (of map) per meter (of world space)".
+  //				This value can differ in the X and Y axes.
+  //
+  //				The map center is the pixel position (x,y) where world space (0, 0, 0) is.
+  //
 
-	static const Vector2 &	Get_Map_Scale (void)							{ return MapScale; }
-	static void					Set_Map_Scale (const Vector2 &scale)	{ MapScale = scale; }
+  static const Vector2 &Get_Map_Scale(void) { return MapScale; }
+  static void Set_Map_Scale(const Vector2 &scale) { MapScale = scale; }
 
-	static const Vector2 &	Get_Map_Center (void)						{ return MapCenterPoint; }
-	static void					Set_Map_Center (const Vector2 &pos)		{ MapCenterPoint = pos; }
+  static const Vector2 &Get_Map_Center(void) { return MapCenterPoint; }
+  static void Set_Map_Center(const Vector2 &pos) { MapCenterPoint = pos; }
 
-	//
-	//	Cloud support
-	//
-	static void					Clear_Cloud_Cell (const Vector3 &pos);
-	static void					Clear_Cloud_Cells (const Vector3 &pos, int pixel_radius);
-	static void					Clear_Cloud_Cell (int x_pos, int y_pos);
-	static void					Clear_Cloud_Cell_By_Pixel (int x_pos, int y_pos);
-	static void					Clear_All_Cloud_Cells (void)				{ ::memset (CloudVector, 0, sizeof (CloudVector)); }
-	static void					Cloud_All_Cells (void)						{ ::memset (CloudVector, 0xFF, sizeof (CloudVector)); }
-	static bool					Is_Cell_Visible (int x_pos, int y_pos);
+  //
+  //	Cloud support
+  //
+  static void Clear_Cloud_Cell(const Vector3 &pos);
+  static void Clear_Cloud_Cells(const Vector3 &pos, int pixel_radius);
+  static void Clear_Cloud_Cell(int x_pos, int y_pos);
+  static void Clear_Cloud_Cell_By_Pixel(int x_pos, int y_pos);
+  static void Clear_All_Cloud_Cells(void) { ::memset(CloudVector, 0, sizeof(CloudVector)); }
+  static void Cloud_All_Cells(void) { ::memset(CloudVector, 0xFF, sizeof(CloudVector)); }
+  static bool Is_Cell_Visible(int x_pos, int y_pos);
 
-	//
-	// VTOL Support.  Some maps do not support VTOL aircraft.
-	//
-	static void					Enable_VTOL_Vehicles(bool onoff)			{ EnableVTOL = onoff; }		
-	static bool					Are_VTOL_Vehicles_Enabled(void)			{ return EnableVTOL; }
+  //
+  // VTOL Support.  Some maps do not support VTOL aircraft.
+  //
+  static void Enable_VTOL_Vehicles(bool onoff) { EnableVTOL = onoff; }
+  static bool Are_VTOL_Vehicles_Enabled(void) { return EnableVTOL; }
 
-	//
-	//	From SaveLoadSubSystemClass
-	//
-	uint32						Chunk_ID (void) const			{ return CHUNKID_MAPMGR; }
+  //
+  //	From SaveLoadSubSystemClass
+  //
+  uint32 Chunk_ID(void) const { return CHUNKID_MAPMGR; }
 
-	//
-	//	Title support
-	//
-	static void					Set_Map_Title (int string_id)	{ MapTitleID = string_id; }
-	static int					Get_Map_Title (void)				{ return MapTitleID; }
+  //
+  //	Title support
+  //
+  static void Set_Map_Title(int string_id) { MapTitleID = string_id; }
+  static int Get_Map_Title(void) { return MapTitleID; }
 
-	//
-	//	Player marker control
-	//
-	static bool					Is_Player_Marker_Visible (void)	{ return IsPlayerMarkerVisible; }
-	static void					Show_Player_Marker (bool onoff)	{ IsPlayerMarkerVisible = onoff; }
+  //
+  //	Player marker control
+  //
+  static bool Is_Player_Marker_Visible(void) { return IsPlayerMarkerVisible; }
+  static void Show_Player_Marker(bool onoff) { IsPlayerMarkerVisible = onoff; }
 
 protected:
+  //
+  //	From SaveLoadSubSystemClass
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  void On_Post_Load(void);
+  const char *Name(void) const { return "MapMgrClass"; }
 
-	//
-	//	From SaveLoadSubSystemClass
-	//
-	bool							Save (ChunkSaveClass &csave);
-	bool							Load (ChunkLoadClass &cload);
-	void							On_Post_Load (void);
-	const char *				Name (void) const					{ return "MapMgrClass"; }	
+  //
+  //	Save load support
+  //
+  void Load_Variables(ChunkLoadClass &cload);
 
-	//
-	//	Save load support
-	//
-	void							Load_Variables (ChunkLoadClass &cload);
-	
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	static bool				IsPlayerMarkerVisible;
-	static int				MapTitleID;
-	static StringClass	MapTextureName;
-	static Vector2			MapCenterPoint;
-	static Vector2			MapScale;
-	static Vector2			MapSize;
-	static uint32			CloudVector[CLOUD_VECTOR_SIZE];
-	static bool				EnableVTOL;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  static bool IsPlayerMarkerVisible;
+  static int MapTitleID;
+  static StringClass MapTextureName;
+  static Vector2 MapCenterPoint;
+  static Vector2 MapScale;
+  static Vector2 MapSize;
+  static uint32 CloudVector[CLOUD_VECTOR_SIZE];
+  static bool EnableVTOL;
 };
 
+////////////////////////////////////////////////////////////////
+//	Clear_Cloud_Cell
+////////////////////////////////////////////////////////////////
+inline void MapMgrClass::Clear_Cloud_Cell(const Vector3 &pos) {
+  if (MapSize.X <= 0 || MapSize.Y <= 0) {
+    return;
+  }
+
+  //
+  //	Calculate where (in map pixels) this position lies
+  //
+  float map_x_pos = MapCenterPoint.X + (pos.X * MapScale.X);
+  float map_y_pos = MapCenterPoint.Y - (pos.Y * MapScale.Y);
+
+  //
+  //	Convert this map coordinate into a cell coordinate
+  //
+  int cell_x = int((map_x_pos / MapSize.X) * CLOUD_WIDTH);
+  int cell_y = int((map_y_pos / MapSize.Y) * CLOUD_HEIGHT);
+
+  //
+  //	Clamp the cells
+  //
+  cell_x = max(cell_x, 0);
+  cell_y = max(cell_y, 0);
+  cell_x = min(cell_x, CLOUD_WIDTH - 1);
+  cell_y = min(cell_y, CLOUD_HEIGHT - 1);
+
+  //
+  //	Determine which bit we need to clear
+  //
+  int bit_offset = (cell_y * CLOUD_WIDTH) + cell_x;
+  int index = bit_offset / 32;
+  int bit = (bit_offset - (index * 32)) + 1;
+
+  //
+  //	Clear the bit
+  //
+  CloudVector[index] &= ~(1 << bit);
+  return;
+}
 
 ////////////////////////////////////////////////////////////////
 //	Clear_Cloud_Cell
 ////////////////////////////////////////////////////////////////
-inline void
-MapMgrClass::Clear_Cloud_Cell (const Vector3 &pos)
-{
-	if (MapSize.X <= 0 || MapSize.Y <= 0) {
-		return ;
-	}
+inline void MapMgrClass::Clear_Cloud_Cell(int x_pos, int y_pos) {
+  if (MapSize.X <= 0 || MapSize.Y <= 0) {
+    return;
+  }
 
-	//
-	//	Calculate where (in map pixels) this position lies
-	//
-	float map_x_pos	= MapCenterPoint.X + (pos.X * MapScale.X);
-	float map_y_pos	= MapCenterPoint.Y - (pos.Y * MapScale.Y);
+  //
+  //	Clamp the cells
+  //
+  int cell_x = max(x_pos, 0);
+  int cell_y = max(y_pos, 0);
+  cell_x = min(x_pos, CLOUD_WIDTH - 1);
+  cell_y = min(y_pos, CLOUD_HEIGHT - 1);
 
-	//
-	//	Convert this map coordinate into a cell coordinate
-	//
-	int cell_x	= int((map_x_pos / MapSize.X) * CLOUD_WIDTH);
-	int cell_y	= int((map_y_pos / MapSize.Y) * CLOUD_HEIGHT);
+  //
+  //	Determine which bit we need to clear
+  //
+  int bit_offset = (cell_y * CLOUD_WIDTH) + cell_x;
+  int index = bit_offset / 32;
+  int bit = (bit_offset - (index * 32)) + 1;
 
-	//
-	//	Clamp the cells
-	//
-	cell_x = max (cell_x, 0);
-	cell_y = max (cell_y, 0);
-	cell_x = min (cell_x, CLOUD_WIDTH - 1);
-	cell_y = min (cell_y, CLOUD_HEIGHT - 1);
-
-	//
-	//	Determine which bit we need to clear
-	//
-	int bit_offset	= (cell_y * CLOUD_WIDTH) + cell_x;
-	int index		= bit_offset / 32;
-	int bit			= (bit_offset - (index * 32)) + 1;
-
-	//
-	//	Clear the bit
-	//
-	CloudVector[index] &= ~(1 << bit);
-	return ;
+  //
+  //	Clear the bit
+  //
+  CloudVector[index] &= ~(1 << bit);
+  return;
 }
-
-
-////////////////////////////////////////////////////////////////
-//	Clear_Cloud_Cell
-////////////////////////////////////////////////////////////////
-inline void
-MapMgrClass::Clear_Cloud_Cell (int x_pos, int y_pos)
-{
-	if (MapSize.X <= 0 || MapSize.Y <= 0) {
-		return ;
-	}
-
-	//
-	//	Clamp the cells
-	//
-	int cell_x	= max (x_pos, 0);
-	int cell_y	= max (y_pos, 0);
-	cell_x		= min (x_pos, CLOUD_WIDTH - 1);
-	cell_y		= min (y_pos, CLOUD_HEIGHT - 1);
-
-	//
-	//	Determine which bit we need to clear
-	//
-	int bit_offset	= (cell_y * CLOUD_WIDTH) + cell_x;
-	int index		= bit_offset / 32;
-	int bit			= (bit_offset - (index * 32)) + 1;
-
-	//
-	//	Clear the bit
-	//
-	CloudVector[index] &= ~(1 << bit);
-	return ;
-}
-
 
 ////////////////////////////////////////////////////////////////
 //	Clear_Cloud_Cell_By_Pixel
 ////////////////////////////////////////////////////////////////
-inline void
-MapMgrClass::Clear_Cloud_Cell_By_Pixel (int x_pos, int y_pos)
-{
-	if (MapSize.X <= 0 || MapSize.Y <= 0) {
-		return ;
-	}
+inline void MapMgrClass::Clear_Cloud_Cell_By_Pixel(int x_pos, int y_pos) {
+  if (MapSize.X <= 0 || MapSize.Y <= 0) {
+    return;
+  }
 
-	//
-	//	Convert this map coordinate into a cell coordinate
-	//
-	int cell_x	= int((x_pos / MapSize.X) * CLOUD_WIDTH);
-	int cell_y	= int((y_pos / MapSize.Y) * CLOUD_HEIGHT);
+  //
+  //	Convert this map coordinate into a cell coordinate
+  //
+  int cell_x = int((x_pos / MapSize.X) * CLOUD_WIDTH);
+  int cell_y = int((y_pos / MapSize.Y) * CLOUD_HEIGHT);
 
-	//
-	//	Clamp the cells
-	//
-	cell_x = max (cell_x, 0);
-	cell_y = max (cell_y, 0);
-	cell_x = min (cell_x, CLOUD_WIDTH - 1);
-	cell_y = min (cell_y, CLOUD_HEIGHT - 1);
+  //
+  //	Clamp the cells
+  //
+  cell_x = max(cell_x, 0);
+  cell_y = max(cell_y, 0);
+  cell_x = min(cell_x, CLOUD_WIDTH - 1);
+  cell_y = min(cell_y, CLOUD_HEIGHT - 1);
 
-	//
-	//	Determine which bit we need to clear
-	//
-	int bit_offset	= (cell_y * CLOUD_WIDTH) + cell_x;
-	int index		= bit_offset / 32;
-	int bit			= (bit_offset - (index * 32)) + 1;
+  //
+  //	Determine which bit we need to clear
+  //
+  int bit_offset = (cell_y * CLOUD_WIDTH) + cell_x;
+  int index = bit_offset / 32;
+  int bit = (bit_offset - (index * 32)) + 1;
 
-	//
-	//	Clear the bit
-	//
-	CloudVector[index] &= ~(1 << bit);
-	return ;
+  //
+  //	Clear the bit
+  //
+  CloudVector[index] &= ~(1 << bit);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //	Is_Cell_Visible
 ////////////////////////////////////////////////////////////////
-inline bool
-MapMgrClass::Is_Cell_Visible (int x_pos, int y_pos)
-{
-	int bit_offset	= (y_pos * CLOUD_WIDTH) + x_pos;
-	int index		= bit_offset / 32;
-	int bit			= (bit_offset - (index * 32)) + 1;
-	
-	//
-	//	Index into the vector to see if this cell is clouded or not
-	//
-	return ((CloudVector[index] & (1 << bit)) == 0);
+inline bool MapMgrClass::Is_Cell_Visible(int x_pos, int y_pos) {
+  int bit_offset = (y_pos * CLOUD_WIDTH) + x_pos;
+  int index = bit_offset / 32;
+  int bit = (bit_offset - (index * 32)) + 1;
+
+  //
+  //	Index into the vector to see if this cell is clouded or not
+  //
+  return ((CloudVector[index] & (1 << bit)) == 0);
 }
 
 #endif //__MAP_MGR_H
-

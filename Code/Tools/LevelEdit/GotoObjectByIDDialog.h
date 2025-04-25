@@ -23,43 +23,38 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "resource.h"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // GotoObjectByIDDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class GotoObjectByIDDialogClass : public CDialog
-{
-// Construction
+class GotoObjectByIDDialogClass : public CDialog {
+  // Construction
 public:
-	GotoObjectByIDDialogClass(CWnd* pParent = NULL);   // standard constructor
+  GotoObjectByIDDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GotoObjectByIDDialogClass)
-	enum { IDD = IDD_GOTO_OBJECT_BY_ID };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GotoObjectByIDDialogClass)
+  enum { IDD = IDD_GOTO_OBJECT_BY_ID };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GotoObjectByIDDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GotoObjectByIDDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GotoObjectByIDDialogClass)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GotoObjectByIDDialogClass)
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

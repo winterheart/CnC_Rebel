@@ -28,54 +28,49 @@
 /////////////////////////////////////////////////////////////////////////////
 // HeightfieldMaterialSettingsDialogClass dialog
 
-class HeightfieldMaterialSettingsDialogClass : public CDialog
-{
-// Construction
+class HeightfieldMaterialSettingsDialogClass : public CDialog {
+  // Construction
 public:
-	HeightfieldMaterialSettingsDialogClass(CWnd* pParent = NULL);   // standard constructor
+  HeightfieldMaterialSettingsDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(HeightfieldMaterialSettingsDialogClass)
-	enum { IDD = IDD_HEIGHTFIELD_MATERIAL_SETTINGS };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(HeightfieldMaterialSettingsDialogClass)
+  enum { IDD = IDD_HEIGHTFIELD_MATERIAL_SETTINGS };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(HeightfieldMaterialSettingsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(HeightfieldMaterialSettingsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(HeightfieldMaterialSettingsDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnBrowse();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(HeightfieldMaterialSettingsDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  afx_msg void OnBrowse();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-
-	//
-	//	Material access
-	//
-	void				Set_Material (int index)	{ MaterialIndex = index; }
+  //
+  //	Material access
+  //
+  void Set_Material(int index) { MaterialIndex = index; }
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	int	MaterialIndex;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  int MaterialIndex;
 };
 
 //{{AFX_INSERT_LOCATION}}

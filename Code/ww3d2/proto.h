@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -78,98 +77,82 @@ class ChunkLoadClass;
 ** Some simple render objects will be created through cloning.  In
 ** that case, their associated prototype simply stores an object and
 ** clones it whenever the Create method is called.  More complex
-** composite render objects will be created from a "blueprint" object.  
-** Basically this class simply associates a name with a render object 
+** composite render objects will be created from a "blueprint" object.
+** Basically this class simply associates a name with a render object
 ** creation function.
 */
-class PrototypeClass 
-{
+class PrototypeClass {
 
 public:
+  PrototypeClass(void) : NextHash(NULL) {}
+  virtual ~PrototypeClass(void) {};
 
-	PrototypeClass(void) : NextHash(NULL) {}
-	virtual ~PrototypeClass(void) {};
-	
-	virtual const char *			Get_Name(void)	const = 0;
-	virtual int						Get_Class_ID(void) const = 0;
-	virtual RenderObjClass *	Create(void) = 0;
+  virtual const char *Get_Name(void) const = 0;
+  virtual int Get_Class_ID(void) const = 0;
+  virtual RenderObjClass *Create(void) = 0;
 
 private:
+  PrototypeClass *NextHash;
 
-	PrototypeClass *				NextHash;
+  // Not Implemented
+  PrototypeClass(const PrototypeClass &that);
+  PrototypeClass &operator=(const PrototypeClass &that);
 
-	// Not Implemented
-	PrototypeClass(const PrototypeClass & that);
-	PrototypeClass & operator = (const PrototypeClass & that);
-
-	friend class WW3DAssetManager;
+  friend class WW3DAssetManager;
 };
 
-class PrimitivePrototypeClass : public PrototypeClass
-{
+class PrimitivePrototypeClass : public PrototypeClass {
 public:
-	PrimitivePrototypeClass(RenderObjClass * proto);
-	virtual ~PrimitivePrototypeClass(void);
+  PrimitivePrototypeClass(RenderObjClass *proto);
+  virtual ~PrimitivePrototypeClass(void);
 
-	virtual const char *			Get_Name(void) const;
-	virtual int						Get_Class_ID(void) const;
-	virtual RenderObjClass *	Create(void);
-	RenderObjClass *				Proto;
+  virtual const char *Get_Name(void) const;
+  virtual int Get_Class_ID(void) const;
+  virtual RenderObjClass *Create(void);
+  RenderObjClass *Proto;
 };
 
 /*
 ** PrototypeLoaderClass
 ** This is the interface for an object which recognizes a certain
 ** chunk type in a W3D file and can load it and create a PrototypeClass
-** for it.  
+** for it.
 */
-class PrototypeLoaderClass 
-{
+class PrototypeLoaderClass {
 
 public:
+  PrototypeLoaderClass(void) {}
+  ~PrototypeLoaderClass(void) {}
 
-	PrototypeLoaderClass(void) {}
-	~PrototypeLoaderClass(void) {}
-
-	virtual int						Chunk_Type(void) = 0;
-	virtual PrototypeClass *	Load_W3D(ChunkLoadClass & cload) = 0;
+  virtual int Chunk_Type(void) = 0;
+  virtual PrototypeClass *Load_W3D(ChunkLoadClass &cload) = 0;
 
 private:
-
-	// Not Implemented:
-	PrototypeLoaderClass(const PrototypeLoaderClass & that);
-	PrototypeLoaderClass & operator = (const PrototypeLoaderClass & that);
-
+  // Not Implemented:
+  PrototypeLoaderClass(const PrototypeLoaderClass &that);
+  PrototypeLoaderClass &operator=(const PrototypeLoaderClass &that);
 };
-
 
 /*
 ** Default Prototype Loaders for Meshes and HModels
 */
-class MeshLoaderClass : public PrototypeLoaderClass
-{
+class MeshLoaderClass : public PrototypeLoaderClass {
 public:
-
-	virtual int						Chunk_Type(void) { return W3D_CHUNK_MESH; }
-	virtual PrototypeClass *	Load_W3D(ChunkLoadClass & cload);
+  virtual int Chunk_Type(void) { return W3D_CHUNK_MESH; }
+  virtual PrototypeClass *Load_W3D(ChunkLoadClass &cload);
 };
 
-class HModelLoaderClass : public PrototypeLoaderClass
-{
+class HModelLoaderClass : public PrototypeLoaderClass {
 public:
-
-	virtual int						Chunk_Type(void) { return W3D_CHUNK_HMODEL; }
-	virtual PrototypeClass *	Load_W3D(ChunkLoadClass & cload);
+  virtual int Chunk_Type(void) { return W3D_CHUNK_HMODEL; }
+  virtual PrototypeClass *Load_W3D(ChunkLoadClass &cload);
 };
-
 
 /*
 ** Instances of the default loaders which the asset manager can
 ** automatically install at creation time
 */
-extern MeshLoaderClass			_MeshLoader;
-extern HModelLoaderClass		_HModelLoader;
-
-
+extern MeshLoaderClass _MeshLoader;
+extern HModelLoaderClass _HModelLoader;
 
 #endif

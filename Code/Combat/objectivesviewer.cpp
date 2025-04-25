@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/objectivesviewer.cpp       $*
  *                                                                                             *
@@ -33,7 +34,6 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
 
 #include "objectivesviewer.h"
 #include "assetmgr.h"
@@ -48,289 +48,252 @@
 #include "rendobj.h"
 #include "string_ids.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Constants
 ////////////////////////////////////////////////////////////////
-static const char *FONT_NAME						= "FONT6X8.TGA";
-static const char *HEADER_FONT_NAME				= "FONT8X8.TGA";
+static const char *FONT_NAME = "FONT6X8.TGA";
+static const char *HEADER_FONT_NAME = "FONT8X8.TGA";
 
-static const char *BACKGROUND_MODEL_NAME		= "FRAME_1BIG";
-static const char *UPPER_LEFT_BONE_NAME		= "BONE00";
-static const char *LOWER_RIGHT_BONE_NAME		= "BONE01";
-
+static const char *BACKGROUND_MODEL_NAME = "FRAME_1BIG";
+static const char *UPPER_LEFT_BONE_NAME = "BONE00";
+static const char *LOWER_RIGHT_BONE_NAME = "BONE01";
 
 ////////////////////////////////////////////////////////////////
 //
 //	ObjectivesViewerClass
 //
 ////////////////////////////////////////////////////////////////
-ObjectivesViewerClass::ObjectivesViewerClass (void) :
-	IsDisplayed (false),
-	TextWindow (NULL)
-{	
-	return ;
-}
-
+ObjectivesViewerClass::ObjectivesViewerClass(void) : IsDisplayed(false), TextWindow(NULL) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	~ObjectivesViewerClass
 //
 ////////////////////////////////////////////////////////////////
-ObjectivesViewerClass::~ObjectivesViewerClass (void)
-{
-	return ;
-}
-
+ObjectivesViewerClass::~ObjectivesViewerClass(void) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	Shutdown
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Shutdown (void)
-{
-	if (TextWindow != NULL) {
-		delete TextWindow;
-		TextWindow = NULL;
-	}
+void ObjectivesViewerClass::Shutdown(void) {
+  if (TextWindow != NULL) {
+    delete TextWindow;
+    TextWindow = NULL;
+  }
 
-	IsDisplayed		= false;
-	return ;
+  IsDisplayed = false;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Initialize
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Initialize (void)
-{
-	//
-	//	Start fresh
-	//
-	if (TextWindow != NULL) {
-		delete TextWindow;
-		TextWindow = NULL;
-	}
+void ObjectivesViewerClass::Initialize(void) {
+  //
+  //	Start fresh
+  //
+  if (TextWindow != NULL) {
+    delete TextWindow;
+    TextWindow = NULL;
+  }
 
-	//
-	//	Allocate the new text window
-	//
-	TextWindow = new TextWindowClass;
+  //
+  //	Allocate the new text window
+  //
+  TextWindow = new TextWindowClass;
 
-	EvaSettingsDefClass *settings = EvaSettingsDefClass::Get_Instance ();
+  EvaSettingsDefClass *settings = EvaSettingsDefClass::Get_Instance();
 
-	//
-	//	Configure the backdrop for the text window
-	//
-	TextWindow->Set_Backdrop ("hud_6x4_Messages.tga", settings->Get_Objectives_Screen_Rect (),
-		settings->Get_Objectives_Texture_Size (), settings->Get_Objectives_Endcap_Rect (),
-		settings->Get_Objectives_Fadeout_Rect (), settings->Get_Objectives_Background_Rect ());
+  //
+  //	Configure the backdrop for the text window
+  //
+  TextWindow->Set_Backdrop("hud_6x4_Messages.tga", settings->Get_Objectives_Screen_Rect(),
+                           settings->Get_Objectives_Texture_Size(), settings->Get_Objectives_Endcap_Rect(),
+                           settings->Get_Objectives_Fadeout_Rect(), settings->Get_Objectives_Background_Rect());
 
-	//
-	//	Configure the area where text can be displayed in the window
-	//
-	TextWindow->Set_Text_Area (settings->Get_Objectives_Text_Rect ());
+  //
+  //	Configure the area where text can be displayed in the window
+  //
+  TextWindow->Set_Text_Area(settings->Get_Objectives_Text_Rect());
 
-	//
-	//	Configure the fonts for the window
-	//
-	TextWindow->Set_Heading_Font (HEADER_FONT_NAME);
-	TextWindow->Set_Text_Font (FONT_NAME);
-	
-	//
-	//	Configure the columns
-	//
-	TextWindow->Add_Column (TRANSLATE (IDS_MENU_MISSION_OBJECTIVE), 0.8F, Vector3 (0.75F, 1.0F, 0.75F));
-	TextWindow->Add_Column (TRANSLATE (IDS_OBJ_STATUS), 0.2F, Vector3 (0.75F, 1.0F, 0.75F));
-	TextWindow->Display_Columns (true);
-	return ;
+  //
+  //	Configure the fonts for the window
+  //
+  TextWindow->Set_Heading_Font(HEADER_FONT_NAME);
+  TextWindow->Set_Text_Font(FONT_NAME);
+
+  //
+  //	Configure the columns
+  //
+  TextWindow->Add_Column(TRANSLATE(IDS_MENU_MISSION_OBJECTIVE), 0.8F, Vector3(0.75F, 1.0F, 0.75F));
+  TextWindow->Add_Column(TRANSLATE(IDS_OBJ_STATUS), 0.2F, Vector3(0.75F, 1.0F, 0.75F));
+  TextWindow->Display_Columns(true);
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Update
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Update (void)
-{
-	if (TextWindow == NULL) {
-		return ;
-	}
+void ObjectivesViewerClass::Update(void) {
+  if (TextWindow == NULL) {
+    return;
+  }
 
-	int objective_count = ObjectiveManager::ObjectiveList.Count ();
+  int objective_count = ObjectiveManager::ObjectiveList.Count();
 
-	//
-	//	Build a temporary list of objectives that we can sort
-	//
-	SimpleDynVecClass<Objective *> sorted_list;
-	for (int index = 0; index < objective_count; index ++){
-		Objective *objective = ObjectiveManager::ObjectiveList[index];
-		
-		//
-		//	Filter out hidden objectives (if necessary)
-		//
-		if (	ObjectiveManager::Is_Objective_Debug_Mode_Enabled() == true ||
-				(objective->Status != ObjectiveManager::STATUS_HIDDEN && objective->Status != ObjectiveManager::STATUS_ACCOMPLISHED))
-		{
-			sorted_list.Add (objective);
-		}
-	}
-	
-	objective_count = sorted_list.Count ();
+  //
+  //	Build a temporary list of objectives that we can sort
+  //
+  SimpleDynVecClass<Objective *> sorted_list;
+  for (int index = 0; index < objective_count; index++) {
+    Objective *objective = ObjectiveManager::ObjectiveList[index];
 
-	//
-	//	Sort the objectives
-	//
-	if (objective_count > 0) {
-		::qsort (&sorted_list[0], objective_count, sizeof (Objective *), fnCompareObjectivesCallback);
-	}
+    //
+    //	Filter out hidden objectives (if necessary)
+    //
+    if (ObjectiveManager::Is_Objective_Debug_Mode_Enabled() == true ||
+        (objective->Status != ObjectiveManager::STATUS_HIDDEN &&
+         objective->Status != ObjectiveManager::STATUS_ACCOMPLISHED)) {
+      sorted_list.Add(objective);
+    }
+  }
 
+  objective_count = sorted_list.Count();
 
-	//
-	//	Start fresh
-	//
-	TextWindow->Delete_All_Items ();
+  //
+  //	Sort the objectives
+  //
+  if (objective_count > 0) {
+    ::qsort(&sorted_list[0], objective_count, sizeof(Objective *), fnCompareObjectivesCallback);
+  }
 
-	//
-	//	Add all the objectives to the text window
-	//
-	for (int index = 0; index < objective_count; index ++){
-		Objective *objective = sorted_list[index];
-		
-		const WCHAR *text				= TranslateDBClass::Get_String (objective->ShortDescriptionID);
-		const WCHAR *status_text	= objective->Status_To_Name ();
-		
-		//
-		//	Insert an item for this objective
-		//
-		int item_index = TextWindow->Insert_Item (index, text);
-		if (item_index >= 0) {
+  //
+  //	Start fresh
+  //
+  TextWindow->Delete_All_Items();
 
-			//
-			//	Configure the entry
-			//
-			TextWindow->Set_Item_Text (item_index, COL_STATUS, status_text);
-			TextWindow->Set_Item_Color (item_index, COL_DESC, objective->Type_To_Color ());
-			TextWindow->Set_Item_Color (item_index, COL_STATUS, objective->Status_To_Color ());
-		}
-	}
+  //
+  //	Add all the objectives to the text window
+  //
+  for (int index = 0; index < objective_count; index++) {
+    Objective *objective = sorted_list[index];
 
-	return ;
+    const WCHAR *text = TranslateDBClass::Get_String(objective->ShortDescriptionID);
+    const WCHAR *status_text = objective->Status_To_Name();
+
+    //
+    //	Insert an item for this objective
+    //
+    int item_index = TextWindow->Insert_Item(index, text);
+    if (item_index >= 0) {
+
+      //
+      //	Configure the entry
+      //
+      TextWindow->Set_Item_Text(item_index, COL_STATUS, status_text);
+      TextWindow->Set_Item_Color(item_index, COL_DESC, objective->Type_To_Color());
+      TextWindow->Set_Item_Color(item_index, COL_STATUS, objective->Status_To_Color());
+    }
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Display
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Display (bool onoff)
-{
-	IsDisplayed	= onoff;
-	TextWindow->Display (onoff);
+void ObjectivesViewerClass::Display(bool onoff) {
+  IsDisplayed = onoff;
+  TextWindow->Display(onoff);
 
-	//
-	//	Play the 'EVA displayed' sound effect
-	//
-	if (IsDisplayed) {
-		int sound_id = GlobalSettingsDef::Get_Global_Settings ()->Get_EVA_Objectives_Sound_ID ();
-		if (sound_id != 0) {
-			WWAudioClass::Get_Instance ()->Create_Instant_Sound (sound_id, Matrix3D (1));
-		}
-	}
-	
-	return ;	
+  //
+  //	Play the 'EVA displayed' sound effect
+  //
+  if (IsDisplayed) {
+    int sound_id = GlobalSettingsDef::Get_Global_Settings()->Get_EVA_Objectives_Sound_ID();
+    if (sound_id != 0) {
+      WWAudioClass::Get_Instance()->Create_Instant_Sound(sound_id, Matrix3D(1));
+    }
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Page_Down
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Page_Down (void)
-{
-	if (TextWindow == NULL) {
-		return ;
-	}
+void ObjectivesViewerClass::Page_Down(void) {
+  if (TextWindow == NULL) {
+    return;
+  }
 
-	//
-	//	Page down the window
-	//
-	TextWindow->Page_Down ();
+  //
+  //	Page down the window
+  //
+  TextWindow->Page_Down();
 
-	//
-	// Close the window if there is nothing left to display
-	//
-	if (TextWindow->Get_Display_Count () == 0) {
-		Display (false);
-	}
+  //
+  // Close the window if there is nothing left to display
+  //
+  if (TextWindow->Get_Display_Count() == 0) {
+    Display(false);
+  }
 
-	return ;
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	Render
 //
 ////////////////////////////////////////////////////////////////
-void
-ObjectivesViewerClass::Render (void)
-{
-	if (IsDisplayed == false) {
-		return ;
-	}
+void ObjectivesViewerClass::Render(void) {
+  if (IsDisplayed == false) {
+    return;
+  }
 
-	TextWindow->Render ();
-	return ;
+  TextWindow->Render();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	fnCompareObjectivesCallback
 //
 ////////////////////////////////////////////////////////////////
-int __cdecl
-ObjectivesViewerClass::fnCompareObjectivesCallback
-(
-	const void *elem1,
-	const void *elem2
-)
-{
-   WWASSERT (elem1 != NULL);
-   WWASSERT (elem2 != NULL);
-   Objective *objective1 = *((Objective **)elem1);
-   Objective *objective2 = *((Objective **)elem2);	
+int __cdecl ObjectivesViewerClass::fnCompareObjectivesCallback(const void *elem1, const void *elem2) {
+  WWASSERT(elem1 != NULL);
+  WWASSERT(elem2 != NULL);
+  Objective *objective1 = *((Objective **)elem1);
+  Objective *objective2 = *((Objective **)elem2);
 
-	//
-	//	Sort the objectives based on type
-	//
-	int result = 0;
-	if (objective1->Type < objective2->Type) {
-		result = -1;
-	} else if (objective1->Type > objective2->Type) {
-		result = 1;
-	} else {
-		
-		//
-		//	Sort alphabetically if the types are the same
-		//
-		const WCHAR *text1 = TranslateDBClass::Get_String (objective1->ShortDescriptionID);
-		const WCHAR *text2 = TranslateDBClass::Get_String (objective2->ShortDescriptionID);
-		result = ::wcsicmp (text1, text2);
-	}
+  //
+  //	Sort the objectives based on type
+  //
+  int result = 0;
+  if (objective1->Type < objective2->Type) {
+    result = -1;
+  } else if (objective1->Type > objective2->Type) {
+    result = 1;
+  } else {
 
-   return result;
+    //
+    //	Sort alphabetically if the types are the same
+    //
+    const WCHAR *text1 = TranslateDBClass::Get_String(objective1->ShortDescriptionID);
+    const WCHAR *text2 = TranslateDBClass::Get_String(objective2->ShortDescriptionID);
+    result = ::wcsicmp(text1, text2);
+  }
+
+  return result;
 }

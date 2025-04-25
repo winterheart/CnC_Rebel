@@ -20,9 +20,10 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : combat																		  *
+ *                 Project Name : combat
+ **
  *                                                                                             *
- *                     $Archive:: /Commando/Code/Combat/unitcoordinationzonemgr.h                                                                                                                                                                                                                                                                                                                                              $Modtime:: 11/15/2001 2:58p                                            $*
+ *                     $Archive:: /Commando/Code/Combat/unitcoordinationzonemgr.h $Modtime:: 11/15/2001 2:58p $*
  *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
@@ -40,48 +41,41 @@
 #include "vector.h"
 #include "aabox.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	UnitCoordinationZoneMgr
 //
 //////////////////////////////////////////////////////////////////////
-class UnitCoordinationZoneMgr
-{
+class UnitCoordinationZoneMgr {
 public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
+  static void Build_Zones(void);
+  static void Reset(void);
+  static bool Is_Unit_In_Zone(const Vector3 &pos);
+  static void Display_Debug_Boxes(void);
 
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
-	static void		Build_Zones (void);
-	static void		Reset (void);
-	static bool		Is_Unit_In_Zone (const Vector3 &pos);
-	static void		Display_Debug_Boxes (void);
-	
 protected:
-	
-	///////////////////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////////////////
-	
-	///////////////////////////////////////////////////////////////////
-	//	Protected member data
-	///////////////////////////////////////////////////////////////////
-	
+  ///////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ///////////////////////////////////////////////////////////////////
+
 private:
-	
-	///////////////////////////////////////////////////////////////////
-	//	Private methods
-	///////////////////////////////////////////////////////////////////
-	static void		Detect_Ladder_Zones (void);
-	static void		Detect_Elevator_Zones (void);
-	
+  ///////////////////////////////////////////////////////////////////
+  //	Private methods
+  ///////////////////////////////////////////////////////////////////
+  static void Detect_Ladder_Zones(void);
+  static void Detect_Elevator_Zones(void);
 
-	///////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////
-	static DynamicVectorClass<AABoxClass>	ZoneList;
+  ///////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////
+  static DynamicVectorClass<AABoxClass> ZoneList;
 };
-
 
 #endif //__UNITCOORDINATIONZONEMGR_H

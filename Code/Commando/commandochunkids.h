@@ -16,55 +16,52 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/commandochunkids.h                  $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 4/13/00 1:19p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/commandochunkids.h                  $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 4/13/00 1:19p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	COMMANDOCHUNKID_H
-#define	COMMANDOCHUNKID_H
+#ifndef COMMANDOCHUNKID_H
+#define COMMANDOCHUNKID_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	SAVELOADIDS_H
-	#include "saveloadids.h"
+#ifndef SAVELOADIDS_H
+#include "saveloadids.h"
 #endif
 
-//#ifndef	DEFINITIONCLASSIDS_H
+// #ifndef	DEFINITIONCLASSIDS_H
 //	#include "definitionclassids.h"
-//#endif
-
+// #endif
 
 /*
 ** CHUNKIDs
 */
 enum {
-	CHUNKID_COMMANDO								= CHUNKID_COMMANDO_BEGIN,
-	CHUNKID_COMMANDO_SOLDIER_OBSERVER,
+  CHUNKID_COMMANDO = CHUNKID_COMMANDO_BEGIN,
+  CHUNKID_COMMANDO_SOLDIER_OBSERVER,
 };
-
 
 /*
 ** CLASSIDs
 */
 enum {
-//	CLASSID_GAME_OBJECT_DEF_SOLDIER			= 	CLASSID_GAME_OBJECTS + 1,
+  //	CLASSID_GAME_OBJECT_DEF_SOLDIER			= 	CLASSID_GAME_OBJECTS + 1,
 };
 
-
-#endif	//	COMMANDOCHUNKID_H
+#endif //	COMMANDOCHUNKID_H

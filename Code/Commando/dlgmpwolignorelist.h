@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolignorelist.h     $*
  *                                                                                             *
@@ -41,7 +42,6 @@
 #ifndef __DLG_MP_WOL_IGNORE_LIST_H
 #define __DLG_MP_WOL_IGNORE_LIST_H
 
-
 #include "popupdialog.h"
 #include "resource.h"
 #include "WOLBuddyMgr.h"
@@ -51,37 +51,33 @@
 //	MPWolIgnoreListPopupClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolIgnoreListPopupClass : public PopupDialogClass,
-	public Observer<WOLBuddyMgrEvent>
-{
+class MPWolIgnoreListPopupClass : public PopupDialogClass, public Observer<WOLBuddyMgrEvent> {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolIgnoreListPopupClass (void);
-	~MPWolIgnoreListPopupClass();
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolIgnoreListPopupClass(void);
+  ~MPWolIgnoreListPopupClass();
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Refresh_List(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		Refresh_List (void);
+  void Get_Selected_Entry(WideStringClass &user_name);
+  void HandleNotification(WOLBuddyMgrEvent &);
 
-	void		Get_Selected_Entry(WideStringClass& user_name);
-	void HandleNotification(WOLBuddyMgrEvent&);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	WOLBuddyMgr* mBuddyMgr;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  WOLBuddyMgr *mBuddyMgr;
 };
 
 #endif //__DLG_MP_WOL_IGNORE_LIST_H

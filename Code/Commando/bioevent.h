@@ -44,31 +44,27 @@
 //
 // A C->S mirrored event object for transmitting initial player bio data.
 //
-class	cBioEvent : public cNetEvent
-{
+class cBioEvent : public cNetEvent {
 public:
-   cBioEvent(void);
+  cBioEvent(void);
 
-	void						Init(int team_choice, unsigned long clanID);
+  void Init(int team_choice, unsigned long clanID);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_BIOEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_BIOEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	WideStringClass		Nickname;
-	char						MapName[256];
-	int TeamChoice;
-	unsigned long ClanID;
+  int SenderId;
+  WideStringClass Nickname;
+  char MapName[256];
+  int TeamChoice;
+  unsigned long ClanID;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __BIOEVENT_H__
-
-
+#endif // __BIOEVENT_H__

@@ -25,48 +25,42 @@
 
 #include "resource.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // ChooseModPackageDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class ChooseModPackageDialogClass : public CDialog
-{
-// Construction
+class ChooseModPackageDialogClass : public CDialog {
+  // Construction
 public:
-	ChooseModPackageDialogClass(CWnd* pParent = NULL);   // standard constructor
+  ChooseModPackageDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(ChooseModPackageDialogClass)
-	enum { IDD = IDD_CHOOSE_MOD_PACKAGE };
-	CListCtrl	ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(ChooseModPackageDialogClass)
+  enum { IDD = IDD_CHOOSE_MOD_PACKAGE };
+  CListCtrl ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ChooseModPackageDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ChooseModPackageDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(ChooseModPackageDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnNewButton();
-	afx_msg void OnDblclkModListCtrl(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(ChooseModPackageDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  afx_msg void OnNewButton();
+  afx_msg void OnDblclkModListCtrl(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
 private:
-
 };
 
 //{{AFX_INSERT_LOCATION}}

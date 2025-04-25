@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/commando/changeteamevent.cpp                    $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 1/17/02 3:30p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 22                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/commando/changeteamevent.cpp                    $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 1/17/02 3:30p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 22                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "changeteamevent.h"
@@ -56,178 +56,141 @@
 #include "beacongameobj.h"
 #include "weaponview.h"
 
-
 DECLARE_NETWORKOBJECT_FACTORY(cChangeTeamEvent, NETCLASSID_CHANGETEAMEVENT);
 
 //-----------------------------------------------------------------------------
-cChangeTeamEvent::cChangeTeamEvent(void)
-{
-	SenderId = 0;
+cChangeTeamEvent::cChangeTeamEvent(void) {
+  SenderId = 0;
 
-	Set_App_Packet_Type(APPPACKETTYPE_CHANGETEAMEVENT);
+  Set_App_Packet_Type(APPPACKETTYPE_CHANGETEAMEVENT);
 }
 
 //-----------------------------------------------------------------------------
-void
-cChangeTeamEvent::Init(void)
-{
-	WWASSERT(cNetwork::I_Am_Client());
+void cChangeTeamEvent::Init(void) {
+  WWASSERT(cNetwork::I_Am_Client());
 
-	SenderId = cNetwork::Get_My_Id();
+  SenderId = cNetwork::Get_My_Id();
 
-	Set_Network_ID(NetworkObjectMgrClass::Get_New_Client_ID());
+  Set_Network_ID(NetworkObjectMgrClass::Get_New_Client_ID());
 
-	if (cNetwork::I_Am_Server()) {
-		Act();
-	} else {
-		Set_Object_Dirty_Bit(0, BIT_CREATION, true);
-	}
+  if (cNetwork::I_Am_Server()) {
+    Act();
+  } else {
+    Set_Object_Dirty_Bit(0, BIT_CREATION, true);
+  }
 }
 
 //-----------------------------------------------------------------------------
-void
-cChangeTeamEvent::Act(void)
-{
-   WWASSERT(cNetwork::I_Am_Server());
+void cChangeTeamEvent::Act(void) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	cPlayer * p_player = cPlayerManager::Find_Player(SenderId);
+  cPlayer *p_player = cPlayerManager::Find_Player(SenderId);
 
-	if (p_player != NULL && 
-		 The_Game() != NULL && 
-		 //The_Game()->Is_Team_Game() && 
-		 (The_Game()->IsTeamChangingAllowed.Is_True() || p_player->Invulnerable.Is_True()))
-	{
-		int team = p_player->Get_Player_Type();
+  if (p_player != NULL && The_Game() != NULL &&
+      // The_Game()->Is_Team_Game() &&
+      (The_Game()->IsTeamChangingAllowed.Is_True() || p_player->Invulnerable.Is_True())) {
+    int team = p_player->Get_Player_Type();
 
-		WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
+    WWASSERT(team == PLAYERTYPE_NOD || team == PLAYERTYPE_GDI);
 
-		int new_team = PLAYERTYPE_NOD;
-		
-		if (team == PLAYERTYPE_NOD) 
-		{
-			new_team = PLAYERTYPE_GDI;
-		} 
-		else 
-		{
-			new_team = PLAYERTYPE_NOD;
-		}
+    int new_team = PLAYERTYPE_NOD;
 
-		p_player->Set_Player_Type(new_team);
+    if (team == PLAYERTYPE_NOD) {
+      new_team = PLAYERTYPE_GDI;
+    } else {
+      new_team = PLAYERTYPE_NOD;
+    }
 
-		WWDEBUG_SAY(("Client %d changed team.\n", SenderId));
+    p_player->Set_Player_Type(new_team);
 
-		//
-		//	Only reset the player's cash if they've changed teams after 60 seconds
-		// have elapsed.
-		//
-		DWORD playing_time = (TIMEGETTIME() - p_player->Get_Join_Time ());
-		if (playing_time > 30000) {
-			p_player->Set_Score(0);
-			p_player->Set_Money(0);
-		}
+    WWDEBUG_SAY(("Client %d changed team.\n", SenderId));
 
-		SoldierGameObj * p_soldier = GameObjManager::Find_Soldier_Of_Client_ID(SenderId);
-		if (p_soldier != NULL)
-		{
+    //
+    //	Only reset the player's cash if they've changed teams after 60 seconds
+    // have elapsed.
+    //
+    DWORD playing_time = (TIMEGETTIME() - p_player->Get_Join_Time());
+    if (playing_time > 30000) {
+      p_player->Set_Score(0);
+      p_player->Set_Money(0);
+    }
 
-			if ( COMBAT_STAR == p_soldier ) {
-				WeaponViewClass::Reset();
-			}
+    SoldierGameObj *p_soldier = GameObjManager::Find_Soldier_Of_Client_ID(SenderId);
+    if (p_soldier != NULL) {
 
-			// Defuse all C4 belonging to this guy
-			SLNode<BaseGameObj> *objnode;
-			for (	objnode = GameObjManager::Get_Game_Obj_List()->Head(); objnode; objnode = objnode->Next()) {
-				PhysicalGameObj *obj = objnode->Data()->As_PhysicalGameObj();
-				if ( obj && obj->As_C4GameObj() ) {
-					if ( obj->As_C4GameObj()->Get_Owner() == p_soldier ) {
-						obj->As_C4GameObj()->Defuse();
-					}
-				}
-				if ( obj && obj->As_BeaconGameObj() ) {
-					if ( obj->As_BeaconGameObj()->Get_Owner() == p_soldier ) {
-						// disarm C4
-						OffenseObjectClass unused (0.0F, 0);
-						obj->As_BeaconGameObj()->Completely_Damaged( unused );
-					}
-				}
-			}
+      if (COMBAT_STAR == p_soldier) {
+        WeaponViewClass::Reset();
+      }
 
+      // Defuse all C4 belonging to this guy
+      SLNode<BaseGameObj> *objnode;
+      for (objnode = GameObjManager::Get_Game_Obj_List()->Head(); objnode; objnode = objnode->Next()) {
+        PhysicalGameObj *obj = objnode->Data()->As_PhysicalGameObj();
+        if (obj && obj->As_C4GameObj()) {
+          if (obj->As_C4GameObj()->Get_Owner() == p_soldier) {
+            obj->As_C4GameObj()->Defuse();
+          }
+        }
+        if (obj && obj->As_BeaconGameObj()) {
+          if (obj->As_BeaconGameObj()->Get_Owner() == p_soldier) {
+            // disarm C4
+            OffenseObjectClass unused(0.0F, 0);
+            obj->As_BeaconGameObj()->Completely_Damaged(unused);
+          }
+        }
+      }
 
+      //
+      // We have to respawn him and possibly change his model...
+      // let's just destroy the soldier and leave the rest up to God.
+      //
+      p_soldier->Set_Delete_Pending();
+    }
 
-			//
-			// We have to respawn him and possibly change his model... 
-			// let's just destroy the soldier and leave the rest up to God.
-			//
-			p_soldier->Set_Delete_Pending();
-		}
+    //
+    // Tell everyone
+    //
+    WideStringClass text;
+    // text.Format(L"_%s_changed_teams!_", p_player->Get_Name());
+    text.Format(L"%s %s", p_player->Get_Name(), TRANSLATE(IDS_MP_CHANGED_TEAMS));
 
-		//
-		// Tell everyone
-		//
-		WideStringClass text;
-		//text.Format(L"_%s_changed_teams!_", p_player->Get_Name());
-		text.Format(L"%s %s", p_player->Get_Name(), TRANSLATE(IDS_MP_CHANGED_TEAMS));
+    cScTextObj *p_message = new cScTextObj;
+    p_message->Init(text, TEXT_MESSAGE_PUBLIC, false, HOST_TEXT_SENDER, -1);
+  }
 
-		cScTextObj * p_message = new cScTextObj;
-		p_message->Init(text, TEXT_MESSAGE_PUBLIC, false, HOST_TEXT_SENDER, -1);
-	}
-
-	Set_Delete_Pending();
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cChangeTeamEvent::Export_Creation(BitStreamClass & packet)
-{
-	WWASSERT(cNetwork::I_Am_Only_Client());
+void cChangeTeamEvent::Export_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	cNetEvent::Export_Creation(packet);
+  cNetEvent::Export_Creation(packet);
 
-	WWASSERT(SenderId > 0);
+  WWASSERT(SenderId > 0);
 
-	packet.Add(SenderId);
+  packet.Add(SenderId);
 
-	Set_Delete_Pending();
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cChangeTeamEvent::Import_Creation(BitStreamClass & packet)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cChangeTeamEvent::Import_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-	cNetEvent::Import_Creation(packet);
+  cNetEvent::Import_Creation(packet);
 
-	packet.Get(SenderId);
+  packet.Get(SenderId);
 
-	WWASSERT(SenderId > 0);
+  WWASSERT(SenderId > 0);
 
-	Act();
+  Act();
 }
 
 //-----------------------------------------------------------------------------
-bool 
-cChangeTeamEvent::Is_Change_Team_Possible(void)
-{
-	return
-		cNetwork::I_Am_Client() &&
-		GameModeManager::Find("Combat") != NULL &&
-		GameModeManager::Find("Combat")->Is_Active() &&
-		The_Game() != NULL && 
-		//The_Game()->Is_Team_Game() && 
-		The_Game()->IsTeamChangingAllowed.Is_True();
+bool cChangeTeamEvent::Is_Change_Team_Possible(void) {
+  return cNetwork::I_Am_Client() && GameModeManager::Find("Combat") != NULL &&
+         GameModeManager::Find("Combat")->Is_Active() && The_Game() != NULL &&
+         // The_Game()->Is_Team_Game() &&
+         The_Game()->IsTeamChangingAllowed.Is_True();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

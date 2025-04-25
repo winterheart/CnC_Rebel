@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/tabctrl.h           $*
  *                                                                                             *
@@ -47,117 +48,111 @@
 #include "render2dsentence.h"
 #include "bittype.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class ChildDialogClass;
 
-
 ////////////////////////////////////////////////////////////////
 //	Useful macros
 ////////////////////////////////////////////////////////////////
-#define	TABCTRL_ADD_TAB(tab_ctrl, class_name) {	\
-	ChildDialogClass *new_tab = new class_name;		\
-	tab_ctrl->Add_Tab (new_tab);							\
-	REF_PTR_RELEASE (new_tab); }
-
+#define TABCTRL_ADD_TAB(tab_ctrl, class_name)                                                                          \
+  {                                                                                                                    \
+    ChildDialogClass *new_tab = new class_name;                                                                        \
+    tab_ctrl->Add_Tab(new_tab);                                                                                        \
+    REF_PTR_RELEASE(new_tab);                                                                                          \
+  }
 
 ////////////////////////////////////////////////////////////////
 //
 //	TabCtrlClass
 //
 ////////////////////////////////////////////////////////////////
-class TabCtrlClass : public DialogControlClass
-{
+class TabCtrlClass : public DialogControlClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  TabCtrlClass(void);
+  virtual ~TabCtrlClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	TabCtrlClass (void);
-	virtual ~TabCtrlClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	From DialogControlClass
+  //
+  void Render(void);
+  bool Wants_Tooltip(void) const { return false; }
 
-	//
-	//	From DialogControlClass
-	//
-	void				Render (void);
-	bool				Wants_Tooltip (void) const	{ return false; }
+  //
+  //	Tab control
+  //
+  void Add_Tab(ChildDialogClass *dialog);
+  void Remove_Tab(int index);
+  int Get_Tab_Count(void) const { return TabList.Count(); }
 
-	//
-	//	Tab control
-	//
-	void				Add_Tab (ChildDialogClass *dialog);
-	void				Remove_Tab (int index);
-	int				Get_Tab_Count (void) const { return TabList.Count (); }
+  //
+  //	Selection control
+  //
+  void Set_Curr_Tab(int index);
+  int Get_Curr_Tab(void) const { return CurrTabIndex; }
 
-	//
-	//	Selection control
-	//
-	void				Set_Curr_Tab (int index);
-	int				Get_Curr_Tab (void) const	{ return CurrTabIndex; }
+  //
+  //	Apply/Discard support
+  //
+  //		Note: If either of these methods return false, then the
+  // dialog should NOT advance.
+  //
+  bool Apply_Changes_On_Tabs(void);
+  bool Discard_Changes_On_Tabs(void);
 
-	//
-	//	Apply/Discard support
-	//
-	//		Note: If either of these methods return false, then the
-	// dialog should NOT advance.
-	//
-	bool				Apply_Changes_On_Tabs (void);
-	bool				Discard_Changes_On_Tabs (void);
-
-	void				Reload_Tabs (void);
+  void Reload_Tabs(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_LButton_Down(const Vector2 &mouse_pos);
+  void On_LButton_Up(const Vector2 &mouse_pos);
+  void On_Mouse_Move(const Vector2 &mouse_pos);
+  void On_Mouse_Wheel(int direction);
+  void On_Set_Cursor(const Vector2 &mouse_pos);
+  void On_Set_Focus(void);
+  void On_Kill_Focus(DialogControlClass *focus);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
+  void On_Create(void);
+  void Update_Client_Rect(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void				On_LButton_Down (const Vector2 &mouse_pos);
-	void				On_LButton_Up (const Vector2 &mouse_pos);
-	void				On_Mouse_Move (const Vector2 &mouse_pos);
-	void				On_Mouse_Wheel (int direction);
-	void				On_Set_Cursor (const Vector2 &mouse_pos);
-	void				On_Set_Focus (void);
-	void				On_Kill_Focus (DialogControlClass *focus);
-	bool				On_Key_Down (uint32 key_id, uint32 key_data);
-	void				On_Create (void);
-	void				Update_Client_Rect (void);
+  void Create_Control_Renderer(void);
+  void Create_Text_Renderer(void);
+  void Create_Glow_Renderer(void);
 
-	void				Create_Control_Renderer (void);
-	void				Create_Text_Renderer (void);
-	void				Create_Glow_Renderer (void);
+  int Tab_From_Pos(const Vector2 &mouse_pos);
+  float Pos_From_Tab(int index);
+  void Free_Tabs(void);
 
-	int				Tab_From_Pos (const Vector2 &mouse_pos);
-	float				Pos_From_Tab (int index);
-	void				Free_Tabs (void);
+  void Update_Bubble(void);
+  void Update_Selector(void);
 
-	void				Update_Bubble (void);
-	void				Update_Selector (void);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  Render2DClass ControlRenderer;
+  Render2DSentenceClass HilightRenderer;
+  Render2DSentenceClass TextRenderer;
+  Render2DSentenceClass HilightGlowRenderer;
+  Render2DSentenceClass GlowRenderer;
+  int CurrTabIndex;
+  int NextBlinkTime;
+  bool IsBubbleDisplayed;
+  float SelectorPos;
+  float ScaleX;
+  float ScaleY;
+  RectClass SelRect;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	Render2DClass				ControlRenderer;
-	Render2DSentenceClass 	HilightRenderer;
-	Render2DSentenceClass	TextRenderer;
-	Render2DSentenceClass	HilightGlowRenderer;
-	Render2DSentenceClass	GlowRenderer;
-	int							CurrTabIndex;
-	int							NextBlinkTime;
-	bool							IsBubbleDisplayed;
-	float							SelectorPos;
-	float							ScaleX;
-	float							ScaleY;
-	RectClass					SelRect;
-
-	DynamicVectorClass<ChildDialogClass *>	TabList;
+  DynamicVectorClass<ChildDialogClass *> TabList;
 };
 
-
 #endif //__TAB_CTRL_H
-

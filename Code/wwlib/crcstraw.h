@@ -16,50 +16,48 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/crcstraw.h                                $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/crcstraw.h                                $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef CRCSTRAW_H
 #define CRCSTRAW_H
 
-#include	"crc.h"
-#include	"straw.h"
+#include "crc.h"
+#include "straw.h"
 
 /*
 **	This class will build a CRC value from the data stream that is drawn through this class.
 **	The data is not modified, but it is examined as it passes through.
 */
-class CRCStraw : public Straw
-{
-	public:
-		CRCStraw(void) {}
-		virtual int Get(void * source, int slen);
+class CRCStraw : public Straw {
+public:
+  CRCStraw(void) {}
+  virtual int Get(void *source, int slen);
 
-		// Calculate and return the CRC value.
-		long Result(void) const;
+  // Calculate and return the CRC value.
+  long Result(void) const;
 
-	protected:
-		CRCEngine CRC;
+protected:
+  CRCEngine CRC;
 
-	private:
-		CRCStraw(CRCStraw & rvalue);
-		CRCStraw & operator = (CRCStraw const & pipe);
+private:
+  CRCStraw(CRCStraw &rvalue);
+  CRCStraw &operator=(CRCStraw const &pipe);
 };
-
 
 #endif

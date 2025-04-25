@@ -36,7 +36,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -49,14 +48,10 @@
 
 class MaterialEffectClass;
 
-typedef MultiListClass<MaterialEffectClass>			NonRefMaterialEffectListClass;
-typedef MultiListIterator<MaterialEffectClass>		NonRefMaterialEffectListIterator;
+typedef MultiListClass<MaterialEffectClass> NonRefMaterialEffectListClass;
+typedef MultiListIterator<MaterialEffectClass> NonRefMaterialEffectListIterator;
 
-typedef RefMultiListClass<MaterialEffectClass>		RefMaterialEffectListClass;
-typedef RefMultiListIterator<MaterialEffectClass>	RefMaterialEffectListIterator;
+typedef RefMultiListClass<MaterialEffectClass> RefMaterialEffectListClass;
+typedef RefMultiListIterator<MaterialEffectClass> RefMaterialEffectListIterator;
 
-
-#endif //MATERIALEFFECTLIST_H
-
-
-
+#endif // MATERIALEFFECTLIST_H

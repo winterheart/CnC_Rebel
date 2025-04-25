@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolhostchatlobby.cpp  $*
  *                                                                                             *
@@ -43,42 +44,33 @@
 //	MPWolHostChatLobbyPopupClass
 //
 ////////////////////////////////////////////////////////////////
-MPWolHostChatLobbyPopupClass::MPWolHostChatLobbyPopupClass (void)	:
-	PopupDialogClass (IDD_MP_WOL_HOST_CHAT_LOBBY)
-{
-	return ;
+MPWolHostChatLobbyPopupClass::MPWolHostChatLobbyPopupClass(void) : PopupDialogClass(IDD_MP_WOL_HOST_CHAT_LOBBY) {
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolHostChatLobbyPopupClass::On_Init_Dialog (void)
-{
-	PopupDialogClass::On_Init_Dialog ();
-	return ;
+void MPWolHostChatLobbyPopupClass::On_Init_Dialog(void) {
+  PopupDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolHostChatLobbyPopupClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id)
-	{
-		case IDC_SELECT_BUTTON:
-			break;
-	}
+void MPWolHostChatLobbyPopupClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  case IDC_SELECT_BUTTON:
+    break;
+  }
 
-	PopupDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }
 
 #endif // NEW_WWONLINE

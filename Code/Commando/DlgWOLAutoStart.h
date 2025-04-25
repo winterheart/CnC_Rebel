@@ -46,21 +46,17 @@
 **
 **
 */
-class AutoRestartProgressDialogClass : public MenuDialogClass
-{
-	public:
-		AutoRestartProgressDialogClass(void);
-		void On_Init_Dialog(void);
-		void On_Command(int ctrl_id, int message_id, DWORD param);
-		void Add_Text(const wchar_t *txt);
-		static AutoRestartProgressDialogClass *Get_Instance(void) {return(Instance);}
+class AutoRestartProgressDialogClass : public MenuDialogClass {
+public:
+  AutoRestartProgressDialogClass(void);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int message_id, DWORD param);
+  void Add_Text(const wchar_t *txt);
+  static AutoRestartProgressDialogClass *Get_Instance(void) { return (Instance); }
 
-	private:
-		int AddItemIndex;
-		static AutoRestartProgressDialogClass *Instance;
+private:
+  int AddItemIndex;
+  static AutoRestartProgressDialogClass *Instance;
 };
 
-
-
 #endif //_DLGWOLAUTOSTART_H
-

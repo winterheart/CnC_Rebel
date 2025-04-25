@@ -28,49 +28,44 @@
 /////////////////////////////////////////////////////////////////////////////
 // LODSettingsDialogClass dialog
 
-class LODSettingsDialogClass : public CDialog
-{
-// Construction
+class LODSettingsDialogClass : public CDialog {
+  // Construction
 public:
-	LODSettingsDialogClass (unsigned int distance = 0, CWnd* pParent = NULL);
+  LODSettingsDialogClass(unsigned int distance = 0, CWnd *pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(LODSettingsDialogClass)
-	enum { IDD = IDD_LOD_SETTINGS };
-	CSpinButtonCtrl	m_DistanceSpin;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(LODSettingsDialogClass)
+  enum { IDD = IDD_LOD_SETTINGS };
+  CSpinButtonCtrl m_DistanceSpin;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LODSettingsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LODSettingsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(LODSettingsDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(LODSettingsDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
+public:
+  ////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////
+  unsigned int Get_Distance(void) const { return m_Distance; }
 
-		////////////////////////////////////////////////////////
-		//	Public methods
-		////////////////////////////////////////////////////////
-		unsigned int		Get_Distance (void) const { return m_Distance; }
-
-	private:
-
-		////////////////////////////////////////////////////////
-		//	Private member data
-		////////////////////////////////////////////////////////
-		unsigned int		m_Distance;
+private:
+  ////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////
+  unsigned int m_Distance;
 };
 
 //{{AFX_INSERT_LOCATION}}

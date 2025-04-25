@@ -34,13 +34,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "parameter.h"
 #include "parametertypes.h"
 #include "simpleparameter.h"
 #include "wwstring.h"
 #include "definitionclassids.h"
-
 
 /////////////////////////////////////////////////////////////////////
 //
@@ -50,135 +48,133 @@
 // instance of any type of parameter used in the Editable system.
 //
 /////////////////////////////////////////////////////////////////////
-ParameterClass *
-ParameterClass::Construct (Type type, void *data, const char *name)
-{
-	ParameterClass *new_param = NULL;
-	switch (type) {
-		
-		case TYPE_INT:
-			new_param = new IntParameterClass (data, name);
-			break;
+ParameterClass *ParameterClass::Construct(Type type, void *data, const char *name) {
+  ParameterClass *new_param = NULL;
+  switch (type) {
 
-		case TYPE_FLOAT:
-			new_param = new FloatParameterClass (data, name);
-			break;
+  case TYPE_INT:
+    new_param = new IntParameterClass(data, name);
+    break;
 
-		case TYPE_VECTOR2:
-			new_param = new Vector2ParameterClass (data, name);
-			break;
+  case TYPE_FLOAT:
+    new_param = new FloatParameterClass(data, name);
+    break;
 
-		case TYPE_VECTOR3:
-			new_param = new Vector3ParameterClass (data, name);
-			break;
+  case TYPE_VECTOR2:
+    new_param = new Vector2ParameterClass(data, name);
+    break;
 
-		case TYPE_RECT:
-			new_param = new RectParameterClass (data, name);
-			break;
+  case TYPE_VECTOR3:
+    new_param = new Vector3ParameterClass(data, name);
+    break;
 
-		case TYPE_COLOR:
-			new_param = new ColorParameterClass (data, name);
-			break;
+  case TYPE_RECT:
+    new_param = new RectParameterClass(data, name);
+    break;
 
-		case TYPE_MATRIX3D:
-			new_param = new Matrix3DParameterClass (data, name);
-			break;
+  case TYPE_COLOR:
+    new_param = new ColorParameterClass(data, name);
+    break;
 
-		case TYPE_BOOL:
-			new_param = new BoolParameterClass (data, name);
-			break;
+  case TYPE_MATRIX3D:
+    new_param = new Matrix3DParameterClass(data, name);
+    break;
 
-		case TYPE_STRINGSDB_ID:
-			new_param = new StringsDBEntryParameterClass (data, name);
-			break;
+  case TYPE_BOOL:
+    new_param = new BoolParameterClass(data, name);
+    break;
 
-		case TYPE_ANGLE:
-			new_param = new AngleParameterClass (data, name);
-			break;
+  case TYPE_STRINGSDB_ID:
+    new_param = new StringsDBEntryParameterClass(data, name);
+    break;
 
-		case TYPE_STRING:
-			new_param = new StringParameterClass ((StringClass *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_ANGLE:
+    new_param = new AngleParameterClass(data, name);
+    break;
 
-		case TYPE_FILENAME:
-			new_param = new FilenameParameterClass ((StringClass *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_STRING:
+    new_param = new StringParameterClass((StringClass *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_SOUND_FILENAME:
-			new_param = new SoundFilenameParameterClass ((StringClass *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_FILENAME:
+    new_param = new FilenameParameterClass((StringClass *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_ENUM:
-			new_param = new EnumParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_SOUND_FILENAME:
+    new_param = new SoundFilenameParameterClass((StringClass *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_GENERICDEFINITIONID:
-			new_param = new GenericDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_ENUM:
+    new_param = new EnumParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_GAMEOBJDEFINITIONID:
-			new_param = new GameObjDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_GENERICDEFINITIONID:
+    new_param = new GenericDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_WEAPONOBJDEFINITIONID:
-			new_param = new WeaponObjDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_GAMEOBJDEFINITIONID:
+    new_param = new GameObjDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_AMMOOBJDEFINITIONID:
-			new_param = new AmmoObjDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_WEAPONOBJDEFINITIONID:
+    new_param = new WeaponObjDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_EXPLOSIONDEFINITIONID:
-			new_param = new ExplosionObjDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;		
+  case TYPE_AMMOOBJDEFINITIONID:
+    new_param = new AmmoObjDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_SOUNDDEFINITIONID:
-			new_param = new SoundDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_EXPLOSIONDEFINITIONID:
+    new_param = new ExplosionObjDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_MODELDEFINITIONID:
-			new_param = new ModelDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_SOUNDDEFINITIONID:
+    new_param = new SoundDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_PHYSDEFINITIONID:
-			new_param = new PhysDefParameterClass ((int *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_MODELDEFINITIONID:
+    new_param = new ModelDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_DEFINITIONIDLIST:
-			new_param = new DefIDListParameterClass ((DynamicVectorClass<int> *)data);
-			new_param->Set_Name (name);
-			((DefIDListParameterClass *)new_param)->Set_Class_ID (CLASSID_GAME_OBJECTS);
-			break;
+  case TYPE_PHYSDEFINITIONID:
+    new_param = new PhysDefParameterClass((int *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_ZONE:
-			new_param = new ZoneParameterClass ((OBBoxClass  *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_DEFINITIONIDLIST:
+    new_param = new DefIDListParameterClass((DynamicVectorClass<int> *)data);
+    new_param->Set_Name(name);
+    ((DefIDListParameterClass *)new_param)->Set_Class_ID(CLASSID_GAME_OBJECTS);
+    break;
 
-		case TYPE_FILENAMELIST:
-			new_param = new FilenameListParameterClass ((DynamicVectorClass<StringClass> *)data);
-			new_param->Set_Name (name);
-			break;
+  case TYPE_ZONE:
+    new_param = new ZoneParameterClass((OBBoxClass *)data);
+    new_param->Set_Name(name);
+    break;
 
-		case TYPE_SEPARATOR:
-			new_param = new SeparatorParameterClass;
-			new_param->Set_Name (name);
-			break;
-	}
+  case TYPE_FILENAMELIST:
+    new_param = new FilenameListParameterClass((DynamicVectorClass<StringClass> *)data);
+    new_param->Set_Name(name);
+    break;
 
-	return new_param;
+  case TYPE_SEPARATOR:
+    new_param = new SeparatorParameterClass;
+    new_param->Set_Name(name);
+    break;
+  }
+
+  return new_param;
 }
 
 //*******************************************************************************************//
@@ -192,124 +188,99 @@ ParameterClass::Construct (Type type, void *data, const char *name)
 //	StringParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-StringParameterClass::StringParameterClass (StringClass *string)
-	:	m_String (string)
-{	
-	return ;
-}
+StringParameterClass::StringParameterClass(StringClass *string) : m_String(string) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	StringParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-StringParameterClass::StringParameterClass (const StringParameterClass &src)
-	:	m_String (NULL)
-{
-	(*this) = src;
-	return ;
+StringParameterClass::StringParameterClass(const StringParameterClass &src) : m_String(NULL) {
+  (*this) = src;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const StringParameterClass &
-StringParameterClass::operator= (const StringParameterClass &src)
-{
-	m_String = src.m_String;
-	ParameterClass::operator= (src);
-	return *this;
+const StringParameterClass &StringParameterClass::operator=(const StringParameterClass &src) {
+  m_String = src.m_String;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-StringParameterClass::operator== (const StringParameterClass &src) const {
-	bool retval = false;
+bool StringParameterClass::operator==(const StringParameterClass &src) const {
+  bool retval = false;
 
-	if (m_String != NULL && src.m_String != NULL &&
-		 (m_String->Compare (*(src.m_String)) == 0)) {
-		retval = true;
-	}
+  if (m_String != NULL && src.m_String != NULL && (m_String->Compare(*(src.m_String)) == 0)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-StringParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool StringParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = StringParameterClass::operator== ((const StringParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = StringParameterClass::operator==((const StringParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-StringParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_STRING)) {
-		(*m_String) = ((StringParameterClass &)src).Get_String ();
-	}
+void StringParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_STRING)) {
+    (*m_String) = ((StringParameterClass &)src).Get_String();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Get_String
 //
 /////////////////////////////////////////////////////////////////////
-const char *
-StringParameterClass::Get_String (void) const
-{
-	const char * string = NULL;
-	if (m_String != NULL) {
-		string = (*m_String);
-	}
-	return string;
+const char *StringParameterClass::Get_String(void) const {
+  const char *string = NULL;
+  if (m_String != NULL) {
+    string = (*m_String);
+  }
+  return string;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Set_String
 //
 /////////////////////////////////////////////////////////////////////
-void
-StringParameterClass::Set_String (const char * string)
-{
-	if (m_String != NULL) {
-		Set_Modified ();
-		(*m_String) = string;
-	}
+void StringParameterClass::Set_String(const char *string) {
+  if (m_String != NULL) {
+    Set_Modified();
+    (*m_String) = string;
+  }
 
-	return ;
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -317,86 +288,62 @@ StringParameterClass::Set_String (const char * string)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	FilenameParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+FilenameParameterClass::FilenameParameterClass(StringClass *string) : StringParameterClass(string) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	FilenameParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-FilenameParameterClass::FilenameParameterClass (StringClass *string)
-	:	StringParameterClass (string)
-{	
-	return ;
+FilenameParameterClass::FilenameParameterClass(const FilenameParameterClass &src) : StringParameterClass(src) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	FilenameParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-FilenameParameterClass::FilenameParameterClass (const FilenameParameterClass &src)
-	:	StringParameterClass (src)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const FilenameParameterClass &
-FilenameParameterClass::operator= (const FilenameParameterClass &src)
-{
-	StringParameterClass::operator= (src);
-	return *this;
+const FilenameParameterClass &FilenameParameterClass::operator=(const FilenameParameterClass &src) {
+  StringParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-FilenameParameterClass::operator== (const FilenameParameterClass &src)
-{
-	return StringParameterClass::operator== (src);
+bool FilenameParameterClass::operator==(const FilenameParameterClass &src) {
+  return StringParameterClass::operator==(src);
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-FilenameParameterClass::operator== (const ParameterClass &src)
-{
-	return StringParameterClass::operator== (src);
-}
-
+bool FilenameParameterClass::operator==(const ParameterClass &src) { return StringParameterClass::operator==(src); }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-FilenameParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_FILENAME)) {
-		Set_String (((FilenameParameterClass &)src).Get_String ());
-	}
+void FilenameParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_FILENAME)) {
+    Set_String(((FilenameParameterClass &)src).Get_String());
+  }
 
-	StringParameterClass::Copy_Value (src);
-	return ;
+  StringParameterClass::Copy_Value(src);
+  return;
 }
-
-
 
 //*******************************************************************************************//
 //
@@ -404,57 +351,44 @@ FilenameParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	SoundFilenameParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+SoundFilenameParameterClass::SoundFilenameParameterClass(StringClass *string) : FilenameParameterClass(string) {
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////
 //
 //	SoundFilenameParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-SoundFilenameParameterClass::SoundFilenameParameterClass (StringClass *string)
-	:	FilenameParameterClass (string)
-{	
-	return ;
+SoundFilenameParameterClass::SoundFilenameParameterClass(const SoundFilenameParameterClass &src)
+    : FilenameParameterClass(src) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	SoundFilenameParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-SoundFilenameParameterClass::SoundFilenameParameterClass (const SoundFilenameParameterClass &src)
-	:	FilenameParameterClass (src)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const SoundFilenameParameterClass &
-SoundFilenameParameterClass::operator= (const SoundFilenameParameterClass &src)
-{
-	FilenameParameterClass::operator= (src);
-	return *this;
+const SoundFilenameParameterClass &SoundFilenameParameterClass::operator=(const SoundFilenameParameterClass &src) {
+  FilenameParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-SoundFilenameParameterClass::operator== (const SoundFilenameParameterClass &src)
-{
-	return FilenameParameterClass::operator== (src);
+bool SoundFilenameParameterClass::operator==(const SoundFilenameParameterClass &src) {
+  return FilenameParameterClass::operator==(src);
 }
-
-
 
 //*******************************************************************************************//
 //
@@ -462,157 +396,128 @@ SoundFilenameParameterClass::operator== (const SoundFilenameParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	EnumParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+EnumParameterClass::EnumParameterClass(int *value) : m_Value(value) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	EnumParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-EnumParameterClass::EnumParameterClass (int *value)
-	:	m_Value (value)
-{	
-	return ;
+EnumParameterClass::EnumParameterClass(const EnumParameterClass &src) : m_Value(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	EnumParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-EnumParameterClass::EnumParameterClass (const EnumParameterClass &src)
-	:	m_Value (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const EnumParameterClass &
-EnumParameterClass::operator= (const EnumParameterClass &src)
-{
-	m_List.Delete_All ();
+const EnumParameterClass &EnumParameterClass::operator=(const EnumParameterClass &src) {
+  m_List.Delete_All();
 
-	m_Value	= src.m_Value;
-	m_List	= src.m_List;
-	ParameterClass::operator= (src);
-	return *this;
+  m_Value = src.m_Value;
+  m_List = src.m_List;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-EnumParameterClass::operator== (const EnumParameterClass &src) const {
-	bool retval = false;
+bool EnumParameterClass::operator==(const EnumParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-EnumParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool EnumParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = EnumParameterClass::operator== ((const EnumParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = EnumParameterClass::operator==((const EnumParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-EnumParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_ENUM)) {
-		(*m_Value) = ((EnumParameterClass &)src).Get_Selected_Value ();
-	}
+void EnumParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_ENUM)) {
+    (*m_Value) = ((EnumParameterClass &)src).Get_Selected_Value();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Add_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-EnumParameterClass::Add_Value (const char *display_name, int value)
-{
-	m_List.Add (ENUM_VALUE(display_name, value));
-	return ;
+void EnumParameterClass::Add_Value(const char *display_name, int value) {
+  m_List.Add(ENUM_VALUE(display_name, value));
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Add_Value
 //
 /////////////////////////////////////////////////////////////////////
-void __cdecl 
-EnumParameterClass::Add_Values (const char *first_name, int first_value, ...)
-{
-	m_List.Add (ENUM_VALUE(first_name, first_value));
+void __cdecl EnumParameterClass::Add_Values(const char *first_name, int first_value, ...) {
+  m_List.Add(ENUM_VALUE(first_name, first_value));
 
-	va_list arg_list;
-	va_start (arg_list, first_value);
+  va_list arg_list;
+  va_start(arg_list, first_value);
 
-	//
-	//	Add all the params on the stack (until we found
-	// the terminator)
-	//
-	bool more_params = true;	
-	while (more_params) {
+  //
+  //	Add all the params on the stack (until we found
+  // the terminator)
+  //
+  bool more_params = true;
+  while (more_params) {
 
-		//
-		//	Get the string param
-		//
-		const char *name = va_arg (arg_list, const char *);
-		if (name == NULL) {
-			more_params = false;
-		} else {
-			
-			//
-			//	Add the string/id pair to the enum list
-			//
-			int value = va_arg (arg_list, int);
-			m_List.Add (ENUM_VALUE(name, value));
-		}		
-	}
-	
-	va_end (arg_list);
-	return ;
+    //
+    //	Get the string param
+    //
+    const char *name = va_arg(arg_list, const char *);
+    if (name == NULL) {
+      more_params = false;
+    } else {
+
+      //
+      //	Add the string/id pair to the enum list
+      //
+      int value = va_arg(arg_list, int);
+      m_List.Add(ENUM_VALUE(name, value));
+    }
+  }
+
+  va_end(arg_list);
+  return;
 }
-
-
 
 //*******************************************************************************************//
 //
@@ -620,96 +525,75 @@ EnumParameterClass::Add_Values (const char *first_name, int first_value, ...)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	PhysDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+PhysDefParameterClass::PhysDefParameterClass(int *id) : m_Value(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	PhysDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-PhysDefParameterClass::PhysDefParameterClass (int *id)
-	:	m_Value (id)
-{	
-	return ;
+PhysDefParameterClass::PhysDefParameterClass(const PhysDefParameterClass &src) : m_Value(NULL) {
+  (*this) = src;
+  return;
 }
-
-/////////////////////////////////////////////////////////////////////
-//
-//	PhysDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-PhysDefParameterClass::PhysDefParameterClass (const PhysDefParameterClass &src)
-	:	m_Value (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const PhysDefParameterClass &
-PhysDefParameterClass::operator= (const PhysDefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	ParameterClass::operator= (src);
-	return *this;
+const PhysDefParameterClass &PhysDefParameterClass::operator=(const PhysDefParameterClass &src) {
+  m_Value = src.m_Value;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-PhysDefParameterClass::operator== (const PhysDefParameterClass &src) const {
-	bool retval = false;
+bool PhysDefParameterClass::operator==(const PhysDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-PhysDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool PhysDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = PhysDefParameterClass::operator== ((const PhysDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = PhysDefParameterClass::operator==((const PhysDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-PhysDefParameterClass::Copy_Value (const ParameterClass &/*src*/)
-{
-	//
-	//	We don't allow the value to be copied
-	//
-	return ;
+void PhysDefParameterClass::Copy_Value(const ParameterClass & /*src*/) {
+  //
+  //	We don't allow the value to be copied
+  //
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -717,96 +601,75 @@ PhysDefParameterClass::Copy_Value (const ParameterClass &/*src*/)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	ModelDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+ModelDefParameterClass::ModelDefParameterClass(int *id) : m_Value(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	ModelDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ModelDefParameterClass::ModelDefParameterClass (int *id)
-	:	m_Value (id)
-{	
-	return ;
+ModelDefParameterClass::ModelDefParameterClass(const ModelDefParameterClass &src) : m_Value(NULL) {
+  (*this) = src;
+  return;
 }
-
-/////////////////////////////////////////////////////////////////////
-//
-//	ModelDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-ModelDefParameterClass::ModelDefParameterClass (const ModelDefParameterClass &src)
-	:	m_Value (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const ModelDefParameterClass &
-ModelDefParameterClass::operator= (const ModelDefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	ParameterClass::operator= (src);
-	return *this;
+const ModelDefParameterClass &ModelDefParameterClass::operator=(const ModelDefParameterClass &src) {
+  m_Value = src.m_Value;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ModelDefParameterClass::operator== (const ModelDefParameterClass &src) const {
-	bool retval = false;
+bool ModelDefParameterClass::operator==(const ModelDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ModelDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool ModelDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = ModelDefParameterClass::operator== ((const ModelDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = ModelDefParameterClass::operator==((const ModelDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-ModelDefParameterClass::Copy_Value (const ParameterClass &/*src*/)
-{
-	//
-	//	We don't allow the value to be copied
-	//
-	return ;
+void ModelDefParameterClass::Copy_Value(const ParameterClass & /*src*/) {
+  //
+  //	We don't allow the value to be copied
+  //
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -819,94 +682,72 @@ ModelDefParameterClass::Copy_Value (const ParameterClass &/*src*/)
 //	DefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-DefParameterClass::DefParameterClass (int *id)
-	:	m_Value (id)
-{	
-	return ;
-}
-
+DefParameterClass::DefParameterClass(int *id) : m_Value(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	DefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-DefParameterClass::DefParameterClass (const DefParameterClass &src)
-	:	m_Value (NULL)
-{
-	(*this) = src;
-	return ;
+DefParameterClass::DefParameterClass(const DefParameterClass &src) : m_Value(NULL) {
+  (*this) = src;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const DefParameterClass &
-DefParameterClass::operator= (const DefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	DefParameterClass::operator= (src);
-	return *this;
+const DefParameterClass &DefParameterClass::operator=(const DefParameterClass &src) {
+  m_Value = src.m_Value;
+  DefParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-DefParameterClass::operator== (const DefParameterClass &src) const {
-	bool retval = false;
+bool DefParameterClass::operator==(const DefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-DefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool DefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = DefParameterClass::operator== ((const DefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = DefParameterClass::operator==((const DefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-DefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Get_Type () == Get_Type ()) {
-		(*m_Value) = ((DefParameterClass &)src).Get_Value ();
-	}
+void DefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Get_Type() == Get_Type()) {
+    (*m_Value) = ((DefParameterClass &)src).Get_Value();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
-
 
 //*******************************************************************************************//
 //
@@ -914,100 +755,77 @@ DefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	GenericDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+GenericDefParameterClass::GenericDefParameterClass(int *id) : m_ClassID(0), DefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	GenericDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-GenericDefParameterClass::GenericDefParameterClass (int *id)
-	:	m_ClassID (0),
-		DefParameterClass (id)
-{	
-	return ;
+GenericDefParameterClass::GenericDefParameterClass(const GenericDefParameterClass &src)
+    : m_ClassID(0), DefParameterClass(src) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	GenericDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-GenericDefParameterClass::GenericDefParameterClass (const GenericDefParameterClass &src)
-	:	m_ClassID (0),
-		DefParameterClass (src)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const GenericDefParameterClass &
-GenericDefParameterClass::operator= (const GenericDefParameterClass &src)
-{
-	DefParameterClass::operator= (src);
-	return *this;
+const GenericDefParameterClass &GenericDefParameterClass::operator=(const GenericDefParameterClass &src) {
+  DefParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-GenericDefParameterClass::operator== (const GenericDefParameterClass &src) const {
-	bool retval = false;
+bool GenericDefParameterClass::operator==(const GenericDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-GenericDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool GenericDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = GenericDefParameterClass::operator== ((const GenericDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = GenericDefParameterClass::operator==((const GenericDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-GenericDefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_GENERICDEFINITIONID)) {
-		(*m_Value) = ((GenericDefParameterClass &)src).Get_Value ();
-	}
+void GenericDefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_GENERICDEFINITIONID)) {
+    (*m_Value) = ((GenericDefParameterClass &)src).Get_Value();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1015,98 +833,76 @@ GenericDefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	GameObjDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+GameObjDefParameterClass::GameObjDefParameterClass(int *id) : DefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	GameObjDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-GameObjDefParameterClass::GameObjDefParameterClass (int *id)
-	:	DefParameterClass (id)
-{	
-	return ;
+GameObjDefParameterClass::GameObjDefParameterClass(const GameObjDefParameterClass &src) : DefParameterClass(src) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	GameObjDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-GameObjDefParameterClass::GameObjDefParameterClass (const GameObjDefParameterClass &src)
-	:	DefParameterClass (src)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const GameObjDefParameterClass &
-GameObjDefParameterClass::operator= (const GameObjDefParameterClass &src)
-{
-	DefParameterClass::operator= (src);
-	return *this;
+const GameObjDefParameterClass &GameObjDefParameterClass::operator=(const GameObjDefParameterClass &src) {
+  DefParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-GameObjDefParameterClass::operator== (const GameObjDefParameterClass &src) const {
-	bool retval = false;
+bool GameObjDefParameterClass::operator==(const GameObjDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-GameObjDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool GameObjDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = GameObjDefParameterClass::operator== ((const GameObjDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = GameObjDefParameterClass::operator==((const GameObjDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-GameObjDefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_GAMEOBJDEFINITIONID)) {
-		(*m_Value) = ((GameObjDefParameterClass &)src).Get_Value ();
-	}
+void GameObjDefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_GAMEOBJDEFINITIONID)) {
+    (*m_Value) = ((GameObjDefParameterClass &)src).Get_Value();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1114,99 +910,78 @@ GameObjDefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	WeaponObjDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+WeaponObjDefParameterClass::WeaponObjDefParameterClass(int *id) : GameObjDefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	WeaponObjDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-WeaponObjDefParameterClass::WeaponObjDefParameterClass (int *id)
-	:	GameObjDefParameterClass (id)
-{	
-	return ;
+WeaponObjDefParameterClass::WeaponObjDefParameterClass(const WeaponObjDefParameterClass &src)
+    : GameObjDefParameterClass(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	WeaponObjDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-WeaponObjDefParameterClass::WeaponObjDefParameterClass (const WeaponObjDefParameterClass &src)
-	:	GameObjDefParameterClass (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const WeaponObjDefParameterClass &
-WeaponObjDefParameterClass::operator= (const WeaponObjDefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	ParameterClass::operator= (src);
-	return *this;
+const WeaponObjDefParameterClass &WeaponObjDefParameterClass::operator=(const WeaponObjDefParameterClass &src) {
+  m_Value = src.m_Value;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-WeaponObjDefParameterClass::operator== (const WeaponObjDefParameterClass &src) const {
-	bool retval = false;
+bool WeaponObjDefParameterClass::operator==(const WeaponObjDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-WeaponObjDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool WeaponObjDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = WeaponObjDefParameterClass::operator== ((const WeaponObjDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = WeaponObjDefParameterClass::operator==((const WeaponObjDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-WeaponObjDefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_WEAPONOBJDEFINITIONID)) {
-		(*m_Value) = ((WeaponObjDefParameterClass &)src).Get_Value ();
-	}
+void WeaponObjDefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_WEAPONOBJDEFINITIONID)) {
+    (*m_Value) = ((WeaponObjDefParameterClass &)src).Get_Value();
+  }
 
-	GameObjDefParameterClass::Copy_Value (src);
-	return ;
+  GameObjDefParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1214,99 +989,78 @@ WeaponObjDefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	AmmoObjDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+AmmoObjDefParameterClass::AmmoObjDefParameterClass(int *id) : GameObjDefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	AmmoObjDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-AmmoObjDefParameterClass::AmmoObjDefParameterClass (int *id)
-	:	GameObjDefParameterClass (id)
-{	
-	return ;
+AmmoObjDefParameterClass::AmmoObjDefParameterClass(const AmmoObjDefParameterClass &src)
+    : GameObjDefParameterClass(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	AmmoObjDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-AmmoObjDefParameterClass::AmmoObjDefParameterClass (const AmmoObjDefParameterClass &src)
-	:	GameObjDefParameterClass (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const AmmoObjDefParameterClass &
-AmmoObjDefParameterClass::operator= (const AmmoObjDefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	ParameterClass::operator= (src);
-	return *this;
+const AmmoObjDefParameterClass &AmmoObjDefParameterClass::operator=(const AmmoObjDefParameterClass &src) {
+  m_Value = src.m_Value;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-AmmoObjDefParameterClass::operator== (const AmmoObjDefParameterClass &src) const {
-	bool retval = false;
+bool AmmoObjDefParameterClass::operator==(const AmmoObjDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-AmmoObjDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool AmmoObjDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = AmmoObjDefParameterClass::operator== ((const AmmoObjDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = AmmoObjDefParameterClass::operator==((const AmmoObjDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-AmmoObjDefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_AMMOOBJDEFINITIONID)) {
-		(*m_Value) = ((AmmoObjDefParameterClass &)src).Get_Value ();
-	}
+void AmmoObjDefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_AMMOOBJDEFINITIONID)) {
+    (*m_Value) = ((AmmoObjDefParameterClass &)src).Get_Value();
+  }
 
-	GameObjDefParameterClass::Copy_Value (src);
-	return ;
+  GameObjDefParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1314,31 +1068,23 @@ AmmoObjDefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	ExplosionObjDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+ExplosionObjDefParameterClass::ExplosionObjDefParameterClass(int *id) : GameObjDefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	ExplosionObjDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ExplosionObjDefParameterClass::ExplosionObjDefParameterClass (int *id)
-	:	GameObjDefParameterClass (id)
-{	
-	return ;
+ExplosionObjDefParameterClass::ExplosionObjDefParameterClass(const ExplosionObjDefParameterClass &src)
+    : GameObjDefParameterClass(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	ExplosionObjDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-ExplosionObjDefParameterClass::ExplosionObjDefParameterClass (const ExplosionObjDefParameterClass &src)
-	:	GameObjDefParameterClass (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
@@ -1346,67 +1092,55 @@ ExplosionObjDefParameterClass::ExplosionObjDefParameterClass (const ExplosionObj
 //
 /////////////////////////////////////////////////////////////////////
 const ExplosionObjDefParameterClass &
-ExplosionObjDefParameterClass::operator= (const ExplosionObjDefParameterClass &src)
-{
-	m_Value = src.m_Value;
-	ParameterClass::operator= (src);
-	return *this;
+ExplosionObjDefParameterClass::operator=(const ExplosionObjDefParameterClass &src) {
+  m_Value = src.m_Value;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ExplosionObjDefParameterClass::operator== (const ExplosionObjDefParameterClass &src) const {
-	bool retval = false;
+bool ExplosionObjDefParameterClass::operator==(const ExplosionObjDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ExplosionObjDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool ExplosionObjDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = ExplosionObjDefParameterClass::operator== ((const ExplosionObjDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = ExplosionObjDefParameterClass::operator==((const ExplosionObjDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-ExplosionObjDefParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_AMMOOBJDEFINITIONID)) {
-		(*m_Value) = ((ExplosionObjDefParameterClass &)src).Get_Value ();
-	}
+void ExplosionObjDefParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_AMMOOBJDEFINITIONID)) {
+    (*m_Value) = ((ExplosionObjDefParameterClass &)src).Get_Value();
+  }
 
-	GameObjDefParameterClass::Copy_Value (src);
-	return ;
+  GameObjDefParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1414,80 +1148,62 @@ ExplosionObjDefParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	SoundDefParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+SoundDefParameterClass::SoundDefParameterClass(int *id) : DefParameterClass(id) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	SoundDefParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-SoundDefParameterClass::SoundDefParameterClass (int *id)
-	:	DefParameterClass (id)
-{	
-	return ;
+SoundDefParameterClass::SoundDefParameterClass(const SoundDefParameterClass &src) : DefParameterClass(src) {
+  (*this) = src;
+  return;
 }
-
-/////////////////////////////////////////////////////////////////////
-//
-//	SoundDefParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-SoundDefParameterClass::SoundDefParameterClass (const SoundDefParameterClass &src)
-	:	DefParameterClass (src)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const SoundDefParameterClass &
-SoundDefParameterClass::operator= (const SoundDefParameterClass &src)
-{
-	DefParameterClass::operator= (src);
-	return *this;
+const SoundDefParameterClass &SoundDefParameterClass::operator=(const SoundDefParameterClass &src) {
+  DefParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-SoundDefParameterClass::operator== (const SoundDefParameterClass &src) const {
-	bool retval = false;
+bool SoundDefParameterClass::operator==(const SoundDefParameterClass &src) const {
+  bool retval = false;
 
-	if (m_Value != NULL && src.m_Value != NULL &&
-		 (*m_Value) == (*src.m_Value))
-	{
-		retval = true;
-	}
+  if (m_Value != NULL && src.m_Value != NULL && (*m_Value) == (*src.m_Value)) {
+    retval = true;
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-SoundDefParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool SoundDefParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = SoundDefParameterClass::operator== ((const SoundDefParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = SoundDefParameterClass::operator==((const SoundDefParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1495,17 +1211,14 @@ SoundDefParameterClass::operator== (const ParameterClass &src) const
 //
 //*******************************************************************************************//
 
-
 /////////////////////////////////////////////////////////////////////
 //
 //	ScriptParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ScriptParameterClass::ScriptParameterClass (StringClass *name, StringClass *params)
-	:	m_ScriptName (name),
-		m_ScriptParams (params)
-{	
-	return ;
+ScriptParameterClass::ScriptParameterClass(StringClass *name, StringClass *params)
+    : m_ScriptName(name), m_ScriptParams(params) {
+  return;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1513,95 +1226,77 @@ ScriptParameterClass::ScriptParameterClass (StringClass *name, StringClass *para
 //	ScriptParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ScriptParameterClass::ScriptParameterClass (const ScriptParameterClass &src)
-	:	m_ScriptName (NULL),
-		m_ScriptParams (NULL)
-{
-	(*this) = src;
-	return ;
+ScriptParameterClass::ScriptParameterClass(const ScriptParameterClass &src) : m_ScriptName(NULL), m_ScriptParams(NULL) {
+  (*this) = src;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const ScriptParameterClass &
-ScriptParameterClass::operator= (const ScriptParameterClass &src)
-{
-	m_ScriptName	= src.m_ScriptName;
-	m_ScriptParams = src.m_ScriptParams;
-	ParameterClass::operator= (src);
-	return *this;
+const ScriptParameterClass &ScriptParameterClass::operator=(const ScriptParameterClass &src) {
+  m_ScriptName = src.m_ScriptName;
+  m_ScriptParams = src.m_ScriptParams;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ScriptParameterClass::operator== (const ScriptParameterClass &src) const {
-	bool retval = false;
+bool ScriptParameterClass::operator==(const ScriptParameterClass &src) const {
+  bool retval = false;
 
-	//
-	//	Data valid?
-	//
-	if (	(m_ScriptName != NULL) && (src.m_ScriptName != NULL) &&
-			(m_ScriptParams != NULL) && (src.m_ScriptParams != NULL))
-	{
-	
-		//
-		//	Simple string compares should workd
-		//
-		if (	(m_ScriptName->Compare (*(src.m_ScriptName)) == 0) &&
-				(m_ScriptParams->Compare (*(src.m_ScriptParams)) == 0))
-		{
-			retval = true;
-		}
-	}
+  //
+  //	Data valid?
+  //
+  if ((m_ScriptName != NULL) && (src.m_ScriptName != NULL) && (m_ScriptParams != NULL) &&
+      (src.m_ScriptParams != NULL)) {
 
-	return retval;
+    //
+    //	Simple string compares should workd
+    //
+    if ((m_ScriptName->Compare(*(src.m_ScriptName)) == 0) && (m_ScriptParams->Compare(*(src.m_ScriptParams)) == 0)) {
+      retval = true;
+    }
+  }
+
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ScriptParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool ScriptParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = ScriptParameterClass::operator== ((const ScriptParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = ScriptParameterClass::operator==((const ScriptParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-ScriptParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_SCRIPT)) {
-		(*m_ScriptName)	= ((ScriptParameterClass &)src).Get_Script_Name ();
-		(*m_ScriptParams)	= ((ScriptParameterClass &)src).Get_Params ();
-	}
+void ScriptParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_SCRIPT)) {
+    (*m_ScriptName) = ((ScriptParameterClass &)src).Get_Script_Name();
+    (*m_ScriptParams) = ((ScriptParameterClass &)src).Get_Params();
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1609,132 +1304,111 @@ ScriptParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	DefIDListParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+DefIDListParameterClass::DefIDListParameterClass(DynamicVectorClass<int> *list)
+    : m_IDList(list), m_ClassID(0), m_SelectedClassID(NULL) {
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////
 //
 //	DefIDListParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-DefIDListParameterClass::DefIDListParameterClass (DynamicVectorClass<int> *list)
-	:	m_IDList (list),
-		m_ClassID (0),
-		m_SelectedClassID (NULL)
-{	
-	return ;
+DefIDListParameterClass::DefIDListParameterClass(const DefIDListParameterClass &src)
+    : m_IDList(NULL), m_ClassID(0), m_SelectedClassID(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	DefIDListParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-DefIDListParameterClass::DefIDListParameterClass (const DefIDListParameterClass &src)
-	:	m_IDList (NULL),
-		m_ClassID (0),
-		m_SelectedClassID (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const DefIDListParameterClass &
-DefIDListParameterClass::operator= (const DefIDListParameterClass &src)
-{
-	m_IDList				= src.m_IDList;
-	m_ClassID			= src.m_ClassID;
-	m_SelectedClassID	= src.m_SelectedClassID;
+const DefIDListParameterClass &DefIDListParameterClass::operator=(const DefIDListParameterClass &src) {
+  m_IDList = src.m_IDList;
+  m_ClassID = src.m_ClassID;
+  m_SelectedClassID = src.m_SelectedClassID;
 
-	ParameterClass::operator= (src);
-	return *this;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-DefIDListParameterClass::operator== (const DefIDListParameterClass &src) const {
-	bool retval = false;
+bool DefIDListParameterClass::operator==(const DefIDListParameterClass &src) const {
+  bool retval = false;
 
-	//
-	//	Data valid?
-	//
-	if ((m_IDList != NULL) && (src.m_IDList != NULL))
-	{
-		//
-		//	Class IDs the same?
-		//
-		if (m_ClassID == src.m_ClassID) {
+  //
+  //	Data valid?
+  //
+  if ((m_IDList != NULL) && (src.m_IDList != NULL)) {
+    //
+    //	Class IDs the same?
+    //
+    if (m_ClassID == src.m_ClassID) {
 
-			int count1 = m_IDList->Count ();
-			int count2 = src.m_IDList->Count ();
+      int count1 = m_IDList->Count();
+      int count2 = src.m_IDList->Count();
 
-			//
-			//	Are the lists the same?
-			//
-			retval = (count1 == count2);
-			for (int index = 0; (index < count1) && retval; index ++) {
-				int value1 = (*m_IDList)[index];
-				int value2 = (*src.m_IDList)[index];
-				retval &= (value1 == value2);
-			}
-		}
-	}
+      //
+      //	Are the lists the same?
+      //
+      retval = (count1 == count2);
+      for (int index = 0; (index < count1) && retval; index++) {
+        int value1 = (*m_IDList)[index];
+        int value2 = (*src.m_IDList)[index];
+        retval &= (value1 == value2);
+      }
+    }
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-DefIDListParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool DefIDListParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = DefIDListParameterClass::operator== ((const DefIDListParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = DefIDListParameterClass::operator==((const DefIDListParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-DefIDListParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_DEFINITIONIDLIST)) {
-		DefIDListParameterClass real_src = (DefIDListParameterClass &)src;
-		
-		m_ClassID				= real_src.m_ClassID;		
-		(*m_IDList)				= (*real_src.m_IDList);
+void DefIDListParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_DEFINITIONIDLIST)) {
+    DefIDListParameterClass real_src = (DefIDListParameterClass &)src;
 
-		if (m_SelectedClassID != NULL && real_src.m_SelectedClassID != NULL) {
-			(*m_SelectedClassID)	= (*real_src.m_SelectedClassID);
-		}
-	}
+    m_ClassID = real_src.m_ClassID;
+    (*m_IDList) = (*real_src.m_IDList);
 
-	ParameterClass::Copy_Value (src);
-	return ;
+    if (m_SelectedClassID != NULL && real_src.m_SelectedClassID != NULL) {
+      (*m_SelectedClassID) = (*real_src.m_SelectedClassID);
+    }
+  }
+
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1742,103 +1416,83 @@ DefIDListParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	ZoneParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+ZoneParameterClass::ZoneParameterClass(OBBoxClass *box) : m_OBBox(box) { return; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	ZoneParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ZoneParameterClass::ZoneParameterClass (OBBoxClass *box)
-	:	m_OBBox (box)
-{	
-	return ;
+ZoneParameterClass::ZoneParameterClass(const ZoneParameterClass &src) : m_OBBox(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	ZoneParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-ZoneParameterClass::ZoneParameterClass (const ZoneParameterClass &src)
-	:	m_OBBox (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const ZoneParameterClass &
-ZoneParameterClass::operator= (const ZoneParameterClass &src)
-{
-	m_OBBox = src.m_OBBox;
+const ZoneParameterClass &ZoneParameterClass::operator=(const ZoneParameterClass &src) {
+  m_OBBox = src.m_OBBox;
 
-	ParameterClass::operator= (src);
-	return *this;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ZoneParameterClass::operator== (const ZoneParameterClass &src) const {
-	bool retval = false;
+bool ZoneParameterClass::operator==(const ZoneParameterClass &src) const {
+  bool retval = false;
 
-	//
-	//	Are the OBBoxes the same?
-	//
-	if ((m_OBBox != NULL) && (src.m_OBBox != NULL)) {
-		retval = (*m_OBBox) == (*src.m_OBBox);
-	}
+  //
+  //	Are the OBBoxes the same?
+  //
+  if ((m_OBBox != NULL) && (src.m_OBBox != NULL)) {
+    retval = (*m_OBBox) == (*src.m_OBBox);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ZoneParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool ZoneParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = ZoneParameterClass::operator== ((const ZoneParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = ZoneParameterClass::operator==((const ZoneParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-ZoneParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_ZONE)) {
-		ZoneParameterClass real_src = (ZoneParameterClass &)src;
-		
-		(*m_OBBox)	= (*real_src.m_OBBox);
-	}
+void ZoneParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_ZONE)) {
+    ZoneParameterClass real_src = (ZoneParameterClass &)src;
 
-	ParameterClass::Copy_Value (src);
-	return ;
+    (*m_OBBox) = (*real_src.m_OBBox);
+  }
+
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1846,114 +1500,95 @@ ZoneParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	FilenameListParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+FilenameListParameterClass::FilenameListParameterClass(DynamicVectorClass<StringClass> *list) : m_FilenameList(list) {
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////
 //
 //	FilenameListParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-FilenameListParameterClass::FilenameListParameterClass (DynamicVectorClass<StringClass> *list)
-	:	m_FilenameList (list)		
-{	
-	return ;
+FilenameListParameterClass::FilenameListParameterClass(const FilenameListParameterClass &src) : m_FilenameList(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	FilenameListParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-FilenameListParameterClass::FilenameListParameterClass (const FilenameListParameterClass &src)
-	:	m_FilenameList (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const FilenameListParameterClass &
-FilenameListParameterClass::operator= (const FilenameListParameterClass &src)
-{
-	m_FilenameList	= src.m_FilenameList;
+const FilenameListParameterClass &FilenameListParameterClass::operator=(const FilenameListParameterClass &src) {
+  m_FilenameList = src.m_FilenameList;
 
-	ParameterClass::operator= (src);
-	return *this;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-FilenameListParameterClass::operator== (const FilenameListParameterClass &src) const {
-	bool retval = false;
+bool FilenameListParameterClass::operator==(const FilenameListParameterClass &src) const {
+  bool retval = false;
 
-	//
-	//	Data valid?
-	//
-	if ((m_FilenameList != NULL) && (src.m_FilenameList != NULL))
-	{
-		int count1 = m_FilenameList->Count ();
-		int count2 = src.m_FilenameList->Count ();
+  //
+  //	Data valid?
+  //
+  if ((m_FilenameList != NULL) && (src.m_FilenameList != NULL)) {
+    int count1 = m_FilenameList->Count();
+    int count2 = src.m_FilenameList->Count();
 
-		//
-		//	Are the lists the same?
-		//
-		retval = (count1 == count2);
-		for (int index = 0; (index < count1) && retval; index ++) {
-			StringClass &filename1 = (*m_FilenameList)[index];
-			StringClass &filename2 = (*src.m_FilenameList)[index];
-			retval &= (::stricmp (filename1, filename2) == 0);
-		}
-	}
+    //
+    //	Are the lists the same?
+    //
+    retval = (count1 == count2);
+    for (int index = 0; (index < count1) && retval; index++) {
+      StringClass &filename1 = (*m_FilenameList)[index];
+      StringClass &filename2 = (*src.m_FilenameList)[index];
+      retval &= (::stricmp(filename1, filename2) == 0);
+    }
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-FilenameListParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool FilenameListParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = FilenameListParameterClass::operator== ((const FilenameListParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = FilenameListParameterClass::operator==((const FilenameListParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-FilenameListParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_FILENAMELIST)) {
-		FilenameListParameterClass real_src = (FilenameListParameterClass &)src;		
-		(*m_FilenameList) = (*real_src.m_FilenameList);
-	}
+void FilenameListParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_FILENAMELIST)) {
+    FilenameListParameterClass real_src = (FilenameListParameterClass &)src;
+    (*m_FilenameList) = (*real_src.m_FilenameList);
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -1961,143 +1596,113 @@ FilenameListParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
+/////////////////////////////////////////////////////////////////////
+//
+//	ScriptListParameterClass
+//
+/////////////////////////////////////////////////////////////////////
+ScriptListParameterClass::ScriptListParameterClass(DynamicVectorClass<StringClass> *name_list,
+                                                   DynamicVectorClass<StringClass> *param_list)
+    : m_NameList(name_list), m_ParamList(param_list) {
+  return;
+}
 
 /////////////////////////////////////////////////////////////////////
 //
 //	ScriptListParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-ScriptListParameterClass::ScriptListParameterClass
-(
-	DynamicVectorClass<StringClass> *name_list,
-	DynamicVectorClass<StringClass> *param_list
-)
-	:	m_NameList (name_list),
-		m_ParamList (param_list)
-{	
-	return ;
+ScriptListParameterClass::ScriptListParameterClass(const ScriptListParameterClass &src)
+    : m_NameList(NULL), m_ParamList(NULL) {
+  (*this) = src;
+  return;
 }
-
-
-/////////////////////////////////////////////////////////////////////
-//
-//	ScriptListParameterClass
-//
-/////////////////////////////////////////////////////////////////////
-ScriptListParameterClass::ScriptListParameterClass (const ScriptListParameterClass &src)
-	:	m_NameList (NULL),
-		m_ParamList (NULL)
-{
-	(*this) = src;
-	return ;
-}
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const ScriptListParameterClass &
-ScriptListParameterClass::operator= (const ScriptListParameterClass &src)
-{
-	m_NameList	= src.m_NameList;
-	m_ParamList	= src.m_ParamList;
+const ScriptListParameterClass &ScriptListParameterClass::operator=(const ScriptListParameterClass &src) {
+  m_NameList = src.m_NameList;
+  m_ParamList = src.m_ParamList;
 
-	ParameterClass::operator= (src);
-	return *this;
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ScriptListParameterClass::operator== (const ScriptListParameterClass &src)
-{
-	bool retval = false;
+bool ScriptListParameterClass::operator==(const ScriptListParameterClass &src) {
+  bool retval = false;
 
-	//
-	//	Data valid?
-	//
-	if (	(m_NameList != NULL) && (src.m_NameList != NULL) &&
-			(m_ParamList != NULL) && (src.m_ParamList != NULL))
-	{
-		retval = Are_Lists_Identical (*m_NameList, *(src.m_NameList));
-		retval &= Are_Lists_Identical (*m_ParamList, *(src.m_ParamList));
-	}
+  //
+  //	Data valid?
+  //
+  if ((m_NameList != NULL) && (src.m_NameList != NULL) && (m_ParamList != NULL) && (src.m_ParamList != NULL)) {
+    retval = Are_Lists_Identical(*m_NameList, *(src.m_NameList));
+    retval &= Are_Lists_Identical(*m_ParamList, *(src.m_ParamList));
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Are_Lists_Identical
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ScriptListParameterClass::Are_Lists_Identical
-(
-	DynamicVectorClass<StringClass> &list1,
-	DynamicVectorClass<StringClass> &list2
-)
-{
-	int count1 = list1.Count ();
-	int count2 = list2.Count ();
+bool ScriptListParameterClass::Are_Lists_Identical(DynamicVectorClass<StringClass> &list1,
+                                                   DynamicVectorClass<StringClass> &list2) {
+  int count1 = list1.Count();
+  int count2 = list2.Count();
 
-	//
-	//	Do a string compare on every entry
-	//
-	bool retval = (count1 == count2);
-	for (int index = 0; (index < count1) && retval; index ++) {
-		StringClass &string1 = list1[index];
-		StringClass &string2 = list2[index];
-		retval &= (::stricmp (string1, string2) == 0);
-	}
+  //
+  //	Do a string compare on every entry
+  //
+  bool retval = (count1 == count2);
+  for (int index = 0; (index < count1) && retval; index++) {
+    StringClass &string1 = list1[index];
+    StringClass &string2 = list2[index];
+    retval &= (::stricmp(string1, string2) == 0);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-ScriptListParameterClass::operator== (const ParameterClass &src)
-{
-	bool retval = false;
+bool ScriptListParameterClass::operator==(const ParameterClass &src) {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = ScriptListParameterClass::operator== ((const ScriptListParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = ScriptListParameterClass::operator==((const ScriptListParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-ScriptListParameterClass::Copy_Value (const ParameterClass &src)
-{
-	if (src.Is_Type (ParameterClass::TYPE_SCRIPTLIST)) {
-		ScriptListParameterClass &real_src = (ScriptListParameterClass &)src;		
-		(*m_NameList)	= (*real_src.m_NameList);
-		(*m_ParamList)	= (*real_src.m_ParamList);
-	}
+void ScriptListParameterClass::Copy_Value(const ParameterClass &src) {
+  if (src.Is_Type(ParameterClass::TYPE_SCRIPTLIST)) {
+    ScriptListParameterClass &real_src = (ScriptListParameterClass &)src;
+    (*m_NameList) = (*real_src.m_NameList);
+    (*m_ParamList) = (*real_src.m_ParamList);
+  }
 
-	ParameterClass::Copy_Value (src);
-	return ;
+  ParameterClass::Copy_Value(src);
+  return;
 }
-
 
 //*******************************************************************************************//
 //
@@ -2105,69 +1710,54 @@ ScriptListParameterClass::Copy_Value (const ParameterClass &src)
 //
 //*******************************************************************************************//
 
-
 /////////////////////////////////////////////////////////////////////
 //
 //	SeparatorParameterClass
 //
 /////////////////////////////////////////////////////////////////////
-SeparatorParameterClass::SeparatorParameterClass (const SeparatorParameterClass &src)
-{
-	(*this) = src;
-	return ;
+SeparatorParameterClass::SeparatorParameterClass(const SeparatorParameterClass &src) {
+  (*this) = src;
+  return;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator=
 //
 /////////////////////////////////////////////////////////////////////
-const SeparatorParameterClass &
-SeparatorParameterClass::operator= (const SeparatorParameterClass &src)
-{
-	ParameterClass::operator= (src);
-	return *this;
+const SeparatorParameterClass &SeparatorParameterClass::operator=(const SeparatorParameterClass &src) {
+  ParameterClass::operator=(src);
+  return *this;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-SeparatorParameterClass::operator== (const SeparatorParameterClass &src) const {
-	return true;
-}
-
+bool SeparatorParameterClass::operator==(const SeparatorParameterClass &src) const { return true; }
 
 /////////////////////////////////////////////////////////////////////
 //
 //	operator==
 //
 /////////////////////////////////////////////////////////////////////
-bool
-SeparatorParameterClass::operator== (const ParameterClass &src) const
-{
-	bool retval = false;
+bool SeparatorParameterClass::operator==(const ParameterClass &src) const {
+  bool retval = false;
 
-	if (src.Get_Type () == Get_Type ()) {
-		retval = SeparatorParameterClass::operator== ((const SeparatorParameterClass &)src);
-	}
+  if (src.Get_Type() == Get_Type()) {
+    retval = SeparatorParameterClass::operator==((const SeparatorParameterClass &)src);
+  }
 
-	return retval;
+  return retval;
 }
-
 
 /////////////////////////////////////////////////////////////////////
 //
 //	Copy_Value
 //
 /////////////////////////////////////////////////////////////////////
-void
-SeparatorParameterClass::Copy_Value (const ParameterClass &src)
-{
-	ParameterClass::Copy_Value (src);
-	return ;
+void SeparatorParameterClass::Copy_Value(const ParameterClass &src) {
+  ParameterClass::Copy_Value(src);
+  return;
 }

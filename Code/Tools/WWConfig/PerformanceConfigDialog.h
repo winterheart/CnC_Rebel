@@ -26,73 +26,67 @@
 #include "resource.h"
 #include "vector.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // PerformanceConfigDialogClass dialog
 
-class PerformanceConfigDialogClass : public CDialog
-{
-// Construction
+class PerformanceConfigDialogClass : public CDialog {
+  // Construction
 public:
-	PerformanceConfigDialogClass(CWnd* pParent = NULL);   // standard constructor
+  PerformanceConfigDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(PerformanceConfigDialogClass)
-	enum { IDD = IDD_PERFORMANCE_CONFIG };
-	CSliderCtrl	m_GeometrySlider;
-	CSliderCtrl	m_CharShadowsSlider;
-	CSliderCtrl	m_TextureDetailSlider;
-	CSliderCtrl	m_SurfaceEffectsSlider;
-	CSliderCtrl	m_PerformanceSlider;
-	CSliderCtrl	m_ParticleSlider;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(PerformanceConfigDialogClass)
+  enum { IDD = IDD_PERFORMANCE_CONFIG };
+  CSliderCtrl m_GeometrySlider;
+  CSliderCtrl m_CharShadowsSlider;
+  CSliderCtrl m_TextureDetailSlider;
+  CSliderCtrl m_SurfaceEffectsSlider;
+  CSliderCtrl m_PerformanceSlider;
+  CSliderCtrl m_ParticleSlider;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PerformanceConfigDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PerformanceConfigDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(PerformanceConfigDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnExpertCheck();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnGraphicsAutoSetup();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(PerformanceConfigDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnExpertCheck();
+  afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg void OnGraphicsAutoSetup();
+  afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	/////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////
-	void			Apply_Changes (void);
+  /////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////
+  void Apply_Changes(void);
 
 private:
-	
-	/////////////////////////////////////////////////////////////////
-	//	Private methods
-	/////////////////////////////////////////////////////////////////
-	void			Build_Expert_Window_List (void);
-	void			Display_Expert_Settings (bool onoff);
-	void			Setup_Controls (void);
-	void			Update_Expert_Controls (int level);
-	void			Load_Values (void);
-	void			Determine_Performance_Setting (void);	
-	void			Get_Settings (DynamicVectorClass<int> &settings);
+  /////////////////////////////////////////////////////////////////
+  //	Private methods
+  /////////////////////////////////////////////////////////////////
+  void Build_Expert_Window_List(void);
+  void Display_Expert_Settings(bool onoff);
+  void Setup_Controls(void);
+  void Update_Expert_Controls(int level);
+  void Load_Values(void);
+  void Determine_Performance_Setting(void);
+  void Get_Settings(DynamicVectorClass<int> &settings);
 
-	/////////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////////
-	DynamicVectorClass<HWND>	ExpertWindowList;
+  /////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////
+  DynamicVectorClass<HWND> ExpertWindowList;
 };
 
 //{{AFX_INSERT_LOCATION}}

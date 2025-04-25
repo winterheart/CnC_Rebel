@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLBuddyMgr.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 14 $
-*     $Modtime: 1/31/02 2:52p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLBuddyMgr.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 14 $
+ *     $Modtime: 1/31/02 2:52p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLBUDDYMGR_H__
 #define __WOLBUDDYMGR_H__
@@ -57,169 +57,156 @@
 class DlgPasswordPrompt;
 class WOLBuddyMgr;
 
-typedef enum
-	{
-	BUDDYLIST_CHANGED = 1,
-	IGNORELIST_CHANGED,
-	BUDDYINFO_CHANGED
-	} WOLBuddyMgrAction;
+typedef enum { BUDDYLIST_CHANGED = 1, IGNORELIST_CHANGED, BUDDYINFO_CHANGED } WOLBuddyMgrAction;
 
 typedef TypedActionPtr<WOLBuddyMgrAction, WOLBuddyMgr> WOLBuddyMgrEvent;
 
-typedef enum
-	{
-	PAGE_ERROR = 0,
-	PAGE_NOT_THERE = 1,
-	PAGE_TURNED_OFF,
-	PAGE_SENT,
-	PAGE_RECEIVED,
-	INVITATION_RECEIVED,
-	INVITATION_DECLINED
-	} WOLPagedAction;
+typedef enum {
+  PAGE_ERROR = 0,
+  PAGE_NOT_THERE = 1,
+  PAGE_TURNED_OFF,
+  PAGE_SENT,
+  PAGE_RECEIVED,
+  INVITATION_RECEIVED,
+  INVITATION_DECLINED
+} WOLPagedAction;
 
 typedef TypedActionPtr<WOLPagedAction, WWOnline::PageMessage> WOLPagedEvent;
 
-class WOLBuddyMgr :
-		public RefCountClass,
-		public Notifier<WOLBuddyMgrEvent>,
-		public Notifier<WOLPagedEvent>,
-		protected Observer<WWOnline::BuddyEvent>,
-		protected Observer<WWOnline::UserEvent>,
-		protected Observer<WWOnline::PageMessage>,
-		protected Observer<WWOnline::PageSendStatus>,
-		protected Signaler<DlgPasswordPrompt>
-	{
-	public:
-		typedef std::vector< WideStringClass > IgnoreList;
-		typedef WWOnline::PageMessageList PageList;
+class WOLBuddyMgr : public RefCountClass,
+                    public Notifier<WOLBuddyMgrEvent>,
+                    public Notifier<WOLPagedEvent>,
+                    protected Observer<WWOnline::BuddyEvent>,
+                    protected Observer<WWOnline::UserEvent>,
+                    protected Observer<WWOnline::PageMessage>,
+                    protected Observer<WWOnline::PageSendStatus>,
+                    protected Signaler<DlgPasswordPrompt> {
+public:
+  typedef std::vector<WideStringClass> IgnoreList;
+  typedef WWOnline::PageMessageList PageList;
 
-		typedef enum
-			{
-			DECLINE_MIN = 0,
-			DECLINE_BYUSER = 1,
-			DECLINE_NOTBUDDY,
-			DECLINE_NOTAPPLICABLE,
-			DECLINE_BUSY,
-			DECLINE_MAX
-			} DECLINE_REASON;
+  typedef enum {
+    DECLINE_MIN = 0,
+    DECLINE_BYUSER = 1,
+    DECLINE_NOTBUDDY,
+    DECLINE_NOTAPPLICABLE,
+    DECLINE_BUSY,
+    DECLINE_MAX
+  } DECLINE_REASON;
 
-		static WOLBuddyMgr* GetInstance(bool createOK);
+  static WOLBuddyMgr *GetInstance(bool createOK);
 
-		// Get a description of a users location.
-		static void GetLocationDescription(const RefPtr<WWOnline::UserData>& user, WideStringClass& description);
+  // Get a description of a users location.
+  static void GetLocationDescription(const RefPtr<WWOnline::UserData> &user, WideStringClass &description);
 
-		// Request the buddy list anew.
-		void RefreshBuddyList(void);
-		
-		// Get list of buddies
-		const WWOnline::UserList& GetBuddyList(void) const
-			{return mWOLSession->GetBuddyList();}
-		
-		// Get a user from our buddy list
-		const RefPtr<WWOnline::UserData> FindBuddy(const WCHAR* name) const;
+  // Request the buddy list anew.
+  void RefreshBuddyList(void);
 
-		// Add a user to our buddy list
-		void AddBuddy(const WCHAR* name);
+  // Get list of buddies
+  const WWOnline::UserList &GetBuddyList(void) const { return mWOLSession->GetBuddyList(); }
 
-		// Remove a user from our buddy list
-		void RemoveBuddy(const WCHAR* name);
+  // Get a user from our buddy list
+  const RefPtr<WWOnline::UserData> FindBuddy(const WCHAR *name) const;
 
-		// Check if a user is in our buddy list
-		bool IsBuddy(const WCHAR* name) const;
+  // Add a user to our buddy list
+  void AddBuddy(const WCHAR *name);
 
-		// Request update to the location of our buddies.
-		void RefreshBuddyInfo(void);
+  // Remove a user from our buddy list
+  void RemoveBuddy(const WCHAR *name);
 
-		// Add a user to the ignore list
-		void AddIgnore(const WCHAR* name);
+  // Check if a user is in our buddy list
+  bool IsBuddy(const WCHAR *name) const;
 
-		// Remove a user from the ignore list.
-		void RemoveIgnore(const WCHAR* name);
+  // Request update to the location of our buddies.
+  void RefreshBuddyInfo(void);
 
-		// Check if a user is in the ignore list.
-		bool IsIgnored(const WCHAR* name) const;
+  // Add a user to the ignore list
+  void AddIgnore(const WCHAR *name);
 
-		// Get a list of usernames we are ignoring
-		const IgnoreList& GetIngoreList(void) const
-			{return mIgnoreList;}
-	
-		const PageList& GetPageList(void) const
-			{return mPageList;}
+  // Remove a user from the ignore list.
+  void RemoveIgnore(const WCHAR *name);
 
-		// Enable the display of a dialog when paged.
-		// This function sets an internal counter that determines whether a dialog
-		// should be displayed when a page message is received.
-		void ShowPagedDialog(void);
+  // Check if a user is in the ignore list.
+  bool IsIgnored(const WCHAR *name) const;
 
-		// Disable the display of a dialog when paged.
-		// This function sets an internal counter that determines whether a dialog
-		// should be displayed when a page message is received.
-		void HidePagedDialog(void);
+  // Get a list of usernames we are ignoring
+  const IgnoreList &GetIngoreList(void) const { return mIgnoreList; }
 
-		// Clear all the queued pages.
-		void ClearPageList(void);
+  const PageList &GetPageList(void) const { return mPageList; }
 
-		// Get the name of the last user who we received a page from.
-		const WCHAR* GetLastPagersName(void) const
-			{return mLastPagersName;}
+  // Enable the display of a dialog when paged.
+  // This function sets an internal counter that determines whether a dialog
+  // should be displayed when a page message is received.
+  void ShowPagedDialog(void);
 
-		// Send a page message to user
-		void PageUser(const WCHAR* name, const WCHAR* message);
+  // Disable the display of a dialog when paged.
+  // This function sets an internal counter that determines whether a dialog
+  // should be displayed when a page message is received.
+  void HidePagedDialog(void);
 
-		// Join a user at his location
-		void JoinUser(const RefPtr<WWOnline::UserData>& user);
+  // Clear all the queued pages.
+  void ClearPageList(void);
 
-		// Check if we are in a position to invite users.
-		bool CanInviteUsers(void) const;
+  // Get the name of the last user who we received a page from.
+  const WCHAR *GetLastPagersName(void) const { return mLastPagersName; }
 
-		// Invite a user to our location
-		void InviteUser(const WCHAR* username, const WCHAR* message);	
+  // Send a page message to user
+  void PageUser(const WCHAR *name, const WCHAR *message);
 
-		// Decline an invitation to join a user.
-		void DeclineInvitation(const WCHAR* username, DECLINE_REASON reason = DECLINE_BYUSER);
+  // Join a user at his location
+  void JoinUser(const RefPtr<WWOnline::UserData> &user);
 
-	protected:
-		WOLBuddyMgr();
-		~WOLBuddyMgr();
+  // Check if we are in a position to invite users.
+  bool CanInviteUsers(void) const;
 
-		bool FinalizeCreate(void);
+  // Invite a user to our location
+  void InviteUser(const WCHAR *username, const WCHAR *message);
 
-		void LoadIgnoreList(void);
-		void SaveIgnoreList(void);
+  // Decline an invitation to join a user.
+  void DeclineInvitation(const WCHAR *username, DECLINE_REASON reason = DECLINE_BYUSER);
 
-		bool IsCommand(const WCHAR* message);
-		
-		void ProcessPendingJoin(void);
-		void GotoPendingJoinLocation(const wchar_t* password);
-		void ReceiveSignal(DlgPasswordPrompt&);
+protected:
+  WOLBuddyMgr();
+  ~WOLBuddyMgr();
 
-		bool IsInvitation(const WCHAR* message);
-		void InvitationReceived(WWOnline::PageMessage& page);
-		void DisplayInvitation(const RefPtr<WWOnline::UserData>& user, const WCHAR* message);
+  bool FinalizeCreate(void);
 
-		bool IsInvitationDeclined(const WCHAR* message);
-		void InvitationDeclined(const WCHAR* username, DECLINE_REASON reaon);
+  void LoadIgnoreList(void);
+  void SaveIgnoreList(void);
 
-		void HandleNotification(WWOnline::BuddyEvent&);
-		void HandleNotification(WWOnline::UserEvent&);
-		void HandleNotification(WWOnline::PageMessage&);
-		void HandleNotification(WWOnline::PageSendStatus&);
+  bool IsCommand(const WCHAR *message);
 
-		DECLARE_NOTIFIER(WOLBuddyMgrEvent)
-		DECLARE_NOTIFIER(WOLPagedEvent)
+  void ProcessPendingJoin(void);
+  void GotoPendingJoinLocation(const wchar_t *password);
+  void ReceiveSignal(DlgPasswordPrompt &);
 
-	private:
-		static WOLBuddyMgr* _mInstance;
-		RefPtr<WWOnline::Session> mWOLSession;
+  bool IsInvitation(const WCHAR *message);
+  void InvitationReceived(WWOnline::PageMessage &page);
+  void DisplayInvitation(const RefPtr<WWOnline::UserData> &user, const WCHAR *message);
 
-		IgnoreList mIgnoreList;
+  bool IsInvitationDeclined(const WCHAR *message);
+  void InvitationDeclined(const WCHAR *username, DECLINE_REASON reaon);
 
-		PageList mPageList;
-		PageList mInvitations;
-		WideStringClass mLastPagersName;
-		unsigned long mHidePagedDialog;
+  void HandleNotification(WWOnline::BuddyEvent &);
+  void HandleNotification(WWOnline::UserEvent &);
+  void HandleNotification(WWOnline::PageMessage &);
+  void HandleNotification(WWOnline::PageSendStatus &);
 
-		RefPtr<WWOnline::UserData> mPendingJoin;
-		};
+  DECLARE_NOTIFIER(WOLBuddyMgrEvent)
+  DECLARE_NOTIFIER(WOLPagedEvent)
+
+private:
+  static WOLBuddyMgr *_mInstance;
+  RefPtr<WWOnline::Session> mWOLSession;
+
+  IgnoreList mIgnoreList;
+
+  PageList mPageList;
+  PageList mInvitations;
+  WideStringClass mLastPagersName;
+  unsigned long mHidePagedDialog;
+
+  RefPtr<WWOnline::UserData> mPendingJoin;
+};
 
 #endif __WOLBUDDYMGR_H__

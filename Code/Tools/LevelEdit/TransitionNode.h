@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -46,179 +45,148 @@
 #include "icons.h"
 #include "transitiongameobj.h"
 
-
 // Forward declarations
 class PresetClass;
 class PhysClass;
-
 
 ////////////////////////////////////////////////////////////////////////////
 //
 //	TransitionNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class TransitionNodeClass : public NodeClass
-{
+class TransitionNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	TransitionNodeClass (PresetClass *preset = NULL);
-	TransitionNodeClass (const TransitionNodeClass &src);
-	~TransitionNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  TransitionNodeClass(PresetClass *preset = NULL);
+  TransitionNodeClass(const TransitionNodeClass &src);
+  ~TransitionNodeClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const TransitionNodeClass &operator= (const TransitionNodeClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const TransitionNodeClass &operator=(const TransitionNodeClass &src);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	
-	//
-	// From NodeClass
-	//
-	NodeClass *	Clone (void)							{ return new TransitionNodeClass (*this); }
-	void			Initialize (void);
-	NODE_TYPE	Get_Type (void) const				{ return NODE_TYPE_TRANSITION; }
-	int			Get_Icon_Index (void) const		{ return TRANSITION_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const;
-	bool			Is_Static (void) const				{ return false; }
-	void			Add_To_Scene (void);
-	void			Remove_From_Scene (void);
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
+  //
+  // From NodeClass
+  //
+  NodeClass *Clone(void) { return new TransitionNodeClass(*this); }
+  void Initialize(void);
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_TRANSITION; }
+  int Get_Icon_Index(void) const { return TRANSITION_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const;
+  bool Is_Static(void) const { return false; }
+  void Add_To_Scene(void);
+  void Remove_From_Scene(void);
 
-	//
-	//	Notifications
-	//
-	void			On_Rotate (void);
-	void			On_Translate (void);
-	void			On_Transform (void);
+  //
+  //	Notifications
+  //
+  void On_Rotate(void);
+  void On_Translate(void);
+  void On_Transform(void);
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//
-	//	Transition Specific
-	//
-	int								Get_Transition_Count (void) const;
-	TransitionInstanceClass *	Get_Transition (int index);
-	TransitionGameObj *			Get_Transition_Game_Obj (void)	{ return m_TransitionObj; }
-	int								Find_Transition (TransitionDataClass::StyleType type);
+  //
+  //	Transition Specific
+  //
+  int Get_Transition_Count(void) const;
+  TransitionInstanceClass *Get_Transition(int index);
+  TransitionGameObj *Get_Transition_Game_Obj(void) { return m_TransitionObj; }
+  int Find_Transition(TransitionDataClass::StyleType type);
 
 protected:
-
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
 
 private:
-
-	//////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////
-	PhysClass *				m_PhysObj;
-	TransitionGameObj *	m_TransitionObj;
+  //////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////
+  PhysClass *m_PhysObj;
+  TransitionGameObj *m_TransitionObj;
 };
-
 
 //////////////////////////////////////////////////////////////////
 //	Peek_Physics_Obj
 //////////////////////////////////////////////////////////////////
-inline PhysClass *
-TransitionNodeClass::Peek_Physics_Obj (void) const
-{
-	return m_PhysObj;
-}
-
+inline PhysClass *TransitionNodeClass::Peek_Physics_Obj(void) const { return m_PhysObj; }
 
 //////////////////////////////////////////////////////////////////
 //	On_Rotate
 //////////////////////////////////////////////////////////////////
-inline void
-TransitionNodeClass::On_Rotate (void)
-{
-	if (m_TransitionObj != NULL) {
-		m_TransitionObj->Set_Transform (m_Transform);
-		m_TransitionObj->Update_Transitions ();
-	}
-	NodeClass::On_Rotate ();
-	return ;
+inline void TransitionNodeClass::On_Rotate(void) {
+  if (m_TransitionObj != NULL) {
+    m_TransitionObj->Set_Transform(m_Transform);
+    m_TransitionObj->Update_Transitions();
+  }
+  NodeClass::On_Rotate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Translate
 //////////////////////////////////////////////////////////////////
-inline void
-TransitionNodeClass::On_Translate (void)
-{
-	if (m_TransitionObj != NULL) {
-		m_TransitionObj->Set_Transform (m_Transform);
-		m_TransitionObj->Update_Transitions ();
-	}
-	NodeClass::On_Translate ();
-	return ;
+inline void TransitionNodeClass::On_Translate(void) {
+  if (m_TransitionObj != NULL) {
+    m_TransitionObj->Set_Transform(m_Transform);
+    m_TransitionObj->Update_Transitions();
+  }
+  NodeClass::On_Translate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Transform
 //////////////////////////////////////////////////////////////////
-inline void
-TransitionNodeClass::On_Transform (void)
-{
-	if (m_TransitionObj != NULL) {
-		m_TransitionObj->Set_Transform (m_Transform);
-		m_TransitionObj->Update_Transitions ();
-	}
-	NodeClass::On_Transform ();
-	return ;
+inline void TransitionNodeClass::On_Transform(void) {
+  if (m_TransitionObj != NULL) {
+    m_TransitionObj->Set_Transform(m_Transform);
+    m_TransitionObj->Update_Transitions();
+  }
+  NodeClass::On_Transform();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	Get_Transition_Count
 //////////////////////////////////////////////////////////////////
-inline int
-TransitionNodeClass::Get_Transition_Count (void) const
-{
-	int count = 0;
-	if (m_TransitionObj != NULL) {
-		count = m_TransitionObj->Get_Transition_Count ();
-	}
+inline int TransitionNodeClass::Get_Transition_Count(void) const {
+  int count = 0;
+  if (m_TransitionObj != NULL) {
+    count = m_TransitionObj->Get_Transition_Count();
+  }
 
-	return count;
+  return count;
 }
 
 //////////////////////////////////////////////////////////////////
 //	Get_Transition
 //////////////////////////////////////////////////////////////////
-inline TransitionInstanceClass *
-TransitionNodeClass::Get_Transition (int index)
-{
-	TransitionInstanceClass *transition = NULL;
+inline TransitionInstanceClass *TransitionNodeClass::Get_Transition(int index) {
+  TransitionInstanceClass *transition = NULL;
 
-	if (	m_TransitionObj != NULL &&
-			index >= 0 &&
-			index < Get_Transition_Count ())
-	{
-		transition = m_TransitionObj->Get_Transition (index);
-	}
+  if (m_TransitionObj != NULL && index >= 0 && index < Get_Transition_Count()) {
+    transition = m_TransitionObj->Get_Transition(index);
+  }
 
-	return transition;
+  return transition;
 }
 
-
 #endif //__TRANSITION_NODE_H
-

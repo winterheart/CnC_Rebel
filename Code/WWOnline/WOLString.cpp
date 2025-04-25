@@ -20,24 +20,16 @@
 
 namespace WWOnline {
 
-static const wchar_t* DefaultMapper(const char*)
-	{
-	return L"<WOL String lookup not set>";
-	}
-
+static const wchar_t *DefaultMapper(const char *) { return L"<WOL String lookup not set>"; }
 
 WOLStringLookupFunc WOLString::_mLookupFunc = DefaultMapper;
 
-void WOLString::SetLookupFunc(WOLStringLookupFunc func)
-	{
-	if (func == NULL)
-		{
-		_mLookupFunc = DefaultMapper;
-		}
-	else
-		{
-		_mLookupFunc = func;
-		}
-	}
+void WOLString::SetLookupFunc(WOLStringLookupFunc func) {
+  if (func == NULL) {
+    _mLookupFunc = DefaultMapper;
+  } else {
+    _mLookupFunc = func;
+  }
+}
 
 } // namespace WWOnline

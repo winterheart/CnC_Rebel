@@ -45,7 +45,6 @@
 #include "aabox.h"
 #include "bittype.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////////
 //
 //	PathfindBoxClass
@@ -56,108 +55,91 @@
 // for a maximum height of 6,553 meters).
 //
 ////////////////////////////////////////////////////////////////////////////////////
-class PathfindBoxClass
-{
+class PathfindBoxClass {
 
 public:
+  //////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////////////
+  PathfindBoxClass(void) : x_pos(0), y_pos(0), z_pos(0), x_size(0), y_size(0) {}
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////////////
-	PathfindBoxClass (void)
-		:	x_pos (0),
-			y_pos (0),
-			z_pos (0),
-			x_size (0),
-			y_size (0)				{ }
+  ~PathfindBoxClass(void) {}
 
-	~PathfindBoxClass (void)	{ }
+  //////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////////////
+  void Get_AABox(AABoxClass &box) const;
+  void Set_AABox(const AABoxClass &box);
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////////////
-	void	Get_AABox (AABoxClass &box) const;
-	void	Set_AABox (const AABoxClass &box);
-	
-	void	Set_Position (int x_pos, int y_pos, float z_pos);
-	void	Set_Size (int cx, int cy);
-	
-	//////////////////////////////////////////////////////////////////////////
-	//	Static methods
-	//////////////////////////////////////////////////////////////////////////
-	static const Vector3 &	Get_Block_Size (void);
-	static void					Set_Block_Size (const Vector3 &size);
+  void Set_Position(int x_pos, int y_pos, float z_pos);
+  void Set_Size(int cx, int cy);
+
+  //////////////////////////////////////////////////////////////////////////
+  //	Static methods
+  //////////////////////////////////////////////////////////////////////////
+  static const Vector3 &Get_Block_Size(void);
+  static void Set_Block_Size(const Vector3 &size);
 
 private:
+  //////////////////////////////////////////////////////////////////////////
+  //	Static member data
+  //////////////////////////////////////////////////////////////////////////
+  static Vector3 _BlockSize;
 
-	//////////////////////////////////////////////////////////////////////////
-	//	Static member data
-	//////////////////////////////////////////////////////////////////////////
-	static Vector3 _BlockSize;
-
-	//////////////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////////////
-	uint16	x_pos;
-	uint16	y_pos;
-	uint16	z_pos;
-	uint8		x_size;
-	uint8		y_size;
+  //////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////////////
+  uint16 x_pos;
+  uint16 y_pos;
+  uint16 z_pos;
+  uint8 x_size;
+  uint8 y_size;
 };
 
 //////////////////////////////////////////////////////////////////////////
 //	Get_AABox
 //////////////////////////////////////////////////////////////////////////
-inline void
-PathfindBoxClass::Get_AABox (AABoxClass &box) const
-{
-	box.Center.X = ((float)x_pos) * _BlockSize.X;
-	box.Center.Y = ((float)y_pos) * _BlockSize.Y;
-	box.Center.Z = ((float)z_pos) / 10.0F;
+inline void PathfindBoxClass::Get_AABox(AABoxClass &box) const {
+  box.Center.X = ((float)x_pos) * _BlockSize.X;
+  box.Center.Y = ((float)y_pos) * _BlockSize.Y;
+  box.Center.Z = ((float)z_pos) / 10.0F;
 
-	box.Extent.X = ((float)x_size) * _BlockSize.X;
-	box.Extent.Y = ((float)y_size) * _BlockSize.Y;
-	box.Extent.Z = _BlockSize.Z;
-	return ;
+  box.Extent.X = ((float)x_size) * _BlockSize.X;
+  box.Extent.Y = ((float)y_size) * _BlockSize.Y;
+  box.Extent.Z = _BlockSize.Z;
+  return;
 }
 
 //////////////////////////////////////////////////////////////////////////
 //	Set_AABox
 //////////////////////////////////////////////////////////////////////////
-inline void
-PathfindBoxClass::Set_AABox (const AABoxClass &box)
-{
-	x_pos = uint16(box.Center.X / _BlockSize.X);
-	y_pos = uint16(box.Center.Y / _BlockSize.Y);
-	z_pos = uint16(box.Center.Z * 10);
+inline void PathfindBoxClass::Set_AABox(const AABoxClass &box) {
+  x_pos = uint16(box.Center.X / _BlockSize.X);
+  y_pos = uint16(box.Center.Y / _BlockSize.Y);
+  z_pos = uint16(box.Center.Z * 10);
 
-	x_size = uint8(box.Extent.X / _BlockSize.X);
-	y_size = uint8(box.Extent.Y / _BlockSize.Y);
-	return ;
+  x_size = uint8(box.Extent.X / _BlockSize.X);
+  y_size = uint8(box.Extent.Y / _BlockSize.Y);
+  return;
 }
 
 //////////////////////////////////////////////////////////////////////////
 //	Set_Position
 //////////////////////////////////////////////////////////////////////////
-inline void
-PathfindBoxClass::Set_Position (int new_x, int new_y, float new_z)
-{
-	x_pos = uint16(new_x);
-	y_pos = uint16(new_y);
-	z_pos = uint16(new_z * 10);
-	return ;
+inline void PathfindBoxClass::Set_Position(int new_x, int new_y, float new_z) {
+  x_pos = uint16(new_x);
+  y_pos = uint16(new_y);
+  z_pos = uint16(new_z * 10);
+  return;
 }
 
 //////////////////////////////////////////////////////////////////////////
 //	Set_Size
 //////////////////////////////////////////////////////////////////////////
-inline void
-PathfindBoxClass::Set_Size (int cx, int cy)
-{
-	x_size = uint8(cx);
-	y_size = uint8(cy);
-	return ;
+inline void PathfindBoxClass::Set_Size(int cx, int cy) {
+  x_size = uint8(cx);
+  y_size = uint8(cy);
+  return;
 }
 
 #endif // __PATHFIND_BOX_H
-

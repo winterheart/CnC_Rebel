@@ -29,71 +29,64 @@
 #include "resource.h"
 #include "textfile.h"
 
-
 #ifndef __AFXEXT_H__
 #include <afxext.h>
 #endif
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // OutputFormClass form view
 //
-class OutputFormClass : public DockableFormClass
-{
+class OutputFormClass : public DockableFormClass {
 public:
-	OutputFormClass();           // protected constructor used by dynamic creation
-	//DECLARE_DYNCREATE(OutputFormClass)
+  OutputFormClass(); // protected constructor used by dynamic creation
+                     // DECLARE_DYNCREATE(OutputFormClass)
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(OutputFormClass)
-	enum { IDD = IDD_OUTPUT };
-	CEdit	m_OutputEdit;
-	//}}AFX_DATA
+  //{{AFX_DATA(OutputFormClass)
+  enum { IDD = IDD_OUTPUT };
+  CEdit m_OutputEdit;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(OutputFormClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(OutputFormClass)
 protected:
-	virtual ~OutputFormClass();
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
+
+  // Implementation
+protected:
+  virtual ~OutputFormClass();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(OutputFormClass)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(OutputFormClass)
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	///////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////
-	void		HandleInitDialog (void);
-	void		Output_Message (LPCTSTR new_message);
+  ///////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////
+  void HandleInitDialog(void);
+  void Output_Message(LPCTSTR new_message);
 
 private:
-
-	///////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////
-	TextFileClass	LogFile;
+  ///////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////
+  TextFileClass LogFile;
 };
 
 /////////////////////////////////////////////////////////////////////////////

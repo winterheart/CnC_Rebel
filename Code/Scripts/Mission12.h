@@ -17,32 +17,30 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     Mission12.h
-*
-* DESCRIPTION
-*     Mission 12 definitions
-*
-* PROGRAMMER
-*     Design Team
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 2 $
-*     $Modtime: 6/13/00 11:27a $
-*     $Archive: /Commando/Code/Scripts/Mission12.h $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     Mission12.h
+ *
+ * DESCRIPTION
+ *     Mission 12 definitions
+ *
+ * PROGRAMMER
+ *     Design Team
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 2 $
+ *     $Modtime: 6/13/00 11:27a $
+ *     $Archive: /Commando/Code/Scripts/Mission12.h $
+ *
+ ******************************************************************************/
 
 #ifndef _MISSION12_H_
 #define _MISSION12_H_
 
-
 // Defines and Includes
 
 #include "toolkit.h"
-
 
 // Predefined Constants
 
@@ -52,9 +50,8 @@
 
 // Timer Enumerations
 
-typedef enum
-{
-	M12TIMER_START = STIMER_MISSION12,
+typedef enum {
+  M12TIMER_START = STIMER_MISSION12,
 } M12TIMER;
 
 #endif // _MISSION12_H_

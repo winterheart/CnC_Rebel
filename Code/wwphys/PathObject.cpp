@@ -44,135 +44,114 @@
 //////////////////////////////////////////////////////////////////
 //	Local constants
 //////////////////////////////////////////////////////////////////
-const float DEF_TURN_RADIUS	= 0;
-const float DEF_SPEED			= 4.0F;
-const int DEF_FLAGS				= PathObjectClass::CAN_USE_EQUIPMENT | PathObjectClass::IS_VEHICLE;
-
+const float DEF_TURN_RADIUS = 0;
+const float DEF_SPEED = 4.0F;
+const int DEF_FLAGS = PathObjectClass::CAN_USE_EQUIPMENT | PathObjectClass::IS_VEHICLE;
 
 //////////////////////////////////////////////////////////////////
 //	Local inlines
 //////////////////////////////////////////////////////////////////
-void Get_Collision_Box (RenderObjClass *render_obj, OBBoxClass &bounding_box);
-
-
+void Get_Collision_Box(RenderObjClass *render_obj, OBBoxClass &bounding_box);
 
 //////////////////////////////////////////////////////////////////
 //
 //	PathObjectClass
 //
 //////////////////////////////////////////////////////////////////
-PathObjectClass::PathObjectClass (void)
-	:	m_TurnRadius (DEF_TURN_RADIUS),
-		m_MaxSpeed (DEF_SPEED),
-		m_CollisionBox (Vector3 (0, 0, 0), Vector3 (0.35F, 0.35F, 0.7F)),
-		m_Flags (DEF_FLAGS),
-		m_KeyRing (0)
-{
-	Init_Human ();
-	return ;
+PathObjectClass::PathObjectClass(void)
+    : m_TurnRadius(DEF_TURN_RADIUS), m_MaxSpeed(DEF_SPEED),
+      m_CollisionBox(Vector3(0, 0, 0), Vector3(0.35F, 0.35F, 0.7F)), m_Flags(DEF_FLAGS), m_KeyRing(0) {
+  Init_Human();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //
 //	~PathObjectClass
 //
 //////////////////////////////////////////////////////////////////
-PathObjectClass::~PathObjectClass (void)
-{
-	return ;
-}
-
+PathObjectClass::~PathObjectClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////
 //
 //	Initialize
 //
 //////////////////////////////////////////////////////////////////
-void
-PathObjectClass::Initialize (PhysClass &phys_obj)
-{
-	RenderObjClass *render_obj = phys_obj.Peek_Model ();
-	if (render_obj != NULL) {
-		
-		//
-		//	Lookup the render object's collision box
-		//
-		::Get_Collision_Box (render_obj, m_CollisionBox);		
-	}
+void PathObjectClass::Initialize(PhysClass &phys_obj) {
+  RenderObjClass *render_obj = phys_obj.Peek_Model();
+  if (render_obj != NULL) {
 
-	//
-	//	Everything except for humans rotate their collision boxes
-	//
-	Set_Flag (PathObjectClass::CAN_BOX_ROTATE, (phys_obj.As_HumanPhysClass () == NULL));
+    //
+    //	Lookup the render object's collision box
+    //
+    ::Get_Collision_Box(render_obj, m_CollisionBox);
+  }
 
-	//
-	//	By default we will assume the vehicles steering-wheels are located in the front...
-	//
-	if (phys_obj.As_HumanPhysClass () == NULL) {
-		Set_Wheel_Offset (m_CollisionBox.Extent.X);
-	}
+  //
+  //	Everything except for humans rotate their collision boxes
+  //
+  Set_Flag(PathObjectClass::CAN_BOX_ROTATE, (phys_obj.As_HumanPhysClass() == NULL));
 
-	return ;
+  //
+  //	By default we will assume the vehicles steering-wheels are located in the front...
+  //
+  if (phys_obj.As_HumanPhysClass() == NULL) {
+    Set_Wheel_Offset(m_CollisionBox.Extent.X);
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //
 //	Init_Human
 //
 //////////////////////////////////////////////////////////////////
-void
-PathObjectClass::Init_Human (void)
-{
-	m_Flags			= CAN_USE_EQUIPMENT;
-	m_TurnRadius	= 0;	
-	m_WheelOffset	= 0;
+void PathObjectClass::Init_Human(void) {
+  m_Flags = CAN_USE_EQUIPMENT;
+  m_TurnRadius = 0;
+  m_WheelOffset = 0;
 
-	// Use some default numbers for the human...
-	m_CollisionBox.Center.Set (0, 0, 0);
-	m_CollisionBox.Extent.Set (0.35F, 0.35F, 0.7F);
-	m_CollisionBox.Basis.Make_Identity ();
+  // Use some default numbers for the human...
+  m_CollisionBox.Center.Set(0, 0, 0);
+  m_CollisionBox.Extent.Set(0.35F, 0.35F, 0.7F);
+  m_CollisionBox.Basis.Make_Identity();
 
-	// (4.75 meters per sec is approx a 6 min mile)
-	m_MaxSpeed		= 4.75F;
-	return ;
+  // (4.75 meters per sec is approx a 6 min mile)
+  m_MaxSpeed = 4.75F;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //
 //	Get_Collision_Box
 //
 //////////////////////////////////////////////////////////////////
-void
-Get_Collision_Box (RenderObjClass *render_obj, OBBoxClass &bounding_box)
-{
-	if (render_obj != NULL) {
+void Get_Collision_Box(RenderObjClass *render_obj, OBBoxClass &bounding_box) {
+  if (render_obj != NULL) {
 
-		//
-		// Try to get the "WorldBox" from the model
-		//
-		RenderObjClass *world_box = render_obj->Get_Sub_Object_By_Name ("WorldBox");
+    //
+    // Try to get the "WorldBox" from the model
+    //
+    RenderObjClass *world_box = render_obj->Get_Sub_Object_By_Name("WorldBox");
 
-		// If we didn't finde WorldBox, try to find the LOD named "WorldBox" 
-		// The LOD code generates a unique name for the mesh by appending A,B,C, etc to the name.
-		// A is the lowest LOD, B is the next, and so on.  Our worldbox is specified in the highest
-		// LOD so we have to construct the name by appending 'A'+LodCount to the name... icky
-		if ((world_box == NULL) && (render_obj->Class_ID () == RenderObjClass::CLASSID_HLOD)) {
-			
-			char namebuffer[64];
-			sprintf(namebuffer,"WorldBox%c",'A' + ((HLodClass *)render_obj)->Get_Lod_Count() - 1);
-			world_box = render_obj->Get_Sub_Object_By_Name (namebuffer);
-		}
+    // If we didn't finde WorldBox, try to find the LOD named "WorldBox"
+    // The LOD code generates a unique name for the mesh by appending A,B,C, etc to the name.
+    // A is the lowest LOD, B is the next, and so on.  Our worldbox is specified in the highest
+    // LOD so we have to construct the name by appending 'A'+LodCount to the name... icky
+    if ((world_box == NULL) && (render_obj->Class_ID() == RenderObjClass::CLASSID_HLOD)) {
 
-		if (world_box != NULL && world_box->Class_ID() == RenderObjClass::CLASSID_OBBOX) {
-			bounding_box = ((OBBoxRenderObjClass *)world_box)->Get_Box ();
-		}
+      char namebuffer[64];
+      sprintf(namebuffer, "WorldBox%c", 'A' + ((HLodClass *)render_obj)->Get_Lod_Count() - 1);
+      world_box = render_obj->Get_Sub_Object_By_Name(namebuffer);
+    }
 
-		REF_PTR_RELEASE (world_box);
-	}
+    if (world_box != NULL && world_box->Class_ID() == RenderObjClass::CLASSID_OBBOX) {
+      bounding_box = ((OBBoxRenderObjClass *)world_box)->Get_Box();
+    }
 
-	return ;
+    REF_PTR_RELEASE(world_box);
+  }
+
+  return;
 }
-

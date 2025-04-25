@@ -28,95 +28,92 @@
 #include "listtypes.h"
 #include "vispointgenerator.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // GeneratingVisDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class GeneratingVisDialogClass : public CDialog
-{
-// Construction
+class GeneratingVisDialogClass : public CDialog {
+  // Construction
 public:
-	GeneratingVisDialogClass(float granularity, CWnd* pParent = NULL);   // standard constructor
+  GeneratingVisDialogClass(float granularity, CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GeneratingVisDialogClass)
-	enum { IDD = IDD_GENERATING_VIS };
-	CProgressCtrl	m_ProgressCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GeneratingVisDialogClass)
+  enum { IDD = IDD_GENERATING_VIS };
+  CProgressCtrl m_ProgressCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GeneratingVisDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GeneratingVisDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GeneratingVisDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GeneratingVisDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Public methods
-		/////////////////////////////////////////////////////////////////////////////////
-		void			Set_Ignore_Bias (bool onoff)	{ m_IgnoreBias = onoff; }
+public:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////////
+  void Set_Ignore_Bias(bool onoff) { m_IgnoreBias = onoff; }
 
-		void			Set_Farm_Mode (int index, int total) { m_ProcessorIndex = index; m_TotalProcessors = total; m_FarmMode = true; }
+  void Set_Farm_Mode(int index, int total) {
+    m_ProcessorIndex = index;
+    m_TotalProcessors = total;
+    m_FarmMode = true;
+  }
 
-		void			Do_Selection_Only (bool sel_only)	{ m_SelectionOnly = sel_only; }
+  void Do_Selection_Only(bool sel_only) { m_SelectionOnly = sel_only; }
 
-		void			Set_Sample_Height (float sample_height) { m_SampleHeight = sample_height; }
+  void Set_Sample_Height(float sample_height) { m_SampleHeight = sample_height; }
 
-	protected:
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Protected methods
-		/////////////////////////////////////////////////////////////////////////////////
-		void			Update_Time (void);
-		void			Build_Node_List (NODE_LIST &list);
-		void			Render_Vis_Points (VIS_POINT_LIST &point_list);
-		bool			On_Manual_Vis_Point_Render (DWORD milliseconds);
-		int			Get_Manual_Point_Count (void);
-		void			Generate_Points (NODE_LIST &node_list, VisPointGeneratorClass &generator);
-		void			Reset_Vis_Data_For_Nodes (NODE_LIST &node_list);
+protected:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////////////////
+  void Update_Time(void);
+  void Build_Node_List(NODE_LIST &list);
+  void Render_Vis_Points(VIS_POINT_LIST &point_list);
+  bool On_Manual_Vis_Point_Render(DWORD milliseconds);
+  int Get_Manual_Point_Count(void);
+  void Generate_Points(NODE_LIST &node_list, VisPointGeneratorClass &generator);
+  void Reset_Vis_Data_For_Nodes(NODE_LIST &node_list);
 
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Protected static methods
-		/////////////////////////////////////////////////////////////////////////////////
-		static bool ManualVisPointCallback (DWORD milliseconds, DWORD param);
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Protected static methods
+  /////////////////////////////////////////////////////////////////////////////////
+  static bool ManualVisPointCallback(DWORD milliseconds, DWORD param);
 
-	private:
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//	Private member data
-		/////////////////////////////////////////////////////////////////////////////////
-		int			m_CurrentPoint;
-		int			m_TotalPoints;
-		DWORD			m_StartTime;
+private:
+  /////////////////////////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////////////////////////
+  int m_CurrentPoint;
+  int m_TotalPoints;
+  DWORD m_StartTime;
 
-		bool			m_IgnoreBias;
-		bool			m_bStop;
-		float			m_Granularity;
-		float			m_SampleHeight;
-		bool			m_SelectionOnly;
+  bool m_IgnoreBias;
+  bool m_bStop;
+  float m_Granularity;
+  float m_SampleHeight;
+  bool m_SelectionOnly;
 
-		int			m_TotalProcessors;
-		int			m_ProcessorIndex;
-		
-		bool			m_FarmMode;
-		CString		m_StatusFilename;
-		CString		m_StatusSection;
+  int m_TotalProcessors;
+  int m_ProcessorIndex;
+
+  bool m_FarmMode;
+  CString m_StatusFilename;
+  CString m_StatusSection;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*************************************************************************** 
- ***    C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S     *** 
- *************************************************************************** 
- *                                                                         * 
- *                 Project Name : Commando/G                               * 
- *                                                                         * 
- *                     $Archive:: /Commando/Code/ww3d2/bmp2d.h            $* 
- *                                                                         * 
- *                      $Author:: Hector_y                                $* 
- *                                                                         * 
- *                     $Modtime:: 2/21/01 1:31p                           $* 
- *                                                                         * 
- *                    $Revision:: 3                                       $* 
- *                                                                         * 
- *-------------------------------------------------------------------------* 
- * Functions:                                                              * 
+/***************************************************************************
+ ***    C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S     ***
+ ***************************************************************************
+ *                                                                         *
+ *                 Project Name : Commando/G                               *
+ *                                                                         *
+ *                     $Archive:: /Commando/Code/ww3d2/bmp2d.h            $*
+ *                                                                         *
+ *                      $Author:: Hector_y                                $*
+ *                                                                         *
+ *                     $Modtime:: 2/21/01 1:31p                           $*
+ *                                                                         *
+ *                    $Revision:: 3                                       $*
+ *                                                                         *
+ *-------------------------------------------------------------------------*
+ * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
@@ -43,17 +43,16 @@
 
 #include "dynamesh.h"
 
-class Bitmap2DObjClass : public DynamicScreenMeshClass
-{
-	public:
-		Bitmap2DObjClass(const char *filename, float norm_x, float norm_y,
-			bool center, bool additive, bool colorizable = false, int width = -1, int height = -1, bool ignore_alpha = false);
-		Bitmap2DObjClass(TextureClass *texture, float norm_x, float norm_y,
-			bool center, bool additive, bool colorizable = false, bool ignore_alpha = false);
-		Bitmap2DObjClass( const Bitmap2DObjClass & src) : DynamicScreenMeshClass(src) {}
+class Bitmap2DObjClass : public DynamicScreenMeshClass {
+public:
+  Bitmap2DObjClass(const char *filename, float norm_x, float norm_y, bool center, bool additive,
+                   bool colorizable = false, int width = -1, int height = -1, bool ignore_alpha = false);
+  Bitmap2DObjClass(TextureClass *texture, float norm_x, float norm_y, bool center, bool additive,
+                   bool colorizable = false, bool ignore_alpha = false);
+  Bitmap2DObjClass(const Bitmap2DObjClass &src) : DynamicScreenMeshClass(src) {}
 
-		virtual RenderObjClass * 	Clone(void) const;
-		virtual int						Class_ID(void) const { return CLASSID_BITMAP2D; }
+  virtual RenderObjClass *Clone(void) const;
+  virtual int Class_ID(void) const { return CLASSID_BITMAP2D; }
 };
 
 #endif

@@ -16,159 +16,148 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/airstripgameobj.h                                                                                                                                        $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 10/01/01 3:44p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 6                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/airstripgameobj.h $Author:: Patrick $*
+ *                                                                                             *
+ *                     $Modtime:: 10/01/01 3:44p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 6                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__AIRSTRIPGAMEOBJ_H
-#define	__AIRSTRIPGAMEOBJ_H
+#ifndef __AIRSTRIPGAMEOBJ_H
+#define __AIRSTRIPGAMEOBJ_H
 
 #include "always.h"
 #include "vehiclefactorygameobj.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
 ////////////////////////////////////////////////////////////////
 class BaseControllerClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	AirStripGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class AirStripGameObjDef : public VehicleFactoryGameObjDef
-{
+class AirStripGameObjDef : public VehicleFactoryGameObjDef {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class AirStripGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class AirStripGameObj;
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	AirStripGameObjDef (void);
-	~AirStripGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  AirStripGameObjDef(void);
+  ~AirStripGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Editable support
-	////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE (AirStripGameObjDef, VehicleFactoryGameObjDef);
+  ////////////////////////////////////////////////////////////////
+  //	Editable support
+  ////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(AirStripGameObjDef, VehicleFactoryGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	int					CinematicDefID;
-	int					CinematicSlotIndex;
-	float					CinematicLengthToDropOff;
-	float					CinematicLengthToVehicleDisplay;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  int CinematicDefID;
+  int CinematicSlotIndex;
+  float CinematicLengthToDropOff;
+  float CinematicLengthToVehicleDisplay;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	AirStripGameObj
 //
 ////////////////////////////////////////////////////////////////
-class AirStripGameObj : public VehicleFactoryGameObj
-{
+class AirStripGameObj : public VehicleFactoryGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  AirStripGameObj(void);
+  ~AirStripGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	AirStripGameObj (void);
-	~AirStripGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const AirStripGameObjDef &definition);
+  const AirStripGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void					Init( void );
-	void								Init (const AirStripGameObjDef & definition);
-	const AirStripGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  AirStripGameObj *As_AirStripGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	AirStripGameObj *				As_AirStripGameObj (void)	{ return this; }
+  //
+  // Persist support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Persist support
-	//
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &	Get_Factory (void) const;
+  //
+  //	From BuildingGameObj
+  //
+  void CnC_Initialize(BaseControllerClass *base);
 
-	//
-	//	From BuildingGameObj
-	//
-	void					CnC_Initialize (BaseControllerClass *base);
-	
-	//
-	//	GameObj methods
-	//
-	void					Think (void);
+  //
+  //	GameObj methods
+  //
+  void Think(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
+  void Begin_Generation(void);
+  void Start_Cinematic(void);
+  void Attach_Vehicle(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
-	void					Begin_Generation (void);
-	void					Start_Cinematic (void);
-	void					Attach_Vehicle (void);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float					CinematicStartTimer;	
-	float					EndTimer;
-	float					DisplayVehicleTimer;
-	float					ClearDropoffZoneTimer;
-	bool					IsCinematicStarted;
-	PhysicalGameObj *	CinematicObject;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float CinematicStartTimer;
+  float EndTimer;
+  float DisplayVehicleTimer;
+  float ClearDropoffZoneTimer;
+  bool IsCinematicStarted;
+  PhysicalGameObj *CinematicObject;
 };
 
-
-#endif	// __AIRSTRIPGAMEOBJ_H
-
+#endif // __AIRSTRIPGAMEOBJ_H

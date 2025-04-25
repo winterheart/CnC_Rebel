@@ -32,107 +32,100 @@ class DefinitionClass;
 class ParameterCtrlClass;
 class ParameterClass;
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // SpecSheetClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class SpecSheetClass : public CWnd
-{
-// Construction
+class SpecSheetClass : public CWnd {
+  // Construction
 public:
-	SpecSheetClass (DefinitionClass *definition);
+  SpecSheetClass(DefinitionClass *definition);
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(SpecSheetClass)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
-public:
-	virtual ~SpecSheetClass();
-
-	// Generated message map functions
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(SpecSheetClass)
 protected:
-	//{{AFX_MSG(SpecSheetClass)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg LRESULT OnNcHitTest(CPoint point);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
-	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
-	afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  virtual BOOL PreCreateWindow(CREATESTRUCT &cs);
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
+
+  // Implementation
+public:
+  virtual ~SpecSheetClass();
+
+  // Generated message map functions
+protected:
+  //{{AFX_MSG(SpecSheetClass)
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg LRESULT OnNcHitTest(CPoint point);
+  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
+  afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
+  afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
+  afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnDestroy();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
-	void					Apply (void);
-	DefinitionClass *	Get_Definition (void) const { return m_Definition; }
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
+  void Apply(void);
+  DefinitionClass *Get_Definition(void) const { return m_Definition; }
 
-	int					Get_Parameter_Count (void) const { return m_CtrlList.Count (); }
-	ParameterClass *	Get_Parameter (int index);
-	void					Get_Current_Filename_Value (int index, CString &value);
+  int Get_Parameter_Count(void) const { return m_CtrlList.Count(); }
+  ParameterClass *Get_Parameter(int index);
+  void Get_Current_Filename_Value(int index, CString &value);
 
-	// Accessors
-	bool					Is_Temp (void) const			{ return m_IsTemp; }
-	void					Set_Is_Temp (bool is_temp)	{ m_IsTemp = is_temp; }
+  // Accessors
+  bool Is_Temp(void) const { return m_IsTemp; }
+  void Set_Is_Temp(bool is_temp) { m_IsTemp = is_temp; }
 
-	bool					Is_Read_Only (void) const	{ return m_IsReadOnly; }
-	void					Set_Read_Only (bool onoff) { m_IsReadOnly = onoff; }
+  bool Is_Read_Only(void) const { return m_IsReadOnly; }
+  void Set_Read_Only(bool onoff) { m_IsReadOnly = onoff; }
 
-	void					Show_File_Only (bool onoff)		{ m_ShowFileOnly = onoff; }	
-	bool					Were_Files_Changed (void) const	{ return m_WereFilesChanged; }
+  void Show_File_Only(bool onoff) { m_ShowFileOnly = onoff; }
+  bool Were_Files_Changed(void) const { return m_WereFilesChanged; }
 
-	void					Set_Asset_Tree_Only (bool onoff)				{ m_AssetTreeOnly = onoff; }
+  void Set_Asset_Tree_Only(bool onoff) { m_AssetTreeOnly = onoff; }
 
 protected:
-
-	///////////////////////////////////////////////////////////////////
-	//	Protected methods
-	///////////////////////////////////////////////////////////////////
-	bool					Is_Filtered (ParameterClass *parameter);
-	void					Add_Parameter (ParameterClass *parameter);
-	void					Scroll_Controls (int amount);
-	void					Set_Scroll_Pos (int new_pos);
+  ///////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ///////////////////////////////////////////////////////////////////
+  bool Is_Filtered(ParameterClass *parameter);
+  void Add_Parameter(ParameterClass *parameter);
+  void Scroll_Controls(int amount);
+  void Set_Scroll_Pos(int new_pos);
 
 private:
+  ///////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////
+  bool m_IsReadOnly;
+  bool m_IsTemp;
+  bool m_ShowFileOnly;
+  bool m_WereFilesChanged;
+  bool m_IsScrolling;
+  bool m_AssetTreeOnly;
+  CPoint m_LastPoint;
+  int m_ScrollPos;
+  int m_MaxScrollPos;
 
-	///////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////
-	bool					m_IsReadOnly;
-	bool					m_IsTemp;
-	bool					m_ShowFileOnly;
-	bool					m_WereFilesChanged;
-	bool					m_IsScrolling;
-	bool					m_AssetTreeOnly;
-	CPoint				m_LastPoint;
-	int					m_ScrollPos;
-	int					m_MaxScrollPos;
+  DefinitionClass *m_Definition;
 
-	DefinitionClass *	m_Definition;
-
-	DynamicVectorClass<ParameterCtrlClass *>	m_CtrlList;
+  DynamicVectorClass<ParameterCtrlClass *> m_CtrlList;
 };
 
 /////////////////////////////////////////////////////////////////////////////

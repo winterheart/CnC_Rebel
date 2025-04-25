@@ -22,7 +22,7 @@
  *                                                                                             *
  *                 Project Name : LevelEdit                                                    *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/wwphys/PathfindSectorBuilder.h                                                                                                                                   $Revision:: 2                                                           $*
+ *                     $Archive:: /Commando/Code/wwphys/PathfindSectorBuilder.h $Revision:: 2 $*
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
@@ -47,73 +47,64 @@
 class Phys3Class;
 class SimDirInfoClass;
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 //	Typedefs
 //
 //////////////////////////////////////////////////////////////////////////
-typedef DynamicVectorClass<PathfindSectorClass *>	SECTOR_LIST;
-typedef TypedGridCullSystemClass<BodyBoxCullObj>	BODY_BOX_CULLING_SYSTEM;
-
-
+typedef DynamicVectorClass<PathfindSectorClass *> SECTOR_LIST;
+typedef TypedGridCullSystemClass<BodyBoxCullObj> BODY_BOX_CULLING_SYSTEM;
 
 //////////////////////////////////////////////////////////////////////////
 //
 //	PathfindSectorBuilderClass
 //
 //////////////////////////////////////////////////////////////////////////
-class PathfindSectorBuilderClass
-{
-	public:
+class PathfindSectorBuilderClass {
+public:
+  ////////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////////
+  PathfindSectorBuilderClass(void);
+  ~PathfindSectorBuilderClass(void);
 
-		////////////////////////////////////////////////////////////////////
-		//	Public constructors/destructors
-		////////////////////////////////////////////////////////////////////
-		PathfindSectorBuilderClass (void);
-		~PathfindSectorBuilderClass (void);
+  ////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////
+  void Generate_Sectors(const Vector3 &start_pos);
 
-		////////////////////////////////////////////////////////////////////
-		//	Public methods
-		////////////////////////////////////////////////////////////////////
-		void					Generate_Sectors (const Vector3 &start_pos);
+protected:
+  ////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////////
+  void Do_Physics_Sim(const Vector3 &start_pos, PATHFIND_DIR direction);
+  void Floodfill(const Vector3 &start_pos);
 
-	protected:
+  BodyBoxCullObj *Get_Sector_Occupant(const Vector3 &pos);
+  BodyBoxCullObj *Mark_Sector(const Vector3 &pos);
+  void Mark_Sector(BodyBoxCullObj *body_box);
 
-		////////////////////////////////////////////////////////////////////
-		//	Protected methods
-		////////////////////////////////////////////////////////////////////
-		void					Do_Physics_Sim (const Vector3 &start_pos, PATHFIND_DIR direction);
-		void					Floodfill (const Vector3 &start_pos);
+  void Compress_Sectors(void);
+  void Free_Sectors(void);
 
-		BodyBoxCullObj *	Get_Sector_Occupant (const Vector3 &pos);
-		BodyBoxCullObj *	Mark_Sector (const Vector3 &pos);
-		void					Mark_Sector (BodyBoxCullObj *body_box);
+  void Import_Raw_Data(void);
 
-		void					Compress_Sectors (void);
-		void					Free_Sectors (void);
-		
-		void					Import_Raw_Data (void);
-		
-	private:
+private:
+  ////////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////////
+  BodyBoxCullObj *m_CurrentSector;
+  Phys3Class *m_PhysicsSim;
+  PhysControllerClass m_Controller;
+  Vector3 m_SimBoundingBox;
+  int m_RecurseLevel;
+  int m_RepartitionCount;
+  bool m_bCancel;
 
-		////////////////////////////////////////////////////////////////////
-		//	Private member data
-		////////////////////////////////////////////////////////////////////
-		BodyBoxCullObj *					m_CurrentSector;
-		Phys3Class *						m_PhysicsSim;
-		PhysControllerClass				m_Controller;		
-		Vector3								m_SimBoundingBox;
-		int									m_RecurseLevel;
-		int									m_RepartitionCount;
-		bool									m_bCancel;		
-		
-		SECTOR_LIST							m_SectorList;
-		BODY_BOX_LIST						m_FloodFillProcessList;
-		BODY_BOX_CULLING_SYSTEM			m_BodyBoxCullingSystem;
-		SimDirInfoClass *					m_DirInfo;
+  SECTOR_LIST m_SectorList;
+  BODY_BOX_LIST m_FloodFillProcessList;
+  BODY_BOX_CULLING_SYSTEM m_BodyBoxCullingSystem;
+  SimDirInfoClass *m_DirInfo;
 };
 
-
 #endif //_PATHFIND_SECTOR_BUILDER_H
-

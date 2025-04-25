@@ -34,109 +34,79 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "listener.h"
 #include "wwaudio.h"
 #include "utils.h"
 #include "soundhandle.h"
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Listener3DClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-Listener3DClass::Listener3DClass (void)
-{
-	return ;
-}
-
+Listener3DClass::Listener3DClass(void) { return; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	~Listener3DClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-Listener3DClass::~Listener3DClass (void)
-{
-	Free_Miles_Handle ();
-	return ;
+Listener3DClass::~Listener3DClass(void) {
+  Free_Miles_Handle();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Initialize_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void
-Listener3DClass::Initialize_Miles_Handle (void)
-{
-	MMSLockClass lock;
+void Listener3DClass::Initialize_Miles_Handle(void) {
+  MMSLockClass lock;
 
-	// Do we have a valid sample handle from miles?
-	if (m_SoundHandle != NULL) {
-		
-		::AIL_set_3D_position (m_SoundHandle->Get_H3DSAMPLE (), 0.0F, 0.0F, 0.0F);
-		::AIL_set_3D_orientation (m_SoundHandle->Get_H3DSAMPLE (),
-				0.0F, 0.0F, 1.0F,
-				0.0F, 1.0F, 0.0F);
+  // Do we have a valid sample handle from miles?
+  if (m_SoundHandle != NULL) {
 
+    ::AIL_set_3D_position(m_SoundHandle->Get_H3DSAMPLE(), 0.0F, 0.0F, 0.0F);
+    ::AIL_set_3D_orientation(m_SoundHandle->Get_H3DSAMPLE(), 0.0F, 0.0F, 1.0F, 0.0F, 1.0F, 0.0F);
 
-		// Associate this object instance with the handle
-		m_SoundHandle->Set_Sample_User_Data (INFO_OBJECT_PTR, (S32)this);
-	}
-		
-	return ;
+    // Associate this object instance with the handle
+    m_SoundHandle->Set_Sample_User_Data(INFO_OBJECT_PTR, (S32)this);
+  }
+
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Allocate_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void
-Listener3DClass::Allocate_Miles_Handle (void)
-{
-	return ;
-}
-
+void Listener3DClass::Allocate_Miles_Handle(void) { return; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Free_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void
-Listener3DClass::Free_Miles_Handle (void)
-{
-	return ;
-}
-
+void Listener3DClass::Free_Miles_Handle(void) { return; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	On_Added_To_Scene
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void
-Listener3DClass::On_Added_To_Scene (void)
-{
-	Allocate_Miles_Handle ();		
-	return ;
+void Listener3DClass::On_Added_To_Scene(void) {
+  Allocate_Miles_Handle();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	On_Removed_From_Scene
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void
-Listener3DClass::On_Removed_From_Scene (void)
-{
-	Free_Miles_Handle ();		
-	return ;
+void Listener3DClass::On_Removed_From_Scene(void) {
+  Free_Miles_Handle();
+  return;
 }
-

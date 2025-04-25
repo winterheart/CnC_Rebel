@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -51,177 +50,151 @@
 class PresetClass;
 class WaypathNodeClass;
 
-
 ////////////////////////////////////////////////////////////////////////////
 //
 //	WaypointNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class WaypointNodeClass : public NodeClass
-{
+class WaypointNodeClass : public NodeClass {
 public:
+  //////////////////////////////////////////////////////////////////
+  //	Public flags
+  //////////////////////////////////////////////////////////////////
+  typedef enum {
+    FLAG_REQUIRES_JUMP = 0x00000001,
 
-	//////////////////////////////////////////////////////////////////
-	//	Public flags
-	//////////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		FLAG_REQUIRES_JUMP	= 0x00000001,
+  } FLAGS;
 
-	} FLAGS;
+  typedef enum {
+    MODEL_START_PT = 1,
+    MODEL_MIDDLE_PT,
+    MODEL_END_PT,
 
-	typedef enum
-	{
-		MODEL_START_PT			= 1,
-		MODEL_MIDDLE_PT,
-		MODEL_END_PT,
+  } MODEL;
 
-	} MODEL;
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  WaypointNodeClass(PresetClass *preset = NULL);
+  WaypointNodeClass(const WaypointNodeClass &src);
+  ~WaypointNodeClass(void);
 
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	WaypointNodeClass (PresetClass *preset = NULL);
-	WaypointNodeClass (const WaypointNodeClass &src);
-	~WaypointNodeClass (void);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const WaypointNodeClass &operator=(const WaypointNodeClass &src);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const WaypointNodeClass &operator= (const WaypointNodeClass &src);
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
+  //
+  //	RTTI
+  //
+  WaypointNodeClass *As_WaypointNodeClass(void) { return this; }
 
-	//
-	//	RTTI
-	//
-	WaypointNodeClass *As_WaypointNodeClass (void)	{ return this; }
-	
-	//
-	// From NodeClass
-	//
-	void			Initialize (void);
-	NodeClass *	Clone (void)								{ return new WaypointNodeClass (*this); }
-	NODE_TYPE	Get_Type (void) const					{ return NODE_TYPE_WAYPOINT; }
-	int			Get_Icon_Index (void) const			{ return WAYPATH_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const			{ return m_PhysObj; }
-	bool			Is_Static (void) const					{ return false; }
-	bool			Show_Settings_Dialog (void);
-	bool			Can_Be_Rotated_Freely (void) const	{ return false; }
-	void			On_Transform (void);
-	void			On_Translate (void);
-	void			On_Delete (void);
+  //
+  // From NodeClass
+  //
+  void Initialize(void);
+  NodeClass *Clone(void) { return new WaypointNodeClass(*this); }
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_WAYPOINT; }
+  int Get_Icon_Index(void) const { return WAYPATH_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return m_PhysObj; }
+  bool Is_Static(void) const { return false; }
+  bool Show_Settings_Dialog(void);
+  bool Can_Be_Rotated_Freely(void) const { return false; }
+  void On_Transform(void);
+  void On_Translate(void);
+  void On_Delete(void);
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//	From PersistClass
-	bool			Save (ChunkSaveClass &csave);
-	bool			Load (ChunkLoadClass &cload);
+  //	From PersistClass
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
-	//
-	// WaypointNodeClass specific
-	//
-	WaypathNodeClass *Peek_Waypath (void) const;
-	void					Set_Waypath (WaypathNodeClass *waypath);
-	void					Set_Model (WaypointNodeClass::MODEL model);
+  //
+  // WaypointNodeClass specific
+  //
+  WaypathNodeClass *Peek_Waypath(void) const;
+  void Set_Waypath(WaypathNodeClass *waypath);
+  void Set_Model(WaypointNodeClass::MODEL model);
 
-	void			Set_Flags (int flags);
-	void			Set_Flag (int flag, bool onoff);
-	bool			Get_Flag (int flag);
+  void Set_Flags(int flags);
+  void Set_Flag(int flag, bool onoff);
+  bool Get_Flag(int flag);
 
-	float			Get_Speed (void) const;
-	void			Set_Speed (float speed);
+  float Get_Speed(void) const;
+  void Set_Speed(float speed);
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	
-	//
-	//	Save/load methods
-	//
-	bool							Load_Variables (ChunkLoadClass &cload);
+  //
+  //	Save/load methods
+  //
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	//
-	//	Model methods
-	//
-	void							Update_Model (void);
+  //
+  //	Model methods
+  //
+  void Update_Model(void);
 
-	//
-	//	Parent methods
-	//
-	void							Parent_Set_Transform (const Matrix3D &tm);
-	void							Parent_Set_Position (const Vector3 &pos);
+  //
+  //	Parent methods
+  //
+  void Parent_Set_Transform(const Matrix3D &tm);
+  void Parent_Set_Position(const Vector3 &pos);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	DecorationPhysClass *	m_PhysObj;
-	WaypathNodeClass *		m_Waypath;
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  DecorationPhysClass *m_PhysObj;
+  WaypathNodeClass *m_Waypath;
 
-	float							m_Speed;
-	int							m_Flags;
-	MODEL							m_ModelType;
+  float m_Speed;
+  int m_Flags;
+  MODEL m_ModelType;
 
-
-	//////////////////////////////////////////////////////////////////
-	//	Friends
-	//////////////////////////////////////////////////////////////////
-	friend class WaypathNodeClass;
+  //////////////////////////////////////////////////////////////////
+  //	Friends
+  //////////////////////////////////////////////////////////////////
+  friend class WaypathNodeClass;
 };
 
 //////////////////////////////////////////////////////////////////
 //	Set_Waypath
 //////////////////////////////////////////////////////////////////
-inline void
-WaypointNodeClass::Set_Waypath (WaypathNodeClass *waypath)
-{
-	m_Waypath = waypath;
-}
-
+inline void WaypointNodeClass::Set_Waypath(WaypathNodeClass *waypath) { m_Waypath = waypath; }
 
 //////////////////////////////////////////////////////////////////
 //	Peek_Waypath
 //////////////////////////////////////////////////////////////////
-inline WaypathNodeClass *
-WaypointNodeClass::Peek_Waypath (void) const
-{
-	return m_Waypath;
-}
-
+inline WaypathNodeClass *WaypointNodeClass::Peek_Waypath(void) const { return m_Waypath; }
 
 //////////////////////////////////////////////////////////////////
 //	Get_Speed
 //////////////////////////////////////////////////////////////////
-inline float
-WaypointNodeClass::Get_Speed (void) const
-{
-	return m_Speed;
-}
-
+inline float WaypointNodeClass::Get_Speed(void) const { return m_Speed; }
 
 //////////////////////////////////////////////////////////////////
 //	Set_Speed
 //////////////////////////////////////////////////////////////////
-inline void
-WaypointNodeClass::Set_Speed (float speed)
-{
-	m_Speed = speed;
-	return ;
+inline void WaypointNodeClass::Set_Speed(float speed) {
+  m_Speed = speed;
+  return;
 }
 
 #endif //__WAYPOINT_NODE_H
-

@@ -20,7 +20,7 @@
 // Filename:     regbool.cpp
 // Author:       Tom Spencer-Smith
 // Date:         Dec 1998
-// Description:  
+// Description:
 //
 
 #include "regbool.h" // I WANNA BE FIRST!
@@ -37,42 +37,37 @@
 cRegistryBool::cRegistryBool() {}
 
 //-----------------------------------------------------------------------------
-cRegistryBool::cRegistryBool(LPCSTR registry_location, LPCSTR key_name, bool default_value)
-{
-	WWMEMLOG(MEM_GAMEDATA);
+cRegistryBool::cRegistryBool(LPCSTR registry_location, LPCSTR key_name, bool default_value) {
+  WWMEMLOG(MEM_GAMEDATA);
 
-	WWASSERT(registry_location != NULL);
-   WWASSERT(key_name != NULL);
-   WWASSERT(strlen(registry_location) < sizeof(RegistryLocation));
-   WWASSERT(strlen(key_name) < sizeof(KeyName));
-   strcpy(RegistryLocation, registry_location);
-   strcpy(KeyName, key_name);
+  WWASSERT(registry_location != NULL);
+  WWASSERT(key_name != NULL);
+  WWASSERT(strlen(registry_location) < sizeof(RegistryLocation));
+  WWASSERT(strlen(key_name) < sizeof(KeyName));
+  strcpy(RegistryLocation, registry_location);
+  strcpy(KeyName, key_name);
 
-	RegistryClass * registry = new RegistryClass(RegistryLocation);
-	WWASSERT(registry != NULL && registry->Is_Valid());
-   Value = registry->Get_Int(KeyName, default_value == 1);
-   delete registry;
+  RegistryClass *registry = new RegistryClass(RegistryLocation);
+  WWASSERT(registry != NULL && registry->Is_Valid());
+  Value = registry->Get_Int(KeyName, default_value == 1);
+  delete registry;
 
-   Set(Value == 1);
+  Set(Value == 1);
 }
 
 //-----------------------------------------------------------------------------
-bool cRegistryBool::Toggle(void)
-{
-   return Set(!Value);
-}
+bool cRegistryBool::Toggle(void) { return Set(!Value); }
 
 //-----------------------------------------------------------------------------
-bool cRegistryBool::Set(bool value)
-{
-   Value = value;
+bool cRegistryBool::Set(bool value) {
+  Value = value;
 
-	WWASSERT(RegistryLocation != NULL);
-   WWASSERT(KeyName != NULL);
-	RegistryClass * registry = new RegistryClass(RegistryLocation);
-	WWASSERT(registry != NULL && registry->Is_Valid());
-   registry->Set_Int(KeyName, Value);
-   delete registry;
+  WWASSERT(RegistryLocation != NULL);
+  WWASSERT(KeyName != NULL);
+  RegistryClass *registry = new RegistryClass(RegistryLocation);
+  WWASSERT(registry != NULL && registry->Is_Valid());
+  registry->Set_Int(KeyName, Value);
+  delete registry;
 
-   return Value == 1;
+  return Value == 1;
 }

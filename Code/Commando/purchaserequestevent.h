@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/commando/purchaserequestevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 1/05/02 5:45p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 5                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/commando/purchaserequestevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 1/05/02 5:45p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 5                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __PURCHASEREQUESTEVENT_H__
@@ -41,33 +41,30 @@
 #include "netclassids.h"
 #include "vendor.h"
 
-
 //-----------------------------------------------------------------------------
 //
 // A C->S mirrored object for C&C mode purchase requests
 //
-class	cPurchaseRequestEvent : public cNetEvent
-{
+class cPurchaseRequestEvent : public cNetEvent {
 public:
-   cPurchaseRequestEvent(void);
+  cPurchaseRequestEvent(void);
 
-	void						Init(VendorClass::PURCHASE_TYPE type, int item_index, int alt_skin_index);
+  void Init(VendorClass::PURCHASE_TYPE type, int item_index, int alt_skin_index);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_PURCHASEREQUESTEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_PURCHASEREQUESTEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int		SenderId;
-	int		PurchaseType;
-	int		ItemIndex;
-	int		AltSkinIndex;
+  int SenderId;
+  int PurchaseType;
+  int ItemIndex;
+  int AltSkinIndex;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __PURCHASEREQUESTEVENT_H__
+#endif // __PURCHASEREQUESTEVENT_H__

@@ -41,79 +41,71 @@
 #ifndef __EDITORONLYOBJECTNODE_H
 #define __EDITORONLYOBJECTNODE_H
 
-
 #include "node.h"
 #include "icons.h"
 #include "decophys.h"
-
 
 //////////////////////////////////////////////////////////////////////
 // Forward declarations
 //////////////////////////////////////////////////////////////////////
 class PresetClass;
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	EditorOnlyObjectNodeClass
 //
 //////////////////////////////////////////////////////////////////////
-class EditorOnlyObjectNodeClass : public NodeClass
-{
+class EditorOnlyObjectNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	EditorOnlyObjectNodeClass (PresetClass *preset = NULL);
-	EditorOnlyObjectNodeClass (const EditorOnlyObjectNodeClass &src);
-	~EditorOnlyObjectNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  EditorOnlyObjectNodeClass(PresetClass *preset = NULL);
+  EditorOnlyObjectNodeClass(const EditorOnlyObjectNodeClass &src);
+  ~EditorOnlyObjectNodeClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const EditorOnlyObjectNodeClass &operator= (const EditorOnlyObjectNodeClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const EditorOnlyObjectNodeClass &operator=(const EditorOnlyObjectNodeClass &src);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// From PersistClass
-	//
-	const PersistFactoryClass &	Get_Factory (void) const;
-	
-	//
-	// Inherited
-	//
-	NodeClass *	Clone (void)							{ return new EditorOnlyObjectNodeClass (*this); }
-	void			Initialize (void);
-	NODE_TYPE	Get_Type (void) const				{ return NODE_TYPE_EDITOR_ONLY_OBJ; }
-	int			Get_Icon_Index (void) const		{ return OBJECT_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const		{ return DisplayObj; }
-	bool			Is_Static (void) const				{ return false; }
-	void			Add_To_Scene (void);
-	void			Remove_From_Scene (void);
+  //
+  // From PersistClass
+  //
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  // Inherited
+  //
+  NodeClass *Clone(void) { return new EditorOnlyObjectNodeClass(*this); }
+  void Initialize(void);
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_EDITOR_ONLY_OBJ; }
+  int Get_Icon_Index(void) const { return OBJECT_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return DisplayObj; }
+  bool Is_Static(void) const { return false; }
+  void Add_To_Scene(void);
+  void Remove_From_Scene(void);
+
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
 protected:
-
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
 
 private:
-
-	//////////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////////
-	DecorationPhysClass *		DisplayObj;
+  //////////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////////
+  DecorationPhysClass *DisplayObj;
 };
-
 
 #endif //__EDITORONLYOBJECTNODE_H

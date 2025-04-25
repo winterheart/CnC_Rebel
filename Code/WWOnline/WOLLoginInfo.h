@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLLoginInfo.h $
-*
-* DESCRIPTION
-*     LoginInfo encapsulates a user's persona login information.
-*     LoginInfo handles the storage/retrival of nicknames/passwords also.
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 10 $
-*     $Modtime: 1/18/02 11:46p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLLoginInfo.h $
+ *
+ * DESCRIPTION
+ *     LoginInfo encapsulates a user's persona login information.
+ *     LoginInfo handles the storage/retrival of nicknames/passwords also.
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 10 $
+ *     $Modtime: 1/18/02 11:46p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLLOGININFO_H__
 #define __WOLLOGININFO_H__
@@ -41,8 +41,7 @@
 #include "RefPtr.h"
 #include <WWLib\WideString.h>
 
-namespace WOL
-{
+namespace WOL {
 #include <wolapi\wolapi.h>
 }
 
@@ -59,91 +58,79 @@ namespace WOL
 namespace WWOnline {
 
 class LoginInfo;
-typedef std::vector< RefPtr<LoginInfo> > LoginInfoList;
+typedef std::vector<RefPtr<LoginInfo>> LoginInfoList;
 
-class LoginInfo :
-		public RefCounted
-	{
-	public:
-		static const LoginInfoList& GetList(void);
-		static void ClearList(void);
-	
-		static RefPtr<LoginInfo> Find(const wchar_t* nickname);
-		static RefPtr<LoginInfo> Find(const char* nickname);
+class LoginInfo : public RefCounted {
+public:
+  static const LoginInfoList &GetList(void);
+  static void ClearList(void);
 
-		static RefPtr<LoginInfo> Create(const wchar_t* nickname, const wchar_t* password, bool isEncrypted);
-		static RefPtr<LoginInfo> Create(const char* nickname, const char* password, bool isEncrypted);
+  static RefPtr<LoginInfo> Find(const wchar_t *nickname);
+  static RefPtr<LoginInfo> Find(const char *nickname);
 
-		static void StoreLogin(const char* nickname, const char* password, bool isEncrypted,
-			WOL::Locale locale);
+  static RefPtr<LoginInfo> Create(const wchar_t *nickname, const wchar_t *password, bool isEncrypted);
+  static RefPtr<LoginInfo> Create(const char *nickname, const char *password, bool isEncrypted);
 
-		const WideStringClass& GetNickname(void) const
-			{return mNickname;}
+  static void StoreLogin(const char *nickname, const char *password, bool isEncrypted, WOL::Locale locale);
 
-		const WideStringClass& GetPassword(void) const
-			{return mPassword;}
+  const WideStringClass &GetNickname(void) const { return mNickname; }
 
-		void SetPassword(const wchar_t* password, bool isEncrypted);
+  const WideStringClass &GetPassword(void) const { return mPassword; }
 
-		bool IsPasswordEncrypted(void) const
-			{return mIsPasswordEncrypted;}
+  void SetPassword(const wchar_t *password, bool isEncrypted);
 
-		void SetLocale(WOL::Locale locale);
-		WOL::Locale GetLocale(void);
+  bool IsPasswordEncrypted(void) const { return mIsPasswordEncrypted; }
 
-		bool IsStored(void) const
-			{return mIsStored;}
+  void SetLocale(WOL::Locale locale);
+  WOL::Locale GetLocale(void);
 
-		// Remeber the login
-		void Remember(bool store);
+  bool IsStored(void) const { return mIsStored; }
 
-		// Delete login from local storage
-		void Forget(bool purge);
+  // Remeber the login
+  void Remember(bool store);
 
-	protected:
-		LoginInfo(const wchar_t* nickname, const wchar_t* password, bool isEncrypted);
-		virtual ~LoginInfo();
+  // Delete login from local storage
+  void Forget(bool purge);
 
-		// Prevent copy and assignment
-		LoginInfo(const LoginInfo&);
-		const LoginInfo& operator=(const LoginInfo&);
+protected:
+  LoginInfo(const wchar_t *nickname, const wchar_t *password, bool isEncrypted);
+  virtual ~LoginInfo();
 
-		static int IndexOf(const wchar_t* nickname);
-		int IndexOf(void) const;
+  // Prevent copy and assignment
+  LoginInfo(const LoginInfo &);
+  const LoginInfo &operator=(const LoginInfo &);
 
-	private:
-		static LoginInfoList _mLoginList;
+  static int IndexOf(const wchar_t *nickname);
+  int IndexOf(void) const;
 
-		WideStringClass mNickname;
-		WideStringClass mPassword;
-		WOL::Locale mLocale;
+private:
+  static LoginInfoList _mLoginList;
 
-		bool mIsPasswordEncrypted;
-		bool mIsStored;
-	};
+  WideStringClass mNickname;
+  WideStringClass mPassword;
+  WOL::Locale mLocale;
 
+  bool mIsPasswordEncrypted;
+  bool mIsStored;
+};
 
-class NewLoginInfoEvent
-	{
-	public:
-		NewLoginInfoEvent(const RefPtr<LoginInfo>& login, const WideStringClass& message) :
-				mLogin(login), mMessage(message)
-			{}
+class NewLoginInfoEvent {
+public:
+  NewLoginInfoEvent(const RefPtr<LoginInfo> &login, const WideStringClass &message)
+      : mLogin(login), mMessage(message) {}
 
-		const RefPtr<LoginInfo>& GetLogin(void) const
-			{return mLogin;}
+  const RefPtr<LoginInfo> &GetLogin(void) const { return mLogin; }
 
-		const WideStringClass& GetMessage(void) const
-			{return mMessage;}
+  const WideStringClass &GetMessage(void) const { return mMessage; }
 
-	private:
-		NewLoginInfoEvent(const NewLoginInfoEvent&);
-		const NewLoginInfoEvent& operator=(const NewLoginInfoEvent&);
+private:
+  NewLoginInfoEvent(const NewLoginInfoEvent &);
+  const NewLoginInfoEvent &operator=(const NewLoginInfoEvent &);
 
-		RefPtr<LoginInfo> mLogin;
-		WideStringClass mMessage;
-	};
+  RefPtr<LoginInfo> mLogin;
+  WideStringClass mMessage;
+};
 
-}
+} // namespace WWOnline
 
 #endif // __WOLLOGININFO_H__

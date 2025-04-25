@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgmpwolquickmatch.h     $*
  *                                                                                             *
@@ -41,49 +42,42 @@
 #ifndef __DLG_MP_WOL_QUICKMATCH_H
 #define __DLG_MP_WOL_QUICKMATCH_H
 
-
 #include "menudialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolQuickMatchMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolQuickMatchMenuClass : public MenuDialogClass
-{
+class MPWolQuickMatchMenuClass : public MenuDialogClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolQuickMatchMenuClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolQuickMatchMenuClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
-	//
-	//	Debug methods
-	//
-	void		Refresh_Dialog (void);
+  //
+  //	Debug methods
+  //
+  void Refresh_Dialog(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Build_Persona_Combobox(void);
+  void Build_Server_Combobox(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		Build_Persona_Combobox (void);
-	void		Build_Server_Combobox (void);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
 };
 
-
 #endif //__DLG_MP_WOL_QUICKMATCH_H
-

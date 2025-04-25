@@ -28,35 +28,32 @@
 /////////////////////////////////////////////////////////////////////////////
 // VisualOptionsDialogClass dialog
 
-class VisualOptionsDialogClass : public CDialog
-{
-// Construction
+class VisualOptionsDialogClass : public CDialog {
+  // Construction
 public:
-	VisualOptionsDialogClass(CWnd* pParent = NULL);   // standard constructor
+  VisualOptionsDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(VisualOptionsDialogClass)
-	enum { IDD = IDD_VISUAL_OPTS };
-	CSliderCtrl	m_SizeSlider;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(VisualOptionsDialogClass)
+  enum { IDD = IDD_VISUAL_OPTS };
+  CSliderCtrl m_SizeSlider;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(VisualOptionsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(VisualOptionsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(VisualOptionsDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(VisualOptionsDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

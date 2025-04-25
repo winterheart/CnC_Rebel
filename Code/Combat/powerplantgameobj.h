@@ -16,142 +16,131 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/powerplantgameobj.h                   $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 7/16/01 11:20a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/powerplantgameobj.h                   $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 7/16/01 11:20a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__POWERPLANTGAMEOBJ_H
-#define	__POWERPLANTGAMEOBJ_H
+#ifndef __POWERPLANTGAMEOBJ_H
+#define __POWERPLANTGAMEOBJ_H
 
 #include "always.h"
 #include "building.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
 ////////////////////////////////////////////////////////////////
 class BaseControllerClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	PowerPlantGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class PowerPlantGameObjDef : public BuildingGameObjDef
-{
+class PowerPlantGameObjDef : public BuildingGameObjDef {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  PowerPlantGameObjDef(void);
+  ~PowerPlantGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	PowerPlantGameObjDef (void);
-	~PowerPlantGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
-
-	////////////////////////////////////////////////////////////////
-	//	Editable support
-	////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE (PowerPlantGameObjDef, BuildingGameObjDef);
+  ////////////////////////////////////////////////////////////////
+  //	Editable support
+  ////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(PowerPlantGameObjDef, BuildingGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float UnloadTime;
+  float FundsGathered;
+  int HarvesterDefID;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float			UnloadTime;
-	float			FundsGathered;	
-	int			HarvesterDefID;
-
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class PowerPlantGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class PowerPlantGameObj;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	PowerPlantGameObj
 //
 ////////////////////////////////////////////////////////////////
-class PowerPlantGameObj : public BuildingGameObj
-{
+class PowerPlantGameObj : public BuildingGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  PowerPlantGameObj(void);
+  ~PowerPlantGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	PowerPlantGameObj (void);
-	~PowerPlantGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const PowerPlantGameObjDef &definition);
+  const PowerPlantGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void						Init( void );
-	void									Init (const PowerPlantGameObjDef & definition);
-	const PowerPlantGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  PowerPlantGameObj *As_PowerPlantGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	PowerPlantGameObj *				As_PowerPlantGameObj (void)	{ return this; }
+  //
+  // Persist support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Persist support
-	//
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &	Get_Factory (void) const;
-
-	//
-	//	From BuildingGameObj
-	//
-	void									On_Destroyed (void);
-	
+  //
+  //	From BuildingGameObj
+  //
+  void On_Destroyed(void);
 
 private:
-
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 };
 
-
-#endif	//__POWERPLANTGAMEOBJ_H
+#endif //__POWERPLANTGAMEOBJ_H

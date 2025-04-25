@@ -17,22 +17,22 @@
 */
 
 /******************************************************************************
-*
-* NAME
-*     $Archive: /Commando/Code/Commando/WebBrowser.h $
-*
-* DESCRIPTION
-*     Web Browser
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 7 $
-*     $Modtime: 1/15/02 3:06p $
-*
-******************************************************************************/
+ *
+ * NAME
+ *     $Archive: /Commando/Code/Commando/WebBrowser.h $
+ *
+ * DESCRIPTION
+ *     Web Browser
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 7 $
+ *     $Modtime: 1/15/02 3:06p $
+ *
+ ******************************************************************************/
 
 #ifndef __WEBBROWSER_H__
 #define __WEBBROWSER_H__
@@ -44,134 +44,121 @@
 
 class WebBrowser;
 
-class WebEvent :
-		public TypedEventPtr<WebEvent, WebBrowser>
-	{
-	public:
-		typedef enum
-			{
-			None = 0, // NULL event
-			Quit, // User initiated quit
-			CertificationFailed, // Requested page failed certification.
-			} EventID;
+class WebEvent : public TypedEventPtr<WebEvent, WebBrowser> {
+public:
+  typedef enum {
+    None = 0,            // NULL event
+    Quit,                // User initiated quit
+    CertificationFailed, // Requested page failed certification.
+  } EventID;
 
-		//! Retrieve event
-		inline EventID Event(void) const
-			{return mEvent;}
+  //! Retrieve event
+  inline EventID Event(void) const { return mEvent; }
 
-		WebEvent(EventID event, WebBrowser* object) :
-				TypedEventPtr<WebEvent, WebBrowser>(object),
-			  mEvent(event)
-			{}
+  WebEvent(EventID event, WebBrowser *object) : TypedEventPtr<WebEvent, WebBrowser>(object), mEvent(event) {}
 
-	protected:
-		// Prevent copy and assignment
-		WebEvent(const WebEvent&);
-		const WebEvent& operator=(const WebEvent&);
+protected:
+  // Prevent copy and assignment
+  WebEvent(const WebEvent &);
+  const WebEvent &operator=(const WebEvent &);
 
-	private:
-		EventID mEvent;
-	};
+private:
+  EventID mEvent;
+};
 
+class WebBrowser : public IWOLBrowserEvent, public Notifier<WebEvent> {
+public:
+// Initialize browser prerequisites.
+// NOTE: This is for development purpose only; The game installer should handle
+//       these tasks.
+#ifdef _DEBUG
+  static bool InstallPrerequisites(void);
+#endif
 
-class WebBrowser :
-		public IWOLBrowserEvent,
-		public Notifier<WebEvent>
-	{
-	public:
-		// Initialize browser prerequisites.
-		// NOTE: This is for development purpose only; The game installer should handle
-		//       these tasks.
-		#ifdef _DEBUG
-		static bool InstallPrerequisites(void);
-		#endif
+  //! Test if a web page is currently displayed
+  static bool IsWebPageDisplayed(void);
 
-		//! Test if a web page is currently displayed
-		static bool IsWebPageDisplayed(void);
+  //! Create an instance of the embedded browser for Dune Emperor.
+  static WebBrowser *CreateInstance(HWND window);
 
-		//! Create an instance of the embedded browser for Dune Emperor.
-		static WebBrowser* CreateInstance(HWND window);
+  //! Check if browser is embedded or external (True if embedded)
+  bool UsingEmbeddedBrowser(void) const { return (mWOLBrowser != NULL); }
 
-		//! Check if browser is embedded or external (True if embedded)
-		bool UsingEmbeddedBrowser(void) const
-			{return (mWOLBrowser != NULL);}
+  //! Test if the external browser is running
+  bool IsExternalBrowserRunning(void) const;
 
-		//! Test if the external browser is running
-		bool IsExternalBrowserRunning(void) const;
+  //! Display the specified web content.
+  bool ShowWebPage(const char *page);
 
-		//! Display the specified web content.
-		bool ShowWebPage(const char* page);
+  //! Launch the external browser
+  bool LaunchExternal(const char *url);
 
-		//! Launch the external browser
-		bool LaunchExternal(const char* url);
+  //! Show the browser
+  void Show(void);
 
-		//! Show the browser
-		void Show(void);
+  //! Hide the browser
+  void Hide(void);
 
-		//! Hide the browser
-		void Hide(void);
+  //! Test if the browser is visible
+  bool IsVisible(void) const { return mVisible; }
 
-		//! Test if the browser is visible
-		bool IsVisible(void) const
-			{return mVisible;}
+protected:
+  // Protected to prevent direct construction via new, use CreateInstance() instead.
+  WebBrowser();
+  virtual ~WebBrowser();
 
-	protected:
-		// Protected to prevent direct construction via new, use CreateInstance() instead.
-		WebBrowser();
-		virtual ~WebBrowser();
+  // Protected to prevent copy and assignment
+  WebBrowser(const WebBrowser &);
+  const WebBrowser &operator=(const WebBrowser &);
 
-		// Protected to prevent copy and assignment
-		WebBrowser(const WebBrowser&);
-		const WebBrowser& operator=(const WebBrowser&);
+  bool FinalizeCreate(HWND window);
 
-		bool FinalizeCreate(HWND window);
+  bool RetrievePageURL(const char *page, char *url, int size);
+  bool RetrieveHTMLPath(char *path, int size);
 
-		bool RetrievePageURL(const char* page, char* url, int size);
-		bool RetrieveHTMLPath(char* path, int size);
+  DECLARE_NOTIFIER(WebEvent)
 
-		DECLARE_NOTIFIER(WebEvent)
+private:
+  static WebBrowser *_mInstance;
 
-	private:
-		static WebBrowser* _mInstance;
+  ULONG mRefCount;
+  CComPtr<IWOLBrowser> mWOLBrowser;
+  wchar_t mPendingURL[512];
+  bool mVisible;
 
-		ULONG mRefCount;
-		CComPtr<IWOLBrowser> mWOLBrowser;
-		wchar_t mPendingURL[512];
-		bool mVisible;
+  PROCESS_INFORMATION mProcessInfo;
 
-		PROCESS_INFORMATION mProcessInfo;
+  bool mSwitchedMode;
+  int mRestoreWidth;
+  int mRestoreHeight;
+  int mRestoreBits;
 
-		bool mSwitchedMode;
-		int mRestoreWidth;
-		int mRestoreHeight;
-		int mRestoreBits;
+  //---------------------------------------------------------------------------
+  // IUnknown methods
+  //---------------------------------------------------------------------------
+public:
+  HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject);
+  ULONG STDMETHODCALLTYPE AddRef(void);
+  ULONG STDMETHODCALLTYPE Release(void);
 
-	//---------------------------------------------------------------------------
-	// IUnknown methods
-	//---------------------------------------------------------------------------
-	public:
-		HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);
-		ULONG STDMETHODCALLTYPE AddRef(void);
-		ULONG STDMETHODCALLTYPE Release(void);
-
-	//---------------------------------------------------------------------------
-	// IWOLBrowserEvent methods
-	//---------------------------------------------------------------------------
-	private:
-		STDMETHOD(OnScriptQuit)(void);
-		STDMETHOD(OnBeforeNavigate)(const wchar_t* url, const wchar_t* targetFrame);
-		STDMETHOD(OnDocumentComplete)(const wchar_t* url, BOOL topFrame);
-		STDMETHOD(OnDownloadBegin)(void);
-		STDMETHOD(OnProgressChange)(LONG progress, LONG progressMax);
-		STDMETHOD(OnDownloadComplete)(void);
-		STDMETHOD(OnNavigateComplete)(const wchar_t* url);
-		STDMETHOD(OnStatusTextChange)(const wchar_t* statusText);
-		STDMETHOD(OnTitleChange)(const wchar_t* title);
-		STDMETHOD(OnNewWindow)(void);
-		STDMETHOD(OnShowMessage)(const wchar_t* text, const wchar_t* caption, ULONG type, LONG* result);
-		STDMETHOD(OnFailedPageCertification)(void);
-		STDMETHOD(OnErrorMsg)(const wchar_t* error);
-		STDMETHOD(OnRegisterLogin)(const wchar_t* nick, const wchar_t* pass);
-	};
+  //---------------------------------------------------------------------------
+  // IWOLBrowserEvent methods
+  //---------------------------------------------------------------------------
+private:
+  STDMETHOD(OnScriptQuit)(void);
+  STDMETHOD(OnBeforeNavigate)(const wchar_t *url, const wchar_t *targetFrame);
+  STDMETHOD(OnDocumentComplete)(const wchar_t *url, BOOL topFrame);
+  STDMETHOD(OnDownloadBegin)(void);
+  STDMETHOD(OnProgressChange)(LONG progress, LONG progressMax);
+  STDMETHOD(OnDownloadComplete)(void);
+  STDMETHOD(OnNavigateComplete)(const wchar_t *url);
+  STDMETHOD(OnStatusTextChange)(const wchar_t *statusText);
+  STDMETHOD(OnTitleChange)(const wchar_t *title);
+  STDMETHOD(OnNewWindow)(void);
+  STDMETHOD(OnShowMessage)(const wchar_t *text, const wchar_t *caption, ULONG type, LONG *result);
+  STDMETHOD(OnFailedPageCertification)(void);
+  STDMETHOD(OnErrorMsg)(const wchar_t *error);
+  STDMETHOD(OnRegisterLogin)(const wchar_t *nick, const wchar_t *pass);
+};
 
 #endif // __WEBBROWSER_H__

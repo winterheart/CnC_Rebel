@@ -30,37 +30,33 @@
 //
 //	If you can't re-exchange a secret key before every message you could keep a
 //		partial secret key and then include the other part of the key in plaintext.
-//		The key would be the concatenation of the two parts of the key.	
+//		The key would be the concatenation of the two parts of the key.
 //
 
-class RC4Class
-{
+class RC4Class {
 public:
+  RC4Class();
 
-	RC4Class();
+  //
+  // Key length can be 0..256 bytes
+  // Key preparation takes about 0.015 Ms on a 1Ghz PC
+  //
+  void Prepare_Key(const unsigned char *key_data_ptr, int key_data_len);
 
-	//
-	// Key length can be 0..256 bytes
-	// Key preparation takes about 0.015 Ms on a 1Ghz PC
-	//
-	void Prepare_Key(const unsigned char *key_data_ptr, int key_data_len);
-
-	//
-	// In-place encryption.  Call Prepare_Key first!
-	// Only a few clock cycles per byte (9 or so...)
-	//
-	void RC4(unsigned char *buffer_ptr, int buffer_len);
+  //
+  // In-place encryption.  Call Prepare_Key first!
+  // Only a few clock cycles per byte (9 or so...)
+  //
+  void RC4(unsigned char *buffer_ptr, int buffer_len);
 
 private:
+  struct RC4Key {
+    unsigned char State[256];
+    unsigned char X;
+    unsigned char Y;
+  };
 
-	struct RC4Key
-	{      
-		unsigned char State[256];       
-		unsigned char X;        
-		unsigned char Y;
-	};
-
-	RC4Key	Key;
+  RC4Key Key;
 };
 
 #endif

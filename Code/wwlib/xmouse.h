@@ -37,7 +37,7 @@
 #ifndef XMOUSE_H
 #define XMOUSE_H
 
-#include	"trect.h"
+#include "trect.h"
 class Surface;
 class ShapeSet;
 
@@ -64,62 +64,62 @@ class ShapeSet;
 **	drawn upon.
 */
 class Mouse {
-	public:
-		virtual ~Mouse(void) {}
+public:
+  virtual ~Mouse(void) {}
 
-		/*
-		**	Sets the game-drawn mouse imagery.
-		*/
-		virtual void Set_Cursor(int xhotspot, int yhotspot, ShapeSet const * cursor, int shape) = 0;
+  /*
+  **	Sets the game-drawn mouse imagery.
+  */
+  virtual void Set_Cursor(int xhotspot, int yhotspot, ShapeSet const *cursor, int shape) = 0;
 
-		/*
-		**	Controls visibility of the game-drawn mouse.
-		*/
-		virtual void Hide_Mouse(void) = 0;
-		virtual void Show_Mouse(void) = 0;
+  /*
+  **	Controls visibility of the game-drawn mouse.
+  */
+  virtual void Hide_Mouse(void) = 0;
+  virtual void Show_Mouse(void) = 0;
 
-		/*
-		**	Takes control of and releases control of the mouse with
-		**	respect to the operating system. The mouse must be released
-		**	during operations with the operating system. When the mouse is
-		**	relased, it may move outside of the confining rectangle and its
-		**	shape is controlled by the operating sytem.
-		*/
-		virtual void Release_Mouse(void) = 0;
-		virtual void Capture_Mouse(void) = 0;
-		virtual bool Is_Captured(void) const = 0;
+  /*
+  **	Takes control of and releases control of the mouse with
+  **	respect to the operating system. The mouse must be released
+  **	during operations with the operating system. When the mouse is
+  **	relased, it may move outside of the confining rectangle and its
+  **	shape is controlled by the operating sytem.
+  */
+  virtual void Release_Mouse(void) = 0;
+  virtual void Capture_Mouse(void) = 0;
+  virtual bool Is_Captured(void) const = 0;
 
-		/*
-		**	Hide the mouse if it falls within this game screen region.
-		*/
-		virtual void Conditional_Hide_Mouse(Rect region) = 0;
-		virtual void Conditional_Show_Mouse(void) = 0;
+  /*
+  **	Hide the mouse if it falls within this game screen region.
+  */
+  virtual void Conditional_Hide_Mouse(Rect region) = 0;
+  virtual void Conditional_Show_Mouse(void) = 0;
 
-		/*
-		**	Query about the mouse visiblity state and location. If the mouse
-		**	state is zero or greater, then the mouse is visible.
-		*/
-		virtual int Get_Mouse_State(void) const = 0;
-		virtual int Get_Mouse_X(void) const = 0;
-		virtual int Get_Mouse_Y(void) const = 0;
+  /*
+  **	Query about the mouse visiblity state and location. If the mouse
+  **	state is zero or greater, then the mouse is visible.
+  */
+  virtual int Get_Mouse_State(void) const = 0;
+  virtual int Get_Mouse_X(void) const = 0;
+  virtual int Get_Mouse_Y(void) const = 0;
 
-		/*
-		**	Set the mouse location.
-		*/
-		virtual void Set_Mouse_XY( int xpos, int ypos ) = 0;
+  /*
+  **	Set the mouse location.
+  */
+  virtual void Set_Mouse_XY(int xpos, int ypos) = 0;
 
-		/*
-		** The following two routines can be used to render the mouse onto an alternate
-		**	surface.
-		*/
-		virtual void Draw_Mouse(Surface * scr, bool issidebarsurface = false) = 0;
-		virtual void Erase_Mouse(Surface * scr, bool issidebarsurface = false) = 0;
-		//virtual void Erase_Mouse(Surface * scr) = 0;
+  /*
+  ** The following two routines can be used to render the mouse onto an alternate
+  **	surface.
+  */
+  virtual void Draw_Mouse(Surface *scr, bool issidebarsurface = false) = 0;
+  virtual void Erase_Mouse(Surface *scr, bool issidebarsurface = false) = 0;
+  // virtual void Erase_Mouse(Surface * scr) = 0;
 
-		/*
-		**	Converts O/S screen coordinates into game coordinates.
-		*/
-		virtual void Convert_Coordinate(int & x, int & y) const = 0;
+  /*
+  **	Converts O/S screen coordinates into game coordinates.
+  */
+  virtual void Convert_Coordinate(int &x, int &y) const = 0;
 };
 
 #endif

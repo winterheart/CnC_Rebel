@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : LevelEdit																	  *
+ *                 Project Name : LevelEdit
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Tools/LevelEdit/_wwaudio.cpp       $*
  *                                                                                             *
@@ -33,8 +34,6 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-
 
 #include "StdAfx.h"
 #include "WWAudio.H"

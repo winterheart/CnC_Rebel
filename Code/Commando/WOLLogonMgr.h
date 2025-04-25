@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLLogonMgr.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 25 $
-*     $Modtime: 1/14/02 2:04p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLLogonMgr.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 25 $
+ *     $Modtime: 1/14/02 2:04p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLLOGONMGR_H__
 #define __WOLLOGONMGR_H__
@@ -45,85 +45,85 @@
 class DlgWOLWaitEvent;
 class DlgMsgBoxEvent;
 
-typedef enum
-	{
-	WOLLOGON_FAILED = 0,
-	WOLLOGON_SUCCESS,
-	WOLLOGON_CANCEL,
-	WOLLOGON_PATCHREQUIRED
-	} WOLLogonAction;
+typedef enum { WOLLOGON_FAILED = 0, WOLLOGON_SUCCESS, WOLLOGON_CANCEL, WOLLOGON_PATCHREQUIRED } WOLLogonAction;
 
-class WOLLogonMgr :
-		public RefCountClass,
-		public Notifier<WOLLogonAction>,
-		public Observer<DlgWOLLogonEvent>,
-		public Observer<DlgWOLWaitEvent>,
-		public Observer<DlgMsgBoxEvent>,
-		public Observer<WWOnline::ServerError>,
-		public Observer<WWOnline::ConnectionStatus>,
-		public Observer<WWOnline::MessageOfTheDayEvent>
-	{
-	public:
-		// Log onto Westwood Online
-		static void Logon(Observer<WOLLogonAction>* observer);
+class WOLLogonMgr : public RefCountClass,
+                    public Notifier<WOLLogonAction>,
+                    public Observer<DlgWOLLogonEvent>,
+                    public Observer<DlgWOLWaitEvent>,
+                    public Observer<DlgMsgBoxEvent>,
+                    public Observer<WWOnline::ServerError>,
+                    public Observer<WWOnline::ConnectionStatus>,
+                    public Observer<WWOnline::MessageOfTheDayEvent> {
+public:
+  // Log onto Westwood Online
+  static void Logon(Observer<WOLLogonAction> *observer);
 
-		// Log the current user off of Westwood Online.
-		static void Logoff(void);
+  // Log the current user off of Westwood Online.
+  static void Logoff(void);
 
-		// Get the name of the logged in user.
-		static bool GetLoginName(WideStringClass& name);
+  // Get the name of the logged in user.
+  static bool GetLoginName(WideStringClass &name);
 
-		// Get the name of the server logged onto.
-		static bool GetServerName(WideStringClass& name);
+  // Get the name of the server logged onto.
+  static bool GetServerName(WideStringClass &name);
 
-		static RefPtr<WWOnline::IRCServerData> GetDefaultServer(void);
+  static RefPtr<WWOnline::IRCServerData> GetDefaultServer(void);
 
-		static void ConfigureSession(void);
+  static void ConfigureSession(void);
 
-		static void Set_Quiet_Mode(bool mode) {mQuietMode = mode;}
+  static void Set_Quiet_Mode(bool mode) { mQuietMode = mode; }
 
-	protected:
-		typedef enum {DISCONNECTED = 0, DETECTING_BANDWIDTH, FETCHING_SERVERLIST, WAITING_PINGS, WAITING_BANDWIDTH_DIALOG_OKAY, CONNECTING, CONNECTED} LogonState;
+protected:
+  typedef enum {
+    DISCONNECTED = 0,
+    DETECTING_BANDWIDTH,
+    FETCHING_SERVERLIST,
+    WAITING_PINGS,
+    WAITING_BANDWIDTH_DIALOG_OKAY,
+    CONNECTING,
+    CONNECTED
+  } LogonState;
 
-		WOLLogonMgr();
-		~WOLLogonMgr();
+  WOLLogonMgr();
+  ~WOLLogonMgr();
 
-		WOLLogonMgr(const WOLLogonMgr&);
-		const WOLLogonMgr& operator=(const WOLLogonMgr&);
+  WOLLogonMgr(const WOLLogonMgr &);
+  const WOLLogonMgr &operator=(const WOLLogonMgr &);
 
-		RefPtr<WWOnline::IRCServerData> GetPreferredServer(const wchar_t* loginname);
+  RefPtr<WWOnline::IRCServerData> GetPreferredServer(const wchar_t *loginname);
 
-		// Check if the user is connected to a server.
-		bool IsConnectedToServer(const wchar_t* loginname, RefPtr<WWOnline::IRCServerData>& server);
-		bool IsUserLoggedIn(const wchar_t* loginname);
-		bool IsAutoLogin(const wchar_t* loginname);
+  // Check if the user is connected to a server.
+  bool IsConnectedToServer(const wchar_t *loginname, RefPtr<WWOnline::IRCServerData> &server);
+  bool IsUserLoggedIn(const wchar_t *loginname);
+  bool IsAutoLogin(const wchar_t *loginname);
 
-		bool HasServerList(void);
-		bool HasValidPings(void);
+  bool HasServerList(void);
+  bool HasValidPings(void);
 
-		void InitiateLogon(bool forced);
+  void InitiateLogon(bool forced);
 
-		void RememberLogin(void);
+  void RememberLogin(void);
 
-		DECLARE_NOTIFIER(WOLLogonAction)
+  DECLARE_NOTIFIER(WOLLogonAction)
 
-		void HandleNotification(DlgWOLLogonEvent&);
-		void HandleNotification(DlgWOLWaitEvent&);
-		void HandleNotification(DlgMsgBoxEvent&);
-		void HandleNotification(WWOnline::ServerError&);
-		void HandleNotification(WWOnline::ConnectionStatus&);
-		void HandleNotification(WWOnline::MessageOfTheDayEvent&);
+  void HandleNotification(DlgWOLLogonEvent &);
+  void HandleNotification(DlgWOLWaitEvent &);
+  void HandleNotification(DlgMsgBoxEvent &);
+  void HandleNotification(WWOnline::ServerError &);
+  void HandleNotification(WWOnline::ConnectionStatus &);
+  void HandleNotification(WWOnline::MessageOfTheDayEvent &);
 
-	private:
-		static bool mQuietMode;
+private:
+  static bool mQuietMode;
 
-		RefPtr<WWOnline::Session> mWOLSession;
-		LogonState mState;
+  RefPtr<WWOnline::Session> mWOLSession;
+  LogonState mState;
 
-		WideStringClass mLoginName;
-		WideStringClass mPassword;
-		bool mPasswordEncrypted;
-		bool mRememberLogin;
-	};
+  WideStringClass mLoginName;
+  WideStringClass mPassword;
+  bool mPasswordEncrypted;
+  bool mRememberLogin;
+};
 
 #endif // __WOLLOGONMGR_H__

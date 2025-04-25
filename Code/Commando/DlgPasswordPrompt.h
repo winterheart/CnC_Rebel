@@ -17,47 +17,42 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/DlgPasswordPrompt.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 3 $
-*     $Modtime: 11/29/01 9:17p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/DlgPasswordPrompt.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 3 $
+ *     $Modtime: 11/29/01 9:17p $
+ *
+ ******************************************************************************/
 
 #include "Resource.h"
 #include <WWUI\PopupDialog.h>
 #include <WWLib\Signaler.h>
 
-class DlgPasswordPrompt :
-		public PopupDialogClass,
-		public Signaler<DlgPasswordPrompt>
-	{
-	public:
-		static bool DoDialog(Signaler<DlgPasswordPrompt>* target);
+class DlgPasswordPrompt : public PopupDialogClass, public Signaler<DlgPasswordPrompt> {
+public:
+  static bool DoDialog(Signaler<DlgPasswordPrompt> *target);
 
-		const WCHAR* GetPassword(void) const;
+  const WCHAR *GetPassword(void) const;
 
-	protected:
-		DlgPasswordPrompt();
-		~DlgPasswordPrompt();
+protected:
+  DlgPasswordPrompt();
+  ~DlgPasswordPrompt();
 
-		// Prevent copy and assignment
-		DlgPasswordPrompt(const DlgPasswordPrompt&);
-		const DlgPasswordPrompt& operator=(const DlgPasswordPrompt&);
+  // Prevent copy and assignment
+  DlgPasswordPrompt(const DlgPasswordPrompt &);
+  const DlgPasswordPrompt &operator=(const DlgPasswordPrompt &);
 
-		void On_Init_Dialog(void);
-		void On_Command(int ctrlID, int mesage, DWORD param);
-		void On_EditCtrl_Change(EditCtrlClass* edit, int id);
-		void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int id);
-	};
-
-
+  void On_Init_Dialog(void);
+  void On_Command(int ctrlID, int mesage, DWORD param);
+  void On_EditCtrl_Change(EditCtrlClass *edit, int id);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int id);
+};

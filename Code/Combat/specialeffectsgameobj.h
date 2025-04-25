@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Combat/specialeffectsgameobj.h      $*
  *                                                                                             *
@@ -43,116 +44,104 @@
 
 #include "physicalgameobj.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class ChunkSaveClass;
 class ChunkLoadClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	SpecialEffectsGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class SpecialEffectsGameObjDef : public PhysicalGameObjDef
-{
+class SpecialEffectsGameObjDef : public PhysicalGameObjDef {
 public:
-	
-	DECLARE_EDITABLE (SpecialEffectsGameObjDef, PhysicalGameObjDef);
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	SpecialEffectsGameObjDef (void);
-	virtual ~SpecialEffectsGameObjDef (void);
+  DECLARE_EDITABLE(SpecialEffectsGameObjDef, PhysicalGameObjDef);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;	
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  SpecialEffectsGameObjDef(void);
+  virtual ~SpecialEffectsGameObjDef(void);
+
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Save_Variables(ChunkSaveClass &csave);
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void									Save_Variables (ChunkSaveClass &csave);
-	void									Load_Variables (ChunkLoadClass &cload);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  StringClass AnimationName;
+  int SoundDefID;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	StringClass							AnimationName;
-	int									SoundDefID;
-
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class SpecialEffectsGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class SpecialEffectsGameObj;
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	SpecialEffectsGameObj
 //
 ////////////////////////////////////////////////////////////////
-class SpecialEffectsGameObj : public PhysicalGameObj
-{
+class SpecialEffectsGameObj : public PhysicalGameObj {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	SpecialEffectsGameObj (void);
-	virtual ~SpecialEffectsGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  SpecialEffectsGameObj(void);
+  virtual ~SpecialEffectsGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	// Definition support
-	//
-	virtual	void							Init( void );
-	void										Init (const SpecialEffectsGameObjDef &definition);
-	const SpecialEffectsGameObjDef &	Get_Definition (void) const;
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const SpecialEffectsGameObjDef &definition);
+  const SpecialEffectsGameObjDef &Get_Definition(void) const;
 
-	//
-	// From PersistClass
-	//
-	bool										Save (ChunkSaveClass &csave);
-	bool										Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &		Get_Factory (void) const;
+  //
+  // From PersistClass
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Thinking
-	//
-	void										Think (void);
+  //
+  //	Thinking
+  //
+  void Think(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Do_Effect(void);
+  void Save_Variables(ChunkSaveClass &csave);
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void										Do_Effect (void);
-	void										Save_Variables (ChunkSaveClass &csave);
-	void										Load_Variables (ChunkLoadClass &cload);
-
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	float				LifeRemaining;
-	bool				IsInitialized;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  float LifeRemaining;
+  bool IsInitialized;
 };
 
-
 #endif //__SPECIALEFFECTSGAMEOBJ_H
-

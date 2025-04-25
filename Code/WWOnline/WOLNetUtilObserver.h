@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLNetUtilObserver.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 1/22/02 5:53p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLNetUtilObserver.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 1/22/02 5:53p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLNETUTILOBSERVER_H__
 #define __WOLNETUTILOBSERVER_H__
@@ -38,64 +38,61 @@
 #include <windows.h>
 #include "WOLUser.h"
 
-namespace WOL 
-{
+namespace WOL {
 #include <WOLAPI\wolapi.h>
 }
 
-template<typename T> class RefPtr;
+template <typename T> class RefPtr;
 
 namespace WWOnline {
 
 class Session;
 class SquadData;
 
-class NetUtilObserver :
-		public WOL::INetUtilEvent
-	{
-	public:
-		NetUtilObserver();
-		
-		void Init(Session& outer);
+class NetUtilObserver : public WOL::INetUtilEvent {
+public:
+  NetUtilObserver();
 
-		//---------------------------------------------------------------------------
-		// IUnknown methods
-		//---------------------------------------------------------------------------
-		virtual HRESULT STDMETHODCALLTYPE QueryInterface(const IID& iid, void** ppv);
-		virtual ULONG STDMETHODCALLTYPE AddRef(void);
-		virtual ULONG STDMETHODCALLTYPE Release(void);
+  void Init(Session &outer);
 
-		//---------------------------------------------------------------------------
-		// INetUtilEvent Methods
-		//---------------------------------------------------------------------------
-		STDMETHOD(OnPing)(HRESULT hr, int time, unsigned long ip, int handle);
-        
-		STDMETHOD(OnLadderList)(HRESULT hr, WOL::Ladder* list, int count, long time, int keyRung);
-       
-		STDMETHOD(OnGameresSent)(HRESULT hr);
-      
-		STDMETHOD(OnNewNick)(HRESULT hr, LPCSTR message, LPCSTR nick, LPCSTR pass);
-        
-		STDMETHOD(OnAgeCheck)(HRESULT hr, int years, int consent);
-   
-		STDMETHOD(OnWDTState)(HRESULT hr, unsigned char* state, int length);
+  //---------------------------------------------------------------------------
+  // IUnknown methods
+  //---------------------------------------------------------------------------
+  virtual HRESULT STDMETHODCALLTYPE QueryInterface(const IID &iid, void **ppv);
+  virtual ULONG STDMETHODCALLTYPE AddRef(void);
+  virtual ULONG STDMETHODCALLTYPE Release(void);
 
-		STDMETHOD(OnHighscore)(HRESULT hr, WOL::Highscore* list, int count, long time, int keyRung);
+  //---------------------------------------------------------------------------
+  // INetUtilEvent Methods
+  //---------------------------------------------------------------------------
+  STDMETHOD(OnPing)(HRESULT hr, int time, unsigned long ip, int handle);
 
-	protected:
-		virtual ~NetUtilObserver();
+  STDMETHOD(OnLadderList)(HRESULT hr, WOL::Ladder *list, int count, long time, int keyRung);
 
-		NetUtilObserver(const NetUtilObserver&);
-		const NetUtilObserver& operator=(const NetUtilObserver&);
+  STDMETHOD(OnGameresSent)(HRESULT hr);
 
-		void ProcessLadderListResults(WOL::Ladder* list, long timeStamp);
-		void NotifyClanLadderUpdate(const UserList& users, const RefPtr<SquadData>& squad);
+  STDMETHOD(OnNewNick)(HRESULT hr, LPCSTR message, LPCSTR nick, LPCSTR pass);
 
-	private:
-		ULONG mRefCount;
-		Session* mOuter;
-	};
+  STDMETHOD(OnAgeCheck)(HRESULT hr, int years, int consent);
 
-}
+  STDMETHOD(OnWDTState)(HRESULT hr, unsigned char *state, int length);
+
+  STDMETHOD(OnHighscore)(HRESULT hr, WOL::Highscore *list, int count, long time, int keyRung);
+
+protected:
+  virtual ~NetUtilObserver();
+
+  NetUtilObserver(const NetUtilObserver &);
+  const NetUtilObserver &operator=(const NetUtilObserver &);
+
+  void ProcessLadderListResults(WOL::Ladder *list, long timeStamp);
+  void NotifyClanLadderUpdate(const UserList &users, const RefPtr<SquadData> &squad);
+
+private:
+  ULONG mRefCount;
+  Session *mOuter;
+};
+
+} // namespace WWOnline
 
 #endif // _WOLNETUTILOBSERVER_H__

@@ -26,15 +26,13 @@
 #include "always.h"
 #include "dxdefs.h"
 
-class MissingTexture
-{
+class MissingTexture {
 public:
-	static void _Init();
-	static void _Deinit();
+  static void _Init();
+  static void _Deinit();
 
-	static DX_IDirect3DTexture* _Get_Missing_Texture();		// Return a reference to missing texture
-	static DX_IDirect3DSurface* _Create_Missing_Surface();	// Create new surface which contain missing texture image
+  static DX_IDirect3DTexture *_Get_Missing_Texture();    // Return a reference to missing texture
+  static DX_IDirect3DSurface *_Create_Missing_Surface(); // Create new surface which contain missing texture image
 };
-
 
 #endif // DX8_MISSING_TEXTURE

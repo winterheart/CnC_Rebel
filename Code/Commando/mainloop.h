@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/mainloop.h                          $* 
- *                                                                                             * 
- *                      $Author:: Denzil_l                                                    $* 
- *                                                                                             * 
- *                     $Modtime:: 10/18/01 6:21p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/mainloop.h                          $*
+ *                                                                                             *
+ *                      $Author:: Denzil_l                                                    $*
+ *                                                                                             *
+ *                     $Modtime:: 10/18/01 6:21p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef MAINLOOP_H
@@ -41,7 +41,7 @@
 #define UPDATE_EXITCODE 123456789
 #define RESTART_EXITCODE 1
 
-int	Game_Main_Loop(void);
-void	Stop_Main_Loop(int exitCode);
+int Game_Main_Loop(void);
+void Stop_Main_Loop(int exitCode);
 
-#endif 
+#endif

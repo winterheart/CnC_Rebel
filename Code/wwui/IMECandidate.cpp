@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/wwui/IMECandidate.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 4 $
-*     $Modtime: 1/12/02 9:43p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/wwui/IMECandidate.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 4 $
+ *     $Modtime: 1/12/02 9:43p $
+ *
+ ******************************************************************************/
 
 #include "IMECandidate.h"
 #include "WWDebug.h"
@@ -38,509 +38,445 @@
 namespace IME {
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::IMECandidate
-*
-* DESCRIPTION
-*     Default constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::IMECandidate
+ *
+ * DESCRIPTION
+ *     Default constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-IMECandidate::IMECandidate() :
-		mCandidateSize(0),
-		mCandidates(NULL)
-	{
-	Close();
-	}
-
+IMECandidate::IMECandidate() : mCandidateSize(0), mCandidates(NULL) { Close(); }
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::~IMECandidate
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::~IMECandidate
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-IMECandidate::~IMECandidate()
-	{
-	if (mCandidates)
-		{
-		delete[] mCandidates;
-		}
-	}
-
+IMECandidate::~IMECandidate() {
+  if (mCandidates) {
+    delete[] mCandidates;
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::Open
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Index      - Candidate Index ID
-*     HWND       - Window IME is associated with
-*     CodePage   - Code page for current input mode.
-*     Unicode    - If true, process IME as unicode; if false, process as MBCS
-*     StartFrom1 - If true, candidates should be displayed starting from 1
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::Open
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Index      - Candidate Index ID
+ *     HWND       - Window IME is associated with
+ *     CodePage   - Code page for current input mode.
+ *     Unicode    - If true, process IME as unicode; if false, process as MBCS
+ *     StartFrom1 - If true, candidates should be displayed starting from 1
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void IMECandidate::Open(int id, HWND hwnd, UINT codepage, bool unicode, bool startFrom1)
-	{
-	mIndex = id;
-	mHWND = hwnd;
-	mCodePage = codepage;
-	mUseUnicode = unicode;
-	mStartFrom1 = startFrom1;
-	}
-
+void IMECandidate::Open(int id, HWND hwnd, UINT codepage, bool unicode, bool startFrom1) {
+  mIndex = id;
+  mHWND = hwnd;
+  mCodePage = codepage;
+  mUseUnicode = unicode;
+  mStartFrom1 = startFrom1;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::Read
-*
-* DESCRIPTION
-*     Read the candidate list from IMM
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::Read
+ *
+ * DESCRIPTION
+ *     Read the candidate list from IMM
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void IMECandidate::Read(void)
-	{
-	HIMC imc = ImmGetContext(mHWND);
+void IMECandidate::Read(void) {
+  HIMC imc = ImmGetContext(mHWND);
 
-	if (imc)
-		{
-		DWORD size = 0;
+  if (imc) {
+    DWORD size = 0;
 
-		// Get the size of the candidate list
-		if (mUseUnicode)
-			{
-			size = ImmGetCandidateListW(imc, mIndex, NULL, 0);
-			}
-		else
-			{
-			size = ImmGetCandidateList(imc, mIndex, NULL, 0);
-			}
+    // Get the size of the candidate list
+    if (mUseUnicode) {
+      size = ImmGetCandidateListW(imc, mIndex, NULL, 0);
+    } else {
+      size = ImmGetCandidateList(imc, mIndex, NULL, 0);
+    }
 
-		// Allocate space to hold candidates
-		if ((mCandidates == NULL) || (size > mCandidateSize))
-			{
-			// Free the existing candidate buffer
-			if (mCandidates != NULL)
-				{
-				delete[] mCandidates;
-				}
+    // Allocate space to hold candidates
+    if ((mCandidates == NULL) || (size > mCandidateSize)) {
+      // Free the existing candidate buffer
+      if (mCandidates != NULL) {
+        delete[] mCandidates;
+      }
 
-			// Allocate a new buffer to hold the candidates
-			mCandidates = (CANDIDATELIST*)(new unsigned char[size]);
-			mCandidateSize = size;
-			}
+      // Allocate a new buffer to hold the candidates
+      mCandidates = (CANDIDATELIST *)(new unsigned char[size]);
+      mCandidateSize = size;
+    }
 
-		if (mCandidates != NULL)
-			{
-			if (mUseUnicode)
-				{
-				ImmGetCandidateListW(imc, mIndex, mCandidates, mCandidateSize);
-				}
-			else
-				{
-				ImmGetCandidateList(imc, mIndex, mCandidates, mCandidateSize);
-				}
+    if (mCandidates != NULL) {
+      if (mUseUnicode) {
+        ImmGetCandidateListW(imc, mIndex, mCandidates, mCandidateSize);
+      } else {
+        ImmGetCandidateList(imc, mIndex, mCandidates, mCandidateSize);
+      }
 
-			WWDEBUG_SAY(("IMECandidate: Index %d, Style %08lX, Selection %d, PageStart %d, PageSize %d, Count %d\n",
-				mIndex, GetStyle(), GetSelection(), GetPageStart(), GetPageSize(), GetCount()));
-			}
+      WWDEBUG_SAY(("IMECandidate: Index %d, Style %08lX, Selection %d, PageStart %d, PageSize %d, Count %d\n", mIndex,
+                   GetStyle(), GetSelection(), GetPageStart(), GetPageSize(), GetCount()));
+    }
 
-		ImmReleaseContext(mHWND, imc);
-		}
-	}
-
+    ImmReleaseContext(mHWND, imc);
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::Close
-*
-* DESCRIPTION
-*     Close the candidate.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::Close
+ *
+ * DESCRIPTION
+ *     Close the candidate.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void IMECandidate::Close(void)
-	{
-	mIndex = -1;
-	mHWND = NULL;
-	mCodePage = CP_ACP;
-	mUseUnicode = true;
-	mStartFrom1 = true;
+void IMECandidate::Close(void) {
+  mIndex = -1;
+  mHWND = NULL;
+  mCodePage = CP_ACP;
+  mUseUnicode = true;
+  mStartFrom1 = true;
 
-	if (mCandidates)
-		{
-		memset(mCandidates, 0, sizeof(CANDIDATELIST));
-		}
-	}
-
+  if (mCandidates) {
+    memset(mCandidates, 0, sizeof(CANDIDATELIST));
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::IsValid
-*
-* DESCRIPTION
-*     Check if the candidate data is valid.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     True if valid
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::IsValid
+ *
+ * DESCRIPTION
+ *     Check if the candidate data is valid.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     True if valid
+ *
+ ******************************************************************************/
 
-bool IMECandidate::IsValid(void) const
-	{
-	return ((-1 != mIndex) && (mCandidates != NULL));
-	}
-
+bool IMECandidate::IsValid(void) const { return ((-1 != mIndex) && (mCandidates != NULL)); }
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetIndex
-*
-* DESCRIPTION
-*     Get the candidate index ID
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     Candidate index ID
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetIndex
+ *
+ * DESCRIPTION
+ *     Get the candidate index ID
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     Candidate index ID
+ *
+ ******************************************************************************/
 
-int IMECandidate::GetIndex(void) const
-	{
-	return mIndex;
-	}
-
+int IMECandidate::GetIndex(void) const { return mIndex; }
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetStyle
-*
-* DESCRIPTION
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetStyle
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-unsigned long IMECandidate::GetStyle(void) const
-	{
-	WWASSERT(mCandidates != NULL);
-	return mCandidates->dwStyle;
-	}
-
+unsigned long IMECandidate::GetStyle(void) const {
+  WWASSERT(mCandidates != NULL);
+  return mCandidates->dwStyle;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetPageStart
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetPageStart
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-unsigned long IMECandidate::GetPageStart(void) const
-	{
-	WWASSERT(mCandidates != NULL);
-	return mCandidates->dwPageStart;
-	}
-
+unsigned long IMECandidate::GetPageStart(void) const {
+  WWASSERT(mCandidates != NULL);
+  return mCandidates->dwPageStart;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::SetPageStart
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::SetPageStart
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void IMECandidate::SetPageStart(unsigned long start)
-	{
-	WWASSERT((start >=0) && (start < GetCount()));
+void IMECandidate::SetPageStart(unsigned long start) {
+  WWASSERT((start >= 0) && (start < GetCount()));
 
-	if ((start >=0) && (start < GetCount()))
-		{
-		HIMC imc = ImmGetContext(mHWND);
+  if ((start >= 0) && (start < GetCount())) {
+    HIMC imc = ImmGetContext(mHWND);
 
-		if (imc)
-			{
-			// The IMM documentation says that the candidate list index must
-			// be in the range of 0 - 3 for NI_SETCANDIDATE_PAGESTART
-			WWASSERT((mIndex >= 0 && mIndex <= 3) && "IMM parameter error");
+    if (imc) {
+      // The IMM documentation says that the candidate list index must
+      // be in the range of 0 - 3 for NI_SETCANDIDATE_PAGESTART
+      WWASSERT((mIndex >= 0 && mIndex <= 3) && "IMM parameter error");
 
-			ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESTART, mIndex, start);
-			ImmReleaseContext(mHWND, imc);
-			}
-		}
-	}
-
+      ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESTART, mIndex, start);
+      ImmReleaseContext(mHWND, imc);
+    }
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetPageSize
-*
-* DESCRIPTION
-*     Get the number of candidates per page.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetPageSize
+ *
+ * DESCRIPTION
+ *     Get the number of candidates per page.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-unsigned long IMECandidate::GetPageSize(void) const
-	{
-	WWASSERT(mCandidates != NULL);
-	return mCandidates->dwPageSize;
-	}
-
+unsigned long IMECandidate::GetPageSize(void) const {
+  WWASSERT(mCandidates != NULL);
+  return mCandidates->dwPageSize;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetCount
-*
-* DESCRIPTION
-*     Get the total number of candidates.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetCount
+ *
+ * DESCRIPTION
+ *     Get the total number of candidates.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
 // Get the number of candidates in the list.
-unsigned long IMECandidate::GetCount(void) const
-	{
-	if (mCandidates)
-		{
-		return mCandidates->dwCount;
-		}
+unsigned long IMECandidate::GetCount(void) const {
+  if (mCandidates) {
+    return mCandidates->dwCount;
+  }
 
-	return 0;
-	}
-
+  return 0;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetSelection
-*
-* DESCRIPTION
-*     Get the index of the currently selected candidate.
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetSelection
+ *
+ * DESCRIPTION
+ *     Get the index of the currently selected candidate.
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-unsigned long IMECandidate::GetSelection(void) const
-	{
-	WWASSERT(mCandidates != NULL);
-	return mCandidates->dwSelection;
-	}
-
+unsigned long IMECandidate::GetSelection(void) const {
+  WWASSERT(mCandidates != NULL);
+  return mCandidates->dwSelection;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::IsStartFrom1
-*
-* DESCRIPTION
-*     Check if the candidates should be listed as starting from 1 or 0
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::IsStartFrom1
+ *
+ * DESCRIPTION
+ *     Check if the candidates should be listed as starting from 1 or 0
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool IMECandidate::IsStartFrom1(void) const
-	{
-	return mStartFrom1;
-	}
-
+bool IMECandidate::IsStartFrom1(void) const { return mStartFrom1; }
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::GetCandidate
-*
-* DESCRIPTION
-*     Get a candidate string.
-*
-* INPUTS
-*     Index of the candidate string to get.
-*
-* RESULT
-*     String
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::GetCandidate
+ *
+ * DESCRIPTION
+ *     Get a candidate string.
+ *
+ * INPUTS
+ *     Index of the candidate string to get.
+ *
+ * RESULT
+ *     String
+ *
+ ******************************************************************************/
 
-const wchar_t* IMECandidate::GetCandidate(unsigned long index)
-	{
-	if (index < GetCount())
-		{
-		// For the IME_CAND_CODE style, the candidate list has a special structure
-		// depending on the value of the dwCount member. If dwCount is 1, the dwOffset
-		// member contains a single DBCS character rather than an offset, and no
-		// candidate string is provided. If the dwCount member is greater than 1,
-		// the dwOffset member contains valid offsets, and the candidate strings are
-		// text representations of individual DBCS character values in hexadecimal notation.
-		if ((IME_CAND_CODE == GetStyle()) && (1 == GetCount()))
-			{
-			unsigned long dbcs = mCandidates->dwOffset[0];
+const wchar_t *IMECandidate::GetCandidate(unsigned long index) {
+  if (index < GetCount()) {
+    // For the IME_CAND_CODE style, the candidate list has a special structure
+    // depending on the value of the dwCount member. If dwCount is 1, the dwOffset
+    // member contains a single DBCS character rather than an offset, and no
+    // candidate string is provided. If the dwCount member is greater than 1,
+    // the dwOffset member contains valid offsets, and the candidate strings are
+    // text representations of individual DBCS character values in hexadecimal notation.
+    if ((IME_CAND_CODE == GetStyle()) && (1 == GetCount())) {
+      unsigned long dbcs = mCandidates->dwOffset[0];
 
-			// If this char has a lead byte then it is double byte. Swap the bytes
-			// for generate string order
-			if (dbcs & 0xFF00)
-				{
-				dbcs = (((dbcs & 0xFF) << 8) | (dbcs >> 8));
-				}
+      // If this char has a lead byte then it is double byte. Swap the bytes
+      // for generate string order
+      if (dbcs & 0xFF00) {
+        dbcs = (((dbcs & 0xFF) << 8) | (dbcs >> 8));
+      }
 
-			// Convert char to unicode
-			MultiByteToWideChar(mCodePage, 0, (const char*)&dbcs, -1, mTempString, 1);
-			mTempString[1] = 0;
+      // Convert char to unicode
+      MultiByteToWideChar(mCodePage, 0, (const char *)&dbcs, -1, mTempString, 1);
+      mTempString[1] = 0;
 
-			return mTempString;
-			}
+      return mTempString;
+    }
 
-		DWORD offset = mCandidates->dwOffset[index];
-		const char* candString = ((const char*)mCandidates + offset);
+    DWORD offset = mCandidates->dwOffset[index];
+    const char *candString = ((const char *)mCandidates + offset);
 
-		if (mUseUnicode)
-			{
-			return ((const wchar_t*)candString);
-			}
+    if (mUseUnicode) {
+      return ((const wchar_t *)candString);
+    }
 
-		MultiByteToWideChar(mCodePage, 0, candString, -1, mTempString, (sizeof(mTempString) / sizeof(wchar_t)));
-		mTempString[(sizeof(mTempString) / sizeof(wchar_t)) - 1] = 0;
-		return mTempString;
-		}
-	
-	return NULL;
-	}
+    MultiByteToWideChar(mCodePage, 0, candString, -1, mTempString, (sizeof(mTempString) / sizeof(wchar_t)));
+    mTempString[(sizeof(mTempString) / sizeof(wchar_t)) - 1] = 0;
+    return mTempString;
+  }
 
+  return NULL;
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::SelectCandidate
-*
-* DESCRIPTION
-*     Select a string in the candidate list.
-*
-* INPUTS
-*     Index of candidate string to select.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::SelectCandidate
+ *
+ * DESCRIPTION
+ *     Select a string in the candidate list.
+ *
+ * INPUTS
+ *     Index of candidate string to select.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-void IMECandidate::SelectCandidate(unsigned long selection)
-	{
-	HIMC imc = ImmGetContext(mHWND);
+void IMECandidate::SelectCandidate(unsigned long selection) {
+  HIMC imc = ImmGetContext(mHWND);
 
-	if (imc)
-		{
-		ImmNotifyIME(imc, NI_SELECTCANDIDATESTR, mIndex, selection);
-		ImmNotifyIME(imc, NI_CLOSECANDIDATE, mIndex, 0);
-		ImmReleaseContext(mHWND, imc);
-		}
-	}
-
+  if (imc) {
+    ImmNotifyIME(imc, NI_SELECTCANDIDATESTR, mIndex, selection);
+    ImmNotifyIME(imc, NI_CLOSECANDIDATE, mIndex, 0);
+    ImmReleaseContext(mHWND, imc);
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     IMECandidate::SetView
-*
-* DESCRIPTION
-*
-* INPUTS
-*     Top - Index of top candidate.
-*     Bottom - Index of bottom candidate.
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     IMECandidate::SetView
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *     Top - Index of top candidate.
+ *     Bottom - Index of bottom candidate.
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-void IMECandidate::SetView(unsigned long topIndex, unsigned long bottomIndex)
-	{
-	HIMC imc = ImmGetContext(mHWND);
+void IMECandidate::SetView(unsigned long topIndex, unsigned long bottomIndex) {
+  HIMC imc = ImmGetContext(mHWND);
 
-	if (imc)
-		{
-		ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESIZE, mIndex, (bottomIndex - topIndex) + 1);
-		ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESTART, mIndex, topIndex);
-		ImmReleaseContext(mHWND, imc);
-		}
-	}
-	
+  if (imc) {
+    ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESIZE, mIndex, (bottomIndex - topIndex) + 1);
+    ImmNotifyIME(imc, NI_SETCANDIDATE_PAGESTART, mIndex, topIndex);
+    ImmReleaseContext(mHWND, imc);
+  }
+}
+
 } // namespace IME

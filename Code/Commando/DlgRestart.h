@@ -17,45 +17,43 @@
 */
 
 /******************************************************************************
-*
-* NAME
-*     $Archive: /Commando/Code/Commando/DlgRestart.h $
-*
-* DESCRIPTION
-*     Dialog to notify the user that the game requires a restart.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 1 $
-*     $Modtime: 10/15/01 3:12p $
-*
-******************************************************************************/
+ *
+ * NAME
+ *     $Archive: /Commando/Code/Commando/DlgRestart.h $
+ *
+ * DESCRIPTION
+ *     Dialog to notify the user that the game requires a restart.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 1 $
+ *     $Modtime: 10/15/01 3:12p $
+ *
+ ******************************************************************************/
 
 #ifndef __DLGRESTART_H__
 #define __DLGRESTART_H__
 
 #include <WWUI\PopupDialog.h>
 
-class DlgRestart :
-		public PopupDialogClass
-	{
-	public:
-		static bool DoDialog(void);
+class DlgRestart : public PopupDialogClass {
+public:
+  static bool DoDialog(void);
 
-	protected:
-		DlgRestart();
-		virtual ~DlgRestart();
+protected:
+  DlgRestart();
+  virtual ~DlgRestart();
 
-		void On_Init_Dialog(void);
-		void On_Command(int ctrl, int message, DWORD param);
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl, int message, DWORD param);
 
-	private:
-		// Prevent copy and assignment
-		DlgRestart(const DlgRestart&);
-		const DlgRestart& operator=(const DlgRestart&);
-	};
+private:
+  // Prevent copy and assignment
+  DlgRestart(const DlgRestart &);
+  const DlgRestart &operator=(const DlgRestart &);
+};
 
 #endif // __DLGRESTART_H__

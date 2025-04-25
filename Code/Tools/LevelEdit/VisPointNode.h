@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -50,109 +49,94 @@
 // Forward declarations
 class PresetClass;
 
-
 ////////////////////////////////////////////////////////////////////////////
 //
 //	VisPointNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class VisPointNodeClass : public NodeClass
-{
+class VisPointNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	VisPointNodeClass (PresetClass *preset = NULL);
-	VisPointNodeClass (const VisPointNodeClass &src);
-	~VisPointNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  VisPointNodeClass(PresetClass *preset = NULL);
+  VisPointNodeClass(const VisPointNodeClass &src);
+  ~VisPointNodeClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const VisPointNodeClass &operator= (const VisPointNodeClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const VisPointNodeClass &operator=(const VisPointNodeClass &src);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// VisPointNodeClass specific
-	//
-	void					Set_Vis_Tile_Location (const Vector3 &location);
-	const Vector3 &	Get_Vis_Tile_Location (void) const;
+  //
+  // VisPointNodeClass specific
+  //
+  void Set_Vis_Tile_Location(const Vector3 &location);
+  const Vector3 &Get_Vis_Tile_Location(void) const;
 
-	void					Save_Camera_Settings (const CameraClass &camera);
-	void					Setup_Camera (CameraClass &camera);
+  void Save_Camera_Settings(const CameraClass &camera);
+  void Setup_Camera(CameraClass &camera);
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	
-	//
-	// From NodeClass
-	//
-	void			Initialize (void);
-	NodeClass *	Clone (void)								{ return new VisPointNodeClass (*this); }
-	NODE_TYPE	Get_Type (void) const					{ return NODE_TYPE_VIS_POINT; }
-	int			Get_Icon_Index (void) const			{ return VIS_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const			{ return m_PhysObj; }
-	bool			Is_Static (void) const					{ return false; }
-	bool			Show_Settings_Dialog (void)			{ return true; }
-	bool			Can_Be_Rotated_Freely (void) const	{ return true; }
-	void			Set_Transform (const Matrix3D &tm);
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  // From NodeClass
+  //
+  void Initialize(void);
+  NodeClass *Clone(void) { return new VisPointNodeClass(*this); }
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_VIS_POINT; }
+  int Get_Icon_Index(void) const { return VIS_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return m_PhysObj; }
+  bool Is_Static(void) const { return false; }
+  bool Show_Settings_Dialog(void) { return true; }
+  bool Can_Be_Rotated_Freely(void) const { return true; }
+  void Set_Transform(const Matrix3D &tm);
 
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//	From PersistClass
-	bool			Save (ChunkSaveClass &csave);
-	bool			Load (ChunkLoadClass &cload);
+  //	From PersistClass
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	bool			Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  DecorationPhysClass *m_PhysObj;
+  Vector3 m_VisTileLocation;
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	DecorationPhysClass *	m_PhysObj;
-	Vector3						m_VisTileLocation;
-
-	float							m_NearClipPlane;
-	float							m_HFov;
-	float							m_VFov;
+  float m_NearClipPlane;
+  float m_HFov;
+  float m_VFov;
 };
-
 
 //////////////////////////////////////////////////////////////////
 //	Set_Vis_Tile_Location
 //////////////////////////////////////////////////////////////////
-inline void
-VisPointNodeClass::Set_Vis_Tile_Location (const Vector3 &location)
-{
-	m_VisTileLocation = location;
-	return ;
+inline void VisPointNodeClass::Set_Vis_Tile_Location(const Vector3 &location) {
+  m_VisTileLocation = location;
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	Get_Vis_Tile_Location
 //////////////////////////////////////////////////////////////////
-inline const Vector3 &
-VisPointNodeClass::Get_Vis_Tile_Location (void) const
-{
-	return m_VisTileLocation;
-}
-
+inline const Vector3 &VisPointNodeClass::Get_Vis_Tile_Location(void) const { return m_VisTileLocation; }
 
 #endif //__VISPOINT_NODE_H
-

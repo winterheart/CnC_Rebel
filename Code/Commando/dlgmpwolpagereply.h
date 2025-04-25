@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolpagereply.h       $*
  *                                                                                             *
@@ -46,36 +47,33 @@
 
 class EditCtrlClass;
 
-class DlgWOLPageReply :
-		public PopupDialogClass,
-		public Observer<WOLPagedEvent>
-	{
-	public:
-		static bool DoDialog(void);
-		static bool IsOpen(void);
+class DlgWOLPageReply : public PopupDialogClass, public Observer<WOLPagedEvent> {
+public:
+  static bool DoDialog(void);
+  static bool IsOpen(void);
 
-	protected:
-		DlgWOLPageReply(void);
-		~DlgWOLPageReply();
+protected:
+  DlgWOLPageReply(void);
+  ~DlgWOLPageReply();
 
-		// Delcared here to prevent copy and assignment
-		DlgWOLPageReply(const DlgWOLPageReply&);
-		const DlgWOLPageReply& operator=(const DlgWOLPageReply&);
+  // Delcared here to prevent copy and assignment
+  DlgWOLPageReply(const DlgWOLPageReply &);
+  const DlgWOLPageReply &operator=(const DlgWOLPageReply &);
 
-		bool FinalizeCreate(void);
+  bool FinalizeCreate(void);
 
-		void On_Init_Dialog(void);
-		void On_Command(int ctrl_id, int mesage_id, DWORD param);	
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
 
-		void Send_Reply(void);
-		void Add_Message(const WCHAR* username, const WCHAR* message);
+  void Send_Reply(void);
+  void Add_Message(const WCHAR *username, const WCHAR *message);
 
-		void HandleNotification(WOLPagedEvent&);
-		void On_EditCtrl_Enter_Pressed(EditCtrlClass* edit, int ID);
+  void HandleNotification(WOLPagedEvent &);
+  void On_EditCtrl_Enter_Pressed(EditCtrlClass *edit, int ID);
 
-	protected:
-		WOLBuddyMgr* mBuddyMgr;
-		static DlgWOLPageReply* _mInstance;
-	};
+protected:
+  WOLBuddyMgr *mBuddyMgr;
+  static DlgWOLPageReply *_mInstance;
+};
 
 #endif //__DLG_MP_WOL_PAGE_REPLY_H

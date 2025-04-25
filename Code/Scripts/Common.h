@@ -17,23 +17,23 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     Common.h
-*
-* DESCRIPTION
-*     Common scripting functions and definitions.
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 12 $
-*     $Modtime: 6/13/00 11:57a $
-*     $Archive: /Commando/Code/Scripts/Common.h $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     Common.h
+ *
+ * DESCRIPTION
+ *     Common scripting functions and definitions.
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 12 $
+ *     $Modtime: 6/13/00 11:57a $
+ *     $Archive: /Commando/Code/Scripts/Common.h $
+ *
+ ******************************************************************************/
 
 #ifndef _COMMON_H_
 #define _COMMON_H_

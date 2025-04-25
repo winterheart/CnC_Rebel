@@ -17,45 +17,39 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLAgeCheck.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 1 $
-*     $Modtime: 7/09/01 6:03p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLAgeCheck.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 1 $
+ *     $Modtime: 7/09/01 6:03p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLAGECHECK_H__
 #define __WOLAGECHECK_H__
 
 namespace WWOnline {
 
-class AgeCheckEvent
-	{
-	public:
-		AgeCheckEvent(int age, bool consent) :
-				mAge(age),
-				mConsent(consent)
-			{}
+class AgeCheckEvent {
+public:
+  AgeCheckEvent(int age, bool consent) : mAge(age), mConsent(consent) {}
 
-	inline int GetAge()
-		const {return mAge;}
+  inline int GetAge() const { return mAge; }
 
-	inline bool HasConsent() const
-		{return mConsent;}
+  inline bool HasConsent() const { return mConsent; }
 
-	private:
-		int mAge;
-		bool mConsent;
-	};
+private:
+  int mAge;
+  bool mConsent;
+};
 
-}
+} // namespace WWOnline
 
 #endif // __WOLAGECHECK_H__

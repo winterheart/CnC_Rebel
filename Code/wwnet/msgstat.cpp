@@ -18,10 +18,10 @@
 
 //
 // Filename:     msgstat.cpp
-// Project:      
+// Project:
 // Author:       Tom Spencer-Smith
-// Date:         
-// Description:  
+// Date:
+// Description:
 //
 //------------------------------------------------------------------------------------
 #include "msgstat.h" // I WANNA BE FIRST!
@@ -31,90 +31,68 @@
 #include "mathutil.h"
 #include "wwdebug.h"
 
-
 //
 // Class statics
 //
 
 //------------------------------------------------------------------------------------
-cMsgStat::cMsgStat(void) :
-	NumMsgSent(0),
-	NumByteSent(0),
-	NumMsgRecd(0),
-	NumByteRecd(0)
-{
-	::strcpy(Name, "UNNAMED");
+cMsgStat::cMsgStat(void) : NumMsgSent(0), NumByteSent(0), NumMsgRecd(0), NumByteRecd(0) { ::strcpy(Name, "UNNAMED"); }
+
+//---------------- --------------------------------------------------------------------
+cMsgStat::~cMsgStat(void) {}
+
+//---------------- --------------------------------------------------------------------
+void cMsgStat::Increment_Num_Msg_Sent(int increment) {
+  WWASSERT(increment > 0);
+
+  NumMsgSent += increment;
 }
 
 //---------------- --------------------------------------------------------------------
-cMsgStat::~cMsgStat(void)
-{
+void cMsgStat::Increment_Num_Byte_Sent(int increment) {
+  WWASSERT(increment > 0);
+
+  NumByteSent += increment;
 }
 
 //---------------- --------------------------------------------------------------------
-void cMsgStat::Increment_Num_Msg_Sent(int increment)	
-{
-	WWASSERT(increment > 0); 
+void cMsgStat::Increment_Num_Msg_Recd(int increment) {
+  WWASSERT(increment > 0);
 
-	NumMsgSent += increment;
+  NumMsgRecd += increment;
 }
 
 //---------------- --------------------------------------------------------------------
-void cMsgStat::Increment_Num_Byte_Sent(int increment)
-{
-	WWASSERT(increment > 0); 
-	
-	NumByteSent += increment;
+void cMsgStat::Increment_Num_Byte_Recd(int increment) {
+  WWASSERT(increment > 0);
+
+  NumByteRecd += increment;
 }
 
 //---------------- --------------------------------------------------------------------
-void cMsgStat::Increment_Num_Msg_Recd(int increment)
-{
-	WWASSERT(increment > 0); 
-	
-	NumMsgRecd += increment;
+DWORD cMsgStat::Compute_Avg_Num_Byte_Sent(void) const {
+  DWORD avg = 0;
+  if (NumMsgSent > 0) {
+    avg = (DWORD)cMathUtil::Round(NumByteSent / (float)NumMsgSent);
+  }
+
+  return avg;
 }
 
 //---------------- --------------------------------------------------------------------
-void cMsgStat::Increment_Num_Byte_Recd(int increment)
-{
-	WWASSERT(increment > 0); 
-	
-	NumByteRecd += increment;
+DWORD cMsgStat::Compute_Avg_Num_Byte_Recd(void) const {
+  DWORD avg = 0;
+  if (NumMsgRecd > 0) {
+    avg = (DWORD)cMathUtil::Round(NumByteRecd / (float)NumMsgRecd);
+  }
+
+  return avg;
 }
 
 //---------------- --------------------------------------------------------------------
-DWORD	cMsgStat::Compute_Avg_Num_Byte_Sent(void) const
-{
-	DWORD avg = 0;
-	if (NumMsgSent > 0) {
-		avg = (DWORD) cMathUtil::Round(NumByteSent / (float) NumMsgSent);
-	}
+void cMsgStat::Set_Name(LPCSTR name) {
+  WWASSERT(name != NULL);
+  WWASSERT(::strlen(name) < sizeof(Name));
 
-	return avg;
+  ::strcpy(Name, name);
 }
-
-//---------------- --------------------------------------------------------------------
-DWORD cMsgStat::Compute_Avg_Num_Byte_Recd(void) const
-{
-	DWORD avg = 0;
-	if (NumMsgRecd > 0) {
-		avg = (DWORD) cMathUtil::Round(NumByteRecd / (float) NumMsgRecd);
-	}
-
-	return avg;
-}
-
-//---------------- --------------------------------------------------------------------
-void cMsgStat::Set_Name(LPCSTR name)
-{
-	WWASSERT(name != NULL);
-	WWASSERT(::strlen(name) < sizeof(Name));
-
-	::strcpy(Name, name);
-}
-
-
-
-
-

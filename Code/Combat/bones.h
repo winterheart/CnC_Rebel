@@ -16,29 +16,29 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/bones.h                             $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 7/28/99 11:58a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 2                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/bones.h                             $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 7/28/99 11:58a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 2                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	BONES_H
-#define	BONES_H
+#ifndef BONES_H
+#define BONES_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
 /*
@@ -47,13 +47,11 @@
 class BonesManager {
 
 public:
-	static void Init( void );
-	static void Shutdown( void );
+  static void Init(void);
+  static void Shutdown(void);
 
-	static const char *	Get_Bone_Screen_Name( const char * bone_name );
-	static float			Get_Bone_Damage_Scale( const char * bone_name );
-
+  static const char *Get_Bone_Screen_Name(const char *bone_name);
+  static float Get_Bone_Damage_Scale(const char *bone_name);
 };
 
 #endif
-

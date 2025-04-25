@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/GameResSend.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 2 $
-*     $Modtime: 8/16/01 7:03p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/GameResSend.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 2 $
+ *     $Modtime: 8/16/01 7:03p $
+ *
+ ******************************************************************************/
 
 #ifndef __GAMERESSEND_H__
 #define __GAMERESSEND_H__
@@ -40,7 +40,7 @@
 class cGameData;
 class cPlayer;
 
-void SendGameResults(unsigned long gameID, cGameData* theGame, SList<cPlayer>* players);
+void SendGameResults(unsigned long gameID, cGameData *theGame, SList<cPlayer> *players);
 
 #ifdef _DEBUG
 void SendTestGameResults(void);

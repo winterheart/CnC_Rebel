@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/dlgcontrols.h         $*
  *                                                                                             *
@@ -41,54 +42,47 @@
 #ifndef __DLGCONTROLS_H
 #define __DLGCONTROLS_H
 
-
 #include "menudialog.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	ControlsMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class ControlsMenuClass : public MenuDialogClass
-{
+class ControlsMenuClass : public MenuDialogClass {
 public:
+  //////////////////////////////////////////////////////////////
+  //	Public constructors/destructor
+  //////////////////////////////////////////////////////////////
+  ControlsMenuClass(void);
+  ~ControlsMenuClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public constructors/destructor
-	//////////////////////////////////////////////////////////////
-	ControlsMenuClass (void);	
-	~ControlsMenuClass (void);
+  //////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////
-	
-	//
-	//	Inherited
-	//
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int message_id, DWORD param);
+  //
+  //	Inherited
+  //
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int message_id, DWORD param);
 
-	//
-	//	Configuration support
-	//
-	void		Apply_Changes (void);
-	void		Reload (void);
+  //
+  //	Configuration support
+  //
+  void Apply_Changes(void);
+  void Reload(void);
 
-	//
-	//	Singleton instance access
-	//
-	static ControlsMenuClass *	Get_Instance (void)	{ return _TheInstance; }
+  //
+  //	Singleton instance access
+  //
+  static ControlsMenuClass *Get_Instance(void) { return _TheInstance; }
 
 private:
-
-	//////////////////////////////////////////////////////////////
-	//	Private member data
-	//////////////////////////////////////////////////////////////
-	static ControlsMenuClass *	_TheInstance;
+  //////////////////////////////////////////////////////////////
+  //	Private member data
+  //////////////////////////////////////////////////////////////
+  static ControlsMenuClass *_TheInstance;
 };
 
-
 #endif //__DLGCONTROLS_H
-

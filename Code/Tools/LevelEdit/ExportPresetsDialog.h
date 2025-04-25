@@ -23,58 +23,51 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "resource.h"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // ExportPresetsDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class ExportPresetsDialogClass : public CDialog
-{
-// Construction
+class ExportPresetsDialogClass : public CDialog {
+  // Construction
 public:
-	ExportPresetsDialogClass(CWnd* pParent = NULL);   // standard constructor
+  ExportPresetsDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(ExportPresetsDialogClass)
-	enum { IDD = IDD_EXPORT_PRESET_SETTINGS };
-	CTreeCtrl	m_TreeCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(ExportPresetsDialogClass)
+  enum { IDD = IDD_EXPORT_PRESET_SETTINGS };
+  CTreeCtrl m_TreeCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ExportPresetsDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ExportPresetsDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(ExportPresetsDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBrowse();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(ExportPresetsDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnBrowse();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	///////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////
 
 private:
-
-	///////////////////////////////////////////////////////////////
-	//	Private methods
-	///////////////////////////////////////////////////////////////
-	void			Fill_Tree (void);
+  ///////////////////////////////////////////////////////////////
+  //	Private methods
+  ///////////////////////////////////////////////////////////////
+  void Fill_Tree(void);
 };
 
 //{{AFX_INSERT_LOCATION}}

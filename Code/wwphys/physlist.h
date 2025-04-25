@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -47,10 +46,10 @@
 
 class PhysClass;
 
-typedef RefMultiListClass<PhysClass>		RefPhysListClass;
-typedef RefMultiListIterator<PhysClass>	RefPhysListIterator;
+typedef RefMultiListClass<PhysClass> RefPhysListClass;
+typedef RefMultiListIterator<PhysClass> RefPhysListIterator;
 
-typedef MultiListClass<PhysClass>			NonRefPhysListClass;
-typedef MultiListIterator<PhysClass>		NonRefPhysListIterator;
+typedef MultiListClass<PhysClass> NonRefPhysListClass;
+typedef MultiListIterator<PhysClass> NonRefPhysListIterator;
 
 #endif // PHYSLIST_H

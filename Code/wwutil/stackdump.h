@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/wwutil/stackdump.h                        $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/29/01 4:13p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwutil/stackdump.h                        $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/29/01 4:13p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __STACKDUMP_H__
@@ -41,19 +41,16 @@
 // Dump the call stack to the logfile. Based on Steve Tall's code.
 //
 
-#define	LOG_CALL_STACK		cStackDump::Print_Call_Stack()
+#define LOG_CALL_STACK cStackDump::Print_Call_Stack()
 
 //-----------------------------------------------------------------------------
-class	cStackDump
-{
+class cStackDump {
 public:
-
-	static void		Print_Call_Stack(void);
+  static void Print_Call_Stack(void);
 
 private:
-
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __STACKDUMP_H__
+#endif // __STACKDUMP_H__

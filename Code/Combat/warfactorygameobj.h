@@ -16,152 +16,139 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/warfactorygameobj.h                                                                                                                                       $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 1/05/02 11:54a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 7                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/warfactorygameobj.h $Author:: Patrick $*
+ *                                                                                             *
+ *                     $Modtime:: 1/05/02 11:54a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 7                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSC_VER)
 #pragma once
 #endif
 
-#ifndef	__WARFACTORYGAMEOBJ_H
-#define	__WARFACTORYGAMEOBJ_H
+#ifndef __WARFACTORYGAMEOBJ_H
+#define __WARFACTORYGAMEOBJ_H
 
 #include "always.h"
 #include "vehiclefactorygameobj.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward delcarations
 ////////////////////////////////////////////////////////////////
 class BaseControllerClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	WarFactoryGameObjDef
 //
 ////////////////////////////////////////////////////////////////
-class WarFactoryGameObjDef : public VehicleFactoryGameObjDef
-{
+class WarFactoryGameObjDef : public VehicleFactoryGameObjDef {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Friends
-	////////////////////////////////////////////////////////////////
-	friend class WarFactoryGameObj;
+  ////////////////////////////////////////////////////////////////
+  //	Friends
+  ////////////////////////////////////////////////////////////////
+  friend class WarFactoryGameObj;
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	WarFactoryGameObjDef (void);
-	~WarFactoryGameObjDef (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  WarFactoryGameObjDef(void);
+  ~WarFactoryGameObjDef(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	uint32								Get_Class_ID (void) const;
-	PersistClass *						Create (void) const;
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const PersistFactoryClass &	Get_Factory (void) const;
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  uint32 Get_Class_ID(void) const;
+  PersistClass *Create(void) const;
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	////////////////////////////////////////////////////////////////
-	//	Editable support
-	////////////////////////////////////////////////////////////////
-	DECLARE_EDITABLE (WarFactoryGameObjDef, VehicleFactoryGameObjDef);
+  ////////////////////////////////////////////////////////////////
+  //	Editable support
+  ////////////////////////////////////////////////////////////////
+  DECLARE_EDITABLE(WarFactoryGameObjDef, VehicleFactoryGameObjDef);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
 };
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	WarFactoryGameObj
 //
 ////////////////////////////////////////////////////////////////
-class WarFactoryGameObj : public VehicleFactoryGameObj
-{
+class WarFactoryGameObj : public VehicleFactoryGameObj {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  WarFactoryGameObj(void);
+  ~WarFactoryGameObj(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	WarFactoryGameObj (void);
-	~WarFactoryGameObj (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  // Definition support
+  //
+  virtual void Init(void);
+  void Init(const WarFactoryGameObjDef &definition);
+  const WarFactoryGameObjDef &Get_Definition(void) const;
 
-	//
-	// Definition support
-	//
-	virtual	void						Init( void );
-	void									Init (const WarFactoryGameObjDef & definition);
-	const WarFactoryGameObjDef &	Get_Definition (void) const;
+  //
+  // RTTI
+  //
+  WarFactoryGameObj *As_WarFactoryGameObj(void) { return this; }
 
-	//
-	// RTTI
-	//
-	WarFactoryGameObj *				As_WarFactoryGameObj (void)	{ return this; }
+  //
+  // Persist support
+  //
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
+  const PersistFactoryClass &Get_Factory(void) const;
 
-	//
-	// Persist support
-	//
-	bool									Save (ChunkSaveClass &csave);
-	bool									Load (ChunkLoadClass &cload);
-	const	PersistFactoryClass &	Get_Factory (void) const;
+  //
+  //	From BuildingGameObj
+  //
+  void CnC_Initialize(BaseControllerClass *base);
 
-	//
-	//	From BuildingGameObj
-	//
-	void					CnC_Initialize (BaseControllerClass *base);
-	
-	//
-	//	GameObj methods
-	//
-	void					Think (void);
+  //
+  //	GameObj methods
+  //
+  void Think(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
+  void Play_Creation_Animation(bool onoff);
+  void Begin_Generation(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					Load_Variables (ChunkLoadClass &cload);
-	void					Play_Creation_Animation (bool onoff);
-	void					Begin_Generation (void);
-
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	int					CreationAnimationID;
-	float					CreationFinishedTimer;
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  int CreationAnimationID;
+  float CreationFinishedTimer;
 };
 
-
-#endif	// __WARFACTORYGAMEOBJ_H
-
+#endif // __WARFACTORYGAMEOBJ_H

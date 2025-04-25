@@ -16,45 +16,45 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/combatphysobserver.h                  $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 2/08/01 11:23a                                              $* 
- *                                                                                             * 
- *                    $Revision:: 5                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/combatphysobserver.h                  $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 2/08/01 11:23a                                              $*
+ *                                                                                             *
+ *                    $Revision:: 5                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	COMBATPHYSOBSERVER_H
-#define	COMBATPHYSOBSERVER_H
+#ifndef COMBATPHYSOBSERVER_H
+#define COMBATPHYSOBSERVER_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	PHYSOBSERVER_H
-	#include "physobserver.h"
+#ifndef PHYSOBSERVER_H
+#include "physobserver.h"
 #endif
 
-class	DamageableGameObj;
-class	PhysicalGameObj;
+class DamageableGameObj;
+class PhysicalGameObj;
 class BuildingGameObj;
 
-class	CombatPhysObserverClass : public PhysObserverClass {
+class CombatPhysObserverClass : public PhysObserverClass {
 
 public:
-	virtual	DamageableGameObj *	As_DamageableGameObj( void )	{ return NULL; }
-	virtual	PhysicalGameObj *		As_PhysicalGameObj( void )		{ return NULL; }
-	virtual	BuildingGameObj *		As_BuildingGameObj( void )		{ return NULL; }
+  virtual DamageableGameObj *As_DamageableGameObj(void) { return NULL; }
+  virtual PhysicalGameObj *As_PhysicalGameObj(void) { return NULL; }
+  virtual BuildingGameObj *As_BuildingGameObj(void) { return NULL; }
 };
 
-#endif	//	COMBATPHYSOBSERVER_H
+#endif //	COMBATPHYSOBSERVER_H

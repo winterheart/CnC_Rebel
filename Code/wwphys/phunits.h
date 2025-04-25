@@ -57,52 +57,50 @@
 ** hmmm... ;-)
 */
 
-#define INCHES_TO_METERS			(0.0254f)
-#define FEET_TO_METERS				(INCHES_TO_METERS * 12.0f)
-#define YARDS_TO_METERS				(INCHES_TO_METERS * 36.0f)
-#define MILES_TO_METERS				(FEET_TO_METERS * 5280.0f)
+#define INCHES_TO_METERS (0.0254f)
+#define FEET_TO_METERS (INCHES_TO_METERS * 12.0f)
+#define YARDS_TO_METERS (INCHES_TO_METERS * 36.0f)
+#define MILES_TO_METERS (FEET_TO_METERS * 5280.0f)
 
-#define PHYSICS_INCHES(x)			(INCHES_TO_METERS * (x))
-#define PHYSICS_FEET(x)				(FEET_TO_METERS * (x))
-#define PHYSICS_YARDS(x)			(YARDS_TO_METERS * (x))
-#define PHYSICS_MILES(x)			(MILES_TO_METERS * (x))
-#define PHYSICS_MILLIMETERS(x)	((x) / 1000.0f)
-#define PHYSICS_CENTIMETERS(x)	((x) / 100.0f)
-#define PHYSICS_DECIMETERS(x)		((x) / 10.0f)
-#define PHYSICS_METERS(x)			((x))
-#define PHYSICS_KILOMETERS(x)		((x) * 1000.0f)
-#define PHYSICS_SECONDS(x)			((x))
-#define PHYSICS_MINUTES(x)			((x) * 60.0f)
-#define PHYSICS_HOURS(x)			((x) * 60.0f * 60.0f)
-#define PHYSICS_GRAMS(x)			((x) * 1000.0f)
-#define PHYSICS_KILOGRAMS(x)		((x))
-#define PHYSICS_NEWTONS(x)			((x))
+#define PHYSICS_INCHES(x) (INCHES_TO_METERS * (x))
+#define PHYSICS_FEET(x) (FEET_TO_METERS * (x))
+#define PHYSICS_YARDS(x) (YARDS_TO_METERS * (x))
+#define PHYSICS_MILES(x) (MILES_TO_METERS * (x))
+#define PHYSICS_MILLIMETERS(x) ((x) / 1000.0f)
+#define PHYSICS_CENTIMETERS(x) ((x) / 100.0f)
+#define PHYSICS_DECIMETERS(x) ((x) / 10.0f)
+#define PHYSICS_METERS(x) ((x))
+#define PHYSICS_KILOMETERS(x) ((x) * 1000.0f)
+#define PHYSICS_SECONDS(x) ((x))
+#define PHYSICS_MINUTES(x) ((x) * 60.0f)
+#define PHYSICS_HOURS(x) ((x) * 60.0f * 60.0f)
+#define PHYSICS_GRAMS(x) ((x) * 1000.0f)
+#define PHYSICS_KILOGRAMS(x) ((x))
+#define PHYSICS_NEWTONS(x) ((x))
 
+class PhysicsUnits {
+  // Distance Units:
+  static float Inches(float inches) { return INCHES_TO_METERS * inches; }
+  static float Feet(float feet) { return FEET_TO_METERS * feet; }
+  static float Yards(float yards) { return YARDS_TO_METERS * yards; }
+  static float Miles(float miles) { return MILES_TO_METERS * miles; }
+  static float Millimeters(float mm) { return mm / 1000.0f; }
+  static float Centimeters(float cm) { return cm / 100.0f; }
+  static float Decimeters(float dm) { return dm / 10.0f; }
+  static float Meters(float m) { return m; }
+  static float Kilometers(float km) { return km * 1000.0f; }
 
-class PhysicsUnits
-{
-	// Distance Units:
-	static float Inches(float inches) { return  INCHES_TO_METERS * inches; }
-	static float Feet(float feet) { return FEET_TO_METERS * feet; }
-	static float Yards(float yards) { return YARDS_TO_METERS * yards; }
-	static float Miles(float miles) { return MILES_TO_METERS * miles; }
-	static float Millimeters(float mm) { return mm / 1000.0f; }
-	static float Centimeters(float cm) { return cm / 100.0f; }
-	static float Decimeters(float dm) { return  dm / 10.0f; }
-	static float Meters(float m) { return m; }
-	static float Kilometers(float km) { return km * 1000.0f; }
+  // Time Units:
+  static float Seconds(float s) { return s; }
+  static float Minutes(float m) { return m * 60.0f; }
+  static float Hours(float h) { return h * 60.0f * 60.0f; }
 
-	// Time Units:
-	static float Seconds(float s) { return s; }
-	static float Minutes(float m) { return m * 60.0f; }
-	static float Hours(float h) { return h * 60.0f * 60.0f; }
+  // Mass Units:
+  static float Grams(float g) { return g * 1000.0f; }
+  static float Kilograms(float kg) { return kg; }
 
-	// Mass Units:
-	static float Grams(float g) { return g * 1000.0f; }
-	static float Kilograms(float kg) { return kg; }
-
-	// Force Units:
-	static float Newtons(float n) { return n; }
+  // Force Units:
+  static float Newtons(float n) { return n; }
 };
 
 #endif /*PHUNITS_H*/

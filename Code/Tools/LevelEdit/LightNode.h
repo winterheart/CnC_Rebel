@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -53,249 +52,218 @@
 // Forward declarations
 class PresetClass;
 
-
 ////////////////////////////////////////////////////////////////////////////
 //
 //	LightNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class LightNodeClass : public NodeClass
-{
+class LightNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	LightNodeClass (PresetClass *preset = NULL);
-	LightNodeClass (const LightNodeClass &src);
-	~LightNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  LightNodeClass(PresetClass *preset = NULL);
+  LightNodeClass(const LightNodeClass &src);
+  ~LightNodeClass(void);
 
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const LightNodeClass &operator=(const LightNodeClass &src);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const LightNodeClass &operator= (const LightNodeClass &src);
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
+  //
+  // From PersistClass
+  //
+  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //
+  //	RTTI
+  //
+  LightNodeClass *As_LightNodeClass(void) { return this; }
 
-	//
-	// From PersistClass
-	//
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
-	virtual bool								Save (ChunkSaveClass &csave);
-	virtual bool								Load (ChunkLoadClass &cload);
+  //
+  // From NodeClass
+  //
+  void Initialize(void);
+  NodeClass *Clone(void) { return new LightNodeClass(*this); }
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_LIGHT; }
+  int Get_Icon_Index(void) const { return LIGHT_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return m_DisplayObj; }
+  bool Is_Static(void) const { return false; }
+  bool Show_Settings_Dialog(void);
+  bool Can_Be_Rotated_Freely(void) const { return true; }
 
-	//
-	//	RTTI
-	//
-	LightNodeClass *As_LightNodeClass (void)		{ return this; }
+  bool Is_Attenuation_Sphere_Shown(void) { return (m_Sphere != NULL); }
+  void Show_Attenuation_Spheres(bool onoff);
+  float Get_Attenuation_Radius(void);
+  void Set_Attenuation_Radius(float radius);
+  void Update_Cached_Vis_IDs(void);
 
-	//
-	// From NodeClass
-	//
-	void			Initialize (void);
-	NodeClass *	Clone (void)							{ return new LightNodeClass (*this); }
-	NODE_TYPE	Get_Type (void) const				{ return NODE_TYPE_LIGHT; }
-	int			Get_Icon_Index (void) const		{ return LIGHT_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const		{ return m_DisplayObj; }
-	bool			Is_Static (void) const				{ return false; }
-	bool			Show_Settings_Dialog (void);
-	bool			Can_Be_Rotated_Freely (void) const	{ return true; }
+  //
+  //	Notifications
+  //
+  void On_Rotate(void);
+  void On_Translate(void);
+  void On_Transform(void);
 
-	bool			Is_Attenuation_Sphere_Shown (void)	{ return (m_Sphere != NULL); }
-	void			Show_Attenuation_Spheres (bool onoff);
-	float			Get_Attenuation_Radius (void);
-	void			Set_Attenuation_Radius (float radius);
-	void			Update_Cached_Vis_IDs (void);
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//
-	//	Notifications
-	//
-	void			On_Rotate (void);
-	void			On_Translate (void);
-	void			On_Transform (void);
+  //
+  //	Scene methods
+  //
+  void Add_To_Scene(void);
+  void Remove_From_Scene(void);
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  //
+  //	Light specific
+  //
+  void Initialize_From_Light(LightClass *light);
+  LightClass *Peek_Light(void);
 
-	//
-	//	Scene methods
-	//
-	void			Add_To_Scene (void);
-	void			Remove_From_Scene (void);
+  LightPhysClass *Peek_Light_Phys(void) { return m_LightPhysObj; }
 
-	//
-	//	Light specific
-	//
-	void			Initialize_From_Light (LightClass *light);
-	LightClass *Peek_Light (void);
+  void Set_Group_ID(int group_id);
+  int Get_Group_ID(void) const;
 
-	LightPhysClass *	Peek_Light_Phys (void)			{ return m_LightPhysObj; }
-
-	void			Set_Group_ID (int group_id);
-	int			Get_Group_ID (void) const;
-
-	uint32		Get_Vis_Sector_ID (void) const		{ return m_VisSectorID; }
-	void			Set_Vis_Sector_ID (uint32 vis_id);
+  uint32 Get_Vis_Sector_ID(void) const { return m_VisSectorID; }
+  void Set_Vis_Sector_ID(uint32 vis_id);
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
+  void Update_Light(void);
+  bool Save_Variables(ChunkSaveClass &csave);
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	void			Update_Light (void);
-	bool			Save_Variables (ChunkSaveClass &csave);
-	bool			Load_Variables (ChunkLoadClass &cload);
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  LightDefinitionClass m_InstanceSettings;
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	LightDefinitionClass m_InstanceSettings;
+  LightPhysClass *m_LightPhysObj;
+  PhysClass *m_DisplayObj;
+  AttenuationSphereClass *m_Sphere;
 
-	LightPhysClass *				m_LightPhysObj;
-	PhysClass *						m_DisplayObj;
-	AttenuationSphereClass *	m_Sphere;
-
-	bool					m_UsePreset;
-	uint32				m_VisSectorID;
+  bool m_UsePreset;
+  uint32 m_VisSectorID;
 };
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Rotate
 //////////////////////////////////////////////////////////////////
-inline void
-LightNodeClass::On_Rotate (void)
-{
-	if (m_LightPhysObj != NULL) {
-		m_LightPhysObj->Set_Transform (m_Transform);
-		::Get_Scene_Editor ()->Update_Lighting ();
-	}
+inline void LightNodeClass::On_Rotate(void) {
+  if (m_LightPhysObj != NULL) {
+    m_LightPhysObj->Set_Transform(m_Transform);
+    ::Get_Scene_Editor()->Update_Lighting();
+  }
 
-	if (m_Sphere != NULL) {
-		m_Sphere->Set_Transform (m_Transform);
-	}
+  if (m_Sphere != NULL) {
+    m_Sphere->Set_Transform(m_Transform);
+  }
 
-	NodeClass::On_Rotate ();
-	return ;
+  NodeClass::On_Rotate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Translate
 //////////////////////////////////////////////////////////////////
-inline void
-LightNodeClass::On_Translate (void)
-{
-	if (m_LightPhysObj != NULL) {
-		m_LightPhysObj->Set_Transform (m_Transform);
-		::Get_Scene_Editor ()->Update_Lighting ();
-	}
+inline void LightNodeClass::On_Translate(void) {
+  if (m_LightPhysObj != NULL) {
+    m_LightPhysObj->Set_Transform(m_Transform);
+    ::Get_Scene_Editor()->Update_Lighting();
+  }
 
-	if (m_Sphere != NULL) {
-		m_Sphere->Set_Transform (m_Transform);
-	}
+  if (m_Sphere != NULL) {
+    m_Sphere->Set_Transform(m_Transform);
+  }
 
-	NodeClass::On_Translate ();
-	return ;
+  NodeClass::On_Translate();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	On_Transform
 //////////////////////////////////////////////////////////////////
-inline void
-LightNodeClass::On_Transform (void)
-{
-	if (m_LightPhysObj != NULL) {
-		m_LightPhysObj->Set_Transform (m_Transform);
-		::Get_Scene_Editor ()->Update_Lighting ();
-	}
+inline void LightNodeClass::On_Transform(void) {
+  if (m_LightPhysObj != NULL) {
+    m_LightPhysObj->Set_Transform(m_Transform);
+    ::Get_Scene_Editor()->Update_Lighting();
+  }
 
-	if (m_Sphere != NULL) {
-		m_Sphere->Set_Transform (m_Transform);
-	}
+  if (m_Sphere != NULL) {
+    m_Sphere->Set_Transform(m_Transform);
+  }
 
-	NodeClass::On_Transform ();
-	return ;
+  NodeClass::On_Transform();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	Get_Attenuation_Radius
 //////////////////////////////////////////////////////////////////
-inline float
-LightNodeClass::Get_Attenuation_Radius (void)
-{
-	return m_InstanceSettings.Get_Outer_Radius ();
-}
-
+inline float LightNodeClass::Get_Attenuation_Radius(void) { return m_InstanceSettings.Get_Outer_Radius(); }
 
 //////////////////////////////////////////////////////////////////
 //	Set_Attenuation_Radius
 //////////////////////////////////////////////////////////////////
-inline void
-LightNodeClass::Set_Attenuation_Radius (float radius)
-{
-	if (radius > 0) {
-		
-		//
-		//	Change the settings
-		//
-		m_UsePreset = false;	
-		m_InstanceSettings.Set_Outer_Radius (radius);
-		
-		//
-		//	Update the light model
-		//
-		Update_Light ();
+inline void LightNodeClass::Set_Attenuation_Radius(float radius) {
+  if (radius > 0) {
 
-		//
-		//	Update the sphere (if necessary)
-		//
-		if (m_Sphere != NULL) {
-			m_Sphere->Set_Radius (radius);
-		}
-	}
+    //
+    //	Change the settings
+    //
+    m_UsePreset = false;
+    m_InstanceSettings.Set_Outer_Radius(radius);
 
-	return ;
+    //
+    //	Update the light model
+    //
+    Update_Light();
+
+    //
+    //	Update the sphere (if necessary)
+    //
+    if (m_Sphere != NULL) {
+      m_Sphere->Set_Radius(radius);
+    }
+  }
+
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////
 //	Set_Group_ID
 //////////////////////////////////////////////////////////////////
-inline void
-LightNodeClass::Set_Group_ID (int group_id)
-{
-	if (m_LightPhysObj != NULL) {
-		m_LightPhysObj->Set_Group_ID (group_id);
-	}
-		
-	return ;
-}
+inline void LightNodeClass::Set_Group_ID(int group_id) {
+  if (m_LightPhysObj != NULL) {
+    m_LightPhysObj->Set_Group_ID(group_id);
+  }
 
+  return;
+}
 
 //////////////////////////////////////////////////////////////////
 //	Get_Group_ID
 //////////////////////////////////////////////////////////////////
-inline int
-LightNodeClass::Get_Group_ID (void) const
-{
-	int group_id = 0;
-	if (m_LightPhysObj != NULL) {
-		group_id = m_LightPhysObj->Get_Group_ID ();
-	}
+inline int LightNodeClass::Get_Group_ID(void) const {
+  int group_id = 0;
+  if (m_LightPhysObj != NULL) {
+    group_id = m_LightPhysObj->Get_Group_ID();
+  }
 
-	return group_id;
+  return group_id;
 }
 
-
 #endif //__LIGHT_NODE_H
-

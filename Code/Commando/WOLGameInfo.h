@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLGameInfo.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Steve_t $
-*
-* VERSION INFO
-*     $Revision: 11 $
-*     $Modtime: 10/31/02 3:07p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLGameInfo.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Steve_t $
+ *
+ * VERSION INFO
+ *     $Revision: 11 $
+ *     $Modtime: 10/31/02 3:07p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLGAMEINFO_H__
 #define __WOLGAMEINFO_H__
@@ -39,156 +39,129 @@
 
 class cGameData;
 
-namespace WWOnline
-{
+namespace WWOnline {
 class ChannelData;
 class UserData;
-}
+} // namespace WWOnline
 
 // Game information used to describe the type of game.
-class WOLGameInfo
-	{
-	public:
-		static bool IsValidGameChannel(const RefPtr<WWOnline::ChannelData>& channel);
+class WOLGameInfo {
+public:
+  static bool IsValidGameChannel(const RefPtr<WWOnline::ChannelData> &channel);
 
-		enum {MAX_TEXT_LENGTH = 32};
+  enum { MAX_TEXT_LENGTH = 32 };
 
-		WOLGameInfo(void);
-		
-		WOLGameInfo(const cGameData& theGame);
-		
-		WOLGameInfo(const RefPtr<WWOnline::ChannelData>& channel);
-		
-		~WOLGameInfo(void);
+  WOLGameInfo(void);
 
-		void Reset(void);
+  WOLGameInfo(const cGameData &theGame);
 
-		bool IsDataValid(void) const
-			{return mIsDataValid;}
+  WOLGameInfo(const RefPtr<WWOnline::ChannelData> &channel);
 
-		bool IsMapValid(void) const
-			{return mIsMapValid;}
-		
-		void ImportFromGame(const cGameData& theGame);
+  ~WOLGameInfo(void);
 
-		void ImportFromChannel(const RefPtr<WWOnline::ChannelData>& channel);
+  void Reset(void);
 
-		void ExportToChannel(const RefPtr<WWOnline::ChannelData>& channel);
+  bool IsDataValid(void) const { return mIsDataValid; }
 
-		unsigned long Version(void) const
-			{return mVersion;};
+  bool IsMapValid(void) const { return mIsMapValid; }
 
-		unsigned int GameType(void) const
-			{return mGameType;}
+  void ImportFromGame(const cGameData &theGame);
 
-		const char* MapName(void) const
-			{return mMapName;}
+  void ImportFromChannel(const RefPtr<WWOnline::ChannelData> &channel);
 
-		const char* ModName(void) const
-			{return mModName;}
+  void ExportToChannel(const RefPtr<WWOnline::ChannelData> &channel);
 
-		const char* Title(void) const
-			{return mTitle;}
+  unsigned long Version(void) const { return mVersion; };
 
-		unsigned int MinPlayers(void) const
-			{return mMinPlayers;}
+  unsigned int GameType(void) const { return mGameType; }
 
-		unsigned int MaxPlayers(void) const
-			{return mMaxPlayers;}
+  const char *MapName(void) const { return mMapName; }
 
-		unsigned int NumPlayers(void) const
-			{return mNumPlayers;}
-		
-		unsigned long ClanID1(void) const
-			{return mClanID1;}
+  const char *ModName(void) const { return mModName; }
 
-		unsigned long ClanID2(void) const
-			{return mClanID2;}
-		
-		bool IsLaddered(void) const
-			{return mIsLaddered;}
-		
-		bool IsPassworded(void) const
-			{return mIsPassworded;}
-		
-		bool IsQuickmatch(void) const
-			{return mIsQuickmatch;}
-		
-		bool IsDedicated(void) const
-			{return mIsDedicated;}
-		
-		bool IsFriendlyFire(void) const
-			{return mIsFriendlyFire;}
-		
-		bool IsFreeWeapons(void) const
-			{return mIsFreeWeapons;}
-		
-		bool IsTeamRemix(void) const
-			{return mIsTeamRemix;}
-		
-		bool IsTeamChange(void) const
-			{return mIsTeamChange;}
-		
-		bool IsClanGame(void) const
-			{return mIsClanGame;}
-		
-		bool IsRepairBuildings(void) const
-			{return mIsRepairBuildings;}
-		
-		bool IsDriverGunner(void) const
-			{return mIsDriverGunner;}
+  const char *Title(void) const { return mTitle; }
 
-		bool IsSpawnWeapons(void) const
-			{return mSpawnWeapons;}
+  unsigned int MinPlayers(void) const { return mMinPlayers; }
 
-		int PingTime(void) const
-			{return mPingTime;}
+  unsigned int MaxPlayers(void) const { return mMaxPlayers; }
 
-		// Is the clan competing in the game.		
-		bool IsClanCompeting(unsigned long clanID) const;
+  unsigned int NumPlayers(void) const { return mNumPlayers; }
 
-		bool IsClanGameOpen(void) const;
+  unsigned long ClanID1(void) const { return mClanID1; }
 
-		bool CanUserJoin(const RefPtr<WWOnline::UserData>& user);
+  unsigned long ClanID2(void) const { return mClanID2; }
 
-	protected:
-		// Prevent copy and assignment
-		WOLGameInfo(const WOLGameInfo&);
-		const WOLGameInfo& operator=(const WOLGameInfo&);
+  bool IsLaddered(void) const { return mIsLaddered; }
 
-	protected:
-		bool mIsDataValid;
-		bool mIsMapValid;
+  bool IsPassworded(void) const { return mIsPassworded; }
 
-		unsigned long mVersion;
-		unsigned int  mGameType;
+  bool IsQuickmatch(void) const { return mIsQuickmatch; }
 
-		char mMapName[MAX_TEXT_LENGTH];
-		char mModName[MAX_TEXT_LENGTH];
-		char mTitle[MAX_TEXT_LENGTH];
+  bool IsDedicated(void) const { return mIsDedicated; }
 
-		unsigned int mMinPlayers;
-		unsigned int mMaxPlayers;
-		unsigned int mNumPlayers;
-		
-		unsigned long mClanID1;
-		unsigned long mClanID2;
-		
-		bool mIsMod;
-		bool mIsLaddered;
-		bool mIsPassworded;
-		bool mIsQuickmatch;
-		bool mIsDedicated;
-		bool mIsFriendlyFire;
-		bool mIsFreeWeapons;
-		bool mIsTeamRemix;
-		bool mIsTeamChange;
-		bool mIsClanGame;
-		bool mIsRepairBuildings;
-		bool mIsDriverGunner;
-		bool mSpawnWeapons;
-		
-		int mPingTime;
-	};
+  bool IsFriendlyFire(void) const { return mIsFriendlyFire; }
+
+  bool IsFreeWeapons(void) const { return mIsFreeWeapons; }
+
+  bool IsTeamRemix(void) const { return mIsTeamRemix; }
+
+  bool IsTeamChange(void) const { return mIsTeamChange; }
+
+  bool IsClanGame(void) const { return mIsClanGame; }
+
+  bool IsRepairBuildings(void) const { return mIsRepairBuildings; }
+
+  bool IsDriverGunner(void) const { return mIsDriverGunner; }
+
+  bool IsSpawnWeapons(void) const { return mSpawnWeapons; }
+
+  int PingTime(void) const { return mPingTime; }
+
+  // Is the clan competing in the game.
+  bool IsClanCompeting(unsigned long clanID) const;
+
+  bool IsClanGameOpen(void) const;
+
+  bool CanUserJoin(const RefPtr<WWOnline::UserData> &user);
+
+protected:
+  // Prevent copy and assignment
+  WOLGameInfo(const WOLGameInfo &);
+  const WOLGameInfo &operator=(const WOLGameInfo &);
+
+protected:
+  bool mIsDataValid;
+  bool mIsMapValid;
+
+  unsigned long mVersion;
+  unsigned int mGameType;
+
+  char mMapName[MAX_TEXT_LENGTH];
+  char mModName[MAX_TEXT_LENGTH];
+  char mTitle[MAX_TEXT_LENGTH];
+
+  unsigned int mMinPlayers;
+  unsigned int mMaxPlayers;
+  unsigned int mNumPlayers;
+
+  unsigned long mClanID1;
+  unsigned long mClanID2;
+
+  bool mIsMod;
+  bool mIsLaddered;
+  bool mIsPassworded;
+  bool mIsQuickmatch;
+  bool mIsDedicated;
+  bool mIsFriendlyFire;
+  bool mIsFreeWeapons;
+  bool mIsTeamRemix;
+  bool mIsTeamChange;
+  bool mIsClanGame;
+  bool mIsRepairBuildings;
+  bool mIsDriverGunner;
+  bool mSpawnWeapons;
+
+  int mPingTime;
+};
 
 #endif // __WOLGAMEINFO_H__

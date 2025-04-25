@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/commandosaveload.cpp                $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 9/06/01 1:57p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 7                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/commandosaveload.cpp                $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 9/06/01 1:57p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 7                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "commandosaveload.h"
@@ -45,63 +45,58 @@
 /*
 **
 */
-CommandoSaveLoadClass	_CommandoSaveLoad;
+CommandoSaveLoadClass _CommandoSaveLoad;
 
-enum	{
-	CHUNKID_NETWORK								= 1011991043,
-	CHUNKID_GOD,
-	CHUNKID_CAMPAIGN,
+enum {
+  CHUNKID_NETWORK = 1011991043,
+  CHUNKID_GOD,
+  CHUNKID_CAMPAIGN,
 };
 
 /*
 **
 */
-bool	CommandoSaveLoadClass::Save( ChunkSaveClass &csave )
-{
-	WWMEMLOG(MEM_GAMEDATA);
+bool CommandoSaveLoadClass::Save(ChunkSaveClass &csave) {
+  WWMEMLOG(MEM_GAMEDATA);
 
-	csave.Begin_Chunk( CHUNKID_NETWORK );
-	cNetwork::Save( csave );
-	csave.End_Chunk();
+  csave.Begin_Chunk(CHUNKID_NETWORK);
+  cNetwork::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk( CHUNKID_GOD );
-	cGod::Save( csave );
-	csave.End_Chunk();
+  csave.Begin_Chunk(CHUNKID_GOD);
+  cGod::Save(csave);
+  csave.End_Chunk();
 
-	csave.Begin_Chunk( CHUNKID_CAMPAIGN );
-	CampaignManager::Save( csave );
-	csave.End_Chunk();
+  csave.Begin_Chunk(CHUNKID_CAMPAIGN);
+  CampaignManager::Save(csave);
+  csave.End_Chunk();
 
-	return true;
+  return true;
 }
 
-bool	CommandoSaveLoadClass::Load( ChunkLoadClass &cload )
-{
-	WWMEMLOG(MEM_GAMEDATA);
+bool CommandoSaveLoadClass::Load(ChunkLoadClass &cload) {
+  WWMEMLOG(MEM_GAMEDATA);
 
-	while (cload.Open_Chunk()) {
-		switch(cload.Cur_Chunk_ID()) {
+  while (cload.Open_Chunk()) {
+    switch (cload.Cur_Chunk_ID()) {
 
-			case CHUNKID_NETWORK:
-				cNetwork::Load( cload );
-				break;
+    case CHUNKID_NETWORK:
+      cNetwork::Load(cload);
+      break;
 
-			case CHUNKID_GOD:
-				cGod::Load( cload );
-				break;
+    case CHUNKID_GOD:
+      cGod::Load(cload);
+      break;
 
-			case CHUNKID_CAMPAIGN:
-				CampaignManager::Load( cload );
-				break;
+    case CHUNKID_CAMPAIGN:
+      CampaignManager::Load(cload);
+      break;
 
-			default:
-				Debug_Say(( "Unrecognized Commando chunkID\n" ));
-				break;
-
-		}
-		cload.Close_Chunk();
-	}
-	return true;
+    default:
+      Debug_Say(("Unrecognized Commando chunkID\n"));
+      break;
+    }
+    cload.Close_Chunk();
+  }
+  return true;
 }
-
-

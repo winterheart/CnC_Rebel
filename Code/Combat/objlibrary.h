@@ -16,29 +16,29 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/objlibrary.h                          $* 
- *                                                                                             * 
- *                      $Author:: Byon_g                                                      $* 
- *                                                                                             * 
- *                     $Modtime:: 12/03/99 10:51a                                             $* 
- *                                                                                             * 
- *                    $Revision:: 12                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/objlibrary.h                          $*
+ *                                                                                             *
+ *                      $Author:: Byon_g                                                      $*
+ *                                                                                             *
+ *                     $Modtime:: 12/03/99 10:51a                                             $*
+ *                                                                                             *
+ *                    $Revision:: 12                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	OBJLIBRARY_H
-#define	OBJLIBRARY_H
+#ifndef OBJLIBRARY_H
+#define OBJLIBRARY_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
 class PhysicalGameObj;
@@ -49,11 +49,9 @@ class PhysicalGameObj;
 class ObjectLibraryManager {
 
 public:
-	// Create an object type from the library
-	static PhysicalGameObj	*Create_Object( int type );
-	static PhysicalGameObj	*Create_Object( const char *name );
+  // Create an object type from the library
+  static PhysicalGameObj *Create_Object(int type);
+  static PhysicalGameObj *Create_Object(const char *name);
 };
 
-#endif  // OBJLIBRARY_H
-
-
+#endif // OBJLIBRARY_H

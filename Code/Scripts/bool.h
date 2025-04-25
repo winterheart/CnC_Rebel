@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/bool.h                                             $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/bool.h                                             $*
+ *                                                                                             *
  *                      $Author:: Neal_k                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 9/23/99 1:46p                                               $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #if _MSC_VER >= 1000
 #pragma once
@@ -47,8 +47,8 @@
 */
 #ifdef _MSC_VER
 
-#include        "yvals.h"
-#define bool    unsigned
+#include "yvals.h"
+#define bool unsigned
 
 #elif defined(_UNIX)
 
@@ -56,7 +56,7 @@
 
 #else
 
-enum {false=0,true=1};
+enum { false = 0, true = 1 };
 typedef int bool;
 
 #endif

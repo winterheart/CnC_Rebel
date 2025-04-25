@@ -51,61 +51,54 @@
 #include "vector.h"
 #endif
 
-
 /*
 ** UniqueArrayClass
 ** This template class can be used to generate an array of unique objects
 ** amongst a huge list of objects which may or may not be unique.  However,
-** in order to use the UniqueArrayClass, you will need to implement a 
+** in order to use the UniqueArrayClass, you will need to implement a
 ** HashCalculatorClass for the type you are using.
 **
 ** Note that the UniqueArrayClass does *copies* of the objects you are
 ** giving it.  It is meant to be used with relatively lightweight objects.
 */
-template <class T> class UniqueArrayClass
-{
+template <class T> class UniqueArrayClass {
 
 public:
+  UniqueArrayClass(int initialsize, int growthrate, HashCalculatorClass<T> *hasher);
+  ~UniqueArrayClass(void);
 
-	UniqueArrayClass(int initialsize,int growthrate,HashCalculatorClass<T> * hasher);
-	~UniqueArrayClass(void);
+  int Add(const T &new_item);
 
-	int				Add(const T & new_item);
-
-	int				Count(void) const								{ return Get_Unique_Count(); }
-	int				Get_Unique_Count(void) const				{ return UniqueItems.Count(); }
-	const T &		Get(int index) const							{ return UniqueItems[index].Item; }
-	const T &		operator [] (int index) const				{ return Get(index); }
+  int Count(void) const { return Get_Unique_Count(); }
+  int Get_Unique_Count(void) const { return UniqueItems.Count(); }
+  const T &Get(int index) const { return UniqueItems[index].Item; }
+  const T &operator[](int index) const { return Get(index); }
 
 private:
+  enum { NO_ITEM = 0xFFFFFFFF };
 
-	enum { NO_ITEM = 0xFFFFFFFF };
+  class HashItem {
+  public:
+    T Item;
+    int NextHashIndex;
 
-	class HashItem
-	{
-	public:
-		T 		Item;
-		int	NextHashIndex;
+    bool operator==(const HashItem &that) { return ((Item == that.Item) && (NextHashIndex == that.NextHashIndex)); }
+    bool operator!=(const HashItem &that) { return !(*this == that); }
+  };
 
-		bool operator == (const HashItem & that) { return ((Item == that.Item) && (NextHashIndex == that.NextHashIndex)); }
-		bool operator != (const HashItem & that) { return !(*this == that); }
-	};
-		
-	// Dynamic Vector of the unique items:
-	DynamicVectorClass<HashItem>		UniqueItems;
+  // Dynamic Vector of the unique items:
+  DynamicVectorClass<HashItem> UniqueItems;
 
-	// Hash table:
-	int										HashTableSize;
-	int *										HashTable;
+  // Hash table:
+  int HashTableSize;
+  int *HashTable;
 
-	// object which does the hashing for the type
-	HashCalculatorClass<T> *			HashCalculator;
+  // object which does the hashing for the type
+  HashCalculatorClass<T> *HashCalculator;
 
-	friend class VectorClass<T>;
-	friend class DynamicVectorClass<T>;
+  friend class VectorClass<T>;
+  friend class DynamicVectorClass<T>;
 };
-
-
 
 /***********************************************************************************************
  * UniqueArrayClass<T>::UniqueArrayClass -- constructor                                        *
@@ -120,25 +113,22 @@ private:
  *   5/29/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 template <class T>
-UniqueArrayClass<T>::UniqueArrayClass(int initial_size,int growth_rate,HashCalculatorClass<T> * hasher) :
-	UniqueItems(initial_size),
-	HashCalculator(hasher)
-{
-	// set the growth rate.
-	UniqueItems.Set_Growth_Step(growth_rate);
-		
-	// sizing and allocating the actual hash table
-	int bits = HashCalculator->Num_Hash_Bits();
-	assert(bits > 0);
-	assert(bits < 24);
-	HashTableSize = 1<<bits;
-	HashTable = new int[HashTableSize];
+UniqueArrayClass<T>::UniqueArrayClass(int initial_size, int growth_rate, HashCalculatorClass<T> *hasher)
+    : UniqueItems(initial_size), HashCalculator(hasher) {
+  // set the growth rate.
+  UniqueItems.Set_Growth_Step(growth_rate);
 
-	for (int hidx=0; hidx < HashTableSize; hidx++) {
-		HashTable[hidx] = NO_ITEM;
-	}
+  // sizing and allocating the actual hash table
+  int bits = HashCalculator->Num_Hash_Bits();
+  assert(bits > 0);
+  assert(bits < 24);
+  HashTableSize = 1 << bits;
+  HashTable = new int[HashTableSize];
+
+  for (int hidx = 0; hidx < HashTableSize; hidx++) {
+    HashTable[hidx] = NO_ITEM;
+  }
 }
-
 
 /***********************************************************************************************
  * UniqueArrayClass<T>::~UniqueArrayClass -- destructor                                        *
@@ -152,15 +142,12 @@ UniqueArrayClass<T>::UniqueArrayClass(int initial_size,int growth_rate,HashCalcu
  * HISTORY:                                                                                    *
  *   5/29/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-template <class T>
-UniqueArrayClass<T>::~UniqueArrayClass(void)
-{
-	if (HashTable != NULL) {
-		delete[] HashTable;
-		HashTable = NULL;
-	}
+template <class T> UniqueArrayClass<T>::~UniqueArrayClass(void) {
+  if (HashTable != NULL) {
+    delete[] HashTable;
+    HashTable = NULL;
+  }
 }
-
 
 /***********************************************************************************************
  * UniqueArrayClass<T>::Add -- Add an item to the array                                        *
@@ -177,52 +164,48 @@ UniqueArrayClass<T>::~UniqueArrayClass(void)
  * HISTORY:                                                                                    *
  *   5/29/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-template <class T> 
-inline int UniqueArrayClass<T>::Add(const T & new_item) 
-{
-	/*
-	** Use the hash table to quickly (hopefully :-) detect
-	** whether this item is already in the array
-	*/
-	int num_hash_vals;
-	HashCalculator->Compute_Hash(new_item);
-	num_hash_vals = HashCalculator->Num_Hash_Values();
-	
-	unsigned int lasthash = 0xFFFFFFFF;
-	unsigned int hash;
-	
-	for (int hidx = 0; hidx < num_hash_vals; hidx++) {
-		hash = HashCalculator->Get_Hash_Value(hidx);
-		if (hash != lasthash) {
-			
-			int test_item_index = HashTable[hash];
+template <class T> inline int UniqueArrayClass<T>::Add(const T &new_item) {
+  /*
+  ** Use the hash table to quickly (hopefully :-) detect
+  ** whether this item is already in the array
+  */
+  int num_hash_vals;
+  HashCalculator->Compute_Hash(new_item);
+  num_hash_vals = HashCalculator->Num_Hash_Values();
 
-			while (test_item_index != 0xFFFFFFFF) {
-				if (HashCalculator->Items_Match(UniqueItems[test_item_index].Item,new_item)) {
-					return test_item_index;
-				}
-				test_item_index = UniqueItems[test_item_index].NextHashIndex;
-			}
-		}
-		lasthash = hash;
-	}
+  unsigned int lasthash = 0xFFFFFFFF;
+  unsigned int hash;
 
-	/*
-	** Ok, this is a new item so add it (copy it!) into the array
-	*/
-	int index = UniqueItems.Count();
-	int hash_index = HashCalculator->Get_Hash_Value(0);
+  for (int hidx = 0; hidx < num_hash_vals; hidx++) {
+    hash = HashCalculator->Get_Hash_Value(hidx);
+    if (hash != lasthash) {
 
-	HashItem entry;
-	entry.Item = new_item;
-	entry.NextHashIndex = HashTable[hash_index];
-	HashTable[hash_index] = index;
-	
-	UniqueItems.Add(entry);
+      int test_item_index = HashTable[hash];
 
-	return index;
+      while (test_item_index != 0xFFFFFFFF) {
+        if (HashCalculator->Items_Match(UniqueItems[test_item_index].Item, new_item)) {
+          return test_item_index;
+        }
+        test_item_index = UniqueItems[test_item_index].NextHashIndex;
+      }
+    }
+    lasthash = hash;
+  }
+
+  /*
+  ** Ok, this is a new item so add it (copy it!) into the array
+  */
+  int index = UniqueItems.Count();
+  int hash_index = HashCalculator->Get_Hash_Value(0);
+
+  HashItem entry;
+  entry.Item = new_item;
+  entry.NextHashIndex = HashTable[hash_index];
+  HashTable[hash_index] = index;
+
+  UniqueItems.Add(entry);
+
+  return index;
 }
 
-
 #endif // UARRAY_H
-

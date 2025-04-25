@@ -32,115 +32,94 @@ static char THIS_FILE[] = __FILE__;
 //
 //	DockableFormClass
 //
-DockableFormClass::DockableFormClass (UINT nIDTemplate)
-	: m_uiTemplateID (nIDTemplate),
-	  CWnd ()
-{
-	//{{AFX_DATA_INIT(DockableFormClass)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-    return ;
+DockableFormClass::DockableFormClass(UINT nIDTemplate) : m_uiTemplateID(nIDTemplate), CWnd() {
+  //{{AFX_DATA_INIT(DockableFormClass)
+  // NOTE: the ClassWizard will add member initialization here
+  //}}AFX_DATA_INIT
+  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	~DockableFormClass
 //
-DockableFormClass::~DockableFormClass (void)
-{
-	return ;
-}
+DockableFormClass::~DockableFormClass(void) { return; }
 
 BEGIN_MESSAGE_MAP(DockableFormClass, CWnd)
-	//{{AFX_MSG_MAP(DockableFormClass)
-	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(DockableFormClass)
+ON_WM_CREATE()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	Create
 //
-BOOL
-DockableFormClass::Create
-(
-	LPCTSTR /*lpszClassName*/,
-	LPCTSTR /*lpszWindowName*/,
-	DWORD dwRequestedStyle,
-	const RECT& rect,
-	CWnd* pParentWnd,
-	UINT nID,
-	CCreateContext* pContext
-)
-{
-	ASSERT(pParentWnd != NULL);
+BOOL DockableFormClass::Create(LPCTSTR /*lpszClassName*/, LPCTSTR /*lpszWindowName*/, DWORD dwRequestedStyle,
+                               const RECT &rect, CWnd *pParentWnd, UINT nID, CCreateContext *pContext) {
+  ASSERT(pParentWnd != NULL);
 
-	// call PreCreateWindow to get prefered extended style
-	CREATESTRUCT cs; memset(&cs, 0, sizeof(CREATESTRUCT));
-	if (dwRequestedStyle == 0) {
-		dwRequestedStyle = AFX_WS_DEFAULT_VIEW;
-	}
-	cs.style = dwRequestedStyle;
-	if (!PreCreateWindow(cs)) {
-		return FALSE;
-	}
+  // call PreCreateWindow to get prefered extended style
+  CREATESTRUCT cs;
+  memset(&cs, 0, sizeof(CREATESTRUCT));
+  if (dwRequestedStyle == 0) {
+    dwRequestedStyle = AFX_WS_DEFAULT_VIEW;
+  }
+  cs.style = dwRequestedStyle;
+  if (!PreCreateWindow(cs)) {
+    return FALSE;
+  }
 
-	// create a modeless dialog
-	if (!CreateDlg(MAKEINTRESOURCE (m_uiTemplateID), pParentWnd)) {
-		return FALSE;
-	}
+  // create a modeless dialog
+  if (!CreateDlg(MAKEINTRESOURCE(m_uiTemplateID), pParentWnd)) {
+    return FALSE;
+  }
 
-	ExecuteDlgInit(MAKEINTRESOURCE (m_uiTemplateID));
+  ExecuteDlgInit(MAKEINTRESOURCE(m_uiTemplateID));
 
-	::SetWindowLong (m_hWnd, GWL_STYLE, ::GetWindowLong (m_hWnd, GWL_STYLE) & (~WS_CAPTION));
+  ::SetWindowLong(m_hWnd, GWL_STYLE, ::GetWindowLong(m_hWnd, GWL_STYLE) & (~WS_CAPTION));
 
+  SetDlgCtrlID(nID);
 
-	SetDlgCtrlID(nID);
+  GetWindowRect(m_rectForm);
 
-	GetWindowRect (m_rectForm);
+  // force the size requested
+  SetWindowPos(NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,
+               SWP_NOZORDER | SWP_NOACTIVATE);
 
-	// force the size requested
-	SetWindowPos(NULL, rect.left, rect.top,
-		rect.right - rect.left, rect.bottom - rect.top,
-		SWP_NOZORDER|SWP_NOACTIVATE);
+  // make visible if requested
+  if (dwRequestedStyle & WS_VISIBLE) {
+    ShowWindow(SW_NORMAL);
+  }
 
-	// make visible if requested
-	if (dwRequestedStyle & WS_VISIBLE) {
-		ShowWindow(SW_NORMAL);
-	}
-
-	// To support dynamic data exchange...
-	UpdateData (FALSE);
-	HandleInitDialog ();
-	return TRUE;
+  // To support dynamic data exchange...
+  UpdateData(FALSE);
+  HandleInitDialog();
+  return TRUE;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //
 //	OnCreate
 //
-int
-DockableFormClass::OnCreate (LPCREATESTRUCT lpCreateStruct) 
-{
-	// Allow the base class to process this message
-	if (CWnd::OnCreate(lpCreateStruct) == -1) {
-		return -1;
-	}
+int DockableFormClass::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+  // Allow the base class to process this message
+  if (CWnd::OnCreate(lpCreateStruct) == -1) {
+    return -1;
+  }
 
-	// we use the style from the template - but make sure that
-	//  the WS_BORDER bit is correct
-	// the WS_BORDER bit will be whatever is in dwRequestedStyle
-	ModifyStyle(WS_BORDER|WS_CAPTION, lpCreateStruct->style & (WS_BORDER|WS_CAPTION));
-	ModifyStyleEx(WS_EX_CLIENTEDGE, lpCreateStruct->dwExStyle & WS_EX_CLIENTEDGE);
+  // we use the style from the template - but make sure that
+  //  the WS_BORDER bit is correct
+  // the WS_BORDER bit will be whatever is in dwRequestedStyle
+  ModifyStyle(WS_BORDER | WS_CAPTION, lpCreateStruct->style & (WS_BORDER | WS_CAPTION));
+  ModifyStyleEx(WS_EX_CLIENTEDGE, lpCreateStruct->dwExStyle & WS_EX_CLIENTEDGE);
 
-	// initialize controls etc
-	/*if (!ExecuteDlgInit(MAKEINTRESOURCE (m_uiTemplateID))) {
-		return -1;
-	}*/
+  // initialize controls etc
+  /*if (!ExecuteDlgInit(MAKEINTRESOURCE (m_uiTemplateID))) {
+          return -1;
+  }*/
 
-	return 0;
-
+  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -148,23 +127,17 @@ DockableFormClass::OnCreate (LPCREATESTRUCT lpCreateStruct)
 //  WindowProc
 //
 LRESULT
-DockableFormClass::WindowProc
-(
-    UINT message,
-    WPARAM wParam,
-    LPARAM lParam
-)
-{
-	// Is this the message we are expecting?
-	if (message == WM_SHOWWINDOW) {
-		
-		// Make sure the controls reflect the current state when we are
-		// shown
-		if ((BOOL)wParam) {
-			//Update_Controls ();
-		}
-	}
+DockableFormClass::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) {
+  // Is this the message we are expecting?
+  if (message == WM_SHOWWINDOW) {
 
-	// Allow the base class to process this message	
-	return CWnd::WindowProc(message, wParam, lParam);
+    // Make sure the controls reflect the current state when we are
+    // shown
+    if ((BOOL)wParam) {
+      // Update_Controls ();
+    }
+  }
+
+  // Allow the base class to process this message
+  return CWnd::WindowProc(message, wParam, lParam);
 }

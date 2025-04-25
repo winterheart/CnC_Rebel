@@ -45,7 +45,7 @@
 #include "wwprofile.h"
 #include "cnetwork.h"
 #include "miscutil.h"
-//#include "gamesettings.h"
+// #include "gamesettings.h"
 #include "WWAudio.H"
 #include "devoptions.h"
 #include "multihud.h"
@@ -71,96 +71,99 @@
 /*
 **
 */
-bool	RunMainLoop = true;
-int		ExitCode = EXIT_SUCCESS;
+bool RunMainLoop = true;
+int ExitCode = EXIT_SUCCESS;
 
-void Stop_Main_Loop(int exitCode)
-{
-	RunMainLoop = false;
-	ExitCode = exitCode;
+void Stop_Main_Loop(int exitCode) {
+  RunMainLoop = false;
+  ExitCode = exitCode;
 }
 
+void _Game_Main_Loop_Loop(void) {
+  WWPROFILE("Main Loop");
 
-void _Game_Main_Loop_Loop(void)
-{
-	WWPROFILE( "Main Loop" );
+  unsigned long time1 = TIMEGETTIME();
 
-	unsigned long time1 = TIMEGETTIME();
+  TimeManager::Update();
 
-   TimeManager::Update();
+  Input::Update();
 
-   Input::Update();
+  {
+    WWPROFILE("Pathfind Evaluate");
+    if (COMBAT_CAMERA != NULL) {
+      Vector3 camera_pos = COMBAT_CAMERA->Get_Position();
+      PathMgrClass::Resolve_Paths(camera_pos);
+    }
+  }
 
+  {
+    WWPROFILE("Think");
+    GameModeManager::Think();
+    GameInitMgrClass::Think();
+  }
 
-{	WWPROFILE( "Pathfind Evaluate" );
-   if (COMBAT_CAMERA != NULL) {
-		Vector3 camera_pos = COMBAT_CAMERA->Get_Position();
-		PathMgrClass::Resolve_Paths( camera_pos );
-	}
-}
+  {
+    WWPROFILE("Dialog Mgr Update");
+    DialogMgrClass::On_Frame_Update();
+  }
 
-{	WWPROFILE( "Think" );
-   GameModeManager::Think();
-	GameInitMgrClass::Think();
-}
+  {
+    WWPROFILE("Network Object Mgr Think");
+    NetworkObjectMgrClass::Think();
+    ServerControl.Service();
+  }
 
-{	WWPROFILE( "Dialog Mgr Update" );
-   DialogMgrClass::On_Frame_Update ();
-}
-
-{	WWPROFILE( "Network Object Mgr Think" );
-   NetworkObjectMgrClass::Think ();
-	ServerControl.Service();
-}
-
-{	WWPROFILE("GameSpy_QnR");
+  {
+    WWPROFILE("GameSpy_QnR");
 #ifdef ENABLE_GAMESPY
-	GameSpyQnR.Think();
+    GameSpyQnR.Think();
 #endif
-}
+  }
 
-	if (cGameSpyAdmin::Is_Gamespy_Game()) {
-		WWPROFILE( "cGameSpyAdmin Think" );
-		cGameSpyAdmin::Think();
-	}
+  if (cGameSpyAdmin::Is_Gamespy_Game()) {
+    WWPROFILE("cGameSpyAdmin Think");
+    cGameSpyAdmin::Think();
+  }
 
-	//
-	// If the following assert hits it may indicate that your
-	// working directory pathname got cleared in the project settings.
-	//
-	WWASSERT(GameModeManager::Find("Combat") != NULL);
+  //
+  // If the following assert hits it may indicate that your
+  // working directory pathname got cleared in the project settings.
+  //
+  WWASSERT(GameModeManager::Find("Combat") != NULL);
 
-	if (!GameModeManager::Find("Combat")->Is_Active()) {
-		cNetwork::Update();
-	}
+  if (!GameModeManager::Find("Combat")->Is_Active()) {
+    cNetwork::Update();
+  }
 
-	// Denzil - Embedded browser
-	if (WebBrowser::IsWebPageDisplayed() == false) {
-		GameModeManager::Render();
-	}
+  // Denzil - Embedded browser
+  if (WebBrowser::IsWebPageDisplayed() == false) {
+    GameModeManager::Render();
+  }
 
-	if (AutoRestart.Is_Active()) {
-		AutoRestart.Think();
-	}
+  if (AutoRestart.Is_Active()) {
+    AutoRestart.Think();
+  }
 
-{	WWPROFILE("ConsoleBox");
-	ConsoleBox.Think();
-}
+  {
+    WWPROFILE("ConsoleBox");
+    ConsoleBox.Think();
+  }
 
-	DEMO_SECURITY_CHECK;
+  DEMO_SECURITY_CHECK;
 
-{	WWPROFILE( "Audio" );
-	if (!ConsoleBox.Is_Exclusive()) {
-		WWAudioClass::Get_Instance ()->On_Frame_Update (0);
-	}
-}
-	// Give the sound manager a chance to think
+  {
+    WWPROFILE("Audio");
+    if (!ConsoleBox.Is_Exclusive()) {
+      WWAudioClass::Get_Instance()->On_Frame_Update(0);
+    }
+  }
+  // Give the sound manager a chance to think
   // PROFILE(	"Audio", WWAudioClass::Get_Instance ()->On_Frame_Update (0) );
 
-   Windows_Message_Handler();
+  Windows_Message_Handler();
 #ifdef WWDEBUG
-   // Sometimes it is useful to be able to artificially lower the frame rate
-   Sleep(cDevOptions::DesiredFrameSleepMs.Get());
+  // Sometimes it is useful to be able to artificially lower the frame rate
+  Sleep(cDevOptions::DesiredFrameSleepMs.Get());
 #endif
 
 #if 0
@@ -173,51 +176,49 @@ void _Game_Main_Loop_Loop(void)
 }
 #endif
 
-   DebugManager::Update();
+  DebugManager::Update();
 
+  /*
+  ** Sleep for a while if we are hogging the CPU.
+  */
+  if (cNetwork::I_Am_Only_Server()) {
+    unsigned long time2 = TIMEGETTIME();
+    if (time2 >= time1) {
 
-	/*
-	** Sleep for a while if we are hogging the CPU.
-	*/
-	if (cNetwork::I_Am_Only_Server()) {
-		unsigned long time2 = TIMEGETTIME();
-		if (time2 >= time1) {
-
-			/*
-			** 16 (approx) for 60 fps. (1000/60)
-			*/
-			unsigned long diff = time2 - time1;
-			if (diff < 16) {
-				unsigned long sleep_time = 16 - (time2 - time1);
-				Sleep(sleep_time);
-			}
-		}
-	}
+      /*
+      ** 16 (approx) for 60 fps. (1000/60)
+      */
+      unsigned long diff = time2 - time1;
+      if (diff < 16) {
+        unsigned long sleep_time = 16 - (time2 - time1);
+        Sleep(sleep_time);
+      }
+    }
+  }
 }
 
 /*
 ** MAIN GAME LOOP
 */
-int Game_Main_Loop(void)
-{
-	const unsigned long servicetime = 1000; // Time in milliseconds.
+int Game_Main_Loop(void) {
+  const unsigned long servicetime = 1000; // Time in milliseconds.
 
-	unsigned long time;
+  unsigned long time;
 
-	// Only run main loop if the init is succesful!
-	if (Game_Init()) {
-		while ( RunMainLoop ) {
-			_Game_Main_Loop_Loop();
-		}
+  // Only run main loop if the init is succesful!
+  if (Game_Init()) {
+    while (RunMainLoop) {
+      _Game_Main_Loop_Loop();
+    }
 
-		// IML: Allow a short period to process any outstanding sound effects before shutdown.
-		time = TIMEGETTIME();
-		while (TIMEGETTIME() - time < servicetime) {
-			WWAudioClass::Get_Instance ()->On_Frame_Update (0);
-		}
+    // IML: Allow a short period to process any outstanding sound effects before shutdown.
+    time = TIMEGETTIME();
+    while (TIMEGETTIME() - time < servicetime) {
+      WWAudioClass::Get_Instance()->On_Frame_Update(0);
+    }
 
-		Game_Shutdown();
-	}
+    Game_Shutdown();
+  }
 
-	return ExitCode;
+  return ExitCode;
 }

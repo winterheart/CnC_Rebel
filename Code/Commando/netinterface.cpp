@@ -21,7 +21,7 @@
 // Project:      Network.lib, for Commando
 // Author:       Tom Spencer-Smith
 // Date:         Dec 1998
-// Description:  
+// Description:
 //
 
 #include "netinterface.h"
@@ -40,141 +40,102 @@
 //
 // class statics
 //
-WideStringClass	cNetInterface::Nickname;
+WideStringClass cNetInterface::Nickname;
 int cNetInterface::mSidePreference = -1;
 
 //-----------------------------------------------------------------------------
-cNetInterface::cNetInterface(void)
-{
+cNetInterface::cNetInterface(void) {}
+
+//-----------------------------------------------------------------------------
+cNetInterface::~cNetInterface(void) {}
+
+//-----------------------------------------------------------------------------
+WideStringClass cNetInterface::Get_Nickname(void) {
+  if (cGameSpyAdmin::Is_Gamespy_Game()) {
+
+    //
+    // If the gamespy nickname is blank, set it to "Unnamed"
+    //
+    if (!::strcmp(cUserOptions::GameSpyNickname.Get(), "")) {
+      cUserOptions::GameSpyNickname.Set("Unnamed");
+    }
+
+    WideStringClass wide_name;
+    wide_name.Convert_From(cUserOptions::GameSpyNickname.Get());
+    return wide_name;
+  } else {
+    return Nickname;
+  }
 }
 
 //-----------------------------------------------------------------------------
-cNetInterface::~cNetInterface(void)
-{
+void cNetInterface::Set_Nickname(WideStringClass &name) {
+  if (cGameSpyAdmin::Is_Gamespy_Game()) {
+    WideStringClass wide_name = name;
+    if (wide_name.Get_Length() > 30) {
+      wide_name[30] = 0;
+    }
+    StringClass name;
+    wide_name.Convert_To(name);
+    cUserOptions::GameSpyNickname.Set(name.Peek_Buffer());
+  } else {
+    Nickname = name;
+
+    //
+    // Abbreviate to 9 chars
+    //
+    if (Nickname.Get_Length() > 9) {
+      Nickname[9] = 0;
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------
-WideStringClass cNetInterface::Get_Nickname(void)
-{
-	if (cGameSpyAdmin::Is_Gamespy_Game()) {
-		
-		//
-		// If the gamespy nickname is blank, set it to "Unnamed"
-		//
-		if (!::strcmp(cUserOptions::GameSpyNickname.Get(), "")) {
-			cUserOptions::GameSpyNickname.Set("Unnamed");
-		}
+void cNetInterface::Set_Random_Nickname(void) {
+  char name[MAX_COMPUTERNAME_LENGTH + 1];
+  DWORD size = sizeof(name);
+  ::GetComputerName(name, &size);
 
-		WideStringClass wide_name;
-		wide_name.Convert_From(cUserOptions::GameSpyNickname.Get());
-		return wide_name;
-	} else {
-		return Nickname;
-	}
+  int length_test = MAX_COMPUTERNAME_LENGTH + 1 - MAX_NICKNAME_LENGTH;
+  if (length_test > 0) {
+    name[MAX_NICKNAME_LENGTH - 1] = 0;
+  }
+
+  WideStringClass widename;
+  widename.Convert_From(name);
+
+  Set_Nickname(widename);
 }
 
-//-----------------------------------------------------------------------------
-void cNetInterface::Set_Nickname(WideStringClass & name)
-{
-	if (cGameSpyAdmin::Is_Gamespy_Game()) {
-		WideStringClass wide_name = name;
-		if (wide_name.Get_Length() > 30) {
-			wide_name[30] = 0;
-		}
-		StringClass name;
-		wide_name.Convert_To(name);
-		cUserOptions::GameSpyNickname.Set(name.Peek_Buffer());
-	} else {
-		Nickname = name;
+void cNetInterface::Set_Side_Preference(int side) { mSidePreference = side; }
 
-		//
-		// Abbreviate to 9 chars
-		//
-		if (Nickname.Get_Length() > 9) {
-			Nickname[9] = 0;
-		}
-	}
+int cNetInterface::Get_Side_Preference(void) { return mSidePreference; }
+
+// WideStringClass & cNetInterface::Get_Nickname(void)
+/*
+Nickname = name;
+
+//
+// Abbreviate to 9 chars
+//
+if (Nickname.Get_Length() > 9) {
+        Nickname[9] = 0;
+}
+*/
+
+/*
+Nickname = name;
+
+int max_len = 0;
+if (cGameSpyAdmin::Is_Gamespy_Game()) {
+        max_len = 34;
+} else {
+        max_len = 9;
 }
 
-//-----------------------------------------------------------------------------
-void cNetInterface::Set_Random_Nickname(void)
-{      
-	char name[MAX_COMPUTERNAME_LENGTH + 1];
-	DWORD size = sizeof(name);
-	::GetComputerName(name, &size);
-
-	int length_test = MAX_COMPUTERNAME_LENGTH + 1 - MAX_NICKNAME_LENGTH;
-	if (length_test > 0) {
-		name[MAX_NICKNAME_LENGTH - 1] = 0;
-	}
-
-	WideStringClass widename;
-	widename.Convert_From(name);
-
-   Set_Nickname(widename);
+if (Nickname.Get_Length() > max_len) {
+        Nickname[max_len] = 0;
 }
+*/
 
-
-void cNetInterface::Set_Side_Preference(int side)
-{
-	mSidePreference = side;
-}
-
-
-int cNetInterface::Get_Side_Preference(void)
-{
-	return mSidePreference;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//WideStringClass & cNetInterface::Get_Nickname(void)
-	/*
-	Nickname = name;
-
-  //
-	// Abbreviate to 9 chars
-	//
-	if (Nickname.Get_Length() > 9) {
-		Nickname[9] = 0;
-	}
-	*/
-
-	/*
-	Nickname = name;
-	
-	int max_len = 0;
-	if (cGameSpyAdmin::Is_Gamespy_Game()) {
-		max_len = 34;
-	} else {
-		max_len = 9;
-	}
-
-	if (Nickname.Get_Length() > max_len) {
-		Nickname[max_len] = 0;
-	}
-	*/
-
-   //return Nickname;
-
+// return Nickname;

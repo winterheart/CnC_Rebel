@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLPageMsg.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 5 $
-*     $Modtime: 12/19/01 2:00p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLPageMsg.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 5 $
+ *     $Modtime: 12/19/01 2:00p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLPAGEMSG_H__
 #define __WOLPAGEMSG_H__
@@ -38,45 +38,41 @@
 #include <WWLib\WideString.h>
 
 #ifdef _MSC_VER
-#pragma warning (push,3)
+#pragma warning(push, 3)
 #endif
 
 #include <vector>
 
 #ifdef _MSC_VER
-#pragma warning (pop)
+#pragma warning(pop)
 #endif
 
 namespace WWOnline {
 
-class PageMessage
-	{
-	public:
-		PageMessage(const char* pagersName, const char* message);
-		PageMessage(const wchar_t* pagersName, const wchar_t* message);
-		PageMessage(const PageMessage&);
-		virtual ~PageMessage();
+class PageMessage {
+public:
+  PageMessage(const char *pagersName, const char *message);
+  PageMessage(const wchar_t *pagersName, const wchar_t *message);
+  PageMessage(const PageMessage &);
+  virtual ~PageMessage();
 
-		const PageMessage& operator=(const PageMessage&);
+  const PageMessage &operator=(const PageMessage &);
 
-		inline const WideStringClass& GetPagersName(void) const
-			{return mPager;}
+  inline const WideStringClass &GetPagersName(void) const { return mPager; }
 
-		inline const WideStringClass& GetPageMessage(void) const
-			{return mMessage;}
+  inline const WideStringClass &GetPageMessage(void) const { return mMessage; }
 
-	protected:
-		WideStringClass mPager;
-		WideStringClass mMessage;
-	};
+protected:
+  WideStringClass mPager;
+  WideStringClass mMessage;
+};
 
-typedef enum
-	{
-	PAGESEND_ERROR = 0,
-	PAGESEND_OFFLINE,
-	PAGESEND_HIDING,
-	PAGESEND_SENT,
-	} PageSendStatus;
+typedef enum {
+  PAGESEND_ERROR = 0,
+  PAGESEND_OFFLINE,
+  PAGESEND_HIDING,
+  PAGESEND_SENT,
+} PageSendStatus;
 
 typedef std::vector<PageMessage> PageMessageList;
 

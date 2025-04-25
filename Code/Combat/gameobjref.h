@@ -16,42 +16,42 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/gameobjref.h                          $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 2/06/01 2:30p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 4                                                           $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/gameobjref.h                          $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 2/06/01 2:30p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 4                                                           $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	GAMEOBJREF_H
-#define	GAMEOBJREF_H
+#ifndef GAMEOBJREF_H
+#define GAMEOBJREF_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
-#ifndef	REFLIST_H
-	#include "reflist.h"
+#ifndef REFLIST_H
+#include "reflist.h"
 #endif
 
 /*
 **
 */
-class		ScriptableGameObj;
-typedef	ScriptableGameObj	*									GameObjRefPtr;
-typedef	ReferenceableClass<ScriptableGameObj>			ReferenceableGameObj;
-typedef	ReferencerClass										GameObjReference;
-typedef	RefCountedReferencerClass							RefCountedGameObjReference;
+class ScriptableGameObj;
+typedef ScriptableGameObj *GameObjRefPtr;
+typedef ReferenceableClass<ScriptableGameObj> ReferenceableGameObj;
+typedef ReferencerClass GameObjReference;
+typedef RefCountedReferencerClass RefCountedGameObjReference;
 
-#endif	//	GAMEOBJREF_H
+#endif //	GAMEOBJREF_H

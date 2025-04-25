@@ -28,36 +28,33 @@
 /////////////////////////////////////////////////////////////////////////////
 // CheckingOutDialogClass dialog
 
-class CheckingOutDialogClass : public CDialog
-{
-// Construction
+class CheckingOutDialogClass : public CDialog {
+  // Construction
 public:
-	CheckingOutDialogClass(CWnd* pParent = NULL);   // standard constructor
+  CheckingOutDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CheckingOutDialogClass)
-	enum { IDD = IDD_CHECKING_OUT };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(CheckingOutDialogClass)
+  enum { IDD = IDD_CHECKING_OUT };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CheckingOutDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CheckingOutDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(CheckingOutDialogClass)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(CheckingOutDialogClass)
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

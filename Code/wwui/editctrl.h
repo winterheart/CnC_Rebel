@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/editctrl.h           $*
  *                                                                                             *
@@ -54,127 +55,123 @@
 //	EditCtrlClass
 //
 ////////////////////////////////////////////////////////////////
-class EditCtrlClass :
-	public DialogControlClass,
-	public Observer<IME::CompositionEvent>,
-	public Observer<IME::CandidateEvent>
-{
+class EditCtrlClass : public DialogControlClass,
+                      public Observer<IME::CompositionEvent>,
+                      public Observer<IME::CandidateEvent> {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  EditCtrlClass(void);
+  virtual ~EditCtrlClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	EditCtrlClass (void);
-	virtual ~EditCtrlClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	RTTI
+  //
+  EditCtrlClass *As_EditCtrlClass(void) { return this; }
 
-	//
-	//	RTTI
-	//	
-	EditCtrlClass *	As_EditCtrlClass (void)	{ return this; }
+  //
+  //	From DialogControlClass
+  //
+  void Render(void);
+  virtual void Set_Text(const WCHAR *title);
 
-	//
-	//	From DialogControlClass
-	//
-	void					Render (void);
-	virtual void		Set_Text (const WCHAR *title);
+  int Get_Text_Length(void) const;
 
-	int					Get_Text_Length (void) const;
+  void Set_Text_Limit(int numChars);
+  int Get_Text_Limit(void) const;
 
-	void					Set_Text_Limit (int numChars);
-	int					Get_Text_Limit (void) const;
+  //
+  //	Content control
+  //
+  bool Delete_Selection(void);
 
-	//
-	//	Content control
-	//
-	bool					Delete_Selection (void);
-	
-	int					Get_Int (void);
-	void					Set_Int (int value);
+  int Get_Int(void);
+  void Set_Int(int value);
 
-	//
-	//	Caret and selection support
-	//
-	int					Get_Caret_Pos (void) const;
-	void					Set_Caret_Pos (int new_pos);
-	void					Set_Sel (int start_index, int end_index);
-	void					Get_Sel (int &start_index, int &end_index) const;
+  //
+  //	Caret and selection support
+  //
+  int Get_Caret_Pos(void) const;
+  void Set_Caret_Pos(int new_pos);
+  void Set_Sel(int start_index, int end_index);
+  void Get_Sel(int &start_index, int &end_index) const;
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void On_LButton_Down(const Vector2 &mouse_pos);
+  void On_LButton_Up(const Vector2 &mouse_pos);
+  void On_Mouse_Move(const Vector2 &mouse_pos);
+  void On_Set_Cursor(const Vector2 &mouse_pos);
+  void On_Set_Focus(void);
+  void On_Kill_Focus(DialogControlClass *focus);
+  bool On_Key_Down(uint32 key_id, uint32 key_data);
+  void On_Create(void);
+  void Update_Client_Rect(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void					On_LButton_Down (const Vector2 &mouse_pos);
-	void					On_LButton_Up (const Vector2 &mouse_pos);
-	void					On_Mouse_Move (const Vector2 &mouse_pos);
-	void					On_Set_Cursor (const Vector2 &mouse_pos);
-	void					On_Set_Focus (void);
-	void					On_Kill_Focus (DialogControlClass *focus);
-	bool					On_Key_Down (uint32 key_id, uint32 key_data);
-	void					On_Create (void);
-	void					Update_Client_Rect (void);
+  void Create_Control_Renderers(void);
+  void Create_Text_Renderers(void);
+  void Create_Caret_Renderer(void);
+  void Update_Caret(void);
 
-	void					Create_Control_Renderers (void);
-	void					Create_Text_Renderers (void);
-	void					Create_Caret_Renderer (void);
-	void					Update_Caret (void);	
+  int Character_From_Pos(const Vector2 &mouse_pos);
+  float Pos_From_Character(int char_index);
 
-	int					Character_From_Pos (const Vector2 &mouse_pos);
-	float					Pos_From_Character (int char_index);
+  void On_Unicode_Char(WCHAR unicode);
+  void Insert_String(const WCHAR *string);
 
-	void					On_Unicode_Char (WCHAR unicode);
-	void					Insert_String (const WCHAR *string);
+  void Update_Hilight(int new_pos, int anchor_pos);
+  int Find_Word_Start(int pos, int increment);
+  void Update_Scroll_Pos(void);
 
-	void					Update_Hilight (int new_pos, int anchor_pos);
-	int					Find_Word_Start (int pos, int increment);
-	void					Update_Scroll_Pos (void);
+  bool IsIMEAllowed(void) const;
 
-	bool IsIMEAllowed(void) const;
+  void Set_IME_Typing_Text_Pos(void);
+  void Show_IME_Typing_Text(const wchar_t *text);
+  void Hide_IME_Typing_Text(void);
+  void PositionCandidateList(void);
 
-	void Set_IME_Typing_Text_Pos(void);
-	void Show_IME_Typing_Text(const wchar_t* text);
-	void Hide_IME_Typing_Text(void);
-	void PositionCandidateList(void);
+  void Get_Display_Text(WideStringClass &text);
 
-	void					Get_Display_Text (WideStringClass &text);
+  void HandleNotification(IME::CompositionEvent &);
+  void HandleNotification(IME::CandidateEvent &);
 
-	void					HandleNotification(IME::CompositionEvent&);
-	void					HandleNotification(IME::CandidateEvent&);
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  Render2DSentenceClass TextRenderer;
+  Render2DClass ControlRenderer;
+  Render2DClass CaretRenderer;
+  Render2DClass HilightRenderer;
+  bool IsCaretDisplayed;
+  uint32 CaretBlinkDelay;
+  uint32 LastCaretBlink;
+  int CaretPos;
+  int ScrollPos;
+  int NumChars;
+  int TextLimit;
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	Render2DSentenceClass	TextRenderer;
-	Render2DClass				ControlRenderer;
-	Render2DClass				CaretRenderer;
-	Render2DClass				HilightRenderer;
-	bool							IsCaretDisplayed;
-	uint32						CaretBlinkDelay;
-	uint32						LastCaretBlink;
-	int							CaretPos;
-	int							ScrollPos;
-	int NumChars;
-	int TextLimit;
+  int HilightAnchorPos;
+  int HilightStartPos;
+  int HilightEndPos;
 
-	int							HilightAnchorPos;
-	int							HilightStartPos;
-	int							HilightEndPos;
+  bool WasButtonPressedOnMe;
 
-	bool							WasButtonPressedOnMe;
-
-	IME::IMEManager* mIME;
-	bool mInComposition;
+  IME::IMEManager *mIME;
+  bool mInComposition;
 
 #ifdef SHOW_IME_TYPING
-	bool mShowIMETypingText;
-	ToolTipClass mIMETypingTip;
+  bool mShowIMETypingText;
+  ToolTipClass mIMETypingTip;
 #endif
 
-	IMECandidateCtrl mCandidateList;
+  IMECandidateCtrl mCandidateList;
 };
 
 #endif //__EDIT_CTRL_H

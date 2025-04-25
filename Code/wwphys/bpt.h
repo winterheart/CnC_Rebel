@@ -38,7 +38,7 @@
 #pragma once
 #endif
 
-#if 0 //OBSOLETE
+#if 0 // OBSOLETE
 #ifdef PORT140
 
 #ifndef BPT_H
@@ -122,7 +122,7 @@ protected:
 
 };
 
-#endif 
+#endif
 
-#endif //PORT140
-#endif 
+#endif // PORT140
+#endif

@@ -39,12 +39,12 @@
 #ifndef SERVERCONTROL_H
 #define SERVERCONTROL_H
 
-#include	"assert.h"
+#include "assert.h"
 #include "vector.h"
 #include "servercontrolsocket.h"
 
 #ifndef DebugString
-#include	"wwdebug.h"
+#include "wwdebug.h"
 #ifdef WWDEBUG_SAY
 #define DebugString WWDEBUG_SAY
 #endif
@@ -53,10 +53,10 @@
 #ifdef WWASSERT
 #ifndef fw_assert
 #define fw_assert WWASSERT
-#endif //fw_assert
-#else //WWASSERT
+#endif // fw_assert
+#else  // WWASSERT
 #define fw_assert assert
-#endif //WWASSERT
+#endif // WWASSERT
 
 /*
 ** Max size of packet this class can handle.
@@ -66,120 +66,113 @@
 /*
 ** Time out non-responsive controllers after 1 minute.
 */
-#define CONTROL_TIMEOUT		60*1000
+#define CONTROL_TIMEOUT 60 * 1000
 
 /*
 ** This class is a simple 'out of band' authenticated server command/response system.
 **
 */
-class ServerControlClass
-{
-	public:
+class ServerControlClass {
+public:
+  /*
+  ** Constructor, destructor.
+  */
+  ServerControlClass(void);
+  ~ServerControlClass(void);
 
-		/*
-		** Constructor, destructor.
-		*/
-		ServerControlClass(void);
-		~ServerControlClass(void);
+  /*
+  ** Init, shutdown.
+  */
+  bool Start_Listening(unsigned short port, char *password, const char *(*app_request_callback)(char *),
+                       void (*app_response_callback)(char *), bool loopback = false, unsigned long ip = 0);
+  void Stop_Listening(void);
+  void Set_Welcome_Message(char *message);
 
-		/*
-		** Init, shutdown.
-		*/
-		bool Start_Listening(unsigned short port, char *password, const char*(*app_request_callback)(char*), void(*app_response_callback)(char*), bool loopback = false, unsigned long ip = 0);
-		void Stop_Listening(void);
-		void Set_Welcome_Message(char *message);
+  void Allow_Remote_Admin(bool allow) { RemoteAdminAllowed = allow; }
 
-		void Allow_Remote_Admin(bool allow) {RemoteAdminAllowed = allow;}
+  /*
+  ** Send/receive etc.
+  */
+  void Send_Message(const char *text, unsigned long ip, unsigned short port);
 
-		/*
-		** Send/receive etc.
-		*/
-		void Send_Message(const char *text, unsigned long ip, unsigned short port);
+  /*
+  ** Service.
+  */
+  void Service(void);
 
-		/*
-		** Service.
-		*/
-		void Service(void);
+private:
+  void Parse_Message(void *buffer, int len, unsigned long address, unsigned short port);
+  void Add_Remote_Control(unsigned long ip, unsigned short port);
+  void Remove_Remote_Control(unsigned long ip, unsigned short port);
+  bool Is_Authenticated(unsigned long address, unsigned short port);
+  void Reset_Timeout(unsigned long address, unsigned short port);
+  void Respond(const char *message, unsigned long ip, unsigned short port);
 
-	private:
+  /*
+  ** Type of messages that can be sent.
+  */
+  typedef enum tControlType { CONTROL_REQUEST, CONTROL_RESPONSE } ControlType;
 
-		void Parse_Message(void *buffer, int len, unsigned long address, unsigned short port);
-		void Add_Remote_Control(unsigned long ip, unsigned short port);
-		void Remove_Remote_Control(unsigned long ip, unsigned short port);
-		bool Is_Authenticated(unsigned long address, unsigned short port);
-		void Reset_Timeout(unsigned long address, unsigned short port);
-		void Respond(const char *message, unsigned long ip, unsigned short port);
+  /*
+  ** Format of control message.
+  */
+  typedef struct tControlMessageStruct {
+    ControlType Type;
+    char Message[MAX_SERVER_CONTROL_MESSAGE_SIZE];
+  } ControlMessageStruct;
 
+  /*
+  ** Instance of comms socket handler.
+  */
+  ServerControlSocketClass Comms;
 
-		/*
-		** Type of messages that can be sent.
-		*/
-		typedef enum tControlType {
-			CONTROL_REQUEST,
-			CONTROL_RESPONSE
-		} ControlType;
+  /*
+  ** Port we are bound to.
+  */
+  unsigned short LocalPort;
 
-		/*
-		** Format of control message.
-		*/
-		typedef struct tControlMessageStruct {
-			ControlType		Type;
-			char				Message[MAX_SERVER_CONTROL_MESSAGE_SIZE];
-		} ControlMessageStruct;
+  /*
+  ** Are we listening for control messages?
+  */
+  bool Listening;
 
-		/*
-		** Instance of comms socket handler.
-		*/
-		ServerControlSocketClass Comms;
+  /*
+  ** Password.
+  */
+  char Password[128];
 
-		/*
-		** Port we are bound to.
-		*/
-		unsigned short LocalPort;
+  /*
+  ** Are we allowed to listen for control messages from a remote admin (i.e. not LOOPBACK address).
+  */
+  bool RemoteAdminAllowed;
 
-		/*
-		** Are we listening for control messages?
-		*/
-		bool Listening;
+  /*
+  ** Welcome message sent to new controllers as the connect.
+  */
+  char WelcomeMessage[1024];
 
-		/*
-		** Password.
-		*/
-		char Password[128];
+  /*
+  ** Struct to hold info about remote controllers.
+  */
+  typedef struct tRemoteControlStruct {
+    unsigned short Port;
+    unsigned long IP;
+    bool Secure;
+    unsigned long Time;
+  } RemoteControlStruct;
 
-		/*
-		** Are we allowed to listen for control messages from a remote admin (i.e. not LOOPBACK address).
-		*/
-		bool RemoteAdminAllowed;
+  RemoteControlStruct *Get_Controller(unsigned long ip, unsigned short port);
 
-		/*
-		** Welcome message sent to new controllers as the connect.
-		*/
-		char WelcomeMessage[1024];
+  /*
+  ** List of remote controllers we know about.
+  */
+  DynamicVectorClass<RemoteControlStruct *> RemoteControllers;
 
-		/*
-		** Struct to hold info about remote controllers.
-		*/
-		typedef struct tRemoteControlStruct{
-			unsigned short Port;
-			unsigned long IP;
-			bool Secure;
-			unsigned long Time;
-		} RemoteControlStruct;
-
-		RemoteControlStruct *Get_Controller(unsigned long ip, unsigned short port);
-
-		/*
-		** List of remote controllers we know about.
-		*/
-		DynamicVectorClass<RemoteControlStruct*> RemoteControllers;
-
-		/*
-		** App callbacks for passing control messages.
-		*/
-		const char *(*AppRequestCallback)(char*);
-		void (*AppResponseCallback)(char*);
-
+  /*
+  ** App callbacks for passing control messages.
+  */
+  const char *(*AppRequestCallback)(char *);
+  void (*AppResponseCallback)(char *);
 };
 
 /*
@@ -187,5 +180,4 @@ class ServerControlClass
 */
 extern ServerControlClass ServerControl;
 
-
-#endif //SERVERCONTROL_H
+#endif // SERVERCONTROL_H

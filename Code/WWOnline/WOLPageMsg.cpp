@@ -17,140 +17,121 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLPageMsg.cpp $
-*
-* DESCRIPTION
-*     Page message
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 6 $
-*     $Modtime: 12/19/01 2:12p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLPageMsg.cpp $
+ *
+ * DESCRIPTION
+ *     Page message
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 6 $
+ *     $Modtime: 12/19/01 2:12p $
+ *
+ ******************************************************************************/
 
 #include "WOLPageMsg.h"
 
-namespace WOL
-{
+namespace WOL {
 #include <WOLAPI\chatdefs.h>
 }
 
 namespace WWOnline {
 
 /******************************************************************************
-*
-* NAME
-*     PageMessage::PageMessage
-*
-* DESCRIPTION
-*     Constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PageMessage::PageMessage
+ *
+ * DESCRIPTION
+ *     Constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-PageMessage::PageMessage(const char* pagersName, const char* message) :
-		mPager(pagersName),
-		mMessage(message)
-	{
-	}
-
+PageMessage::PageMessage(const char *pagersName, const char *message) : mPager(pagersName), mMessage(message) {}
 
 /******************************************************************************
-*
-* NAME
-*     PageMessage::PageMessage
-*
-* DESCRIPTION
-*     Constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PageMessage::PageMessage
+ *
+ * DESCRIPTION
+ *     Constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-PageMessage::PageMessage(const wchar_t* pagersName, const wchar_t* message) :
-		mPager(pagersName),
-		mMessage(message)
-	{
-	}
-
+PageMessage::PageMessage(const wchar_t *pagersName, const wchar_t *message) : mPager(pagersName), mMessage(message) {}
 
 /******************************************************************************
-*
-* NAME
-*     PageMessage::PageMessage
-*
-* DESCRIPTION
-*     Copy constructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PageMessage::PageMessage
+ *
+ * DESCRIPTION
+ *     Copy constructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-PageMessage::PageMessage(const PageMessage& page)
-	{
-	*this = page;
-	}
-
+PageMessage::PageMessage(const PageMessage &page) { *this = page; }
 
 /******************************************************************************
-*
-* NAME
-*     PageMessage::~PageMessage
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PageMessage::~PageMessage
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-PageMessage::~PageMessage()
-	{
-	}
-
+PageMessage::~PageMessage() {}
 
 /******************************************************************************
-*
-* NAME
-*     PageMessage::operator=
-*
-* DESCRIPTION
-*     Assignment operator
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     PageMessage::operator=
+ *
+ * DESCRIPTION
+ *     Assignment operator
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-const PageMessage& PageMessage::operator=(const PageMessage& page)
-	{
-	mPager = page.mPager;
-	mMessage = page.mMessage;
-	return (*this);
-	}
+const PageMessage &PageMessage::operator=(const PageMessage &page) {
+  mPager = page.mPager;
+  mMessage = page.mMessage;
+  return (*this);
+}
 
 } // namespace WWOnline

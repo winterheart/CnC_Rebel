@@ -17,32 +17,30 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     Mission4.h
-*
-* DESCRIPTION
-*     Mission 4 definitions
-*
-* PROGRAMMER
-*     Design Team
-*
-* VERSION INFO
-*     $Author: Rich_d $
-*     $Revision: 2 $
-*     $Modtime: 6/13/00 11:21a $
-*     $Archive: /Commando/Code/Scripts/Mission4.h $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     Mission4.h
+ *
+ * DESCRIPTION
+ *     Mission 4 definitions
+ *
+ * PROGRAMMER
+ *     Design Team
+ *
+ * VERSION INFO
+ *     $Author: Rich_d $
+ *     $Revision: 2 $
+ *     $Modtime: 6/13/00 11:21a $
+ *     $Archive: /Commando/Code/Scripts/Mission4.h $
+ *
+ ******************************************************************************/
 
 #ifndef _MISSION4_H_
 #define _MISSION4_H_
 
-
 // Defines and Includes
 
 #include "toolkit.h"
-
 
 // Predefined Constants
 
@@ -52,9 +50,8 @@
 
 // Timer Enumerations
 
-typedef enum
-{
-	M4TIMER_START = STIMER_MISSION4,
+typedef enum {
+  M4TIMER_START = STIMER_MISSION4,
 } M4TIMER;
 
 #endif // _MISSION4_H_

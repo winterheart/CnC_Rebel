@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwoldeletebuddy.cpp     $*
  *                                                                                             *
@@ -34,67 +35,52 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "dlgmpwoldeletebuddy.h"
 #include "WOLBuddyMgr.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolDeleteBuddyPopupClass
 //
 ////////////////////////////////////////////////////////////////
-MPWolDeleteBuddyPopupClass::MPWolDeleteBuddyPopupClass (void)	:
-	PopupDialogClass (IDD_MP_WOL_DELETE_BUDDY)
-{
-	return ;
-}
-
+MPWolDeleteBuddyPopupClass::MPWolDeleteBuddyPopupClass(void) : PopupDialogClass(IDD_MP_WOL_DELETE_BUDDY) { return; }
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolDeleteBuddyPopupClass::On_Init_Dialog (void)
-{
-	Set_Dlg_Item_Text(IDC_BUDDY_NAME_STATIC, UserName);
-	PopupDialogClass::On_Init_Dialog ();
-	return ;
+void MPWolDeleteBuddyPopupClass::On_Init_Dialog(void) {
+  Set_Dlg_Item_Text(IDC_BUDDY_NAME_STATIC, UserName);
+  PopupDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 ////////////////////////////////////////////////////////////////
-void
-MPWolDeleteBuddyPopupClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	switch (ctrl_id)
-	{
-		case IDC_DELETE_BUTTON:
-		{	
-			//
-			//	Simply delete the user from our list
-			//		
-			if (UserName.Is_Empty () == false) {
-				WOLBuddyMgr* buddyMgr = WOLBuddyMgr::GetInstance(false);
+void MPWolDeleteBuddyPopupClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  switch (ctrl_id) {
+  case IDC_DELETE_BUTTON: {
+    //
+    //	Simply delete the user from our list
+    //
+    if (UserName.Is_Empty() == false) {
+      WOLBuddyMgr *buddyMgr = WOLBuddyMgr::GetInstance(false);
 
-				if (buddyMgr) {
-					buddyMgr->RemoveBuddy(UserName);
-					buddyMgr->Release_Ref();
-				}
-				End_Dialog ();
-			}
+      if (buddyMgr) {
+        buddyMgr->RemoveBuddy(UserName);
+        buddyMgr->Release_Ref();
+      }
+      End_Dialog();
+    }
 
-			break;
-		}
-	}
+    break;
+  }
+  }
 
-	PopupDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }
-

@@ -21,7 +21,7 @@
 // Project:      Network.lib, for Commando
 // Author:       Tom Spencer-Smith
 // Date:         Dec 1998
-// Description:  
+// Description:
 //
 //-----------------------------------------------------------------------------
 #if defined(_MSV_VER)
@@ -38,8 +38,7 @@
 class cGameData;
 class cGameChannel;
 
-namespace WWOnline
-{
+namespace WWOnline {
 class ChannelData;
 }
 
@@ -48,23 +47,18 @@ class ChannelData;
 class WideStringClass;
 
 //-----------------------------------------------------------------------------
-class cGameChannelList
-{
-   public:
-		 static void Add_Channel(cGameData * p_game_data, const RefPtr<WWOnline::ChannelData>& channel = RefPtr<WWOnline::ChannelData>());
-		static void Remove_Channel(const WideStringClass & owner);
-		static void Remove_All(void);
-		static cGameChannel * Find_Channel(const WideStringClass & owner);
-		static SList<cGameChannel> * Get_Chan_List(void) {return &ChanList;}
+class cGameChannelList {
+public:
+  static void Add_Channel(cGameData *p_game_data,
+                          const RefPtr<WWOnline::ChannelData> &channel = RefPtr<WWOnline::ChannelData>());
+  static void Remove_Channel(const WideStringClass &owner);
+  static void Remove_All(void);
+  static cGameChannel *Find_Channel(const WideStringClass &owner);
+  static SList<cGameChannel> *Get_Chan_List(void) { return &ChanList; }
 
-   private:
-		static SList<cGameChannel> ChanList;
-};	
+private:
+  static SList<cGameChannel> ChanList;
+};
 
 //-----------------------------------------------------------------------------
 #endif // GAMECHANLIST_H
-
-
-
-
-

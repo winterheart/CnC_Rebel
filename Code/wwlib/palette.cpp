@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/PALETTE.CPP                               $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/PALETTE.CPP                               $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   PaletteClass::Adjust -- Adjusts the palette toward another palette.                       *
  *   PaletteClass::Adjust -- Adjusts this palette toward black.                                *
  *   PaletteClass::Closest_Color -- Finds closest match to color specified.                    *
@@ -40,11 +40,9 @@
  *   PaletteClass::operator == -- Equality operator for palette objects.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-#include	"always.h"
-#include	"palette.h"
-#include	<string.h>
-
+#include "always.h"
+#include "palette.h"
+#include <string.h>
 
 /***********************************************************************************************
  * PaletteClass::PaletteClass -- Constructor that fills palette with color specified.          *
@@ -60,17 +58,13 @@
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-PaletteClass::PaletteClass(RGBClass const & rgb)
-{
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		Palette[index] = rgb;
-	}
+PaletteClass::PaletteClass(RGBClass const &rgb) {
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    Palette[index] = rgb;
+  }
 }
 
-PaletteClass::PaletteClass(unsigned char *binary_palette)
-{
-	memcpy(&Palette[0], binary_palette, sizeof(Palette));
-}
+PaletteClass::PaletteClass(unsigned char *binary_palette) { memcpy(&Palette[0], binary_palette, sizeof(Palette)); }
 
 /***********************************************************************************************
  * PaletteClass::operator == -- Equality operator for palette objects.                         *
@@ -87,12 +81,11 @@ PaletteClass::PaletteClass(unsigned char *binary_palette)
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-int PaletteClass::operator == (PaletteClass const & palette) const
-{
-	if (this == &palette) return(true);
-	return(memcmp(&Palette[0], &palette.Palette[0], sizeof(Palette)) == 0);
+int PaletteClass::operator==(PaletteClass const &palette) const {
+  if (this == &palette)
+    return (true);
+  return (memcmp(&Palette[0], &palette.Palette[0], sizeof(Palette)) == 0);
 }
-
 
 /***********************************************************************************************
  * PaletteClass::operator = -- Assignment operator for palette objects.                        *
@@ -110,14 +103,13 @@ int PaletteClass::operator == (PaletteClass const & palette) const
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-PaletteClass & PaletteClass::operator = (PaletteClass const & palette)
-{
-	if (this == &palette) return(*this);
+PaletteClass &PaletteClass::operator=(PaletteClass const &palette) {
+  if (this == &palette)
+    return (*this);
 
-	memcpy(&Palette[0], &palette.Palette[0], sizeof(Palette));
-	return(*this);
+  memcpy(&Palette[0], &palette.Palette[0], sizeof(Palette));
+  return (*this);
 }
-
 
 /***********************************************************************************************
  * PaletteClass::Adjust -- Adjusts this palette toward black.                                  *
@@ -136,13 +128,11 @@ PaletteClass & PaletteClass::operator = (PaletteClass const & palette)
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PaletteClass::Adjust(int ratio)
-{
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		Palette[index].Adjust(ratio, BlackColor);
-	}
+void PaletteClass::Adjust(int ratio) {
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    Palette[index].Adjust(ratio, BlackColor);
+  }
 }
-
 
 /***********************************************************************************************
  * PaletteClass::Adjust -- Adjusts the palette toward another palette.                         *
@@ -163,13 +153,11 @@ void PaletteClass::Adjust(int ratio)
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PaletteClass::Adjust(int ratio, PaletteClass const & palette)
-{
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		Palette[index].Adjust(ratio, palette[index]);
-	}
+void PaletteClass::Adjust(int ratio, PaletteClass const &palette) {
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    Palette[index].Adjust(ratio, palette[index]);
+  }
 }
-
 
 /***********************************************************************************************
  * PaletteClass::Partial_Adjust -- Adjusts the specified parts of this palette toward black.   *
@@ -191,15 +179,13 @@ void PaletteClass::Adjust(int ratio, PaletteClass const & palette)
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PaletteClass::Partial_Adjust(int ratio, char *lut)
-{
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		if (lut[index]) {
-			Palette[index].Adjust(ratio, BlackColor);
-		}
-	}
+void PaletteClass::Partial_Adjust(int ratio, char *lut) {
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    if (lut[index]) {
+      Palette[index].Adjust(ratio, BlackColor);
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * PaletteClass::Partial_Adjust -- Adjusts the palette toward another palette.                 *
@@ -225,15 +211,13 @@ void PaletteClass::Partial_Adjust(int ratio, char *lut)
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void PaletteClass::Partial_Adjust(int ratio, PaletteClass const & palette, char *lut)
-{
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		if (lut[index]) {
-			Palette[index].Adjust(ratio, palette[index]);
-		}
-	}
+void PaletteClass::Partial_Adjust(int ratio, PaletteClass const &palette, char *lut) {
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    if (lut[index]) {
+      Palette[index].Adjust(ratio, palette[index]);
+    }
+  }
 }
-
 
 /***********************************************************************************************
  * PaletteClass::Closest_Color -- Finds closest match to color specified.                      *
@@ -251,18 +235,17 @@ void PaletteClass::Partial_Adjust(int ratio, PaletteClass const & palette, char 
  * HISTORY:                                                                                    *
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-int PaletteClass::Closest_Color(RGBClass const & rgb) const
-{
-	int closest = 0;
-	int value = -1;
+int PaletteClass::Closest_Color(RGBClass const &rgb) const {
+  int closest = 0;
+  int value = -1;
 
-	RGBClass const * ptr = &Palette[0];
-	for (int index = 0; index < COLOR_COUNT; index++) {
-		int difference = rgb.Difference(*ptr++);
-		if (value == -1 || difference < value) {
-			value = difference;
-			closest = index;
-		}
-	}
-	return(closest);
+  RGBClass const *ptr = &Palette[0];
+  for (int index = 0; index < COLOR_COUNT; index++) {
+    int difference = rgb.Difference(*ptr++);
+    if (value == -1 || difference < value) {
+      value = difference;
+      closest = index;
+    }
+  }
+  return (closest);
 }

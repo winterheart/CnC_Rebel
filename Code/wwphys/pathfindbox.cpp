@@ -34,12 +34,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "pathfindbox.h"
-
 
 //////////////////////////////////////////////////////////////////////////
 //	Static member initialization
 //////////////////////////////////////////////////////////////////////////
-Vector3 PathfindBoxClass::_BlockSize (1, 1, 1);
-
+Vector3 PathfindBoxClass::_BlockSize(1, 1, 1);

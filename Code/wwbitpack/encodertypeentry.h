@@ -21,7 +21,7 @@
 // Project:      wwbitpack.lib
 // Author:       Tom Spencer-Smith
 // Date:         June 2000
-// Description:  
+// Description:
 //
 //-----------------------------------------------------------------------------
 #if defined(_MSV_VER)
@@ -33,36 +33,35 @@
 
 #include "bittype.h"
 
-class cEncoderTypeEntry
-{
-	public:
-		cEncoderTypeEntry();
+class cEncoderTypeEntry {
+public:
+  cEncoderTypeEntry();
 
-		void Init(double min, double max, double resolution);
-		void Init(int num_bits);
+  void Init(double min, double max, double resolution);
+  void Init(int num_bits);
 
-		bool Scale(double value, ULONG & scaled_value);
-		double Unscale(ULONG u_value);
-		double Clamp(double value);
+  bool Scale(double value, ULONG &scaled_value);
+  double Unscale(ULONG u_value);
+  double Clamp(double value);
 
-		UINT	Get_Bit_Precision()	const	{return BitPrecision;}
-		double	Get_Resolution()	const	{return Resolution;}
+  UINT Get_Bit_Precision() const { return BitPrecision; }
+  double Get_Resolution() const { return Resolution; }
 
-		bool Is_Valid() const;
-		void Invalidate();
+  bool Is_Valid() const;
+  void Invalidate();
 
-		bool Is_Value_In_Range(double value) const;
+  bool Is_Value_In_Range(double value) const;
 
-	private:
-      cEncoderTypeEntry(const cEncoderTypeEntry& source);			// Disallow
-      cEncoderTypeEntry& operator=(const cEncoderTypeEntry& rhs);	// Disallow
+private:
+  cEncoderTypeEntry(const cEncoderTypeEntry &source);         // Disallow
+  cEncoderTypeEntry &operator=(const cEncoderTypeEntry &rhs); // Disallow
 
-		void Calc_Bit_Precision(double resolution);
+  void Calc_Bit_Precision(double resolution);
 
-		double Min;
-		double Max;
-		double Resolution;
-		UINT BitPrecision;
+  double Min;
+  double Max;
+  double Resolution;
+  UINT BitPrecision;
 };
 
 #endif // ENCODERTYPEENTRY_H

@@ -17,20 +17,20 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLString.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 2 $
-*     $Modtime: 1/11/02 7:26p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLString.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 2 $
+ *     $Modtime: 1/11/02 7:26p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLSTRING_H__
 #define __WOLSTRING_H__
@@ -42,23 +42,20 @@ namespace WWOnline {
 // warning C4514: unreferenced inline function has been removed
 #pragma warning(disable : 4514)
 
-typedef const wchar_t* (*WOLStringLookupFunc)(const char* token);
+typedef const wchar_t *(*WOLStringLookupFunc)(const char *token);
 
-class WOLString
-	{
-	public:
-		static void SetLookupFunc(WOLStringLookupFunc);
+class WOLString {
+public:
+  static void SetLookupFunc(WOLStringLookupFunc);
 
-		static const wchar_t* Lookup(const char* token)
-			{return _mLookupFunc(token);}
+  static const wchar_t *Lookup(const char *token) { return _mLookupFunc(token); }
 
-	private:
-		static WOLStringLookupFunc _mLookupFunc;
-	};
+private:
+  static WOLStringLookupFunc _mLookupFunc;
+};
 
 } // namespace WWOnline
 
 #define WOLSTRING(token) WWOnline::WOLString::Lookup(token)
 
 #endif // __WOLSTRING_H__
-

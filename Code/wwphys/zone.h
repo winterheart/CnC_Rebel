@@ -34,8 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-#if 0  // TODO: implement zones one day???
+#if 0 // TODO: implement zones one day???
 
 #ifndef ZONE_H
 #define ZONE_H
@@ -97,7 +96,6 @@ private:
 
 };
 
-
 #endif
 
-#endif //0
+#endif // 0

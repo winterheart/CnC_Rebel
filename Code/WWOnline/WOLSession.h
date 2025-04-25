@@ -17,34 +17,34 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLSession.h $
-*
-* DESCRIPTION
-*     WOLSession is the entryway to Westwood Online. An object of this type
-*     must exist in order to do anything WOL related. There should only be one
-*     instance of this; retrieve it via GetInstance.
-*
-* PROGRAMMER
-*     Steve Clinard & Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 54 $
-*     $Modtime: 1/25/02 5:02p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLSession.h $
+ *
+ * DESCRIPTION
+ *     WOLSession is the entryway to Westwood Online. An object of this type
+ *     must exist in order to do anything WOL related. There should only be one
+ *     instance of this; retrieve it via GetInstance.
+ *
+ * PROGRAMMER
+ *     Steve Clinard & Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 54 $
+ *     $Modtime: 1/25/02 5:02p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLSESSION_H__
 #define __WOLSESSION_H__
 
-// TODO: WH: Temporary workaround for https://developercommunity.visualstudio.com/t/C20-compile-error-with-ATL::CComPtrlt/10833434
-// Fixed in Visual Studio 2022 version 17.14
+// TODO: WH: Temporary workaround for
+// https://developercommunity.visualstudio.com/t/C20-compile-error-with-ATL::CComPtrlt/10833434 Fixed in Visual Studio
+// 2022 version 17.14
 #include <atlcore.h>
-namespace ATL
-{
-	ATLAPI AtlAdvise(_Inout_ IUnknown* pUnkCP, _Inout_opt_ IUnknown* pUnk, _In_ const IID& iid, _Out_ LPDWORD pdw);
+namespace ATL {
+ATLAPI AtlAdvise(_Inout_ IUnknown *pUnkCP, _Inout_opt_ IUnknown *pUnk, _In_ const IID &iid, _Out_ LPDWORD pdw);
 }
 
 #include <atlbase.h>
@@ -59,8 +59,7 @@ namespace ATL
 #include <WWLib/Notify.h>
 #include <WWLib/WideString.h>
 
-namespace WOL
-{
+namespace WOL {
 #include <WOLAPI/wolapi.h>
 }
 
@@ -79,7 +78,7 @@ class WaitCondition;
 namespace WWOnline {
 
 // The version of WOLAPI this product was build with.
-#define WOLAPI_BUILD_VERSION MAKELONG(19,1) 
+#define WOLAPI_BUILD_VERSION MAKELONG(19, 1)
 
 class ChatObserver;
 class NetUtilObserver;
@@ -97,484 +96,456 @@ class ConnectWait;
 class DisconnectWait;
 
 class IRCServerData;
-typedef std::vector< RefPtr<IRCServerData> > IRCServerList;
+typedef std::vector<RefPtr<IRCServerData>> IRCServerList;
 
 class MGLServerData;
-typedef std::vector< RefPtr<MGLServerData> > MGLServerList;
+typedef std::vector<RefPtr<MGLServerData>> MGLServerList;
 
 class PingServerData;
-typedef std::vector< RefPtr<PingServerData> > PingServerList;
+typedef std::vector<RefPtr<PingServerData>> PingServerList;
 
-typedef std::vector< RefPtr<LadderData> > LadderList;
+typedef std::vector<RefPtr<LadderData>> LadderList;
 
-enum ConnectionStatus {ConnectionDisconnected, ConnectionDisconnecting, ConnectionConnecting, ConnectionConnected};
+enum ConnectionStatus { ConnectionDisconnected, ConnectionDisconnecting, ConnectionConnecting, ConnectionConnected };
 
 class MessageOfTheDayType;
 typedef TypedEvent<MessageOfTheDayType, WideStringClass> MessageOfTheDayEvent;
 
 // Information request flags
-#define REQUEST_LOCALE     (1<<0L)
-#define REQUEST_SQUADINFO  (1<<1L)
-#define REQUEST_TEAMINFO   (1<<2L)
-#define REQUEST_LADDERINFO (1<<3L)
-#define REQUEST_ALL (REQUEST_LOCALE|REQUEST_SQUADINFO|REQUEST_TEAMINFO|REQUEST_LADDERINFO)
+#define REQUEST_LOCALE (1 << 0L)
+#define REQUEST_SQUADINFO (1 << 1L)
+#define REQUEST_TEAMINFO (1 << 2L)
+#define REQUEST_LADDERINFO (1 << 3L)
+#define REQUEST_ALL (REQUEST_LOCALE | REQUEST_SQUADINFO | REQUEST_TEAMINFO | REQUEST_LADDERINFO)
 #define REQUEST_NONE 0
 
-class Session :
-		public RefCounted,
-		public Notifier<ServerError>,
-		public Notifier<ConnectionStatus>,
-		public Notifier<IRCServerList>,
-		public Notifier<ChannelListEvent>,
-		public Notifier<UserList>,
-		public Notifier<UserEvent>,
-		public Notifier<BuddyEvent>,
-		public Notifier<ChannelEvent>,
-		public Notifier<MessageOfTheDayEvent>,
-		public Notifier<ChatMessage>,
-		public Notifier<PageMessage>,
-		public Notifier<PageSendStatus>,
-		public Notifier<GameOptionsMessage>,
-		public Notifier<GameStartEvent>,
-		public Notifier<RawPing>,
-		public Notifier<LadderInfoEvent>,
-		public Notifier<LadderList>,
-		public Notifier<SquadEvent>,
-		public Notifier<NewLoginInfoEvent>,
-		public Notifier<AgeCheckEvent>,
-		public Notifier<UserIPEvent>
-	{
-	public:
-		// Retrieve WWOnline session instance.
-		static RefPtr<Session> GetInstance(bool okToCreate = false);
-
-		void Reset(void);
-
-		// Yeild time for WWOnline processing.
-		virtual bool Process(void);
-
-		// Retrieve pointer to IChat object
-		const CComPtr<WOL::IChat>& GetChatObject(void) const
-			{return mChat;}
-
-		// Retrieve pointer to INetUtil object
-		const CComPtr<WOL::INetUtil>& GetNetUtilObject(void) const
-			{return mNetUtil;}
-
-		// Obtain current patch download list
-		DownloadList& GetPatchDownloadList(void)
-			{return mPatchFiles;}
-
-		// Retrieve connection status
-		ConnectionStatus GetConnectionStatus(void) const
-			{return mCurrentConnectionStatus;}
-
-		//-------------------------------------------------------------------------
-		// Server Methods
-		//-------------------------------------------------------------------------
-
-		// Retrieve new server list
-		RefPtr<WaitCondition> GetNewServerList(void);
-
-		// Submit request for new server list
-		bool RequestServerList(bool just_kidding = false);
-
-		// Obtain current server list
-		const IRCServerList& GetIRCServerList(void)
-			{return mIRCServers;}
-
-		const MGLServerList& GetManglerServerList(void)
-			{return mMGLServers;}
-
-		const PingServerList& GetPingServerList(void)
-			{return mPingServers;}
+class Session : public RefCounted,
+                public Notifier<ServerError>,
+                public Notifier<ConnectionStatus>,
+                public Notifier<IRCServerList>,
+                public Notifier<ChannelListEvent>,
+                public Notifier<UserList>,
+                public Notifier<UserEvent>,
+                public Notifier<BuddyEvent>,
+                public Notifier<ChannelEvent>,
+                public Notifier<MessageOfTheDayEvent>,
+                public Notifier<ChatMessage>,
+                public Notifier<PageMessage>,
+                public Notifier<PageSendStatus>,
+                public Notifier<GameOptionsMessage>,
+                public Notifier<GameStartEvent>,
+                public Notifier<RawPing>,
+                public Notifier<LadderInfoEvent>,
+                public Notifier<LadderList>,
+                public Notifier<SquadEvent>,
+                public Notifier<NewLoginInfoEvent>,
+                public Notifier<AgeCheckEvent>,
+                public Notifier<UserIPEvent> {
+public:
+  // Retrieve WWOnline session instance.
+  static RefPtr<Session> GetInstance(bool okToCreate = false);
 
-		// Retrieve current server
-		const RefPtr<IRCServerData>& GetCurrentServer(void) const
-			{return mCurrentServer;}
+  void Reset(void);
 
-		// Retrieve current login
-		const RefPtr<LoginInfo>& GetCurrentLogin(void) const
-			{return mCurrentLogin;}
+  // Yeild time for WWOnline processing.
+  virtual bool Process(void);
 
-		// Login into server
-		RefPtr<WaitCondition> LoginServer(const RefPtr<IRCServerData>&, const RefPtr<LoginInfo>&);
+  // Retrieve pointer to IChat object
+  const CComPtr<WOL::IChat> &GetChatObject(void) const { return mChat; }
 
-		// Disconnection from current server.
-		RefPtr<WaitCondition> Logout(void);
+  // Retrieve pointer to INetUtil object
+  const CComPtr<WOL::INetUtil> &GetNetUtilObject(void) const { return mNetUtil; }
 
-		// Retrieve message of the day
-		const WideStringClass& GetMessageOfTheDay(void) const
-			{return mMessageOfTheDay;}
+  // Obtain current patch download list
+  DownloadList &GetPatchDownloadList(void) { return mPatchFiles; }
 
-		//-------------------------------------------------------------------------
-		// Channel Methods
-		//-------------------------------------------------------------------------
+  // Retrieve connection status
+  ConnectionStatus GetConnectionStatus(void) const { return mCurrentConnectionStatus; }
 
-		bool EnableProgressiveChannelList(bool enable);
+  //-------------------------------------------------------------------------
+  // Server Methods
+  //-------------------------------------------------------------------------
 
-		// Submit request for new channel list
-		bool RequestChannelList(int channelType, bool autoPing);
+  // Retrieve new server list
+  RefPtr<WaitCondition> GetNewServerList(void);
 
-		// Look for a channel with the specified name in the current channel list.
-		RefPtr<ChannelData> FindChannel(const wchar_t* name);
-		RefPtr<ChannelData> FindChannel(const char* name);
+  // Submit request for new server list
+  bool RequestServerList(bool just_kidding = false);
 
-		// Create a new channel
-		RefPtr<WaitCondition> CreateChannel(const wchar_t* channelName, const wchar_t* password, int type);
-		RefPtr<WaitCondition> CreateChannel(const RefPtr<ChannelData>&, const wchar_t* password);
+  // Obtain current server list
+  const IRCServerList &GetIRCServerList(void) { return mIRCServers; }
 
-		// Join a channel
-		RefPtr<WaitCondition> JoinChannel(const RefPtr<ChannelData>& channel, const wchar_t* password);
-		RefPtr<WaitCondition> JoinChannel(const wchar_t* name, const wchar_t* password, int type);
-		bool RequestChannelJoin(const RefPtr<ChannelData>& channel, const wchar_t* password);
+  const MGLServerList &GetManglerServerList(void) { return mMGLServers; }
 
-		// Leave the current channel.
-		RefPtr<WaitCondition> LeaveChannel(void);
+  const PingServerList &GetPingServerList(void) { return mPingServers; }
 
-		bool RequestLeaveChannel(void);
+  // Retrieve current server
+  const RefPtr<IRCServerData> &GetCurrentServer(void) const { return mCurrentServer; }
 
-		// Obtain current channel
-		const RefPtr<ChannelData>& GetCurrentChannel(void) const
-			{return mCurrentChannel;}
+  // Retrieve current login
+  const RefPtr<LoginInfo> &GetCurrentLogin(void) const { return mCurrentLogin; }
 
-		const char* GetChannelTopic(void) const;
+  // Login into server
+  RefPtr<WaitCondition> LoginServer(const RefPtr<IRCServerData> &, const RefPtr<LoginInfo> &);
 
-		// Send the current channels topic to the server.
-		bool SendChannelTopic(void);
+  // Disconnection from current server.
+  RefPtr<WaitCondition> Logout(void);
 
-		// Send the current channels extra info to the server.
-		bool SendChannelExtraInfo(void);
+  // Retrieve message of the day
+  const WideStringClass &GetMessageOfTheDay(void) const { return mMessageOfTheDay; }
 
-		// Retrieve current channel status
-		ChannelStatus GetChannelStatus(void) const
-			{return mCurrentChannelStatus;}
+  //-------------------------------------------------------------------------
+  // Channel Methods
+  //-------------------------------------------------------------------------
 
-		// Retrieve new chat channel list
-		RefPtr<WaitCondition> GetNewChatChannelList(void);
+  bool EnableProgressiveChannelList(bool enable);
 
-		// Obtain current channel list.
-		const ChannelList& GetChatChannelList(void)
-			{return mChatChannels;}
+  // Submit request for new channel list
+  bool RequestChannelList(int channelType, bool autoPing);
 
-		RefPtr<ChannelData> FindChatChannel(const wchar_t* name);
-		RefPtr<ChannelData> FindChatChannel(const char* name);
+  // Look for a channel with the specified name in the current channel list.
+  RefPtr<ChannelData> FindChannel(const wchar_t *name);
+  RefPtr<ChannelData> FindChannel(const char *name);
 
-		// Retrieve new game channel list
-		RefPtr<WaitCondition> GetNewGameChannelList(void);
+  // Create a new channel
+  RefPtr<WaitCondition> CreateChannel(const wchar_t *channelName, const wchar_t *password, int type);
+  RefPtr<WaitCondition> CreateChannel(const RefPtr<ChannelData> &, const wchar_t *password);
 
-		// Submit request for new game channel list.
-		bool RequestGameChannelList(void);
+  // Join a channel
+  RefPtr<WaitCondition> JoinChannel(const RefPtr<ChannelData> &channel, const wchar_t *password);
+  RefPtr<WaitCondition> JoinChannel(const wchar_t *name, const wchar_t *password, int type);
+  bool RequestChannelJoin(const RefPtr<ChannelData> &channel, const wchar_t *password);
 
-		// Obtain current game channel list
-		const ChannelList& GetGameChannelList(void)
-			{return mGameChannels;}
+  // Leave the current channel.
+  RefPtr<WaitCondition> LeaveChannel(void);
 
-		RefPtr<ChannelData> FindGameChannel(const wchar_t* name);
-		RefPtr<ChannelData> FindGameChannel(const char* name);
+  bool RequestLeaveChannel(void);
 
-		//-------------------------------------------------------------------------
-		// User Methods
-		//-------------------------------------------------------------------------
+  // Obtain current channel
+  const RefPtr<ChannelData> &GetCurrentChannel(void) const { return mCurrentChannel; }
 
-		// Request a new user list
-		bool RequestUserList(void);
+  const char *GetChannelTopic(void) const;
 
-		// Obtian current user list
-		const UserList& GetUserList(void)
-			{return mUsers;}
+  // Send the current channels topic to the server.
+  bool SendChannelTopic(void);
 
-		// Find specified user
-		RefPtr<UserData> FindUser(const wchar_t* userName);
+  // Send the current channels extra info to the server.
+  bool SendChannelExtraInfo(void);
 
-		// Obtain current user
-		RefPtr<UserData> GetCurrentUser(void) const
-			{return mCurrentUser;}
+  // Retrieve current channel status
+  ChannelStatus GetChannelStatus(void) const { return mCurrentChannelStatus; }
 
-		// Test is specified user is the current one.
-		bool IsCurrentUser(const RefPtr<UserData>&) const;
-		bool IsCurrentUser(const wchar_t* username) const;
+  // Retrieve new chat channel list
+  RefPtr<WaitCondition> GetNewChatChannelList(void);
 
-		// Change the locale for the user currently logged in.
-		bool ChangeCurrentUserLocale(WOL::Locale locale);
+  // Obtain current channel list.
+  const ChannelList &GetChatChannelList(void) { return mChatChannels; }
 
-		// Squelch / unsquelch user messages. Prevents messages from specified user.
-		bool SquelchUser(const RefPtr<UserData>& user, bool squelched);
+  RefPtr<ChannelData> FindChatChannel(const wchar_t *name);
+  RefPtr<ChannelData> FindChatChannel(const char *name);
 
-		// Kick a user from the current channel. Kicking is only allowed for
-		// channel owners.
-		bool KickUser(const wchar_t* username);
+  // Retrieve new game channel list
+  RefPtr<WaitCondition> GetNewGameChannelList(void);
 
-		// Ban / unban a user from the current channel. Banning is only allowed for
-		// channel owners.
-		bool BanUser(const wchar_t* username, bool banned);
+  // Submit request for new game channel list.
+  bool RequestGameChannelList(void);
 
-		// Send a page to a user.
-		bool PageUser(const wchar_t* userName, const wchar_t* message);
+  // Obtain current game channel list
+  const ChannelList &GetGameChannelList(void) { return mGameChannels; }
 
-		// Request a users online location
-		unsigned long GetAutoRequestFlags(void) const
-			{return mAutoRequestFlags;}
+  RefPtr<ChannelData> FindGameChannel(const wchar_t *name);
+  RefPtr<ChannelData> FindGameChannel(const char *name);
 
-		void SetAutoRequestFlags(unsigned long flags)
-			{mAutoRequestFlags = flags;}
+  //-------------------------------------------------------------------------
+  // User Methods
+  //-------------------------------------------------------------------------
 
-		void RequestUserDetails(const RefPtr<UserData>& user, unsigned long requestFlags);
+  // Request a new user list
+  bool RequestUserList(void);
 
-		void RequestLocateUser(const wchar_t* userName);
-		void RequestLocateUser(const RefPtr<UserData>& user);
+  // Obtian current user list
+  const UserList &GetUserList(void) { return mUsers; }
 
-		// Request users locale
-		void RequestUserLocale(const wchar_t* userName);
+  // Find specified user
+  RefPtr<UserData> FindUser(const wchar_t *userName);
 
-		// Request information about a squad by Squad ID
-		void RequestSquadInfoByID(unsigned long squadID);
+  // Obtain current user
+  RefPtr<UserData> GetCurrentUser(void) const { return mCurrentUser; }
 
-		// Request information about a squad by member name
-		void RequestSquadInfoByMemberName(const wchar_t* memberName);
+  // Test is specified user is the current one.
+  bool IsCurrentUser(const RefPtr<UserData> &) const;
+  bool IsCurrentUser(const wchar_t *username) const;
 
-		// Request users team information
-		void RequestTeamInfo(const wchar_t* userName);
+  // Change the locale for the user currently logged in.
+  bool ChangeCurrentUserLocale(WOL::Locale locale);
 
-		// Request users ladder information
-		void RequestLadderInfo(const wchar_t* name, unsigned long type);
+  // Squelch / unsquelch user messages. Prevents messages from specified user.
+  bool SquelchUser(const RefPtr<UserData> &user, bool squelched);
 
-		//-------------------------------------------------------------------------
-		// Buddy Methods
-		//-------------------------------------------------------------------------
-
-		// Obtian current buddy list
-		const UserList& GetBuddyList(void) const
-			{return mBuddies;}
-
-		// Find specified buddy
-		RefPtr<UserData> FindBuddy(const wchar_t* buddyName)
-			{return FindUserInList(buddyName, mBuddies);}
-
-		bool RequestBuddyList(void);
-		bool AddBuddy(const wchar_t* buddyName);
-		bool RemoveBuddy(const wchar_t* buddyName);
+  // Kick a user from the current channel. Kicking is only allowed for
+  // channel owners.
+  bool KickUser(const wchar_t *username);
 
-		//-------------------------------------------------------------------------
-		// Chatting Methods
-		//-------------------------------------------------------------------------
-		bool AllowFindPage(bool allowFind, bool allowPage);
+  // Ban / unban a user from the current channel. Banning is only allowed for
+  // channel owners.
+  bool BanUser(const wchar_t *username, bool banned);
 
-		// Enable / disable filtering of bad language
-		bool SetBadLanguageFilter(bool enabled);
+  // Send a page to a user.
+  bool PageUser(const wchar_t *userName, const wchar_t *message);
 
-		bool SendPublicMessage(const char* message);
-		bool SendPublicMessage(const wchar_t* message);
-		bool SendPublicAction(const char* action);
-		bool SendPublicAction(const wchar_t* action);
+  // Request a users online location
+  unsigned long GetAutoRequestFlags(void) const { return mAutoRequestFlags; }
 
-		bool SendPrivateMessage(const wchar_t* username, const wchar_t* message);
-		bool SendPrivateMessage(const UserList& users, const char* message);
-		bool SendPrivateMessage(const UserList& users, const wchar_t* message);
-		bool SendPrivateAction(const UserList& users, const char* action);
-		bool SendPrivateAction(const UserList& users, const wchar_t* action);
+  void SetAutoRequestFlags(unsigned long flags) { mAutoRequestFlags = flags; }
 
-		bool SendPublicGameOptions(const char* options);
-		bool SendPrivateGameOptions(const wchar_t* user, const char* options);
-		bool SendPrivateGameOptions(const UserList& users, const char* options);
+  void RequestUserDetails(const RefPtr<UserData> &user, unsigned long requestFlags);
 
-		//-------------------------------------------------------------------------
-		// Utility Methods
-		//-------------------------------------------------------------------------
-		void GetLocaleStrings(std::vector<WideStringClass>& localeStrings);
+  void RequestLocateUser(const wchar_t *userName);
+  void RequestLocateUser(const RefPtr<UserData> &user);
 
-		void EnablePinging(bool enable);
-		void RequestPing(const char* address, int timeout = 1000);
+  // Request users locale
+  void RequestUserLocale(const wchar_t *userName);
 
-		unsigned int GetPendingPingCount(void) const
-			{return mPingsPending;}
+  // Request information about a squad by Squad ID
+  void RequestSquadInfoByID(unsigned long squadID);
 
-		bool SendGameResults(unsigned char* packet, unsigned long length);
-
-		bool RequestUserIP(char *user_name);
+  // Request information about a squad by member name
+  void RequestSquadInfoByMemberName(const wchar_t *memberName);
 
-		time_t GetServerTime(void)
-			{return mServerTime;}
-
-		//-------------------------------------------------------------------------
-		// IGR (Internet Gaming Room) support
-		//-------------------------------------------------------------------------
-		bool IsStoreLoginAllowed(void);
-		bool IsAutoLoginAllowed(void);
-		bool IsRunRegAppAllowed(void);
-
-		//-------------------------------------------------------------------------
-		// Insider status support
-		//-------------------------------------------------------------------------
-		void RequestInsiderStatus(void);
-		void RequestServerTime(void);
-
-		bool IsCurrUserInsider(void)
-			{return mIsInsider;}
-
-		//-------------------------------------------------------------------------
-		// Event notification
-		//-------------------------------------------------------------------------
-		DECLARE_NOTIFIER(ServerError)
-		DECLARE_NOTIFIER(ConnectionStatus)
-		DECLARE_NOTIFIER(IRCServerList)
-		DECLARE_NOTIFIER(ChannelListEvent)
-		DECLARE_NOTIFIER(UserList)
-		DECLARE_NOTIFIER(UserEvent)
-		DECLARE_NOTIFIER(BuddyEvent)
-		DECLARE_NOTIFIER(ChannelEvent)
-		DECLARE_NOTIFIER(MessageOfTheDayEvent)
-		DECLARE_NOTIFIER(ChatMessage)
-		DECLARE_NOTIFIER(PageMessage)
-		DECLARE_NOTIFIER(PageSendStatus)
-		DECLARE_NOTIFIER(GameOptionsMessage)
-		DECLARE_NOTIFIER(GameStartEvent)
-		DECLARE_NOTIFIER(RawPing)
-		DECLARE_NOTIFIER(LadderInfoEvent)
-		DECLARE_NOTIFIER(LadderList)
-		DECLARE_NOTIFIER(SquadEvent)
-		DECLARE_NOTIFIER(NewLoginInfoEvent)
-		DECLARE_NOTIFIER(AgeCheckEvent)
-		DECLARE_NOTIFIER(UserIPEvent)
+  // Request users team information
+  void RequestTeamInfo(const wchar_t *userName);
 
-	protected:
-		friend ChatObserver;
-		friend NetUtilObserver;
-		friend Download;
-		friend ConnectWait;
-		friend DisconnectWait;
+  // Request users ladder information
+  void RequestLadderInfo(const wchar_t *name, unsigned long type);
 
-		Session();
-		virtual ~Session();
+  //-------------------------------------------------------------------------
+  // Buddy Methods
+  //-------------------------------------------------------------------------
 
-		// Disallow copy and assignment
-		Session(const Session&);
-		const Session& operator=(const Session&);
+  // Obtian current buddy list
+  const UserList &GetBuddyList(void) const { return mBuddies; }
 
-		virtual void ReleaseReference(void);
-		bool FinalizeCreate(void);
+  // Find specified buddy
+  RefPtr<UserData> FindBuddy(const wchar_t *buddyName) { return FindUserInList(buddyName, mBuddies); }
 
-		void UpdatePingServerTime(const char* name, int time);
+  bool RequestBuddyList(void);
+  bool AddBuddy(const wchar_t *buddyName);
+  bool RemoveBuddy(const wchar_t *buddyName);
 
-		void AutoRequestUserDetails(const RefPtr<UserData>& user);
+  //-------------------------------------------------------------------------
+  // Chatting Methods
+  //-------------------------------------------------------------------------
+  bool AllowFindPage(bool allowFind, bool allowPage);
 
-		RefPtr<UserData> GetUserOrBuddy(const wchar_t*);
+  // Enable / disable filtering of bad language
+  bool SetBadLanguageFilter(bool enabled);
 
-		const CComPtr<WOL::IIGROptions>& GetIGRObject(void);
-		
-	private:
-		void ClearServers(void);
+  bool SendPublicMessage(const char *message);
+  bool SendPublicMessage(const wchar_t *message);
+  bool SendPublicAction(const char *action);
+  bool SendPublicAction(const wchar_t *action);
 
-		void MakeLocateUserRequests(void);
-		void MakeSquadRequests(void);
-		void MakeLocaleRequests(void);
-		void MakeTeamRequests(void);
-		void MakeLadderRequests(void);
-		void MakePingRequests(void);
+  bool SendPrivateMessage(const wchar_t *username, const wchar_t *message);
+  bool SendPrivateMessage(const UserList &users, const char *message);
+  bool SendPrivateMessage(const UserList &users, const wchar_t *message);
+  bool SendPrivateAction(const UserList &users, const char *action);
+  bool SendPrivateAction(const UserList &users, const wchar_t *action);
 
-		CComPtr<WOL::IChat> mChat;
-		CComPtr<WOL::IChatEvent> mChatEvents;
-		unsigned long mChatCookie;
+  bool SendPublicGameOptions(const char *options);
+  bool SendPrivateGameOptions(const wchar_t *user, const char *options);
+  bool SendPrivateGameOptions(const UserList &users, const char *options);
 
-		CComPtr<WOL::INetUtil> mNetUtil;
-		CComPtr<WOL::INetUtilEvent> mNetUtilEvents;
-		unsigned long mNetUtilCookie;
+  //-------------------------------------------------------------------------
+  // Utility Methods
+  //-------------------------------------------------------------------------
+  void GetLocaleStrings(std::vector<WideStringClass> &localeStrings);
 
-		CComPtr<WOL::IIGROptions> mIGRObject;
+  void EnablePinging(bool enable);
+  void RequestPing(const char *address, int timeout = 1000);
 
-		// Server data
-		bool mRequestingServerList;
-		IRCServerList mIRCServers;
-		RefPtr<LadderServerData> mLadderServer;
-		RefPtr<GameResultsServerData> mGameResultsServer;
-		RefPtr<WDTServerData> mWDTServer;
-		MGLServerList mMGLServers;
-		PingServerList mPingServers;
-		bool mIgnoreServerLists;
+  unsigned int GetPendingPingCount(void) const { return mPingsPending; }
 
-		// Insider status data
-		bool mIsInsider;
-		time_t mServerTime;
+  bool SendGameResults(unsigned char *packet, unsigned long length);
 
-		// Patch data
-		DownloadList mPatchFiles;
+  bool RequestUserIP(char *user_name);
 
-		// Connection state
-		ConnectionStatus mCurrentConnectionStatus;
-		RefPtr<IRCServerData> mPendingServer;
-		RefPtr<IRCServerData> mCurrentServer;
-		RefPtr<LoginInfo> mPendingLogin;
-		RefPtr<LoginInfo> mCurrentLogin;
+  time_t GetServerTime(void) { return mServerTime; }
 
-		// Channel data
-		ChannelList mChatChannels;
-		ChannelList mGameChannels;
+  //-------------------------------------------------------------------------
+  // IGR (Internet Gaming Room) support
+  //-------------------------------------------------------------------------
+  bool IsStoreLoginAllowed(void);
+  bool IsAutoLoginAllowed(void);
+  bool IsRunRegAppAllowed(void);
 
-		int mRequestedChannelType;
-		ChannelList mIncommingChatChannels;
-		ChannelList mIncommingGameChannels;
+  //-------------------------------------------------------------------------
+  // Insider status support
+  //-------------------------------------------------------------------------
+  void RequestInsiderStatus(void);
+  void RequestServerTime(void);
 
-		RefPtr<ChannelData> mPendingChannel;
-		RefPtr<ChannelData> mCurrentChannel;
+  bool IsCurrUserInsider(void) { return mIsInsider; }
 
-		ChannelStatus mCurrentChannelStatus;
+  //-------------------------------------------------------------------------
+  // Event notification
+  //-------------------------------------------------------------------------
+  DECLARE_NOTIFIER(ServerError)
+  DECLARE_NOTIFIER(ConnectionStatus)
+  DECLARE_NOTIFIER(IRCServerList)
+  DECLARE_NOTIFIER(ChannelListEvent)
+  DECLARE_NOTIFIER(UserList)
+  DECLARE_NOTIFIER(UserEvent)
+  DECLARE_NOTIFIER(BuddyEvent)
+  DECLARE_NOTIFIER(ChannelEvent)
+  DECLARE_NOTIFIER(MessageOfTheDayEvent)
+  DECLARE_NOTIFIER(ChatMessage)
+  DECLARE_NOTIFIER(PageMessage)
+  DECLARE_NOTIFIER(PageSendStatus)
+  DECLARE_NOTIFIER(GameOptionsMessage)
+  DECLARE_NOTIFIER(GameStartEvent)
+  DECLARE_NOTIFIER(RawPing)
+  DECLARE_NOTIFIER(LadderInfoEvent)
+  DECLARE_NOTIFIER(LadderList)
+  DECLARE_NOTIFIER(SquadEvent)
+  DECLARE_NOTIFIER(NewLoginInfoEvent)
+  DECLARE_NOTIFIER(AgeCheckEvent)
+  DECLARE_NOTIFIER(UserIPEvent)
 
-		// User data
-		UserList mUsers;
-		RefPtr<UserData> mCurrentUser;
+protected:
+  friend ChatObserver;
+  friend NetUtilObserver;
+  friend Download;
+  friend ConnectWait;
+  friend DisconnectWait;
 
-		UserList mLocatePendingUsers;
-		RefPtr<UserData> mLocatingUser;
+  Session();
+  virtual ~Session();
 
-		UserList mBuddies;
+  // Disallow copy and assignment
+  Session(const Session &);
+  const Session &operator=(const Session &);
 
-		unsigned long mAutoRequestFlags;
+  virtual void ReleaseReference(void);
+  bool FinalizeCreate(void);
 
-      // Squad Request queues
-		typedef std::vector<WideStringClass> SquadRequestColl;
-		SquadRequestColl mSquadRequests;
-		SquadRequestColl mSquadPending;
+  void UpdatePingServerTime(const char *name, int time);
 
-		typedef std::vector<WideStringClass> LocaleRequestColl;
-		LocaleRequestColl mLocaleRequests;
+  void AutoRequestUserDetails(const RefPtr<UserData> &user);
 
-		typedef std::vector<WideStringClass> TeamRequestColl;
-		TeamRequestColl mTeamRequests;
+  RefPtr<UserData> GetUserOrBuddy(const wchar_t *);
 
-		typedef std::list<WideStringClass> LadderRequestList;
-		LadderRequestList mLadderRequests;
-		unsigned long mLadderPending;
+  const CComPtr<WOL::IIGROptions> &GetIGRObject(void);
 
-		// Misc.
-		WideStringClass mMessageOfTheDay;
+private:
+  void ClearServers(void);
 
-		std::vector<RawPing> mPingRequests;
-		unsigned int mPingsPending;
-		int mPingEnable;
+  void MakeLocateUserRequests(void);
+  void MakeSquadRequests(void);
+  void MakeLocaleRequests(void);
+  void MakeTeamRequests(void);
+  void MakeLadderRequests(void);
+  void MakePingRequests(void);
 
-		unsigned long mLastUserDataRequestTime;
-		static RefPtr<Session> _mInstance;
-	};
+  CComPtr<WOL::IChat> mChat;
+  CComPtr<WOL::IChatEvent> mChatEvents;
+  unsigned long mChatCookie;
 
+  CComPtr<WOL::INetUtil> mNetUtil;
+  CComPtr<WOL::INetUtilEvent> mNetUtilEvents;
+  unsigned long mNetUtilCookie;
 
-class ChatAdvisement :
-		public RefCounted
-	{
-	public:
-		static RefPtr<ChatAdvisement> Create(const CComPtr<WOL::IChat>&, const CComPtr<WOL::IChatEvent>&);
+  CComPtr<WOL::IIGROptions> mIGRObject;
 
-	private:
-		ChatAdvisement(const CComPtr<WOL::IChat>&, const CComPtr<WOL::IChatEvent>&);
-		virtual ~ChatAdvisement();
+  // Server data
+  bool mRequestingServerList;
+  IRCServerList mIRCServers;
+  RefPtr<LadderServerData> mLadderServer;
+  RefPtr<GameResultsServerData> mGameResultsServer;
+  RefPtr<WDTServerData> mWDTServer;
+  MGLServerList mMGLServers;
+  PingServerList mPingServers;
+  bool mIgnoreServerLists;
 
-		// Prevent copy and assignment
-		ChatAdvisement(const ChatAdvisement&);
-		const ChatAdvisement& operator=(const ChatAdvisement&);
+  // Insider status data
+  bool mIsInsider;
+  time_t mServerTime;
 
-		CComPtr<WOL::IChat> mChat;
-		unsigned long mChatCookie;
-	};
+  // Patch data
+  DownloadList mPatchFiles;
 
-} // using namespace WWOnline
+  // Connection state
+  ConnectionStatus mCurrentConnectionStatus;
+  RefPtr<IRCServerData> mPendingServer;
+  RefPtr<IRCServerData> mCurrentServer;
+  RefPtr<LoginInfo> mPendingLogin;
+  RefPtr<LoginInfo> mCurrentLogin;
+
+  // Channel data
+  ChannelList mChatChannels;
+  ChannelList mGameChannels;
+
+  int mRequestedChannelType;
+  ChannelList mIncommingChatChannels;
+  ChannelList mIncommingGameChannels;
+
+  RefPtr<ChannelData> mPendingChannel;
+  RefPtr<ChannelData> mCurrentChannel;
+
+  ChannelStatus mCurrentChannelStatus;
+
+  // User data
+  UserList mUsers;
+  RefPtr<UserData> mCurrentUser;
+
+  UserList mLocatePendingUsers;
+  RefPtr<UserData> mLocatingUser;
+
+  UserList mBuddies;
+
+  unsigned long mAutoRequestFlags;
+
+  // Squad Request queues
+  typedef std::vector<WideStringClass> SquadRequestColl;
+  SquadRequestColl mSquadRequests;
+  SquadRequestColl mSquadPending;
+
+  typedef std::vector<WideStringClass> LocaleRequestColl;
+  LocaleRequestColl mLocaleRequests;
+
+  typedef std::vector<WideStringClass> TeamRequestColl;
+  TeamRequestColl mTeamRequests;
+
+  typedef std::list<WideStringClass> LadderRequestList;
+  LadderRequestList mLadderRequests;
+  unsigned long mLadderPending;
+
+  // Misc.
+  WideStringClass mMessageOfTheDay;
+
+  std::vector<RawPing> mPingRequests;
+  unsigned int mPingsPending;
+  int mPingEnable;
+
+  unsigned long mLastUserDataRequestTime;
+  static RefPtr<Session> _mInstance;
+};
+
+class ChatAdvisement : public RefCounted {
+public:
+  static RefPtr<ChatAdvisement> Create(const CComPtr<WOL::IChat> &, const CComPtr<WOL::IChatEvent> &);
+
+private:
+  ChatAdvisement(const CComPtr<WOL::IChat> &, const CComPtr<WOL::IChatEvent> &);
+  virtual ~ChatAdvisement();
+
+  // Prevent copy and assignment
+  ChatAdvisement(const ChatAdvisement &);
+  const ChatAdvisement &operator=(const ChatAdvisement &);
+
+  CComPtr<WOL::IChat> mChat;
+  unsigned long mChatCookie;
+};
+
+} // namespace WWOnline
 
 #endif // __WOLSESSION_H__

@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolmain.h        $*
  *                                                                                             *
@@ -51,70 +52,63 @@
 //	MPWolMainMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolMainMenuClass :
-	public MenuDialogClass,
-	public Observer<WOLLogonAction>,
-	public Observer<DlgMsgBoxEvent>
-{
+class MPWolMainMenuClass : public MenuDialogClass, public Observer<WOLLogonAction>, public Observer<DlgMsgBoxEvent> {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolMainMenuClass (void);
-	~MPWolMainMenuClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolMainMenuClass(void);
+  ~MPWolMainMenuClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	
-	//
-	//	Inherited
-	//
-	void		On_Init_Dialog (void);
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	void		On_Frame_Update (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	//
-	//	Debug methods
-	//
-	void		Refresh_Dialog (void);
+  //
+  //	Inherited
+  //
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_Frame_Update(void);
 
-	//
-	//	Singleton access
-	//
-	static void							Display (void);
-	static MPWolMainMenuClass *	Get_Instance (void)	{ return _TheInstance; }
+  //
+  //	Debug methods
+  //
+  void Refresh_Dialog(void);
+
+  //
+  //	Singleton access
+  //
+  static void Display(void);
+  static MPWolMainMenuClass *Get_Instance(void) { return _TheInstance; }
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	
-	bool CheckWOLVersion(void);
+  bool CheckWOLVersion(void);
 
-	//
-	//	Inherited
-	//
-	void		On_Activate(bool onoff);
-	void		On_Last_Menu_Ending (void);
-	
-	void		Update_Login_Profile(void);
-	void		Build_Persona_Combobox (void);
-	void		Build_Server_Combobox (void);
+  //
+  //	Inherited
+  //
+  void On_Activate(bool onoff);
+  void On_Last_Menu_Ending(void);
 
-	void HandleNotification(WOLLogonAction&);
-	void HandleNotification(DlgMsgBoxEvent&);
+  void Update_Login_Profile(void);
+  void Build_Persona_Combobox(void);
+  void Build_Server_Combobox(void);
 
-	int mPendingCmd;
+  void HandleNotification(WOLLogonAction &);
+  void HandleNotification(DlgMsgBoxEvent &);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
-	static MPWolMainMenuClass *_TheInstance;
-	bool		IsSidebarHelpPending;
+  int mPendingCmd;
+
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  static MPWolMainMenuClass *_TheInstance;
+  bool IsSidebarHelpPending;
 };
-
 
 #endif //__DLG_MP_WOL_MAIN_H

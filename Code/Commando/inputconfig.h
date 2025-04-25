@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/commando/inputconfig.h         $*
  *                                                                                             *
@@ -44,87 +45,77 @@
 #include "widestring.h"
 #include "wwstring.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
 ////////////////////////////////////////////////////////////////
 class ChunkSaveClass;
 class ChunkLoadClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	InputConfigClass
 //
 ////////////////////////////////////////////////////////////////
-class InputConfigClass
-{
+class InputConfigClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  InputConfigClass(void) : IsDefault(false), IsCustom(false) {}
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	InputConfigClass (void)	:
-		IsDefault (false),
-		IsCustom (false)			{}
+  InputConfigClass(const InputConfigClass &src) : IsDefault(false), IsCustom(false) { *this = src; }
 
-	InputConfigClass (const InputConfigClass &src)	:
-		IsDefault (false),
-		IsCustom (false)			{ *this = src; }
+  ~InputConfigClass(void) {}
 
-	~InputConfigClass (void)	{}
+  ////////////////////////////////////////////////////////////////
+  //	Public operators
+  ////////////////////////////////////////////////////////////////
+  bool operator==(const InputConfigClass &src) { return false; }
+  bool operator!=(const InputConfigClass &src) { return true; }
 
-	////////////////////////////////////////////////////////////////
-	//	Public operators
-	////////////////////////////////////////////////////////////////
-	bool operator== (const InputConfigClass &src)	{ return false; }
-	bool operator!= (const InputConfigClass &src)	{ return true; }
+  const InputConfigClass &operator=(const InputConfigClass &src);
 
-	const InputConfigClass &operator= (const InputConfigClass &src);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Accessors
+  //
+  const WCHAR *Get_Display_Name(void) const { return DisplayName; }
+  const char *Get_Filename(void) const { return Filename; }
 
-	//
-	//	Accessors
-	//
-	const WCHAR *	Get_Display_Name (void) const				{ return DisplayName; }
-	const char *	Get_Filename (void) const					{ return Filename; }
+  void Set_Display_Name(const WCHAR *name) { DisplayName = name; }
+  void Set_Filename(const char *name) { Filename = name; }
 
-	void				Set_Display_Name (const WCHAR *name)	{ DisplayName = name; }
-	void				Set_Filename (const char *name)			{ Filename = name; }
+  //
+  //	Flags
+  //
+  bool Is_Default(void) const { return IsDefault; }
+  bool Is_Custom(void) const { return IsCustom; }
 
-	//
-	//	Flags
-	//
-	bool				Is_Default (void) const			{ return IsDefault; }
-	bool				Is_Custom (void) const			{ return IsCustom; }
+  void Set_Is_Default(bool onoff) { IsDefault = onoff; }
+  void Set_Is_Custom(bool onoff) { IsCustom = onoff; }
 
-	void				Set_Is_Default (bool onoff)	{ IsDefault = onoff; }
-	void				Set_Is_Custom (bool onoff)		{ IsCustom = onoff; }
-
-	//
-	//	Save/load support
-	//
-	void				Save (ChunkSaveClass &csave);
-	void				Load (ChunkLoadClass &cload);
+  //
+  //	Save/load support
+  //
+  void Save(ChunkSaveClass &csave);
+  void Load(ChunkLoadClass &cload);
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  void Load_Variables(ChunkLoadClass &cload);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	void				Load_Variables (ChunkLoadClass &cload);
-
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////	
-	WideStringClass	DisplayName;
-	StringClass			Filename;
-	bool					IsDefault;
-	bool					IsCustom;
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  WideStringClass DisplayName;
+  StringClass Filename;
+  bool IsDefault;
+  bool IsCustom;
 };
-
 
 #endif //__INPUT_CONFIG_H

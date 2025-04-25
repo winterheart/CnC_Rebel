@@ -16,31 +16,30 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/BLWSTRAW.CPP                              $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/BLWSTRAW.CPP                              $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   BlowStraw::Get -- Fetch a block of data from the straw.                                   *
  *   BlowStraw::Key -- Submit a key to the Blowfish straw.                                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"blwstraw.h"
-#include	<string.h>
-#include	<assert.h>
-
+#include "always.h"
+#include "blwstraw.h"
+#include <string.h>
+#include <assert.h>
 
 /***********************************************************************************************
  * BlowStraw::Get -- Fetch a block of data from the straw.                                     *
@@ -62,69 +61,69 @@
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int BlowStraw::Get(void * source, int slen)
-{
-	/*
-	**	Verify the parameter for legality.
-	*/
-	if (source == NULL || slen <= 0) {
-		return(0);
-	}
+int BlowStraw::Get(void *source, int slen) {
+  /*
+  **	Verify the parameter for legality.
+  */
+  if (source == NULL || slen <= 0) {
+    return (0);
+  }
 
-	/*
-	**	If there is no blowfish engine present, then merely pass the data through
-	**	unchanged.
-	*/
-	if (BF == NULL) {
-		return(Straw::Get(source, slen));
-	}
+  /*
+  **	If there is no blowfish engine present, then merely pass the data through
+  **	unchanged.
+  */
+  if (BF == NULL) {
+    return (Straw::Get(source, slen));
+  }
 
-	int total = 0;
+  int total = 0;
 
-	while (slen > 0) {
+  while (slen > 0) {
 
-		/*
-		**	If there are any left over bytes in the buffer, pass them
-		**	through first.
-		*/
-		if (Counter > 0) {
-			int sublen = (slen < Counter) ? slen : Counter;
-			memmove(source, &Buffer[sizeof(Buffer)-Counter], sublen);
-			Counter -= sublen;
-			source = ((char *)source) + sublen;
-			slen -= sublen;
-			total += sublen;
-		}
-		if (slen == 0) break;
+    /*
+    **	If there are any left over bytes in the buffer, pass them
+    **	through first.
+    */
+    if (Counter > 0) {
+      int sublen = (slen < Counter) ? slen : Counter;
+      memmove(source, &Buffer[sizeof(Buffer) - Counter], sublen);
+      Counter -= sublen;
+      source = ((char *)source) + sublen;
+      slen -= sublen;
+      total += sublen;
+    }
+    if (slen == 0)
+      break;
 
-		/*
-		**	Fetch and encrypt/decrypt the next block.
-		*/
-		int incount = Straw::Get(Buffer, sizeof(Buffer));
-		if (incount == 0) break;
+    /*
+    **	Fetch and encrypt/decrypt the next block.
+    */
+    int incount = Straw::Get(Buffer, sizeof(Buffer));
+    if (incount == 0)
+      break;
 
-		/*
-		**	Only full blocks are processed. Partial blocks are
-		**	merely passed through unchanged.
-		*/
-		if (incount == sizeof(Buffer)) {
-			if (Control == DECRYPT) {
-				BF->Decrypt(Buffer, incount, Buffer);
-			} else {
-				BF->Encrypt(Buffer, incount, Buffer);
-			}
-		} else {
-			memmove(&Buffer[sizeof(Buffer)-incount], Buffer, incount);
-		}
-		Counter = incount;
-	}
+    /*
+    **	Only full blocks are processed. Partial blocks are
+    **	merely passed through unchanged.
+    */
+    if (incount == sizeof(Buffer)) {
+      if (Control == DECRYPT) {
+        BF->Decrypt(Buffer, incount, Buffer);
+      } else {
+        BF->Encrypt(Buffer, incount, Buffer);
+      }
+    } else {
+      memmove(&Buffer[sizeof(Buffer) - incount], Buffer, incount);
+    }
+    Counter = incount;
+  }
 
-	/*
-	**	Return with the total number of bytes placed into the buffer.
-	*/
-	return(total);
+  /*
+  **	Return with the total number of bytes placed into the buffer.
+  */
+  return (total);
 }
-
 
 /***********************************************************************************************
  * BlowStraw::Key -- Submit a key to the Blowfish straw.                                       *
@@ -143,18 +142,17 @@ int BlowStraw::Get(void * source, int slen)
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void BlowStraw::Key(void const * key, int length)
-{
-	/*
-	**	Create the blowfish engine if one isn't already present.
-	*/
-	if (BF == NULL) {
-		BF = new BlowfishEngine;
-	}
+void BlowStraw::Key(void const *key, int length) {
+  /*
+  **	Create the blowfish engine if one isn't already present.
+  */
+  if (BF == NULL) {
+    BF = new BlowfishEngine;
+  }
 
-	assert(BF != NULL);
+  assert(BF != NULL);
 
-	if (BF != NULL) {
-		BF->Submit_Key(key, length);
-	}
+  if (BF != NULL) {
+    BF->Submit_Key(key, length);
+  }
 }

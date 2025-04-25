@@ -34,11 +34,10 @@
 #define __COMINIT_H__
 
 //-----------------------------------------------------------------------------
-class cComInit
-{
+class cComInit {
 public:
-	cComInit(void);
-    ~cComInit(void);
+  cComInit(void);
+  ~cComInit(void);
 };
 
 //-----------------------------------------------------------------------------

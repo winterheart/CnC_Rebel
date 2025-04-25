@@ -32,53 +32,48 @@ class GroupMgrClass;
 //
 // GotoGroupDialogClass dialog
 //
-class GotoGroupDialogClass : public CDialog
-{
-// Construction
+class GotoGroupDialogClass : public CDialog {
+  // Construction
 public:
-	GotoGroupDialogClass (GroupMgrClass *pgroup, CWnd* pParent = NULL);   // standard constructor
+  GotoGroupDialogClass(GroupMgrClass *pgroup, CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GotoGroupDialogClass)
-	enum { IDD = IDD_GOTO_GROUP };
-	CComboBox	m_GroupList;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GotoGroupDialogClass)
+  enum { IDD = IDD_GOTO_GROUP };
+  CComboBox m_GroupList;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GotoGroupDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GotoGroupDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GotoGroupDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnEditChangeGroupList();
-	afx_msg void OnSelChangeGroupList();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GotoGroupDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  afx_msg void OnEditChangeGroupList();
+  afx_msg void OnSelChangeGroupList();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	public:
-		
-		////////////////////////////////////////////////////////////////
-		//
-		//	Public Methods
-		//
-		int						Get_Current_Selection (void);
+public:
+  ////////////////////////////////////////////////////////////////
+  //
+  //	Public Methods
+  //
+  int Get_Current_Selection(void);
 
-	private:
-
-		////////////////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		GroupMgrClass *		m_pGroup;
+private:
+  ////////////////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  GroupMgrClass *m_pGroup;
 };
 
 //{{AFX_INSERT_LOCATION}}

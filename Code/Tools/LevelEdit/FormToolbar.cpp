@@ -29,143 +29,114 @@
 #include "FormToolbar.H"
 #include "DockableForm.H"
 
-
 BEGIN_MESSAGE_MAP(FormToolbarClass, CControlBar)
-	//{{AFX_MSG_MAP(FormToolbarClass)
-	ON_WM_SIZE()
-	ON_WM_ERASEBKGND()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(FormToolbarClass)
+ON_WM_SIZE()
+ON_WM_ERASEBKGND()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 //////////////////////////////////////////////////////////////
 //
 //  Local constants
 //
-const int BORDER_TOP			= 6;
-const int BORDER_BOTTOM		= 6;
-const int BORDER_LEFT		= 6;
-const int BORDER_RIGHT		= 6;
-
+const int BORDER_TOP = 6;
+const int BORDER_BOTTOM = 6;
+const int BORDER_LEFT = 6;
+const int BORDER_RIGHT = 6;
 
 //////////////////////////////////////////////////////////////
 //
 //  FormToolbarClass
 //
-FormToolbarClass::FormToolbarClass (void)
-	: m_pCForm (NULL)
-{
-    m_minSize.cx = 100;
-    m_minSize.cy = 100;    
-    return ;
+FormToolbarClass::FormToolbarClass(void) : m_pCForm(NULL) {
+  m_minSize.cx = 100;
+  m_minSize.cy = 100;
+  return;
 }
 
 //////////////////////////////////////////////////////////////
 //
 //  ~FormToolbarClass
 //
-FormToolbarClass::~FormToolbarClass (void)
-{
-	if (m_pCForm) {
-		// Free the dockable form
-		delete m_pCForm;
-		m_pCForm = NULL;
-	}
+FormToolbarClass::~FormToolbarClass(void) {
+  if (m_pCForm) {
+    // Free the dockable form
+    delete m_pCForm;
+    m_pCForm = NULL;
+  }
 
-	return ;
+  return;
 }
 
 //////////////////////////////////////////////////////////////
 //
 //  Create
 //
-BOOL
-FormToolbarClass::Create
-(
-	DockableFormClass *pCFormClass,
-	LPCTSTR pszWindowName,
-	CWnd *pCParentWnd,
-	UINT uiID
-)
-{
-	ASSERT (pCFormClass);
-	m_pCForm = pCFormClass;
+BOOL FormToolbarClass::Create(DockableFormClass *pCFormClass, LPCTSTR pszWindowName, CWnd *pCParentWnd, UINT uiID) {
+  ASSERT(pCFormClass);
+  m_pCForm = pCFormClass;
 
-	// Allow the base class to process this message	
-	RECT rect = { 0 };
-	BOOL retval = CWnd::Create (NULL, pszWindowName, WS_CHILD | WS_VISIBLE, rect, pCParentWnd, uiID);
-	if (retval) {
+  // Allow the base class to process this message
+  RECT rect = {0};
+  BOOL retval = CWnd::Create(NULL, pszWindowName, WS_CHILD | WS_VISIBLE, rect, pCParentWnd, uiID);
+  if (retval) {
 
-		// Ask the dockable form to create itself
-		retval = m_pCForm->Create (this, 101);
+    // Ask the dockable form to create itself
+    retval = m_pCForm->Create(this, 101);
 
+    CRect rect;
+    rect = m_pCForm->Get_Form_Rect();
+    m_minSize.cx = rect.Width();
+    m_minSize.cy = rect.Height();
+    m_minSize.cx += BORDER_LEFT + BORDER_RIGHT;
+    m_minSize.cy += BORDER_TOP + BORDER_BOTTOM;
+    SetWindowPos(NULL, 0, 0, m_minSize.cx, m_minSize.cy, SWP_NOZORDER | SWP_NOMOVE);
+    m_pCForm->SetWindowPos(NULL, BORDER_LEFT, BORDER_TOP, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 
-		CRect rect;
-		rect = m_pCForm->Get_Form_Rect ();
-		m_minSize.cx = rect.Width ();
-		m_minSize.cy = rect.Height ();
-		m_minSize.cx += BORDER_LEFT + BORDER_RIGHT;
-		m_minSize.cy += BORDER_TOP + BORDER_BOTTOM;
-		SetWindowPos (NULL, 0, 0, m_minSize.cx, m_minSize.cy, SWP_NOZORDER | SWP_NOMOVE);
-		m_pCForm->SetWindowPos (NULL, BORDER_LEFT, BORDER_TOP, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    // Allow the toolbar to be resized
+    // Allow the toolbar to be docked either to the right or left
+    SetBarStyle(GetBarStyle() | CBRS_SIZE_DYNAMIC);
+    EnableDocking(CBRS_ALIGN_RIGHT | CBRS_ALIGN_LEFT);
+  }
 
-		// Allow the toolbar to be resized
-		// Allow the toolbar to be docked either to the right or left
-		SetBarStyle (GetBarStyle() | CBRS_SIZE_DYNAMIC);
-		EnableDocking (CBRS_ALIGN_RIGHT | CBRS_ALIGN_LEFT);
-	}
-
-	// Return the TRUE/FALSE result code
-	return retval;
+  // Return the TRUE/FALSE result code
+  return retval;
 }
-
 
 //////////////////////////////////////////////////////////////
 //
 //  OnSize
 //
-void
-FormToolbarClass::OnSize
-(
-	UINT nType,
-	int cx,
-	int cy
-)
-{
-	// Allow the base class to process this message	
-	CControlBar::OnSize(nType, cx, cy);
+void FormToolbarClass::OnSize(UINT nType, int cx, int cy) {
+  // Allow the base class to process this message
+  CControlBar::OnSize(nType, cx, cy);
 
-	if (m_pCForm && (cx > 0) && (cy > 0)) {		
-		// Get the bounding rectangle
-		CRect rect;
-		GetClientRect (rect);
+  if (m_pCForm && (cx > 0) && (cy > 0)) {
+    // Get the bounding rectangle
+    CRect rect;
+    GetClientRect(rect);
 
-		// Resize the dockable form window
-		m_pCForm->SetWindowPos (NULL,
-										0,
-										0,
-										rect.Width () - (BORDER_LEFT + BORDER_RIGHT),
-										rect.Height () - (BORDER_TOP + BORDER_BOTTOM),
-										SWP_NOZORDER | SWP_NOMOVE);
-	}
+    // Resize the dockable form window
+    m_pCForm->SetWindowPos(NULL, 0, 0, rect.Width() - (BORDER_LEFT + BORDER_RIGHT),
+                           rect.Height() - (BORDER_TOP + BORDER_BOTTOM), SWP_NOZORDER | SWP_NOMOVE);
+  }
 
-	return ;	
+  return;
 }
 
 //////////////////////////////////////////////////////////////
 //
 //  OnEraseBkgnd
 //
-BOOL
-FormToolbarClass::OnEraseBkgnd (CDC* pDC) 
-{
-	// Get the bounding rectangle
-	RECT rect;
-	GetClientRect (&rect);
+BOOL FormToolbarClass::OnEraseBkgnd(CDC *pDC) {
+  // Get the bounding rectangle
+  RECT rect;
+  GetClientRect(&rect);
 
-	// Paint the background light gray
-	::FillRect (*pDC, &rect, (HBRUSH)(COLOR_3DFACE + 1));
+  // Paint the background light gray
+  ::FillRect(*pDC, &rect, (HBRUSH)(COLOR_3DFACE + 1));
 
-	// Allow the base class to process this message	
-	return CControlBar::OnEraseBkgnd(pDC);
+  // Allow the base class to process this message
+  return CControlBar::OnEraseBkgnd(pDC);
 }

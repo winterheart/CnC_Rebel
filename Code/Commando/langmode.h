@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/langmode.h                          $* 
- *                                                                                             * 
- *                      $Author:: Denzil_l                                                    $* 
- *                                                                                             * 
- *                     $Modtime:: 11/16/01 1:30p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 11                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/langmode.h                          $*
+ *                                                                                             *
+ *                      $Author:: Denzil_l                                                    $*
+ *                                                                                             *
+ *                     $Modtime:: 11/16/01 1:30p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 11                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #if defined(_MSV_VER)
@@ -46,23 +46,21 @@
 
 #define PLC LanGameModeClass::Get_Lan_Interface()
 
-// 
+//
 // Game Mode to do LAN interface
 //
-class	LanGameModeClass :
-		public GameModeClass
-{
-	public:
-		static cLanChat * Get_Lan_Interface(void);
+class LanGameModeClass : public GameModeClass {
+public:
+  static cLanChat *Get_Lan_Interface(void);
 
-		virtual	const char *Name(void)	{ return "LAN"; }	// the name of this mode
-		virtual	void	Init(void);		 	// called when the mode is activated
-		virtual	void 	Shutdown(void); 	// called when the mode is deactivated
-		virtual	void 	Think(void);		// called each time through the main loop
-		virtual	void 	Render(void) {};		// called each time through the main loop
+  virtual const char *Name(void) { return "LAN"; } // the name of this mode
+  virtual void Init(void);                         // called when the mode is activated
+  virtual void Shutdown(void);                     // called when the mode is deactivated
+  virtual void Think(void);                        // called each time through the main loop
+  virtual void Render(void) {};                    // called each time through the main loop
 
-	private:
-		static cLanChat * PLanChat;
+private:
+  static cLanChat *PLanChat;
 };
 
-#endif	//	LANGMODE_H
+#endif //	LANGMODE_H

@@ -27,58 +27,52 @@
 #include "vector.h"
 #include "wwstring.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // EditFilenameListDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class EditFilenameListDialogClass : public CDialog
-{
-// Construction
+class EditFilenameListDialogClass : public CDialog {
+  // Construction
 public:
-	EditFilenameListDialogClass(CWnd* pParent = NULL);   // standard constructor
+  EditFilenameListDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(EditFilenameListDialogClass)
-	enum { IDD = IDD_EDIT_FILENAME_LIST };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(EditFilenameListDialogClass)
+  enum { IDD = IDD_EDIT_FILENAME_LIST };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(EditFilenameListDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(EditFilenameListDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(EditFilenameListDialogClass)
-	afx_msg void OnAdd();
-	afx_msg void OnKeydownFilenameListCtrl(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(EditFilenameListDialogClass)
+  afx_msg void OnAdd();
+  afx_msg void OnKeydownFilenameListCtrl(NMHDR *pNMHDR, LRESULT *pResult);
+  virtual BOOL OnInitDialog();
+  virtual void OnOK();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	////////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////////
-	DynamicVectorClass<StringClass> &	Get_List (void) { return m_List; }
-	void											Set_List (DynamicVectorClass<StringClass> &list) { m_List = list; }
+  ////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////
+  DynamicVectorClass<StringClass> &Get_List(void) { return m_List; }
+  void Set_List(DynamicVectorClass<StringClass> &list) { m_List = list; }
 
 private:
-
-	////////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////////
-	DynamicVectorClass<StringClass>	m_List;
+  ////////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////////
+  DynamicVectorClass<StringClass> m_List;
 };
 
 //{{AFX_INSERT_LOCATION}}

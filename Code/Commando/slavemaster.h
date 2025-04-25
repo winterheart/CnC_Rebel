@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/slavemaster.h                       $*
  *                                                                                             *
@@ -34,8 +35,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
-
 #pragma once
 
 #ifndef _SLAVEMASTER_H
@@ -43,7 +42,7 @@
 
 #include <winbase.h>
 
-#define MAX_SLAVES	7
+#define MAX_SLAVES 7
 
 class SlaveMasterClass;
 
@@ -52,40 +51,32 @@ class SlaveMasterClass;
 **  One of these classes for each slave server.
 **
 */
-class SlaveServerClass
-{
-	friend SlaveMasterClass;
+class SlaveServerClass {
+  friend SlaveMasterClass;
 
-	public:
+public:
+  SlaveServerClass(void);
+  ~SlaveServerClass(void);
 
-		SlaveServerClass(void);
-		~SlaveServerClass(void);
+  void Set(bool enable, const char *nick, const char *serial, unsigned short port, const char *settings_file,
+           int bandwidth, const char *password);
+  void Get(bool &enable, char *nick, char *serial, unsigned short &port, char *settings_file, int &bandwidth,
+           char *password);
 
-		void Set(bool enable, const char *nick, const char *serial, unsigned short port, const char *settings_file, int bandwidth, const char *password);
-		void Get(bool &enable, char *nick, char *serial, unsigned short &port, char *settings_file, int &bandwidth, char *password);
+private:
+  char NickName[32];
+  char Serial[64];
+  char Password[64];
+  unsigned short Port;
+  char SettingsFileName[MAX_PATH];
 
+  bool Enable;
+  bool IsRunning;
+  unsigned short ControlPort;
+  int Bandwidth;
 
-	private:
-
-		char	NickName[32];
-		char	Serial[64];
-		char	Password[64];
-		unsigned short Port;
-		char	SettingsFileName[MAX_PATH];
-
-		bool	Enable;
-		bool	IsRunning;
-		unsigned short ControlPort;
-		int	Bandwidth;
-
-		PROCESS_INFORMATION ProcessInfo;
+  PROCESS_INFORMATION ProcessInfo;
 };
-
-
-
-
-
-
 
 /*
 **
@@ -93,60 +84,42 @@ class SlaveServerClass
 **
 **
 */
-class SlaveMasterClass
-{
-	public:
+class SlaveMasterClass {
+public:
+  SlaveMasterClass(void);
+  ~SlaveMasterClass(void);
 
-		SlaveMasterClass(void);
-		~SlaveMasterClass(void);
+  void Startup_Slaves(void);
+  void Shutdown_Slaves(void);
+  bool Shutdown_Slave(char *slave_login);
 
-		void Startup_Slaves(void);
-		void Shutdown_Slaves(void);
-		bool Shutdown_Slave(char *slave_login);
+  char *Get_Slave_Info(char *buffer, int buflen);
 
-		char *Get_Slave_Info(char *buffer, int buflen);
+  void Load(void);
+  void Save(void);
+  void Reset(void);
 
-		void Load(void);
-		void Save(void);
-		void Reset(void);
+  int Get_Num_Slaves(void) { return (NumSlaveServers); }
+  int Get_Num_Enabled_Slaves(void);
+  void Add_Slave(bool enable, const char *nick, const char *serial, unsigned short port, const char *settings_file,
+                 int bandwidth, const char *password);
+  SlaveServerClass *Get_Slave(int index);
 
-		int Get_Num_Slaves(void) {return(NumSlaveServers);}
-		int Get_Num_Enabled_Slaves(void);
-		void Add_Slave(bool enable, const char *nick, const char *serial, unsigned short port, const char *settings_file, int bandwidth, const char *password);
-		SlaveServerClass *Get_Slave(int index);
+  void Set_Slave_Mode(bool mode) { SlaveMode = mode; }
+  bool Am_I_Slave(void) { return (SlaveMode); }
 
-		void Set_Slave_Mode(bool mode) {SlaveMode = mode;}
-		bool Am_I_Slave(void) {return(SlaveMode);}
+private:
+  void Delete_Registry_Copies(void);
+  void Create_Registry_Copies(void);
+  bool Aquire_Slave(int index);
+  void Wait_For_Slave_Shutdown(void);
 
+  SlaveServerClass SlaveServers[MAX_SLAVES];
+  int NumSlaveServers;
 
-	private:
-
-		void Delete_Registry_Copies(void);
-		void Create_Registry_Copies(void);
-		bool Aquire_Slave(int index);
-		void Wait_For_Slave_Shutdown(void);
-
-		SlaveServerClass SlaveServers[MAX_SLAVES];
-		int NumSlaveServers;
-
-		bool SlaveMode;	// false = master, true = slave
-
+  bool SlaveMode; // false = master, true = slave
 };
 
-
-
 extern SlaveMasterClass SlaveMaster;
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif //_SLAVEMASTER_H

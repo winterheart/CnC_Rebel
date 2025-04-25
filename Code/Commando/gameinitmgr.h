@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/gameinitmgr.h         $*
  *                                                                                             *
@@ -43,104 +44,92 @@
 
 #include "renegadedialogmgr.h"
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	GameInitMgrClass
 //
 ////////////////////////////////////////////////////////////////
-class GameInitMgrClass
-{
+class GameInitMgrClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	Level init
+  //
+  static void Start_Game(const char *map_name, int teamChoice, unsigned long clanID);
+  static void End_Game(void);
+  static void Continue_Game(void);
+  static void Display_End_Game_Menu(void);
+  static bool Is_Game_In_Progress(void);
+  //
+  //	Client/server control
+  //
+  static void Set_Is_Client_Required(bool onoff) { IsClientRequired = onoff; }
+  static void Set_Is_Server_Required(bool onoff) { IsServerRequired = onoff; }
 
-	//
-	//	Level init
-	//
-	static void		Start_Game (const char *map_name, int teamChoice, unsigned long clanID);
-	static void		End_Game (void);
-	static void		Continue_Game (void);
-	static void		Display_End_Game_Menu (void);
-	static bool		Is_Game_In_Progress(void);
-	//
-	//	Client/server control
-	//
-	static void		Set_Is_Client_Required (bool onoff)	{ IsClientRequired = onoff; }
-	static void		Set_Is_Server_Required (bool onoff)	{ IsServerRequired = onoff; }
+  //
+  //	Interface type init
+  //
+  //		LAN	= Local Area Network
+  //		WOL	= Westwood Online
+  //		SP		= Single Player
+  //
+  static void Initialize_LAN(void);
+  static void Initialize_WOL(void);
+  static void Initialize_SP(void);
+  static void Initialize_Skirmish(void);
 
-	//
-	//	Interface type init
-	//
-	//		LAN	= Local Area Network
-	//		WOL	= Westwood Online
-	//		SP		= Single Player
-	//
-	static void		Initialize_LAN (void);
-	static void		Initialize_WOL (void);
-	static void		Initialize_SP (void);
-	static void		Initialize_Skirmish (void);
+  static bool Is_LAN_Initialized(void) { return Mode == MODE_LAN; }
+  static bool Is_WOL_Initialized(void) { return Mode == MODE_WOL; }
+  static bool Is_SP_Initialized(void) { return Mode == MODE_SP; }
+  static bool Is_Skirmish_Initialized(void) { return Mode == MODE_SKIRMISH; }
 
-	static bool		Is_LAN_Initialized (void)			{ return Mode == MODE_LAN; }
-	static bool		Is_WOL_Initialized (void)			{ return Mode == MODE_WOL; }
-	static bool		Is_SP_Initialized (void)			{ return Mode == MODE_SP; }
-	static bool		Is_Skirmish_Initialized (void)	{ return Mode == MODE_SKIRMISH; }
+  static void Shutdown(void);
+  static void Shutdown_LAN(void);
+  static void Shutdown_WOL(void);
+  static void Shutdown_SP(void);
+  static void Shutdown_Skirmish(void);
 
-	static void		Shutdown (void);
-	static void		Shutdown_LAN (void);
-	static void		Shutdown_WOL (void);
-	static void		Shutdown_SP (void);
-	static void		Shutdown_Skirmish (void);
+  static void End_Client_Server(void);
 
-	static void		End_Client_Server (void);
+  //
+  //	Thinking support (for safely triggering game ends)
+  //
+  static void Think(void);
+  static void Set_Needs_Game_Exit(bool onoff) { NeedsGameExit = onoff; }
+  static void Set_Needs_Game_Exit_All(bool onoff) { NeedsGameExitAll = onoff; }
 
-	//
-	//	Thinking support (for safely triggering game ends)
-	//
-	static void		Think (void);
-	static void		Set_Needs_Game_Exit			(bool onoff)	{ NeedsGameExit = onoff; }
-	static void		Set_Needs_Game_Exit_All		(bool onoff)	{ NeedsGameExitAll = onoff; }
-
-	//
-	//	WOL specific
-	//
-	static void		Set_WOL_Return_Dialog (RenegadeDialogMgrClass::LOCATION location)	{ WOLReturnDialog = location; }
+  //
+  //	WOL specific
+  //
+  static void Set_WOL_Return_Dialog(RenegadeDialogMgrClass::LOCATION location) { WOLReturnDialog = location; }
 
 private:
+  ////////////////////////////////////////////////////////////////
+  //	Private constants
+  ////////////////////////////////////////////////////////////////
+  enum { MODE_UNKNOWN = 0, MODE_SP, MODE_SKIRMISH, MODE_LAN, MODE_WOL };
 
-	////////////////////////////////////////////////////////////////
-	//	Private constants
-	////////////////////////////////////////////////////////////////
-	enum
-	{
-		MODE_UNKNOWN	= 0,
-		MODE_SP,
-		MODE_SKIRMISH,
-		MODE_LAN,
-		MODE_WOL
-	};
+  ////////////////////////////////////////////////////////////////
+  //	Private methods
+  ////////////////////////////////////////////////////////////////
+  static void Start_Client_Server(void);
+  static void Transmit_Player_Data(int teamChoice, unsigned long clanID);
 
-	////////////////////////////////////////////////////////////////
-	//	Private methods
-	////////////////////////////////////////////////////////////////
-	static void		Start_Client_Server (void);
-	static void		Transmit_Player_Data (int teamChoice, unsigned long clanID);
+  ////////////////////////////////////////////////////////////////
+  //	Private member data
+  ////////////////////////////////////////////////////////////////
+  static bool IsClientRequired;
+  static bool IsServerRequired;
+  static bool RestoreSFX;
+  static bool RestoreMusic;
+  static int Mode;
+  static int WOLReturnDialog;
 
-	////////////////////////////////////////////////////////////////
-	//	Private member data
-	////////////////////////////////////////////////////////////////
-	static bool		IsClientRequired;
-	static bool		IsServerRequired;
-	static bool		RestoreSFX;
-	static bool		RestoreMusic;
-	static int		Mode;
-	static int		WOLReturnDialog;
-
-	static bool		NeedsGameExit;
-	static bool		NeedsGameExitAll;
+  static bool NeedsGameExit;
+  static bool NeedsGameExitAll;
 };
-
 
 #endif //__GAME_INIT_MGR_H

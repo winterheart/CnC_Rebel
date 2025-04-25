@@ -48,32 +48,30 @@
 #define USE_FAST_ALLOCATOR
 
 #ifdef STEVES_NEW_CATCHER
-	#define DISABLE_MEMLOG	1
-#else //STEVES_NEW_CATCHER
+#define DISABLE_MEMLOG 1
+#else // STEVES_NEW_CATCHER
 #ifdef PARAM_EDITING_ON
-	#define DISABLE_MEMLOG	1
-#else //PARAM_EDITING_ON
-	#define DISABLE_MEMLOG	0
-#endif //PARAM_EDITING_ON
-#endif //STEVES_NEW_CATCHER*/
+#define DISABLE_MEMLOG 1
+#else // PARAM_EDITING_ON
+#define DISABLE_MEMLOG 0
+#endif // PARAM_EDITING_ON
+#endif // STEVES_NEW_CATCHER*/
 
 #ifdef USE_FAST_ALLOCATOR
-	#define ALLOC_MEMORY(n) FastAllocatorGeneral::Get_Allocator()->Alloc(n)
-	#define FREE_MEMORY(p) FastAllocatorGeneral::Get_Allocator()->Free(p)
+#define ALLOC_MEMORY(n) FastAllocatorGeneral::Get_Allocator()->Alloc(n)
+#define FREE_MEMORY(p) FastAllocatorGeneral::Get_Allocator()->Free(p)
 #else
-	#define ALLOC_MEMORY(n) ::malloc(n)
-	#define FREE_MEMORY(p) ::free(p)
+#define ALLOC_MEMORY(n) ::malloc(n)
+#define FREE_MEMORY(p) ::free(p)
 #endif
-
 
 /*
 ** Enable one of the following #defines to specify which thread-sychronization
 ** method to use.
 */
-#define MEMLOG_USE_MUTEX					0
-#define MEMLOG_USE_CRITICALSECTION		1
-#define MEMLOG_USE_FASTCRITICALSECTION	0
-
+#define MEMLOG_USE_MUTEX 0
+#define MEMLOG_USE_CRITICALSECTION 1
+#define MEMLOG_USE_FASTCRITICALSECTION 0
 
 static unsigned AllocateCount;
 static unsigned FreeCount;
@@ -82,54 +80,34 @@ static unsigned FreeCount;
 ** Name for each memory category.  I'm padding the array with some "undefined" strings in case
 ** someone forgets to set the name when adding a new category.
 */
-static const char * _MemoryCategoryNames[] =
-{
-	"UNKNOWN",
-	"Geometry",
-	"Animation",
-	"Texture",
-	"Pathfind",
-	"Vis",
-	"Sound",
-	"CullingData",
-	"Strings",
-	"GameData",
-	"PhysicsData",
-	"W3dData",
-	"StaticAllocations",
-	"GameInit",
-	"Renderer",
-	"Network",
-	"BINK",
-	"<undefined>",
-	"<undefined>",
-	"<undefined>",
-	"<undefined>",
+static const char *_MemoryCategoryNames[] = {
+    "UNKNOWN", "Geometry",    "Animation",   "Texture",     "Pathfind",          "Vis",      "Sound",    "CullingData",
+    "Strings", "GameData",    "PhysicsData", "W3dData",     "StaticAllocations", "GameInit", "Renderer", "Network",
+    "BINK",    "<undefined>", "<undefined>", "<undefined>", "<undefined>",
 };
-
 
 /**
 ** MemoryCounterClass
 ** This object will store statistics for each memory category.  It can provide things like
 ** the current amount of allocated memory and the peak amount of allocated memory.
 */
-class MemoryCounterClass
-{
+class MemoryCounterClass {
 public:
-	MemoryCounterClass(void) : CurrentAllocation(0), PeakAllocation(0) { }
+  MemoryCounterClass(void) : CurrentAllocation(0), PeakAllocation(0) {}
 
-	void		Memory_Allocated(int size)						{ CurrentAllocation+=size; PeakAllocation = max(PeakAllocation,CurrentAllocation); }
-	void		Memory_Released(int size)						{ CurrentAllocation-=size; }
+  void Memory_Allocated(int size) {
+    CurrentAllocation += size;
+    PeakAllocation = max(PeakAllocation, CurrentAllocation);
+  }
+  void Memory_Released(int size) { CurrentAllocation -= size; }
 
-	int		Get_Current_Allocated_Memory(void)			{ return CurrentAllocation; }
-	int		Get_Peak_Allocated_Memory(void)				{ return PeakAllocation; }
+  int Get_Current_Allocated_Memory(void) { return CurrentAllocation; }
+  int Get_Peak_Allocated_Memory(void) { return PeakAllocation; }
 
 protected:
-	int		CurrentAllocation;
-	int		PeakAllocation;
+  int CurrentAllocation;
+  int PeakAllocation;
 };
-
-
 
 /**
 ** ActiveCategoryStackClass
@@ -138,37 +116,36 @@ protected:
 ** one ActiveCategoryStack per thread that is encountered in the program.
 */
 const int MAX_CATEGORY_STACK_DEPTH = 1024;
-class ActiveCategoryStackClass : public VectorClass<int>
-{
+class ActiveCategoryStackClass : public VectorClass<int> {
 public:
-	ActiveCategoryStackClass(void) :
-		VectorClass<int>(MAX_CATEGORY_STACK_DEPTH),
-		ThreadID(-1),
-		Count(0)
-	{ }
+  ActiveCategoryStackClass(void) : VectorClass<int>(MAX_CATEGORY_STACK_DEPTH), ThreadID(-1), Count(0) {}
 
-	~ActiveCategoryStackClass(void)									{ WWASSERT(Count == 1); }
+  ~ActiveCategoryStackClass(void) { WWASSERT(Count == 1); }
 
-	ActiveCategoryStackClass & operator = (const ActiveCategoryStackClass & that);
+  ActiveCategoryStackClass &operator=(const ActiveCategoryStackClass &that);
 
-	bool		operator == (const ActiveCategoryStackClass &)	{ return false; }
-	bool		operator != (const ActiveCategoryStackClass &)	{ return true; }
+  bool operator==(const ActiveCategoryStackClass &) { return false; }
+  bool operator!=(const ActiveCategoryStackClass &) { return true; }
 
-	void		Init(int thread_id)										{ ThreadID = thread_id; Count = 0; Push(MEM_UNKNOWN); }
-	void		Set_Thread_ID(int id)									{ ThreadID = id; }
-	int		Get_Thread_ID(void)										{ return ThreadID; }
+  void Init(int thread_id) {
+    ThreadID = thread_id;
+    Count = 0;
+    Push(MEM_UNKNOWN);
+  }
+  void Set_Thread_ID(int id) { ThreadID = id; }
+  int Get_Thread_ID(void) { return ThreadID; }
 
-	void		Push(int active_category)								{ (*this)[Count] = active_category; Count++; }
-	void		Pop(void)													{ Count--; }
-	int		Current(void)												{ return (*this)[Count-1]; }
+  void Push(int active_category) {
+    (*this)[Count] = active_category;
+    Count++;
+  }
+  void Pop(void) { Count--; }
+  int Current(void) { return (*this)[Count - 1]; }
 
 protected:
-
-	int		ThreadID;
-	int		Count;
+  int ThreadID;
+  int Count;
 };
-
-
 
 /**
 ** ActiveCategoryClass
@@ -176,56 +153,49 @@ protected:
 ** a new thread is encountered.  It also is able to return to you the active category for
 ** the currently active thread automatically.
 */
-const int MAX_CATEGORY_STACKS = 256;		// maximum number of threads we expect to encounter...
+const int MAX_CATEGORY_STACKS = 256; // maximum number of threads we expect to encounter...
 
-class ActiveCategoryClass : public VectorClass<ActiveCategoryStackClass>
-{
+class ActiveCategoryClass : public VectorClass<ActiveCategoryStackClass> {
 public:
+  ActiveCategoryClass(void) : VectorClass<ActiveCategoryStackClass>(MAX_CATEGORY_STACKS), Count(0) {
+    Get_Active_Stack().Push(MEM_STATICALLOCATION);
+  }
 
-	ActiveCategoryClass(void) : VectorClass<ActiveCategoryStackClass>(MAX_CATEGORY_STACKS), Count(0) { Get_Active_Stack().Push(MEM_STATICALLOCATION); }
-
-	void		Push(int active_category)	{ Get_Active_Stack().Push(active_category); }
-	void		Pop(void)						{ Get_Active_Stack().Pop(); }
-	int		Current(void)					{ return Get_Active_Stack().Current(); }
+  void Push(int active_category) { Get_Active_Stack().Push(active_category); }
+  void Pop(void) { Get_Active_Stack().Pop(); }
+  int Current(void) { return Get_Active_Stack().Current(); }
 
 protected:
+  ActiveCategoryStackClass &Get_Active_Stack(void);
 
-	ActiveCategoryStackClass & Get_Active_Stack(void);
-
-	int		Count;
+  int Count;
 };
-
 
 /**
 ** MemLogClass
 ** This class ties all of the logging datastructures together into a single object
 ** which can be created on demand when the first 'new' call is encountered.
 */
-class MemLogClass
-{
+class MemLogClass {
 public:
+  int Get_Current_Allocated_Memory(int category);
+  int Get_Peak_Allocated_Memory(int category);
 
-	int				Get_Current_Allocated_Memory(int category);
-	int				Get_Peak_Allocated_Memory(int category);
+  /*
+  ** Interface for recording allocations and de-allocations
+  */
+  int Register_Memory_Allocated(int size);
+  void Register_Memory_Released(int category, int size);
 
-	/*
-	** Interface for recording allocations and de-allocations
-	*/
-	int				Register_Memory_Allocated(int size);
-	void				Register_Memory_Released(int category,int size);
+  void Push_Active_Category(int category);
+  void Pop_Active_Category(void);
 
-	void				Push_Active_Category(int category);
-	void				Pop_Active_Category(void);
-
-	void				Init();
+  void Init();
 
 private:
-
-	MemoryCounterClass		_MemoryCounters[MEM_COUNT];
-	ActiveCategoryClass		_ActiveCategoryTracker;
-
+  MemoryCounterClass _MemoryCounters[MEM_COUNT];
+  ActiveCategoryClass _ActiveCategoryTracker;
 };
-
 
 /**
 ** Static Variables
@@ -233,230 +203,204 @@ private:
 ** _MemLogMutex - handle to the mutex used to arbtirate access to the logging data structures
 ** _MemLogLockCounter - count of the active mutex locks.
 */
-static MemLogClass *				_TheMemLog = NULL;
-static bool							_MemLogAllocated = false;
+static MemLogClass *_TheMemLog = NULL;
+static bool _MemLogAllocated = false;
 
 #if MEMLOG_USE_MUTEX
-static void *						_MemLogMutex = NULL;
-static int							_MemLogLockCounter = 0;
+static void *_MemLogMutex = NULL;
+static int _MemLogLockCounter = 0;
 #endif
 
 #if MEMLOG_USE_CRITICALSECTION
-static bool							_MemLogCriticalSectionAllocated = false;
-static char							_MemLogCriticalSectionHandle[sizeof(CRITICAL_SECTION)];
+static bool _MemLogCriticalSectionAllocated = false;
+static char _MemLogCriticalSectionHandle[sizeof(CRITICAL_SECTION)];
 #endif
 
 #if MEMLOG_USE_FASTCRITICALSECTION
-volatile unsigned					_MemLogSemaphore = 0;
+volatile unsigned _MemLogSemaphore = 0;
 #endif
 
 /*
 ** Use this code to get access to the mutex...
 */
-WWINLINE void * Get_Mem_Log_Mutex(void)
-{
+WWINLINE void *Get_Mem_Log_Mutex(void) {
 #if MEMLOG_USE_MUTEX
 
-	if (_MemLogMutex == NULL) {
-		_MemLogMutex=CreateMutex(NULL,false,NULL);
-		WWASSERT(_MemLogMutex);
-	}
-	return _MemLogMutex;
+  if (_MemLogMutex == NULL) {
+    _MemLogMutex = CreateMutex(NULL, false, NULL);
+    WWASSERT(_MemLogMutex);
+  }
+  return _MemLogMutex;
 
 #endif
 
 #if MEMLOG_USE_CRITICALSECTION
 
-	if (_MemLogCriticalSectionAllocated == false) {
-		InitializeCriticalSection((CRITICAL_SECTION*)_MemLogCriticalSectionHandle);
-		_MemLogCriticalSectionAllocated = true;
-	}
-	return _MemLogCriticalSectionHandle;
+  if (_MemLogCriticalSectionAllocated == false) {
+    InitializeCriticalSection((CRITICAL_SECTION *)_MemLogCriticalSectionHandle);
+    _MemLogCriticalSectionAllocated = true;
+  }
+  return _MemLogCriticalSectionHandle;
 
 #endif
 }
 
-WWINLINE void Lock_Mem_Log_Mutex(void)
-{
+WWINLINE void Lock_Mem_Log_Mutex(void) {
 #if MEMLOG_USE_MUTEX
 
-	void * mutex = Get_Mem_Log_Mutex();
+  void *mutex = Get_Mem_Log_Mutex();
 #ifdef WWDEBUG
-	int res =
+  int res =
 #endif
-		WaitForSingleObject(mutex,INFINITE);
-	WWASSERT(res==WAIT_OBJECT_0);
-	_MemLogLockCounter++;
+      WaitForSingleObject(mutex, INFINITE);
+  WWASSERT(res == WAIT_OBJECT_0);
+  _MemLogLockCounter++;
 #endif
 
 #if MEMLOG_USE_CRITICALSECTION
 
-	Get_Mem_Log_Mutex();
-	EnterCriticalSection((CRITICAL_SECTION*)_MemLogCriticalSectionHandle);
+  Get_Mem_Log_Mutex();
+  EnterCriticalSection((CRITICAL_SECTION *)_MemLogCriticalSectionHandle);
 
 #endif
 
 #if MEMLOG_USE_FASTCRITICALSECTION
 
-	volatile unsigned& nFlag=_MemLogSemaphore;
+  volatile unsigned &nFlag = _MemLogSemaphore;
 
-	#define ts_lock _emit 0xF0
-	assert(((unsigned)&nFlag % 4) == 0);
+#define ts_lock _emit 0xF0
+  assert(((unsigned)&nFlag % 4) == 0);
 
-	__asm mov ebx, [nFlag]
-	__asm ts_lock
-	__asm bts dword ptr [ebx], 0
-	__asm jc The_Bit_Was_Previously_Set_So_Try_Again
-	return;
+  __asm mov ebx, [nFlag] __asm ts_lock __asm bts dword ptr[ebx],
+      0 __asm jc The_Bit_Was_Previously_Set_So_Try_Again return;
 
-	The_Bit_Was_Previously_Set_So_Try_Again:
-	ThreadClass::Switch_Thread();
-	__asm mov ebx, [nFlag]
-	__asm ts_lock
-	__asm bts dword ptr [ebx], 0
-	__asm jc  The_Bit_Was_Previously_Set_So_Try_Again
+The_Bit_Was_Previously_Set_So_Try_Again:
+  ThreadClass::Switch_Thread();
+  __asm mov ebx, [nFlag] __asm ts_lock __asm bts dword ptr[ebx], 0 __asm jc The_Bit_Was_Previously_Set_So_Try_Again
 
 #endif
 }
 
-WWINLINE void Unlock_Mem_Log_Mutex(void)
-{
+WWINLINE void Unlock_Mem_Log_Mutex(void) {
 #if MEMLOG_USE_MUTEX
 
-	void * mutex = Get_Mem_Log_Mutex();
-	_MemLogLockCounter--;
+  void *mutex = Get_Mem_Log_Mutex();
+  _MemLogLockCounter--;
 #ifdef WWDEBUG
-	int res=
+  int res =
 #endif
-		ReleaseMutex(mutex);
-	WWASSERT(res);
+      ReleaseMutex(mutex);
+  WWASSERT(res);
 
 #endif
 #if MEMLOG_USE_CRITICALSECTION
 
-	Get_Mem_Log_Mutex();
-	LeaveCriticalSection((CRITICAL_SECTION*)_MemLogCriticalSectionHandle);
+  Get_Mem_Log_Mutex();
+  LeaveCriticalSection((CRITICAL_SECTION *)_MemLogCriticalSectionHandle);
 
 #endif
 
 #if MEMLOG_USE_FASTCRITICALSECTION
-	_MemLogSemaphore = 0;
+  _MemLogSemaphore = 0;
 #endif
 }
 
-class MemLogMutexLockClass
-{
+class MemLogMutexLockClass {
 public:
-	MemLogMutexLockClass(void) { Lock_Mem_Log_Mutex(); }
-	~MemLogMutexLockClass(void) { Unlock_Mem_Log_Mutex(); }
+  MemLogMutexLockClass(void) { Lock_Mem_Log_Mutex(); }
+  ~MemLogMutexLockClass(void) { Unlock_Mem_Log_Mutex(); }
 };
-
-
 
 /***************************************************************************************************
 **
 ** ActiveCategoryStackClass Implementation
 **
 ***************************************************************************************************/
-ActiveCategoryStackClass &
-ActiveCategoryStackClass::operator = (const ActiveCategoryStackClass & that)
-{
-	if (this != &that) {
-		VectorClass<int>::operator == (that);
-		ThreadID = that.ThreadID;
-		Count = that.Count;
-	}
-	return *this;
+ActiveCategoryStackClass &ActiveCategoryStackClass::operator=(const ActiveCategoryStackClass &that) {
+  if (this != &that) {
+    VectorClass<int>::operator==(that);
+    ThreadID = that.ThreadID;
+    Count = that.Count;
+  }
+  return *this;
 }
-
 
 /***************************************************************************************************
 **
 ** ActiveCategoryClass Implementation
 **
 ***************************************************************************************************/
-ActiveCategoryStackClass & ActiveCategoryClass::Get_Active_Stack(void)
-{
-	int current_thread = ::GetCurrentThreadId();
+ActiveCategoryStackClass &ActiveCategoryClass::Get_Active_Stack(void) {
+  int current_thread = ::GetCurrentThreadId();
 
-	/*
-	** If we already have an allocated category stack for the current thread,
-	** just return its active category.
-	*/
-	for (int i=0; i<Count; i++) {
-		ActiveCategoryStackClass & cat_stack = (*this)[i];
-		if (cat_stack.Get_Thread_ID() == current_thread) {
-			return cat_stack;
-		}
-	}
+  /*
+  ** If we already have an allocated category stack for the current thread,
+  ** just return its active category.
+  */
+  for (int i = 0; i < Count; i++) {
+    ActiveCategoryStackClass &cat_stack = (*this)[i];
+    if (cat_stack.Get_Thread_ID() == current_thread) {
+      return cat_stack;
+    }
+  }
 
-	/*
-	** If we fall through to here, we need to allocate a new category stack
-	** for this thread.
-	*/
-	(*this)[Count].Init(current_thread);
-	Count++;
-	return (*this)[Count-1];
+  /*
+  ** If we fall through to here, we need to allocate a new category stack
+  ** for this thread.
+  */
+  (*this)[Count].Init(current_thread);
+  Count++;
+  return (*this)[Count - 1];
 }
-
 
 /***************************************************************************************************
 **
 ** MemLogClass Implementation
 **
 ***************************************************************************************************/
-int MemLogClass::Get_Current_Allocated_Memory(int category)
-{
-	MemLogMutexLockClass lock;
-	return _MemoryCounters[category].Get_Current_Allocated_Memory();
+int MemLogClass::Get_Current_Allocated_Memory(int category) {
+  MemLogMutexLockClass lock;
+  return _MemoryCounters[category].Get_Current_Allocated_Memory();
 }
 
-int MemLogClass::Get_Peak_Allocated_Memory(int category)
-{
-	MemLogMutexLockClass lock;
-	return _MemoryCounters[category].Get_Peak_Allocated_Memory();
+int MemLogClass::Get_Peak_Allocated_Memory(int category) {
+  MemLogMutexLockClass lock;
+  return _MemoryCounters[category].Get_Peak_Allocated_Memory();
 }
 
-void MemLogClass::Init()
-{
-	{
-		MemLogMutexLockClass lock;
-		WWASSERT(_ActiveCategoryTracker.Current()==MEM_STATICALLOCATION);
-	}
-	Pop_Active_Category();	// Remove staticallocation state forever
+void MemLogClass::Init() {
+  {
+    MemLogMutexLockClass lock;
+    WWASSERT(_ActiveCategoryTracker.Current() == MEM_STATICALLOCATION);
+  }
+  Pop_Active_Category(); // Remove staticallocation state forever
 }
 
-int MemLogClass::Register_Memory_Allocated(int size)
-{
-	MemLogMutexLockClass lock;
+int MemLogClass::Register_Memory_Allocated(int size) {
+  MemLogMutexLockClass lock;
 
-	int active_category = _ActiveCategoryTracker.Current();
-	WWASSERT((active_category >= 0) && (active_category < MEM_COUNT));
-	_MemoryCounters[active_category].Memory_Allocated(size);
+  int active_category = _ActiveCategoryTracker.Current();
+  WWASSERT((active_category >= 0) && (active_category < MEM_COUNT));
+  _MemoryCounters[active_category].Memory_Allocated(size);
 
-	return active_category;
+  return active_category;
 }
 
-void MemLogClass::Register_Memory_Released(int category,int size)
-{
-	MemLogMutexLockClass lock;
-	_MemoryCounters[category].Memory_Released(size);
+void MemLogClass::Register_Memory_Released(int category, int size) {
+  MemLogMutexLockClass lock;
+  _MemoryCounters[category].Memory_Released(size);
 }
 
-void MemLogClass::Push_Active_Category(int category)
-{
-	MemLogMutexLockClass lock;
-	WWASSERT((category >= 0) && (category < MEM_COUNT));
-	_ActiveCategoryTracker.Push(category);
+void MemLogClass::Push_Active_Category(int category) {
+  MemLogMutexLockClass lock;
+  WWASSERT((category >= 0) && (category < MEM_COUNT));
+  _ActiveCategoryTracker.Push(category);
 }
 
-void MemLogClass::Pop_Active_Category(void)
-{
-	MemLogMutexLockClass lock;
-	_ActiveCategoryTracker.Pop();
+void MemLogClass::Pop_Active_Category(void) {
+  MemLogMutexLockClass lock;
+  _ActiveCategoryTracker.Pop();
 }
-
-
 
 /***************************************************************************************************
 **
@@ -464,80 +408,59 @@ void MemLogClass::Pop_Active_Category(void)
 **
 ***************************************************************************************************/
 
-int WWMemoryLogClass::Get_Category_Count(void)
-{
-	return MEM_COUNT;
+int WWMemoryLogClass::Get_Category_Count(void) { return MEM_COUNT; }
+
+const char *WWMemoryLogClass::Get_Category_Name(int category) { return _MemoryCategoryNames[category]; }
+
+int WWMemoryLogClass::Get_Current_Allocated_Memory(int category) {
+  return Get_Log()->Get_Current_Allocated_Memory(category);
 }
 
-const char * WWMemoryLogClass::Get_Category_Name(int category)
-{
-	return _MemoryCategoryNames[category];
-}
+int WWMemoryLogClass::Get_Peak_Allocated_Memory(int category) { return Get_Log()->Get_Peak_Allocated_Memory(category); }
 
-int WWMemoryLogClass::Get_Current_Allocated_Memory(int category)
-{
-	return Get_Log()->Get_Current_Allocated_Memory(category);
-}
-
-int WWMemoryLogClass::Get_Peak_Allocated_Memory(int category)
-{
-	return Get_Log()->Get_Peak_Allocated_Memory(category);
-}
-
-void WWMemoryLogClass::Push_Active_Category(int category)
-{
+void WWMemoryLogClass::Push_Active_Category(int category) {
 #if (DISABLE_MEMLOG == 0)
-	Get_Log()->Push_Active_Category(category);
+  Get_Log()->Push_Active_Category(category);
 #endif //(DISABLE_MEMLOG == 0)
 }
 
-void WWMemoryLogClass::Pop_Active_Category(void)
-{
+void WWMemoryLogClass::Pop_Active_Category(void) {
 #if (DISABLE_MEMLOG == 0)
-	Get_Log()->Pop_Active_Category();
+  Get_Log()->Pop_Active_Category();
 #endif //(DISABLE_MEMLOG == 0)
 }
 
-int WWMemoryLogClass::Register_Memory_Allocated(int size)
-{
-	return Get_Log()->Register_Memory_Allocated(size);
+int WWMemoryLogClass::Register_Memory_Allocated(int size) { return Get_Log()->Register_Memory_Allocated(size); }
+
+void WWMemoryLogClass::Register_Memory_Released(int category, int size) {
+  Get_Log()->Register_Memory_Released(category, size);
 }
 
-void WWMemoryLogClass::Register_Memory_Released(int category,int size)
-{
-	Get_Log()->Register_Memory_Released(category,size);
-}
+static void __cdecl _MemLogCleanup(void) { delete _TheMemLog; }
 
+MemLogClass *WWMemoryLogClass::Get_Log(void) {
+  MemLogMutexLockClass lock;
 
-static void __cdecl _MemLogCleanup(void)
-{
-	delete _TheMemLog;
-}
-
-
-MemLogClass * WWMemoryLogClass::Get_Log(void)
-{
-	MemLogMutexLockClass lock;
-
-	if (_TheMemLog == NULL) {
-		//assert(!_MemLogAllocated);
-		_TheMemLog = new MemLogClass;
+  if (_TheMemLog == NULL) {
+    // assert(!_MemLogAllocated);
+    _TheMemLog = new MemLogClass;
 
 #ifdef STEVES_NEW_CATCHER
-		/*
-		** This was me trying to be clever and fix the memory leak in the memlog. Unfortunately, the Get_Log member can be called
-		** during the process of exiting the process (IYSWIM) and you get it trying to re-allocate the MemLogClass I just freed.
-		** Solution is just to disable memlog when I'm trying to find memory leaks. ST - 6/18/2001 9:51PM
-		*/
-		if (!_MemLogAllocated) {
-			atexit(&Release_Log);
-		}
-		_MemLogAllocated = true;
-#endif //STEVES_NEW_CATCHER
-	}
-	return _TheMemLog;
+    /*
+    ** This was me trying to be clever and fix the memory leak in the memlog. Unfortunately, the Get_Log member can be
+    *called
+    ** during the process of exiting the process (IYSWIM) and you get it trying to re-allocate the MemLogClass I just
+    *freed.
+    ** Solution is just to disable memlog when I'm trying to find memory leaks. ST - 6/18/2001 9:51PM
+    */
+    if (!_MemLogAllocated) {
+      atexit(&Release_Log);
+    }
+    _MemLogAllocated = true;
+#endif // STEVES_NEW_CATCHER
+  }
+  return _TheMemLog;
 }
-
 
 /***********************************************************************************************
  * WWMemoryLogClass::Release_Log -- Free the memory used by WWMemoryLogClass so it doesn't leak*
@@ -556,15 +479,13 @@ MemLogClass * WWMemoryLogClass::Get_Log(void)
  * HISTORY:                                                                                    *
  *   6/13/2001 8:55PM ST : Created                                                             *
  *=============================================================================================*/
-void __cdecl WWMemoryLogClass::Release_Log(void)
-{
-	MemLogMutexLockClass lock;
-	if (_TheMemLog) {
-		delete _TheMemLog;
-		_TheMemLog = NULL;
-	}
+void __cdecl WWMemoryLogClass::Release_Log(void) {
+  MemLogMutexLockClass lock;
+  if (_TheMemLog) {
+    delete _TheMemLog;
+    _TheMemLog = NULL;
+  }
 }
-
 
 /***************************************************************************************************
 **
@@ -578,9 +499,8 @@ void __cdecl WWMemoryLogClass::Release_Log(void)
 **
 ***************************************************************************************************/
 
-const int WWMEMLOG_KEY0 = (unsigned('G')<<24) | (unsigned('g')<<16) | (unsigned('0')<<8) | unsigned('l');
-const int WWMEMLOG_KEY1 = (unsigned('~')<<24) | (unsigned('_')<<16) | (unsigned('d')<<8) | unsigned('3');
-
+const int WWMEMLOG_KEY0 = (unsigned('G') << 24) | (unsigned('g') << 16) | (unsigned('0') << 8) | unsigned('l');
+const int WWMEMLOG_KEY1 = (unsigned('~') << 24) | (unsigned('_') << 16) | (unsigned('d') << 8) | unsigned('3');
 
 /**
 ** MemoryLogStruct
@@ -589,24 +509,16 @@ const int WWMEMLOG_KEY1 = (unsigned('~')<<24) | (unsigned('_')<<16) | (unsigned(
 ** this struct is also 16 bytes so that we wont be seriously affecting the alignment
 ** of allocated memory...
 */
-struct MemoryLogStruct
-{
-	MemoryLogStruct(int category,int size) :
-		Key0(WWMEMLOG_KEY0),
-		Key1(WWMEMLOG_KEY1),
-		Category(category),
-		Size(size)
-	{}
+struct MemoryLogStruct {
+  MemoryLogStruct(int category, int size) : Key0(WWMEMLOG_KEY0), Key1(WWMEMLOG_KEY1), Category(category), Size(size) {}
 
-	bool		Is_Valid_Memory_Log(void)	{ return ((Key0 == WWMEMLOG_KEY0) && (Key1 == WWMEMLOG_KEY1)); }
+  bool Is_Valid_Memory_Log(void) { return ((Key0 == WWMEMLOG_KEY0) && (Key1 == WWMEMLOG_KEY1)); }
 
-	int		Key0;				// if this is not equal to WWMEMLOG_KEY0 then we don't have a valid log
-	int		Key1;				// should be equal to WWMEMLOG_KEY1
-	int		Category;		// category this memory belongs to
-	int		Size;				// size of the allocation
+  int Key0;     // if this is not equal to WWMEMLOG_KEY0 then we don't have a valid log
+  int Key1;     // should be equal to WWMEMLOG_KEY1
+  int Category; // category this memory belongs to
+  int Size;     // size of the allocation
 };
-
-
 
 /***********************************************************************************************
  * WWMemoryLogClass::Allocate_Memory -- allocates memory                                       *
@@ -624,53 +536,50 @@ struct MemoryLogStruct
  * HISTORY:                                                                                    *
  *   5/29/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-void * WWMemoryLogClass::Allocate_Memory(size_t size)
-{
+void *WWMemoryLogClass::Allocate_Memory(size_t size) {
 #if DISABLE_MEMLOG
-	AllocateCount++;
-	return ALLOC_MEMORY(size);
+  AllocateCount++;
+  return ALLOC_MEMORY(size);
 #else
 
-	__declspec( thread ) static bool reentrancy_test = false;
-	MemLogMutexLockClass lock;
+  __declspec(thread) static bool reentrancy_test = false;
+  MemLogMutexLockClass lock;
 
-	if (reentrancy_test) {
-		return ALLOC_MEMORY(size);
-	} else {
-		reentrancy_test = true;
+  if (reentrancy_test) {
+    return ALLOC_MEMORY(size);
+  } else {
+    reentrancy_test = true;
 
-		/*
-		** Allocate space for the requested buffer + our logging structure
-		*/
-		void * ptr = ALLOC_MEMORY(size + sizeof(MemoryLogStruct));
+    /*
+    ** Allocate space for the requested buffer + our logging structure
+    */
+    void *ptr = ALLOC_MEMORY(size + sizeof(MemoryLogStruct));
 
-		if (ptr != NULL) {
-			/*
-			** Record this allocation
-			*/
-			int active_category = WWMemoryLogClass::Register_Memory_Allocated(size);
+    if (ptr != NULL) {
+      /*
+      ** Record this allocation
+      */
+      int active_category = WWMemoryLogClass::Register_Memory_Allocated(size);
 
-			/*
-			** Write our logging structure into the beginning of the buffer.  I'm using
-			** placement new syntax to initialize the log structure right in the memory buffer
-			*/
-			new(ptr) MemoryLogStruct(active_category,size);
+      /*
+      ** Write our logging structure into the beginning of the buffer.  I'm using
+      ** placement new syntax to initialize the log structure right in the memory buffer
+      */
+      new (ptr) MemoryLogStruct(active_category, size);
 
-			/*
-			** Return the allocated memory to the user, skipping past our log structure.
-			*/
-			reentrancy_test = false;
-			return (void*)(((char *)ptr) + sizeof(MemoryLogStruct));
+      /*
+      ** Return the allocated memory to the user, skipping past our log structure.
+      */
+      reentrancy_test = false;
+      return (void *)(((char *)ptr) + sizeof(MemoryLogStruct));
 
-		} else {
-			reentrancy_test = false;
-			return ptr;
-		}
-
-	}
-#endif //DISABLE_MEMLOG
+    } else {
+      reentrancy_test = false;
+      return ptr;
+    }
+  }
+#endif // DISABLE_MEMLOG
 }
-
 
 /***********************************************************************************************
  * WWMemoryLogClass::Release_Memory -- frees memory                                            *
@@ -687,62 +596,51 @@ void * WWMemoryLogClass::Allocate_Memory(size_t size)
  * HISTORY:                                                                                    *
  *   5/29/2001  gth : Created.                                                                 *
  *=============================================================================================*/
-void WWMemoryLogClass::Release_Memory(void *ptr)
-{
+void WWMemoryLogClass::Release_Memory(void *ptr) {
 #if DISABLE_MEMLOG
-	FREE_MEMORY(ptr);
-	FreeCount++;
+  FREE_MEMORY(ptr);
+  FreeCount++;
 #else
 
-	MemLogMutexLockClass lock;
-	if (ptr) {
+  MemLogMutexLockClass lock;
+  if (ptr) {
 
-		/*
-		** Check if this memory is preceeded by a valid MemoryLogStruct
-		*/
-		MemoryLogStruct * memlog = (MemoryLogStruct*)((char*)ptr - sizeof(MemoryLogStruct));
-		if (memlog->Is_Valid_Memory_Log()) {
+    /*
+    ** Check if this memory is preceeded by a valid MemoryLogStruct
+    */
+    MemoryLogStruct *memlog = (MemoryLogStruct *)((char *)ptr - sizeof(MemoryLogStruct));
+    if (memlog->Is_Valid_Memory_Log()) {
 
-			/*
-			** Valid MemoryLogStruct found, track the de-allocation and pass on
-			** to the built-in free function.
-			*/
-			WWMemoryLogClass::Register_Memory_Released(memlog->Category,memlog->Size);
-			FREE_MEMORY((void*)memlog);
+      /*
+      ** Valid MemoryLogStruct found, track the de-allocation and pass on
+      ** to the built-in free function.
+      */
+      WWMemoryLogClass::Register_Memory_Released(memlog->Category, memlog->Size);
+      FREE_MEMORY((void *)memlog);
 
-		} else {
+    } else {
 
-			/*
-			** No valid MemoryLogStruct found, just call free on the memory.
-			*/
-			FREE_MEMORY(ptr);
-		}
-	}
+      /*
+      ** No valid MemoryLogStruct found, just call free on the memory.
+      */
+      FREE_MEMORY(ptr);
+    }
+  }
 
-#endif //DISABLE_MEMLOG
+#endif // DISABLE_MEMLOG
 }
 
 // Reset allocate and free counters
 
-void WWMemoryLogClass::Reset_Counters()
-{
-	AllocateCount=0;
-	FreeCount=0;
+void WWMemoryLogClass::Reset_Counters() {
+  AllocateCount = 0;
+  FreeCount = 0;
 }
 
 // Return allocate count since last reset
-int WWMemoryLogClass::Get_Allocate_Count()
-{
-	return AllocateCount;
-}
+int WWMemoryLogClass::Get_Allocate_Count() { return AllocateCount; }
 
 // Return allocate count since last reset
-int WWMemoryLogClass::Get_Free_Count()
-{
-	return FreeCount;
-}
+int WWMemoryLogClass::Get_Free_Count() { return FreeCount; }
 
-void WWMemoryLogClass::Init()
-{
-	Get_Log()->Init();
-}
+void WWMemoryLogClass::Init() { Get_Log()->Init(); }

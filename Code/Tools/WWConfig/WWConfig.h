@@ -27,38 +27,36 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"		// main symbols
+#include "resource.h" // main symbols
 
 /////////////////////////////////////////////////////////////////////////////
 // CWWConfigApp:
 // See WWConfig.cpp for the implementation of this class
 //
 
-class CWWConfigApp : public CWinApp
-{
+class CWWConfigApp : public CWinApp {
 public:
-	CWWConfigApp();
+  CWWConfigApp();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWWConfigApp)
-	public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
-	//}}AFX_VIRTUAL
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CWWConfigApp)
+public:
+  virtual BOOL InitInstance();
+  virtual int ExitInstance();
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 
-	//{{AFX_MSG(CWWConfigApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CWWConfigApp)
+  // NOTE - the ClassWizard will add and remove member functions here.
+  //    DO NOT EDIT what you see in these blocks of generated code !
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 

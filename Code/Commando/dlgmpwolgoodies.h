@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolgoodies.h      $*
  *                                                                                             *
@@ -42,7 +43,6 @@
 
 #ifndef __DLG_MP_WOL_GOODIES_H
 #define __DLG_MP_WOL_GOODIES_H
-
 
 #include "menudialog.h"
 #include "resource.h"
@@ -79,8 +79,6 @@ protected:
 	////////////////////////////////////////////////////////////////
 };
 
-
 #endif //__DLG_MP_WOL_GOODIES_H
-
 
 #endif // 0

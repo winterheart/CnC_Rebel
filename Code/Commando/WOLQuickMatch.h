@@ -17,21 +17,21 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/Commando/WOLQuickMatch.h $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     Denzil E. Long, Jr.
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 18 $
-*     $Modtime: 2/20/02 5:07p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/Commando/WOLQuickMatch.h $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     Denzil E. Long, Jr.
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 18 $
+ *     $Modtime: 2/20/02 5:07p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLQUICKMATCH_H__
 #define __WOLQUICKMATCH_H__
@@ -44,70 +44,61 @@
 class WaitCondition;
 class DlgWOLWaitEvent;
 
-class QuickMatchEvent :
-		public TypedEvent<QuickMatchEvent, const WideStringClass>
-	{
-	public:
-		enum Event {QMERROR = 0, QMINFO, QMMSG, QMMATCHED, QMUNKNOWN};
+class QuickMatchEvent : public TypedEvent<QuickMatchEvent, const WideStringClass> {
+public:
+  enum Event { QMERROR = 0, QMINFO, QMMSG, QMMATCHED, QMUNKNOWN };
 
-		Event GetEvent(void) const
-			{return mEvent;}
+  Event GetEvent(void) const { return mEvent; }
 
-		QuickMatchEvent(Event event, const WideStringClass& msg) :
-			TypedEvent<QuickMatchEvent, const WideStringClass>(msg),
-					mEvent(event)
-			{}
+  QuickMatchEvent(Event event, const WideStringClass &msg)
+      : TypedEvent<QuickMatchEvent, const WideStringClass>(msg), mEvent(event) {}
 
-		~QuickMatchEvent()
-			{}
+  ~QuickMatchEvent() {}
 
-	private:
-		Event mEvent;
-	};
+private:
+  Event mEvent;
+};
 
+class WOLQuickMatch : public RefCountClass,
+                      public Notifier<QuickMatchEvent>,
+                      public Observer<WWOnline::ServerError>,
+                      public Observer<WWOnline::ChatMessage> {
+public:
+  static WOLQuickMatch *Create(void);
 
-class WOLQuickMatch :
-		public RefCountClass,
-		public Notifier<QuickMatchEvent>,
-		public Observer<WWOnline::ServerError>,
-		public Observer<WWOnline::ChatMessage>
-	{
-	public:
-		static WOLQuickMatch* Create(void);
+  RefPtr<WaitCondition> ConnectClient(void);
+  RefPtr<WaitCondition> Disconnect(void);
 
-		RefPtr<WaitCondition> ConnectClient(void);
-		RefPtr<WaitCondition> Disconnect(void);
+  bool SendClientInfo(void);
+  void SendServerInfo(const char *exInfo, const char *topic);
 
-		bool SendClientInfo(void);
-		void SendServerInfo(const char* exInfo, const char* topic);
-			
-		DECLARE_NOTIFIER(QuickMatchEvent)
+  DECLARE_NOTIFIER(QuickMatchEvent)
 
-	protected:
-		WOLQuickMatch();
-		~WOLQuickMatch();
+protected:
+  WOLQuickMatch();
+  ~WOLQuickMatch();
 
-		bool FinalizeCreate(void);
-		
-		void SendStatus(const wchar_t* statusMsg);
+  bool FinalizeCreate(void);
 
-		void ParseResponse(const wchar_t* message);
+  void SendStatus(const wchar_t *statusMsg);
 
-		void HandleNotification(WWOnline::ServerError&);
-		void HandleNotification(WWOnline::ChatMessage&);
+  void ParseResponse(const wchar_t *message);
 
-	private:
-		// Prevent copy and assignment
-		WOLQuickMatch(const WOLQuickMatch&);
-		const WOLQuickMatch& operator=(const WOLQuickMatch&);
+  void HandleNotification(WWOnline::ServerError &);
+  void HandleNotification(WWOnline::ChatMessage &);
 
-		static void ProcessInfo(WOLQuickMatch*, const wchar_t*);
-		static void ProcessError(WOLQuickMatch*, const wchar_t*);
-		static void ProcessStart(WOLQuickMatch*, const wchar_t*);
-		static void ProcessUnknown(WOLQuickMatch*, const wchar_t*);
+private:
+  // Prevent copy and assignment
+  WOLQuickMatch(const WOLQuickMatch &);
+  const WOLQuickMatch &operator=(const WOLQuickMatch &);
 
-	protected:
-		RefPtr<WWOnline::Session> mWOLSession;
-	};
+  static void ProcessInfo(WOLQuickMatch *, const wchar_t *);
+  static void ProcessError(WOLQuickMatch *, const wchar_t *);
+  static void ProcessStart(WOLQuickMatch *, const wchar_t *);
+  static void ProcessUnknown(WOLQuickMatch *, const wchar_t *);
+
+protected:
+  RefPtr<WWOnline::Session> mWOLSession;
+};
 
 #endif // __WOLQUICKMATCH_H__

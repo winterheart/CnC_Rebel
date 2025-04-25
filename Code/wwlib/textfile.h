@@ -16,18 +16,18 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/wwlib/textfile.h                             $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/wwlib/textfile.h                             $*
+ *                                                                                             *
  *                      $Author:: Patrick                   $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 5/31/00 9:22a                                               $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 2                                                           $*
  *                                                                                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -39,14 +39,12 @@
 #ifndef __TEXT_FILE_H
 #define __TEXT_FILE_H
 
-
 #include "rawfile.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 ///////////////////////////////////////////////////////////////////////////////
 class StringClass;
-
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -56,30 +54,26 @@ class StringClass;
 // It is used for reading/writing lines of text (looking for CR/LF or LF's).
 //
 ///////////////////////////////////////////////////////////////////////////////
-class TextFileClass : public RawFileClass
-{
+class TextFileClass : public RawFileClass {
 public:
+  /////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  /////////////////////////////////////////////////////////////////
+  TextFileClass(void);
+  TextFileClass(char const *filename);
+  TextFileClass(const TextFileClass &src);
+  virtual ~TextFileClass(void);
 
-	/////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	/////////////////////////////////////////////////////////////////
-	TextFileClass (void);
-	TextFileClass (char const *filename);	
-	TextFileClass (const TextFileClass &src);
-	virtual ~TextFileClass (void);
+  /////////////////////////////////////////////////////////////////
+  //	Public operators
+  /////////////////////////////////////////////////////////////////
+  const TextFileClass &operator=(const TextFileClass &src);
 
-	/////////////////////////////////////////////////////////////////
-	//	Public operators
-	/////////////////////////////////////////////////////////////////
-	const TextFileClass &operator= (const TextFileClass &src);
-
-	/////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////
-	bool			Read_Line (StringClass &string);
-	bool			Write_Line (const StringClass &string);
+  /////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////
+  bool Read_Line(StringClass &string);
+  bool Write_Line(const StringClass &string);
 };
 
-
 #endif //__TEXT_FILE_H
-

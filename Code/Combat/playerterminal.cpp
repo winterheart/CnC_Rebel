@@ -36,9 +36,7 @@
 
 #include "playerterminal.h"
 
-
 ////////////////////////////////////////////////////////////////
 //	Static member initialization
 ////////////////////////////////////////////////////////////////
-PlayerTerminalClass * PlayerTerminalClass::_TheInstance = 0;
-
+PlayerTerminalClass *PlayerTerminalClass::_TheInstance = 0;

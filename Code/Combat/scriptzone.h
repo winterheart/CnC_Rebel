@@ -16,95 +16,89 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Combat/scriptzone.h                          $* 
- *                                                                                             * 
- *                      $Author:: Patrick                                                     $* 
- *                                                                                             * 
- *                     $Modtime:: 11/27/01 4:46p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 14                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Combat/scriptzone.h                          $*
+ *                                                                                             *
+ *                      $Author:: Patrick                                                     $*
+ *                                                                                             *
+ *                     $Modtime:: 11/27/01 4:46p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 14                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	SCRIPTZONEOBJ_H
-#define	SCRIPTZONEOBJ_H
+#ifndef SCRIPTZONEOBJ_H
+#define SCRIPTZONEOBJ_H
 
-#ifndef	ALWAYS_H
-	#include "always.h"
+#ifndef ALWAYS_H
+#include "always.h"
 #endif
 
 #ifndef SCRIPTABLEGAMEOBJ_H
-	#include "scriptablegameobj.h"
+#include "scriptablegameobj.h"
 #endif
 
 #ifndef OBBOX_H
-	#include "obbox.h"
+#include "obbox.h"
 #endif
 
 #ifndef SLIST_H
-	#include "slist.h"
+#include "slist.h"
 #endif
 
 /*
 ** ZoneConstants
 ** Convienent namespace declaration for the constants used with zones
 */
-namespace ZoneConstants
-{
-	typedef enum
-	{
-		TYPE_DEFAULT					= 0,
-		TYPE_CTF,
-		TYPE_VEHICLE_CONSTRUCTION,
-		TYPE_VEHICLE_REPAIR,
-		TYPE_TIBERIUM_FIELD,
-		TYPE_BEACON,
-		TYPE_GDI_TIB_FIELD,
-		TYPE_NOD_TIB_FIELD,
-		TYPE_COUNT
-	} ZoneType;
+namespace ZoneConstants {
+typedef enum {
+  TYPE_DEFAULT = 0,
+  TYPE_CTF,
+  TYPE_VEHICLE_CONSTRUCTION,
+  TYPE_VEHICLE_REPAIR,
+  TYPE_TIBERIUM_FIELD,
+  TYPE_BEACON,
+  TYPE_GDI_TIB_FIELD,
+  TYPE_NOD_TIB_FIELD,
+  TYPE_COUNT
+} ZoneType;
 }
-
 
 /*
 ** ZoneGameObjDef - Defintion class for a ZoneGameObj
 */
-class ScriptZoneGameObjDef : public ScriptableGameObjDef
-{
+class ScriptZoneGameObjDef : public ScriptableGameObjDef {
 public:
-	ScriptZoneGameObjDef( void );
+  ScriptZoneGameObjDef(void);
 
-	virtual uint32								Get_Class_ID( void ) const;
-	virtual PersistClass *					Create( void ) const ;
-	virtual bool								Save( ChunkSaveClass &csave );
-	virtual bool								Load( ChunkLoadClass &cload );
-	virtual bool								Is_Valid_Config (StringClass &message) { return true; }
-	virtual const PersistFactoryClass &	Get_Factory( void ) const;
+  virtual uint32 Get_Class_ID(void) const;
+  virtual PersistClass *Create(void) const;
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual bool Is_Valid_Config(StringClass &message) { return true; }
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	DECLARE_EDITABLE( ScriptZoneGameObjDef, ScriptableGameObjDef );
+  DECLARE_EDITABLE(ScriptZoneGameObjDef, ScriptableGameObjDef);
 
-	const Vector3 &							Get_Color (void) const { return Color; }
+  const Vector3 &Get_Color(void) const { return Color; }
 
-	ZoneConstants::ZoneType					Get_Type (void) const	{ return ZoneType; }
+  ZoneConstants::ZoneType Get_Type(void) const { return ZoneType; }
 
 protected:
-
-	ZoneConstants::ZoneType					ZoneType;
-	Vector3										Color;
-	bool											IsCTFZone;
-	bool											CheckStarsOnly;
-	bool											IsEnvironmentZone;
-	friend	class								ScriptZoneGameObj;
+  ZoneConstants::ZoneType ZoneType;
+  Vector3 Color;
+  bool IsCTFZone;
+  bool CheckStarsOnly;
+  bool IsEnvironmentZone;
+  friend class ScriptZoneGameObj;
 };
-
 
 /*
 **
@@ -112,59 +106,56 @@ protected:
 class ScriptZoneGameObj : public ScriptableGameObj {
 
 public:
-	ScriptZoneGameObj();
-	virtual	~ScriptZoneGameObj();
+  ScriptZoneGameObj();
+  virtual ~ScriptZoneGameObj();
 
-	// Definitions
-	virtual	void	Init( void );
-	void	Init( const ScriptZoneGameObjDef & definition );
-	const ScriptZoneGameObjDef & Get_Definition( void ) const;
-	
-	// RTTI
-	ScriptZoneGameObj	*As_ScriptZoneGameObj( void )	{ return this; };
+  // Definitions
+  virtual void Init(void);
+  void Init(const ScriptZoneGameObjDef &definition);
+  const ScriptZoneGameObjDef &Get_Definition(void) const;
 
-	// Save / Load / Construction Factory
-	virtual	bool	Save( ChunkSaveClass & csave );
-	virtual	bool	Load( ChunkLoadClass & cload );
-	virtual	const	PersistFactoryClass & Get_Factory( void ) const;
+  // RTTI
+  ScriptZoneGameObj *As_ScriptZoneGameObj(void) { return this; };
 
-	//	Thinking
-	virtual	void		Think();
+  // Save / Load / Construction Factory
+  virtual bool Save(ChunkSaveClass &csave);
+  virtual bool Load(ChunkLoadClass &cload);
+  virtual const PersistFactoryClass &Get_Factory(void) const;
 
-	virtual	void		Get_Position(Vector3 * set_pos) const { *set_pos = BoundingBox.Center; }
+  //	Thinking
+  virtual void Think();
 
-	// Bounding Box
-	void	Set_Bounding_Box( OBBoxClass & box )			{ BoundingBox = box; }
-	const OBBoxClass & Get_Bounding_Box(void)				{ return BoundingBox; }
+  virtual void Get_Position(Vector3 *set_pos) const { *set_pos = BoundingBox.Center; }
 
-	// PlayerType (a simple copy of what's used in PhyiscalGameObj, needed for CTF
-   int		Get_Player_Type( void) const					{ return PlayerType; }
-   void		Set_Player_Type( int type )					{ PlayerType = type; }
+  // Bounding Box
+  void Set_Bounding_Box(OBBoxClass &box) { BoundingBox = box; }
+  const OBBoxClass &Get_Bounding_Box(void) { return BoundingBox; }
 
-   int		Count_Team_Members_Inside( int player_type );
+  // PlayerType (a simple copy of what's used in PhyiscalGameObj, needed for CTF
+  int Get_Player_Type(void) const { return PlayerType; }
+  void Set_Player_Type(int type) { PlayerType = type; }
 
-	static ScriptZoneGameObj *	Find_Closest_Zone (const Vector3 &pos, ZoneConstants::ZoneType type);
+  int Count_Team_Members_Inside(int player_type);
 
-	// Network support
-	//virtual bool	Exists_On_Client( void ) const;
+  static ScriptZoneGameObj *Find_Closest_Zone(const Vector3 &pos, ZoneConstants::ZoneType type);
 
-   bool	Is_Environment_Zone( void )						{ return Get_Definition().IsEnvironmentZone; }
+  // Network support
+  // virtual bool	Exists_On_Client( void ) const;
 
+  bool Is_Environment_Zone(void) { return Get_Definition().IsEnvironmentZone; }
 
 protected:
-	OBBoxClass			BoundingBox;
-	int					PlayerType;
+  OBBoxClass BoundingBox;
+  int PlayerType;
 
-	// a list of all SMART objects currently inside me and a checking function
-	SList<GameObjReference>	  	InsideList;
-	void		Entered( SmartGameObj * obj );
-	bool		In_List( SmartGameObj * obj );
-	bool		Inside_Me( const SmartGameObj * obj );
-
+  // a list of all SMART objects currently inside me and a checking function
+  SList<GameObjReference> InsideList;
+  void Entered(SmartGameObj *obj);
+  bool In_List(SmartGameObj *obj);
+  bool Inside_Me(const SmartGameObj *obj);
 };
 
 #endif
-
 
 #if 0
 
@@ -249,4 +240,4 @@ class	ZoneManager {
 
 };
 
-#endif  // SCRIPTZONEOBJ
+#endif // SCRIPTZONEOBJ

@@ -25,7 +25,6 @@
 // PresetsForm.h : header file
 //
 
-
 #ifndef __AFXEXT_H__
 #include <afxext.h>
 #endif
@@ -34,142 +33,131 @@
 #include "bittype.h"
 #include "vector.h"
 
-
 // Forward declarations
 class DefinitionFactoryClass;
 class DefinitionClass;
 class PresetClass;
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Typedefs
 //
 /////////////////////////////////////////////////////////////////////////////
-typedef struct _DERIVED_PARAM_INFO
-{
-	PresetClass *				preset;
-	DynamicVectorClass<int>	inherited_param_list;
+typedef struct _DERIVED_PARAM_INFO {
+  PresetClass *preset;
+  DynamicVectorClass<int> inherited_param_list;
 
-	// For DyanmicVectorClass
-	bool operator== (const _DERIVED_PARAM_INFO &) { return false; }
-	bool operator!= (const _DERIVED_PARAM_INFO &) { return true; }
+  // For DyanmicVectorClass
+  bool operator==(const _DERIVED_PARAM_INFO &) { return false; }
+  bool operator!=(const _DERIVED_PARAM_INFO &) { return true; }
 } DERIVED_PARAM_INFO;
 
 typedef DynamicVectorClass<DERIVED_PARAM_INFO> DERIVED_PARAM_LIST;
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // PresetsFormClass form view
 //
 /////////////////////////////////////////////////////////////////////////////
-class PresetsFormClass : public CDialog
-{
+class PresetsFormClass : public CDialog {
 public:
-	PresetsFormClass (CWnd *parent_wnd);
+  PresetsFormClass(CWnd *parent_wnd);
 
-// Form Data
+  // Form Data
 public:
-	//{{AFX_DATA(PresetsFormClass)
-	enum { IDD = IDD_PRESETS_FORM };
-	CTreeCtrl	m_TreeCtrl;
-	//}}AFX_DATA
+  //{{AFX_DATA(PresetsFormClass)
+  enum { IDD = IDD_PRESETS_FORM };
+  CTreeCtrl m_TreeCtrl;
+  //}}AFX_DATA
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(PresetsFormClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(PresetsFormClass)
 protected:
-	virtual ~PresetsFormClass();
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
+
+  // Implementation
+protected:
+  virtual ~PresetsFormClass();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(PresetsFormClass)
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	virtual BOOL OnInitDialog();
-	afx_msg void OnAdd();
-	afx_msg void OnDeleteitemPresetsTree(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnModify();
-	afx_msg void OnMake();
-	afx_msg void OnAddTemp();
-	afx_msg void OnDelete();
-	afx_msg void OnSelchangedPresetsTree(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(PresetsFormClass)
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  virtual BOOL OnInitDialog();
+  afx_msg void OnAdd();
+  afx_msg void OnDeleteitemPresetsTree(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnModify();
+  afx_msg void OnMake();
+  afx_msg void OnAddTemp();
+  afx_msg void OnDelete();
+  afx_msg void OnSelchangedPresetsTree(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-	
-	/////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////
-	void								Reload_Presets (void);	
-	bool								Is_Modified (void) const	{ return m_IsModified; }
+  /////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////
+  void Reload_Presets(void);
+  bool Is_Modified(void) const { return m_IsModified; }
 
-	bool								Save_Presets (void);
-	bool								Save_Temp_Presets (void);
-	static bool						Load_Presets (void);
-	static bool						Load_Temp_Presets (void);
-	
+  bool Save_Presets(void);
+  bool Save_Temp_Presets(void);
+  static bool Load_Presets(void);
+  static bool Load_Temp_Presets(void);
+
 protected:
+  /////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////
+  void Fill_In_Presets(HTREEITEM root_item);
+  void Fill_In_Preset_Children(HTREEITEM root_item, uint32 parent_id);
 
-	/////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////
-	void								Fill_In_Presets (HTREEITEM root_item);
-	void								Fill_In_Preset_Children (HTREEITEM root_item, uint32 parent_id);
+  HTREEITEM Find_Preset(HTREEITEM root_item, uint32 id);
+  HTREEITEM Find_Factory(HTREEITEM root_item, uint32 id);
 
-	HTREEITEM						Find_Preset (HTREEITEM root_item, uint32 id);
-	HTREEITEM						Find_Factory (HTREEITEM root_item, uint32 id);
+  void Set_Item_Data(HTREEITEM item, DefinitionFactoryClass *factory);
+  void Set_Item_Data(HTREEITEM item, PresetClass *preset);
+  DefinitionFactoryClass *Get_Item_Factory(HTREEITEM item);
+  DefinitionClass *Get_Item_Definition(HTREEITEM item);
+  PresetClass *Get_Item_Preset(HTREEITEM item);
+  DefinitionFactoryClass *Get_Selected_Factory(void);
 
-	void								Set_Item_Data (HTREEITEM item, DefinitionFactoryClass *factory);
-	void								Set_Item_Data (HTREEITEM item, PresetClass *preset);
-	DefinitionFactoryClass *	Get_Item_Factory (HTREEITEM item);
-	DefinitionClass *				Get_Item_Definition (HTREEITEM item);
-	PresetClass *					Get_Item_Preset (HTREEITEM item);
-	DefinitionFactoryClass *	Get_Selected_Factory (void);
+  HTREEITEM Insert_Preset(HTREEITEM root_item, PresetClass *preset);
+  int Get_Icon(PresetClass *preset);
+  void Reselect_Item(int id, bool is_factory = false);
+  void Sort_Nodes(HTREEITEM root_item, bool recursive = true);
 
-	HTREEITEM						Insert_Preset (HTREEITEM root_item, PresetClass *preset);
-	int								Get_Icon (PresetClass *preset);
-	void								Reselect_Item (int id, bool is_factory = false);
-	void								Sort_Nodes (HTREEITEM root_item, bool recursive = true);
+  bool Add_New_Preset(bool is_temp = false);
+  bool Modify_Preset(void);
+  PresetClass *Create_Preset(DefinitionFactoryClass *factory, bool is_temp);
 
-	bool								Add_New_Preset (bool is_temp = false);
-	bool								Modify_Preset (void);
-	PresetClass *					Create_Preset (DefinitionFactoryClass *factory, bool is_temp);
+  void Build_Child_List(HTREEITEM parent_item, DynamicVectorClass<HTREEITEM> &list);
 
-	void								Build_Child_List (HTREEITEM parent_item, DynamicVectorClass<HTREEITEM> &list);	
-
-	void								Build_Inherited_Param_List (HTREEITEM parent_item, DERIVED_PARAM_LIST &list);
-	void								Propagate_Changes (HTREEITEM modified_item, DERIVED_PARAM_LIST &list);
+  void Build_Inherited_Param_List(HTREEITEM parent_item, DERIVED_PARAM_LIST &list);
+  void Propagate_Changes(HTREEITEM modified_item, DERIVED_PARAM_LIST &list);
 
 private:
+  /////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////
+  DialogToolbarClass m_Toolbar;
+  static bool m_IsModified;
 
-	/////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////
-	DialogToolbarClass	m_Toolbar;
-	static bool				m_IsModified;
-
-	/////////////////////////////////////////////////////////
-	//	Friends
-	/////////////////////////////////////////////////////////
-	friend class SelectionCaptureClass;
+  /////////////////////////////////////////////////////////
+  //	Friends
+  /////////////////////////////////////////////////////////
+  friend class SelectionCaptureClass;
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 

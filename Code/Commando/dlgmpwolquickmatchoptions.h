@@ -21,7 +21,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/Commando/dlgmpwolquickmatchoptions.h   $*
  *                                                                                             *
@@ -42,46 +43,40 @@
 #ifndef __DLG_MP_WOL_QUICKMATCH_OPTIONS_H
 #define __DLG_MP_WOL_QUICKMATCH_OPTIONS_H
 
-
 #include "menudialog.h"
 #include "resource.h"
-
 
 ////////////////////////////////////////////////////////////////
 //
 //	MPWolQuickMatchOptionsMenuClass
 //
 ////////////////////////////////////////////////////////////////
-class MPWolQuickMatchOptionsMenuClass : public MenuDialogClass
-{
+class MPWolQuickMatchOptionsMenuClass : public MenuDialogClass {
 public:
-	
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////	
-	MPWolQuickMatchOptionsMenuClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  MPWolQuickMatchOptionsMenuClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
-	void		On_Init_Dialog (void);	
-	void		On_Command (int ctrl_id, int mesage_id, DWORD param);
-	void		On_SliderCtrl_Pos_Changed (SliderCtrlClass *slider_ctrl, int ctrl_id, int new_pos);
-	bool		Save_Settings (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
+  void On_Init_Dialog(void);
+  void On_Command(int ctrl_id, int mesage_id, DWORD param);
+  void On_SliderCtrl_Pos_Changed(SliderCtrlClass *slider_ctrl, int ctrl_id, int new_pos);
+  bool Save_Settings(void);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Update_Slider_Text(int ctrl_id);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void		Update_Slider_Text (int ctrl_id);
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
 };
 
 #endif //__DLG_MP_WOL_QUICKMATCH_OPTIONS_H
 
 #endif // QUICKMATCH_OPTIONS
-

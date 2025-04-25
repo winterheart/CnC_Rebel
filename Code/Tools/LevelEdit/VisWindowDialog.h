@@ -25,89 +25,80 @@
 
 #include "resource.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //	Forward declarations
 /////////////////////////////////////////////////////////////////////////////
 class VisRasterizerClass;
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // VisWindowDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class VisWindowDialogClass : public CDialog
-{
-// Construction
+class VisWindowDialogClass : public CDialog {
+  // Construction
 public:
-	VisWindowDialogClass (CWnd* pParent = NULL);
-	~VisWindowDialogClass (void);
+  VisWindowDialogClass(CWnd *pParent = NULL);
+  ~VisWindowDialogClass(void);
 
-// Dialog Data
-	//{{AFX_DATA(VisWindowDialogClass)
-	enum { IDD = IDD_VIS_WINDOW };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(VisWindowDialogClass)
+  enum { IDD = IDD_VIS_WINDOW };
+  // NOTE: the ClassWizard will add data members here
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(VisWindowDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(VisWindowDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(VisWindowDialogClass)
-	afx_msg void OnPaint();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
-public:
-
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
-	void		Create (void);
-	void		Update_Display (VisRasterizerClass &rasterizer);
-	BOOL		OnToolTipNeedText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
-	BOOL		PreTranslateMessage(MSG* pMsg);
-
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(VisWindowDialogClass)
+  afx_msg void OnPaint();
+  virtual BOOL OnInitDialog();
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
+  void Create(void);
+  void Update_Display(VisRasterizerClass &rasterizer);
+  BOOL OnToolTipNeedText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
+  BOOL PreTranslateMessage(MSG *pMsg);
 
-	///////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////
-	void		Free_DIB_Section (void);
-	void		Create_DIB_Section (int width, int height);
-	void		Paint_Display (void);
+public:
+  ///////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////
+  void Free_DIB_Section(void);
+  void Create_DIB_Section(int width, int height);
+  void Paint_Display(void);
 
 private:
+  ///////////////////////////////////////////////////////////////////
+  // Private methods
+  ///////////////////////////////////////////////////////////////////
+  int Hit_Test(CPoint point) const;
+  unsigned int Id_To_Pixel(unsigned int id) const;
+  unsigned int Pixel_To_Id(unsigned int pixel) const;
 
-	///////////////////////////////////////////////////////////////////
-	// Private methods
-	///////////////////////////////////////////////////////////////////
-	int				Hit_Test(CPoint point) const;
-	unsigned int	Id_To_Pixel(unsigned int id) const;		
-	unsigned int	Pixel_To_Id(unsigned int pixel) const;
-
-	///////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////
-	HDC				MemDC;
-	HBITMAP			Bitmap;
-	BYTE *			BitmapBits;
-	int				Width;
-	int				Height;
-	unsigned			CurToolTipVisId;
-	CToolTipCtrl	ToolTip;
+  ///////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////
+  HDC MemDC;
+  HBITMAP Bitmap;
+  BYTE *BitmapBits;
+  int Width;
+  int Height;
+  unsigned CurToolTipVisId;
+  CToolTipCtrl ToolTip;
 };
 
 //{{AFX_INSERT_LOCATION}}

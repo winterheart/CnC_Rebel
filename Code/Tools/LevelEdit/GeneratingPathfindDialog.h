@@ -30,62 +30,53 @@
 // GeneratingPathfindDialogClass dialog
 //
 /////////////////////////////////////////////////////////////////////////////
-class GeneratingPathfindDialogClass : public CDialog
-{
-// Construction
+class GeneratingPathfindDialogClass : public CDialog {
+  // Construction
 public:
-	GeneratingPathfindDialogClass(CWnd* pParent = NULL);   // standard constructor
+  GeneratingPathfindDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(GeneratingPathfindDialogClass)
-	enum { IDD = IDD_GENERATING_SECTORS };
-	CProgressCtrl	m_ProgressBar;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(GeneratingPathfindDialogClass)
+  enum { IDD = IDD_GENERATING_SECTORS };
+  CProgressCtrl m_ProgressBar;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(GeneratingPathfindDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(GeneratingPathfindDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(GeneratingPathfindDialogClass)
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(GeneratingPathfindDialogClass)
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
+  /////////////////////////////////////////////////////////////
+  //	Public data types
+  /////////////////////////////////////////////////////////////
+  typedef enum { STATE_FLOODFILL = 1, STATE_COMPRESS } STATE;
 
-	/////////////////////////////////////////////////////////////
-	//	Public data types
-	/////////////////////////////////////////////////////////////
-	typedef enum
-	{
-		STATE_FLOODFILL	= 1,
-		STATE_COMPRESS
-	} STATE;
+  /////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////
+  void Set_State(STATE state);
+  void Set_Status(LPCTSTR text, float percent);
 
-	/////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////
-	void			Set_State (STATE state);
-	void			Set_Status (LPCTSTR text, float percent);
-
-	bool			Was_Cancelled (void) const	{ return m_Cancelled; }
+  bool Was_Cancelled(void) const { return m_Cancelled; }
 
 private:
-
-	/////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////
-	bool			m_Cancelled;
+  /////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////
+  bool m_Cancelled;
 };
 
 //{{AFX_INSERT_LOCATION}}

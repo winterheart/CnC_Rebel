@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/incdec.h                                  $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/incdec.h                                  $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef INCDEC_H
@@ -42,27 +42,23 @@
 **	arithmatic performed. The operators must be instatiated for the
 **	enumerated types desired.
 */
-template<class T> inline T operator ++(T & a)
-{
-	a = (T)((int)a + (int)1);
-	return(a);
+template <class T> inline T operator++(T &a) {
+  a = (T)((int)a + (int)1);
+  return (a);
 }
-template<class T> inline T operator ++(T & a, int)
-{
-	T aa = a;
-	a = (T)((int)a + (int)1);
-	return(aa);
+template <class T> inline T operator++(T &a, int) {
+  T aa = a;
+  a = (T)((int)a + (int)1);
+  return (aa);
 }
-template<class T> inline T operator --(T & a)
-{
-	a = (T)((int)a - (int)1);
-	return(a);
+template <class T> inline T operator--(T &a) {
+  a = (T)((int)a - (int)1);
+  return (a);
 }
-template<class T> inline T operator --(T & a, int)
-{
-	T aa = a;
-	a = (T)((int)a - (int)1);
-	return(aa);
+template <class T> inline T operator--(T &a, int) {
+  T aa = a;
+  a = (T)((int)a - (int)1);
+  return (aa);
 }
 
 #endif

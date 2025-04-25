@@ -38,72 +38,60 @@
 #include "mpsettingsmgr.h"
 #include "resource.h"
 
-
 //////////////////////////////////////////////////////////////////////
 //
 //	MPWolAutoLoginPromptDialogClass
 //
 //////////////////////////////////////////////////////////////////////
-MPWolAutoLoginPromptDialogClass::MPWolAutoLoginPromptDialogClass (void)	:
-	PopupDialogClass (IDD_MP_WOL_AUTO_LOGIN_PROMPT)
-{
-	return ;
+MPWolAutoLoginPromptDialogClass::MPWolAutoLoginPromptDialogClass(void)
+    : PopupDialogClass(IDD_MP_WOL_AUTO_LOGIN_PROMPT) {
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	~MPWolAutoLoginPromptDialogClass
 //
 //////////////////////////////////////////////////////////////////////
-MPWolAutoLoginPromptDialogClass::~MPWolAutoLoginPromptDialogClass (void)
-{
-	return ;
-}
-
+MPWolAutoLoginPromptDialogClass::~MPWolAutoLoginPromptDialogClass(void) { return; }
 
 //////////////////////////////////////////////////////////////////////
 //
 //	On_Init_Dialog
 //
 //////////////////////////////////////////////////////////////////////
-void
-MPWolAutoLoginPromptDialogClass::On_Init_Dialog (void)
-{	
-	Check_Dlg_Button (IDC_DONT_ASK_AGAIN_CHECK, true);
-	PopupDialogClass::On_Init_Dialog ();
-	return ;
+void MPWolAutoLoginPromptDialogClass::On_Init_Dialog(void) {
+  Check_Dlg_Button(IDC_DONT_ASK_AGAIN_CHECK, true);
+  PopupDialogClass::On_Init_Dialog();
+  return;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 //
 //	On_Command
 //
 //////////////////////////////////////////////////////////////////////
-void
-MPWolAutoLoginPromptDialogClass::On_Command (int ctrl_id, int message_id, DWORD param)
-{
-	//
-	//	Remember the "don't show me this again" setting
-	//
-	if (ctrl_id == IDYES || ctrl_id == IDNO) {
-		bool is_checked = Is_Dlg_Button_Checked (IDC_DONT_ASK_AGAIN_CHECK);
-		MPSettingsMgrClass::Enable_Auto_Login_Prompt (!is_checked);
+void MPWolAutoLoginPromptDialogClass::On_Command(int ctrl_id, int message_id, DWORD param) {
+  //
+  //	Remember the "don't show me this again" setting
+  //
+  if (ctrl_id == IDYES || ctrl_id == IDNO) {
+    bool is_checked = Is_Dlg_Button_Checked(IDC_DONT_ASK_AGAIN_CHECK);
+    MPSettingsMgrClass::Enable_Auto_Login_Prompt(!is_checked);
 
-		bool autoLogin = (ctrl_id == IDYES);
+    bool autoLogin = (ctrl_id == IDYES);
 
-		if (autoLogin) {
-			const char* login = MPSettingsMgrClass::Get_Last_Login();
-			MPSettingsMgrClass::Set_Auto_Login(login);
-		}
+    if (autoLogin) {
+      const char *login = MPSettingsMgrClass::Get_Last_Login();
+      MPSettingsMgrClass::Set_Auto_Login(login);
+    }
 
-		//
-		//	Close the dialog
-		//
-		End_Dialog ();
-	}
+    //
+    //	Close the dialog
+    //
+    End_Dialog();
+  }
 
-	PopupDialogClass::On_Command (ctrl_id, message_id, param);
-	return ;
+  PopupDialogClass::On_Command(ctrl_id, message_id, param);
+  return;
 }

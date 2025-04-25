@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -44,7 +43,7 @@
 
 #include "always.h"
 
-class	PhysClass;
+class PhysClass;
 class RenderObjClass;
 struct CastResultStruct;
 
@@ -53,31 +52,24 @@ struct CastResultStruct;
 ** This structure is simply used to package up the information pertaining to
 ** a collision.
 */
-class CollisionEventClass
-{
+class CollisionEventClass {
 public:
-	CollisionEventClass(void) : 
-		OtherObj(NULL),
-		CollisionResult(NULL),
-		CollidedRenderObj(NULL)
-	{}
+  CollisionEventClass(void) : OtherObj(NULL), CollisionResult(NULL), CollidedRenderObj(NULL) {}
 
-	PhysClass *						OtherObj;				// set to the other object before given to you
-	const CastResultStruct *	CollisionResult;		// actual collision data.
-	RenderObjClass *				CollidedRenderObj;	// actual render object collided against (may be NULL!)
+  PhysClass *OtherObj;                     // set to the other object before given to you
+  const CastResultStruct *CollisionResult; // actual collision data.
+  RenderObjClass *CollidedRenderObj;       // actual render object collided against (may be NULL!)
 };
-
 
 /*
 ** CollisionReactionType
 ** This is an enumeration of possible replies that an observer can make when
 ** it gets a collision event.
 */
-enum _CollisionReactionType
-{
-	COLLISION_REACTION_DEFAULT,
-	COLLISION_REACTION_STOP_MOTION,
-	COLLISION_REACTION_NO_BOUNCE,
+enum _CollisionReactionType {
+  COLLISION_REACTION_DEFAULT,
+  COLLISION_REACTION_STOP_MOTION,
+  COLLISION_REACTION_NO_BOUNCE,
 };
 
 typedef int CollisionReactionType;
@@ -87,10 +79,9 @@ typedef int CollisionReactionType;
 ** This is an enumeration of the responses that the game object can give
 ** when the physics object it is observing is about to expire
 */
-enum _ExpirationReactionType
-{
-	EXPIRATION_DENIED,
-	EXPIRATION_APPROVED,
+enum _ExpirationReactionType {
+  EXPIRATION_DENIED,
+  EXPIRATION_APPROVED,
 };
 
 typedef int ExpirationReactionType;
@@ -101,15 +92,14 @@ typedef int ExpirationReactionType;
 ** Each physics object can have a single observer installed into it which
 ** will be notified when certain things occur.
 */
-class PhysObserverClass
-{
+class PhysObserverClass {
 public:
-
-	virtual CollisionReactionType		Collision_Occurred(const CollisionEventClass & event) { return COLLISION_REACTION_DEFAULT; }
-	virtual ExpirationReactionType	Object_Expired(PhysClass * observed_obj)					{ return EXPIRATION_APPROVED; }
-	virtual void							Object_Removed_From_Scene(PhysClass * observed_obj)	{ };
-	virtual void							Object_Shattered_Something(PhysClass * observed_obj, PhysClass * shattered_obj, int surface_type) { };
+  virtual CollisionReactionType Collision_Occurred(const CollisionEventClass &event) {
+    return COLLISION_REACTION_DEFAULT;
+  }
+  virtual ExpirationReactionType Object_Expired(PhysClass *observed_obj) { return EXPIRATION_APPROVED; }
+  virtual void Object_Removed_From_Scene(PhysClass *observed_obj) {};
+  virtual void Object_Shattered_Something(PhysClass *observed_obj, PhysClass *shattered_obj, int surface_type) {};
 };
 
-
-#endif	// PHYSOBSERVER_H
+#endif // PHYSOBSERVER_H

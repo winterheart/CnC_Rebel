@@ -28,39 +28,36 @@
 /////////////////////////////////////////////////////////////////////////////
 // ParameterSheetClass view
 
-class ParameterSheetClass : public CScrollView
-{
+class ParameterSheetClass : public CScrollView {
 protected:
-	ParameterSheetClass();           // protected constructor used by dynamic creation
-	DECLARE_DYNCREATE(ParameterSheetClass)
+  ParameterSheetClass(); // protected constructor used by dynamic creation
+  DECLARE_DYNCREATE(ParameterSheetClass)
 
-// Attributes
+  // Attributes
 public:
-
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(ParameterSheetClass)
-	protected:
-	virtual void OnDraw(CDC* pDC);      // overridden to draw this view
-	virtual void OnInitialUpdate();     // first time after construct
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(ParameterSheetClass)
 protected:
-	virtual ~ParameterSheetClass();
+  virtual void OnDraw(CDC *pDC);  // overridden to draw this view
+  virtual void OnInitialUpdate(); // first time after construct
+                                  //}}AFX_VIRTUAL
+
+  // Implementation
+protected:
+  virtual ~ParameterSheetClass();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(ParameterSheetClass)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(ParameterSheetClass)
+  // NOTE - the ClassWizard will add and remove member functions here.
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

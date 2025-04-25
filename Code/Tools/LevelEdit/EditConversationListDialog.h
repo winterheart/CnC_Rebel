@@ -25,7 +25,6 @@
 
 #include "resource.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //	 Forward declarations
 /////////////////////////////////////////////////////////////////////////////
@@ -36,53 +35,48 @@ class ConversationClass;
 // EditConversationListDialogClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class EditConversationListDialogClass : public CDialog
-{
-// Construction
+class EditConversationListDialogClass : public CDialog {
+  // Construction
 public:
-	EditConversationListDialogClass(CWnd* pParent = NULL);   // standard constructor
+  EditConversationListDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(EditConversationListDialogClass)
-	enum { IDD = IDD_CONVERSATION_LIST };
-	CListCtrl	m_ListCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(EditConversationListDialogClass)
+  enum { IDD = IDD_CONVERSATION_LIST };
+  CListCtrl m_ListCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(EditConversationListDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(EditConversationListDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(EditConversationListDialogClass)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnAdd();
-	virtual void OnOK();
-	afx_msg void OnDblclkConversationList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDeleteitemConversationList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnKeydownConversationList(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(EditConversationListDialogClass)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnAdd();
+  virtual void OnOK();
+  afx_msg void OnDblclkConversationList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDeleteitemConversationList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnKeydownConversationList(NMHDR *pNMHDR, LRESULT *pResult);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////////////////////
 
 protected:
-
-	/////////////////////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////////////////////
-	void				Add_Conversation (ConversationClass *conversation);
-	void				Update_Conversation (int sel_index);
+  /////////////////////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////////////////////
+  void Add_Conversation(ConversationClass *conversation);
+  void Update_Conversation(int sel_index);
 };
 
 //{{AFX_INSERT_LOCATION}}

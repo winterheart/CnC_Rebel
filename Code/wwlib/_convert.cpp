@@ -34,13 +34,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"_convert.h"
+#include "always.h"
+#include "_convert.h"
 
-ConvertClass * VoxelDrawer = NULL;
-ConvertClass * UnitDrawer = NULL;
-ConvertClass * TerrainDrawer = NULL;
-ConvertClass * AnimDrawer = NULL;
-ConvertClass * NormalDrawer = NULL;
-ConvertClass * IsometricDrawer = NULL;
-
+ConvertClass *VoxelDrawer = NULL;
+ConvertClass *UnitDrawer = NULL;
+ConvertClass *TerrainDrawer = NULL;
+ConvertClass *AnimDrawer = NULL;
+ConvertClass *NormalDrawer = NULL;
+ConvertClass *IsometricDrawer = NULL;

@@ -29,7 +29,6 @@
 #include <afxext.h>
 #endif
 
-
 #include "DockableForm.H"
 #include "resource.h"
 
@@ -37,63 +36,57 @@
 //
 //	LightAmbientFormClass
 //
-class LightAmbientFormClass : public DockableFormClass
-{
-	public:
-		LightAmbientFormClass (void);
-		virtual ~LightAmbientFormClass (void);
-
-// Form Data
+class LightAmbientFormClass : public DockableFormClass {
 public:
-	//{{AFX_DATA(LightAmbientFormClass)
-	enum { IDD = IDD_LIGHT_AMBIENT_DIALOG };
-	//}}AFX_DATA
+  LightAmbientFormClass(void);
+  virtual ~LightAmbientFormClass(void);
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(LightAmbientFormClass)
+  enum { IDD = IDD_LIGHT_AMBIENT_DIALOG };
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(LightAmbientFormClass)
+protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(LightAmbientFormClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(LightAmbientFormClass)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(LightAmbientFormClass)
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
+public:
+  ///////////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void HandleInitDialog(void);
+  void Update_Settings(void);
 
-	public:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void			HandleInitDialog (void);
-		void			Update_Settings (void);
-
-	private:
-
-		///////////////////////////////////////////////////////
-		//
-		//	Private member data
-		//
-		int	m_InitialRed;
-		int	m_InitialGreen;
-		int	m_InitialBlue;
-		HWND	m_ColorForm;
+private:
+  ///////////////////////////////////////////////////////
+  //
+  //	Private member data
+  //
+  int m_InitialRed;
+  int m_InitialGreen;
+  int m_InitialBlue;
+  HWND m_ColorForm;
 };
 
 /////////////////////////////////////////////////////////////////////////////

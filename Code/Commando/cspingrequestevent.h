@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/cspingrequestevent.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 10/03/01 11:08a                                             $* 
- *                                                                                             * 
- *                    $Revision:: 1                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/cspingrequestevent.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 10/03/01 11:08a                                             $*
+ *                                                                                             *
+ *                    $Revision:: 1                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __CSPINGREQUESTEVENT_H__
@@ -44,26 +44,24 @@
 //
 // A C->S ping request event
 //
-class	cCsPingRequestEvent : public cNetEvent
-{
+class cCsPingRequestEvent : public cNetEvent {
 public:
-   cCsPingRequestEvent(void);
+  cCsPingRequestEvent(void);
 
-	void						Init(int ping_number);
+  void Init(int ping_number);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
 
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_CSPINGREQUESTEVENT;}
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_CSPINGREQUESTEVENT; }
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						SenderId;
-	int						PingNumber;
+  int SenderId;
+  int PingNumber;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __CSPINGREQUESTEVENT_H__
+#endif // __CSPINGREQUESTEVENT_H__

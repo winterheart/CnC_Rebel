@@ -42,15 +42,12 @@
  *	  VisSectorStatsClass::Get_Name -- Returns the name of the model this vis sector contains	  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "vissectorstats.h"
 #include "pscene.h"
 #include "vistable.h"
 #include "staticphys.h"
 #include "statistics.h"
 #include "matinfo.h"
-
-
 
 /***********************************************************************************************
  * Count_Textures -- counts textures used by the given object                                  *
@@ -64,39 +61,36 @@
  * HISTORY:                                                                                    *
  *   6/6/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-static void Count_Textures(RenderObjClass * obj)
-{
-	if (obj == NULL) {
-		return;
-	}
+static void Count_Textures(RenderObjClass *obj) {
+  if (obj == NULL) {
+    return;
+  }
 
-	/*
-	** Count the textures for the sub objects
-	*/
-	for (int i=0; i<obj->Get_Num_Sub_Objects(); i++) {
-		RenderObjClass * subobj = obj->Get_Sub_Object(i);
-		Count_Textures(subobj);
-		REF_PTR_RELEASE(subobj);
-	}
-	
-	/*
-	** Count the textures for this object
-	*/
-	MaterialInfoClass * matinfo = obj->Get_Material_Info();
-	if (matinfo != NULL) {
-		for (int ti=0; ti<matinfo->Texture_Count(); ti++) {
-			Debug_Statistics::Record_Texture(matinfo->Peek_Texture(ti));
-		}
-	}
+  /*
+  ** Count the textures for the sub objects
+  */
+  for (int i = 0; i < obj->Get_Num_Sub_Objects(); i++) {
+    RenderObjClass *subobj = obj->Get_Sub_Object(i);
+    Count_Textures(subobj);
+    REF_PTR_RELEASE(subobj);
+  }
+
+  /*
+  ** Count the textures for this object
+  */
+  MaterialInfoClass *matinfo = obj->Get_Material_Info();
+  if (matinfo != NULL) {
+    for (int ti = 0; ti < matinfo->Texture_Count(); ti++) {
+      Debug_Statistics::Record_Texture(matinfo->Peek_Texture(ti));
+    }
+  }
 }
-
 
 /*********************************************************************************************
 **
 ** VisSectorStatsClass Implementation
 **
-*********************************************************************************************/			
-
+*********************************************************************************************/
 
 /***********************************************************************************************
  * VisSectorStatsClass::VisSectorStatsClass -- Constructor                                     *
@@ -110,16 +104,8 @@ static void Count_Textures(RenderObjClass * obj)
  * HISTORY:                                                                                    *
  *   6/6/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-VisSectorStatsClass::VisSectorStatsClass(void) :
-	VisId(-1),
-	PolygonCount(0),
-	TextureCount(0),
-	TextureBytes(0),
-	CenterPoint(0,0,0),
-	PhysObj(NULL)
-{
-}
-
+VisSectorStatsClass::VisSectorStatsClass(void)
+    : VisId(-1), PolygonCount(0), TextureCount(0), TextureBytes(0), CenterPoint(0, 0, 0), PhysObj(NULL) {}
 
 /***********************************************************************************************
  * VisSectorStatsClass::VisSectorStatsClass -- Constructor                                     *
@@ -133,17 +119,10 @@ VisSectorStatsClass::VisSectorStatsClass(void) :
  * HISTORY:                                                                                    *
  *   6/6/2000   pds : Created.                                                                 *
  *=============================================================================================*/
-VisSectorStatsClass::VisSectorStatsClass(const VisSectorStatsClass &src) :
-	VisId(-1),
-	PolygonCount(0),
-	TextureCount(0),
-	TextureBytes(0),
-	CenterPoint(0,0,0),
-	PhysObj(NULL)
-{
-	(*this) = src;
+VisSectorStatsClass::VisSectorStatsClass(const VisSectorStatsClass &src)
+    : VisId(-1), PolygonCount(0), TextureCount(0), TextureBytes(0), CenterPoint(0, 0, 0), PhysObj(NULL) {
+  (*this) = src;
 }
-
 
 /***********************************************************************************************
  * VisSectorStatsClass::~VisSectorStatsClass -- Destructor                                     *
@@ -156,11 +135,7 @@ VisSectorStatsClass::VisSectorStatsClass(const VisSectorStatsClass &src) :
  *                                                                                             *
  * HISTORY:                                                                                    *
  *=============================================================================================*/
-VisSectorStatsClass::~VisSectorStatsClass(void)
-{
-	REF_PTR_RELEASE(PhysObj);
-}
-
+VisSectorStatsClass::~VisSectorStatsClass(void) { REF_PTR_RELEASE(PhysObj); }
 
 /***********************************************************************************************
  * VisSectorStatsClass::Compute_Stats -- Initializes the statistics for the given object       *
@@ -174,58 +149,55 @@ VisSectorStatsClass::~VisSectorStatsClass(void)
  * HISTORY:                                                                                    *
  *   6/6/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void VisSectorStatsClass::Compute_Stats(StaticPhysClass * obj,VisTableClass * vistable)
-{
-	/*
-	** Save the vis id and a point above the center of the object
-	*/
-	VisId = obj->Get_Vis_Object_ID();
-	CenterPoint = obj->Get_Cull_Box().Center + Vector3(0.0f,0.0f,2.0f);
+void VisSectorStatsClass::Compute_Stats(StaticPhysClass *obj, VisTableClass *vistable) {
+  /*
+  ** Save the vis id and a point above the center of the object
+  */
+  VisId = obj->Get_Vis_Object_ID();
+  CenterPoint = obj->Get_Cull_Box().Center + Vector3(0.0f, 0.0f, 2.0f);
 
-	/*
-	** Reset the texture statistics tracker
-	*/
-	PolygonCount = 0;
-	TextureCount = 0;
-	TextureBytes = 0;
+  /*
+  ** Reset the texture statistics tracker
+  */
+  PolygonCount = 0;
+  TextureCount = 0;
+  TextureBytes = 0;
 
-	if (vistable != NULL) {
-		Debug_Statistics::Begin_Statistics();
-		Debug_Statistics::Record_Texture_Mode(Debug_Statistics::RECORD_TEXTURE_DETAILS);
+  if (vistable != NULL) {
+    Debug_Statistics::Begin_Statistics();
+    Debug_Statistics::Record_Texture_Mode(Debug_Statistics::RECORD_TEXTURE_DETAILS);
 
-		/*
-		** Walk through every static object in the level, adding its resources
-		** to our stats if it is visible from this sector
-		*/
-		RefPhysListIterator it = PhysicsSceneClass::Get_Instance()->Get_Static_Object_Iterator();
-		for (it.First(); !it.Is_Done(); it.Next()) {
-			
-			StaticPhysClass * obj = it.Peek_Obj()->As_StaticPhysClass();
-			if (obj && vistable->Get_Bit(obj->Get_Vis_Object_ID())) {
+    /*
+    ** Walk through every static object in the level, adding its resources
+    ** to our stats if it is visible from this sector
+    */
+    RefPhysListIterator it = PhysicsSceneClass::Get_Instance()->Get_Static_Object_Iterator();
+    for (it.First(); !it.Is_Done(); it.Next()) {
 
-				PolygonCount += obj->Peek_Model()->Get_Num_Polys();
+      StaticPhysClass *obj = it.Peek_Obj()->As_StaticPhysClass();
+      if (obj && vistable->Get_Bit(obj->Get_Vis_Object_ID())) {
 
-				Count_Textures(obj->Peek_Model());
+        PolygonCount += obj->Peek_Model()->Get_Num_Polys();
 
-			}
-		}
+        Count_Textures(obj->Peek_Model());
+      }
+    }
 
-		/*
-		** Finish the texture statistics
-		*/
-		Debug_Statistics::Record_Texture_Mode(Debug_Statistics::RECORD_TEXTURE_NONE);
-		Debug_Statistics::End_Statistics();
+    /*
+    ** Finish the texture statistics
+    */
+    Debug_Statistics::Record_Texture_Mode(Debug_Statistics::RECORD_TEXTURE_NONE);
+    Debug_Statistics::End_Statistics();
 
-		TextureCount = Debug_Statistics::Get_Record_Texture_Count();
-		TextureBytes = Debug_Statistics::Get_Record_Texture_Size();
-	}
+    TextureCount = Debug_Statistics::Get_Record_Texture_Count();
+    TextureBytes = Debug_Statistics::Get_Record_Texture_Size();
+  }
 
-	/*
-	** Save a reference to the physics object
-	*/
-	REF_PTR_SET (PhysObj, obj);
+  /*
+  ** Save a reference to the physics object
+  */
+  REF_PTR_SET(PhysObj, obj);
 }
-
 
 /***********************************************************************************************
  * VisSectorStatsClass::operator= -- Safely copies the member data from the source object.	  *
@@ -239,17 +211,15 @@ void VisSectorStatsClass::Compute_Stats(StaticPhysClass * obj,VisTableClass * vi
  * HISTORY:                                                                                    *
  *   6/6/2000   pds : Created.                                                                 *
  *=============================================================================================*/
-const VisSectorStatsClass &VisSectorStatsClass::operator= (const VisSectorStatsClass &src)
-{
-	VisId				= src.VisId;
-	PolygonCount	= src.PolygonCount;
-	TextureCount	= src.TextureCount;
-	TextureBytes	= src.TextureBytes;
-	CenterPoint		= src.CenterPoint;
-	REF_PTR_SET (PhysObj, src.PhysObj);
-	return (*this);
+const VisSectorStatsClass &VisSectorStatsClass::operator=(const VisSectorStatsClass &src) {
+  VisId = src.VisId;
+  PolygonCount = src.PolygonCount;
+  TextureCount = src.TextureCount;
+  TextureBytes = src.TextureBytes;
+  CenterPoint = src.CenterPoint;
+  REF_PTR_SET(PhysObj, src.PhysObj);
+  return (*this);
 }
-
 
 /***********************************************************************************************
  * VisSectorStatsClass::Get_Name -- Returns the name of the model this vis sector contains	  *
@@ -263,14 +233,12 @@ const VisSectorStatsClass &VisSectorStatsClass::operator= (const VisSectorStatsC
  * HISTORY:                                                                                    *
  *   6/6/2000   pds : Created.                                                                 *
  *=============================================================================================*/
-const char *VisSectorStatsClass::Get_Name(void)
-{
-	const char *name = NULL;
+const char *VisSectorStatsClass::Get_Name(void) {
+  const char *name = NULL;
 
-	if (PhysObj != NULL && PhysObj->Peek_Model () != NULL) {
-		name = PhysObj->Peek_Model ()->Get_Name ();
-	}
+  if (PhysObj != NULL && PhysObj->Peek_Model() != NULL) {
+    name = PhysObj->Peek_Model()->Get_Name();
+  }
 
-	return name;
+  return name;
 }
-

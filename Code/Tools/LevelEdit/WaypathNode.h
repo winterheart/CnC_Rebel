@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -50,7 +49,6 @@
 #include "waypointnode.h"
 #include "waypath.h"
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 ////////////////////////////////////////////////////////////////////////////
@@ -58,171 +56,155 @@ class PresetClass;
 class SegmentedLineClass;
 class WaypathClass;
 
-
 ////////////////////////////////////////////////////////////////////////////
 //
 //	WaypathNodeClass
 //
 ////////////////////////////////////////////////////////////////////////////
-class WaypathNodeClass : public NodeClass
-{
+class WaypathNodeClass : public NodeClass {
 public:
-	
-	//////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	//////////////////////////////////////////////////////////////////
-	WaypathNodeClass (PresetClass *preset = NULL);
-	WaypathNodeClass (const WaypathNodeClass &src);
-	~WaypathNodeClass (void);
+  //////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  //////////////////////////////////////////////////////////////////
+  WaypathNodeClass(PresetClass *preset = NULL);
+  WaypathNodeClass(const WaypathNodeClass &src);
+  ~WaypathNodeClass(void);
 
-	//////////////////////////////////////////////////////////////
-	//	Public operators
-	//////////////////////////////////////////////////////////////
-	const WaypathNodeClass &operator= (const WaypathNodeClass &src);
+  //////////////////////////////////////////////////////////////
+  //	Public operators
+  //////////////////////////////////////////////////////////////
+  const WaypathNodeClass &operator=(const WaypathNodeClass &src);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public methods
-	//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //	Public methods
+  //////////////////////////////////////////////////////////////////
 
-	//
-	// From PersistClass
-	//
-	const PersistFactoryClass &	Get_Factory (void) const;
-	void									On_Post_Load (void);
+  //
+  // From PersistClass
+  //
+  const PersistFactoryClass &Get_Factory(void) const;
+  void On_Post_Load(void);
 
-	//
-	//	RTTI
-	//
-	WaypathNodeClass *As_WaypathNodeClass (void)		{ return this; }
-	
-	//
-	// From NodeClass
-	//
-	void			Initialize (void);
-	NodeClass *	Clone (void)								{ return new WaypathNodeClass (*this); }
-	NODE_TYPE	Get_Type (void) const					{ return NODE_TYPE_WAYPATH; }
-	int			Get_Icon_Index (void) const			{ return WAYPATH_ICON; }
-	PhysClass *	Peek_Physics_Obj (void)	const			{ return m_PhysObj; }
-	bool			Is_Static (void) const					{ return false; }
-	bool			Show_Settings_Dialog (void);
-	bool			Can_Be_Rotated_Freely (void) const	{ return true; }
-	void			Set_Transform (const Matrix3D &tm);
-	void			Add_To_Scene (void);
-	void			Remove_From_Scene (void);
-	void			Hide (bool hide);
-	void			On_Delete (void);
-	void			On_Restore (void);
+  //
+  //	RTTI
+  //
+  WaypathNodeClass *As_WaypathNodeClass(void) { return this; }
 
-	int			Get_Sub_Node_Count (void) const		{ return Get_Point_Count (); }
-	NodeClass *	Get_Sub_Node (int index)				{ return m_PointList[index]; }
+  //
+  // From NodeClass
+  //
+  void Initialize(void);
+  NodeClass *Clone(void) { return new WaypathNodeClass(*this); }
+  NODE_TYPE Get_Type(void) const { return NODE_TYPE_WAYPATH; }
+  int Get_Icon_Index(void) const { return WAYPATH_ICON; }
+  PhysClass *Peek_Physics_Obj(void) const { return m_PhysObj; }
+  bool Is_Static(void) const { return false; }
+  bool Show_Settings_Dialog(void);
+  bool Can_Be_Rotated_Freely(void) const { return true; }
+  void Set_Transform(const Matrix3D &tm);
+  void Add_To_Scene(void);
+  void Remove_From_Scene(void);
+  void Hide(bool hide);
+  void On_Delete(void);
+  void On_Restore(void);
 
-	//
-	//	Export methods
-	//
-	void			Pre_Export (void);
-	void			Post_Export (void);
+  int Get_Sub_Node_Count(void) const { return Get_Point_Count(); }
+  NodeClass *Get_Sub_Node(int index) { return m_PointList[index]; }
 
-	//	From PersistClass
-	bool			Save (ChunkSaveClass &csave);
-	bool			Load (ChunkLoadClass &cload);
+  //
+  //	Export methods
+  //
+  void Pre_Export(void);
+  void Post_Export(void);
 
-	//
-	// WaypathNodeClass specific
-	//
-	int			Add_Point (const Vector3 &point);
-	void			Insert_Point (int index, const Vector3 &point);
-	void			Delete_Point (int index);
-	int			Find_Index (WaypointNodeClass *waypoint);
-	void			On_Point_Moved (int index, const Vector3 &new_pos);
-	int			Get_Point_Count (void) const;
-	void			Get_Point (int index, Vector3 &point);
-	void			Get_Point (int index, WaypointNodeClass **waypoint);
-	void			Update_Line (void);
-	
-	void			Set_Flags (int flags);
-	void			Set_Flag (int flag, bool onoff);
-	bool			Get_Flag (int flag);
+  //	From PersistClass
+  bool Save(ChunkSaveClass &csave);
+  bool Load(ChunkLoadClass &cload);
 
+  //
+  // WaypathNodeClass specific
+  //
+  int Add_Point(const Vector3 &point);
+  void Insert_Point(int index, const Vector3 &point);
+  void Delete_Point(int index);
+  int Find_Index(WaypointNodeClass *waypoint);
+  void On_Point_Moved(int index, const Vector3 &new_pos);
+  int Get_Point_Count(void) const;
+  void Get_Point(int index, Vector3 &point);
+  void Get_Point(int index, WaypointNodeClass **waypoint);
+  void Update_Line(void);
 
-	//////////////////////////////////////////////////////////////////
-	//	Public flags
-	//////////////////////////////////////////////////////////////////	
-	typedef enum
-	{
-		FLAG_TWO_WAY			= WaypathClass::FLAG_TWO_WAY,
-		FLAG_LOOPING			= WaypathClass::FLAG_LOOPING,
-		FLAG_HUMAN				= WaypathClass::FLAG_HUMAN,
-		FLAG_GROUND_VEHICLE	= WaypathClass::FLAG_GROUND_VEHICLE,
-		FLAG_FLYING_VEHICLE	= WaypathClass::FLAG_FLYING_VEHICLE,
-		FLAG_INNATE_PATHFIND	= WaypathClass::FLAG_INNATE_PATHFIND
+  void Set_Flags(int flags);
+  void Set_Flag(int flag, bool onoff);
+  bool Get_Flag(int flag);
 
-	} FLAGS;
+  //////////////////////////////////////////////////////////////////
+  //	Public flags
+  //////////////////////////////////////////////////////////////////
+  typedef enum {
+    FLAG_TWO_WAY = WaypathClass::FLAG_TWO_WAY,
+    FLAG_LOOPING = WaypathClass::FLAG_LOOPING,
+    FLAG_HUMAN = WaypathClass::FLAG_HUMAN,
+    FLAG_GROUND_VEHICLE = WaypathClass::FLAG_GROUND_VEHICLE,
+    FLAG_FLYING_VEHICLE = WaypathClass::FLAG_FLYING_VEHICLE,
+    FLAG_INNATE_PATHFIND = WaypathClass::FLAG_INNATE_PATHFIND
+
+  } FLAGS;
 
 protected:
+  //////////////////////////////////////////////////////////////////
+  //	Protected methods
+  //////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected methods
-	//////////////////////////////////////////////////////////////////
-	
-	//
-	//	Save/load methods
-	//
-	bool						Load_Variables (ChunkLoadClass &cload);
+  //
+  //	Save/load methods
+  //
+  bool Load_Variables(ChunkLoadClass &cload);
 
-	//
-	//	Misc utility methods
-	//
-	void						Free_Waypoints (void);
-	SegmentedLineClass *	Peek_Line (void);	
-	WaypointNodeClass *	Create_Waypoint (const Vector3 &point);
+  //
+  //	Misc utility methods
+  //
+  void Free_Waypoints(void);
+  SegmentedLineClass *Peek_Line(void);
+  WaypointNodeClass *Create_Waypoint(const Vector3 &point);
 
-	//////////////////////////////////////////////////////////////////
-	//	Protected member data
-	//////////////////////////////////////////////////////////////////
-	DecorationPhysClass *							m_PhysObj;
-	DynamicVectorClass<WaypointNodeClass *>	m_PointList;
-	int													m_Flags;
-	WaypathClass *										m_RuntimeWaypath;
-	bool													m_HasLoadCompleted;
+  //////////////////////////////////////////////////////////////////
+  //	Protected member data
+  //////////////////////////////////////////////////////////////////
+  DecorationPhysClass *m_PhysObj;
+  DynamicVectorClass<WaypointNodeClass *> m_PointList;
+  int m_Flags;
+  WaypathClass *m_RuntimeWaypath;
+  bool m_HasLoadCompleted;
 
-	DynamicVectorClass<WaypointNodeClass *>	m_OldStylePointList;
+  DynamicVectorClass<WaypointNodeClass *> m_OldStylePointList;
 };
-
 
 //////////////////////////////////////////////////////////////////
 //	Get_Point_Count
 //////////////////////////////////////////////////////////////////
-inline int
-WaypathNodeClass::Get_Point_Count (void) const
-{
-	return m_PointList.Count ();
+inline int WaypathNodeClass::Get_Point_Count(void) const { return m_PointList.Count(); }
+
+//////////////////////////////////////////////////////////////////
+//	Get_Point
+//////////////////////////////////////////////////////////////////
+inline void WaypathNodeClass::Get_Point(int index, Vector3 &point) {
+  if (index >= 0 && index < m_PointList.Count()) {
+    point = m_PointList[index]->Get_Position();
+  }
+
+  return;
 }
 
 //////////////////////////////////////////////////////////////////
 //	Get_Point
 //////////////////////////////////////////////////////////////////
-inline void
-WaypathNodeClass::Get_Point (int index, Vector3 &point)
-{
-	if (index >= 0 && index < m_PointList.Count ()) {
-		point = m_PointList[index]->Get_Position ();
-	}
+inline void WaypathNodeClass::Get_Point(int index, WaypointNodeClass **waypoint) {
+  if (index >= 0 && index < m_PointList.Count()) {
+    (*waypoint) = m_PointList[index];
+  }
 
-	return ;
-}
-
-//////////////////////////////////////////////////////////////////
-//	Get_Point
-//////////////////////////////////////////////////////////////////
-inline void
-WaypathNodeClass::Get_Point (int index, WaypointNodeClass **waypoint)
-{
-	if (index >= 0 && index < m_PointList.Count ()) {
-		(*waypoint) = m_PointList[index];
-	}
-
-	return ;
+  return;
 }
 
 #endif //__WAYPATH_NODE_H
-

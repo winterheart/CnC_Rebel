@@ -17,294 +17,248 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLChatMsg.cpp $
-*
-* DESCRIPTION
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 7 $
-*     $Modtime: 10/23/01 10:36a $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLChatMsg.cpp $
+ *
+ * DESCRIPTION
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 7 $
+ *     $Modtime: 10/23/01 10:36a $
+ *
+ ******************************************************************************/
 
 #include "WOLChatMsg.h"
 #include <WOLAPI\ChatDefs.h>
 
-namespace WOL
-{
+namespace WOL {
 #include <WOLAPI\wolapi.h>
 }
 
 namespace WWOnline {
 
 /******************************************************************************
-*
-* NAME
-*     ChatMessage::ChatMessage
-*
-* DESCRIPTION
-*     Constructor (ANSI)
-*
-* INPUTS
-*     Sender  - Name of message sender
-*     Message - Message to send
-*     Private - Flag indicating if message is private.
-*     Action  - Flag indicating if message in an action.
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *     ChatMessage::ChatMessage
+ *
+ * DESCRIPTION
+ *     Constructor (ANSI)
+ *
+ * INPUTS
+ *     Sender  - Name of message sender
+ *     Message - Message to send
+ *     Private - Flag indicating if message is private.
+ *     Action  - Flag indicating if message in an action.
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-ChatMessage::ChatMessage(const WOL::User* sender, const char* message, bool isPrivate, bool isAction) :
-		mMessage(message),
-		mIsPrivate(isPrivate),
-		mIsAction(isAction),
-		mSenderFlags(0),
-		mSenderClanID(0)
-	{
-	if (sender)
-		{
-		mSenderName = (const char*)sender->name;
-		mSenderFlags = sender->flags;
-		mSenderClanID = sender->squadID;
-		}
-	}
-
+ChatMessage::ChatMessage(const WOL::User *sender, const char *message, bool isPrivate, bool isAction)
+    : mMessage(message), mIsPrivate(isPrivate), mIsAction(isAction), mSenderFlags(0), mSenderClanID(0) {
+  if (sender) {
+    mSenderName = (const char *)sender->name;
+    mSenderFlags = sender->flags;
+    mSenderClanID = sender->squadID;
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     ChatMessage::ChatMessage
-*
-* DESCRIPTION
-*     Constructor (Unicode)
-*
-* INPUTS
-*     Sender  - Name of message sender
-*     Message - Message to send
-*     Private - Flag indicating if message is private.
-*     Action  - Flag indicating if message in an action.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     ChatMessage::ChatMessage
+ *
+ * DESCRIPTION
+ *     Constructor (Unicode)
+ *
+ * INPUTS
+ *     Sender  - Name of message sender
+ *     Message - Message to send
+ *     Private - Flag indicating if message is private.
+ *     Action  - Flag indicating if message in an action.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-ChatMessage::ChatMessage(const WOL::User* sender, const wchar_t* message, bool isPrivate, bool isAction) :
-		mMessage(message),
-		mIsPrivate(isPrivate),
-		mIsAction(isAction),
-		mSenderFlags(0),
-		mSenderClanID(0)
-	{
-	if (sender)
-		{
-		mSenderName = (const char*)sender->name;
-		mSenderFlags = sender->flags;
-		mSenderClanID = sender->squadID;
-		}
-	}
-
+ChatMessage::ChatMessage(const WOL::User *sender, const wchar_t *message, bool isPrivate, bool isAction)
+    : mMessage(message), mIsPrivate(isPrivate), mIsAction(isAction), mSenderFlags(0), mSenderClanID(0) {
+  if (sender) {
+    mSenderName = (const char *)sender->name;
+    mSenderFlags = sender->flags;
+    mSenderClanID = sender->squadID;
+  }
+}
 
 /******************************************************************************
-*
-* NAME
-*     ChatMessage::ChatMessage
-*
-* DESCRIPTION
-*     Constructor (Unicode)
-*
-* INPUTS
-*     Sender  - Name of message sender
-*     Message - Message to send
-*     Private - Flag indicating if message is private.
-*     Action  - Flag indicating if message in an action.
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     ChatMessage::ChatMessage
+ *
+ * DESCRIPTION
+ *     Constructor (Unicode)
+ *
+ * INPUTS
+ *     Sender  - Name of message sender
+ *     Message - Message to send
+ *     Private - Flag indicating if message is private.
+ *     Action  - Flag indicating if message in an action.
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-ChatMessage::ChatMessage(const wchar_t* sender, const wchar_t* message, bool isPrivate, bool isAction) :
-		mSenderName(sender),
-		mMessage(message),
-		mIsPrivate(isPrivate),
-		mIsAction(isAction),
-		mSenderFlags(CHAT_USER_MYSELF),
-		mSenderClanID(0)
-	{
-	}
-
+ChatMessage::ChatMessage(const wchar_t *sender, const wchar_t *message, bool isPrivate, bool isAction)
+    : mSenderName(sender), mMessage(message), mIsPrivate(isPrivate), mIsAction(isAction),
+      mSenderFlags(CHAT_USER_MYSELF), mSenderClanID(0) {}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-ChatMessage::ChatMessage(const ChatMessage& chat)
-	{
-	*this = chat;
-	}
-
+ChatMessage::ChatMessage(const ChatMessage &chat) { *this = chat; }
 
 /******************************************************************************
-*
-* NAME
-*     ChatMessage::~ChatMessage
-*
-* DESCRIPTION
-*     Destructor
-*
-* INPUTS
-*     NONE
-*
-* RESULT
-*     NONE
-*
-******************************************************************************/
+ *
+ * NAME
+ *     ChatMessage::~ChatMessage
+ *
+ * DESCRIPTION
+ *     Destructor
+ *
+ * INPUTS
+ *     NONE
+ *
+ * RESULT
+ *     NONE
+ *
+ ******************************************************************************/
 
-ChatMessage::~ChatMessage()
-	{
-	}
-
+ChatMessage::~ChatMessage() {}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-const ChatMessage& ChatMessage::operator=(const ChatMessage& chat)
-	{
-	mSenderName = chat.mSenderName;
-	mMessage = chat.mMessage;
-	mIsPrivate = chat.mIsPrivate;
-	mIsAction = chat.mIsAction;
-	mSenderFlags = chat.mSenderFlags;
-	mSenderClanID = chat.mSenderClanID;
-	return (*this);
-	}
-
+const ChatMessage &ChatMessage::operator=(const ChatMessage &chat) {
+  mSenderName = chat.mSenderName;
+  mMessage = chat.mMessage;
+  mIsPrivate = chat.mIsPrivate;
+  mIsAction = chat.mIsAction;
+  mSenderFlags = chat.mSenderFlags;
+  mSenderClanID = chat.mSenderClanID;
+  return (*this);
+}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool ChatMessage::IsSenderMyself(void) const
-	{
-	return ((mSenderFlags & CHAT_USER_MYSELF) == CHAT_USER_MYSELF);
-	}
-
+bool ChatMessage::IsSenderMyself(void) const { return ((mSenderFlags & CHAT_USER_MYSELF) == CHAT_USER_MYSELF); }
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool ChatMessage::IsSenderChannelOwner(void) const
-	{
-	return ((mSenderFlags & CHAT_USER_CHANNELOWNER) == CHAT_USER_CHANNELOWNER);
-	}
-
+bool ChatMessage::IsSenderChannelOwner(void) const {
+  return ((mSenderFlags & CHAT_USER_CHANNELOWNER) == CHAT_USER_CHANNELOWNER);
+}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool ChatMessage::IsSenderSquelched(void) const
-	{
-	return ((mSenderFlags & CHAT_USER_SQUELCHED) == CHAT_USER_SQUELCHED);
-	}
-
+bool ChatMessage::IsSenderSquelched(void) const {
+  return ((mSenderFlags & CHAT_USER_SQUELCHED) == CHAT_USER_SQUELCHED);
+}
 
 /******************************************************************************
-*
-* NAME
-*
-* DESCRIPTION
-*
-* INPUTS
-*
-* RESULT
-*
-******************************************************************************/
+ *
+ * NAME
+ *
+ * DESCRIPTION
+ *
+ * INPUTS
+ *
+ * RESULT
+ *
+ ******************************************************************************/
 
-bool ChatMessage::IsSenderInClan(unsigned long clanID) const
-	{
-	return (mSenderClanID == clanID);
-	}
-
+bool ChatMessage::IsSenderInClan(unsigned long clanID) const { return (mSenderClanID == clanID); }
 
 /******************************************************************************
-*
-* NAME
-*     InAnsiText
-*
-* DESCRIPTION
-*     Test if a Unicode string is within ANSI range.
-*
-* INPUTS
-*     Text - Unicode text to check.
-*
-* RESULT
-*     True if entire string is within ANSI range.
-*
-******************************************************************************/
+ *
+ * NAME
+ *     InAnsiText
+ *
+ * DESCRIPTION
+ *     Test if a Unicode string is within ANSI range.
+ *
+ * INPUTS
+ *     Text - Unicode text to check.
+ *
+ * RESULT
+ *     True if entire string is within ANSI range.
+ *
+ ******************************************************************************/
 
-bool IsAnsiText(const wchar_t* text)
-	{
-	for (int index = 0; text[index] != 0; index ++)
-		{
-		unsigned short value = text[index];
+bool IsAnsiText(const wchar_t *text) {
+  for (int index = 0; text[index] != 0; index++) {
+    unsigned short value = text[index];
 
-		if (value > 255)
-			{
-			return false;
-			}
-		}
+    if (value > 255) {
+      return false;
+    }
+  }
 
-	return true;
-	}
+  return true;
+}
 
 } // namespace WWOnline

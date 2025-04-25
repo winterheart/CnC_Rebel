@@ -17,40 +17,39 @@
 */
 
 /******************************************************************************
-*
-* FILE
-*     $Archive: /Commando/Code/WWOnline/WOLLangCodes.h $
-*
-* DESCRIPTION
-*      Westwood Online Product Language Codes.
-*
-* PROGRAMMER
-*     $Author: Denzil_l $
-*
-* VERSION INFO
-*     $Revision: 1 $
-*     $Modtime: 2/06/02 2:53p $
-*
-******************************************************************************/
+ *
+ * FILE
+ *     $Archive: /Commando/Code/WWOnline/WOLLangCodes.h $
+ *
+ * DESCRIPTION
+ *      Westwood Online Product Language Codes.
+ *
+ * PROGRAMMER
+ *     $Author: Denzil_l $
+ *
+ * VERSION INFO
+ *     $Revision: 1 $
+ *     $Modtime: 2/06/02 2:53p $
+ *
+ ******************************************************************************/
 
 #ifndef __WOLLANGCODE_H__
 #define __WOLLANGCODE_H__
 
 namespace WWOnline {
 
-typedef enum
-{
-	LANGCODE_USA = 0,
-	LANGCODE_UK,
-	LANGCODE_GERMAN,
-	LANGCODE_FRENCH,
-	LANGCODE_DUTCH,
-	LANGCODE_ITALIAN,
-	LANGCODE_JAPANESE,
-	LANGCODE_SPANISH,
-	LANGCODE_SCANDINAVIAN,
-	LANGCODE_KOREAN,
-	LANGCODE_CHINESE
+typedef enum {
+  LANGCODE_USA = 0,
+  LANGCODE_UK,
+  LANGCODE_GERMAN,
+  LANGCODE_FRENCH,
+  LANGCODE_DUTCH,
+  LANGCODE_ITALIAN,
+  LANGCODE_JAPANESE,
+  LANGCODE_SPANISH,
+  LANGCODE_SCANDINAVIAN,
+  LANGCODE_KOREAN,
+  LANGCODE_CHINESE
 } LANGCODE;
 
 }

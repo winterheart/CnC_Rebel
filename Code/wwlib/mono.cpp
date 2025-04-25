@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /G/wwlib/mono.cpp                                           $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /G/wwlib/mono.cpp                                           $*
+ *                                                                                             *
  *                      $Author:: Neal_k                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 10/04/99 10:25a                                             $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  *   MonoClass::Clear -- Clears the monochrome screen object.                                  *
  *   MonoClass::Draw_Box -- Draws a box using the IBM linedraw characters.                     *
  *   MonoClass::Fill_Attrib -- Fill a block with specified attribute.                          *
@@ -56,15 +56,14 @@
  *   Mono_Text_Print -- Prints text to location specified.                                     *
  *   Mono_X -- Fetches the X cursor position for current visible mono page.                    *
  *   Mono_Y -- Fetches the Y cursor position for current mono page.                            *
- *   MonoClass::Set_Default_Attribute -- Set the default attribute for this window.            * 
+ *   MonoClass::Set_Default_Attribute -- Set the default attribute for this window.            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"always.h"
-#include	"data.h"
-#include	"mono.h"
-#include	"monodrvr.h"
-#include	<stdio.h>
-
+#include "always.h"
+#include "data.h"
+#include "mono.h"
+#include "monodrvr.h"
+#include <stdio.h>
 
 /*
 **	Global flag to indicate whether mono output is enabled. If it is not enabled,
@@ -72,12 +71,10 @@
 */
 bool MonoClass::Enabled = false;
 
-
 /*
 **	This points to the current mono displayed screen.
 */
-MonoClass * MonoClass::Current;
-
+MonoClass *MonoClass::Current;
 
 /***********************************************************************************************
  * MonoClass::MonoClass -- The default constructor for monochrome screen object.               *
@@ -95,19 +92,16 @@ MonoClass * MonoClass::Current;
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-MonoClass::MonoClass(void) :
-	Handle(INVALID_HANDLE_VALUE)
-{
+MonoClass::MonoClass(void) : Handle(INVALID_HANDLE_VALUE) {
 #ifdef _WINDOWS
-	Handle = CreateFile("\\\\.\\MONO", GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (Current == NULL) {
-		Current = this;
-	}
+  Handle = CreateFile("\\\\.\\MONO", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+  if (Current == NULL) {
+    Current = this;
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::~MonoClass -- The default destructor for a monochrome screen object.             *
@@ -122,21 +116,19 @@ MonoClass::MonoClass(void) :
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-MonoClass::~MonoClass(void)
-{
+MonoClass::~MonoClass(void) {
 #ifdef _WINDOWS
-	if (Handle != INVALID_HANDLE_VALUE)  {
-		CloseHandle(Handle);
-		Handle = INVALID_HANDLE_VALUE;
-	}
-	if (Current == this) {
-		Current = NULL;
-	}
+  if (Handle != INVALID_HANDLE_VALUE) {
+    CloseHandle(Handle);
+    Handle = INVALID_HANDLE_VALUE;
+  }
+  if (Current == this) {
+    Current = NULL;
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Pan -- Scroll the window right or left.                                          *
@@ -153,18 +145,16 @@ MonoClass::~MonoClass(void)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   06/05/1996 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Pan(int )
-{
+void MonoClass::Pan(int) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_PAN, NULL, 0, NULL, 0, &retval, 0);
-	}
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_PAN, NULL, 0, NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Sub_Window -- Partitions the mono screen into a sub-window.                      *
@@ -183,26 +173,24 @@ void MonoClass::Pan(int )
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   06/05/1996 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Sub_Window(int x, int y, int w, int h)
-{
+void MonoClass::Sub_Window(int x, int y, int w, int h) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		struct subwindow {
-			int X,Y,W,H;
-		} subwindow;
-		unsigned long retval;
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    struct subwindow {
+      int X, Y, W, H;
+    } subwindow;
+    unsigned long retval;
 
-		subwindow.X = x;
-		subwindow.Y = y;
-		subwindow.W = w;
-		subwindow.H = h;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_WINDOW, &subwindow, sizeof(subwindow), NULL, 0, &retval, 0);
-	}
+    subwindow.X = x;
+    subwindow.Y = y;
+    subwindow.W = w;
+    subwindow.H = h;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_WINDOW, &subwindow, sizeof(subwindow), NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Set_Cursor -- Sets the monochrome cursor to the coordinates specified.           *
@@ -220,24 +208,22 @@ void MonoClass::Sub_Window(int x, int y, int w, int h)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Set_Cursor(int x, int y)
-{
+void MonoClass::Set_Cursor(int x, int y) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		struct  {
-			int X,Y;
-		} cursor;
-		unsigned long retval;
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    struct {
+      int X, Y;
+    } cursor;
+    unsigned long retval;
 
-		cursor.X = x;
-		cursor.Y = y;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_CURSOR, &cursor, sizeof(cursor), NULL, 0, &retval, 0);
-	}
+    cursor.X = x;
+    cursor.Y = y;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_CURSOR, &cursor, sizeof(cursor), NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Clear -- Clears the monochrome screen object.                                    *
@@ -254,19 +240,17 @@ void MonoClass::Set_Cursor(int x, int y)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Clear(void)
-{
+void MonoClass::Clear(void) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
 
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_CLEAR_SCREEN, NULL, 0, NULL, 0, &retval, 0);
-	}
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_CLEAR_SCREEN, NULL, 0, NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Fill_Attrib -- Fill a block with specified attribute.                            *
@@ -287,28 +271,25 @@ void MonoClass::Clear(void)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   06/04/1996 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Fill_Attrib(int x, int y, int w, int h, MonoAttribute attrib)
-{
+void MonoClass::Fill_Attrib(int x, int y, int w, int h, MonoAttribute attrib) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		struct fillcontrol  {
-			int X,Y,W,H,A;
-		} fillcontrol;
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    struct fillcontrol {
+      int X, Y, W, H, A;
+    } fillcontrol;
 
-
-		fillcontrol.X = x;
-		fillcontrol.Y = y;
-		fillcontrol.W = w;
-		fillcontrol.H = h;
-		fillcontrol.A = attrib;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_FILL_ATTRIB, &fillcontrol, sizeof(fillcontrol), NULL, 0, &retval, 0);
-	}
+    fillcontrol.X = x;
+    fillcontrol.Y = y;
+    fillcontrol.W = w;
+    fillcontrol.H = h;
+    fillcontrol.A = attrib;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_FILL_ATTRIB, &fillcontrol, sizeof(fillcontrol), NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Scroll -- Scroll the monochrome screen up by the specified lines.                *
@@ -326,18 +307,16 @@ void MonoClass::Fill_Attrib(int x, int y, int w, int h, MonoAttribute attrib)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Scroll(int )
-{
+void MonoClass::Scroll(int) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SCROLL, NULL, 0, NULL, 0, &retval, 0);
-	}
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SCROLL, NULL, 0, NULL, 0, &retval, 0);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Printf -- Prints a formatted string to the monochrome screen.                    *
@@ -356,29 +335,28 @@ void MonoClass::Scroll(int )
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void MonoClass::Printf(char const *text, ...)
-{
+void MonoClass::Printf(char const *text, ...) {
 #ifdef _WINDOWS
-	va_list	va;
-	/*
-	**	The buffer object is placed at the end of the local variable list
-	**	so that if the sprintf happens to spill past the end, it isn't likely
-	**	to trash anything (important). The buffer is then manually truncated
-	**	to maximum allowed size before being printed.
-	*/
-	char buffer[256];
+  va_list va;
+  /*
+  **	The buffer object is placed at the end of the local variable list
+  **	so that if the sprintf happens to spill past the end, it isn't likely
+  **	to trash anything (important). The buffer is then manually truncated
+  **	to maximum allowed size before being printed.
+  */
+  char buffer[256];
 
-	if ( !Enabled || (Handle == INVALID_HANDLE_VALUE) ) return;
+  if (!Enabled || (Handle == INVALID_HANDLE_VALUE))
+    return;
 
-	va_start(va, text);
-	vsprintf(buffer, text, va);
-	buffer[sizeof(buffer)-1] = '\0';
+  va_start(va, text);
+  vsprintf(buffer, text, va);
+  buffer[sizeof(buffer) - 1] = '\0';
 
-	Print(buffer);
-	va_end(va);
+  Print(buffer);
+  va_end(va);
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Printf -- Prints formatted text using text string number.                        *
@@ -397,30 +375,29 @@ void MonoClass::Printf(char const *text, ...)
  * HISTORY:                                                                                    *
  *   06/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void MonoClass::Printf(int text, ...)
-{
+void MonoClass::Printf(int text, ...) {
 #ifdef _WINDOWS
-	va_list	va;
+  va_list va;
 
-	/*
-	**	The buffer object is placed at the end of the local variable list
-	**	so that if the sprintf happens to spill past the end, it isn't likely
-	**	to trash anything (important). The buffer is then manually truncated
-	**	to maximum allowed size before being printed.
-	*/
-	char buffer[256];
+  /*
+  **	The buffer object is placed at the end of the local variable list
+  **	so that if the sprintf happens to spill past the end, it isn't likely
+  **	to trash anything (important). The buffer is then manually truncated
+  **	to maximum allowed size before being printed.
+  */
+  char buffer[256];
 
-	if ( !Enabled || (Handle == INVALID_HANDLE_VALUE) ) return;
+  if (!Enabled || (Handle == INVALID_HANDLE_VALUE))
+    return;
 
-	va_start(va, text);
-	vsprintf(buffer, Fetch_String(text), va);
-	buffer[sizeof(buffer)-1] = '\0';
+  va_start(va, text);
+  vsprintf(buffer, Fetch_String(text), va);
+  buffer[sizeof(buffer) - 1] = '\0';
 
-	Print(buffer);
-	va_end(va);
+  Print(buffer);
+  va_end(va);
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Print -- Prints the text string at the current cursor coordinates.               *
@@ -436,44 +413,40 @@ void MonoClass::Printf(int text, ...)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Print(char const * ptr)
-{
+void MonoClass::Print(char const *ptr) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		WriteFile(Handle, ptr, strlen(ptr), &retval, NULL);
-	}
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    WriteFile(Handle, ptr, strlen(ptr), &retval, NULL);
+  }
 #endif
 }
 
-
-/*********************************************************************************************** 
- * MonoClass::Set_Default_Attribute -- Set the default attribute for this window.              * 
- *                                                                                             * 
- *    This will change the default attribute to that specified. All future text will use       * 
- *    this new attribute.                                                                      * 
- *                                                                                             * 
- * INPUT:   attrib   -- The attribute to make the current default.                             * 
- *                                                                                             * 
- * OUTPUT:  none                                                                               * 
- *                                                                                             * 
- * WARNINGS:   none                                                                            * 
- *                                                                                             * 
- * HISTORY:                                                                                    * 
- *   01/06/1997 JLB : Created.                                                                 * 
+/***********************************************************************************************
+ * MonoClass::Set_Default_Attribute -- Set the default attribute for this window.              *
+ *                                                                                             *
+ *    This will change the default attribute to that specified. All future text will use       *
+ *    this new attribute.                                                                      *
+ *                                                                                             *
+ * INPUT:   attrib   -- The attribute to make the current default.                             *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   none                                                                            *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   01/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void MonoClass::Set_Default_Attribute(MonoAttribute attrib)
-{
+void MonoClass::Set_Default_Attribute(MonoAttribute attrib) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_ATTRIBUTE, &attrib, 1, NULL, 0, &retval, 0);
-	}
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_ATTRIBUTE, &attrib, 1, NULL, 0, &retval, 0);
+  }
 #endif
-}	
-
+}
 
 /***********************************************************************************************
  * MonoClass::Text_Print -- Prints text to the monochrome object at coordinates indicated.     *
@@ -493,21 +466,19 @@ void MonoClass::Set_Default_Attribute(MonoAttribute attrib)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::Text_Print(char const *text, int x, int y, MonoAttribute attrib)
-{
+void MonoClass::Text_Print(char const *text, int x, int y, MonoAttribute attrib) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
 
-		Set_Cursor(x, y);
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_ATTRIBUTE, &attrib, 1, NULL, 0, &retval, 0);
-		Print(text);
-	}
+    Set_Cursor(x, y);
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_SET_ATTRIBUTE, &attrib, 1, NULL, 0, &retval, 0);
+    Print(text);
+  }
 #endif
 }
-
 
 /***********************************************************************************************
  * MonoClass::Text_Print -- Simple text printing from text number.                             *
@@ -528,11 +499,9 @@ void MonoClass::Text_Print(char const *text, int x, int y, MonoAttribute attrib)
  * HISTORY:                                                                                    *
  *   06/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void MonoClass::Text_Print(int text, int x, int y, MonoAttribute attrib)
-{
-	Text_Print(Fetch_String(text), x, y, attrib);
+void MonoClass::Text_Print(int text, int x, int y, MonoAttribute attrib) {
+  Text_Print(Fetch_String(text), x, y, attrib);
 }
-
 
 /***********************************************************************************************
  * MonoClass::Print -- Simple print of text number.                                            *
@@ -548,11 +517,7 @@ void MonoClass::Text_Print(int text, int x, int y, MonoAttribute attrib)
  * HISTORY:                                                                                    *
  *   06/04/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void MonoClass::Print(int text)
-{
-	Print(Fetch_String(text));
-}
-
+void MonoClass::Print(int text) { Print(Fetch_String(text)); }
 
 /***********************************************************************************************
  * MonoClass::View -- Brings the mono object to the main display.                              *
@@ -572,16 +537,14 @@ void MonoClass::Print(int text)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *   10/17/1994 JLB : Created.                                                                 *
- *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               * 
+ *   01/06/1997 JLB : Updated to WindowsNT style of mono output.                               *
  *=============================================================================================*/
-void MonoClass::View(void)
-{
+void MonoClass::View(void) {
 #ifdef _WINDOWS
-	if ( Enabled && (Handle != INVALID_HANDLE_VALUE) ) {
-		unsigned long retval;
-		DeviceIoControl(Handle, (DWORD)IOCTL_MONO_BRING_TO_TOP, NULL, 0, NULL, 0, &retval, 0);
-		Current = this;
-	}
+  if (Enabled && (Handle != INVALID_HANDLE_VALUE)) {
+    unsigned long retval;
+    DeviceIoControl(Handle, (DWORD)IOCTL_MONO_BRING_TO_TOP, NULL, 0, NULL, 0, &retval, 0);
+    Current = this;
+  }
 #endif
 }
-

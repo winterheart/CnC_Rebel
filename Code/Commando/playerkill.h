@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/playerkill.h                           $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 9/21/01 2:42p                                               $* 
- *                                                                                             * 
- *                    $Revision:: 3                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/playerkill.h                           $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 9/21/01 2:42p                                               $*
+ *                                                                                             *
+ *                    $Revision:: 3                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef __PLAYERKILL_H__
@@ -44,27 +44,26 @@
 //
 // A S->C mirrored object to represent player kill notification
 //
-class	cPlayerKill : public cNetEvent
-{
+class cPlayerKill : public cNetEvent {
 public:
-   cPlayerKill(void);
-   //~cPlayerKill(void) {}
+  cPlayerKill(void);
+  //~cPlayerKill(void) {}
 
-	void						Init(int killer_id, int victim_id);
+  void Init(int killer_id, int victim_id);
 
-	virtual void			Export_Creation(BitStreamClass &packet);
-	virtual void			Import_Creation(BitStreamClass &packet);
-	virtual uint32			Get_Network_Class_ID(void) const				{return NETCLASSID_PLAYERKILL;}
-	//virtual void			Delete (void)										{delete this;}
+  virtual void Export_Creation(BitStreamClass &packet);
+  virtual void Import_Creation(BitStreamClass &packet);
+  virtual uint32 Get_Network_Class_ID(void) const { return NETCLASSID_PLAYERKILL; }
+  // virtual void			Delete (void)
+  // {delete this;}
 
 private:
+  virtual void Act(void);
 
-	virtual void			Act(void);
-
-	int						KillerId;
-	int						VictimId;
+  int KillerId;
+  int VictimId;
 };
 
 //-----------------------------------------------------------------------------
 
-#endif	// __PLAYERKILL_H__
+#endif // __PLAYERKILL_H__

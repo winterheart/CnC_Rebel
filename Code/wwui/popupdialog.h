@@ -20,7 +20,8 @@
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
- *                 Project Name : Combat																		  *
+ *                 Project Name : Combat
+ **
  *                                                                                             *
  *                     $Archive:: /Commando/Code/wwui/popupdialog.h          $*
  *                                                                                             *
@@ -41,12 +42,10 @@
 #ifndef __POPUP_DIALOG_H
 #define __POPUP_DIALOG_H
 
-
 #include "dialogbase.h"
 #include "rendobj.h"
 #include "wwstring.h"
 #include "render2dsentence.h"
-
 
 ////////////////////////////////////////////////////////////////
 //	Forward declarations
@@ -54,66 +53,58 @@
 class SimpleSceneClass;
 class CameraClass;
 
-
 ////////////////////////////////////////////////////////////////
 //
 //	PopupDialogClass
 //
 ////////////////////////////////////////////////////////////////
-class PopupDialogClass : public DialogBaseClass
-{
+class PopupDialogClass : public DialogBaseClass {
 public:
+  ////////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ////////////////////////////////////////////////////////////////
+  PopupDialogClass(int res_id);
+  virtual ~PopupDialogClass(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	////////////////////////////////////////////////////////////////
-	PopupDialogClass (int res_id);
-	virtual ~PopupDialogClass (void);
+  ////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////
+  //
+  //	RTTI
+  //
+  virtual PopupDialogClass *As_PopupDialogClass(void) { return this; }
 
-	//
-	//	RTTI
-	//
-	virtual PopupDialogClass *	As_PopupDialogClass (void)	{ return this; }
+  //
+  //	Display methods
+  //
+  virtual void Render(void);
 
-	//
-	//	Display methods
-	//
-	virtual void				Render (void);
-
-	virtual void Set_Title(const WCHAR* title);
+  virtual void Set_Title(const WCHAR *title);
 
 protected:
+  ////////////////////////////////////////////////////////////////
+  //	Protected methods
+  ////////////////////////////////////////////////////////////////
+  void Build_Background_Renderers(void);
 
-	////////////////////////////////////////////////////////////////
-	//	Protected methods
-	////////////////////////////////////////////////////////////////
-	void				Build_Background_Renderers (void);
-	
-	//
-	// Set whether or not background is darkened
-	//
-	void				Set_Background_Darkened(bool flag)		{ IsBackgroundDarkened = flag; }
+  //
+  // Set whether or not background is darkened
+  //
+  void Set_Background_Darkened(bool flag) { IsBackgroundDarkened = flag; }
 
-	//
-	//	From DialogBaseClass
-	//
-	void				On_Init_Dialog (void);	
+  //
+  //	From DialogBaseClass
+  //
+  void On_Init_Dialog(void);
 
-
-	////////////////////////////////////////////////////////////////
-	//	Protected member data
-	////////////////////////////////////////////////////////////////	
-	Render2DClass				BlackoutRenderer;
-	Render2DClass				BackgroundRenderer;
-	Render2DSentenceClass	TextRenderer;
-	bool							IsBackgroundDarkened;
-
+  ////////////////////////////////////////////////////////////////
+  //	Protected member data
+  ////////////////////////////////////////////////////////////////
+  Render2DClass BlackoutRenderer;
+  Render2DClass BackgroundRenderer;
+  Render2DSentenceClass TextRenderer;
+  bool IsBackgroundDarkened;
 };
 
-
 #endif //__POPUP_DIALOG_H
-

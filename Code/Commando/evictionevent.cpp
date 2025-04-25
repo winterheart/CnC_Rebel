@@ -16,22 +16,22 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***                            Confidential - Westwood Studios                              *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Commando                                                     * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Code/Commando/evictionevent.cpp               $* 
- *                                                                                             * 
- *                      $Author:: Tom_s                                                       $* 
- *                                                                                             * 
- *                     $Modtime:: 11/10/01 1:02p                                              $* 
- *                                                                                             * 
- *                    $Revision:: 11                                                          $* 
- *                                                                                             * 
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+/***********************************************************************************************
+ ***                            Confidential - Westwood Studios                              ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Commando                                                     *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Code/Commando/evictionevent.cpp               $*
+ *                                                                                             *
+ *                      $Author:: Tom_s                                                       $*
+ *                                                                                             *
+ *                     $Modtime:: 11/10/01 1:02p                                              $*
+ *                                                                                             *
+ *                    $Revision:: 11                                                          $*
+ *                                                                                             *
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "evictionevent.h"
@@ -49,95 +49,74 @@
 #include "apppackettypes.h"
 #include "messagewindow.h"
 
-// 
+//
 // TSS2001 Problem - we have lost the unreliable multiblast effect for this message
 //
 
 DECLARE_NETWORKOBJECT_FACTORY(cEvictionEvent, NETCLASSID_EVICTIONEVENT);
 
 //-----------------------------------------------------------------------------
-cEvictionEvent::cEvictionEvent(void)
-{
-	Set_App_Packet_Type(APPPACKETTYPE_EVICTIONEVENT);
+cEvictionEvent::cEvictionEvent(void) { Set_App_Packet_Type(APPPACKETTYPE_EVICTIONEVENT); }
+
+//-----------------------------------------------------------------------------
+void cEvictionEvent::Init(int client_id, EvictionCodeEnum code) {
+  WWASSERT(cNetwork::I_Am_Server());
+  WWASSERT(client_id >= 0);
+
+  EvictionCode = code;
+
+  Set_Object_Dirty_Bit(client_id, BIT_CREATION, true);
+
+  //
+  // This is a transient object. It is created, rendered, and destroyed immediately.
+  //
+  // Set_Delete_Pending ();
 }
 
 //-----------------------------------------------------------------------------
-void
-cEvictionEvent::Init(int client_id, EvictionCodeEnum code)
-{
-	WWASSERT(cNetwork::I_Am_Server());
-	WWASSERT(client_id >= 0);
+void cEvictionEvent::Act(void) {
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	EvictionCode = code;
+  WideStringClass code_string;
+  switch (EvictionCode) {
+  case EVICTION_POOR_BANDWIDTH:
+    code_string = TRANSLATION(IDS_MP_BANDWIDTH_INSUFFICIENT);
+    break;
 
-	Set_Object_Dirty_Bit(client_id, BIT_CREATION, true);
+  default:
+    DIE;
+  }
 
-	//
-	// This is a transient object. It is created, rendered, and destroyed immediately.
-	//
-	//Set_Delete_Pending ();
+  WideStringClass widestring;
+  widestring.Format(L"%s: %s", TRANSLATION(IDS_MP_YOU_ARE_EVICTED), code_string);
+  WWASSERT(CombatManager::Get_Message_Window() != NULL);
+
+  //
+  //	Display the message...
+  //
+  CombatManager::Get_Message_Window()->Add_Message(widestring);
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cEvictionEvent::Act(void)
-{
-	WWASSERT(cNetwork::I_Am_Only_Client());
+void cEvictionEvent::Export_Creation(BitStreamClass &packet) {
+  WWASSERT(cNetwork::I_Am_Server());
 
-   WideStringClass code_string;
-	switch (EvictionCode)
-	{
-		case EVICTION_POOR_BANDWIDTH:
-			code_string = TRANSLATION(IDS_MP_BANDWIDTH_INSUFFICIENT);
-			break;
+  cNetEvent::Export_Creation(packet);
 
-		default:
-			DIE;
-	}
+  packet.Add((int)EvictionCode);
 
-	WideStringClass widestring;
-	widestring.Format(
-		L"%s: %s", 
-		TRANSLATION(IDS_MP_YOU_ARE_EVICTED), 
-		code_string);
-   WWASSERT(CombatManager::Get_Message_Window() != NULL);
-
-	//
-	//	Display the message...
-	//
-	CombatManager::Get_Message_Window ()->Add_Message (widestring);
-	Set_Delete_Pending();
+  Set_Delete_Pending();
 }
 
 //-----------------------------------------------------------------------------
-void
-cEvictionEvent::Export_Creation(BitStreamClass & packet)
-{
-	WWASSERT(cNetwork::I_Am_Server());
+void cEvictionEvent::Import_Creation(BitStreamClass &packet) {
+  cNetEvent::Import_Creation(packet);
 
-	cNetEvent::Export_Creation(packet);
+  WWASSERT(cNetwork::I_Am_Only_Client());
 
-	packet.Add((int) EvictionCode);
+  int eviction_code = packet.Get(eviction_code);
+  EvictionCode = (EvictionCodeEnum)eviction_code;
 
-	Set_Delete_Pending();
+  Act();
 }
-
-//-----------------------------------------------------------------------------
-void
-cEvictionEvent::Import_Creation(BitStreamClass & packet)
-{
-	cNetEvent::Import_Creation(packet);
-
-	WWASSERT(cNetwork::I_Am_Only_Client());
-
-	int eviction_code = packet.Get(eviction_code);
-	EvictionCode = (EvictionCodeEnum) eviction_code;
-
-	Act();
-}
-
-
-
-
-
-

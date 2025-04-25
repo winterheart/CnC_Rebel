@@ -36,7 +36,6 @@
  *   HModelLoaderClass::Load -- reads in an hmodel definition and creates a prototype for it   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #include "proto.h"
 #include "mesh.h"
 #include "hmdldef.h"
@@ -46,55 +45,46 @@
 /*
 ** Global instances of the default loaders for the asset manager to install
 */
-MeshLoaderClass		_MeshLoader;
-HModelLoaderClass		_HModelLoader;
-
+MeshLoaderClass _MeshLoader;
+HModelLoaderClass _HModelLoader;
 
 /*
 ** Prototype Classes
 ** These prototypes are the "built-in" ones for the W3D library.
 */
-PrimitivePrototypeClass::PrimitivePrototypeClass(RenderObjClass * proto)			
-{ 
-	Proto = proto; 
-	assert(Proto); 
-	Proto->Add_Ref(); 
+PrimitivePrototypeClass::PrimitivePrototypeClass(RenderObjClass *proto) {
+  Proto = proto;
+  assert(Proto);
+  Proto->Add_Ref();
 }
-PrimitivePrototypeClass::~PrimitivePrototypeClass(void)						
-{ 
-	if (Proto) { 
-		Proto->Release_Ref(); 
-	}
+PrimitivePrototypeClass::~PrimitivePrototypeClass(void) {
+  if (Proto) {
+    Proto->Release_Ref();
+  }
 }
 
-const char * PrimitivePrototypeClass::Get_Name(void) const			
-{ 
-	return Proto->Get_Name(); 
-}	
+const char *PrimitivePrototypeClass::Get_Name(void) const { return Proto->Get_Name(); }
 
-int PrimitivePrototypeClass::Get_Class_ID(void) const	
-{ 
-	return Proto->Class_ID(); 
-}
+int PrimitivePrototypeClass::Get_Class_ID(void) const { return Proto->Class_ID(); }
 
-RenderObjClass * PrimitivePrototypeClass::Create(void)					
-{ 
-	return (RenderObjClass *)( SET_REF_OWNER( Proto->Clone() ) ); 
-}	
+RenderObjClass *PrimitivePrototypeClass::Create(void) { return (RenderObjClass *)(SET_REF_OWNER(Proto->Clone())); }
 
-
-class HModelPrototypeClass : public PrototypeClass
-{
+class HModelPrototypeClass : public PrototypeClass {
 public:
-	HModelPrototypeClass(HModelDefClass * def)				{ HModelDef = def; assert(HModelDef); }
-	virtual ~HModelPrototypeClass(void)							{ if (HModelDef) delete HModelDef; }						 
+  HModelPrototypeClass(HModelDefClass *def) {
+    HModelDef = def;
+    assert(HModelDef);
+  }
+  virtual ~HModelPrototypeClass(void) {
+    if (HModelDef)
+      delete HModelDef;
+  }
 
-	virtual const char *			Get_Name(void)	const			{ return HModelDef->Get_Name(); }	
-	virtual int						Get_Class_ID(void) const	{ return RenderObjClass::CLASSID_HLOD; }
-	virtual RenderObjClass *	Create(void)					{ return NEW_REF( HLodClass, (*HModelDef) ); }	
-	HModelDefClass *				HModelDef;
+  virtual const char *Get_Name(void) const { return HModelDef->Get_Name(); }
+  virtual int Get_Class_ID(void) const { return RenderObjClass::CLASSID_HLOD; }
+  virtual RenderObjClass *Create(void) { return NEW_REF(HLodClass, (*HModelDef)); }
+  HModelDefClass *HModelDef;
 };
-
 
 /***********************************************************************************************
  * MeshLoaderClass::Load -- reads in a mesh and creates a prototype for it                     *
@@ -108,31 +98,28 @@ public:
  * HISTORY:                                                                                    *
  *   7/28/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-PrototypeClass * MeshLoaderClass::Load_W3D(ChunkLoadClass & cload)
-{
-	MeshClass * mesh = NEW_REF( MeshClass, () );
+PrototypeClass *MeshLoaderClass::Load_W3D(ChunkLoadClass &cload) {
+  MeshClass *mesh = NEW_REF(MeshClass, ());
 
-	if (mesh == NULL) {
-		return NULL;
-	}
+  if (mesh == NULL) {
+    return NULL;
+  }
 
-	if (mesh->Load_W3D(cload) != WW3D_ERROR_OK) {
+  if (mesh->Load_W3D(cload) != WW3D_ERROR_OK) {
 
-		// if the load failed, delete the mesh
-		assert(mesh->Num_Refs() == 1);
-		mesh->Release_Ref();
-		return NULL;
+    // if the load failed, delete the mesh
+    assert(mesh->Num_Refs() == 1);
+    mesh->Release_Ref();
+    return NULL;
 
-	} else {
+  } else {
 
-		// create the prototype and add it to the lists
-		PrimitivePrototypeClass * newproto = new PrimitivePrototypeClass(mesh);
-		mesh->Release_Ref();
-		return newproto;
-	
-	}
+    // create the prototype and add it to the lists
+    PrimitivePrototypeClass *newproto = new PrimitivePrototypeClass(mesh);
+    mesh->Release_Ref();
+    return newproto;
+  }
 }
-
 
 /***********************************************************************************************
  * HModelLoaderClass::Load -- reads in an hmodel and creates a prototype for it                *
@@ -146,26 +133,23 @@ PrototypeClass * MeshLoaderClass::Load_W3D(ChunkLoadClass & cload)
  * HISTORY:                                                                                    *
  *   7/28/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-PrototypeClass * HModelLoaderClass::Load_W3D(ChunkLoadClass & cload)
-{
-	HModelDefClass * hdef = new HModelDefClass;
+PrototypeClass *HModelLoaderClass::Load_W3D(ChunkLoadClass &cload) {
+  HModelDefClass *hdef = new HModelDefClass;
 
-	if (hdef == NULL) {
-		return NULL;
-	}
+  if (hdef == NULL) {
+    return NULL;
+  }
 
-	if (hdef->Load_W3D(cload) != HModelDefClass::OK) {
+  if (hdef->Load_W3D(cload) != HModelDefClass::OK) {
 
-		// load failed, delete the model and return an error
-		delete hdef;
-		return NULL;
+    // load failed, delete the model and return an error
+    delete hdef;
+    return NULL;
 
-	} else {
-	
-		// ok, accept this model! 
-		HModelPrototypeClass * hproto = new HModelPrototypeClass(hdef);
-		return hproto;
-	
-	}
+  } else {
+
+    // ok, accept this model!
+    HModelPrototypeClass *hproto = new HModelPrototypeClass(hdef);
+    return hproto;
+  }
 }
-

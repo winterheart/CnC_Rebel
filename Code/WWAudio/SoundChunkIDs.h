@@ -34,7 +34,6 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
@@ -45,7 +44,6 @@
 #include "saveloadids.h"
 #include "definitionclassids.h"
 
-
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	These are the chunk IDs that serve as 'globally-unique' persist identifiers for
@@ -53,19 +51,17 @@
 //	PersistFactoryClass's for definitions.
 //
 //////////////////////////////////////////////////////////////////////////////////
-enum
-{
-	CHUNKID_SOUND_DEF			= CHUNKID_WWAUDIO_BEGIN,
-	CHUNKID_AUDIBLE_SOUND,
-	CHUNKID_FILTERED_SOUND,
-	CHUNKID_SOUND3D,
-	CHUNKID_PSEUDO_SOUND3D,
-	CHUNKID_STATIC_SAVELOAD,
-	CHUNKID_DYNAMIC_SAVELOAD,
-	CHUNKID_LOGICALSOUND,
-	CHUNKID_LOGICALLISTENER
+enum {
+  CHUNKID_SOUND_DEF = CHUNKID_WWAUDIO_BEGIN,
+  CHUNKID_AUDIBLE_SOUND,
+  CHUNKID_FILTERED_SOUND,
+  CHUNKID_SOUND3D,
+  CHUNKID_PSEUDO_SOUND3D,
+  CHUNKID_STATIC_SAVELOAD,
+  CHUNKID_DYNAMIC_SAVELOAD,
+  CHUNKID_LOGICALSOUND,
+  CHUNKID_LOGICALLISTENER
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -73,10 +69,8 @@ enum
 // uses inside the editor.
 //
 //////////////////////////////////////////////////////////////////////////////////
-enum
-{
-	CLASSID_SOUND_DEF			= CLASSID_SOUND,
+enum {
+  CLASSID_SOUND_DEF = CLASSID_SOUND,
 };
-
 
 #endif //__SOUND_CHUNK_IDS_H

@@ -34,65 +34,65 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef	BITPACKIDS_H
-#define	BITPACKIDS_H
+#ifndef BITPACKIDS_H
+#define BITPACKIDS_H
 
 enum {
-	/*
-	//
-	// 08/30/00 Use of pathfind extents for bitcompression decommissioned.
-	// Flying vehicles and sea vehicles would have to use world extents
-	// anyway.
-	//
+  /*
+  //
+  // 08/30/00 Use of pathfind extents for bitcompression decommissioned.
+  // Flying vehicles and sea vehicles would have to use world extents
+  // anyway.
+  //
 
-	//
-	// Use these for objects restricted to pathfindable areas
-	//
-	BITPACK_PATHFIND_POSITION_X,
-	BITPACK_PATHFIND_POSITION_Y,
-	BITPACK_PATHFIND_POSITION_Z,
-	*/
+  //
+  // Use these for objects restricted to pathfindable areas
+  //
+  BITPACK_PATHFIND_POSITION_X,
+  BITPACK_PATHFIND_POSITION_Y,
+  BITPACK_PATHFIND_POSITION_Z,
+  */
 
-	//
-	// Use these for objects restricted to world extents
-	//
-	BITPACK_WORLD_POSITION_X,
-	BITPACK_WORLD_POSITION_Y,
-	BITPACK_WORLD_POSITION_Z,
+  //
+  // Use these for objects restricted to world extents
+  //
+  BITPACK_WORLD_POSITION_X,
+  BITPACK_WORLD_POSITION_Y,
+  BITPACK_WORLD_POSITION_Z,
 
-	BITPACK_ONE_TIME_BOOLEAN_BITS,
-	BITPACK_CONTINUOUS_BOOLEAN_BITS,
-	BITPACK_ANALOG_VALUES,
+  BITPACK_ONE_TIME_BOOLEAN_BITS,
+  BITPACK_CONTINUOUS_BOOLEAN_BITS,
+  BITPACK_ANALOG_VALUES,
 
-	BITPACK_HEALTH,
-	BITPACK_SHIELD_STRENGTH,
-	BITPACK_SHIELD_TYPE,
+  BITPACK_HEALTH,
+  BITPACK_SHIELD_STRENGTH,
+  BITPACK_SHIELD_TYPE,
 
-	BITPACK_CTF_TEAM_FLAG,
+  BITPACK_CTF_TEAM_FLAG,
 
-	BITPACK_HUMAN_STATE,
-	BITPACK_HUMAN_SUB_STATE,
+  BITPACK_HUMAN_STATE,
+  BITPACK_HUMAN_SUB_STATE,
 
-	BITPACK_VEHICLE_VELOCITY,
-	BITPACK_VEHICLE_ANGULAR_VELOCITY,
-	BITPACK_VEHICLE_QUATERNION,
-	BITPACK_VEHICLE_LOCK_TIMER,
+  BITPACK_VEHICLE_VELOCITY,
+  BITPACK_VEHICLE_ANGULAR_VELOCITY,
+  BITPACK_VEHICLE_QUATERNION,
+  BITPACK_VEHICLE_LOCK_TIMER,
 
-	BITPACK_DOOR_STATE,
-	BITPACK_ELEVATOR_STATE,
-	BITPACK_ELEVATOR_TOP_DOOR_STATE,
-	BITPACK_ELEVATOR_BOTTOM_DOOR_STATE,
+  BITPACK_DOOR_STATE,
+  BITPACK_ELEVATOR_STATE,
+  BITPACK_ELEVATOR_TOP_DOOR_STATE,
+  BITPACK_ELEVATOR_BOTTOM_DOOR_STATE,
 
-	BITPACK_BUILDING_RADIUS,
+  BITPACK_BUILDING_RADIUS,
 
-	BITPACK_BUILDING_STATE,
+  BITPACK_BUILDING_STATE,
 
-	BITPACK_CONTROL_MOVES_CS,
-	BITPACK_CONTROL_MOVES_SC,
+  BITPACK_CONTROL_MOVES_CS,
+  BITPACK_CONTROL_MOVES_SC,
 
-	BITPACK_PACKET_TYPE,
-	BITPACK_PACKET_ID,
+  BITPACK_PACKET_TYPE,
+  BITPACK_PACKET_ID,
 
 };
 
-#endif	// BITPACKIDS_H
+#endif // BITPACKIDS_H

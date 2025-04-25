@@ -16,56 +16,53 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*********************************************************************************************** 
- ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               *** 
- *********************************************************************************************** 
- *                                                                                             * 
- *                 Project Name : Command & Conquer                                            * 
- *                                                                                             * 
- *                     $Archive:: /Commando/Library/SHASTRAW.H                                $* 
- *                                                                                             * 
+/***********************************************************************************************
+ ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
+ ***********************************************************************************************
+ *                                                                                             *
+ *                 Project Name : Command & Conquer                                            *
+ *                                                                                             *
+ *                     $Archive:: /Commando/Library/SHASTRAW.H                                $*
+ *                                                                                             *
  *                      $Author:: Greg_h                                                      $*
- *                                                                                             * 
+ *                                                                                             *
  *                     $Modtime:: 7/22/97 11:37a                                              $*
- *                                                                                             * 
+ *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
- *---------------------------------------------------------------------------------------------* 
- * Functions:                                                                                  * 
+ *---------------------------------------------------------------------------------------------*
+ * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef SHASTRAW_H
 #define SHASTRAW_H
 
-
-#include	"sha.h"
-#include	"straw.h"
+#include "sha.h"
+#include "straw.h"
 
 /*
 **	This class serves as a straw that generates a Secure Hash from the data stream that flows
 **	through it. It doesn't modify the data stream in any fashion.
 */
-class SHAStraw : public Straw
-{
-	public:
-		SHAStraw(void) : IsDisabled(false) {}
-		virtual int Get(void * source, int slen);
+class SHAStraw : public Straw {
+public:
+  SHAStraw(void) : IsDisabled(false) {}
+  virtual int Get(void *source, int slen);
 
-		void Disable(void) {IsDisabled = true;}
-		void Enable(void) {IsDisabled = false;}
+  void Disable(void) { IsDisabled = true; }
+  void Enable(void) { IsDisabled = false; }
 
-		// Fetch the SHA hash value (stored in result buffer -- 20 bytes long).
-		int Result(void * result) const;
+  // Fetch the SHA hash value (stored in result buffer -- 20 bytes long).
+  int Result(void *result) const;
 
-	protected:
-		bool IsDisabled;
+protected:
+  bool IsDisabled;
 
-		SHAEngine SHA;
+  SHAEngine SHA;
 
-	private:
-		SHAStraw(SHAStraw & rvalue);
-		SHAStraw & operator = (SHAStraw const & straw);
+private:
+  SHAStraw(SHAStraw &rvalue);
+  SHAStraw &operator=(SHAStraw const &straw);
 };
-
 
 #endif
