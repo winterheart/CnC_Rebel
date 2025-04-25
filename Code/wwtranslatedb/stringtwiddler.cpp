@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -65,24 +66,21 @@ enum {
 //	StringTwiddlerClass
 //
 ///////////////////////////////////////////////////////////////////////
-StringTwiddlerClass::StringTwiddlerClass(void) { return; }
+StringTwiddlerClass::StringTwiddlerClass() = default;
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	StringTwiddlerClass
 //
 ///////////////////////////////////////////////////////////////////////
-StringTwiddlerClass::StringTwiddlerClass(const StringTwiddlerClass &src) : TDBObjClass(src) {
-  (*this) = src;
-  return;
-}
+StringTwiddlerClass::StringTwiddlerClass(const StringTwiddlerClass &src) : TDBObjClass(src) { (*this) = src; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	~StringTwiddlerClass
 //
 ///////////////////////////////////////////////////////////////////////
-StringTwiddlerClass::~StringTwiddlerClass(void) { return; }
+StringTwiddlerClass::~StringTwiddlerClass() = default;
 
 /////////////////////////////////////////////////////////////////
 //
@@ -100,7 +98,7 @@ const StringTwiddlerClass &StringTwiddlerClass::operator=(const StringTwiddlerCl
 //	Get_Factory
 //
 ///////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &StringTwiddlerClass::Get_Factory(void) const { return _StringTwiddlerPersistFactory; }
+const PersistFactoryClass &StringTwiddlerClass::Get_Factory() const { return _StringTwiddlerPersistFactory; }
 
 /////////////////////////////////////////////////////////////////
 //
@@ -178,8 +176,6 @@ void StringTwiddlerClass::Load_Variables(ChunkLoadClass &cload) {
 
     cload.Close_Micro_Chunk();
   }
-
-  return;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -214,7 +210,7 @@ void StringTwiddlerClass::Randomize(int lang_id) {
     //
     int index = (rand() % count);
     TDBObjClass *object = TranslateDBClass::Find_Object(StringList[index]);
-    if (object != NULL && object->As_StringTwiddlerClass() == NULL) {
+    if (object != nullptr && object->As_StringTwiddlerClass() == nullptr) {
 
       //
       //	Copy the string contents into ourselves
@@ -225,6 +221,4 @@ void StringTwiddlerClass::Randomize(int lang_id) {
       AnimationName = object->Get_Animation_Name();
     }
   }
-
-  return;
 }

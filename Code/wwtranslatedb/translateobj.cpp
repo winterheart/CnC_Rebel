@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -68,24 +69,21 @@ enum {
 //	TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::TDBObjClass(void) : ID(0), SoundID(-1), CategoryID(CATEGORY_DEFAULT) { return; }
+TDBObjClass::TDBObjClass() : ID(0), SoundID(0xffffffff), CategoryID(CATEGORY_DEFAULT) {}
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::TDBObjClass(const TDBObjClass &src) : ID(0), SoundID(-1), CategoryID(CATEGORY_DEFAULT) {
-  (*this) = src;
-  return;
-}
+TDBObjClass::TDBObjClass(const TDBObjClass &src) : ID(0), SoundID(0xffffffff), CategoryID(CATEGORY_DEFAULT) { (*this) = src; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	~TDBObjClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBObjClass::~TDBObjClass(void) { return; }
+TDBObjClass::~TDBObjClass() = default;
 
 /////////////////////////////////////////////////////////////////
 //
@@ -109,7 +107,7 @@ const TDBObjClass &TDBObjClass::operator=(const TDBObjClass &src) {
 //	Get_Factory
 //
 ///////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &TDBObjClass::Get_Factory(void) const { return _TranslateObjPersistFactory; }
+const PersistFactoryClass &TDBObjClass::Get_Factory() const { return _TranslateObjPersistFactory; }
 
 /////////////////////////////////////////////////////////////////
 //
@@ -217,7 +215,6 @@ void TDBObjClass::Save_Variables(ChunkSaveClass &csave) {
   WRITE_MICRO_CHUNK(csave, VARID_CATEGORY_ID, CategoryID);
   WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_ID_DESC, IDDesc);
   WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_ANIMATION_NAME, AnimationName);
-  return;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -251,8 +248,6 @@ void TDBObjClass::Load_Variables(ChunkLoadClass &cload) {
 
     cload.Close_Micro_Chunk();
   }
-
-  return;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -272,7 +267,6 @@ void TDBObjClass::Set_English_String(const TCHAR *string) {
   }
 
   TranslatedStrings[TranslateDBClass::LANGID_ENGLISH].Convert_From(string);
-  return;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -280,27 +274,21 @@ void TDBObjClass::Set_English_String(const TCHAR *string) {
 //	Set_ID
 //
 /////////////////////////////////////////////////////////////////
-void TDBObjClass::Set_ID(uint32 id) {
-  ID = id;
-  return;
-}
+void TDBObjClass::Set_ID(uint32 id) { ID = id; }
 
 /////////////////////////////////////////////////////////////////
 //
 //	Set_ID_Desc
 //
 /////////////////////////////////////////////////////////////////
-void TDBObjClass::Set_ID_Desc(const TCHAR *desc) {
-  IDDesc = desc;
-  return;
-}
+void TDBObjClass::Set_ID_Desc(const TCHAR *desc) { IDDesc = desc; }
 
 /////////////////////////////////////////////////////////////////
 //
 //	Get_String
 //
 /////////////////////////////////////////////////////////////////
-const WideStringClass &TDBObjClass::Get_String(void) {
+const WideStringClass &TDBObjClass::Get_String() {
   //
   //	Lookup the translated string based on the current language
   //
