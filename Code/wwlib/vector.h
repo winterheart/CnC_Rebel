@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,18 +51,18 @@
  *   DynamicVectorClass<T>::Uninitialized_Add -- Add an empty place to the vector.             *
  *   DynamicVectorClass<T>::Insert -- insert an object at the desired index                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "always.h"
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
 #include <new.h>
+
+#include "always.h"
+
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4702) // unreachable code, happens with some uses of these templates
@@ -88,7 +89,7 @@ public:
   WWINLINE VectorClass(NoInitClass const &) {};
   VectorClass(int size = 0, T const *array = 0);
   VectorClass(VectorClass<T> const &); // Copy constructor.
-  virtual ~VectorClass(void);
+  virtual ~VectorClass();
 
   WWINLINE T &operator[](int index) {
     assert(unsigned(index) < unsigned(VectorMax));
@@ -104,8 +105,8 @@ public:
   virtual bool operator==(VectorClass<T> const &) const; // Equality operator.
 
   virtual bool Resize(int newsize, T const *array = 0);
-  virtual void Clear(void);
-  WWINLINE int Length(void) const { return VectorMax; };
+  virtual void Clear();
+  WWINLINE int Length() const { return VectorMax; };
   virtual int ID(T const *ptr); // Pointer based identification.
   virtual int ID(T const &ptr); // Value based identification.
 
@@ -188,7 +189,7 @@ VectorClass<T>::VectorClass(int size, T const *array) : Vector(0), VectorMax(siz
  * HISTORY:                                                                                    *
  *   03/10/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> VectorClass<T>::~VectorClass(void) { VectorClass<T>::Clear(); }
+template <class T> VectorClass<T>::~VectorClass() { VectorClass<T>::Clear(); }
 
 /***********************************************************************************************
  * VectorClass<T>::VectorClass -- Copy constructor for vector object.                          *
@@ -341,7 +342,7 @@ template <class T> int VectorClass<T>::ID(T const &object) {
  * HISTORY:                                                                                    *
  *   03/10/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> void VectorClass<T>::Clear(void) {
+template <class T> void VectorClass<T>::Clear() {
   if (Vector && IsAllocated) {
     delete[] Vector;
     Vector = 0;
@@ -400,7 +401,7 @@ template <class T> bool VectorClass<T>::Resize(int newsize, T const *array) {
     **	If there is an old vector, then it must be copied (as much as is feasible)
     **	to the new vector.
     */
-    if (Vector != NULL) {
+    if (Vector != nullptr) {
 
       /*
       **	Copy as much of the old vector into the new vector as possible. This
@@ -462,17 +463,17 @@ public:
   virtual bool Resize(int newsize, T const *array = 0);
 
   // Resets and frees the vector array.
-  virtual void Clear(void) {
+  virtual void Clear() {
     ActiveCount = 0;
     VectorClass<T>::Clear();
   };
 
   // retains the memory but zeros the active count
-  void Reset_Active(void) { ActiveCount = 0; }
+  void Reset_Active() { ActiveCount = 0; }
   void Set_Active(int count) { ActiveCount = count; }
 
   // Fetch number of "allocated" vector objects.
-  int Count(void) const { return (ActiveCount); };
+  int Count() const { return (ActiveCount); };
 
   // Add object to vector (growing as necessary).
   bool Add(T const &object);
@@ -486,13 +487,13 @@ public:
   bool Delete(int index);
 
   // Deletes all objects in the vector.
-  void Delete_All(void);
+  void Delete_All();
 
   // Set amount that vector grows by.
   int Set_Growth_Step(int step) { return (GrowthStep = step); };
 
   // Fetch current growth step rate.
-  int Growth_Step(void) { return GrowthStep; };
+  int Growth_Step() { return GrowthStep; };
 
   virtual int ID(T const *ptr) { return (VectorClass<T>::ID(ptr)); };
   virtual int ID(T const &ptr);
@@ -509,7 +510,7 @@ public:
   // the 'new' spot. (NULL if the Add failed). NOTE - you must then fill
   // this memory area with a valid object (e.g. by using placement new),
   // or chaos will result!
-  T *Uninitialized_Add(void);
+  T *Uninitialized_Add();
 
 protected:
   /*
@@ -810,7 +811,7 @@ template <class T> bool DynamicVectorClass<T>::Delete(int index) {
   return (false);
 }
 
-template <class T> void DynamicVectorClass<T>::Delete_All(void) {
+template <class T> void DynamicVectorClass<T>::Delete_All() {
   int len = this->VectorMax;
   Clear(); // Forces destructor call on each object.
   Resize(len);
@@ -835,7 +836,7 @@ template <class T> void DynamicVectorClass<T>::Delete_All(void) {
  * HISTORY:                                                                                    *
  *   03/04/1998 NH : Created.                                                                  *
  *=============================================================================================*/
-template <class T> T *DynamicVectorClass<T>::Uninitialized_Add(void) {
+template <class T> T *DynamicVectorClass<T>::Uninitialized_Add() {
   if (ActiveCount >= this->Length()) {
     //		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
     if (GrowthStep > 0) {
@@ -845,7 +846,7 @@ template <class T> T *DynamicVectorClass<T>::Uninitialized_Add(void) {
         **	Failure to increase the size of the vector is an error condition.
         **	Return with the error value.
         */
-        return (NULL);
+        return (nullptr);
       }
     } else {
 
@@ -853,7 +854,7 @@ template <class T> T *DynamicVectorClass<T>::Uninitialized_Add(void) {
       **	Increasing the size of this vector is not allowed! Bail this
       **	routine with the error value.
       */
-      return (NULL);
+      return (nullptr);
     }
   }
 
@@ -895,16 +896,16 @@ public:
   void Init(unsigned size);
 
   // Fetch number of boolean objects in vector.
-  int Length(void) { return BitCount; };
+  int Length() { return BitCount; };
 
   // Set all boolean values to false;
-  void Reset(void);
+  void Reset();
 
   // Set all boolean values to true.
-  void Set(void);
+  void Set();
 
   // Resets vector to zero length (frees memory).
-  void Clear(void);
+  void Clear();
 
   // Change size of this boolean vector.
   int Resize(unsigned size);
@@ -929,7 +930,7 @@ public:
   };
 
   // Find first index that is false.
-  int First_False(void) const {
+  int First_False() const {
     if (LastIndex != -1)
       Fixup(-1);
 
@@ -945,7 +946,7 @@ public:
   }
 
   // Find first index that is true.
-  int First_True(void) const {
+  int First_True() const {
     if (LastIndex != -1)
       Fixup(-1);
 
@@ -961,7 +962,7 @@ public:
   }
 
   // Accessors (usefull for saving the bit vector)
-  const VectorClass<unsigned char> &Get_Bit_Array(void) { return BitArray; }
+  const VectorClass<unsigned char> &Get_Bit_Array() { return BitArray; }
 
 protected:
   void Fixup(int index = -1) const;
@@ -998,7 +999,7 @@ template <class T> int Pointer_Vector_Add(T *ptr, VectorClass<T *> &vec) {
   int id = 0;
   bool foundspot = false;
   for (int index = 0; index < vec.Length(); index++) {
-    if (vec[index] == NULL) {
+    if (vec[index] == nullptr) {
       id = index;
       foundspot = true;
       break;
@@ -1008,7 +1009,7 @@ template <class T> int Pointer_Vector_Add(T *ptr, VectorClass<T *> &vec) {
     id = vec.Length();
     vec.Resize((vec.Length() + 1) * 2);
     for (int index = id; index < vec.Length(); index++) {
-      vec[index] = NULL;
+      vec[index] = nullptr;
     }
   }
   vec[id] = ptr;
@@ -1018,7 +1019,7 @@ template <class T> int Pointer_Vector_Add(T *ptr, VectorClass<T *> &vec) {
 template <class T> bool Pointer_Vector_Remove(T const *ptr, VectorClass<T *> &vec) {
   int id = vec.ID((T *)ptr);
   if (id != -1) {
-    vec[id] = NULL;
+    vec[id] = nullptr;
     return (true);
   }
   return (false);

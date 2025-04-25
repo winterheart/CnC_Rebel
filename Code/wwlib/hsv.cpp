@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -131,7 +132,7 @@ int HSVClass::Difference(HSVClass const &hsv) const {
  * HISTORY:                                                                                    *
  *   02/20/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-HSVClass::operator RGBClass(void) const {
+HSVClass::operator RGBClass() const {
   unsigned int i;         // Integer part.
   unsigned int f;         // Fractional or remainder part.  f/HSV_BASE gives fraction.
   unsigned int tmp;       // Temporary variable to help with calculations.

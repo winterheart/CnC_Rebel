@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -48,6 +49,7 @@
 */
 class Blitter {
 public:
+  virtual ~Blitter() = default;
   /*
   **	Blits from source to dest (starts at first pixel). This is the preferred
   **	method of pixel blitting and this routine will be called 99% of the time under
@@ -82,6 +84,7 @@ public:
 */
 class RLEBlitter {
 public:
+  virtual ~RLEBlitter() = default;
   /*
   **	Blits from the RLE compressed source to the destination buffer. An optional
   **	leading pixel skip value can be supplied when a sub-section of an RLE

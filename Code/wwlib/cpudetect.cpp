@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -994,7 +995,7 @@ void CPUDetectClass::Init_Processor_Log() {
   SYSLOG(("Operating system version %d.%d\r\n", OSVersionNumberMajor, OSVersionNumberMinor));
   SYSLOG(("Operating system build: %d.%d.%d\r\n", (OSVersionBuildNumber & 0xff000000) >> 24,
           (OSVersionBuildNumber & 0xff0000) >> 16, (OSVersionBuildNumber & 0xffff)));
-  SYSLOG(("OS-Info: %s\r\n", OSVersionExtraInfo));
+  SYSLOG(("OS-Info: %s\r\n", OSVersionExtraInfo.Peek_Buffer()));
 
   SYSLOG(("Processor: %s\r\n", CPUDetectClass::Get_Processor_String()));
   SYSLOG(("Clock speed: ~%dMHz\r\n", CPUDetectClass::Get_Processor_Speed()));
@@ -1013,7 +1014,7 @@ void CPUDetectClass::Init_Processor_Log() {
     cpu_type = "*Intel Reserved*";
     break;
   }
-  SYSLOG(("Processor type: %s\r\n", cpu_type));
+  SYSLOG(("Processor type: %s\r\n", cpu_type.Peek_Buffer()));
 
   SYSLOG(("\r\n"));
 
@@ -1085,7 +1086,7 @@ void CPUDetectClass::Init_Compact_Log() {
   GetTimeZoneInformation(&time_zone);
   COMPACTLOG(("%d\t", time_zone.Bias));
 
-  OSInfoStruct os_info;
+  OSInfoStruct os_info{};
   Get_OS_Info(os_info, OSVersionPlatformId, OSVersionNumberMajor, OSVersionNumberMinor, OSVersionBuildNumber);
   COMPACTLOG(("%s\t", os_info.Code));
 
@@ -1243,12 +1244,12 @@ void Get_OS_Info(OSInfoStruct &os_info, unsigned OSVersionPlatformId, unsigned O
   default:
     break;
   case VER_PLATFORM_WIN32_WINDOWS: {
-    for (int i = 0; i < sizeof(Windows9xVersionTable) / sizeof(os_info); ++i) {
-      if (Windows9xVersionTable[i].VersionMajor == OSVersionNumberMajor &&
-          Windows9xVersionTable[i].VersionMinor == OSVersionNumberMinor &&
-          Windows9xVersionTable[i].BuildMajor == build_major && Windows9xVersionTable[i].BuildMinor == build_minor &&
-          Windows9xVersionTable[i].BuildSub == build_sub) {
-        os_info = Windows9xVersionTable[i];
+    for (auto & i : Windows9xVersionTable) {
+      if (i.VersionMajor == OSVersionNumberMajor &&
+          i.VersionMinor == OSVersionNumberMinor &&
+          i.BuildMajor == build_major && i.BuildMinor == build_minor &&
+          i.BuildSub == build_sub) {
+        os_info = i;
         return;
       }
     }

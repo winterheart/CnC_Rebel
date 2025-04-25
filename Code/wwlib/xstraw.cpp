@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,10 +38,10 @@
  *   FileStraw::~FileStraw -- The destructor for the file straw.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "xstraw.h"
-#include <stddef.h>
-#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------
 // BufferStraw
@@ -67,7 +68,7 @@
 int BufferStraw::Get(void *source, int slen) {
   int total = 0;
 
-  if (Is_Valid() && source != NULL && slen > 0) {
+  if (Is_Valid() && source != nullptr && slen > 0) {
     int len = slen;
     if (BufferPtr.Get_Size() != 0) {
       int theoretical_max = BufferPtr.Get_Size() - Index;
@@ -109,7 +110,7 @@ int BufferStraw::Get(void *source, int slen) {
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int FileStraw::Get(void *source, int slen) {
-  if (Valid_File() && source != NULL && slen > 0) {
+  if (Valid_File() && source != nullptr && slen > 0) {
     if (!File->Is_Open()) {
       HasOpened = true;
       if (!File->Is_Available())
@@ -137,10 +138,10 @@ int FileStraw::Get(void *source, int slen) {
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-FileStraw::~FileStraw(void) {
+FileStraw::~FileStraw() {
   if (Valid_File() && HasOpened) {
     File->Close();
     HasOpened = false;
-    File = NULL;
+    File = nullptr;
   }
 }

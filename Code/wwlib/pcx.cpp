@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdlib>
+
 #include "always.h"
 #include "pcx.h"
-#include <stdlib.h>
 
 /***************************************************************************
  * READ_PCX_FILE -- read a pcx file into a Graphic Buffer                  *
@@ -88,33 +90,33 @@ Surface *Read_PCX_File(FileClass &file_handle, PaletteClass *palette, void *Buff
   BSurface *pic;
 
   if (!file_handle.Is_Available())
-    return (NULL);
+    return (nullptr);
 
   file_handle.Open(FileClass::READ);
 
   file_handle.Read(&header, sizeof(PCX_HEADER));
 
   if (header.id != 10 && header.version != 5 && header.pixelsize != 8)
-    return NULL;
+    return nullptr;
 
   width = header.width - header.x + 1;
   height = header.height - header.y + 1;
 
-  if (Buff != NULL) {
+  if (Buff != nullptr) {
     i = Size / width;
     height = MIN((int)(i - 1), (int)height);
     Buffer b(Buff, Size);
     pic = new BSurface(width, height, 1, &b);
-    if (pic == NULL)
-      return NULL;
+    if (pic == nullptr)
+      return nullptr;
   } else {
     pic = new BSurface(width, height, 1);
-    if (pic == NULL)
-      return NULL;
+    if (pic == nullptr)
+      return nullptr;
   }
 
   buffer = (char *)pic->Lock();
-  if (buffer != NULL) {
+  if (buffer != nullptr) {
     file_ptr = pool;
     file_handle.Read(pool, POOL_SIZE);
 

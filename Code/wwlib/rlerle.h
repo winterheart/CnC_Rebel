@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -43,9 +44,9 @@
 **	templates to support the different destination pixel formats.
 */
 
+#include <cassert>
+
 #include "blitter.h"
-#include <assert.h>
-#include <string.h>
 
 /*
 **	This is a helper function that will skip N pixels in the RLE compressed source. This is
@@ -77,7 +78,7 @@ inline int Skip_Leading_Pixels(unsigned char const *&sptr, int skipper) {
 */
 template <class T> class RLEBlitTransXlat : public RLEBlitter {
 public:
-  RLEBlitTransXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != NULL); }
+  RLEBlitTransXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != nullptr); }
 
   virtual void Blit(void *dest, void const *source, int length, int leadskip = 0) const {
     unsigned char const *sptr = (unsigned char const *)source;
@@ -121,8 +122,8 @@ template <class T> class RLEBlitTransRemapXlat : public RLEBlitter {
 public:
   RLEBlitTransRemapXlat(unsigned char const *remapper, T const *translator)
       : RemapTable(remapper), TranslateTable(translator) {
-    assert(TranslateTable != NULL);
-    assert(RemapTable != NULL);
+    assert(TranslateTable != nullptr);
+    assert(RemapTable != nullptr);
   }
 
   virtual void Blit(void *dest, void const *source, int length, int leadskip = 0) const {
@@ -170,8 +171,8 @@ template <class T> class RLEBlitTransZRemapXlat : public RLEBlitter {
 public:
   RLEBlitTransZRemapXlat(unsigned char const *const *remapper, T const *translator)
       : RemapTable(remapper), TranslateTable(translator) {
-    assert(TranslateTable != NULL);
-    assert(RemapTable != NULL);
+    assert(TranslateTable != nullptr);
+    assert(RemapTable != nullptr);
   }
 
   virtual void Blit(void *dest, void const *source, int length, int leadskip = 0) const {

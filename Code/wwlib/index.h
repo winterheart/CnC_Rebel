@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -48,9 +49,7 @@
  *   IndexClass<T>::~IndexClass -- Destructor for index handler object.                        *
  *   compfunc -- Support function for bsearch and bsort.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef INDEX_H
 #define INDEX_H
@@ -82,8 +81,8 @@
 
 template <class INDEX, class T> class IndexClass {
 public:
-  IndexClass(void);
-  ~IndexClass(void);
+  IndexClass();
+  ~IndexClass();
 
   /*
   **	Add element to index table.
@@ -103,7 +102,7 @@ public:
   /*
   **	Fetch number of index entries in the table.
   */
-  int Count(void) const;
+  int Count() const;
 
   /*
   **	Actually a fetch an index data element from the table.
@@ -119,7 +118,7 @@ public:
   /*
   **	Clear out the index table to null (empty) state.
   */
-  void Clear(void);
+  void Clear();
 
 private:
   /*
@@ -127,7 +126,7 @@ private:
   **	object and the index identifier number.
   */
   struct NodeElement {
-    NodeElement(void) {} // Default constructor does nothing (by design).
+    NodeElement() = default; // Default constructor does nothing (by design).
     NodeElement(INDEX const &id, T &data) : ID(id), Data(data) {}
 
     INDEX ID; // ID number (must be first element in this structure).
@@ -180,7 +179,7 @@ private:
   /*
   **	Invalidate the archive pointer.
   */
-  void Invalidate_Archive(void) const;
+  void Invalidate_Archive() const;
 
   /*
   **	Set archive to specified value.
@@ -210,7 +209,7 @@ private:
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 template <class INDEX, class T>
-IndexClass<INDEX, T>::IndexClass(void) : IndexTable(0), IndexCount(0), IndexSize(0), IsSorted(false), Archive(0) {
+IndexClass<INDEX, T>::IndexClass() : IndexTable(0), IndexCount(0), IndexSize(0), IsSorted(false), Archive(0) {
   Invalidate_Archive();
 }
 
@@ -228,7 +227,7 @@ IndexClass<INDEX, T>::IndexClass(void) : IndexTable(0), IndexCount(0), IndexSize
  * HISTORY:                                                                                    *
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class INDEX, class T> IndexClass<INDEX, T>::~IndexClass(void) { Clear(); }
+template <class INDEX, class T> IndexClass<INDEX, T>::~IndexClass() { Clear(); }
 
 /***********************************************************************************************
  * IndexClass<T>::Clear -- Clear index handler to empty state.                                 *
@@ -245,7 +244,7 @@ template <class INDEX, class T> IndexClass<INDEX, T>::~IndexClass(void) { Clear(
  * HISTORY:                                                                                    *
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class INDEX, class T> void IndexClass<INDEX, T>::Clear(void) {
+template <class INDEX, class T> void IndexClass<INDEX, T>::Clear() {
   delete[] IndexTable;
   IndexTable = 0;
   IndexCount = 0;
@@ -278,7 +277,7 @@ template <class INDEX, class T> bool IndexClass<INDEX, T>::Increase_Table_Size(i
     return (false);
 
   NodeElement *table = new NodeElement[IndexSize + amount];
-  if (table != NULL) {
+  if (table != nullptr) {
 
     /*
     **	Copy all valid nodes into the new table.
@@ -323,7 +322,7 @@ template <class INDEX, class T> bool IndexClass<INDEX, T>::Increase_Table_Size(i
  * HISTORY:                                                                                    *
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class INDEX, class T> int IndexClass<INDEX, T>::Count(void) const { return (IndexCount); }
+template <class INDEX, class T> int IndexClass<INDEX, T>::Count() const { return (IndexCount); }
 
 /***********************************************************************************************
  * IndexClass<T>::Is_Present -- Checks for presense of index entry.                            *
@@ -457,7 +456,7 @@ template <class INDEX, class T> bool IndexClass<INDEX, T>::Is_Archive_Same(INDEX
  * HISTORY:                                                                                    *
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class INDEX, class T> void IndexClass<INDEX, T>::Invalidate_Archive(void) const { Archive = 0; }
+template <class INDEX, class T> void IndexClass<INDEX, T>::Invalidate_Archive() const { Archive = 0; }
 
 /***********************************************************************************************
  * IndexClass<T>::Set_Archive -- Records the node pointer into the archive.                    *

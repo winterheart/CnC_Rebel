@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef CHUNKIO_H
 #define CHUNKIO_H
@@ -97,13 +96,13 @@ struct ChunkHeader {
 
   // Use these accessors to ensure you correctly deal with the data in the chunk header
   void Set_Type(uint32 type) { ChunkType = type; }
-  uint32 Get_Type(void) { return ChunkType; }
+  uint32 Get_Type() { return ChunkType; }
   void Set_Size(uint32 size) {
     ChunkSize &= 0x80000000;
     ChunkSize |= (size & 0x7FFFFFFF);
   }
   void Add_Size(uint32 add) { Set_Size(Get_Size() + add); }
-  uint32 Get_Size(void) { return (ChunkSize & 0x7FFFFFFF); }
+  uint32 Get_Size() { return (ChunkSize & 0x7FFFFFFF); }
   void Set_Sub_Chunk_Flag(bool onoff) {
     if (onoff) {
       ChunkSize |= 0x80000000;
@@ -111,7 +110,7 @@ struct ChunkHeader {
       ChunkSize &= 0x7FFFFFFF;
     }
   }
-  int Get_Sub_Chunk_Flag(void) { return (ChunkSize & 0x80000000); }
+  int Get_Sub_Chunk_Flag() { return (ChunkSize & 0x80000000); }
 
   // Chunk type and size.
   // Note: MSB of ChunkSize is used to indicate whether this chunk
@@ -125,10 +124,10 @@ struct MicroChunkHeader {
   MicroChunkHeader(uint8 type, uint8 size) { ChunkType = type, ChunkSize = size; }
 
   void Set_Type(uint8 type) { ChunkType = type; }
-  uint8 Get_Type(void) { return ChunkType; }
+  uint8 Get_Type() { return ChunkType; }
   void Set_Size(uint8 size) { ChunkSize = size; }
   void Add_Size(uint8 add) { Set_Size(Get_Size() + add); }
-  uint8 Get_Size(void) { return ChunkSize; }
+  uint8 Get_Size() { return ChunkSize; }
 
   uint8 ChunkType;
   uint8 ChunkSize;

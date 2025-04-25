@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -104,7 +105,7 @@ RandomClass::RandomClass(unsigned seed) : Seed(seed) {}
  * HISTORY:                                                                                    *
  *   02/27/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RandomClass::operator()(void) {
+int RandomClass::operator()() {
   /*
   **	Transform the seed value into the next number in the sequence.
   */
@@ -155,8 +156,8 @@ int RandomClass::operator()(int minval, int maxval) { return (Pick_Random_Number
 Random2Class::Random2Class(unsigned seed) : Index1(0), Index2(103) {
   Random3Class random(seed);
 
-  for (int index = 0; index < ARRAY_SIZE(Table); index++) {
-    Table[index] = random;
+  for (int & index : Table) {
+    index = random;
   }
 }
 
@@ -175,7 +176,7 @@ Random2Class::Random2Class(unsigned seed) : Index1(0), Index2(103) {
  * HISTORY:                                                                                    *
  *   05/20/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int Random2Class::operator()(void) {
+int Random2Class::operator()() {
   Table[Index1] ^= Table[Index2];
   int val = Table[Index1];
 
@@ -263,7 +264,7 @@ Random3Class::Random3Class(unsigned seed1, unsigned seed2) : Seed(seed1), Index(
  * HISTORY:                                                                                    *
  *   05/20/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int Random3Class::operator()(void) {
+int Random3Class::operator()() {
   int loword = Seed;
   int hiword = Index++;
   for (int i = 0; i < 4; i++) {
@@ -330,7 +331,7 @@ Random4Class::Random4Class(unsigned int seed) {
   // mti is N+1 after this
 }
 
-int Random4Class::operator()(void) {
+int Random4Class::operator()() {
   unsigned int y;
   static unsigned int mag01[2] = {0x0, MATRIX_A};
   /* mag01[x] = x * MATRIX_A  for x=0,1 */

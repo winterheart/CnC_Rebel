@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -30,21 +31,19 @@
 #ifndef FASTALLOCATOR_H
 #define FASTALLOCATOR_H
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 // #define MEMORY_OVERWRITE_TEST
 
 ///////////////////////////////////////////////////////////////////////////////
 // Include files
 //
+#include <cstring>
+#include <malloc.h>
+
 #include "always.h"
 #include "wwdebug.h"
 #include "mutex.h"
-#include <malloc.h>
-#include <stddef.h> //size_t & ptrdiff_t definition
-#include <string.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Forward Declarations
@@ -243,7 +242,7 @@ protected:
 WWINLINE void *FastFixedAllocator::Alloc() {
   TotalAllocationCount++;
   TotalAllocatedSize += esize;
-  if (head == 0) {
+  if (head == nullptr) {
     grow();
   }
   Link *p = head;
@@ -273,8 +272,8 @@ WWINLINE void FastFixedAllocator::Free(void *pAlloc) {
 
 WWINLINE FastFixedAllocator::FastFixedAllocator(unsigned int n)
     : esize(1), TotalHeapSize(0), TotalAllocatedSize(0), TotalAllocationCount(0) {
-  head = 0;
-  chunks = 0;
+  head = nullptr;
+  chunks = nullptr;
   Init(n);
 }
 
@@ -318,7 +317,7 @@ WWINLINE void FastFixedAllocator::grow() {
   char *last = &start[(nelem - 1) * esize];
   for (char *p = start; p < last; p += esize)
     reinterpret_cast<Link *>(p)->next = reinterpret_cast<Link *>(p + esize);
-  reinterpret_cast<Link *>(last)->next = 0;
+  reinterpret_cast<Link *>(last)->next = nullptr;
   head = reinterpret_cast<Link *>(start);
 }
 
@@ -473,7 +472,7 @@ WWINLINE void *FastAllocatorGeneral::Realloc(void *pAlloc, unsigned int n) {
     return pNewAlloc;
   }
   Free(pAlloc);
-  return NULL;
+  return nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -503,7 +502,7 @@ template <class T> struct FastSTLAllocator {
 
   T *address(T &t) const { return (&t); }             // These two are slightly strange but
   const T *address(const T &t) const { return (&t); } // required functions. Just do it.
-  static T *allocate(size_t n, const void * = NULL) { return (T *)generalAllocator->Alloc(n * sizeof(T)); }
+  static T *allocate(size_t n, const void * = nullptr) { return (T *)generalAllocator->Alloc(n * sizeof(T)); }
   static void construct(T *ptr, const T &value) { new (ptr) T(value); }
   static void deallocate(void *ptr, size_t /*n*/) { generalAllocator->Free(ptr); }
   static void destroy(T *ptr) { ptr->~T(); }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,8 +38,8 @@
  *   Hires_Load -- Allocates memory for, and loads, a resolution dependant file.               *
  *   Fetch_String -- Fetches a string resource.                                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "always.h"
 #include <new.h>
+#include "always.h"
 #include "data.h"
 
 /***********************************************************************************************
@@ -59,12 +60,12 @@
  *   10/17/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
 void *Load_Alloc_Data(FileClass &file) {
-  void *ptr = NULL;
+  void *ptr = nullptr;
   if (file.Is_Available()) {
     long size = file.Size();
 
     ptr = new char[size];
-    if (ptr != NULL) {
+    if (ptr != nullptr) {
       file.Read(ptr, size);
     }
   }
@@ -175,7 +176,7 @@ typedef struct SRecord {
   int TimeStamp;     // 'Time' that this string was last requested.
   char String[2048]; // Copy of string resource.
 
-  SRecord(void) : ID(-1), TimeStamp(-1) {}
+  SRecord() : ID(-1), TimeStamp(-1) {}
 } SRecord;
 
 /***********************************************************************************************
@@ -215,10 +216,10 @@ char const *Fetch_String(int id) {
   **	Check to see if the requested string has already been fetched into a buffer. If so, then
   **	return a pointer to that string (update the time stamp as well).
   */
-  for (int index = 0; index < ARRAY_SIZE(_buffers); index++) {
-    if (_buffers[index].ID == id) {
-      _buffers[index].TimeStamp = _time;
-      return (_buffers[index].String);
+  for (auto & _buffer : _buffers) {
+    if (_buffer.ID == id) {
+      _buffer.TimeStamp = _time;
+      return (_buffer.String);
     }
   }
 
@@ -254,7 +255,7 @@ char const *Fetch_String(int id) {
 
 void const *Fetch_Resource(LPCSTR resname, LPCSTR restype) {
 #ifdef _UNIX
-  return (NULL);
+  return (nullptr);
 #else
   /*
   **	Fetch the program instance if it hasn't already been recorded.
@@ -264,13 +265,13 @@ void const *Fetch_Resource(LPCSTR resname, LPCSTR restype) {
   //	}
 
   HRSRC handle = FindResource(ProgramInstance, resname, restype);
-  if (handle == NULL) {
-    return (NULL);
+  if (handle == nullptr) {
+    return (nullptr);
   }
 
   HGLOBAL rhandle = LoadResource(ProgramInstance, handle);
-  if (rhandle == NULL) {
-    return (NULL);
+  if (rhandle == nullptr) {
+    return (nullptr);
   }
 
   return (LockResource(rhandle));
@@ -297,17 +298,15 @@ int Load_Picture(FileClass &file, Buffer &scratchbuf, Buffer &destbuf, unsigned 
  *    5/13/96 3:20PM ST : Created                                                              *
  *=============================================================================================*/
 void *Hires_Load(FileClass &file) {
-  int length;
-  void *return_ptr;
 
   if (file.Is_Available()) {
 
-    length = file.Size();
-    return_ptr = new char[length];
+    int length = file.Size();
+    void *return_ptr = new char[length];
     file.Read(return_ptr, length);
     return (return_ptr);
 
   } else {
-    return (NULL);
+    return (nullptr);
   }
 }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,10 +51,10 @@ class BlowStraw : public Straw {
 public:
   typedef enum CryptControl { ENCRYPT, DECRYPT } CryptControl;
 
-  BlowStraw(CryptControl control) : BF(NULL), Counter(0), Control(control) {}
+  BlowStraw(CryptControl control) : BF(nullptr), Counter(0), Control(control) {}
   virtual ~BlowStraw(void) {
     delete BF;
-    BF = NULL;
+    BF = nullptr;
   }
 
   virtual int Get(void *source, int slen);

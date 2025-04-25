@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,9 +38,10 @@
  *   DIB8C::Clear -- clears the DIB                                                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <math.h>
+
 #include "always.h"
 #include "dib.h"
-#include <math.h>
 
 /***********************************************************************************************
  * DIB8C::DIB8Class -- constructor                                                             *
@@ -54,12 +56,12 @@
  *   04/18/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
 DIB8Class::DIB8Class(HWND hwnd, int width, int height, PaletteClass &pal)
-    : IsZombie(false), Info(NULL), Handle(0), Pixels(NULL), Width(width), Height(height), PixelBase(NULL), Pitch(NULL),
-      Surface(NULL) {
+    : IsZombie(false), Info(nullptr), Handle(0), Pixels(nullptr), Width(width), Height(height), PixelBase(nullptr),
+      Pitch(nullptr), Surface(nullptr) {
   // Allocate a BITMAPINFO structure
   Info = (BITMAPINFO *)new char[sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD)];
 
-  if (Info == NULL) {
+  if (Info == nullptr) {
     IsZombie = true;
     return;
   }
@@ -87,7 +89,7 @@ DIB8Class::DIB8Class(HWND hwnd, int width, int height, PaletteClass &pal)
 
   // Create the DIB.
   HDC hdc = GetDC(hwnd);
-  Handle = CreateDIBSection(hdc, Info, DIB_RGB_COLORS, (void **)&Pixels, NULL, 0);
+  Handle = CreateDIBSection(hdc, Info, DIB_RGB_COLORS, (void **)&Pixels, nullptr, 0);
   ReleaseDC(hwnd, hdc);
 
   if (!Handle) {
@@ -118,7 +120,7 @@ DIB8Class::DIB8Class(HWND hwnd, int width, int height, PaletteClass &pal)
   int surfwid = abs(Pitch);
   Surface = new BSurface(surfwid, Height, 1, Pixels);
 
-  if (Surface == NULL) {
+  if (Surface == nullptr) {
     IsZombie = true;
     return;
   }

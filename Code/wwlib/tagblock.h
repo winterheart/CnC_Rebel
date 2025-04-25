@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef TAGBLOCK_H
 #define TAGBLOCK_H
@@ -46,7 +45,6 @@
 #include "crc.h"
 #include "rawfile.h"
 
-#include <string.h>
 
 class TagBlockHandle;
 class TagBlockIndex;
@@ -86,9 +84,9 @@ public:
   TagBlockHandle *Create_Tag(const char *tagname);
   void Close_Tag(TagBlockHandle *handle);
 
-  int Does_Tag_Exist(const char *tagname) { return (Find_Block(tagname) != NULL); }
+  int Does_Tag_Exist(const char *tagname) { return (Find_Block(tagname) != nullptr); }
 
-  virtual unsigned long Get_Date_Time(void) { return (FileTime); }
+  virtual unsigned long Get_Date_Time() { return (FileTime); }
 
   // Methods to figure an offset of the tag name and the data
   // given the offset of the start of the block (BlockHeader)..

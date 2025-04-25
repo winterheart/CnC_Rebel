@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef XSURFACE_H
 #define XSURFACE_H
@@ -51,7 +50,7 @@
 class XSurface : public Surface {
 public:
   XSurface(int width = 0, int height = 0) : Surface(width, height), LockCount(0) {}
-  virtual ~XSurface(void) {}
+  virtual ~XSurface() {}
 
   /*
   **	Copies regions from one surface to another.
@@ -91,18 +90,18 @@ public:
   */
   virtual void *Lock(Point2D = Point2D(0, 0)) const {
     LockCount++;
-    return (NULL);
+    return (nullptr);
   }
-  virtual bool Unlock(void) const {
+  virtual bool Unlock() const {
     LockCount--;
     return (true);
   }
-  virtual bool Is_Locked(void) const { return (LockCount != 0); }
+  virtual bool Is_Locked() const { return (LockCount != 0); }
 
   /*
   **	Queries information about the surface.
   */
-  virtual int Bytes_Per_Pixel(void) const = 0;
+  virtual int Bytes_Per_Pixel() const = 0;
   virtual int Stride(void) const = 0;
 
   /*
@@ -110,7 +109,7 @@ public:
   **	the Watcom compiler doesn't support RTTI, we must resort to using this
   **	alternative.
   */
-  virtual bool Is_Direct_Draw(void) const { return (false); }
+  virtual bool Is_Direct_Draw() const { return (false); }
 
   /*
   **	This routine is handy for preparing to perform some kind of manual blit

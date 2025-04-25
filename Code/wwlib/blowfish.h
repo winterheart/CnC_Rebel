@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,14 +38,7 @@
 #ifndef BLOWFISH_H
 #define BLOWFISH_H
 
-#include <limits.h>
-
-/*
-**	The "bool" integral type was defined by the C++ committee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#include "bool.h"
+#include <climits>
 
 /*
 **	This engine will process data blocks by encryption and decryption.
@@ -60,8 +54,8 @@
 */
 class BlowfishEngine {
 public:
-  BlowfishEngine(void) : IsKeyed(false) {}
-  ~BlowfishEngine(void);
+  BlowfishEngine() : IsKeyed(false) {}
+  ~BlowfishEngine();
 
   void Submit_Key(void const *key, int length);
 
@@ -79,7 +73,7 @@ private:
   void Sub_Key_Encrypt(unsigned long &left, unsigned long &right);
 
   void Process_Block(void const *plaintext, void *cyphertext, unsigned long const *ptable);
-  void Initialize_Tables(void);
+  void Initialize_Tables();
 
   enum {
     ROUNDS = 16,        // Feistal round count (16 is standard).

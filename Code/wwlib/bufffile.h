@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -38,9 +39,7 @@
  *   RawFileClass::Is_Open -- Checks to see if the file is open or not.                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef BUFFFILE_H
 #define BUFFFILE_H
@@ -68,7 +67,7 @@ public:
 protected:
   static void Set_Desired_Buffer_Size(int size) { _DesiredBufferSize = size; }
 
-  void Reset_Buffer(void);
+  void Reset_Buffer();
 
 private:
   unsigned char *Buffer;   // The read buffer

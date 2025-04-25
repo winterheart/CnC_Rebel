@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,7 +41,7 @@
 /*=============================================================================================*/
 // Includes.
 /*=============================================================================================*/
-#include <assert.h>
+#include <cassert>
 #include "bittype.h"
 
 /*=============================================================================================*/
@@ -54,11 +55,11 @@
 // Any class used as an element of a heap for BinaryHeapClass must inherit HeapNodeClass.
 template <class Key_Type> class HeapNodeClass {
 public:
-  virtual uint32 Get_Heap_Location(void) const = 0;
+  virtual uint32 Get_Heap_Location() const = 0;
   virtual void Set_Heap_Location(uint32 location) = 0;
 
   // This is pure virtual so that any type of key can be used as long as it uses the comparison operators.
-  virtual Key_Type Heap_Key(void) const = 0;
+  virtual Key_Type Heap_Key() const = 0;
 };
 
 // WARNING!
@@ -87,7 +88,7 @@ public:
   ~BinaryHeapClass() { Release_Array(); }
 
   // Reset all entries in the array to NULL
-  void Flush_Array(void) {
+  void Flush_Array() {
     ::memset(Elements, NULL, sizeof(HeapNodeClass<Key_Type> *) * Max_Number_Of_Elements);
     Number_Of_Elements = 0;
   }
@@ -105,10 +106,9 @@ public:
 
     // Initialize to NULL
     ::memset(Elements, NULL, sizeof(HeapNodeClass<Key_Type> *) * new_size);
-    return;
   }
 
-  void Release_Array(void) {
+  void Release_Array() {
     if (Own_Array) {
       delete[] Elements;
       Elements = NULL;
@@ -117,14 +117,13 @@ public:
     }
 
     Own_Array = false;
-    return;
   }
 
   // Return the current number of elements.
   unsigned int Get_Number_Of_Elements() { return (Number_Of_Elements); }
 
   // Return the maximum number of elements.
-  unsigned int Get_Max_Number_Of_Elements(void) { return (Max_Number_Of_Elements); }
+  unsigned int Get_Max_Number_Of_Elements() { return (Max_Number_Of_Elements); }
 
   // Return a pointer to a node in the tree
   HeapNodeClass<Key_Type> *Peek_Node(unsigned int location) { return Elements[location]; }
@@ -169,7 +168,7 @@ public:
   }
 
   // Take the smallest element out of the tree and reorder
-  HeapNodeClass<Key_Type> *Remove_Min(void) {
+  HeapNodeClass<Key_Type> *Remove_Min() {
     unsigned int child;
     HeapNodeClass<Key_Type> *last_element;
     HeapNodeClass<Key_Type> *min_element;

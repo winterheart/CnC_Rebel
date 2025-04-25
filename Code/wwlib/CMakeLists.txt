@@ -5,8 +5,8 @@ set(SOURCES
     LaunchWeb.cpp
     TARGA.CPP
     WWCOMUtil.cpp
-    _convert.cpp
-    _mono.cpp
+    #_convert.cpp
+    #_mono.cpp
     #_timer.cpp
     argv.cpp
     b64pipe.cpp
@@ -48,9 +48,9 @@ set(SOURCES
     lzo1x_d.cpp
     #lzopipe.cpp
     #lzostraw.cpp
-    md5.cpp
+    #md5.cpp
     mixfile.cpp
-    mono.cpp
+    #mono.cpp
     mpmath.cpp
     mpu.cpp
     msgloop.cpp

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,14 +36,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "hash.h"
 #include "wwdebug.h"
 #include "realcrc.h"
-#ifdef _UNIX
-#include "osdep.h"
-#endif
-
-#include <string.h>
 
 /*
 ** HashTableClass
@@ -56,37 +54,37 @@ HashTableClass::HashTableClass(int size) : HashTableSize(size) {
   Reset();
 }
 
-HashTableClass::~HashTableClass(void) {
+HashTableClass::~HashTableClass() {
   // If we need to, free the hash table
-  if (HashTable != NULL) {
+  if (HashTable != nullptr) {
     delete[] HashTable;
-    HashTable = NULL;
+    HashTable = nullptr;
   }
 }
 
-void HashTableClass::Reset(void) {
+void HashTableClass::Reset() {
   for (int i = 0; i < HashTableSize; i++) {
-    HashTable[i] = NULL;
+    HashTable[i] = nullptr;
   }
 }
 
 void HashTableClass::Add(HashableClass *entry) {
-  WWASSERT(entry != NULL);
+  WWASSERT(entry != nullptr);
 
   int index = Hash(entry->Get_Key());
-  WWASSERT(entry->NextHash == NULL);
+  WWASSERT(entry->NextHash == nullptr);
   entry->NextHash = HashTable[index];
   HashTable[index] = entry;
 }
 
 bool HashTableClass::Remove(HashableClass *entry) {
-  WWASSERT(entry != NULL);
+  WWASSERT(entry != nullptr);
 
   // Find in the hash table.
   const char *key = entry->Get_Key();
   int index = Hash(key);
 
-  if (HashTable[index] != NULL) {
+  if (HashTable[index] != nullptr) {
 
     // Special check for first entry
     if (HashTable[index] == entry) {
@@ -96,7 +94,7 @@ bool HashTableClass::Remove(HashableClass *entry) {
 
     // Search the list for the entry, and remove it
     HashableClass *node = HashTable[index];
-    while (node->NextHash != NULL) {
+    while (node->NextHash != nullptr) {
       if (node->NextHash == entry) {
         node->NextHash = entry->NextHash;
         return true;
@@ -111,12 +109,12 @@ bool HashTableClass::Remove(HashableClass *entry) {
 HashableClass *HashTableClass::Find(const char *key) {
   // Find in the hash table.
   int index = Hash(key);
-  for (HashableClass *node = HashTable[index]; node != NULL; node = node->NextHash) {
+  for (HashableClass *node = HashTable[index]; node != nullptr; node = node->NextHash) {
     if (::stricmp(node->Get_Key(), key) == 0) {
       return node;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 int HashTableClass::Hash(const char *key) { return CRC_Stringi(key) & (HashTableSize - 1); }
@@ -124,23 +122,23 @@ int HashTableClass::Hash(const char *key) { return CRC_Stringi(key) & (HashTable
 /*
 **
 */
-void HashTableIteratorClass::First(void) {
+void HashTableIteratorClass::First() {
   Index = 0;
   NextEntry = Table.HashTable[Index];
   Advance_Next();
   Next(); // Accept the next we found, and go to the next next
 }
 
-void HashTableIteratorClass::Next(void) {
+void HashTableIteratorClass::Next() {
   CurrentEntry = NextEntry;
-  if (NextEntry != NULL) {
+  if (NextEntry != nullptr) {
     NextEntry = NextEntry->NextHash;
     Advance_Next();
   }
 }
 
-void HashTableIteratorClass::Advance_Next(void) {
-  while (NextEntry == NULL) {
+void HashTableIteratorClass::Advance_Next() {
+  while (NextEntry == nullptr) {
     Index++;
     if (Index >= Table.HashTableSize) {
       return; // Done!

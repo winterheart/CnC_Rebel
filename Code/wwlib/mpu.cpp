@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,11 +36,12 @@
  *   Get_CPU_Rate -- Fetch the rate of CPU ticks per second.                                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+#include <cmath>
+
 #include "always.h"
 #include "win.h"
 #include "mpu.h"
-#include "math.h"
-#include <assert.h>
 
 typedef union {
   LARGE_INTEGER LargeInt;
@@ -117,7 +119,7 @@ unsigned long Get_CPU_Clock(unsigned long &high) {
 static unsigned long TSC_Low;
 static unsigned long TSC_High;
 
-void RDTSC(void) {
+void RDTSC() {
   _asm
   {
         ASM_RDTSC;
@@ -126,7 +128,7 @@ void RDTSC(void) {
   }
 }
 
-int Get_RDTSC_CPU_Speed(void) {
+int Get_RDTSC_CPU_Speed() {
   LARGE_INTEGER t0, t1;
   int freq = 0;                 // Most current freq. calc.
   int freq2 = 0;                // 2nd most current freq. calc.

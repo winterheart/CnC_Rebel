@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,10 +37,11 @@
  *   Base64Pipe::Put -- Processes a block of data through the pipe.                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "b64pipe.h"
 #include "base64.h"
-#include <string.h>
 
 /***********************************************************************************************
  * Base64Pipe::Put -- Processes a block of data through the pipe.                              *
@@ -61,7 +63,7 @@
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int Base64Pipe::Put(void const *source, int slen) {
-  if (source == NULL || slen < 1) {
+  if (source == nullptr || slen < 1) {
     return (Pipe::Put(source, slen));
   }
 
@@ -139,7 +141,7 @@ int Base64Pipe::Put(void const *source, int slen) {
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int Base64Pipe::Flush(void) {
+int Base64Pipe::Flush() {
   int len = 0;
 
   if (Counter) {

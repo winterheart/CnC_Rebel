@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -22,11 +23,11 @@
 
 // ----------------------------------------------------------------------------
 
-MutexClass::MutexClass(const char *name) : handle(NULL), locked(false) {
+MutexClass::MutexClass(const char *name) : handle(nullptr), locked(false) {
 #ifdef _UNIX
   // assert(0);
 #else
-  handle = CreateMutex(NULL, false, name);
+  handle = CreateMutex(nullptr, false, name);
   WWASSERT(handle);
 #endif
 }
@@ -75,7 +76,7 @@ MutexClass::LockClass::~LockClass() {
 
 // ----------------------------------------------------------------------------
 
-CriticalSectionClass::CriticalSectionClass() : handle(NULL), locked(false) {
+CriticalSectionClass::CriticalSectionClass() : handle(nullptr), locked(false) {
 #ifdef _UNIX
   // assert(0);
 #else

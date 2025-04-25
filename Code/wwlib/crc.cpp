@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -86,7 +87,7 @@ void CRCEngine::operator()(char datum) {
  *   03/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 long CRCEngine::operator()(void const *buffer, int length) {
-  if (buffer != NULL && length > 0) {
+  if (buffer != nullptr && length > 0) {
     char const *dataptr = (char const *)buffer;
     int bytes_left = length;
 

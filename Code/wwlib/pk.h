@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef PK_H
 #define PK_H
@@ -61,7 +60,7 @@
 */
 class PKey {
 public:
-  PKey(void) : Modulus(0), Exponent(0), BitPrecision(0) {}
+  PKey() : Modulus(0), Exponent(0), BitPrecision(0) {}
   PKey(void const *exponent, void const *modulus); // DER initialization.
 
   int Encrypt(void const *source, int slen, void *dest) const;
@@ -69,8 +68,8 @@ public:
 
   static void Generate(Straw &random, int bits, PKey &fastkey, PKey &slowkey);
 
-  int Plain_Block_Size(void) const { return ((BitPrecision - 1) / 8); }
-  int Crypt_Block_Size(void) const { return (Plain_Block_Size() + 1); }
+  int Plain_Block_Size() const { return ((BitPrecision - 1) / 8); }
+  int Crypt_Block_Size() const { return (Plain_Block_Size() + 1); }
   int Block_Count(int plaintext_length) const { return ((((plaintext_length - 1) / Plain_Block_Size()) + 1)); }
 
   int Encode_Modulus(void *buffer) const;
@@ -79,7 +78,7 @@ public:
   void Decode_Modulus(void *buffer);
   void Decode_Exponent(void *buffer);
 
-  static long Fast_Exponent(void) { return (65537L); }
+  static long Fast_Exponent() { return (65537L); }
 
   //	private:
 

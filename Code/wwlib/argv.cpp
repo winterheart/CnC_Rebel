@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -41,13 +42,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "argv.h"
 
-#include <assert.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstdio>
+
 #include "ffactory.h"
 #include "rawfile.h"
+
 int ArgvClass::Argc = 0;
 char *ArgvClass::Argv[MAX_ARGC];
 
@@ -66,7 +66,7 @@ char *ArgvClass::Argv[MAX_ARGC];
  * HISTORY:                                                                                    *
  *   06/18/1999 SKB : Created.                                                                 *
  *=============================================================================================*/
-ArgvClass::ArgvClass(bool case_sensitive, bool exact_size) : Flags(0), LastArg(0), CurrentPos(-1) {
+ArgvClass::ArgvClass(bool case_sensitive, bool exact_size) : Flags(0), LastArg(nullptr), CurrentPos(-1) {
   Case_Sensitive(case_sensitive);
   Exact_Size(exact_size);
 }
@@ -108,7 +108,7 @@ const char *ArgvClass::Find_Again(const char *arg) {
         }
       } else {
         // Case Sensitive, Match first strlen(arg).
-        int len = strlen(arg);
+        size_t len = strlen(arg);
         for (; CurrentPos < Argc; CurrentPos++) {
           if (!strncmp(arg, Argv[CurrentPos], len)) {
             return Argv[CurrentPos];
@@ -125,7 +125,7 @@ const char *ArgvClass::Find_Again(const char *arg) {
         }
       } else {
         // Note case sensitive, Match first strlen(arg).
-        int len = strlen(arg);
+        size_t len = strlen(arg);
         for (; CurrentPos < Argc; CurrentPos++) {
           if (!strnicmp(arg, Argv[CurrentPos], len)) {
             return Argv[CurrentPos];
@@ -134,7 +134,7 @@ const char *ArgvClass::Find_Again(const char *arg) {
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 /***********************************************************************************************
@@ -163,7 +163,7 @@ int ArgvClass::Init(char *lpCmdLine, const char *fileprefix) {
     return 0;
   }
 
-  int fp_cmp_len = (fileprefix) ? strlen(fileprefix) : 0;
+  size_t fp_cmp_len = (fileprefix) ? strlen(fileprefix) : 0;
 
   // Save original Argc for return.
   int origargc = Argc;
@@ -305,7 +305,7 @@ bool ArgvClass::Load_File(const char *fname) {
 void ArgvClass::Free() {
   for (int lp = 0; lp < Argc; lp++) {
     free(Argv[lp]);
-    Argv[lp] = 0;
+    Argv[lp] = nullptr;
   }
   Argc = -1;
 }
@@ -329,7 +329,7 @@ const char *ArgvClass::Find_Value(const char *arg) {
       return (Get_Cur_Value(strlen(arg)));
     }
   }
-  return (NULL);
+  return (nullptr);
 }
 
 /***********************************************************************************************
@@ -345,16 +345,16 @@ const char *ArgvClass::Find_Value(const char *arg) {
  *   08/23/1999 SKB : Created.                                                                 *
  *   06/25/2001 SKB : add flag user can check to see if value was extracted from next location.*
  *=============================================================================================*/
-const char *ArgvClass::Get_Cur_Value(unsigned prefixlen, bool *val_in_next) {
+const char *ArgvClass::Get_Cur_Value(unsigned prefixlen, bool *val_in_next) const {
   if (val_in_next)
     *val_in_next = false;
   if (CurrentPos < 0) {
-    return NULL;
+    return nullptr;
   }
   char *ptr = Argv[CurrentPos];
 
   if (strlen(ptr) < prefixlen) {
-    return (NULL);
+    return (nullptr);
   }
 
   ptr += prefixlen;
@@ -370,7 +370,7 @@ const char *ArgvClass::Get_Cur_Value(unsigned prefixlen, bool *val_in_next) {
   // Goto next line to handle '-P data' case on command line.
   ptr = Argv[CurrentPos + 1];
   if (!ptr) {
-    return NULL;
+    return nullptr;
   }
 
   while (*ptr) {
@@ -381,7 +381,7 @@ const char *ArgvClass::Get_Cur_Value(unsigned prefixlen, bool *val_in_next) {
     }
     ptr++;
   }
-  return (NULL);
+  return (nullptr);
 }
 
 /***********************************************************************************************
@@ -399,7 +399,7 @@ const char *ArgvClass::Get_Cur_Value(unsigned prefixlen, bool *val_in_next) {
  *   12/13/1999 NAK : Created.                                                                 *
  *=============================================================================================*/
 void ArgvClass::Update_Value(const char *attrib, const char *value) {
-  if ((Find_Value(attrib)) != NULL) {
+  if ((Find_Value(attrib)) != nullptr) {
     if (((CurrentPos + 1) < Argc) && (Argv[CurrentPos + 1][0] != '-')) // update old value
     {
       free(Argv[CurrentPos + 1]);
@@ -461,9 +461,8 @@ void ArgvClass::Add_Value(const char *attrib, const char *value) {
  *   06/25/2001 SKB : WARNINGS message                                                         *
  *=============================================================================================*/
 bool ArgvClass::Remove_Value(const char *attrib) {
-  int removeCount = 1;
-
-  if ((Find_Value(attrib)) != NULL) {
+  if ((Find_Value(attrib)) != nullptr) {
+    int removeCount = 1;
     free(Argv[CurrentPos]);
     if (((CurrentPos + 1) < Argc) && (Argv[CurrentPos + 1][0] != '-')) // value for this arg
     {

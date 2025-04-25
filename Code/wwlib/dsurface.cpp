@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -49,10 +50,10 @@
  *   DSurface::Unlock -- Unlock a previously locked surface.                                   *
  *   DSurface::~DSurface -- Destructor for a direct draw surface object.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+#include <cassert>
 
 #include "always.h"
 #include "dsurface.h"
-#include <assert.h>
 
 extern LPDIRECTDRAW DirectDrawObject; // pointer to direct draw object
 extern LPDIRECTDRAWSURFACE PaletteSurface;
@@ -60,7 +61,7 @@ extern LPDIRECTDRAWSURFACE PaletteSurface;
 /*
 **	Clipper object (for primary surface).
 */
-LPDIRECTDRAWCLIPPER DSurface::Clipper = NULL;
+LPDIRECTDRAWCLIPPER DSurface::Clipper = nullptr;
 
 int DSurface::RedRight = 0;
 int DSurface::RedLeft = 0;
@@ -97,10 +98,10 @@ DDPIXELFORMAT DSurface::PixelFormat;
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pixform)
-    : XSurface(width, height), BytesPerPixel(0), LockPtr(NULL), IsPrimary(false), IsVideoRam(false), SurfacePtr(NULL),
-      Description(NULL), DCUnlockCount(0) {
+    : XSurface(width, height), BytesPerPixel(0), LockPtr(nullptr), IsPrimary(false), IsVideoRam(false), SurfacePtr(nullptr),
+      Description(nullptr), DCUnlockCount(0) {
   Description = new DDSURFACEDESC;
-  if (Description != NULL) {
+  if (Description != nullptr) {
     memset(Description, '\0', sizeof(DDSURFACEDESC));
     Description->dwSize = sizeof(DDSURFACEDESC);
     Description->dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH;
@@ -120,12 +121,12 @@ DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pix
       Description->dwFlags |= DDSD_PIXELFORMAT;
     }
 
-    DirectDrawObject->CreateSurface(Description, &SurfacePtr, NULL);
+    DirectDrawObject->CreateSurface(Description, &SurfacePtr, nullptr);
 
     /*
     **	Get a description of the surface that was just allocated.
     */
-    if (SurfacePtr != NULL) {
+    if (SurfacePtr != nullptr) {
       memset(Description, '\0', sizeof(DDSURFACEDESC));
       Description->dwSize = sizeof(DDSURFACEDESC);
       SurfacePtr->GetSurfaceDesc(Description);
@@ -204,27 +205,27 @@ DSurface::DSurface(int width, int height, bool system_memory, DDPIXELFORMAT *pix
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::~DSurface(void) {
+DSurface::~DSurface() {
   /*
   **	If this is the primary surface, then the clipper must be detached from
   **	this surface and the clipper object deleted.
   */
-  if (IsPrimary && SurfacePtr != NULL && Clipper != NULL) {
-    SurfacePtr->SetClipper(NULL);
+  if (IsPrimary && SurfacePtr != nullptr && Clipper != nullptr) {
+    SurfacePtr->SetClipper(nullptr);
     Clipper->Release();
-    Clipper = NULL;
+    Clipper = nullptr;
   }
 
   /*
   **	Delete the description of the surface.
   */
   delete Description;
-  Description = NULL;
+  Description = nullptr;
 
-  if (SurfacePtr != NULL) {
+  if (SurfacePtr != nullptr) {
     SurfacePtr->Release();
   }
-  SurfacePtr = NULL;
+  SurfacePtr = nullptr;
 }
 
 /***********************************************************************************************
@@ -244,7 +245,7 @@ DSurface::~DSurface(void) {
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-DSurface::DSurface(void) : BytesPerPixel(0), LockPtr(NULL), SurfacePtr(NULL), Description(NULL), DCUnlockCount(0) {
+DSurface::DSurface() : BytesPerPixel(0), LockPtr(nullptr), SurfacePtr(nullptr), Description(nullptr), DCUnlockCount(0) {
   Description = new DDSURFACEDESC;
   memset(Description, '\0', sizeof(DDSURFACEDESC));
   Description->dwSize = sizeof(DDSURFACEDESC);
@@ -262,8 +263,8 @@ DSurface::DSurface(void) : BytesPerPixel(0), LockPtr(NULL), SurfacePtr(NULL), De
  * HISTORY:                                                                                    *
  *   06/21/2000 NAK : Created.                                                                 *
  *=============================================================================================*/
-HDC DSurface::GetDC(void) {
-  HDC hdc = NULL;
+HDC DSurface::GetDC() {
+  HDC hdc = nullptr;
   HRESULT hr;
 
   // We have to remove all current locks to get the device context unfortunately...
@@ -279,14 +280,14 @@ HDC DSurface::GetDC(void) {
       Lock();
       DCUnlockCount--;
     }
-    return (NULL);
+    return (nullptr);
   }
 
   // GetDC() locks the surface internally, so we need to reflect that here
   if (hr == DD_OK) {
     LockCount++;
   } else {
-    hdc = NULL;
+    hdc = nullptr;
   }
 
   return (hdc);
@@ -346,7 +347,7 @@ int DSurface::ReleaseDC(HDC hdc) {
  *=============================================================================================*/
 DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
   DSurface *surface = new DSurface();
-  int backcount = (backsurface1 != NULL) ? 1 : 0;
+  int backcount = (backsurface1 != nullptr) ? 1 : 0;
 
   /*
   **	Setup parameter for creating the primary surface. This will
@@ -360,7 +361,7 @@ DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
     surface->Description->dwFlags |= DDSD_BACKBUFFERCOUNT;
     surface->Description->dwBackBufferCount = backcount;
   }
-  HRESULT result = DirectDrawObject->CreateSurface(surface->Description, &surface->SurfacePtr, NULL);
+  HRESULT result = DirectDrawObject->CreateSurface(surface->Description, &surface->SurfacePtr, nullptr);
 
   /*
   **	If the primary surface object was created, then fetch a pointer to the
@@ -398,7 +399,7 @@ DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
     **	isn't the case for full screen games). It doesn't hurt to attach
     **	a clipper object anyway -- just in case.
     */
-    if (DirectDrawObject->CreateClipper(0, &Clipper, NULL) == DD_OK) {
+    if (DirectDrawObject->CreateClipper(0, &Clipper, nullptr) == DD_OK) {
       if (Clipper->SetHWnd(0, GetActiveWindow()) == DD_OK) {
         surface->SurfacePtr->SetClipper(Clipper);
       }
@@ -473,7 +474,7 @@ DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
 
   } else {
     delete surface;
-    surface = NULL;
+    surface = nullptr;
   }
 
   return (surface);
@@ -495,8 +496,8 @@ DSurface *DSurface::Create_Primary(DSurface **backsurface1) {
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 DSurface::DSurface(LPDIRECTDRAWSURFACE surfaceptr)
-    : BytesPerPixel(0), LockPtr(NULL), SurfacePtr(surfaceptr), Description(NULL) {
-  if (SurfacePtr != NULL) {
+    : BytesPerPixel(0), LockPtr(nullptr), SurfacePtr(surfaceptr), Description(nullptr) {
+  if (SurfacePtr != nullptr) {
     Description = new DDSURFACEDESC;
     memset(Description, '\0', sizeof(DDSURFACEDESC));
     Description->dwSize = sizeof(DDSURFACEDESC);
@@ -525,7 +526,7 @@ DSurface::DSurface(LPDIRECTDRAWSURFACE surfaceptr)
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::Bytes_Per_Pixel(void) const { return (BytesPerPixel); }
+int DSurface::Bytes_Per_Pixel() const { return (BytesPerPixel); }
 
 /***********************************************************************************************
  * DSurface::Stride -- Fetches the bytes between rows.                                         *
@@ -543,7 +544,7 @@ int DSurface::Bytes_Per_Pixel(void) const { return (BytesPerPixel); }
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int DSurface::Stride(void) const { return (Description->lPitch); }
+int DSurface::Stride() const { return (Description->lPitch); }
 
 /***********************************************************************************************
  * DSurface::Lock -- Fetches a working pointer into surface memory.                            *
@@ -572,9 +573,9 @@ void *DSurface::Lock(Point2D point) const {
     DDSURFACEDESC desc;
     memset(&desc, '\0', sizeof(desc));
     desc.dwSize = sizeof(desc);
-    HRESULT result = SurfacePtr->Lock(NULL, &desc, DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT, NULL);
+    HRESULT result = SurfacePtr->Lock(nullptr, &desc, DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT, nullptr);
     if (result != DD_OK)
-      return (NULL);
+      return (nullptr);
     memcpy(Description, &desc, sizeof(DDSURFACEDESC));
     BytesPerPixel = (Description->ddpfPixelFormat.dwRGBBitCount + 7) / 8;
     LockPtr = Description->lpSurface;
@@ -599,13 +600,13 @@ void *DSurface::Lock(Point2D point) const {
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool DSurface::Unlock(void) const {
+bool DSurface::Unlock() const {
   Restore_Check();
   if (LockCount > 0) {
     XSurface::Unlock();
     if (LockCount == 0) {
       SurfacePtr->Unlock(LockPtr);
-      LockPtr = NULL;
+      LockPtr = nullptr;
     }
     return (true);
   }
@@ -627,7 +628,7 @@ bool DSurface::Unlock(void) const {
  * HISTORY:                                                                                    *
  *   02/07/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void DSurface::Restore_Check(void) const {
+void DSurface::Restore_Check() const {
   if (SurfacePtr->IsLost() == DDERR_SURFACELOST) {
     SurfacePtr->Restore();
     if (LockCount > 0 && SurfacePtr->IsLost() != DDERR_SURFACELOST) {
@@ -733,7 +734,7 @@ bool DSurface::Blit_From(Rect const &dcliprect, Rect const &destrect, Surface co
     xsrcrect.right = srect.X + swindow.X + srect.Width;
     xsrcrect.bottom = srect.Y + swindow.Y + srect.Height;
 
-    HRESULT result = SurfacePtr->Blt(&xdestrect, source.SurfacePtr, &xsrcrect, DDBLT_WAIT, NULL);
+    HRESULT result = SurfacePtr->Blt(&xdestrect, source.SurfacePtr, &xsrcrect, DDBLT_WAIT, nullptr);
     return (result == DD_OK);
   }
   return (false);
@@ -822,7 +823,7 @@ bool DSurface::Fill_Rect(Rect const &cliprect, Rect const &fillrect, int color) 
   memset(&fx, '\0', sizeof(fx));
   fx.dwSize = sizeof(fx);
   fx.dwFillColor = color;
-  HRESULT result = SurfacePtr->Blt(&rect, NULL, NULL, DDBLT_WAIT | DDBLT_COLORFILL, &fx);
+  HRESULT result = SurfacePtr->Blt(&rect, nullptr, nullptr, DDBLT_WAIT | DDBLT_COLORFILL, &fx);
   return (result == DD_OK);
 }
 
@@ -869,7 +870,7 @@ int DSurface::Build_Hicolor_Pixel(int red, int green, int blue) {
  *   05/27/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 void DSurface::Build_Remap_Table(unsigned short *table, PaletteClass const &palette) {
-  assert(table != NULL);
+  assert(table != nullptr);
 
   /*
   **	Build the hicolor index table according to the palette.

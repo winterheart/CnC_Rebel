@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -42,9 +43,7 @@
  *   AutoPoolClass::operator delete -- overriden delete which calls the internal ObjectPool    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef MEMPOOL_H
 #define MEMPOOL_H
@@ -53,8 +52,6 @@
 #include "wwdebug.h"
 #include "mutex.h"
 #include <new.h>
-#include <stdlib.h>
-#include <stddef.h>
 
 /**********************************************************************************************
 ** ObjectPoolClass
@@ -73,13 +70,13 @@
 **********************************************************************************************/
 template <class T, int BLOCK_SIZE = 64> class ObjectPoolClass {
 public:
-  ObjectPoolClass(void);
-  ~ObjectPoolClass(void);
+  ObjectPoolClass();
+  ~ObjectPoolClass();
 
-  T *Allocate_Object(void);
+  T *Allocate_Object();
   void Free_Object(T *obj);
 
-  T *Allocate_Object_Memory(void);
+  T *Allocate_Object_Memory();
   void Free_Object_Memory(T *obj);
 
 protected:
@@ -130,8 +127,8 @@ public:
 
 private:
   // not implemented
-  static void *operator new[](size_t size);
-  static void operator delete[](void *memory);
+  void *operator new[](size_t size);
+  void operator delete[](void *memory);
 
   // This must be staticly declared by user
   static ObjectPoolClass<T, BLOCK_SIZE> Allocator;
@@ -158,8 +155,8 @@ private:
  * HISTORY:                                                                                    *
  *=============================================================================================*/
 template <class T, int BLOCK_SIZE>
-ObjectPoolClass<T, BLOCK_SIZE>::ObjectPoolClass(void)
-    : FreeListHead(NULL), BlockListHead(NULL), FreeObjectCount(0), TotalObjectCount(0) {}
+ObjectPoolClass<T, BLOCK_SIZE>::ObjectPoolClass()
+    : FreeListHead(nullptr), BlockListHead(nullptr), FreeObjectCount(0), TotalObjectCount(0) {}
 
 /***********************************************************************************************
  * ObjectPoolClass::~ObjectPoolClass -- destructor for ObjectPoolClass                         *
@@ -174,13 +171,13 @@ ObjectPoolClass<T, BLOCK_SIZE>::ObjectPoolClass(void)
  *                                                                                             *
  * HISTORY:                                                                                    *
  *=============================================================================================*/
-template <class T, int BLOCK_SIZE> ObjectPoolClass<T, BLOCK_SIZE>::~ObjectPoolClass(void) {
+template <class T, int BLOCK_SIZE> ObjectPoolClass<T, BLOCK_SIZE>::~ObjectPoolClass() {
   // assert that the user gave back all of the memory he was using
   WWASSERT(FreeObjectCount == TotalObjectCount);
 
   // delete all of the blocks we allocated
   int block_count = 0;
-  while (BlockListHead != NULL) {
+  while (BlockListHead != nullptr) {
     uint32 *next_block = *(uint32 **)BlockListHead;
     ::operator delete(BlockListHead);
     BlockListHead = next_block;
@@ -203,7 +200,7 @@ template <class T, int BLOCK_SIZE> ObjectPoolClass<T, BLOCK_SIZE>::~ObjectPoolCl
  * HISTORY:                                                                                    *
  *   7/29/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_Object(void) {
+template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_Object() {
   // allocate memory for the object
   T *obj = Allocate_Object_Memory();
 
@@ -243,7 +240,7 @@ template <class T, int BLOCK_SIZE> void ObjectPoolClass<T, BLOCK_SIZE>::Free_Obj
  * HISTORY:                                                                                    *
  *   7/29/99    GTH : Created.                                                                 *
  *=============================================================================================*/
-template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_Object_Memory(void) {
+template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_Object_Memory() {
   FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
 
   if (FreeListHead == 0) {
@@ -287,7 +284,7 @@ template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_O
 template <class T, int BLOCK_SIZE> void ObjectPoolClass<T, BLOCK_SIZE>::Free_Object_Memory(T *obj) {
   FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
 
-  WWASSERT(obj != NULL);
+  WWASSERT(obj != nullptr);
   *(T **)(obj) = FreeListHead; // Link to the Head
   FreeListHead = obj;          // Set the Head
   FreeObjectCount++;
@@ -323,7 +320,7 @@ template <class T, int BLOCK_SIZE> void *AutoPoolClass<T, BLOCK_SIZE>::operator 
  *   7/29/99    GTH : Created.                                                                 *
  *=============================================================================================*/
 template <class T, int BLOCK_SIZE> void AutoPoolClass<T, BLOCK_SIZE>::operator delete(void *memory) {
-  if (memory == 0)
+  if (memory == nullptr)
     return;
   Allocator.Free_Object_Memory((T *)memory);
 }

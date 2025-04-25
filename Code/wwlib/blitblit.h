@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -59,9 +60,10 @@
 **	the pixel to the logical palette color index appropriate for the display.
 */
 
+#include <cassert>
+#include <cstring>
+
 #include "blitter.h"
-#include <assert.h>
-#include <string.h>
 
 /*
 ** Blits without translation and source and dest are same pixel format. Note that
@@ -111,7 +113,7 @@ public:
 */
 template <class T> class BlitPlainXlat : public Blitter {
 public:
-  BlitPlainXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != NULL); }
+  BlitPlainXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != nullptr); }
   virtual void BlitForward(void *dest, void const *source, int len) const {
     for (int index = 0; index < len; index++) {
       unsigned char color = *(unsigned char const *)source;
@@ -139,7 +141,7 @@ private:
 */
 template <class T> class BlitTransXlat : public Blitter {
 public:
-  BlitTransXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != NULL); }
+  BlitTransXlat(T const *translator) : TranslateTable(translator) { assert(TranslateTable != nullptr); }
   virtual void BlitForward(void *dest, void const *source, int len) const {
     for (int index = 0; index < len; index++) {
       unsigned char color = *(unsigned char const *)source;
@@ -172,8 +174,8 @@ template <class T> class BlitTransRemapXlat : public Blitter {
 public:
   BlitTransRemapXlat(unsigned char const *remapper, T const *translator)
       : RemapTable(remapper), TranslateTable(translator) {
-    assert(RemapTable != NULL);
-    assert(TranslateTable != NULL);
+    assert(RemapTable != nullptr);
+    assert(TranslateTable != nullptr);
   }
   virtual void BlitForward(void *dest, void const *source, int length) const {
     for (int index = 0; index < length; index++) {
@@ -209,8 +211,8 @@ template <class T> class BlitTransZRemapXlat : public Blitter {
 public:
   BlitTransZRemapXlat(unsigned char const *const *remapper, T const *translator)
       : RemapTable(remapper), TranslateTable(translator) {
-    assert(RemapTable != NULL);
-    assert(TranslateTable != NULL);
+    assert(RemapTable != nullptr);
+    assert(TranslateTable != nullptr);
   }
   virtual void BlitForward(void *dest, void const *source, int length) const {
     unsigned char const *rtable = *RemapTable;
@@ -331,7 +333,7 @@ private:
 template <class T> class BlitTransLucent50 : public Blitter {
 public:
   BlitTransLucent50(T const *translator, T mask) : TranslateTable(translator), Mask(mask) {
-    assert(TranslateTable != NULL);
+    assert(TranslateTable != nullptr);
   }
   virtual void BlitForward(void *dest, void const *source, int length) const {
     for (int index = 0; index < length; index++) {
@@ -363,7 +365,7 @@ private:
 template <class T> class BlitTransLucent25 : public Blitter {
 public:
   BlitTransLucent25(T const *translator, T mask) : TranslateTable(translator), Mask(mask) {
-    assert(TranslateTable != NULL);
+    assert(TranslateTable != nullptr);
   }
   virtual void BlitForward(void *dest, void const *source, int length) const {
     for (int index = 0; index < length; index++) {
@@ -398,7 +400,7 @@ private:
 template <class T> class BlitTransLucent75 : public Blitter {
 public:
   BlitTransLucent75(T const *translator, T mask) : TranslateTable(translator), Mask(mask) {
-    assert(TranslateTable != NULL);
+    assert(TranslateTable != nullptr);
   }
   virtual void BlitForward(void *dest, void const *source, int length) const {
     for (int index = 0; index < length; index++) {

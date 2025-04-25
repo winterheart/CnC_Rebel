@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -66,7 +67,7 @@
 #define LZO_VERSION_STRING "0.20"
 #define LZO_VERSION_DATE "11 Aug 1996"
 
-#include <limits.h> /* CHAR_BIT, UINT_MAX, ULONG_MAX */
+#include <climits> /* CHAR_BIT, UINT_MAX, ULONG_MAX */
 #if !defined(CHAR_BIT) || (CHAR_BIT != 8)
 #error invalid CHAR_BIT
 #endif
@@ -202,7 +203,7 @@ lzo_adler32(lzo_uint _adler, const lzo_byte *_buf, lzo_uint _len);
 
 /* misc. */
 LZO_EXTERN(int) lzo_assert(int _expr);
-LZO_EXTERN(int) _lzo_config_check(void);
+LZO_EXTERN(int) _lzo_config_check();
 
 // #ifdef __cplusplus
 // } /* extern "C" */

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -38,7 +39,6 @@
 
 #include "always.h"
 #include "base64.h"
-// #include	<stddef.h>
 
 /*
 **	This is the magic padding character used to fill out the encoded data to a multiple of
@@ -136,7 +136,7 @@ int Base64_Encode(void const *source, int slen, void *dest, int dlen) {
   /*
   **	Check the parameters for legality.
   */
-  if (source == NULL || slen == 0 || dest == NULL || dlen == 0) {
+  if (source == nullptr || slen == 0 || dest == nullptr || dlen == 0) {
     return (0);
   }
 
@@ -235,7 +235,7 @@ int Base64_Decode(void const *source, int slen, void *dest, int dlen) {
   /*
   **	Check the parameters for legality.
   */
-  if (source == NULL || slen == 0 || dest == NULL || dlen == 0) {
+  if (source == nullptr || slen == 0 || dest == nullptr || dlen == 0) {
     return (0);
   }
 

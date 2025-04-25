@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -32,9 +33,7 @@
  *                                                                                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef __TEXT_FILE_H
 #define __TEXT_FILE_H
@@ -59,10 +58,10 @@ public:
   /////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   /////////////////////////////////////////////////////////////////
-  TextFileClass(void);
+  TextFileClass();
   TextFileClass(char const *filename);
   TextFileClass(const TextFileClass &src);
-  virtual ~TextFileClass(void);
+  virtual ~TextFileClass();
 
   /////////////////////////////////////////////////////////////////
   //	Public operators

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,19 +51,19 @@ extern LPDIRECTDRAWSURFACE PaletteSurface;
 /*=========================================================================*/
 /* The following prototypes are for the file: DDRAW.CPP							*/
 /*=========================================================================*/
-void Prep_Direct_Draw(void);
+void Prep_Direct_Draw();
 void Process_DD_Result(HRESULT result, int display_ok_msg);
 bool Set_Video_Mode(HWND hwnd, int w, int h, int bits_per_pixel);
-void Reset_Video_Mode(void);
-unsigned Get_Free_Video_Memory(void);
-void Wait_Blit(void);
-unsigned Get_Video_Hardware_Capabilities(void);
+void Reset_Video_Mode();
+unsigned Get_Free_Video_Memory();
+void Wait_Blit();
+unsigned Get_Video_Hardware_Capabilities();
 
 extern "C" void Wait_Vert_Blank(void);
 
 #include "palette.h"
 
-void Set_Palette(PaletteClass const &pal, int time = 0, void (*callback)() = NULL);
+void Set_Palette(PaletteClass const &pal, int time = 0, void (*callback)() = nullptr);
 void Set_Palette(void const *palette);
 
 /*
@@ -77,7 +78,7 @@ void Set_Palette(void const *palette);
 /*
 ** Function to call if we detect focus loss
 */
-extern void (*Audio_Focus_Loss_Function)(void);
+extern void (*Audio_Focus_Loss_Function)();
 
 /*
  *  Flags returned by Get_Video_Hardware_Capabilities
@@ -117,14 +118,14 @@ extern LPDIRECTDRAW2 DirectDraw2Interface;
 /* The following prototypes are for the file: EXIT.CPP							*/
 /* Prog_End Must be supplied by the user program in startup.cpp				*/
 /*=========================================================================*/
-void Prog_End(void);
+void Prog_End();
 // void __cdecl Exit(INT errorval, const char *message, ...);
 
 /*=========================================================================*/
 /* The following prototypes are for the file: DELAY.CPP							*/
 /*=========================================================================*/
 void Delay(int duration);
-void Vsync(void);
+void Vsync();
 
 /*========================= Assembly Routines ==============================*/
 

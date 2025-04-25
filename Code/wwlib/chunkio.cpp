@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -63,9 +64,10 @@
  *   ChunkLoadClass::Read -- read an IOQuaternionStruct                                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+#include <cstring>
+
 #include "chunkio.h"
-#include <string.h>
-#include <assert.h>
 
 /***********************************************************************************************
  * ChunkSaveClass::ChunkSaveClass -- Constructor                                               *
@@ -143,7 +145,7 @@ bool ChunkSaveClass::Begin_Chunk(uint32 id) {
  * HISTORY:                                                                                    *
  *   07/17/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-bool ChunkSaveClass::End_Chunk(void) {
+bool ChunkSaveClass::End_Chunk() {
   // If the user didn't close his micro chunks bad things are gonna happen
   assert(!InMicroChunk);
 
@@ -224,7 +226,7 @@ bool ChunkSaveClass::Begin_Micro_Chunk(uint32 id) {
  * HISTORY:                                                                                    *
  *   9/3/99     GTH : Created.                                                                 *
  *=============================================================================================*/
-bool ChunkSaveClass::End_Micro_Chunk(void) {
+bool ChunkSaveClass::End_Micro_Chunk() {
   assert(InMicroChunk);
 
   // Save the current position
@@ -345,7 +347,7 @@ uint32 ChunkSaveClass::Write(const IOQuaternionStruct &q) { return Write(&q, siz
  * HISTORY:                                                                                    *
  *   07/17/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-int ChunkSaveClass::Cur_Chunk_Depth(void) { return StackIndex; }
+int ChunkSaveClass::Cur_Chunk_Depth() { return StackIndex; }
 
 /***********************************************************************************************
  * ChunkLoadClass::ChunkLoadClass -- Constructor                                               *
@@ -433,10 +435,10 @@ bool ChunkLoadClass::Peek_Next_Chunk(uint32 *set_id, uint32 *set_size) {
   int seek_offset = sizeof(ChunkHeader);
   File->Seek(-seek_offset, SEEK_CUR);
 
-  if (set_id != NULL) {
+  if (set_id != nullptr) {
     *set_id = temp_header.Get_Type();
   }
-  if (set_size != NULL) {
+  if (set_size != nullptr) {
     *set_size = temp_header.Get_Size();
   }
 
@@ -719,7 +721,7 @@ uint32 ChunkLoadClass::Read(void *buf, uint32 nbytes) {
  *   1/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
 uint32 ChunkLoadClass::Read(IOVector2Struct *v) {
-  assert(v != NULL);
+  assert(v != nullptr);
   return Read(v, sizeof(v));
 }
 
@@ -736,7 +738,7 @@ uint32 ChunkLoadClass::Read(IOVector2Struct *v) {
  *   1/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
 uint32 ChunkLoadClass::Read(IOVector3Struct *v) {
-  assert(v != NULL);
+  assert(v != nullptr);
   return Read(v, sizeof(v));
 }
 
@@ -753,7 +755,7 @@ uint32 ChunkLoadClass::Read(IOVector3Struct *v) {
  *   1/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
 uint32 ChunkLoadClass::Read(IOVector4Struct *v) {
-  assert(v != NULL);
+  assert(v != nullptr);
   return Read(v, sizeof(v));
 }
 
@@ -770,6 +772,6 @@ uint32 ChunkLoadClass::Read(IOVector4Struct *v) {
  *   1/4/99     GTH : Created.                                                                 *
  *=============================================================================================*/
 uint32 ChunkLoadClass::Read(IOQuaternionStruct *q) {
-  assert(q != NULL);
+  assert(q != nullptr);
   return Read(q, sizeof(q));
 }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,9 +37,10 @@
 
 #pragma warning(disable : 4514)
 
+#include <cstdio>
+
 #include "widestring.h"
 #include "win.h"
-#include <stdio.h>
 
 ///////////////////////////////////////////////////////////////////
 //	Static member initialzation
@@ -65,7 +67,7 @@ WCHAR *WideStringClass::m_FreeTempPtr[MAX_TEMP_STRING] = {
     reinterpret_cast<WCHAR *>(m_TempString3 + sizeof(WideStringClass::_HEADER)),
     reinterpret_cast<WCHAR *>(m_TempString4 + sizeof(WideStringClass::_HEADER))};
 
-WCHAR *WideStringClass::m_ResTempPtr[MAX_TEMP_STRING] = {NULL, NULL, NULL, NULL};
+WCHAR *WideStringClass::m_ResTempPtr[MAX_TEMP_STRING] = {nullptr, nullptr, nullptr, nullptr};
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -77,7 +79,7 @@ void WideStringClass::Get_String(int length, bool is_temp) {
     m_Buffer = m_EmptyString;
   } else {
 
-    WCHAR *string = NULL;
+    WCHAR *string = nullptr;
 
     //
     //	Should we attempt to use a temp buffer for this string?
@@ -94,14 +96,14 @@ void WideStringClass::Get_String(int length, bool is_temp) {
       //	Try to find an available temporary buffer
       //
       for (int index = 0; index < MAX_TEMP_STRING; index++) {
-        if (m_FreeTempPtr[index] != NULL) {
+        if (m_FreeTempPtr[index] != nullptr) {
 
           //
           //	Grab this unused buffer for our string
           //
           string = m_FreeTempPtr[index];
           m_ResTempPtr[index] = m_FreeTempPtr[index];
-          m_FreeTempPtr[index] = NULL;
+          m_FreeTempPtr[index] = nullptr;
           Set_Buffer_And_Allocated_Length(string, MAX_TEMP_LEN);
 
           //
@@ -113,12 +115,11 @@ void WideStringClass::Get_String(int length, bool is_temp) {
       }
     }
 
-    if (string == NULL) {
+    if (string == nullptr) {
       Set_Buffer_And_Allocated_Length(Allocate_Buffer(length), length);
     }
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -143,7 +144,6 @@ void WideStringClass::Resize(int new_len) {
     Set_Buffer_And_Allocated_Length(new_buffer, new_len);
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -166,7 +166,6 @@ void WideStringClass::Uninitialised_Grow(int new_len) {
   // Whenever this function is called, clear the cached length
   //
   Store_Length(0);
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -174,7 +173,7 @@ void WideStringClass::Uninitialised_Grow(int new_len) {
 //	Uninitialised_Grow
 //
 ///////////////////////////////////////////////////////////////////
-void WideStringClass::Free_String(void) {
+void WideStringClass::Free_String() {
   if (m_Buffer != m_EmptyString) {
 
     //
@@ -215,7 +214,6 @@ void WideStringClass::Free_String(void) {
     m_Buffer = m_EmptyString;
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -224,7 +222,7 @@ void WideStringClass::Free_String(void) {
 //
 ///////////////////////////////////////////////////////////////////
 int _cdecl WideStringClass::Format_Args(const WCHAR *format, const va_list &arg_list) {
-  if (format == NULL) {
+  if (format == nullptr) {
     return 0;
   }
 
@@ -252,7 +250,7 @@ int _cdecl WideStringClass::Format_Args(const WCHAR *format, const va_list &arg_
 //
 ///////////////////////////////////////////////////////////////////
 int _cdecl WideStringClass::Format(const WCHAR *format, ...) {
-  if (format == NULL) {
+  if (format == nullptr) {
     return 0;
   }
 
@@ -283,17 +281,17 @@ int _cdecl WideStringClass::Format(const WCHAR *format, ...) {
 //	Release_Resources
 //
 ///////////////////////////////////////////////////////////////////
-void WideStringClass::Release_Resources(void) { return; }
+void WideStringClass::Release_Resources() {}
 
 ///////////////////////////////////////////////////////////////////
 // Convert_From
 ///////////////////////////////////////////////////////////////////
 bool WideStringClass::Convert_From(const char *text) {
-  if (text != NULL) {
+  if (text != nullptr) {
 
     int length;
 
-    length = MultiByteToWideChar(CP_ACP, 0, text, -1, NULL, 0);
+    length = MultiByteToWideChar(CP_ACP, 0, text, -1, nullptr, 0);
     if (length > 0) {
 
       Uninitialised_Grow(length);
@@ -314,7 +312,7 @@ bool WideStringClass::Convert_From(const char *text) {
 ///////////////////////////////////////////////////////////////////
 // Test if a Unicode string is within the ANSI range. (0 - 255)
 ///////////////////////////////////////////////////////////////////
-bool WideStringClass::Is_ANSI(void) {
+bool WideStringClass::Is_ANSI() {
   if (m_Buffer) {
     for (int index = 0; m_Buffer[index] != 0; index++) {
       unsigned short value = m_Buffer[index];

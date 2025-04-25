@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef FFACTORY_H
 #define FFACTORY_H
@@ -61,7 +60,7 @@ class FileClass;
 class FileFactoryClass {
 
 public:
-  virtual ~FileFactoryClass(void) {};
+  virtual ~FileFactoryClass() {};
   virtual FileClass *Get_File(char const *filename) = 0;
   virtual void Return_File(FileClass *file) = 0;
 };
@@ -74,7 +73,7 @@ public:
   explicit file_auto_ptr(FileFactoryClass *fac, const char *filename);
   ~file_auto_ptr();
 
-  operator FileClass *(void) const { return (get()); }
+  operator FileClass *() const { return (get()); }
 
   FileClass &operator*() const { return (*get()); }
 
@@ -111,8 +110,8 @@ public:
 class SimpleFileFactoryClass : public FileFactoryClass {
 
 public:
-  SimpleFileFactoryClass(void);
-  ~SimpleFileFactoryClass(void) {}
+  SimpleFileFactoryClass();
+  ~SimpleFileFactoryClass() {}
 
   virtual FileClass *Get_File(char const *filename);
   virtual void Return_File(FileClass *file);
@@ -123,7 +122,7 @@ public:
   void Set_Sub_Directory(const char *sub_directory);
   void Prepend_Sub_Directory(const char *sub_directory);
   void Append_Sub_Directory(const char *sub_directory);
-  bool Get_Strip_Path(void) const { return IsStripPath; }
+  bool Get_Strip_Path() const { return IsStripPath; }
   void Set_Strip_Path(bool set) { IsStripPath = set; }
 
 protected:

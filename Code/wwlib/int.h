@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,18 +34,17 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef INT_H
 #define INT_H
 
+#include <cassert>
+#include <climits>
+#include <memory.h>
+
 #include "mpmath.h"
 #include "straw.h"
-#include <assert.h>
-#include <limits.h>
-#include <memory.h>
 
 #ifdef __BORLANDC__
 #pragma warn - inl
@@ -63,7 +63,7 @@ public:
   /*
   **	Constructors and initializers.
   */
-  Int(void) { XMP_Init(&reg[0], 0, PRECISION); }
+  Int() { XMP_Init(&reg[0], 0, PRECISION); }
   Int(unsigned long value) { XMP_Init(&reg[0], value, PRECISION); }
 
   void Randomize(Straw &rng, int bitcount) { XMP_Randomize(&reg[0], rng, bitcount, PRECISION); }
@@ -88,20 +88,20 @@ public:
   /*
   **	Unary operators.
   */
-  Int &operator++(void) {
+  Int &operator++() {
     XMP_Inc(&reg[0], PRECISION);
     return (*this);
   }
-  Int &operator--(void) {
+  Int &operator--() {
     XMP_Dec(&reg[0], PRECISION);
     return (*this);
   }
-  int operator!(void) const { return (XMP_Test_Eq_Int(&reg[0], 0, PRECISION)); }
-  Int operator~(void) {
+  int operator!() const { return (XMP_Test_Eq_Int(&reg[0], 0, PRECISION)); }
+  Int operator~() {
     XMP_Not(&reg[0], PRECISION);
     return (*this);
   }
-  Int operator-(void) const {
+  Int operator-() const {
     Int a = *this;
     a.Negate();
     return (a);
@@ -110,14 +110,14 @@ public:
   /*
   **	Attribute query functions.
   */
-  int ByteCount(void) const { return (XMP_Count_Bytes(&reg[0], PRECISION)); }
-  int BitCount(void) const { return (XMP_Count_Bits(&reg[0], PRECISION)); }
-  bool Is_Negative(void) const { return (XMP_Is_Negative(&reg[0], PRECISION)); }
+  int ByteCount() const { return (XMP_Count_Bytes(&reg[0], PRECISION)); }
+  int BitCount() const { return (XMP_Count_Bits(&reg[0], PRECISION)); }
+  bool Is_Negative() const { return (XMP_Is_Negative(&reg[0], PRECISION)); }
   unsigned MaxBitPrecision() const { return PRECISION * (sizeof(unsigned long) * CHAR_BIT); }
-  bool IsSmallPrime(void) const { return (XMP_Is_Small_Prime(&reg[0], PRECISION)); }
-  bool SmallDivisorsTest(void) const { return (XMP_Small_Divisors_Test(&reg[0], PRECISION)); }
+  bool IsSmallPrime() const { return (XMP_Is_Small_Prime(&reg[0], PRECISION)); }
+  bool SmallDivisorsTest() const { return (XMP_Small_Divisors_Test(&reg[0], PRECISION)); }
   bool FermatTest(unsigned rounds) const { return (XMP_Fermat_Test(&reg[0], rounds, PRECISION)); }
-  bool IsPrime(void) const { return (XMP_Is_Prime(&reg[0], PRECISION)); }
+  bool IsPrime() const { return (XMP_Is_Prime(&reg[0], PRECISION)); }
   bool RabinMillerTest(Straw &rng, unsigned int rounds) const {
     return (XMP_Rabin_Miller_Test(rng, &reg[0], rounds, PRECISION));
   }
@@ -236,8 +236,8 @@ public:
   /*
   **	Misc. mathematical and logical functions.
   */
-  void Negate(void) { XMP_Neg(&reg[0], PRECISION); }
-  Int Abs(void) {
+  void Negate() { XMP_Neg(&reg[0], PRECISION); }
+  Int Abs() {
     XMP_Abs(&reg[0], PRECISION);
     return (*this);
   }

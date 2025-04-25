@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,13 +40,12 @@
 #ifndef CRIT_SECTION
 #define CRIT_SECTION
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
+
+#include <windows.h>
 
 #include "always.h"
 #include "wwdebug.h"
-#include <windows.h>
 
 class CriticalSectionClass {
 public:

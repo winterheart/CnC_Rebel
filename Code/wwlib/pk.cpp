@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -42,10 +43,11 @@
  *   PKey::PKey -- Construct a key using encoded strings.                                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "pk.h"
 #include "rndstraw.h"
-#include <string.h>
 
 #if defined(__BORLANDC__)
 extern BigInt Generate_Prime<BigInt>(Straw &, int, BigInt const *);
@@ -94,7 +96,7 @@ PKey::PKey(void const *exponent, void const *modulus) {
  *   07/08/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int PKey::Encode_Modulus(void *buffer) const {
-  if (buffer == NULL) {
+  if (buffer == nullptr) {
     return (0);
   }
   return (Modulus.DEREncode((unsigned char *)buffer));
@@ -117,7 +119,7 @@ int PKey::Encode_Modulus(void *buffer) const {
  *   07/08/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int PKey::Encode_Exponent(void *buffer) const {
-  if (buffer == NULL) {
+  if (buffer == nullptr) {
     return (0);
   }
   return (Exponent.DEREncode((unsigned char *)buffer));

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -65,7 +66,7 @@ RefCountListClass RefCountClass::ActiveRefList;
  *=============================================================================================*/
 RefCountClass *RefCountClass::Add_Active_Ref(RefCountClass *obj) {
   ActiveRefList.Add_Head(&(obj->ActiveRefNode));
-  obj->ActiveRefInfo.File = NULL; // default to no debug information added.
+  obj->ActiveRefInfo.File = nullptr; // default to no debug information added.
   obj->ActiveRefInfo.Line = 0;
   return obj;
 }
@@ -84,7 +85,7 @@ RefCountClass *RefCountClass::Add_Active_Ref(RefCountClass *obj) {
  *=============================================================================================*/
 RefCountClass *RefCountClass::Set_Ref_Owner(RefCountClass *obj, const char *file, int line) {
   //	static RefCountClass *hunt = (RefCountClass *)0x06558890;
-  static RefCountClass *hunt = (RefCountClass *)0x0;
+  static RefCountClass *hunt = (RefCountClass *)nullptr;
   if (obj == hunt) {
     assert(0);
   }
@@ -155,10 +156,10 @@ void RefCountClass::Inc_Total_Refs(RefCountClass *obj) {
 
 // SKB 7/21/99 Set BreakOnRefernce to a pointer and it will break when called.
 //					This is used for debugging, please do not deleted.
-RefCountClass *BreakOnReference = 0;
+RefCountClass *BreakOnReference = nullptr;
 
 #ifndef NDEBUG
-void RefCountClass::Add_Ref(void) {
+void RefCountClass::Add_Ref() {
   NumRefs++;
 
   // See if programmer set break on for a specific address.

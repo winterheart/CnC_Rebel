@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,16 +38,7 @@
 #ifndef SHA_H
 #define SHA_H
 
-/*
-**	The "bool" integral type was defined by the C++ comittee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#include "bool.h"
 #include <new.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 /*
 **	This implements the Secure Hash Algorithm. It is a cryptographically
@@ -55,7 +47,7 @@
 */
 class SHAEngine {
 public:
-  SHAEngine(void) : IsCached(false), Length(0), PartialCount(0) {
+  SHAEngine() : IsCached(false), Length(0), PartialCount(0) {
     Acc.Long[0] = (unsigned long)SA;
     Acc.Long[1] = (unsigned long)SB;
     Acc.Long[2] = (unsigned long)SC;
@@ -63,14 +55,14 @@ public:
     Acc.Long[4] = (unsigned long)SE;
   };
 
-  void Init(void) { new ((void *)this) SHAEngine; };
+  void Init() { new ((void *)this) SHAEngine; };
 
   // Fetch result as if source data were to stop now.
   int Result(void *result) const;
 
   void Hash(void const *data, long length);
 
-  static int Digest_Size(void) { return (sizeof(SHADigest)); }
+  static int Digest_Size() { return (sizeof(SHADigest)); }
 
 private:
   typedef union {

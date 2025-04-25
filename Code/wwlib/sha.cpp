@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -38,9 +39,10 @@
  *   SHAEngine::Process_Block -- Process a full data block into the hash accumulator.          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "sha.h"
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
+
+#include "sha.h"
 
 #if !defined(__BORLANDC__) && !defined(min)
 #define min(a, b) ((a) < (b)) ? (a) : (b)
@@ -69,7 +71,7 @@
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 void SHAEngine::Process_Partial(void const *&data, long &length) {
-  if (length == 0 || data == NULL)
+  if (length == 0 || data == nullptr)
     return;
 
   /*

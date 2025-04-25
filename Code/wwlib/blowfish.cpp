@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,10 +41,11 @@
  *   BlowfishEngine::~BlowfishEngine -- Destructor for the Blowfish engine.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+#include <cstring>
+
 #include "always.h"
 #include "blowfish.h"
-#include <string.h>
-#include <assert.h>
 
 /*
 **	Byte order controlled long integer. This integer is constructed
@@ -120,7 +122,7 @@ void BlowfishEngine::Submit_Key(void const *key, int length) {
   /*
   **	Validate parameters.
   */
-  if (key == 0 || length == 0) {
+  if (key == nullptr || length == 0) {
     IsKeyed = false;
     return;
   }
@@ -171,11 +173,11 @@ void BlowfishEngine::Submit_Key(void const *key, int length) {
   **	working 64 bit number is carried into this process from the previous
   **	operation.
   */
-  for (int sbox_index = 0; sbox_index < 4; sbox_index++) {
+  for (auto & sbox_index : bf_S) {
     for (int ss_index = 0; ss_index < UCHAR_MAX + 1; ss_index += 2) {
       Sub_Key_Encrypt(left, right);
-      bf_S[sbox_index][ss_index] = left;
-      bf_S[sbox_index][ss_index + 1] = right;
+      sbox_index[ss_index] = left;
+      sbox_index[ss_index + 1] = right;
     }
   }
 
@@ -205,10 +207,10 @@ void BlowfishEngine::Submit_Key(void const *key, int length) {
  *   04/14/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int BlowfishEngine::Encrypt(void const *plaintext, int length, void *cyphertext) {
-  if (plaintext == 0 || length == 0) {
+  if (plaintext == nullptr || length == 0) {
     return (0);
   }
-  if (cyphertext == 0)
+  if (cyphertext == nullptr)
     cyphertext = (void *)plaintext;
 
   if (IsKeyed) {

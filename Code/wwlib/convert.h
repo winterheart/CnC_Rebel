@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -84,7 +85,7 @@ typedef enum {
 class ConvertClass {
 public:
   ConvertClass(PaletteClass const &artpalette, PaletteClass const &screenpalette, Surface const &typicalsurface);
-  ~ConvertClass(void);
+  ~ConvertClass();
 
   /*
   **	Convert from source pixel to dest screen pixel.
@@ -106,13 +107,13 @@ public:
   **	This returns the bytes per pixel. Use this to determine how to index
   **	through the translation table.
   */
-  int Bytes_Per_Pixel(void) const { return (BBP); }
+  int Bytes_Per_Pixel() const { return (BBP); }
 
   /*
   **	Fetches the translation table. Sometimes the provided blitter objects
   **	won't suffice and manual access to the translation process is necessary.
   */
-  void const *Get_Translate_Table(void) const { return (Translator); }
+  void const *Get_Translate_Table() const { return (Translator); }
 
   /*
   **	Sets the dynamic remap table so that the remapping blitters will use

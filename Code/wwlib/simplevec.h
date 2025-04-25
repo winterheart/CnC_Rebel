@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -47,16 +48,15 @@
  *   SimpleDynVecClass<T>::Delete_All -- delete all items from the array                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef SIMPLEVEC_H
 #define SIMPLEVEC_H
 
+#include <cassert>
+#include <cstring> // for memmove
+
 #include "always.h"
-#include <assert.h>
-#include <string.h> // for memmove
 
 #if (_MSC_VER >= 1200)
 #pragma warning(push)
@@ -72,7 +72,7 @@
 template <class T> class SimpleVecClass {
 public:
   SimpleVecClass(int size = 0);
-  virtual ~SimpleVecClass(void);
+  virtual ~SimpleVecClass();
 
   T &operator[](int index) {
     assert(index < VectorMax);
@@ -83,11 +83,11 @@ public:
     return (Vector[index]);
   }
 
-  int Length(void) const { return VectorMax; }
+  int Length() const { return VectorMax; }
   virtual bool Resize(int newsize);
   virtual bool Uninitialised_Grow(int newsize);
-  void Zero_Memory(void) {
-    if (Vector != NULL) {
+  void Zero_Memory() {
+    if (Vector != nullptr) {
       memset(Vector, 0, VectorMax * sizeof(T));
     }
   }
@@ -110,7 +110,7 @@ protected:
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline SimpleVecClass<T>::SimpleVecClass(int size) : Vector(NULL), VectorMax(0) {
+template <class T> inline SimpleVecClass<T>::SimpleVecClass(int size) : Vector(nullptr), VectorMax(0) {
   if (size > 0) {
     Resize(size);
   }
@@ -128,10 +128,10 @@ template <class T> inline SimpleVecClass<T>::SimpleVecClass(int size) : Vector(N
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline SimpleVecClass<T>::~SimpleVecClass(void) {
-  if (Vector != NULL) {
+template <class T> inline SimpleVecClass<T>::~SimpleVecClass() {
+  if (Vector != nullptr) {
     delete[] Vector;
-    Vector = NULL;
+    Vector = nullptr;
     VectorMax = 0;
   }
 }
@@ -165,7 +165,7 @@ template <class T> inline bool SimpleVecClass<T>::Resize(int newsize) {
     **	If there is an old vector, then it must be copied (as much as is feasible)
     **	to the new vector.
     */
-    if (Vector != NULL) {
+    if (Vector != nullptr) {
 
       /*
       **	Mem copy as much of the old vector into the new vector as possible.
@@ -177,7 +177,7 @@ template <class T> inline bool SimpleVecClass<T>::Resize(int newsize) {
       **	Delete the old vector.
       */
       delete[] Vector;
-      Vector = NULL;
+      Vector = nullptr;
     }
 
     /*
@@ -192,9 +192,9 @@ template <class T> inline bool SimpleVecClass<T>::Resize(int newsize) {
     ** Delete entire vector and reset counts
     */
     VectorMax = 0;
-    if (Vector != NULL) {
+    if (Vector != nullptr) {
       delete[] Vector;
-      Vector = NULL;
+      Vector = nullptr;
     }
   }
   return true;
@@ -249,10 +249,10 @@ template <class T> inline bool SimpleVecClass<T>::Uninitialised_Grow(int newsize
 template <class T> class SimpleDynVecClass : public SimpleVecClass<T> {
 public:
   SimpleDynVecClass(int size = 0);
-  virtual ~SimpleDynVecClass(void);
+  virtual ~SimpleDynVecClass();
 
   // Array-like access (does not grow)
-  int Count(void) const { return (ActiveCount); }
+  int Count() const { return (ActiveCount); }
   T &operator[](int index) {
     assert(index < ActiveCount);
     return (this->Vector[index]);
@@ -279,7 +279,7 @@ public:
 
 protected:
   bool Grow(int new_size_hint);
-  bool Shrink(void);
+  bool Shrink();
 
   int Find_Index(T const &object);
 
@@ -313,10 +313,10 @@ template <class T> inline SimpleDynVecClass<T>::SimpleDynVecClass(int size) : Si
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline SimpleDynVecClass<T>::~SimpleDynVecClass(void) {
-  if (this->Vector != NULL) {
+template <class T> inline SimpleDynVecClass<T>::~SimpleDynVecClass() {
+  if (this->Vector != nullptr) {
     delete[] this->Vector;
-    this->Vector = NULL;
+    this->Vector = nullptr;
   }
 }
 
@@ -570,7 +570,7 @@ template <class T> inline bool SimpleDynVecClass<T>::Grow(int new_size_hint) {
  * HISTORY:                                                                                    *
  *   1/25/00    gth : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline bool SimpleDynVecClass<T>::Shrink(void) {
+template <class T> inline bool SimpleDynVecClass<T>::Shrink() {
   /*
   ** Shrink the array if it is wasting more than 25%
   */

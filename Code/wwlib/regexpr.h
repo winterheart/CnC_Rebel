@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,9 +41,9 @@
 */
 class RegularExpressionClass {
 public:
-  RegularExpressionClass(const char *expression = 0);
+  RegularExpressionClass(const char *expression = nullptr);
   RegularExpressionClass(const RegularExpressionClass &copy);
-  ~RegularExpressionClass(void);
+  ~RegularExpressionClass();
 
   // Before you try to match a string against this regular expression,
   // you must first compile the expression. This has the logical effect
@@ -59,7 +60,7 @@ public:
   // this object. If you passed a regular expression string into this
   // object's constructor, make sure you check Is_Valid before calling
   // Match().
-  bool Is_Valid(void) const;
+  bool Is_Valid() const;
 
   // Tests if 'string' matches this regular expression.
   bool Match(const char *string) const;

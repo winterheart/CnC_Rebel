@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -60,9 +61,10 @@
    markus.oberhumer@jk.uni-linz.ac.at
  */
 
+#include <cassert>
+
 #include "always.h"
 #include "lzo1x.h"
-#include <assert.h>
 
 #if !defined(LZO1X) && !defined(LZO1Y)
 #define LZO1X
@@ -79,10 +81,10 @@
 ************************************************************************/
 
 int lzo1x_decompress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_uint *out_len, lzo_voidp) {
-  register lzo_byte *op;
-  register const lzo_byte *ip;
-  register lzo_uint t;
-  register const lzo_byte *m_pos;
+  lzo_byte *op;
+  const lzo_byte *ip;
+  lzo_uint t;
+  const lzo_byte *m_pos;
   const lzo_byte *const ip_end = in + in_len;
 
   *out_len = 0;

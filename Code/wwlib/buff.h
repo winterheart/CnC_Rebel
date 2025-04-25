@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,19 +34,10 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef CCBUFF_H
 #define CCBUFF_H
-
-/*
-**	The "bool" integral type was defined by the C++ committee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#include "bool.h"
 
 /*
 **	A general purpose buffer pointer handler object. It holds not only the pointer to the
@@ -55,20 +47,20 @@
 class Buffer {
 public:
   Buffer(char *ptr, long size = 0);
-  Buffer(void *ptr = 0, long size = 0);
+  Buffer(void *ptr = nullptr, long size = 0);
   Buffer(void const *ptr, long size = 0);
   Buffer(long size);
   Buffer(Buffer const &buffer);
-  ~Buffer(void);
+  ~Buffer();
 
   Buffer &operator=(Buffer const &buffer);
-  operator void *(void) const { return (BufferPtr); }
-  operator char *(void) const { return ((char *)BufferPtr); }
+  operator void *() const { return (BufferPtr); }
+  operator char *() const { return ((char *)BufferPtr); }
 
-  void Reset(void);
-  void *Get_Buffer(void) const { return (BufferPtr); }
-  long Get_Size(void) const { return (Size); }
-  bool Is_Valid(void) const { return (BufferPtr != 0); }
+  void Reset();
+  void *Get_Buffer() const { return (BufferPtr); }
+  long Get_Size() const { return (Size); }
+  bool Is_Valid() const { return (BufferPtr != 0); }
 
 protected:
   /*

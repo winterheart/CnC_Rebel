@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -60,11 +61,12 @@
    markus.oberhumer@jk.uni-linz.ac.at
  */
 
+#include <cassert>
+
 #include "always.h"
 #include "lzo1x.h"
 #include "lzo_conf.h"
 #include "wwdebug.h"
-#include <assert.h>
 
 #if !defined(LZO1X) && !defined(LZO1Y)
 #define LZO1X
@@ -106,7 +108,7 @@
 ************************************************************************/
 static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_uint *out_len, lzo_voidp wrkmem) {
 
-  register const lzo_byte *ip;
+  const lzo_byte *ip;
   lzo_uint dv;
   lzo_byte *op;
   const lzo_byte *const in_end = in + in_len;
@@ -132,7 +134,7 @@ static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_u
   ip++;
 
   for (;;) {
-    register const lzo_byte *m_pos;
+    const lzo_byte *m_pos;
     lzo_uint m_len;
     lzo_ptrdiff_t m_off;
     lzo_uint lit;
@@ -188,7 +190,7 @@ static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_u
 
     /* store current literal run */
     if (lit > 0) {
-      register lzo_uint t = lit;
+      lzo_uint t = lit;
 
       if (t <= 3) {
         assert(op - 2 > out);
@@ -197,7 +199,7 @@ static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_u
         if (t <= 18) {
           *op++ = LZO_BYTE(t - 3);
         } else {
-          register lzo_uint tt = t - 18;
+          lzo_uint tt = t - 18;
 
           *op++ = 0;
           while (tt > 255) {
@@ -294,7 +296,7 @@ static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_u
 
   /* store final literal run */
   if (in_end - ii > 0) {
-    register lzo_uint t = in_end - ii;
+    lzo_uint t = in_end - ii;
 
     if (op == out && t <= 238) {
       *op++ = LZO_BYTE(17 + t);
@@ -305,7 +307,7 @@ static int do_compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_u
         if (t <= 18) {
           *op++ = LZO_BYTE(t - 3);
         } else {
-          register lzo_uint tt = t - 18;
+          lzo_uint tt = t - 18;
 
           *op++ = 0;
           while (tt > 255) {

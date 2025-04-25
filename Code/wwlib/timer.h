@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -73,16 +74,16 @@ public:
   BasicTimerClass(int set = 0);
   BasicTimerClass(NoInitClass const &);
 
-  virtual ~BasicTimerClass(void);
+  virtual ~BasicTimerClass();
 
   // Fetch current value of timer.
-  int Value(void) const { return (Timer() - Started); }
+  int Value() const { return (Timer() - Started); }
 
   // Conversion operator to allow consistent treatment with integral types.
-  operator int(void) const;
+  operator int() const;
 
   // Function operator to allow timer object definition to be cascaded.
-  int operator()(void) const;
+  int operator()() const;
 
 protected:
   T Timer;     // Timer regulator (ticks at constant rate).
@@ -125,7 +126,7 @@ template <class T> inline BasicTimerClass<T>::BasicTimerClass(int set) : Started
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline BasicTimerClass<T>::~BasicTimerClass(void) {}
+template <class T> inline BasicTimerClass<T>::~BasicTimerClass() {}
 
 // template<class T>
 // inline unsigned long BasicTimerClass<T>::Value(void) const
@@ -149,7 +150,7 @@ template <class T> inline BasicTimerClass<T>::~BasicTimerClass(void) {}
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline BasicTimerClass<T>::operator int(void) const { return (Timer() - Started); }
+template <class T> inline BasicTimerClass<T>::operator int() const { return (Timer() - Started); }
 
 /***********************************************************************************************
  * BasicTimerClass<T>::operator () -- Function operator for timer object.                      *
@@ -167,7 +168,7 @@ template <class T> inline BasicTimerClass<T>::operator int(void) const { return 
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline int BasicTimerClass<T>::operator()(void) const { return (Timer() - Started); }
+template <class T> inline int BasicTimerClass<T>::operator()() const { return (Timer() - Started); }
 
 /*
 **	This timer class functions similarly to the basic timer class. In addition to the
@@ -181,31 +182,31 @@ public:
   TTimerClass(int set = 0);
   TTimerClass(NoInitClass const &x);
 
-  ~TTimerClass(void) {};
+  ~TTimerClass() {};
 
   // Fetches current value of timer.
-  int Value(void) const;
+  int Value() const;
 
   // Conversion operator to allow consistent treatment with integral types.
-  operator int(void) const;
+  operator int() const;
 
   // Function operator to allow timer object definition to be cascaded.
-  int operator()(void) const;
+  int operator()() const;
 
   // Stops (pauses) the timer.
-  void Stop(void);
+  void Stop();
 
   // Starts (resumes) the timer.
-  void Start(void);
+  void Start();
 
   // Queries whether the timer is currently active.
-  bool Is_Active(void) const;
+  bool Is_Active() const;
 
 private:
   int Accumulated; //	Total accumulated ticks.
 };
 
-template <class T> inline TTimerClass<T>::TTimerClass(NoInitClass const &x) : BasicTimerClass<T>(x) {}
+template <class T> TTimerClass<T>::TTimerClass(NoInitClass const &x) : BasicTimerClass<T>(x) {}
 
 /***********************************************************************************************
  * TTimerClass<T>::TTimerClass -- Constructor for timer class object.                          *
@@ -241,7 +242,7 @@ template <class T> inline TTimerClass<T>::TTimerClass(int set) : BasicTimerClass
  * HISTORY:                                                                                    *
  *   07/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline int TTimerClass<T>::Value(void) const {
+template <class T> inline int TTimerClass<T>::Value() const {
   int value = Accumulated;
   if (this->Started != -1) {
     value += BasicTimerClass<T>::Value();
@@ -266,7 +267,7 @@ template <class T> inline int TTimerClass<T>::Value(void) const {
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline TTimerClass<T>::operator int(void) const {
+template <class T> inline TTimerClass<T>::operator int() const {
   int value = Accumulated;
   if (this->Started != -1) {
     value += BasicTimerClass<T>::Value();
@@ -291,7 +292,7 @@ template <class T> inline TTimerClass<T>::operator int(void) const {
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline int TTimerClass<T>::operator()(void) const {
+template <class T> inline int TTimerClass<T>::operator()() const {
   int value = Accumulated;
   if (this->Started != -1) {
     value += BasicTimerClass<T>::Value();
@@ -315,7 +316,7 @@ template <class T> inline int TTimerClass<T>::operator()(void) const {
  * HISTORY:                                                                                    *
  *   02/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> void TTimerClass<T>::Stop(void) {
+template <class T> void TTimerClass<T>::Stop() {
   if (this->Started != -1) {
     Accumulated += BasicTimerClass<T>::Value();
     this->Started = -1;
@@ -336,7 +337,7 @@ template <class T> void TTimerClass<T>::Stop(void) {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> void TTimerClass<T>::Start(void) {
+template <class T> void TTimerClass<T>::Start() {
   if (this->Started == -1) {
     this->Started = this->Timer();
   }
@@ -358,7 +359,7 @@ template <class T> void TTimerClass<T>::Start(void) {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline bool TTimerClass<T>::Is_Active(void) const { return (this->Started != -1); }
+template <class T> inline bool TTimerClass<T>::Is_Active() const { return (this->Started != -1); }
 
 /*
 **	This timer counts down from the specified (or constructed) value down towards zero.
@@ -373,25 +374,25 @@ public:
   CDTimerClass(int set = 0);
   CDTimerClass(NoInitClass const &x);
 
-  ~CDTimerClass(void);
+  ~CDTimerClass();
 
   // Fetches current value of count down timer.
-  int Value(void) const;
+  int Value() const;
 
   // Conversion operator to allow consistent treatment with integral types.
-  operator int(void) const;
+  operator int() const;
 
   // Function operator to allow timer object definition to be cascaded.
-  int operator()(void) const;
+  int operator()() const;
 
   // Stops (pauses) the timer.
-  void Stop(void);
+  void Stop();
 
   // Starts (resumes) the timer.
-  void Start(void);
+  void Start();
 
   // Queries whether the timer is currently active.
-  bool Is_Active(void) const;
+  bool Is_Active() const;
 
 private:
   int DelayTime; // Ticks remaining before countdown timer expires.
@@ -431,7 +432,7 @@ template <class T> inline CDTimerClass<T>::CDTimerClass(int set) : BasicTimerCla
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline CDTimerClass<T>::~CDTimerClass(void) {}
+template <class T> CDTimerClass<T>::~CDTimerClass() {}
 
 /***********************************************************************************************
  * CDTimerClass<T>::Value -- Fetches the current value of the countdown timer.                 *
@@ -449,7 +450,7 @@ template <class T> inline CDTimerClass<T>::~CDTimerClass(void) {}
  * HISTORY:                                                                                    *
  *   07/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline int CDTimerClass<T>::Value(void) const {
+template <class T> inline int CDTimerClass<T>::Value() const {
   int remain = DelayTime;
   if (this->Started != -1) {
     int value = BasicTimerClass<T>::Value();
@@ -478,7 +479,7 @@ template <class T> inline int CDTimerClass<T>::Value(void) const {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline CDTimerClass<T>::operator int(void) const {
+template <class T> inline CDTimerClass<T>::operator int() const {
   int remain = DelayTime;
   if (this->Started != 0xFFFFFFFFU) {
     int value = BasicTimerClass<T>::Value();
@@ -507,7 +508,7 @@ template <class T> inline CDTimerClass<T>::operator int(void) const {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline int CDTimerClass<T>::operator()(void) const {
+template <class T> inline int CDTimerClass<T>::operator()() const {
   int remain = DelayTime;
   if (this->Started != -1) {
     int value = BasicTimerClass<T>::Value();
@@ -536,7 +537,7 @@ template <class T> inline int CDTimerClass<T>::operator()(void) const {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> void CDTimerClass<T>::Stop(void) {
+template <class T> void CDTimerClass<T>::Stop() {
   if (this->Started != -1) {
     DelayTime = *this;
     this->Started = -1;
@@ -558,7 +559,7 @@ template <class T> void CDTimerClass<T>::Stop(void) {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> void CDTimerClass<T>::Start(void) {
+template <class T> void CDTimerClass<T>::Start() {
   if (this->Started == -1) {
     this->Started = this->Timer();
   }
@@ -580,6 +581,6 @@ template <class T> void CDTimerClass<T>::Start(void) {
  * HISTORY:                                                                                    *
  *   02/06/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-template <class T> inline bool CDTimerClass<T>::Is_Active(void) const { return (this->Started != -1); }
+template <class T> inline bool CDTimerClass<T>::Is_Active() const { return (this->Started != -1); }
 
 #endif

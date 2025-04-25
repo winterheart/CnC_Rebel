@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,8 @@
 *   nstrdup -- duplicates a string using new[]                            *
 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "string.h"
+#include <cstring>
 #include "nstrdup.h"
-// #include "../app/main/gnew.h"
 
 /**************************************************************************
  * nstrdup -- duplicates a string using new[]                             *
@@ -52,8 +52,8 @@
  *   02/03/1998 PWG : Created.                                            *
  *========================================================================*/
 char *nstrdup(const char *str) {
-  if (str == 0)
-    return 0;
+  if (str == nullptr)
+    return nullptr;
 
   // eventually should be replaced with NEW when we go to the wwnew stuff.
   char *retval = new char[strlen(str) + 1];

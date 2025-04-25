@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -46,8 +47,8 @@ class MutexClass {
   void Unlock();
 
 public:
-  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
-  MutexClass(const char *name = NULL);
+  // Name can (and usually should) be nullptr. Use name only if you wish to create a globally unique mutex
+  MutexClass(const char *name = nullptr);
   ~MutexClass();
 
   enum { WAIT_INFINITE = -1 };
@@ -87,7 +88,7 @@ class CriticalSectionClass {
   void Unlock();
 
 public:
-  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+  // Name can (and usually should) be nullptr. Use name only if you wish to create a globally unique mutex
   CriticalSectionClass();
   ~CriticalSectionClass();
 
@@ -142,7 +143,7 @@ class FastCriticalSectionClass {
   WWINLINE void Thread_Safe_Clear_Flag() { Flag = 0; }
 
 public:
-  // Name can (and usually should) be NULL. Use name only if you wish to create a globally unique mutex
+  // Name can (and usually should) be nullptr. Use name only if you wish to create a globally unique mutex
   FastCriticalSectionClass() : Flag(0) {}
 
   class LockClass {

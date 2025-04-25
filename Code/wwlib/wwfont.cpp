@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -46,9 +47,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "always.h"
-#include "_convert.h"
 #include "wwfont.h"
-// #include	<stdlib.h>
 
 #define FONTINFOMAXHEIGHT 4
 #define FONTINFOMAXWIDTH 5
@@ -141,7 +140,7 @@ int WWFontClass::Char_Pixel_Width(char c) const {
  *   05/26/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 int WWFontClass::String_Pixel_Width(char const *string) const {
-  if (string == NULL)
+  if (string == nullptr)
     return (0);
   if (string[0] == 0)
     return 0;
@@ -176,7 +175,7 @@ int WWFontClass::String_Pixel_Width(char const *string) const {
  * HISTORY:                                                                                    *
  *   05/26/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int WWFontClass::Raw_Width(void) const {
+int WWFontClass::Raw_Width() const {
   return (*(((unsigned char *)FontData) + FontData->InfoBlockOffset + FONTINFOMAXWIDTH));
 }
 
@@ -195,7 +194,7 @@ int WWFontClass::Raw_Width(void) const {
  * HISTORY:                                                                                    *
  *   05/26/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int WWFontClass::Raw_Height(void) const {
+int WWFontClass::Raw_Height() const {
   return (*(((unsigned char *)FontData) + FontData->InfoBlockOffset + FONTINFOMAXHEIGHT));
 }
 
@@ -214,7 +213,7 @@ int WWFontClass::Raw_Height(void) const {
  * HISTORY:                                                                                    *
  *   05/26/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int WWFontClass::Get_Width(void) const { return (Raw_Width() + ((FontXSpacing > 0) ? FontXSpacing : 0)); }
+int WWFontClass::Get_Width() const { return (Raw_Width() + ((FontXSpacing > 0) ? FontXSpacing : 0)); }
 
 /***********************************************************************************************
  * WWFontClass::Get_Height -- Fetch the normalized height of the nominal font character.       *
@@ -231,7 +230,7 @@ int WWFontClass::Get_Width(void) const { return (Raw_Width() + ((FontXSpacing > 
  * HISTORY:                                                                                    *
  *   05/26/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-int WWFontClass::Get_Height(void) const { return (Raw_Height() + ((FontYSpacing > 0) ? FontYSpacing : 0)); }
+int WWFontClass::Get_Height() const { return (Raw_Height() + ((FontYSpacing > 0) ? FontYSpacing : 0)); }
 
 /***********************************************************************************************
  * WWFontClass::Set_XSpacing -- Set the X spacing override value.                              *
@@ -343,7 +342,7 @@ int WWFontClass::Set_YSpacing(int y) {
  *=============================================================================================*/
 Point2D WWFontClass::Print(char const *string, Surface &surface, Rect const &cliprect, Point2D const &drawpoint,
                            ConvertClass const &convertref, unsigned char const *remap) const {
-  if (string == NULL)
+  if (string == nullptr)
     return (drawpoint);
 
   /*
@@ -391,7 +390,7 @@ Point2D WWFontClass::Print(char const *string, Surface &surface, Rect const &cli
   **	Check to see if access to the surface buffer is possible.
   */
   void *buffer = surface.Lock();
-  if (buffer != NULL) {
+  if (buffer != nullptr) {
     int startx = xpos;
     unsigned char *fontwidth = ((unsigned char *)FontData) + FontData->WidthBlockOffset;
     unsigned short *fontheight = (unsigned short *)(((unsigned char *)FontData) + FontData->HeightOffset);

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,10 +36,11 @@
  *   Base64Straw::Get -- Fetch data and convert it to/from base 64 encoding.                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "b64straw.h"
 #include "base64.h"
-#include <string.h>
 
 /***********************************************************************************************
  * Base64Straw::Get -- Fetch data and convert it to/from base 64 encoding.                     *
