@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -42,24 +43,22 @@
 //	SoundHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-SoundHandleClass::SoundHandleClass(void) : Buffer(NULL) { return; }
+SoundHandleClass::SoundHandleClass() : Buffer(nullptr) {}
 
 //////////////////////////////////////////////////////////////////////
 //
 //	~SoundHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-SoundHandleClass::~SoundHandleClass(void) {
+SoundHandleClass::~SoundHandleClass() {
   //
   //	Delay the release of the buffer (fixes a sync bug
   // with Miles internals).
   //
-  if (Buffer != NULL) {
+  if (Buffer != nullptr) {
     WWAudioThreadsClass::Add_Delayed_Release_Object(Buffer);
-    Buffer = NULL;
+    Buffer = nullptr;
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -67,7 +66,4 @@ SoundHandleClass::~SoundHandleClass(void) {
 //	Initialize
 //
 //////////////////////////////////////////////////////////////////////
-void SoundHandleClass::Initialize(SoundBufferClass *buffer) {
-  REF_PTR_SET(Buffer, buffer);
-  return;
-}
+void SoundHandleClass::Initialize(SoundBufferClass *buffer) { REF_PTR_SET(Buffer, buffer); }

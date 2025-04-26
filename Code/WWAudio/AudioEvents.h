@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __AUDIO_EVENTS_H
-#define __AUDIO_EVENTS_H
 
 #include "simplevec.h"
 #include "bittype.h"
@@ -101,8 +97,8 @@ public:
   /////////////////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   /////////////////////////////////////////////////////////////////////////////////
-  AudioCallbackClass(void);
-  virtual ~AudioCallbackClass(void);
+  AudioCallbackClass();
+  virtual ~AudioCallbackClass();
 
   /////////////////////////////////////////////////////////////////////////////////
   //	Overrideables (callback-methods)
@@ -116,7 +112,7 @@ public:
   /////////////////////////////////////////////////////////////////////////////////
   void On_Registered(SoundSceneObjClass *sound);
   void On_UnRegistered(SoundSceneObjClass *sound);
-  void Remove_All_Callbacks(void);
+  void Remove_All_Callbacks();
 
   /////////////////////////////////////////////////////////////////////////////////
   //	Private member data
@@ -143,7 +139,7 @@ template <class T> struct AUDIO_CALLBACK_STRUCT {
   T callback_ptr;
   uint32 user_data;
 
-  AUDIO_CALLBACK_STRUCT(void) : callback_ptr(NULL), user_data(0) {}
+  AUDIO_CALLBACK_STRUCT() : callback_ptr(nullptr), user_data(0) {}
 
   AUDIO_CALLBACK_STRUCT(T _ptr, uint32 _data) : callback_ptr(_ptr), user_data(_data) {}
 };
@@ -156,8 +152,8 @@ public:
   /////////////////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   /////////////////////////////////////////////////////////////////////////////////
-  AudioCallbackListClass(void) {}
-  virtual ~AudioCallbackListClass(void) {}
+  AudioCallbackListClass() = default;
+  virtual ~AudioCallbackListClass() = default;
 
   /////////////////////////////////////////////////////////////////////////////////
   //	Public methods
@@ -178,7 +174,7 @@ template <class T> void AudioCallbackListClass<T>::Add_Callback(T pointer, uint3
 //	Get_Callback
 /////////////////////////////////////////////////////////////////////////////////
 template <class T> T AudioCallbackListClass<T>::Get_Callback(int index, uint32 *user_data) {
-  if (user_data != NULL) {
+  if (user_data != nullptr) {
     (*user_data) = this->Vector[index].user_data;
   }
 
@@ -196,5 +192,3 @@ template <class T> void AudioCallbackListClass<T>::Remove_Callback(T pointer) {
     }
   }
 }
-
-#endif //__AUDIO_EVENTS_H

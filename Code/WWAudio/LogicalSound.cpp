@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -62,18 +63,16 @@ enum {
 //	LogicalSoundClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-LogicalSoundClass::LogicalSoundClass(void)
+LogicalSoundClass::LogicalSoundClass()
     : m_DropOffRadius(1), m_TypeMask(0), m_Position(0, 0, 0), m_IsSingleShot(false), m_OldestListenerTimestamp(0),
-      m_MaxListeners(0), m_NotifyDelayInMS(2000), m_LastNotification(0) {
-  return;
-}
+      m_MaxListeners(0), m_NotifyDelayInMS(2000), m_LastNotification(0) {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	~LogicalSoundClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-LogicalSoundClass::~LogicalSoundClass(void) { return; }
+LogicalSoundClass::~LogicalSoundClass() = default;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -82,7 +81,7 @@ LogicalSoundClass::~LogicalSoundClass(void) { return; }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void LogicalSoundClass::Add_To_Scene(bool /*start_playing*/) {
   SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-  if ((scene != NULL) && (m_Scene == NULL)) {
+  if ((scene != nullptr) && (m_Scene == nullptr)) {
 
     //
     //	Add this sound to the culling system
@@ -90,8 +89,6 @@ void LogicalSoundClass::Add_To_Scene(bool /*start_playing*/) {
     m_Scene = scene;
     scene->Add_Logical_Sound(this, m_IsSingleShot);
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,19 +96,17 @@ void LogicalSoundClass::Add_To_Scene(bool /*start_playing*/) {
 //	Remove_From_Scene
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void LogicalSoundClass::Remove_From_Scene(void) {
-  if (m_Scene != NULL) {
+void LogicalSoundClass::Remove_From_Scene() {
+  if (m_Scene != nullptr) {
 
     //
     //	Remove this sound from the culling system
     //
     m_Scene->Remove_Logical_Sound(this, m_IsSingleShot);
-    m_Scene = NULL;
-    m_PhysWrapper = NULL;
+    m_Scene = nullptr;
+    m_PhysWrapper = nullptr;
     m_LastNotification = 0;
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +144,7 @@ bool LogicalSoundClass::On_Frame_Update(unsigned int milliseconds) {
 //	Get_Factory
 //
 /////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &LogicalSoundClass::Get_Factory(void) const { return _LogicalSoundPersistFactory; }
+const PersistFactoryClass &LogicalSoundClass::Get_Factory() const { return _LogicalSoundPersistFactory; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //

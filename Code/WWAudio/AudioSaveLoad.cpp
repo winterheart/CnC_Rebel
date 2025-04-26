@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -68,14 +69,14 @@ enum {
 //	Chunk_ID
 //
 ///////////////////////////////////////////////////////////////////////
-uint32 StaticAudioSaveLoadClass::Chunk_ID(void) const { return CHUNKID_STATIC_SAVELOAD; }
+uint32 StaticAudioSaveLoadClass::Chunk_ID() const { return CHUNKID_STATIC_SAVELOAD; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Contains_Data
 //
 ///////////////////////////////////////////////////////////////////////
-bool StaticAudioSaveLoadClass::Contains_Data(void) const { return true; }
+bool StaticAudioSaveLoadClass::Contains_Data() const { return true; }
 
 ///////////////////////////////////////////////////////////////////////
 //
@@ -91,7 +92,7 @@ bool StaticAudioSaveLoadClass::Save(ChunkSaveClass &csave) {
   //	Save the static sounds
   //
   SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-  if (scene != NULL) {
+  if (scene != nullptr) {
     csave.Begin_Chunk(CHUNKID_STATIC_SCENE);
     scene->Save_Static(csave);
     csave.End_Chunk();
@@ -117,7 +118,7 @@ bool StaticAudioSaveLoadClass::Load(ChunkLoadClass &cload) {
     //
     case CHUNKID_STATIC_SCENE: {
       SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-      if (scene != NULL) {
+      if (scene != nullptr) {
         scene->Load_Static(cload);
       }
     } break;
@@ -140,14 +141,14 @@ bool StaticAudioSaveLoadClass::Load(ChunkLoadClass &cload) {
 //	Chunk_ID
 //
 ///////////////////////////////////////////////////////////////////////
-uint32 DynamicAudioSaveLoadClass::Chunk_ID(void) const { return CHUNKID_DYNAMIC_SAVELOAD; }
+uint32 DynamicAudioSaveLoadClass::Chunk_ID() const { return CHUNKID_DYNAMIC_SAVELOAD; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	Contains_Data
 //
 ///////////////////////////////////////////////////////////////////////
-bool DynamicAudioSaveLoadClass::Contains_Data(void) const { return true; }
+bool DynamicAudioSaveLoadClass::Contains_Data() const { return true; }
 
 ///////////////////////////////////////////////////////////////////////
 //
@@ -161,7 +162,7 @@ bool DynamicAudioSaveLoadClass::Save(ChunkSaveClass &csave) {
   //	Save the static sounds
   //
   SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-  if (scene != NULL) {
+  if (scene != nullptr) {
 
     csave.Begin_Chunk(CHUNKID_DYNAMIC_VARIABLES);
     float global_scale = LogicalListenerClass::Get_Global_Scale();
@@ -226,7 +227,7 @@ bool DynamicAudioSaveLoadClass::Load(ChunkLoadClass &cload) {
     //
     case CHUNKID_DYNAMIC_SCENE: {
       SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-      if (scene != NULL) {
+      if (scene != nullptr) {
         scene->Load_Dynamic(cload);
       }
     } break;

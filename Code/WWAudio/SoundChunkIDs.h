@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __SOUND_CHUNK_IDS_H
-#define __SOUND_CHUNK_IDS_H
 
 #include "saveloadids.h"
 #include "definitionclassids.h"
@@ -72,5 +68,3 @@ enum {
 enum {
   CLASSID_SOUND_DEF = CLASSID_SOUND,
 };
-
-#endif //__SOUND_CHUNK_IDS_H

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -30,17 +31,17 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <process.h>
+
 #include "Threads.h"
 #include "refcount.h"
 #include "Utils.h"
-#include <Process.h>
-#include "wwdebug.h"
 #include "systimer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //	Static member initialization
 ///////////////////////////////////////////////////////////////////////////////////////////
-WWAudioThreadsClass::DELAYED_RELEASE_INFO *WWAudioThreadsClass::m_ReleaseListHead = NULL;
+WWAudioThreadsClass::DELAYED_RELEASE_INFO *WWAudioThreadsClass::m_ReleaseListHead = nullptr;
 CriticalSectionClass WWAudioThreadsClass::m_ListMutex;
 HANDLE WWAudioThreadsClass::m_hDelayedReleaseThread = (HANDLE)-1;
 HANDLE WWAudioThreadsClass::m_hDelayedReleaseEvent = (HANDLE)-1;
@@ -52,27 +53,26 @@ bool WWAudioThreadsClass::m_IsFlushing = false;
 //	WWAudioThreadsClass
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-WWAudioThreadsClass::WWAudioThreadsClass(void) { return; }
+WWAudioThreadsClass::WWAudioThreadsClass() = default;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //	~WWAudioThreadsClass
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-WWAudioThreadsClass::~WWAudioThreadsClass(void) { return; }
+WWAudioThreadsClass::~WWAudioThreadsClass() = default;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Create_Delayed_Release_Thread
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-HANDLE
-WWAudioThreadsClass::Create_Delayed_Release_Thread(LPVOID param) {
+HANDLE WWAudioThreadsClass::Create_Delayed_Release_Thread(LPVOID param) {
   //
   //	If the thread isn't already running, then
   //
   if (m_hDelayedReleaseThread == (HANDLE)-1) {
-    m_hDelayedReleaseEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_hDelayedReleaseEvent = ::CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_hDelayedReleaseThread = (HANDLE)::_beginthread(Delayed_Release_Thread_Proc, 0, param);
   }
 
@@ -95,8 +95,6 @@ void WWAudioThreadsClass::End_Delayed_Release_Thread(DWORD timeout) {
     m_hDelayedReleaseEvent = (HANDLE)-1;
     m_hDelayedReleaseThread = (HANDLE)-1;
   }
-
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -132,17 +130,15 @@ void WWAudioThreadsClass::Add_Delayed_Release_Object(RefCountClass *object, DWOR
       info->object = object;
       info->time = TIMEGETTIME() + delay;
       info->next = m_ReleaseListHead;
-      info->prev = NULL;
+      info->prev = nullptr;
 
-      if (info->next != NULL) {
+      if (info->next != nullptr) {
         info->next->prev = info;
       }
 
       m_ReleaseListHead = info;
     }
   }
-
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +146,7 @@ void WWAudioThreadsClass::Add_Delayed_Release_Object(RefCountClass *object, DWOR
 //	Flush_Delayed_Release_Objects
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void WWAudioThreadsClass::Flush_Delayed_Release_Objects(void) {
+void WWAudioThreadsClass::Flush_Delayed_Release_Objects() {
   CriticalSectionClass::LockClass lock(m_ListMutex);
   m_IsFlushing = true;
 
@@ -158,9 +154,9 @@ void WWAudioThreadsClass::Flush_Delayed_Release_Objects(void) {
   //	Loop through all the objects in our delay list, and
   // free them now.
   //
-  DELAYED_RELEASE_INFO *info = NULL;
-  DELAYED_RELEASE_INFO *next = NULL;
-  for (info = m_ReleaseListHead; info != NULL; info = next) {
+  DELAYED_RELEASE_INFO *info = nullptr;
+  DELAYED_RELEASE_INFO *next = nullptr;
+  for (info = m_ReleaseListHead; info != nullptr; info = next) {
     next = info->next;
 
     //
@@ -170,8 +166,7 @@ void WWAudioThreadsClass::Flush_Delayed_Release_Objects(void) {
     SAFE_DELETE(info);
   }
 
-  m_ReleaseListHead = NULL;
-  return;
+  m_ReleaseListHead = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -196,10 +191,10 @@ void __cdecl WWAudioThreadsClass::Delayed_Release_Thread_Proc(LPVOID /*param*/) 
       // free any that have expired.
       //
       DWORD current_time = TIMEGETTIME();
-      DELAYED_RELEASE_INFO *curr = NULL;
-      DELAYED_RELEASE_INFO *prev = NULL;
-      DELAYED_RELEASE_INFO *next = NULL;
-      for (curr = m_ReleaseListHead; curr != NULL; curr = next) {
+      DELAYED_RELEASE_INFO *curr = nullptr;
+      DELAYED_RELEASE_INFO *prev = nullptr;
+      DELAYED_RELEASE_INFO *next = nullptr;
+      for (curr = m_ReleaseListHead; curr != nullptr; curr = next) {
         next = curr->next;
         prev = curr->prev;
 
@@ -215,11 +210,11 @@ void __cdecl WWAudioThreadsClass::Delayed_Release_Thread_Proc(LPVOID /*param*/) 
             m_ReleaseListHead = next;
           }
 
-          if (prev != NULL) {
+          if (prev != nullptr) {
             prev->next = next;
           }
 
-          if (next != NULL) {
+          if (next != nullptr) {
             next->prev = prev;
           }
 
@@ -239,7 +234,6 @@ void __cdecl WWAudioThreadsClass::Delayed_Release_Thread_Proc(LPVOID /*param*/) 
   }
 
   Flush_Delayed_Release_Objects();
-  return;
 }
 
 /*
@@ -249,14 +243,14 @@ void __cdecl WWAudioThreadsClass::Delayed_Release_Thread_Proc(LPVOID /*param*/) 
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool
-WWAudioThreadsClass::Begin_Modify_List (void)
+WWAudioThreadsClass::Begin_Modify_List ()
 {
         bool retval = false;
 
         //
         //	Wait for up to one second to modify the list object
         //
-        if (m_ListMutex != NULL) {
+        if (m_ListMutex != nullptr) {
                 retval = (::WaitForSingleObject (m_ListMutex, 1000) == WAIT_OBJECT_0);
                 WWASSERT (retval);
         }
@@ -271,12 +265,12 @@ WWAudioThreadsClass::Begin_Modify_List (void)
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-WWAudioThreadsClass::End_Modify_List (void)
+WWAudioThreadsClass::End_Modify_List ()
 {
         //
         //	Release this thread's hold on the mutex object.
         //
-        if (m_ListMutex != NULL) {
+        if (m_ListMutex != nullptr) {
                 ::ReleaseMutex (m_ListMutex);
         }
 

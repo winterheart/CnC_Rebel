@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __FILTERED_SOUND_H
-#define __FILTERED_SOUND_H
 
 #include "SoundPseudo3D.H"
 
@@ -56,8 +52,8 @@ public:
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
   FilteredSoundClass(const FilteredSoundClass &src);
-  FilteredSoundClass(void);
-  virtual ~FilteredSoundClass(void);
+  FilteredSoundClass();
+  virtual ~FilteredSoundClass();
 
   //////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -67,26 +63,26 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Identification methods
   //////////////////////////////////////////////////////////////////////
-  virtual SOUND_CLASSID Get_Class_ID(void) { return CLASSID_FILTERED; }
+  virtual SOUND_CLASSID Get_Class_ID() { return CLASSID_FILTERED; }
 
   //////////////////////////////////////////////////////////////////////
   //	Conversion methods
   //////////////////////////////////////////////////////////////////////
-  virtual FilteredSoundClass *As_FilteredSoundClass(void) { return this; }
+  virtual FilteredSoundClass *As_FilteredSoundClass() { return this; }
 
   //////////////////////////////////////////////////////////////////////
   //	Volume control
   //////////////////////////////////////////////////////////////////////
-  virtual void Update_Volume(void);
+  virtual void Update_Volume();
 
   // From PersistClass
-  const PersistFactoryClass &Get_Factory(void) const;
+  const PersistFactoryClass &Get_Factory() const;
 
 protected:
   //////////////////////////////////////////////////////////////////////
   //	Handle information
   //////////////////////////////////////////////////////////////////////
-  virtual void Initialize_Miles_Handle(void);
+  virtual void Initialize_Miles_Handle();
 
 private:
   //////////////////////////////////////////////////////////////////////
@@ -94,5 +90,3 @@ private:
   //////////////////////////////////////////////////////////////////////
   HPROVIDER m_hFilter;
 };
-
-#endif //__FILTERED_SOUND_H

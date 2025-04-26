@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,18 +35,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __SOUNDSCENE_H
-#define __SOUNDSCENE_H
 
 #include "aabtreecull.h"
 #include "gridcull.h"
 #include "listener.h"
-#include "vector.h"
-#include "priorityvector.h"
 #include "soundcullobj.h"
 #include "logicallistener.h"
 #include "multilist.h"
@@ -85,8 +79,8 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
-  SoundSceneClass(void);
-  virtual ~SoundSceneClass(void);
+  SoundSceneClass();
+  virtual ~SoundSceneClass();
 
   //////////////////////////////////////////////////////////////////////
   //	Partition methods
@@ -106,18 +100,18 @@ public:
   }
 
   virtual void Set_Listener_Position(const Vector3 &pos) { m_Listener->Set_Position(pos); }
-  virtual Vector3 Get_Listener_Position(void) const { return m_Listener->Get_Position(); }
+  virtual Vector3 Get_Listener_Position() const { return m_Listener->Get_Position(); }
 
   virtual void Set_Listener_Transform(const Matrix3D &transform) { m_Listener->Set_Transform(transform); }
-  virtual Matrix3D Get_Listener_Transform(void) const { return m_Listener->Get_Transform(); }
+  virtual Matrix3D Get_Listener_Transform() const { return m_Listener->Get_Transform(); }
 
-  virtual Listener3DClass *Peek_2nd_Listener(void) const { return m_2ndListener; }
+  virtual Listener3DClass *Peek_2nd_Listener() const { return m_2ndListener; }
   virtual void Set_2nd_Listener(Listener3DClass *listener);
 
   //////////////////////////////////////////////////////////////////////
   //	Sound insertion
   //////////////////////////////////////////////////////////////////////
-  virtual void Flush_Scene(void);
+  virtual void Flush_Scene();
   virtual void Update_Sound(SoundCullObjClass *sound_obj);
 
   //
@@ -151,7 +145,7 @@ public:
   bool Save_Dynamic(ChunkSaveClass &csave);
   bool Load_Dynamic(ChunkLoadClass &cload);
 
-  bool Is_Batch_Mode(void) const { return m_IsBatchMode; }
+  bool Is_Batch_Mode() const { return m_IsBatchMode; }
   void Set_Batch_Mode(bool batch_mode) { m_IsBatchMode = batch_mode; }
 
   //////////////////////////////////////////////////////////////////////
@@ -161,7 +155,7 @@ public:
 
   class AudibleInfoClass : public MultiListObjectClass, public AutoPoolClass<AudibleInfoClass, 64> {
   public:
-    AudibleInfoClass(void) : sound_obj(NULL), distance2(0) {}
+    AudibleInfoClass() : sound_obj(nullptr), distance2(0) {}
 
     AudibleInfoClass(AudibleSoundClass *obj, float dist2) : sound_obj(obj), distance2(dist2) {}
 
@@ -174,7 +168,7 @@ protected:
   //	Protected methods
   //////////////////////////////////////////////////////////////////////
   virtual void On_Frame_Update(unsigned int milliseconds = 0);
-  virtual void Initialize(void);
+  virtual void Initialize();
 
   virtual bool Is_Logical_Sound_In_Scene(LogicalSoundClass *sound_obj, bool single_shot = false);
 
@@ -214,5 +208,3 @@ private:
 
   bool m_IsBatchMode;
 };
-
-#endif //__SOUNDSCENE_H

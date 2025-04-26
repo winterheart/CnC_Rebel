@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,8 +37,6 @@
 #include "camera.h"
 #include "rendobj.h"
 #include "persistfactory.h"
-#include "SoundChunkIDs.h"
-#include "utils.h"
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Save/Load constants
@@ -60,8 +59,8 @@ CriticalSectionClass SoundSceneObjClass::m_IDListMutex;
 class HandleMgrClass
 {
 public:
-        HandleMgrClass (void)	{ SoundSceneObjClass::m_IDListMutex = ::CreateMutex (NULL, FALSE, NULL); }
-        ~HandleMgrClass (void)	{ ::CloseHandle (SoundSceneObjClass::m_IDListMutex); }
+        HandleMgrClass ()	{ SoundSceneObjClass::m_IDListMutex = ::CreateMutex (nullptr, FALSE, nullptr); }
+        ~HandleMgrClass ()	{ ::CloseHandle (SoundSceneObjClass::m_IDListMutex); }
 
 };
 
@@ -73,13 +72,12 @@ HandleMgrClass _GlobalMutexHandleMgr;
 //	SoundSceneObjClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-SoundSceneObjClass::SoundSceneObjClass(void)
-    : m_Scene(NULL), m_PhysWrapper(NULL), m_pCallback(NULL), m_AttachedObject(NULL), m_UserData(0), m_UserObj(NULL),
-      m_ID(SOUND_OBJ_DEFAULT_ID), m_RegisteredEvents(AudioCallbackClass::EVENT_NONE) {
+SoundSceneObjClass::SoundSceneObjClass()
+    : m_Scene(nullptr), m_PhysWrapper(nullptr), m_pCallback(nullptr), m_AttachedObject(nullptr), m_UserData(0),
+      m_UserObj(nullptr), m_ID(SOUND_OBJ_DEFAULT_ID), m_RegisteredEvents(AudioCallbackClass::EVENT_NONE) {
   m_ID = m_NextAvailableID++;
 
   Register_Sound_Object(this);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,13 +86,12 @@ SoundSceneObjClass::SoundSceneObjClass(void)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 SoundSceneObjClass::SoundSceneObjClass(const SoundSceneObjClass &src)
-    : m_Scene(NULL), m_PhysWrapper(NULL), m_pCallback(NULL), m_AttachedObject(NULL), m_UserData(0), m_UserObj(NULL),
-      m_ID(SOUND_OBJ_DEFAULT_ID), m_RegisteredEvents(AudioCallbackClass::EVENT_NONE) {
+    : m_Scene(nullptr), m_PhysWrapper(nullptr), m_pCallback(nullptr), m_AttachedObject(nullptr), m_UserData(0),
+      m_UserObj(nullptr), m_ID(SOUND_OBJ_DEFAULT_ID), m_RegisteredEvents(AudioCallbackClass::EVENT_NONE) {
   m_ID = m_NextAvailableID++;
 
   (*this) = src;
   Register_Sound_Object(this);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,12 +99,11 @@ SoundSceneObjClass::SoundSceneObjClass(const SoundSceneObjClass &src)
 //	~SoundSceneObjClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-SoundSceneObjClass::~SoundSceneObjClass(void) {
-  Register_Callback(AudioCallbackClass::EVENT_NONE, NULL);
+SoundSceneObjClass::~SoundSceneObjClass() {
+  Register_Callback(AudioCallbackClass::EVENT_NONE, nullptr);
   REF_PTR_RELEASE(m_UserObj);
   REF_PTR_RELEASE(m_AttachedObject);
   Unregister_Sound_Object(this);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,13 +130,11 @@ const SoundSceneObjClass &SoundSceneObjClass::operator=(const SoundSceneObjClass
 void SoundSceneObjClass::Attach_To_Object(RenderObjClass *render_obj, const char *bone_name) {
   REF_PTR_SET(m_AttachedObject, render_obj);
 
-  if (m_AttachedObject != NULL && bone_name != NULL) {
+  if (m_AttachedObject != nullptr && bone_name != nullptr) {
     m_AttachedBone = m_AttachedObject->Get_Bone_Index(bone_name);
   } else {
     m_AttachedBone = -1;
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,8 +156,6 @@ void SoundSceneObjClass::Attach_To_Object(RenderObjClass *render_obj, int bone_i
     //
     Apply_Auto_Position();
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -171,13 +163,13 @@ void SoundSceneObjClass::Attach_To_Object(RenderObjClass *render_obj, int bone_i
 //	Apply_Auto_Position
 //
 //////////////////////////////////////////////////////////////////////////////
-void SoundSceneObjClass::Apply_Auto_Position(void) {
+void SoundSceneObjClass::Apply_Auto_Position() {
   // If the sound is attached to an object, then update its transform
   // based on this link.
-  if (m_AttachedObject != NULL) {
+  if (m_AttachedObject != nullptr) {
 
     // Determine which transform to use
-    Matrix3D transform(1);
+    Matrix3D transform(true);
     if (m_AttachedBone >= 0) {
       transform = m_AttachedObject->Get_Bone_Transform(m_AttachedBone);
     } else {
@@ -195,8 +187,6 @@ void SoundSceneObjClass::Apply_Auto_Position(void) {
     // Update the sound's transform
     Set_Transform(transform);
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -273,7 +263,7 @@ bool SoundSceneObjClass::Load(ChunkLoadClass &cload) {
   //	We need to 'swizzle' the attached object pointer.  We saved the pointer's
   // value, and need to map it (hopefully) to the new value.
   //
-  if (m_AttachedObject != NULL) {
+  if (m_AttachedObject != nullptr) {
     SaveLoadSystemClass::Request_Ref_Counted_Pointer_Remap((RefCountClass **)&m_AttachedObject);
   }
 
@@ -310,7 +300,6 @@ void SoundSceneObjClass::Set_ID(uint32 id) {
   //	Reinsert the sound object in our sorted list
   //
   Register_Sound_Object(this);
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -341,8 +330,6 @@ void SoundSceneObjClass::Register_Sound_Object(SoundSceneObjClass *sound_obj) {
       m_GlobalSoundList.Insert(index, sound_obj);
     }
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -364,8 +351,6 @@ void SoundSceneObjClass::Unregister_Sound_Object(SoundSceneObjClass *sound_obj) 
     //
     m_GlobalSoundList.Delete(index);
   }
-
-  return;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
