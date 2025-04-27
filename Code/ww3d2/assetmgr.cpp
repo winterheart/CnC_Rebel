@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /* $Header: /Commando/Code/ww3d2/assetmgr.cpp 43    11/01/01 1:11a Jani_p $ */
 /***********************************************************************************************
@@ -55,7 +56,7 @@
  *   WW3DAssetManager::Get_Font3DInstance -- Creates a pointer to a Font3DInstance             *
  *   WW3DAssetManager::Get_Font3DData -- Gets a pointer to a loaded Font3DData or creates it   *
  *   WW3DAssetManager::Release_Material -- Release a material                                  *
- *   WW3DAssetManager::Release_Font3DData -- Release a Font3DData	                             *
+ *   WW3DAssetManager::Release_Font3DData -- Release a Font3DData	                       *
  *   WW3DAssetManager::Add_Material -- Add a material to the list                              *
  *   WW3DAssetManager::Add_Font3DData -- Add a Font3DData to the list                          *
  *   WW3DAssetManager::Get_Texture -- get a TextureClass for the specified targa               *
@@ -72,9 +73,13 @@
  *   WW3DAssetManager::Get_Streaming_Texture -- Gets a streaming texture.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "assetmgr.h"
-#include <assert.h>
+#include <cassert>
+#include <cstdio>
+#include <format>
+#include <string>
+#include <windows.h>
 
+#include "assetmgr.h"
 #include "bittype.h"
 #include "chunkio.h"
 #include "realcrc.h"
@@ -105,9 +110,7 @@
 #include "dxdefs.h"
 #include "dx8wrapper.h"
 #include "metalmap.h"
-#include <ini.h>
-#include <windows.h>
-#include <stdio.h>
+#include "ini.h"
 #include "texture.h"
 #include "wwprofile.h"
 #include "assetstatus.h"
@@ -248,19 +251,6 @@ WW3DAssetManager::~WW3DAssetManager(void) {
 #endif // WW3D_DX8
 }
 
-static void Create_Number_String(StringClass &number, unsigned value) {
-  unsigned miljoonat = value / (1024 * 1028);
-  unsigned tuhannet = (value / 1024) % 1024;
-  unsigned ykkoset = value % 1024;
-  if (miljoonat) {
-    number.Format("%d %3.3d %3.3d", miljoonat, tuhannet, ykkoset);
-  } else if (tuhannet) {
-    number.Format("%d %3.3d", tuhannet, ykkoset);
-  } else {
-    number.Format("%d", ykkoset);
-  }
-}
-
 void WW3DAssetManager::Load_Procedural_Textures() {
   int i, count;
   if (!MetalManager) {
@@ -289,7 +279,7 @@ static void Log_Textures(bool inited, unsigned &total_count, unsigned &total_mem
       continue;
     DX8_ErrorCode(d3d_texture->GetLevelDesc(0, &desc));
 
-    StringClass tex_format = "Unknown";
+    std::string tex_format = "D3DFMT_UNKNOWN";
     switch (desc.Format) {
     case D3DFMT_A8R8G8B8:
       tex_format = "D3DFMT_A8R8G8B8";
@@ -408,11 +398,11 @@ static void Log_Textures(bool inited, unsigned &total_count, unsigned &total_mem
     unsigned texmem = tex->Get_Texture_Memory_Usage();
     total_mem += texmem;
     total_count++;
-    StringClass number;
-    Create_Number_String(number, texmem);
 
-    WWDEBUG_SAY(("%32s	%4d * %4d (%15s), init %d, size: %14s bytes, refs: %d\n", tex->Get_Texture_Name(), desc.Width,
-                 desc.Height, tex_format, tex->Is_Initialized(), number, tex->Num_Refs()));
+    WWDEBUG_SAY((std::format("{:32s}\t{:4d} * {:4d} ({:>15s}), init {:d}, size {:14L} bytes, refs {:d}\n",
+                             tex->Get_Texture_Name().Peek_Buffer(), desc.Width, desc.Height, tex_format,
+                             tex->Is_Initialized(), texmem, tex->Num_Refs())
+                     .c_str()));
   }
 }
 
@@ -421,19 +411,20 @@ void WW3DAssetManager::Log_Texture_Statistics() {
   unsigned total_uninitialized_tex_mem = 0;
   unsigned total_initialized_count = 0;
   unsigned total_uninitialized_count = 0;
-  StringClass number;
 
   WWDEBUG_SAY(("\nInitialized textures ------------------------------------------\n\n"));
   Log_Textures(true, total_initialized_count, total_initialized_tex_mem);
 
-  Create_Number_String(number, total_initialized_tex_mem);
-  WWDEBUG_SAY(("\n%d initialized textures, totalling %14s bytes\n\n", total_initialized_count, number));
+  WWDEBUG_SAY((std::format("\n{:d} initialized textures, totalling {:14L} bytes\n\n", total_initialized_count,
+                           total_initialized_tex_mem)
+                   .c_str()));
 
   WWDEBUG_SAY(("\nUn-initialized textures ---------------------------------------\n\n"));
   Log_Textures(false, total_uninitialized_count, total_uninitialized_tex_mem);
 
-  Create_Number_String(number, total_uninitialized_tex_mem);
-  WWDEBUG_SAY(("\n%d un-initialized textures, totalling, totalling %14s bytes\n\n", total_uninitialized_count, number));
+  WWDEBUG_SAY((std::format("\n{:d} un-initialized textures, totalling {:14L} bytes\n\n",
+                           total_uninitialized_count, total_uninitialized_tex_mem)
+                   .c_str()));
   /*
           RenderObjIterator * rite=WW3DAssetManager::Get_Instance()->Create_Render_Obj_Iterator();
           if (rite) {
@@ -1102,14 +1093,10 @@ void WW3DAssetManager::Log_All_Textures(void) {
     if (!t->Is_Lightmap())
       continue;
 
-    StringClass tmp(true);
+    std::string init = t->Is_Initialized() ? " " : "*";
     unsigned bytes = t->Get_Texture_Memory_Usage();
-    if (!t->Is_Initialized()) {
-      tmp += "*";
-    } else {
-      tmp += " ";
-    }
-    WWDEBUG_SAY(("%4.4dkb %s%s\n", bytes / 1024, tmp, t->Get_Texture_Name()));
+    WWDEBUG_SAY((std::format("{:04d} kb {:s}{:s}\n",
+      bytes / 1024, init, t->Get_Texture_Name().Peek_Buffer()).c_str()));
   }
 
   // Log procedural textures -------------------------------
@@ -1124,14 +1111,10 @@ void WW3DAssetManager::Log_All_Textures(void) {
     if (!t->Is_Procedural())
       continue;
 
-    StringClass tmp(true);
+    std::string init = t->Is_Initialized() ? " " : "*";
     unsigned bytes = t->Get_Texture_Memory_Usage();
-    if (!t->Is_Initialized()) {
-      tmp += "*";
-    } else {
-      tmp += " ";
-    }
-    WWDEBUG_SAY(("%4.4dkb %s%s\n", bytes / 1024, tmp, t->Get_Texture_Name()));
+    WWDEBUG_SAY((std::format("{:04d} kb {:s}{:s}\n",
+      bytes / 1024, init, t->Get_Texture_Name().Peek_Buffer()).c_str()));
   }
 
   // Log "ordinary" textures -------------------------------
@@ -1149,14 +1132,10 @@ void WW3DAssetManager::Log_All_Textures(void) {
     if (t->Is_Lightmap())
       continue;
 
-    StringClass tmp(true);
+    std::string init = t->Is_Initialized() ? " " : "*";
     unsigned bytes = t->Get_Texture_Memory_Usage();
-    if (!t->Is_Initialized()) {
-      tmp += "*";
-    } else {
-      tmp += " ";
-    }
-    WWDEBUG_SAY(("%4.4dkb %s%s\n", bytes / 1024, tmp, t->Get_Texture_Name()));
+    WWDEBUG_SAY((std::format("{:04d} kb {:s}{:s}\n",
+      bytes / 1024, init, t->Get_Texture_Name().Peek_Buffer()).c_str()));
   }
 }
 

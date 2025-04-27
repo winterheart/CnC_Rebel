@@ -169,34 +169,6 @@ struct RenderStateStruct {
   RenderStateStruct &operator=(const RenderStateStruct &src);
 };
 
-// Returns BPP of format
-WWINLINE unsigned DX_Get_Bytes_Per_Pixel(DX_D3DFORMAT format) {
-  switch (format) {
-  case D3DFMT_X8R8G8B8:
-  case D3DFMT_X8L8V8U8:
-  case D3DFMT_A8R8G8B8:
-    return 4;
-  case D3DFMT_R8G8B8:
-    return 3;
-  case D3DFMT_A1R5G5B5:
-  case D3DFMT_A4R4G4B4:
-  case D3DFMT_V8U8:
-  case D3DFMT_L6V5U5:
-  case D3DFMT_R5G6B5:
-    return 2;
-  case D3DFMT_R3G3B2:
-  case D3DFMT_L8:
-  case D3DFMT_A8:
-  case D3DFMT_P8:
-    return 1;
-
-  default:
-    WWASSERT(0);
-    break;
-  }
-  return 0;
-}
-
 /**
 ** DX8Wrapper
 **
@@ -682,7 +654,8 @@ WWINLINE void DX8Wrapper::Set_DX8_Render_State(DX_D3DRENDERSTATETYPE state, unsi
   if (WW3D::Is_Snapshot_Activated()) {
     StringClass value_name(0, true);
     Get_DX8_Render_State_Value_Name(value_name, state, value);
-    SNAPSHOT_SAY(("DX8 - SetRenderState(state: %s, value: %s)\n", Get_DX8_Render_State_Name(state), value_name));
+    SNAPSHOT_SAY(("DX8 - SetRenderState(state: %s, value: %s)\n",
+      Get_DX8_Render_State_Name(state), value_name.Peek_Buffer()));
   }
 #endif
 
@@ -701,7 +674,7 @@ WWINLINE void DX8Wrapper::Set_DX8_Texture_Stage_State(unsigned stage, DX_D3DTEXT
     StringClass value_name(0, true);
     Get_DX8_Texture_Stage_State_Value_Name(value_name, state, value);
     SNAPSHOT_SAY(("DX8 - SetTextureStageState(stage: %d, state: %s, value: %s)\n", stage,
-                  Get_DX8_Texture_Stage_State_Name(state), value_name));
+                  Get_DX8_Texture_Stage_State_Name(state), value_name.Peek_Buffer()));
   }
 #endif
 
