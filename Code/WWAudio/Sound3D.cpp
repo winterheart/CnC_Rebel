@@ -35,6 +35,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+
 #include "sound3d.h"
 #include "wwaudio.h"
 #include "soundscene.h"
@@ -227,7 +229,7 @@ void Sound3DClass::Update_Edge_Volume() {
     //	Normalize our distance from the edge
     //
     float percent = (distance - falloff_start) / (m_DropOffRadius - falloff_start);
-    percent = WWMath::Clamp(1.0F - percent, 0.0F, 1.0F);
+    percent = std::clamp(1.0F - percent, 0.0F, 1.0F);
 
     //
     //	Update the sound volume

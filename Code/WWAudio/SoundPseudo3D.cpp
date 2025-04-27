@@ -35,6 +35,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+
 #include "soundpseudo3d.h"
 #include "soundscene.h"
 #include "utils.h"
@@ -118,8 +120,7 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(float distance) {
     float volume = 1.0F;
     if (distance > min_distance) {
       volume = 1.0F - ((distance - min_distance) / delta);
-      volume = min(volume, 1.0F);
-      volume = max(volume, 0.0F);
+      volume = std::clamp(volume, 0.0F, 1.0F);
     }
 
     // Multiply the 'max' volume with the calculated volume

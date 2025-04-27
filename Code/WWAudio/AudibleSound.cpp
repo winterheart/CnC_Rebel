@@ -35,6 +35,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+
 #include "audiblesound.h"
 #include "wwaudio.h"
 #include "ww3d.h"
@@ -281,7 +283,7 @@ void AudibleSoundClass::Update_Fade() {
   //	Determine what percent we should ramp up or down to...
   //
   float percent = ((float)m_FadeTimer / (float)m_FadeTime);
-  percent = WWMath::Clamp(percent, 0.0F, 1.0F);
+  percent = std::clamp(percent, 0.0F, 1.0F);
 
   //
   //	Invert the percent if we're fading in
@@ -761,8 +763,7 @@ void AudibleSoundClass::Set_Pan(float pan) {
   //
   // Cache the normalized pan value
   //
-  m_Pan = min(pan, 1.0F);
-  m_Pan = max(m_Pan, 0.0F);
+  m_Pan = std::clamp(pan, 0.0F, 1.0F);
 
   //
   // Do we have a valid sample handle from miles?
@@ -859,8 +860,7 @@ void AudibleSoundClass::Internal_Set_Volume(float volume) {
   //
   // Cache the normalized volume value
   //
-  m_Volume = min(volume, 1.0F);
-  m_Volume = max(m_Volume, 0.0F);
+  m_Volume = std::clamp(volume, 0.0F, 1.0F);
 
   //
   // Do we have a valid sample handle from miles?
@@ -887,8 +887,7 @@ void AudibleSoundClass::Set_Volume(float volume) {
   //
   // Cache the normalized volume value
   //
-  m_RealVolume = min(volume, 1.0F);
-  m_RealVolume = max(m_RealVolume, 0.0F);
+  m_RealVolume = std::clamp(volume, 0.0F, 1.0F);
 
   //
   //	Update the volume
@@ -929,8 +928,7 @@ void AudibleSoundClass::Set_Priority(float priority) {
   MMSLockClass lock;
 
   // Cache the normalized priority
-  m_Priority = min(priority, 1.0F);
-  m_Priority = max(m_Priority, 0.0F);
+  m_Priority = std::clamp(priority, 0.0F, 1.0F);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -35,8 +35,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+#include <windows.h>
+
 #include "always.h"
-#include <Windows.H>
 #include "WWAudio.H"
 #include "WWDebug.H"
 #include "Utils.H"
@@ -1922,9 +1924,7 @@ void WWAudioClass::Remove_3D_Sound_Handles() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Set_Dialog_Volume(float volume) {
-  m_DialogVolume = volume;
-  m_DialogVolume = min(1.0F, m_DialogVolume);
-  m_DialogVolume = max(0.0F, m_DialogVolume);
+  m_DialogVolume = std::clamp(volume, 0.0F, 1.0F);
 
   // Update all the currently playing 'Dialog' to
   // reflect this new volume
@@ -1942,9 +1942,7 @@ void WWAudioClass::Set_Dialog_Volume(float volume) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Set_Cinematic_Volume(float volume) {
-  m_CinematicVolume = volume;
-  m_CinematicVolume = min(1.0F, m_CinematicVolume);
-  m_CinematicVolume = max(0.0F, m_CinematicVolume);
+  m_CinematicVolume = std::clamp(volume, 0.0F, 1.0F);
 
   //
   // Update all the currently playing cinematic-counds to
@@ -1964,9 +1962,7 @@ void WWAudioClass::Set_Cinematic_Volume(float volume) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Set_Sound_Effects_Volume(float volume) {
-  m_RealSoundVolume = volume;
-  m_RealSoundVolume = min(1.0F, m_RealSoundVolume);
-  m_RealSoundVolume = max(0.0F, m_RealSoundVolume);
+  m_RealSoundVolume = std::clamp(volume, 0.0F, 1.0F);
 
   Internal_Set_Sound_Effects_Volume(m_RealSoundVolume);
 }
@@ -1977,9 +1973,7 @@ void WWAudioClass::Set_Sound_Effects_Volume(float volume) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Set_Music_Volume(float volume) {
-  m_RealMusicVolume = volume;
-  m_RealMusicVolume = min(1.0F, m_RealMusicVolume);
-  m_RealMusicVolume = max(0.0F, m_RealMusicVolume);
+  m_RealMusicVolume = std::clamp(volume, 0.0F, 1.0F);
 
   Internal_Set_Music_Volume(m_RealMusicVolume);
 }
@@ -1990,9 +1984,7 @@ void WWAudioClass::Set_Music_Volume(float volume) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Internal_Set_Sound_Effects_Volume(float volume) {
-  m_SoundVolume = volume;
-  m_SoundVolume = min(1.0F, m_SoundVolume);
-  m_SoundVolume = max(0.0F, m_SoundVolume);
+  m_SoundVolume = std::clamp(volume, 0.0F, 1.0F);
 
   // Update all the currently playing 'Sound Effects' to
   // reflect this new volume
@@ -2010,9 +2002,7 @@ void WWAudioClass::Internal_Set_Sound_Effects_Volume(float volume) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Internal_Set_Music_Volume(float volume) {
-  m_MusicVolume = volume;
-  m_MusicVolume = min(1.0F, m_MusicVolume);
-  m_MusicVolume = max(0.0F, m_MusicVolume);
+  m_MusicVolume = std::clamp(volume, 0.0F, 1.0F);
 
   // Update all currently playing music to
   // reflect this new volume
@@ -2642,10 +2632,10 @@ bool WWAudioClass::Load_From_Registry(const char *subkey_name, StringClass &devi
     sound_volume = registry.Get_Int(VALUE_NAME_SOUND_VOL, defaultsoundvolume) / 100.0F;
     dialog_volume = registry.Get_Int(VALUE_NAME_DIALOG_VOL, defaultdialogvolume) / 100.0F;
     cinematic_volume = registry.Get_Int(VALUE_NAME_CINEMATIC_VOL, defaultcinematicvolume) / 100.0F;
-    music_volume = WWMath::Clamp(music_volume, 0, 1.0F);
-    sound_volume = WWMath::Clamp(sound_volume, 0, 1.0F);
-    dialog_volume = WWMath::Clamp(dialog_volume, 0, 1.0F);
-    cinematic_volume = WWMath::Clamp(cinematic_volume, 0, 1.0F);
+    music_volume = std::clamp(music_volume, 0.0F, 1.0F);
+    sound_volume = std::clamp(sound_volume, 0.0F, 1.0F);
+    dialog_volume = std::clamp(dialog_volume, 0.0F, 1.0F);
+    cinematic_volume = std::clamp(cinematic_volume, 0.0F, 1.0F);
 
     //
     //	Misc
@@ -2978,7 +2968,7 @@ void WWAudioClass::Update_Fade() {
   //	Determine what percent we should ramp up or down to...
   //
   float percent = (m_FadeTimer / m_NonDialogFadeTime);
-  percent = WWMath::Clamp(percent, 0.0F, 1.0F);
+  percent = std::clamp(percent, 0.0F, 1.0F);
 
   //
   //	Invert the percent if we're fading out
@@ -3219,11 +3209,11 @@ void WWAudioClass::Load_Default_Volume(int &defaultmusicvolume, int &defaultsoun
   }
 
   defaultmusicvolume =
-      MIN(maxsetting, MAX(minsetting, AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_MUSIC_VOLUME_ENTRY, 31)));
+      std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_MUSIC_VOLUME_ENTRY, 31), minsetting, maxsetting);
   defaultsoundvolume =
-      MIN(maxsetting, MAX(minsetting, AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_SOUND_VOLUME_ENTRY, 43)));
+      std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_SOUND_VOLUME_ENTRY, 43), minsetting, maxsetting);
   defaultdialogvolume =
-      MIN(maxsetting, MAX(minsetting, AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_DIALOG_VOLUME_ENTRY, 50)));
+      std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_DIALOG_VOLUME_ENTRY, 50), minsetting, maxsetting);
   defaultcinematicvolume =
-      MIN(maxsetting, MAX(minsetting, AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_CINEMATIC_VOLUME_ENTRY, 100)));
+      std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_CINEMATIC_VOLUME_ENTRY, 100), minsetting, maxsetting);
 }
