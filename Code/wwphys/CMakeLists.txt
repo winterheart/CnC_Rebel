@@ -13,7 +13,7 @@ set(SOURCES
     bin_obbox.cpp
     bin_point.cpp
     bin_vector.cpp
-    bpt.cpp
+    #bpt.cpp
     camerashakesystem.cpp
     decophys.cpp
     dynamicaabtreecull.cpp
