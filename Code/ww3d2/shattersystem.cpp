@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -1009,19 +1010,19 @@ void ShatterSystem::Process_Clip_Pools(const Matrix3D &Mshatter_to_mesh, MeshCla
   /*
   ** Loop over all ClipPools and build a mesh for any that contain polygons
   */
-  for (int ipool = 0; ipool < MAX_MESH_FRAGMENTS; ipool++) {
+  for (auto & ClipPool : ClipPools) {
 
-    if (ClipPools[ipool].Count() > 0) {
+    if (ClipPool.Count() > 0) {
 
-      int ivert, ipoly, ipass, istage;
+      int ipoly, ipass, istage;
 
       /*
       ** Count the verts and polys
       */
       int pcount = 0;
       int vcount = 0;
-      for (ipoly = 0; ipoly < ClipPools[ipool].Count(); ipoly++) {
-        int poly_vert_count = ClipPools[ipool][ipoly].Get_Vertex_Count();
+      for (ipoly = 0; ipoly < ClipPool.Count(); ipoly++) {
+        int poly_vert_count = ClipPool[ipoly].Get_Vertex_Count();
         vcount += poly_vert_count;
         pcount += poly_vert_count - 2;
       }
@@ -1047,7 +1048,7 @@ void ShatterSystem::Process_Clip_Pools(const Matrix3D &Mshatter_to_mesh, MeshCla
         if (model->Peek_Single_Material(ipass) != NULL) {
           matinfo->Add_Vertex_Material(model->Peek_Single_Material(ipass));
         }
-        for (int istage = 0; istage < MeshMatDescClass::MAX_TEX_STAGES; istage++) {
+        for (istage = 0; istage < MeshMatDescClass::MAX_TEX_STAGES; istage++) {
           if (model->Peek_Single_Texture(ipass, istage) != NULL) {
             matinfo->Add_Texture(model->Peek_Single_Texture(ipass, istage));
             has_textures = true;
@@ -1074,14 +1075,14 @@ void ShatterSystem::Process_Clip_Pools(const Matrix3D &Mshatter_to_mesh, MeshCla
       ** Add the polygons and vertices to the mesh, transform the vertices
       ** back into the original mesh's coordinate system as we do this
       */
-      for (ipoly = 0; ipoly < ClipPools[ipool].Count(); ipoly++) {
+      for (ipoly = 0; ipoly < ClipPool.Count(); ipoly++) {
 
-        PolygonClass &poly = ClipPools[ipool][ipoly];
+        PolygonClass &poly = ClipPool[ipoly];
 
         new_mesh->Begin_Tri_Fan();
         SHATTER_DEBUG_SAY(("Begin Tri Fan\n"));
 
-        for (ivert = 0; ivert < poly.Get_Vertex_Count(); ivert++) {
+        for (int ivert = 0; ivert < poly.Get_Vertex_Count(); ivert++) {
 
           Vector3 pos, norm;
           VertexClass &vert = poly[ivert];

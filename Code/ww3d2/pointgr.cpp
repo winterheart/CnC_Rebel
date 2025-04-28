@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***************************************************************************
  ***    C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S     ***
@@ -854,7 +855,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
     VertexDiffuse.Resize(total_vnum * 2, nullptr);
   }
 
-  int vert, j;
+  int vert;
 
   /*
   ** Generate the vertex locations from the point locations (note that both are in camera space).
@@ -1084,7 +1085,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
     if (PointMode != QUADS) {
       // Modes with three vertices per point:
       Vector2 *uv_ptr = _TriVertexUVFrameTable[FrameRowColumnCountLog2];
-      int vert = 0;
+      vert = 0;
       for (int i = 0; i < active_points; i++) {
         int uv_idx = (point_frame[i] & frame_mask) * 3;
         vertex_uv[vert++] = uv_ptr[uv_idx + 0];
@@ -1094,7 +1095,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
     } else {
       // Modes with four vertices per point:
       Vector2 *uv_ptr = _QuadVertexUVFrameTable[FrameRowColumnCountLog2];
-      int vert = 0;
+      vert = 0;
       for (int i = 0; i < active_points; i++) {
         int uv_idx = (point_frame[i] & frame_mask) * 4;
         vertex_uv[vert++] = uv_ptr[uv_idx + 0];
@@ -1111,7 +1112,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
     if (PointMode != QUADS) {
       // Modes with three vertices per point:
       Vector2 *uv_ptr = _TriVertexUVFrameTable[FrameRowColumnCountLog2] + ((DefaultPointFrame & frame_mask) * 3);
-      int vert = 0;
+      vert = 0;
       for (int i = 0; i < active_points; i++) {
         vertex_uv[vert++] = uv_ptr[0];
         vertex_uv[vert++] = uv_ptr[1];
@@ -1120,7 +1121,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
     } else {
       // Modes with four vertices per point:
       Vector2 *uv_ptr = _QuadVertexUVFrameTable[FrameRowColumnCountLog2] + ((DefaultPointFrame & frame_mask) * 4);
-      int vert = 0;
+      vert = 0;
       for (int i = 0; i < active_points; i++) {
         vertex_uv[vert++] = uv_ptr[0];
         vertex_uv[vert++] = uv_ptr[1];
@@ -1137,7 +1138,7 @@ void PointGroupClass::Update_Arrays(Vector3 *point_loc, Vector4 *point_diffuse, 
   if (point_diffuse) {
     Vector4 *vertex_color = &VertexDiffuse[0];
     for (int i = 0; i < active_points; i++) {
-      for (j = 0; j < verts_per_point; j++) {
+      for (int j = 0; j < verts_per_point; j++) {
         vertex_color[vert + j] = point_diffuse[i];
       }
       vert += verts_per_point;

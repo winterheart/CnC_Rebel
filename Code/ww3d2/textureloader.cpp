@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "textureloader.h"
 #include "mutex.h"
@@ -1209,8 +1210,8 @@ bool TextureLoadTaskClass::Begin_Uncompressed_Load(void) {
       Get_Valid_Texture_Format(dest_format, false); // No compressed destination format if reading from targa...
 
   if (src_format != WW3D_FORMAT_A8R8G8B8 && src_format != WW3D_FORMAT_R8G8B8 && src_format != WW3D_FORMAT_X8R8G8B8) {
-    WWDEBUG_SAY(
-        ("Invalid TGA format used in %s - only 24 and 32 bit formats should be used!\n", Texture->Get_Full_Path()));
+    WWDEBUG_SAY(("Invalid TGA format used in %s - only 24 and 32 bit formats should be used!\n",
+      Texture->Get_Full_Path().Peek_Buffer()));
   }
 
   // Destination size will be the next power of two square from the larger width and height...
@@ -1219,7 +1220,7 @@ bool TextureLoadTaskClass::Begin_Uncompressed_Load(void) {
   TextureLoader::Validate_Texture_Size(width, height);
   if (width != ow || height != oh) {
     WWDEBUG_SAY(("Invalid texture size, scaling required. Texture: %s, size: %d x %d -> %d x %d\n",
-                 Texture->Get_Full_Path(), ow, oh, width, height));
+      Texture->Get_Full_Path().Peek_Buffer(), ow, oh, width, height));
   }
 
   Width = width;

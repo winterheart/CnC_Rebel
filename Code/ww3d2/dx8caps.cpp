@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -754,7 +755,7 @@ void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format, const DX_D
       if (SupportTextureFormat[i]) {
         StringClass name(0, true);
         Get_WW3D_Format_Name(format, name);
-        DXLOG(("Supports texture format: %s\r\n", name));
+        DXLOG(("Supports texture format: %s\r\n", name.Peek_Buffer()));
       }
     }
   }
@@ -762,8 +763,8 @@ void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format, const DX_D
 
 void DX8Caps::Check_Render_To_Texture_Support(WW3DFormat display_format, const DX_D3DCAPS &caps) {
   if (display_format == WW3D_FORMAT_UNKNOWN) {
-    for (unsigned i = 0; i < WW3D_FORMAT_COUNT; ++i) {
-      SupportRenderToTextureFormat[i] = false;
+    for (bool & i : SupportRenderToTextureFormat) {
+      i = false;
     }
     return;
   }
@@ -779,7 +780,7 @@ void DX8Caps::Check_Render_To_Texture_Support(WW3DFormat display_format, const D
       if (SupportRenderToTextureFormat[i]) {
         StringClass name(0, true);
         Get_WW3D_Format_Name(format, name);
-        DXLOG(("Supports render-to-texture format: %s\r\n", name));
+        DXLOG(("Supports render-to-texture format: %s\r\n", name.Peek_Buffer()));
       }
     }
   }

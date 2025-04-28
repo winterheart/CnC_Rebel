@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -598,9 +599,9 @@ void DX8Wrapper::Enumerate_Devices() {
         D3DDISPLAYMODE d3dmode;
         ::ZeroMemory(&d3dmode, sizeof(D3DDISPLAYMODE));
 #if (DIRECT3D_VERSION < 0x0900)
-        HRESULT res = D3DInterface->EnumAdapterModes(adapter_index, mode_index, &d3dmode);
+        res = D3DInterface->EnumAdapterModes(adapter_index, mode_index, &d3dmode);
 #else
-        HRESULT res = D3DInterface->EnumAdapterModes(adapter_index, adapter_d3dmode.Format, mode_index, &d3dmode);
+        res = D3DInterface->EnumAdapterModes(adapter_index, adapter_d3dmode.Format, mode_index, &d3dmode);
 #endif
 
         if (res == D3D_OK) {
@@ -718,7 +719,7 @@ bool DX8Wrapper::Set_Render_Device(int dev, int width, int height, int bits, int
     IsWindowed = (windowed != 0);
 
   WWDEBUG_SAY(("Attempting Set_Render_Device: name: %s, width: %d, height: %d, windowed: %d\r\n",
-               _RenderDeviceNameTable[CurRenderDevice], ResolutionWidth, ResolutionHeight, (IsWindowed ? 1 : 0)));
+               _RenderDeviceNameTable[CurRenderDevice].Peek_Buffer(), ResolutionWidth, ResolutionHeight, (IsWindowed ? 1 : 0)));
 
   WWASSERT(D3DDevice == NULL);
 
@@ -1977,7 +1978,7 @@ void DX8Wrapper::Apply_Render_State_Changes() {
   }
 
   if (render_state_changed & LIGHTS_CHANGED) {
-    unsigned mask = LIGHT0_CHANGED;
+    mask = LIGHT0_CHANGED;
     for (unsigned index = 0; index < 4; ++index, mask <<= 1) {
       if (render_state_changed & mask) {
         SNAPSHOT_SAY(("DX8 - apply light %d\n", index));
@@ -2078,7 +2079,7 @@ DX_IDirect3DTexture *DX8Wrapper::_Create_DX8_Texture(unsigned int width, unsigne
   DX_IDirect3DTexture *texture = NULL;
 
   // Paletted textures not supported!
-  WWASSERT(format != D3DFMT_P8);
+  WWASSERT(format != WW3D_FORMAT_P8);
 
   // NOTE: If 'format' is not supported as a texture format, this function will find the closest
   // format that is supported and use that instead.
@@ -2145,8 +2146,8 @@ DX_IDirect3DTexture *DX8Wrapper::_Create_DX8_Texture(unsigned int width, unsigne
     } else {
       StringClass format_name(0, true);
       Get_WW3D_Format_Name(format, format_name);
-      WWDEBUG_SAY(("...Texture creation failed. (%d x %d, format: %s, mips: %d\n", width, height, format_name,
-                   mip_level_count));
+      WWDEBUG_SAY(("...Texture creation failed. (%d x %d, format: %s, mips: %d\n", width, height,
+        format_name.Peek_Buffer(), mip_level_count));
     }
   }
   DX8_ErrorCode(ret);
@@ -2219,7 +2220,7 @@ DX_IDirect3DSurface *DX8Wrapper::_Create_DX8_Surface(unsigned int width, unsigne
   DX_IDirect3DSurface *surface = NULL;
 
   // Paletted surfaces not supported!
-  WWASSERT(format != D3DFMT_P8);
+  WWASSERT(format != WW3D_FORMAT_P8);
 
 #if (DIRECT3D_VERSION < 0x0900)
   DX8CALL(CreateImageSurface(width, height, WW3DFormat_To_D3DFormat(format), &surface));
