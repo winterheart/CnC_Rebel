@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -30,15 +31,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#ifndef __WWAUDIO_THREADS_H
-#define __WWAUDIO_THREADS_H
-
-#include "Windows.H"
-#include "Vector.H"
+#include <windows.h>
 #include "mutex.h"
 
 // Forward declarations
@@ -57,8 +52,8 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
-  WWAudioThreadsClass(void);
-  ~WWAudioThreadsClass(void);
+  WWAudioThreadsClass();
+  ~WWAudioThreadsClass();
 
   //////////////////////////////////////////////////////////////////////
   //	Public methods
@@ -67,10 +62,10 @@ public:
   //
   //	Delayed release mechanism
   //
-  static HANDLE Create_Delayed_Release_Thread(LPVOID param = NULL);
+  static HANDLE Create_Delayed_Release_Thread(LPVOID param = nullptr);
   static void End_Delayed_Release_Thread(DWORD timeout = 20000);
   static void Add_Delayed_Release_Object(RefCountClass *object, DWORD delay = 2000);
-  static void Flush_Delayed_Release_Objects(void);
+  static void Flush_Delayed_Release_Objects();
 
 private:
   //////////////////////////////////////////////////////////////////////
@@ -102,5 +97,3 @@ private:
   static CriticalSectionClass m_ListMutex;
   static bool m_IsFlushing;
 };
-
-#endif //__WWAUDIO_THREADS_H

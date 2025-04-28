@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -48,6 +49,6 @@
 #pragma warning(pop)
 #endif
 
-long SystemTimerClass::operator()(void) const { return TIMEGETTIME() / 16; }
+long SystemTimerClass::operator()() const { return TIMEGETTIME() / 16; }
 
-SystemTimerClass::operator long(void) const { return TIMEGETTIME() / 16; }
+SystemTimerClass::operator long() const { return TIMEGETTIME() / 16; }

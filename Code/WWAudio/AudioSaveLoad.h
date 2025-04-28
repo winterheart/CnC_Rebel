@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,15 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __AUDIO_SAVE_LOAD_H
-#define __AUDIO_SAVE_LOAD_H
 
 #include "saveloadsubsystem.h"
-#include "vector.h"
 #include "bittype.h"
 
 // Singleton instances
@@ -59,21 +54,21 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  StaticAudioSaveLoadClass(void) {}
-  virtual ~StaticAudioSaveLoadClass(void) {}
+  StaticAudioSaveLoadClass() {}
+  virtual ~StaticAudioSaveLoadClass() = default;
 
   //////////////////////////////////////////////////////////////
   //	Public methods
   //////////////////////////////////////////////////////////////
 
   // From SaveLoadSubSystemClass
-  virtual uint32 Chunk_ID(void) const;
+  virtual uint32 Chunk_ID() const;
 
 protected:
   //////////////////////////////////////////////////////////////
   //	Protected methods
   //////////////////////////////////////////////////////////////
-  virtual bool Contains_Data(void) const;
+  virtual bool Contains_Data() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
   virtual const char *Name() const { return "StaticAudioSaveLoadClass"; }
@@ -89,27 +84,25 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  DynamicAudioSaveLoadClass(void) {}
-  virtual ~DynamicAudioSaveLoadClass(void) {}
+  DynamicAudioSaveLoadClass() = default;
+  virtual ~DynamicAudioSaveLoadClass() = default;
 
   //////////////////////////////////////////////////////////////
   //	Public methods
   //////////////////////////////////////////////////////////////
 
   // From SaveLoadSubSystemClass
-  virtual uint32 Chunk_ID(void) const;
+  virtual uint32 Chunk_ID() const;
 
 protected:
   //////////////////////////////////////////////////////////////
   //	Protected methods
   //////////////////////////////////////////////////////////////
-  virtual bool Contains_Data(void) const;
+  virtual bool Contains_Data() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
   virtual const char *Name() const { return "DynamicAudioSaveLoadClass"; }
 
-  // bool							Save_Micro_Chunks (ChunkSaveClass &csave);
-  // bool							Load_Micro_Chunks (ChunkLoadClass &cload);
+  // bool Save_Micro_Chunks (ChunkSaveClass &csave);
+  // bool Load_Micro_Chunks (ChunkLoadClass &cload);
 };
-
-#endif //__AUDIO_SAVE_LOAD_H

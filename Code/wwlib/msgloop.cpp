@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -54,7 +55,7 @@ static DynamicVectorClass<HWND> _ModelessDialogs;
 **	Tracks windows accelerators with this structure.
 */
 struct AcceleratorTracker {
-  AcceleratorTracker(HWND window = NULL, HACCEL accelerator = NULL) : Accelerator(accelerator), Window(window) {}
+  AcceleratorTracker(HWND window = nullptr, HACCEL accelerator = nullptr) : Accelerator(accelerator), Window(window) {}
 
   int operator==(AcceleratorTracker const &acc) const {
     return (Accelerator == acc.Accelerator && Window == acc.Window);
@@ -71,7 +72,7 @@ static DynamicVectorClass<AcceleratorTracker> _Accelerators;
 **	of a modeless dialog box or a windows accelerator, then this is a function
 **	pointer to than message intercept handler.
 */
-bool (*Message_Intercept_Handler)(MSG &msg) = NULL;
+bool (*Message_Intercept_Handler)(MSG &msg) = nullptr;
 
 /***********************************************************************************************
  * Windows_Message_Handler -- Handles windows message.                                         *
@@ -92,14 +93,14 @@ bool (*Message_Intercept_Handler)(MSG &msg) = NULL;
  * HISTORY:                                                                                    *
  *   05/17/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Windows_Message_Handler(void) {
+void Windows_Message_Handler() {
   MSG msg;
 
   /*
   **	Process windows messages until the message queue is exhuasted.
   */
-  while (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
-    if (!GetMessage(&msg, NULL, 0, 0)) {
+  while (PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE)) {
+    if (!GetMessage(&msg, nullptr, 0, 0)) {
       return;
     }
 
@@ -138,7 +139,7 @@ void Windows_Message_Handler(void) {
     **	If the message was not handled by any normal intercept handlers, then
     **	submit the message to a custom message handler if one has been provided.
     */
-    if (Message_Intercept_Handler != NULL) {
+    if (Message_Intercept_Handler != nullptr) {
       processed = Message_Intercept_Handler(msg);
     }
     if (processed)

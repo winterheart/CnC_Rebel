@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -190,11 +191,11 @@ Buffer::~Buffer(void) { Reset(); }
  * HISTORY:                                                                                    *
  *   09/07/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void Buffer::Reset(void) {
+void Buffer::Reset() {
   if (IsAllocated) {
     delete[] BufferPtr;
   }
-  BufferPtr = NULL;
+  BufferPtr = nullptr;
   Size = 0;
   IsAllocated = false;
 }

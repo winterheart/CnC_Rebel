@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -38,11 +39,11 @@
 
 class CallbackHook {
 public:
-  CallbackHook() {}
+  CallbackHook() = default;
 
-  virtual ~CallbackHook() {}
+  virtual ~CallbackHook() = default;
 
-  virtual bool DoCallback(void) { return false; }
+  virtual bool DoCallback() { return false; }
 
 protected:
   CallbackHook(const CallbackHook &);
@@ -55,7 +56,7 @@ public:
 
   virtual ~Callback() {}
 
-  virtual bool DoCallback(void) {
+  virtual bool DoCallback() {
     if (mCallback) {
       return mCallback(mUserData);
     }

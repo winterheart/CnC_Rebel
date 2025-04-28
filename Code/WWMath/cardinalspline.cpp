@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -76,7 +77,7 @@ void CardinalSpline3DClass::Remove_Key(int i) {
   HermiteSpline3DClass::Remove_Key(i);
 }
 
-void CardinalSpline3DClass::Clear_Keys(void) {
+void CardinalSpline3DClass::Clear_Keys() {
   Tightness.Clear();
   HermiteSpline3DClass::Clear_Keys();
 }
@@ -90,7 +91,7 @@ void CardinalSpline3DClass::Set_Tightness(int i, float tightness) {
 
 float CardinalSpline3DClass::Get_Tightness(int i) { return Tightness[i]; }
 
-void CardinalSpline3DClass::Update_Tangents(void) {
+void CardinalSpline3DClass::Update_Tangents() {
   if (Keys.Count() < 2) {
     for (int i = 0; i < Keys.Count(); i++) {
       Tangents[0].InTangent.Set(0, 0, 0);
@@ -137,8 +138,8 @@ void CardinalSpline3DClass::Update_Tangents(void) {
     Tangents[i].InTangent.Z = (1.0f - Tightness[i]) * (Keys[i + 1].Point.Z - Keys[i - 1].Point.Z);
     Tangents[i].OutTangent = Tangents[i].InTangent;
 
-    float in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
-    float out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
 
     Tangents[i].InTangent *= in_factor; // compensating for the un-even keys
     Tangents[i].OutTangent *= out_factor;
@@ -146,7 +147,7 @@ void CardinalSpline3DClass::Update_Tangents(void) {
   TangentsDirty = false;
 }
 
-const PersistFactoryClass &CardinalSpline3DClass::Get_Factory(void) const { return _CardinalSpline3DFactory; }
+const PersistFactoryClass &CardinalSpline3DClass::Get_Factory() const { return _CardinalSpline3DFactory; }
 
 bool CardinalSpline3DClass::Save(ChunkSaveClass &csave) {
   csave.Begin_Chunk(CARDINAL3D_CHUNK_HERMITE3D);
@@ -209,7 +210,7 @@ void CardinalSpline1DClass::Remove_Key(int i) {
   HermiteSpline1DClass::Remove_Key(i);
 }
 
-void CardinalSpline1DClass::Clear_Keys(void) {
+void CardinalSpline1DClass::Clear_Keys() {
   Tightness.Clear();
   HermiteSpline1DClass::Clear_Keys();
 }
@@ -223,7 +224,7 @@ void CardinalSpline1DClass::Set_Tightness(int i, float tightness) {
 
 float CardinalSpline1DClass::Get_Tightness(int i) { return Tightness[i]; }
 
-void CardinalSpline1DClass::Update_Tangents(void) {
+void CardinalSpline1DClass::Update_Tangents() {
   if (Keys.Count() < 2) {
     for (int i = 0; i < Keys.Count(); i++) {
       Tangents[0].InTangent = 0;
@@ -260,8 +261,8 @@ void CardinalSpline1DClass::Update_Tangents(void) {
     Tangents[i].InTangent = (1.0f - Tightness[i]) * (Keys[i + 1].Point - Keys[i - 1].Point);
     Tangents[i].OutTangent = Tangents[i].InTangent;
 
-    float in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
-    float out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
 
     Tangents[i].InTangent *= in_factor; // compensating for the un-even keys
     Tangents[i].OutTangent *= out_factor;
@@ -269,7 +270,7 @@ void CardinalSpline1DClass::Update_Tangents(void) {
   TangentsDirty = false;
 }
 
-const PersistFactoryClass &CardinalSpline1DClass::Get_Factory(void) const { return _CardinalSpline1DFactory; }
+const PersistFactoryClass &CardinalSpline1DClass::Get_Factory() const { return _CardinalSpline1DFactory; }
 
 bool CardinalSpline1DClass::Save(ChunkSaveClass &csave) {
   csave.Begin_Chunk(CARDINAL1D_CHUNK_HERMITE1D);

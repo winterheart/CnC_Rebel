@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -44,9 +45,7 @@
 #include "always.h"
 #include "blit.h"
 #include "bsurface.h"
-// #include	"rle.h"
 #include "xsurface.h"
-// #include	<stdlib.h>
 
 /***********************************************************************************************
  * Buffer_Size -- Determines size of buffer for given dimensions.                              *
@@ -196,8 +195,8 @@ bool Bit_Blit(Surface &dest, Rect const &dcliprect, Rect const &ddrect, Surface 
   Rect srect = ssrect;
   Rect drect = ddrect;
   bool overlapped = false;
-  void *dbuffer = NULL;
-  void *sbuffer = NULL;
+  void *dbuffer = nullptr;
+  void *sbuffer = nullptr;
 
   /*
   **	Prepare for the blit by performing any clipping as well as fetching pointers into the
@@ -354,7 +353,7 @@ bool RLE_Blit(Surface &dest, Rect const &dcliprect, Rect const &ddrect, Surface 
 
   void *dbuffer = dest.Lock(dcliprect.Top_Left() + drect.Top_Left());
   //	void * dbuffer = dest.Lock(Point2D(dcliprect.X + drect.X, dcliprect.Y + drect.Y));
-  if (dbuffer == NULL)
+  if (dbuffer == nullptr)
     return (false);
 
   /*
@@ -363,7 +362,7 @@ bool RLE_Blit(Surface &dest, Rect const &dcliprect, Rect const &ddrect, Surface 
   **	is a pixel offset required, it is handled below.
   */
   void *sbuffer = source.Lock();
-  if (sbuffer == NULL) {
+  if (sbuffer == nullptr) {
     dest.Unlock();
     return (false);
   }

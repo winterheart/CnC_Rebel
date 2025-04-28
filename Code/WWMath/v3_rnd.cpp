@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -53,7 +54,7 @@ void Vector3SolidBoxRandomizer::Get_Vector(Vector3 &vector) {
   vector.Z = Get_Random_Float_Minus1_To_1() * Extents.Z;
 }
 
-float Vector3SolidBoxRandomizer::Get_Maximum_Extent(void) {
+float Vector3SolidBoxRandomizer::Get_Maximum_Extent() {
   float max = MAX(Extents.X, Extents.Y);
   max = MAX(max, Extents.Z);
   return max;
@@ -80,7 +81,7 @@ void Vector3SolidSphereRandomizer::Get_Vector(Vector3 &vector) {
   }
 }
 
-float Vector3SolidSphereRandomizer::Get_Maximum_Extent(void) { return Radius; }
+float Vector3SolidSphereRandomizer::Get_Maximum_Extent() { return Radius; }
 
 void Vector3SolidSphereRandomizer::Scale(float scale) {
   scale = MAX(scale, 0.0f);
@@ -109,7 +110,7 @@ void Vector3HollowSphereRandomizer::Get_Vector(Vector3 &vector) {
   vector.Z *= scale;
 }
 
-float Vector3HollowSphereRandomizer::Get_Maximum_Extent(void) { return Radius; }
+float Vector3HollowSphereRandomizer::Get_Maximum_Extent() { return Radius; }
 
 void Vector3HollowSphereRandomizer::Scale(float scale) {
   scale = MAX(scale, 0.0f);
@@ -138,7 +139,7 @@ void Vector3SolidCylinderRandomizer::Get_Vector(Vector3 &vector) {
   vector.Z = vec2.Y;
 }
 
-float Vector3SolidCylinderRandomizer::Get_Maximum_Extent(void) { return MAX(Extent, Radius); }
+float Vector3SolidCylinderRandomizer::Get_Maximum_Extent() { return MAX(Extent, Radius); }
 
 void Vector3SolidCylinderRandomizer::Scale(float scale) {
   scale = MAX(scale, 0.0f);

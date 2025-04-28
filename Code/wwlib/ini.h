@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,21 +35,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef INI_H
 #define INI_H
-
-// #include	"listnode.h"
-// #include	"trect.h"
-// #include	"index.h"
-
-// #include	"pipe.h"
-// #include	"pk.h"
-// #include	"straw.h"
-// #include	"wwfile.h"
 
 class PKey;
 class FileClass;
@@ -67,21 +57,17 @@ template <class T> class TRect;
 template <class T> class List;
 template <class T, class U> class IndexClass;
 
-#ifndef NULL
-#define NULL 0L
-#endif
-
 /*
 **	This is an INI database handler class. It handles a database with a disk format identical
 **	to the INI files commonly used by Windows.
 */
 class INIClass {
 public:
-  INIClass(void);
+  INIClass();
   INIClass(FileClass &file);
   INIClass(const char *filename);
 
-  virtual ~INIClass(void);
+  virtual ~INIClass();
 
   /*
   ** This setting allows you to control the behavior of loading blank entries.
@@ -106,28 +92,28 @@ public:
   /*
   ** Fetch the name of the INI file (if it wasn't created from a Straw).
   */
-  const char *Get_Filename(void) const;
+  const char *Get_Filename() const;
 
   /*
   **	Erase all data within this INI file manager.
   */
-  bool Clear(char const *section = NULL, char const *entry = NULL);
+  bool Clear(char const *section = nullptr, char const *entry = nullptr);
 
   //		int Line_Count(char const * section) const;
-  bool Is_Loaded(void) const;
-  int Size(void) const;
-  bool Is_Present(char const *section, char const *entry = NULL) const {
-    if (entry == 0)
-      return (Find_Section(section) != 0);
-    return (Find_Entry(section, entry) != 0);
+  bool Is_Loaded() const;
+  int Size() const;
+  bool Is_Present(char const *section, char const *entry = nullptr) const {
+    if (entry == nullptr)
+      return (Find_Section(section) != nullptr);
+    return (Find_Entry(section, entry) != nullptr);
   }
 
   /*
   **	Fetch the number of sections in the INI file or verify if a specific
   **	section is present.
   */
-  int Section_Count(void) const;
-  bool Section_Present(char const *section) const { return (Find_Section(section) != NULL); }
+  int Section_Count() const;
+  bool Section_Present(char const *section) const { return (Find_Section(section) != nullptr); }
 
   /*
   **	Fetch the number of entries in a section or get a particular entry in a section.
@@ -155,7 +141,7 @@ public:
                                 char const *defvalue = "") const;
   const WideStringClass &Get_Wide_String(WideStringClass &new_string, char const *section, char const *entry,
                                          wchar_t const *defvalue = L"") const;
-  int Get_List_Index(char const *section, char const *entry, int const defvalue, char *list[]);
+  int Get_List_Index(char const *section, char const *entry, int defvalue, char *list[]);
   int *Get_Alloc_Int_Array(char const *section, char const *entry, int listend);
   int Get_Int_Bitfield(char const *section, char const *entry, int defvalue, char *list[]);
   char *Get_Alloc_String(char const *section, char const *entry, char const *defvalue) const;
@@ -217,8 +203,8 @@ private:
   /*
   **	These functions are used to allocate and free the section list and section index
   */
-  void Initialize(void);
-  void Shutdown(void);
+  void Initialize();
+  void Shutdown();
 
   /*
   **	This is the list of all sections within this INI file.

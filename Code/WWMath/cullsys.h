@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,15 +35,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef CULLSYS_H
 #define CULLSYS_H
 
 #include "wwdebug.h"
-#include "stdlib.h"
 #include "refcount.h"
 #include "aabox.h"
 
@@ -63,10 +61,10 @@ public:
     System = system;
     WWASSERT(System);
   }
-  virtual ~CullLinkClass(void) { WWASSERT(System == NULL); }
+  virtual ~CullLinkClass() { WWASSERT(System == nullptr); }
 
   WWINLINE void Set_Culling_System(CullSystemClass *sys) { System = sys; }
-  WWINLINE CullSystemClass *Get_Culling_System(void) { return System; }
+  WWINLINE CullSystemClass *Get_Culling_System() { return System; }
 
 protected:
   CullSystemClass *System;
@@ -80,8 +78,8 @@ protected:
 */
 class CullableClass : public RefCountClass {
 public:
-  CullableClass(void);
-  virtual ~CullableClass(void);
+  CullableClass();
+  virtual ~CullableClass();
 
   /*
   ** Access to the culling box for this object.  When you set the cull box, you are
@@ -89,7 +87,7 @@ public:
   ** object will automatically be updated in whatever culling system it is currently
   ** contained in (if any)
   */
-  WWINLINE const AABoxClass &Get_Cull_Box(void) const { return CullBox; }
+  WWINLINE const AABoxClass &Get_Cull_Box() const { return CullBox; }
   void Set_Cull_Box(const AABoxClass &box, bool just_loaded = false);
 
   /*
@@ -97,20 +95,20 @@ public:
   ** pointers.  *The average user should NEVER call these*
   */
   void Set_Culling_System(CullSystemClass *sys);
-  CullSystemClass *Get_Culling_System(void) const;
+  CullSystemClass *Get_Culling_System() const;
   WWINLINE void Set_Cull_Link(CullLinkClass *c) { CullLink = c; }
-  WWINLINE CullLinkClass *Get_Cull_Link(void) const { return CullLink; }
+  WWINLINE CullLinkClass *Get_Cull_Link() const { return CullLink; }
 
 private:
   WWINLINE void Set_Next_Collected(CullableClass *c) { NextCollected = c; }
-  WWINLINE CullableClass *Get_Next_Collected(void) { return NextCollected; }
+  WWINLINE CullableClass *Get_Next_Collected() { return NextCollected; }
 
   /*
   ** Culling Data
   ** Each object can be linked into various types of culling systems.
   ** Each culling system can use its own linkage data structure (derived
   ** from CullLinkClass) to keep track of the object.  The CullData pointer
-  ** will point to one of the culling link objects and NULL
+  ** will point to one of the culling link objects and nullptr
   ** if its not in any system.
   */
   CullLinkClass *CullLink;
@@ -144,8 +142,8 @@ private:
 */
 class CullSystemClass {
 public:
-  CullSystemClass(void);
-  virtual ~CullSystemClass(void);
+  CullSystemClass();
+  virtual ~CullSystemClass();
 
   /*
   ** Collect_Objects.  Updates the internal collection list with the
@@ -155,7 +153,7 @@ public:
   ** WARNING: Always call Reset_Collection if you want to start a
   ** fresh collection!
   */
-  void Reset_Collection(void);
+  void Reset_Collection();
   virtual void Collect_Objects(const Vector3 &point) = 0;
   virtual void Collect_Objects(const AABoxClass &box) = 0;
   virtual void Collect_Objects(const OBBoxClass &box) = 0;
@@ -170,9 +168,9 @@ protected:
   /*
   ** Iterate through the collected objects
   */
-  CullableClass *Get_First_Collected_Object_Internal(void);
+  CullableClass *Get_First_Collected_Object_Internal();
   CullableClass *Get_Next_Collected_Object_Internal(CullableClass *obj);
-  CullableClass *Peek_First_Collected_Object_Internal(void);
+  CullableClass *Peek_First_Collected_Object_Internal();
   CullableClass *Peek_Next_Collected_Object_Internal(CullableClass *obj);
 
   /*

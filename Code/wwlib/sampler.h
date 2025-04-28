@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,9 +37,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef SAMPLER_H
 #define SAMPLER_H
@@ -61,7 +60,7 @@ public:
   SamplingClass(unsigned int dimensions, unsigned char divisions) : Dimensions(dimensions), Divisions(divisions) {};
   virtual void Reset() {};
   virtual void Sample(float *target) = 0;
-  virtual ~SamplingClass() {};
+  virtual ~SamplingClass() = default;
 
 protected:
   unsigned int Dimensions;

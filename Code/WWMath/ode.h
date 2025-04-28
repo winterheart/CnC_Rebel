@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef ODE_H
 #define ODE_H
@@ -56,7 +55,7 @@
 */
 class StateVectorClass : public DynamicVectorClass<float> {
 public:
-  void Reset(void) { ActiveCount = 0; }
+  void Reset() { ActiveCount = 0; }
   void Resize(int size) {
     if (size > VectorMax) {
       DynamicVectorClass<float>::Resize(size);

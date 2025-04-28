@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,8 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+
 #include "soundpseudo3d.h"
-#include "wwaudio.h"
 #include "soundscene.h"
 #include "utils.h"
 #include "soundchunkids.h"
@@ -52,27 +54,21 @@ SimplePersistFactoryClass<SoundPseudo3DClass, CHUNKID_PSEUDO_SOUND3D> _PseudoSou
 //	SoundPseudo3DClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-SoundPseudo3DClass::SoundPseudo3DClass(void) { return; }
+SoundPseudo3DClass::SoundPseudo3DClass() = default;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	SoundPseudo3DClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-SoundPseudo3DClass::SoundPseudo3DClass(const SoundPseudo3DClass &src) : Sound3DClass(src) {
-  (*this) = src;
-  return;
-}
+SoundPseudo3DClass::SoundPseudo3DClass(const SoundPseudo3DClass &src) : Sound3DClass(src) { (*this) = src; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	~SoundPseudo3DClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-SoundPseudo3DClass::~SoundPseudo3DClass(void) {
-  Free_Miles_Handle();
-  return;
-}
+SoundPseudo3DClass::~SoundPseudo3DClass() { Free_Miles_Handle(); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -90,20 +86,16 @@ const SoundPseudo3DClass &SoundPseudo3DClass::operator=(const SoundPseudo3DClass
 //	Set_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Set_Miles_Handle(MILES_HANDLE handle) {
-  AudibleSoundClass::Set_Miles_Handle(handle);
-  return;
-}
+void SoundPseudo3DClass::Set_Miles_Handle(MILES_HANDLE handle) { AudibleSoundClass::Set_Miles_Handle(handle); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Initialize_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Initialize_Miles_Handle(void) {
+void SoundPseudo3DClass::Initialize_Miles_Handle() {
   AudibleSoundClass::Initialize_Miles_Handle();
   Update_Pseudo_Volume();
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +109,7 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(float distance) {
   //
   // Only do this if the sound is really playing
   //
-  if (m_SoundHandle != NULL) {
+  if (m_SoundHandle != nullptr) {
 
     float volume_mod = Determine_Real_Volume();
     float max_distance = Get_DropOff_Radius();
@@ -128,8 +120,7 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(float distance) {
     float volume = 1.0F;
     if (distance > min_distance) {
       volume = 1.0F - ((distance - min_distance) / delta);
-      volume = min(volume, 1.0F);
-      volume = max(volume, 0.0F);
+      volume = std::clamp(volume, 0.0F, 1.0F);
     }
 
     // Multiply the 'max' volume with the calculated volume
@@ -140,8 +131,6 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(float distance) {
     //
     m_SoundHandle->Set_Sample_Volume(int(volume * 127.0F));
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,11 +138,11 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(float distance) {
 //	Update_Pseudo_Volume
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Update_Pseudo_Volume(void) {
+void SoundPseudo3DClass::Update_Pseudo_Volume() {
   MMSLockClass lock;
 
   // Only do this if the sound is really playing
-  if (m_SoundHandle != NULL) {
+  if (m_SoundHandle != nullptr) {
 
     //
     // Find the difference in the sound position and its listener's position
@@ -166,8 +155,6 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(void) {
     //
     Update_Pseudo_Volume(distance);
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,13 +162,13 @@ void SoundPseudo3DClass::Update_Pseudo_Volume(void) {
 //	Update_Pseudo_Pan
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Update_Pseudo_Pan(void) {
+void SoundPseudo3DClass::Update_Pseudo_Pan() {
   MMSLockClass lock;
 
   //
   // Only do this if the sound is really playing
   //
-  if (m_SoundHandle != NULL) {
+  if (m_SoundHandle != nullptr) {
 
     //
     //	Transform the sound's position into 'listener-space'
@@ -202,8 +189,6 @@ void SoundPseudo3DClass::Update_Pseudo_Pan(void) {
     //
     m_SoundHandle->Set_Sample_Pan(S32(pan * 127.0F));
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,20 +196,14 @@ void SoundPseudo3DClass::Update_Pseudo_Pan(void) {
 //	Allocate_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Allocate_Miles_Handle(void) {
-  AudibleSoundClass::Allocate_Miles_Handle();
-  return;
-}
+void SoundPseudo3DClass::Allocate_Miles_Handle() { AudibleSoundClass::Allocate_Miles_Handle(); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	Free_Miles_Handle
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void SoundPseudo3DClass::Free_Miles_Handle(void) {
-  AudibleSoundClass::Free_Miles_Handle();
-  return;
-}
+void SoundPseudo3DClass::Free_Miles_Handle() { AudibleSoundClass::Free_Miles_Handle(); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -234,7 +213,7 @@ void SoundPseudo3DClass::Free_Miles_Handle(void) {
 bool SoundPseudo3DClass::On_Frame_Update(unsigned int milliseconds) {
   // If necessary, update the volume based on the distance
   // from the listener
-  if (m_SoundHandle != NULL) {
+  if (m_SoundHandle != nullptr) {
     Update_Pseudo_Volume();
     Update_Pseudo_Pan();
   }
@@ -248,4 +227,4 @@ bool SoundPseudo3DClass::On_Frame_Update(unsigned int milliseconds) {
 //	Get_Factory
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &SoundPseudo3DClass::Get_Factory(void) const { return _PseudoSound3DPersistFactory; }
+const PersistFactoryClass &SoundPseudo3DClass::Get_Factory() const { return _PseudoSound3DPersistFactory; }

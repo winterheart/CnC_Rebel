@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,14 +51,13 @@
  *   XSurface::Put_Pixel -- Stores a pixel at the location specified.                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "blit.h"
 #include "blitblit.h"
-#include "bsurface.h"
 #include "swap.h"
 #include "xsurface.h"
-// #include	<stdlib.h>
-#include <string.h>
 
 /***********************************************************************************************
  * XSurface::Draw_Line -- Draws a line upon the surface.                                       *
@@ -194,7 +194,7 @@ bool XSurface::Draw_Line(Rect const &xcliprect, Point2D const &startpoint, Point
 
   int bbp = Bytes_Per_Pixel();
   void *buffer = Lock(start);
-  if (buffer != NULL) {
+  if (buffer != nullptr) {
 
     if (start.Y == end.Y) {
       if (bbp == 1) {
@@ -291,7 +291,7 @@ bool XSurface::Draw_Rect(Rect const &cliprect, Rect const &crect, int color) {
 int XSurface::Get_Pixel(Point2D const &point) const {
   int color = 0;
   void *pointer = ((Surface *)this)->Lock(point);
-  if (pointer != NULL) {
+  if (pointer != nullptr) {
     if (Bytes_Per_Pixel() == 2) {
       color = *((unsigned short *)pointer);
     } else {
@@ -321,7 +321,7 @@ int XSurface::Get_Pixel(Point2D const &point) const {
  *=============================================================================================*/
 bool XSurface::Put_Pixel(Point2D const &point, int color) {
   void *pointer = Lock(point);
-  if (pointer != NULL) {
+  if (pointer != nullptr) {
     if (Bytes_Per_Pixel() == 2) {
       *((unsigned short *)pointer) = (unsigned short)color;
     } else {
@@ -390,7 +390,7 @@ bool XSurface::Fill_Rect(Rect const &cliprect, Rect const &fillrect, int color) 
     return (false);
 
   void *buffer = Lock(crect.Top_Left());
-  if (buffer != NULL) {
+  if (buffer != nullptr) {
     if (Bytes_Per_Pixel() == 1) {
       for (int y = 0; y < crect.Height; y++) {
         memset(buffer, color, crect.Width);
@@ -685,8 +685,8 @@ bool XSurface::Prep_For_Blit(Surface &dest, Rect &drect, Surface const &source, 
                                   sbuffer));
 #ifdef NEVER
   overlapped = false;
-  dbuffer = NULL;
-  sbuffer = NULL;
+  dbuffer = nullptr;
+  sbuffer = nullptr;
 
   if (!drect.Is_Valid() || !srect.Is_Valid())
     return (false);
@@ -720,10 +720,10 @@ bool XSurface::Prep_For_Blit(Surface &dest, Rect &drect, Surface const &source, 
   **	respectively.
   */
   dbuffer = dest.Lock(drect.Point());
-  if (dbuffer == NULL)
+  if (dbuffer == nullptr)
     return (false);
   sbuffer = ((Surface &)source).Lock(srect.Point());
-  if (sbuffer == NULL) {
+  if (sbuffer == nullptr) {
     dest.Unlock();
     return (false);
   }
@@ -776,8 +776,8 @@ bool XSurface::Prep_For_Blit(Surface &dest, Rect &drect, Surface const &source, 
 bool XSurface::Prep_For_Blit(Surface &dest, Rect const &dcliprect, Rect &drect, Surface const &source,
                              Rect const &scliprect, Rect &srect, bool &overlapped, void *&dbuffer, void *&sbuffer) {
   overlapped = false;
-  dbuffer = NULL;
-  sbuffer = NULL;
+  dbuffer = nullptr;
+  sbuffer = nullptr;
 
   if (!drect.Is_Valid() || !dcliprect.Is_Valid() || !srect.Is_Valid() || !scliprect.Is_Valid())
     return (false);
@@ -809,10 +809,10 @@ bool XSurface::Prep_For_Blit(Surface &dest, Rect const &dcliprect, Rect &drect, 
   **	respectively.
   */
   dbuffer = dest.Lock(dcliprect.Top_Left() + drect.Top_Left());
-  if (dbuffer == NULL)
+  if (dbuffer == nullptr)
     return (false);
   sbuffer = source.Lock(scliprect.Top_Left() + srect.Top_Left());
-  if (sbuffer == NULL) {
+  if (sbuffer == nullptr) {
     dest.Unlock();
     return (false);
   }

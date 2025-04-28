@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -519,7 +520,7 @@ void BulletClass::Init(const BulletDataClass &data, float progress_time, const V
 
     // If no name is given, lets create the NULL render obj
     if (model == NULL) {
-      Debug_Say(("Bullet Not Found \"%s\" \n", BulletData.AmmoDefinition->ModelName));
+      Debug_Say(("Bullet Not Found \"%s\" \n", BulletData.AmmoDefinition->ModelName.Peek_Buffer()));
       model = WW3DAssetManager::Get_Instance()->Create_Render_Obj("NULL");
     }
 
@@ -527,7 +528,8 @@ void BulletClass::Init(const BulletDataClass &data, float progress_time, const V
 
     if (model) {
       if (BulletData.AmmoDefinition->ModelName.Compare_No_Case(model->Get_Name()) != 0) {
-        Debug_Say(("Possible bullet twiddler!!  %s %s\n", BulletData.AmmoDefinition->ModelName, model->Get_Name()));
+        Debug_Say(("Possible bullet twiddler!!  %s %s\n",
+          BulletData.AmmoDefinition->ModelName.Peek_Buffer(), model->Get_Name()));
       }
       //			ModelNameCRC = CRC_Stringi( model->Get_Name() );
       ModelNameCRC = CRC_Stringi(BulletData.AmmoDefinition->ModelName);

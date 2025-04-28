@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,17 +51,17 @@ class DSurface : public XSurface {
   typedef XSurface BASECLASS;
 
 public:
-  virtual ~DSurface(void);
+  virtual ~DSurface();
 
   /*
   **	Default constructor.
   */
-  DSurface(void);
+  DSurface();
 
   /*
   **	Constructs a working surface (not visible).
   */
-  DSurface(int width, int height, bool system_memory = false, DDPIXELFORMAT *pixform = NULL);
+  DSurface(int width, int height, bool system_memory = false, DDPIXELFORMAT *pixform = nullptr);
 
   /*
   **	Creates a surface from a previously created DirectDraw surface object.
@@ -70,13 +71,13 @@ public:
   /*
   ** Get/Release a windows device context from a DirectX surface
   */
-  HDC GetDC(void);
+  HDC GetDC();
   int ReleaseDC(HDC hdc);
 
   /*
   **	Create a surface object that represents the currently visible screen.
   */
-  static DSurface *Create_Primary(DSurface **backsurface1 = NULL);
+  static DSurface *Create_Primary(DSurface **backsurface1 = nullptr);
 
   /*
   **	Copies regions from one surface to another.
@@ -96,28 +97,28 @@ public:
   **	Gets and frees a direct pointer to the video memory.
   */
   virtual void *Lock(Point2D point = Point2D(0, 0)) const;
-  virtual bool Unlock(void) const;
+  virtual bool Unlock() const;
 
   /*
   **	Queries information about the surface.
   */
-  virtual int Bytes_Per_Pixel(void) const;
-  virtual int Stride(void) const;
-  bool In_Video_Ram(void) const { return (IsVideoRam); }
+  virtual int Bytes_Per_Pixel() const;
+  virtual int Stride() const;
+  bool In_Video_Ram() const { return (IsVideoRam); }
 
   /*
   **	Verifies that this is a direct draw enabled surface.
   */
-  virtual bool Is_Direct_Draw(void) const { return (true); }
+  virtual bool Is_Direct_Draw() const { return (true); }
 
   static int Build_Hicolor_Pixel(int red, int green, int blue);
   static void Build_Remap_Table(unsigned short *table, PaletteClass const &palette);
-  static unsigned short Get_Halfbright_Mask(void) { return (HalfbrightMask); }
-  static unsigned short Get_Quarterbright_Mask(void) { return (QuarterbrightMask); }
-  static unsigned short Get_Eighthbright_Mask(void) { return (EighthbrightMask); }
+  static unsigned short Get_Halfbright_Mask() { return (HalfbrightMask); }
+  static unsigned short Get_Quarterbright_Mask() { return (QuarterbrightMask); }
+  static unsigned short Get_Eighthbright_Mask() { return (EighthbrightMask); }
 
 protected:
-  void Restore_Check(void) const;
+  void Restore_Check() const;
 
   /*
   **	Convenient copy of the bytes per pixel value to speed accessing it. It

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,17 +34,12 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef CRC_H
 #define CRC_H
 
-#include <stdlib.h>
-#ifdef _UNIX
-#include "osdep.h"
-#endif
+#include <cstdlib>
 
 /*
 **	This is a CRC engine class. It will process submitted data and generate a CRC from it.
@@ -58,7 +54,7 @@ public:
   CRCEngine(long initial = 0) : CRC(initial), Index(0) { StagingBuffer.Composite = 0; };
 
   // Fetches CRC value.
-  long operator()(void) const { return (Value()); };
+  long operator()() const { return (Value()); };
 
   // Submits one byte sized datum to the CRC accumulator.
   void operator()(char datum);
@@ -67,12 +63,12 @@ public:
   long operator()(void const *buffer, int length);
 
   // Implicit conversion operator so this object appears like a 'long integer'.
-  operator long(void) const { return (Value()); };
+  operator long() const { return (Value()); };
 
 protected:
-  bool Buffer_Needs_Data(void) const { return (Index != 0); };
+  bool Buffer_Needs_Data() const { return (Index != 0); };
 
-  long Value(void) const {
+  long Value() const {
     if (Buffer_Needs_Data()) {
       return (_lrotl(CRC, 1) + StagingBuffer.Composite);
     }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef PALETTE_H
 #define PALETTE_H
@@ -52,7 +51,7 @@ public:
     COLOR_COUNT = 256 // Number of color indices on the palette.
   };
 
-  PaletteClass(void) {};
+  PaletteClass() = default;
   PaletteClass(RGBClass const &rgb);
   PaletteClass(unsigned char *binary_palette);
 
@@ -63,8 +62,8 @@ public:
   int operator==(PaletteClass const &palette) const;
   int operator!=(PaletteClass const &palette) const { return (!(operator==(palette))); };
   PaletteClass &operator=(PaletteClass const &palette);
-  operator const unsigned char *(void) const { return ((const unsigned char *)&Palette[0]); };
-  operator unsigned char *(void) { return ((unsigned char *)&Palette[0]); };
+  operator const unsigned char *() const { return ((const unsigned char *)&Palette[0]); };
+  operator unsigned char *() { return ((unsigned char *)&Palette[0]); };
 
   void Adjust(int ratio);
   void Adjust(int ratio, PaletteClass const &palette);

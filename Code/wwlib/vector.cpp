@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -52,9 +53,10 @@
  *   VectorClass<T>::~VectorClass -- Default destructor for vector class.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "vector.h"
-#include <string.h>
 
 /*
 **	The following template function can be located here ONLY if all the instantiations are
@@ -225,7 +227,7 @@ int BooleanVectorClass::Resize(unsigned size) {
  * HISTORY:                                                                                    *
  *   07/18/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void BooleanVectorClass::Clear(void) {
+void BooleanVectorClass::Clear() {
   Fixup();
   BitCount = 0;
   BitArray.Clear();
@@ -245,7 +247,7 @@ void BooleanVectorClass::Clear(void) {
  * HISTORY:                                                                                    *
  *   07/18/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void BooleanVectorClass::Reset(void) {
+void BooleanVectorClass::Reset() {
   LastIndex = -1;
   if (BitArray.Length() > 0) {
     memset(&BitArray[0], '\0', BitArray.Length());
@@ -266,7 +268,7 @@ void BooleanVectorClass::Reset(void) {
  * HISTORY:                                                                                    *
  *   07/18/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void BooleanVectorClass::Set(void) {
+void BooleanVectorClass::Set() {
   LastIndex = -1;
   if (BitArray.Length() > 0) {
     memset(&BitArray[0], '\xFF', BitArray.Length());

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -30,14 +31,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#ifndef __PRIORITY_VECTOR_H
-#define __PRIORITY_VECTOR_H
-
-#include "Vector.H"
+#include "vector.h"
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -63,7 +59,7 @@ public:
 ////////////////////////////////////////////////////////////////////
 template <class T> __inline bool PriorityVectorClass<T>::Process_Head(T &object) {
   bool retval = false;
-  if (this->Vector != NULL) {
+  if (this->Vector != nullptr) {
 
     // Pass the object back to the caller
     object = this->Vector[0];
@@ -100,5 +96,3 @@ template <class T> __inline bool PriorityVectorClass<T>::Add_Low(T const &object
 template <class T> __inline bool PriorityVectorClass<T>::Add_High(T const &object) {
   return DynamicVectorClass<T>::Add_Head(object);
 }
-
-#endif //__PRIORITY_VECTOR_H

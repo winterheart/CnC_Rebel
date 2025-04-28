@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -111,7 +112,7 @@ typedef List<RefCountNodeClass *> RefCountListClass;
 
 class RefCountClass {
 public:
-  RefCountClass(void)
+  RefCountClass()
       : NumRefs(1)
 #ifndef NDEBUG
         ,
@@ -144,14 +145,14 @@ public:
 #ifdef NDEBUG
   WWINLINE void Add_Ref(void) { NumRefs++; }
 #else
-  void Add_Ref(void);
+  void Add_Ref();
 #endif
 
   /*
   ** Release_Ref, call this function when you no longer need the pointer
   ** to this object.
   */
-  WWINLINE void Release_Ref(void) {
+  WWINLINE void Release_Ref() {
 #ifndef NDEBUG
     Dec_Total_Refs(this);
 #endif
@@ -164,27 +165,27 @@ public:
   /*
   ** Check the number of references to this object.
   */
-  int Num_Refs(void) { return NumRefs; }
+  int Num_Refs() { return NumRefs; }
 
   /*
   ** Delete_This - this function will be called when the object is being
   ** destroyed as a result of its last reference being released.  Its
   ** job is to actually destroy the object.
   */
-  virtual void Delete_This(void) { delete this; }
+  virtual void Delete_This() { delete this; }
 
   /*
   ** Total_Refs - This static function can be used to get the total number
   ** of references that have been made.  Once you've released all of your
   ** objects, it should go to zero.
   */
-  static int Total_Refs(void) { return TotalRefs; }
+  static int Total_Refs() { return TotalRefs; }
 
 protected:
   /*
   ** Destructor, user should not have access to this...
   */
-  virtual ~RefCountClass(void) {
+  virtual ~RefCountClass() {
 #ifndef NDEBUG
     Remove_Active_Ref(this);
 #endif

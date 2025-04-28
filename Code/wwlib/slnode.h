@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,9 +38,7 @@
  *	Functions:
  **
  *	- - -	- - -	- - -	- - -	- - -	- - -	- - -	- - -	- - -	- - -	- - -	- - -	*/
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef __SLNODE_H__
 #define __SLNODE_H__
@@ -49,10 +48,6 @@
 #endif
 
 #include "mempool.h"
-
-#ifndef NULL
-#define NULL 0
-#endif
 
 //	Forward references for friend	classes
 template <class T> class SList;
@@ -65,9 +60,9 @@ template <class T> class SList;
 
 class GenericSLNode : public AutoPoolClass<GenericSLNode, 256> {
 protected:
-  void *Internal_Get_Next(void) { return NodeNext; };
+  void *Internal_Get_Next() { return NodeNext; };
   void Internal_Set_Next(void *n) { NodeNext = n; };
-  void *Internal_Get_Data(void) { return NodeData; };
+  void *Internal_Get_Data() { return NodeData; };
   void Internal_Get_Data(void *d) { NodeData = d; };
 
   //
@@ -77,7 +72,7 @@ protected:
   //
   GenericSLNode(void *obj) {
     NodeData = obj;
-    NodeNext = 0;
+    NodeNext = nullptr;
   };
 
   //
@@ -86,7 +81,7 @@ protected:
   //	that it cannot be used.
   //
 private:
-  GenericSLNode(void) {};
+  GenericSLNode() {};
 
   void *NodeNext; //	Next Node in the list chain
   void *NodeData; //	Current Node in the list chain
@@ -100,8 +95,8 @@ public:
   //
   friend class SList<T>;
 
-  SLNode<T> *Next(void) { return reinterpret_cast<SLNode<T> *>(Internal_Get_Next()); }
-  T *Data(void) { return reinterpret_cast<T *>(Internal_Get_Data()); }
+  SLNode<T> *Next() { return reinterpret_cast<SLNode<T> *>(Internal_Get_Next()); }
+  T *Data() { return reinterpret_cast<T *>(Internal_Get_Data()); }
 
   void Set_Next(SLNode<T> *n) { Internal_Set_Next(reinterpret_cast<void *>(n)); }
 
@@ -119,7 +114,7 @@ protected:
   //	that it cannot be used.
   //
 private:
-  SLNode(void) {};
+  SLNode() {};
 };
 
 #endif

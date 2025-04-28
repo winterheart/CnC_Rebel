@@ -46,7 +46,7 @@
 //-----------------------------------------------------------------------------
 class cStackDump {
 public:
-  static void Print_Call_Stack(void);
+  static void Print_Call_Stack();
 
 private:
 };

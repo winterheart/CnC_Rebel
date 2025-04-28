@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef RNDSTRNG_H
 #define RNDSTRNG_H
@@ -56,7 +55,7 @@ public:
   void Add_String(const char *str);
 
   // Get a random string from the class
-  const char *Get_String(void);
+  const char *Get_String();
 
 private:
   DynamicVectorClass<StringClass> Strings;

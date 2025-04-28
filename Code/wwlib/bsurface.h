@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef BSURFACE_H
 #define BSURFACE_H
@@ -62,8 +61,8 @@ public:
   /*
   **	Queries information about the surface.
   */
-  virtual int Bytes_Per_Pixel(void) const { return (BBP); }
-  virtual int Stride(void) const { return (Get_Width() * BBP); }
+  virtual int Bytes_Per_Pixel() const { return (BBP); }
+  virtual int Stride() const { return (Get_Width() * BBP); }
 
 protected:
   /*

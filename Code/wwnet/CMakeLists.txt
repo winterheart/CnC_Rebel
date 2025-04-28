@@ -24,7 +24,7 @@ target_include_directories(WWNet PUBLIC
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code          # Requires commando/nat.h
-        ${PROJECT_SOURCE_DIR}/Code/wolapi
+        ${PROJECT_SOURCE_DIR}/Code/WOLAPI
 )
 target_link_libraries(WWNet
     PRIVATE

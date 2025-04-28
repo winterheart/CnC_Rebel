@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,8 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef __UTILS_H
-#define __UTILS_H
+#pragma once
 
 #pragma warning(push, 3)
 #include "Mss.H"
@@ -47,20 +47,20 @@
 //
 #define SAFE_DELETE(pobject)                                                                                           \
   if (pobject) {                                                                                                       \
-    delete pobject;                                                                                                    \
-    pobject = NULL;                                                                                                    \
+    delete (pobject);                                                                                                  \
+    (pobject) = nullptr;                                                                                               \
   }
 
 #define SAFE_DELETE_ARRAY(pobject)                                                                                     \
   if (pobject) {                                                                                                       \
-    delete[] pobject;                                                                                                  \
-    pobject = NULL;                                                                                                    \
+    delete[] (pobject);                                                                                                \
+    (pobject) = nullptr;                                                                                               \
   }
 
 #define SAFE_FREE(pobject)                                                                                             \
   if (pobject) {                                                                                                       \
     ::free(pobject);                                                                                                   \
-    pobject = NULL;                                                                                                    \
+    (pobject) = nullptr;                                                                                               \
   }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -70,8 +70,8 @@
 /////////////////////////////////////////////////////////////////////////////
 class MMSLockClass {
 public:
-  MMSLockClass(void) { ::AIL_lock(); }
-  ~MMSLockClass(void) { ::AIL_unlock(); }
+  MMSLockClass() { ::AIL_lock(); }
+  ~MMSLockClass() { ::AIL_unlock(); }
 
   static CRITICAL_SECTION _MSSLockCriticalSection;
 };
@@ -83,7 +83,7 @@ public:
 __inline LPCTSTR Get_Filename_From_Path(LPCTSTR path) {
   // Find the last occurance of the directory deliminator
   LPCTSTR filename = ::strrchr(path, '\\');
-  if (filename != NULL) {
+  if (filename != nullptr) {
     // Increment past the directory deliminator
     filename++;
   } else {
@@ -93,5 +93,3 @@ __inline LPCTSTR Get_Filename_From_Path(LPCTSTR path) {
   // Return the filename part of the path
   return filename;
 }
-
-#endif //__UTILS_H

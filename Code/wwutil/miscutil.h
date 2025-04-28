@@ -24,9 +24,7 @@
 // Description:
 //
 //-----------------------------------------------------------------------------
-#if defined(_MSV_VER)
 #pragma once
-#endif
 
 #ifndef MISCUTIL_H
 #define MISCUTIL_H
@@ -42,7 +40,7 @@ const float MISCUTIL_EPSILON = 0.0001f;
 
 class cMiscUtil {
 public:
-  static LPCSTR Get_Text_Time(void);
+  static LPCSTR Get_Text_Time();
   static void Seconds_To_Hms(float seconds, int &h, int &m, int &s);
   static bool Is_String_Same(LPCSTR str1, LPCSTR str2);
   static bool Is_String_Different(LPCSTR str1, LPCSTR str2);

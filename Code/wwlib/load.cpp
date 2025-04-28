@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,10 +41,11 @@
  *   Uncompress_Data -- Uncompresses data from one buffer to another.      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "iff.h"
 #include "lcw.h"
-#include <string.h>
 
 /***************************************************************************
  * Uncompress_Data -- Uncompresses data from one buffer to another.        *
@@ -70,7 +72,7 @@ unsigned long __cdecl Uncompress_Data(void const *src, void *dst) {
   unsigned long uncomp_size;
 
   if (!src || !dst)
-    return (NULL);
+    return 0;
 
   /*
   **	Interpret the data block header structure to determine

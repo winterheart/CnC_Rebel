@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -182,7 +183,6 @@ CollisionMath::OverlapType CollisionMath::Overlap_Test(const AABoxClass &box, co
     // In practice, there are optimizations you can make on each of the axes that
     // we need to test (see below).
 
-    float box_proj, p0_proj, dp_proj;
     Vector3 dp0;
     Vector3::Subtract(line.Get_P0(), box.Center, &dp0);
 
@@ -191,9 +191,9 @@ CollisionMath::OverlapType CollisionMath::Overlap_Test(const AABoxClass &box, co
     // vector instead of doing the dot-product.  The projection of 'dp' is only
     // counted if it points towards the center of the box (i.e. it decreases the
     // chances of them being separated...)
-    box_proj = box.Extent.X;
-    p0_proj = dp0.X;
-    dp_proj = line.Get_DP().X;
+    float box_proj = box.Extent.X;
+    float p0_proj = dp0.X;
+    float dp_proj = line.Get_DP().X;
     if (p0_proj > 0) {
       if (p0_proj > box_proj - WWMath::Min(dp_proj, 0.0f))
         return OUTSIDE;
@@ -435,8 +435,8 @@ bool CollisionMath::Collide(const AABoxClass &box, const Vector3 &move_vector, c
 struct AABCollisionStruct {
   AABCollisionStruct(const AABoxClass &box0, const Vector3 &move0, const AABoxClass &box1, const Vector3 &move1)
       : StartBad(true), // Startbad is true until one of the axes clears it
-        AxisId(-1),     // AxisId will be the axis that allowed the longest move
         MaxFrac(0.0f),  // MaxFrac is the longest allowed move so far
+        AxisId(-1),     // AxisId will be the axis that allowed the longest move
         Box0(box0), Box1(box1) {
     Vector3::Subtract(box1.Center, box0.Center, &C); // vector from center of box0 to center of box1
     Vector3::Subtract(move1, move0, &M);             // move vector relative to stationary box0
@@ -445,7 +445,7 @@ struct AABCollisionStruct {
   bool StartBad; // Inital configuration is intersecting?
   float MaxFrac; // Longest move allowed so far
   int AxisId;    // Last separating axis
-  int Side;      // which side of the interval
+  int Side{};    // which side of the interval
 
   Vector3 C; // Vector from the center0 to center1
   Vector3 M; // Move vector relative to stationary box0

@@ -24,9 +24,7 @@
 // Description:  static
 //
 //-----------------------------------------------------------------------------
-#if defined(_MSV_VER)
 #pragma once
-#endif
 
 #ifndef MATHUTIL_H
 #define MATHUTIL_H

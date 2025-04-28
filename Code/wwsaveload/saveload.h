@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef SAVELOAD_H
 #define SAVELOAD_H
@@ -142,7 +141,7 @@ public:
   */
   static bool Save(ChunkSaveClass &csave, SaveLoadSubSystemClass &subsystem);
   static bool Load(ChunkLoadClass &cload, bool auto_post_load = true);
-  static bool Post_Load_Processing(void (*network_callback)(void));
+  static bool Post_Load_Processing(void (*network_callback)());
   /*
   ** Look up the persist factory for a given chunk id
   */
@@ -161,8 +160,8 @@ public:
   static void Register_Pointer(void *old_pointer, void *new_pointer);
 
 #ifdef WWDEBUG
-  static void Request_Pointer_Remap(void **pointer_to_convert, const char *file = NULL, int line = 0);
-  static void Request_Ref_Counted_Pointer_Remap(RefCountClass **pointer_to_convert, const char *file = NULL,
+  static void Request_Pointer_Remap(void **pointer_to_convert, const char *file = nullptr, int line = 0);
+  static void Request_Ref_Counted_Pointer_Remap(RefCountClass **pointer_to_convert, const char *file = nullptr,
                                                 int line = 0);
 #else
   static void Request_Pointer_Remap(void **pointer_to_convert);

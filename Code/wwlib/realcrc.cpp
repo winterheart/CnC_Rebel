@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,8 +38,9 @@
  *   CRC_Stringi -- Calculates a CRC for a string, case-insensitive                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cctype>
+
 #include "realcrc.h"
-#include <ctype.h>
 
 //    CRC for poly 0x04C11DB7
 unsigned long CRC32_Table[256] = {

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -49,9 +50,9 @@ public:
   typedef enum CompControl { COMPRESS, DECOMPRESS } CompControl;
 
   LZOPipe(CompControl, int blocksize = 1024 * 8);
-  virtual ~LZOPipe(void);
+  virtual ~LZOPipe();
 
-  virtual int Flush(void);
+  virtual int Flush();
   virtual int Put(void const *source, int slen);
 
 private:

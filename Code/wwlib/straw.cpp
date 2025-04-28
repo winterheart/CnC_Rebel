@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,8 +40,6 @@
 
 #include "always.h"
 #include "straw.h"
-#include <stddef.h>
-// #include	<string.h>
 
 /***********************************************************************************************
  * Straw::~Straw -- Destructor for a straw segment.                                            *
@@ -58,16 +57,16 @@
  * HISTORY:                                                                                    *
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-Straw::~Straw(void) {
-  if (ChainTo != NULL) {
+Straw::~Straw() {
+  if (ChainTo != nullptr) {
     ChainTo->ChainFrom = ChainFrom;
   }
-  if (ChainFrom != NULL) {
+  if (ChainFrom != nullptr) {
     ChainFrom->Get_From(ChainTo);
   }
 
-  ChainFrom = NULL;
-  ChainTo = NULL;
+  ChainFrom = nullptr;
+  ChainTo = nullptr;
 }
 
 /***********************************************************************************************
@@ -88,17 +87,17 @@ Straw::~Straw(void) {
  *=============================================================================================*/
 void Straw::Get_From(Straw *straw) {
   if (ChainTo != straw) {
-    if (straw != NULL && straw->ChainFrom != NULL) {
-      straw->ChainFrom->Get_From(NULL);
-      straw->ChainFrom = NULL;
+    if (straw != nullptr && straw->ChainFrom != nullptr) {
+      straw->ChainFrom->Get_From(nullptr);
+      straw->ChainFrom = nullptr;
     }
 
-    if (ChainTo != NULL) {
-      ChainTo->ChainFrom = NULL;
+    if (ChainTo != nullptr) {
+      ChainTo->ChainFrom = nullptr;
     }
 
     ChainTo = straw;
-    if (ChainTo != NULL) {
+    if (ChainTo != nullptr) {
       ChainTo->ChainFrom = this;
     }
   }
@@ -125,7 +124,7 @@ void Straw::Get_From(Straw *straw) {
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int Straw::Get(void *source, int slen) {
-  if (ChainTo != NULL) {
+  if (ChainTo != nullptr) {
     return (ChainTo->Get(source, slen));
   }
   return (0);

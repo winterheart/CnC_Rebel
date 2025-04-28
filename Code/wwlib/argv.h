@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef ARGV_H
 #define ARGV_H
@@ -70,7 +69,7 @@ public:
   static void Free();
 
   // Create an object that can search the args.
-  ArgvClass(bool case_sensitive = false, bool exact_size = false);
+  explicit ArgvClass(bool case_sensitive = false, bool exact_size = false);
   ~ArgvClass() {}
 
   // Functions to find a value.
@@ -79,7 +78,7 @@ public:
     return (Find_Again(arg));
   }
   // If NULL passed, original string will be used.
-  const char *Find_Again(const char *arg = 0L);
+  const char *Find_Again(const char *arg = nullptr);
 
   // Return pointer to data after 'arg'.
   // White space is skipped.
@@ -91,13 +90,13 @@ public:
   // in the strlen of the prefix (2 for -P example above) to skip.
   // Val_in_next is set if the value was extracted from the next Argv,
   // this way the programmer can know if he needs to call an extra Next().
-  const char *Get_Cur_Value(unsigned prefixlen, bool *val_in_next = 0);
+  const char *Get_Cur_Value(unsigned prefixlen, bool *val_in_next = nullptr) const;
 
   // Update an existing attrib to use this new value
   void Update_Value(const char *attrib, const char *value);
 
   // Add a new attrib value pair (or just an option)
-  void Add_Value(const char *attrib, const char *value = NULL);
+  static void Add_Value(const char *attrib, const char *value = nullptr);
 
   // Remove an option (and its value)
   bool Remove_Value(const char *attrib);
@@ -114,25 +113,25 @@ public:
     if (CurrentPos < Argc) {
       return (Argv[CurrentPos]);
     }
-    return (0L);
+    return (nullptr);
   }
   // Can be called so Next() will return First()...
   void Reset() { CurrentPos = -1; }
 
-  const char *Cur() {
+  const char *Cur() const {
     if (CurrentPos < Argc) {
       return (Argv[CurrentPos]);
     }
-    return (0L);
+    return (nullptr);
   }
 
   // Allow user to change states.
   void Case_Sensitive(bool on) { Flag.CaseSensitive = on; }
-  bool Is_Case_Sensitive() { return (Flag.CaseSensitive); }
+  bool Is_Case_Sensitive() const { return (Flag.CaseSensitive); }
 
   // Allow user to change states.
   void Exact_Size(bool on) { Flag.ExactSize = on; }
-  bool Is_Exact_Size() { return (Flag.ExactSize); }
+  bool Is_Exact_Size() const { return (Flag.ExactSize); }
 
 protected:
   // Current position to be used when Next or Find_Again are called.

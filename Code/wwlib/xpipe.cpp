@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,10 +38,10 @@
  *   FilePipe::End -- End the file pipe handler.                                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "xpipe.h"
-#include <stddef.h>
-#include <string.h>
 
 //---------------------------------------------------------------------------------------------------------
 // BufferPipe
@@ -67,7 +68,7 @@
 int BufferPipe::Put(void const *source, int slen) {
   int total = 0;
 
-  if (Is_Valid() && source != NULL && slen > 0) {
+  if (Is_Valid() && source != nullptr && slen > 0) {
     int len = slen;
     if (BufferPtr.Get_Size() != 0) {
       int theoretical_max = BufferPtr.Get_Size() - Index;
@@ -90,11 +91,11 @@ int BufferPipe::Put(void const *source, int slen) {
 // FilePipe
 //---------------------------------------------------------------------------------------------------------
 
-FilePipe::~FilePipe(void) {
+FilePipe::~FilePipe() {
   if (Valid_File() && HasOpened) {
     HasOpened = false;
     File->Close();
-    File = NULL;
+    File = nullptr;
   }
 }
 
@@ -117,7 +118,7 @@ FilePipe::~FilePipe(void) {
  * HISTORY:                                                                                    *
  *   07/05/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int FilePipe::End(void) {
+int FilePipe::End() {
   int total = Pipe::End();
   if (Valid_File() && HasOpened) {
     HasOpened = false;
@@ -144,7 +145,7 @@ int FilePipe::End(void) {
  *   07/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 int FilePipe::Put(void const *source, int slen) {
-  if (Valid_File() && source != NULL && slen > 0) {
+  if (Valid_File() && source != nullptr && slen > 0) {
     if (!File->Is_Open()) {
       HasOpened = true;
       File->Open(FileClass::WRITE);

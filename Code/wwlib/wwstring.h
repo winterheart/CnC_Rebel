@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef __WWSTRING_H
 #define __WWSTRING_H
@@ -44,8 +43,6 @@
 #include "always.h"
 #include "mutex.h"
 #include "win.h"
-#include <string.h>
-#include <stdarg.h>
 #include <tchar.h>
 #include "trim.h"
 #include "wwdebug.h"
@@ -77,7 +74,7 @@ public:
   StringClass(const TCHAR *string, bool hint_temporary = false);
   StringClass(TCHAR ch, bool hint_temporary = false);
   StringClass(const WCHAR *string, bool hint_temporary = false);
-  ~StringClass(void);
+  ~StringClass();
 
   ////////////////////////////////////////////////////////////
   //	Public operators
@@ -105,7 +102,7 @@ public:
 
   const TCHAR &operator[](int index) const;
   TCHAR &operator[](int index);
-  inline operator const TCHAR *(void) const;
+  inline operator const TCHAR *() const;
 
   ////////////////////////////////////////////////////////////
   //	Public methods
@@ -113,26 +110,26 @@ public:
   int Compare(const TCHAR *string) const;
   int Compare_No_Case(const TCHAR *string) const;
 
-  inline int Get_Length(void) const;
-  bool Is_Empty(void) const;
+  inline int Get_Length() const;
+  bool Is_Empty() const;
 
   void Erase(int start_index, int char_count);
   int _cdecl Format(const TCHAR *format, ...);
   int _cdecl Format_Args(const TCHAR *format, const va_list &arg_list);
 
   // Trim leading and trailing whitespace characters (values <= 32)
-  void Trim(void);
+  void Trim();
 
   TCHAR *Get_Buffer(int new_length);
-  TCHAR *Peek_Buffer(void);
-  const TCHAR *Peek_Buffer(void) const;
+  TCHAR *Peek_Buffer();
+  const TCHAR *Peek_Buffer() const;
 
   bool Copy_Wide(const WCHAR *source);
 
   ////////////////////////////////////////////////////////////
   //	Static methods
   ////////////////////////////////////////////////////////////
-  static void Release_Resources(void);
+  static void Release_Resources();
 
 private:
   ////////////////////////////////////////////////////////////
@@ -161,12 +158,12 @@ private:
   TCHAR *Allocate_Buffer(int length);
   void Resize(int size);
   void Uninitialised_Grow(int length);
-  void Free_String(void);
+  void Free_String();
 
   inline void Store_Length(int length);
   inline void Store_Allocated_Length(int allocated_length);
-  inline HEADER *Get_Header(void) const;
-  int Get_Allocated_Length(void) const;
+  inline HEADER *Get_Header() const;
+  int Get_Allocated_Length() const;
 
   void Set_Buffer_And_Allocated_Length(TCHAR *buffer, int length);
 
@@ -203,7 +200,7 @@ inline const StringClass &StringClass::operator=(const StringClass &string) {
 //	operator=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &StringClass::operator=(const TCHAR *string) {
-  if (string != 0) {
+  if (string != nullptr) {
 
     int len = _tcslen(string);
     Uninitialised_Grow(len + 1);
@@ -219,7 +216,7 @@ inline const StringClass &StringClass::operator=(const TCHAR *string) {
 //	operator=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &StringClass::operator=(const WCHAR *string) {
-  if (string != 0) {
+  if (string != nullptr) {
     Copy_Wide(string);
   }
 
@@ -246,7 +243,6 @@ inline StringClass::StringClass(bool hint_temporary) : m_Buffer(m_EmptyString) {
   Get_String(MAX_TEMP_LEN, hint_temporary);
   m_Buffer[0] = m_NullChar;
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -256,7 +252,6 @@ inline StringClass::StringClass(int initial_len, bool hint_temporary) : m_Buffer
   Get_String(initial_len, hint_temporary);
   m_Buffer[0] = m_NullChar;
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -265,7 +260,6 @@ inline StringClass::StringClass(int initial_len, bool hint_temporary) : m_Buffer
 inline StringClass::StringClass(TCHAR ch, bool hint_temporary) : m_Buffer(m_EmptyString) {
   Get_String(2, hint_temporary);
   (*this) = ch;
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -277,7 +271,6 @@ inline StringClass::StringClass(const StringClass &string, bool hint_temporary) 
   }
 
   (*this) = string;
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -290,7 +283,6 @@ inline StringClass::StringClass(const TCHAR *string, bool hint_temporary) : m_Bu
   }
 
   (*this) = string;
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -303,21 +295,19 @@ inline StringClass::StringClass(const WCHAR *string, bool hint_temporary) : m_Bu
   }
 
   (*this) = string;
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
 //	~StringClass
 ///////////////////////////////////////////////////////////////////
-inline StringClass::~StringClass(void) {
+inline StringClass::~StringClass() {
   Free_String();
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
 //	Is_Empty
 ///////////////////////////////////////////////////////////////////
-inline bool StringClass::Is_Empty(void) const { return (m_Buffer[0] == m_NullChar); }
+inline bool StringClass::Is_Empty() const { return (m_Buffer[0] == m_NullChar); }
 
 ///////////////////////////////////////////////////////////////////
 //	Compare
@@ -348,7 +338,7 @@ inline TCHAR &StringClass::operator[](int index) {
 ///////////////////////////////////////////////////////////////////
 //	operator const TCHAR *
 ///////////////////////////////////////////////////////////////////
-inline StringClass::operator const TCHAR *(void) const { return m_Buffer; }
+inline StringClass::operator const TCHAR *() const { return m_Buffer; }
 
 ///////////////////////////////////////////////////////////////////
 //	operator==
@@ -398,19 +388,18 @@ inline void StringClass::Erase(int start_index, int char_count) {
     Store_Length(len - char_count);
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
 // Trim leading and trailing whitespace characters (values <= 32)
 ///////////////////////////////////////////////////////////////////
-inline void StringClass::Trim(void) { strtrim(m_Buffer); }
+inline void StringClass::Trim() { strtrim(m_Buffer); }
 
 ///////////////////////////////////////////////////////////////////
 //	operator+=
 ///////////////////////////////////////////////////////////////////
 inline const StringClass &StringClass::operator+=(const TCHAR *string) {
-  WWASSERT(string != NULL);
+  WWASSERT(string != nullptr);
 
   int cur_len = Get_Length();
   int src_len = _tcslen(string);
@@ -458,12 +447,12 @@ inline TCHAR *StringClass::Get_Buffer(int new_length) {
 ///////////////////////////////////////////////////////////////////
 //	Peek_Buffer
 ///////////////////////////////////////////////////////////////////
-inline TCHAR *StringClass::Peek_Buffer(void) { return m_Buffer; }
+inline TCHAR *StringClass::Peek_Buffer() { return m_Buffer; }
 
 ///////////////////////////////////////////////////////////////////
 //	Peek_Buffer
 ///////////////////////////////////////////////////////////////////
-inline const TCHAR *StringClass::Peek_Buffer(void) const { return m_Buffer; }
+inline const TCHAR *StringClass::Peek_Buffer() const { return m_Buffer; }
 
 ///////////////////////////////////////////////////////////////////
 //	operator+=
@@ -522,7 +511,7 @@ inline StringClass operator+(const StringClass &string1, const TCHAR *string2) {
 //
 //	Return allocated size of the string buffer
 ///////////////////////////////////////////////////////////////////
-inline int StringClass::Get_Allocated_Length(void) const {
+inline int StringClass::Get_Allocated_Length() const {
   int allocated_length = 0;
 
   //
@@ -544,7 +533,7 @@ inline int StringClass::Get_Allocated_Length(void) const {
 // quite a lot cpu time if a lot of string combining operations are
 // performed.
 ///////////////////////////////////////////////////////////////////
-inline int StringClass::Get_Length(void) const {
+inline int StringClass::Get_Length() const {
   int length = 0;
 
   if (m_Buffer != m_EmptyString) {
@@ -588,7 +577,6 @@ inline void StringClass::Set_Buffer_And_Allocated_Length(TCHAR *buffer, int leng
     WWASSERT(length == 0);
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -617,7 +605,7 @@ inline TCHAR *StringClass::Allocate_Buffer(int length) {
 ///////////////////////////////////////////////////////////////////
 // Get_Header
 ///////////////////////////////////////////////////////////////////
-inline StringClass::HEADER *StringClass::Get_Header(void) const {
+inline StringClass::HEADER *StringClass::Get_Header() const {
   return reinterpret_cast<HEADER *>(((char *)m_Buffer) - sizeof(StringClass::_HEADER));
 }
 
@@ -632,7 +620,6 @@ inline void StringClass::Store_Allocated_Length(int allocated_length) {
     WWASSERT(allocated_length == 0);
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -649,7 +636,6 @@ inline void StringClass::Store_Length(int length) {
     WWASSERT(length == 0);
   }
 
-  return;
 }
 
 #endif //__WWSTRING_H

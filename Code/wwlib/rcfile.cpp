@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,13 +35,14 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdlib>
+
 #include "rcfile.h"
-#include <stdlib.h>
 
 const char *RESOURCE_FILE_TYPE_NAME = "File";
 
 ResourceFileClass::ResourceFileClass(HMODULE hmodule, char const *filename)
-    : ResourceName(NULL), hModule(NULL), FileBytes(NULL), FilePtr(NULL), EndOfFile(NULL) {
+    : ResourceName(nullptr), hModule(nullptr), FileBytes(nullptr), FilePtr(nullptr), EndOfFile(nullptr) {
   Set_Name(filename);
   HRSRC hresource = FindResource(hmodule, ResourceName, RESOURCE_FILE_TYPE_NAME);
 
@@ -64,7 +66,7 @@ ResourceFileClass::~ResourceFileClass(void) {
 char const *ResourceFileClass::Set_Name(char const *filename) {
   if (ResourceName) {
     free(ResourceName);
-    ResourceName = NULL;
+    ResourceName = nullptr;
   }
   if (filename) {
     ResourceName = strdup(filename);
@@ -109,6 +111,6 @@ int ResourceFileClass::Seek(int pos, int dir) {
   return FilePtr - FileBytes;
 }
 
-int ResourceFileClass::Size(void) { return EndOfFile - FileBytes; }
+int ResourceFileClass::Size() { return EndOfFile - FileBytes; }
 
 void ResourceFileClass::Error(int /*error*/, int /*canretry*/, char const * /*filename*/) {}

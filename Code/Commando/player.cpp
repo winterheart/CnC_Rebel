@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -226,7 +227,7 @@ void cPlayer::On_Create(void) {
       switch (PlayerType()) {
       case PLAYERTYPE_RENEGADE: {
         WideStringClass widestring;
-        widestring.Format(L"%s, %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name);
+        widestring.Format(L"%s, %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name.Peek_Buffer());
         //
         //	Display the message...
         //
@@ -238,10 +239,10 @@ void cPlayer::On_Create(void) {
         WideStringClass widestring;
         WWASSERT(PTheGameData != NULL);
         if (The_Game()->IsTeamChangingAllowed.Is_True()) {
-          widestring.Format(L"%s, %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name);
+          widestring.Format(L"%s, %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name.Peek_Buffer());
         } else {
-          widestring.Format(L"%s, %s, %s %s %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name, TRANSLATION(IDS_MP_TO),
-                            The_Game()->Get_Team_Word(), cTeamManager::Get_Team_Name(PlayerType));
+          widestring.Format(L"%s, %s, %s %s %s.\n", TRANSLATION(IDS_MP_WELCOME_RENEGADE), Name.Peek_Buffer(), TRANSLATION(IDS_MP_TO),
+                            The_Game()->Get_Team_Word().Peek_Buffer(), cTeamManager::Get_Team_Name(PlayerType).Peek_Buffer());
         }
 
         //
@@ -261,7 +262,7 @@ void cPlayer::On_Create(void) {
         break;
       case PLAYERTYPE_RENEGADE: {
         WideStringClass widestring;
-        widestring.Format(L"%s %s\n", Name, TRANSLATION(IDS_MP_RENEGADE_JOINS));
+        widestring.Format(L"%s %s\n", Name.Peek_Buffer(), TRANSLATION(IDS_MP_RENEGADE_JOINS));
 
         //
         //	Display the message...
@@ -274,10 +275,10 @@ void cPlayer::On_Create(void) {
         WideStringClass widestring;
         WWASSERT(PTheGameData != NULL);
         if (The_Game()->IsTeamChangingAllowed.Is_True()) {
-          widestring.Format(L"%s %s\n", Name, TRANSLATION(IDS_MP_RENEGADE_JOINS));
+          widestring.Format(L"%s %s\n", Name.Peek_Buffer(), TRANSLATION(IDS_MP_RENEGADE_JOINS));
         } else {
-          widestring.Format(L"%s %s %s %s\n", Name, TRANSLATION(IDS_MP_TEAMPLAYER_JOINS), The_Game()->Get_Team_Word(),
-                            cTeamManager::Get_Team_Name(PlayerType));
+          widestring.Format(L"%s %s %s %s\n", Name.Peek_Buffer(), TRANSLATION(IDS_MP_TEAMPLAYER_JOINS),
+            The_Game()->Get_Team_Word().Peek_Buffer(), cTeamManager::Get_Team_Name(PlayerType).Peek_Buffer());
         }
 
         //
@@ -301,7 +302,7 @@ void cPlayer::On_Destroy(void) {
       The_Game()->Is_Cnc()) {
 
     WideStringClass message;
-    message.Format(L"%s %s\n", Name, TRANSLATION(IDS_MP_PLAYER_LEFT_GAME));
+    message.Format(L"%s %s\n", Name.Peek_Buffer(), TRANSLATION(IDS_MP_PLAYER_LEFT_GAME));
 
     //
     //	Display the message...
@@ -424,9 +425,9 @@ void cPlayer::Get_Player_String(int rank, WideStringClass &string, bool force_ve
   }
   */
   if (cGameSpyAdmin::Is_Gamespy_Game()) {
-    substring.Format(L"%-34s", Name);
+    substring.Format(L"%-34s", Name.Peek_Buffer());
   } else {
-    substring.Format(L"%-9s", Name);
+    substring.Format(L"%-9s", Name.Peek_Buffer());
   }
   if (IsActive.Is_True()) {
     substring += L"  ";
@@ -567,7 +568,7 @@ void cPlayer::Get_Player_String(int rank, WideStringClass &string, bool force_ve
   if (cNetwork::I_Am_Server() && cGameSpyAdmin::Is_Gamespy_Game() && cDevOptions::ShowGameSpyAuthState.Is_True()) {
     WideStringClass wide_string;
     wide_string.Convert_From(cGameSpyAuthMgr::Describe_Auth_State(GameSpyAuthState));
-    substring.Format(L"%-12s", wide_string);
+    substring.Format(L"%-12s", wide_string.Peek_Buffer());
     string += substring;
   }
 
@@ -577,7 +578,7 @@ void cPlayer::Get_Player_String(int rank, WideStringClass &string, bool force_ve
   if (cNetwork::I_Am_Server() && cDevOptions::ShowIpAddresses.Is_True()) {
     WideStringClass wide_ip;
     wide_ip.Convert_From(cNetUtil::Address_To_String(IpAddress));
-    substring.Format(L"%-30s", wide_ip);
+    substring.Format(L"%-30s", wide_ip.Peek_Buffer());
     string += substring;
   }
 #endif // WWDEBUG

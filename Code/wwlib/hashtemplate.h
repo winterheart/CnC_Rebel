@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef HASH_TEMPLATE_H
 #define HASH_TEMPLATE_H
@@ -74,8 +73,8 @@ public:
     NIL = -1 // internal enumeration for representing a NULL link
   };
 
-  HashTemplateClass(void);
-  ~HashTemplateClass(void);
+  HashTemplateClass();
+  ~HashTemplateClass();
 
   void Insert(const KeyType &s, const ValueType &d);
   void Set_Value(const KeyType &s, const ValueType &d);
@@ -85,8 +84,8 @@ public:
   bool Get(const KeyType &s, ValueType &d) const;
   bool Exists(const KeyType &s) const;
   bool Exists(const KeyType &s, const ValueType &d) const;
-  void Remove_All(void);
-  unsigned int Get_Size(void) const;
+  void Remove_All();
+  unsigned int Get_Size() const;
 
   int *Get_Hash() { return Hash; }
   Entry *Get_Table() { return Table; }
@@ -95,9 +94,9 @@ private:
   HashTemplateClass(const HashTemplateClass &);            // not allowed
   HashTemplateClass &operator=(const HashTemplateClass &); // not allowed
   static unsigned int Get_Hash_Val(const KeyType &s, const unsigned int hash_array_size);
-  void Re_Hash(void);
+  void Re_Hash();
 
-  int Alloc_Entry(void);
+  int Alloc_Entry();
 
   struct Entry {
     int Next;        // next pointer in linked list
@@ -164,11 +163,11 @@ inline void HashTemplateClass<KeyType, ValueType>::Insert(const KeyType &s, cons
 }
 
 template <class KeyType, class ValueType>
-inline unsigned int HashTemplateClass<KeyType, ValueType>::Get_Size(void) const {
+inline unsigned int HashTemplateClass<KeyType, ValueType>::Get_Size() const {
   return Size;
 }
 
-template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType, ValueType>::Remove_All(void) {
+template <class KeyType, class ValueType> inline void HashTemplateClass<KeyType, ValueType>::Remove_All() {
   for (unsigned int i = 0; i < Size; i++) {
     int f = Hash[i];
     if (f != NIL) {

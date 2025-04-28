@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,7 +41,6 @@
 #include "matrix4.h"
 #include "wwdebug.h"
 #include "cpudetect.h"
-#include <memory.h>
 
 #define SHUFFLE(x, y, z, w) (((x) & 3) << 6 | ((y) & 3) << 4 | ((z) & 3) << 2 | ((w) & 3))
 #define BROADCAST(XMM, INDEX)                                                                                          \
@@ -295,9 +295,7 @@ void VectorProcessorClass::Transform(Vector3 *dst, const Vector3 *src, const Mat
   } else
 #endif
   {
-    int i;
-
-    for (i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
       dst[i] = mtx * src[i];
     }
   }
@@ -307,9 +305,7 @@ void VectorProcessorClass::Transform(Vector4 *dst, const Vector3 *src, const Mat
   if (count <= 0)
     return;
 
-  int i;
-
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = matrix * src[i];
   }
 }
@@ -341,9 +337,8 @@ void VectorProcessorClass::Copy(Vector4 *dst, const Vector4 *src, int count) {
 void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 *src, const float *srca, const int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i].X = src[i].X;
     dst[i].Y = src[i].Y;
     dst[i].Z = src[i].Z;
@@ -354,9 +349,8 @@ void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 *src, const float *s
 void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 *src, const float srca, const int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i].X = src[i].X;
     dst[i].Y = src[i].Y;
     dst[i].Z = src[i].Z;
@@ -367,9 +361,8 @@ void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 *src, const float sr
 void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 &src, const float *srca, const int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i].X = src.X;
     dst[i].Y = src.Y;
     dst[i].Z = src.Z;
@@ -380,9 +373,8 @@ void VectorProcessorClass::Copy(Vector4 *dst, const Vector3 &src, const float *s
 void VectorProcessorClass::CopyIndexed(unsigned *dst, const unsigned *src, const unsigned int *index, int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -390,9 +382,8 @@ void VectorProcessorClass::CopyIndexed(unsigned *dst, const unsigned *src, const
 void VectorProcessorClass::CopyIndexed(Vector2 *dst, const Vector2 *src, const unsigned int *index, int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -400,9 +391,8 @@ void VectorProcessorClass::CopyIndexed(Vector2 *dst, const Vector2 *src, const u
 void VectorProcessorClass::CopyIndexed(Vector3 *dst, const Vector3 *src, const unsigned int *index, int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -410,9 +400,8 @@ void VectorProcessorClass::CopyIndexed(Vector3 *dst, const Vector3 *src, const u
 void VectorProcessorClass::CopyIndexed(Vector4 *dst, const Vector4 *src, const unsigned int *index, int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -421,9 +410,8 @@ void VectorProcessorClass::CopyIndexed(unsigned char *dst, const unsigned char *
                                        int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -431,9 +419,8 @@ void VectorProcessorClass::CopyIndexed(unsigned char *dst, const unsigned char *
 void VectorProcessorClass::CopyIndexed(float *dst, float *src, const unsigned int *index, int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i] = src[index[i]];
   }
 }
@@ -441,9 +428,8 @@ void VectorProcessorClass::CopyIndexed(float *dst, float *src, const unsigned in
 void VectorProcessorClass::Clamp(Vector4 *dst, const Vector4 *src, const float min, const float max, const int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     dst[i].X = (src[i].X < min) ? min : src[i].X;
     dst[i].X = (src[i].X > max) ? max : src[i].X;
 
@@ -467,9 +453,8 @@ void VectorProcessorClass::Clear(Vector3 *dst, const int count) {
 void VectorProcessorClass::Normalize(Vector3 *dst, const int count) {
   if (count <= 0)
     return;
-  int i;
 
-  for (i = 0; i < count; i++)
+  for (int i = 0; i < count; i++)
     dst[i].Normalize();
 }
 
@@ -479,9 +464,7 @@ void VectorProcessorClass::MinMax(Vector3 *src, Vector3 &min, Vector3 &max, cons
   min = *src;
   max = *src;
 
-  int i;
-
-  for (i = 1; i < count; i++) {
+  for (int i = 1; i < count; i++) {
     min.X = MIN(min.X, src[i].X);
     min.Y = MIN(min.Y, src[i].Y);
     min.Z = MIN(min.Z, src[i].Z);

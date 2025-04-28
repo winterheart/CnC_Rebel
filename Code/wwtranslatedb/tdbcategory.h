@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,14 +36,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#ifndef __TDB_CATEGORY_H
-#define __TDB_CATEGORY_H
-
-#include "persist.h"
+#include "persistfactory.h"
 #include "wwstring.h"
 #include "vector.h"
 #include "bittype.h"
@@ -63,9 +59,9 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  TDBCategoryClass(void);
+  TDBCategoryClass();
   TDBCategoryClass(const TDBCategoryClass &src);
-  virtual ~TDBCategoryClass(void);
+  virtual ~TDBCategoryClass();
 
   //////////////////////////////////////////////////////////////
   //	Public operators
@@ -79,23 +75,23 @@ public:
   //
   // From PersistClass
   //
-  const PersistFactoryClass &Get_Factory(void) const;
+  const PersistFactoryClass &Get_Factory() const;
   bool Save(ChunkSaveClass &csave);
   bool Load(ChunkLoadClass &cload);
 
   //
   // Copy methods
   //
-  TDBCategoryClass *Clone(void) const { return new TDBCategoryClass(*this); }
+  TDBCategoryClass *Clone() const { return new TDBCategoryClass(*this); }
 
   //
   // TDBCategoryClass specific
   //
 
-  const StringClass &Get_Name(void) const { return Name; }
+  const StringClass &Get_Name() const { return Name; }
   void Set_Name(const char *name) { Name = name; }
 
-  uint32 Get_ID(void) const { return ID; }
+  uint32 Get_ID() const { return ID; }
   void Set_ID(uint32 id) { ID = id; }
 
 protected:
@@ -112,5 +108,3 @@ private:
   StringClass Name;
   uint32 ID;
 };
-
-#endif //__TDB_CATEGORY_H

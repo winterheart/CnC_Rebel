@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -89,9 +90,9 @@ public:
   /////////////////////////////////////////////////////////////////////////
   // Public constructors/destructors
   /////////////////////////////////////////////////////////////////////////
-  PathSolveClass(void);
+  PathSolveClass();
   PathSolveClass(const Vector3 &start, const Vector3 &end);
-  ~PathSolveClass(void);
+  ~PathSolveClass();
 
   /////////////////////////////////////////////////////////////////////////
   // Public methods
@@ -106,9 +107,9 @@ public:
   // Position methods
   //
   STATE_DESC Reset(const Vector3 &start, const Vector3 &end, float sector_fudge = 0);
-  const Vector3 &Get_Start_Pos(void) const;
-  const Vector3 &Get_Dest_Pos(void) const;
-  STATE_DESC Get_State(void) const;
+  const Vector3 &Get_Start_Pos() const;
+  const Vector3 &Get_Dest_Pos() const;
+  STATE_DESC Get_State() const;
 
   //
   // Traversing object
@@ -120,12 +121,12 @@ public:
   //	Priority access
   //
   void Set_Priority(float priority) { m_Priority = priority; }
-  float Get_Priority(void) const { return m_Priority; }
+  float Get_Priority() const { return m_Priority; }
 
   //
   //	Birth-time access
   //
-  uint32 Get_Birth_Time(void) const { return m_BirthTime; }
+  uint32 Get_Birth_Time() const { return m_BirthTime; }
 
   //
   // Volume access
@@ -137,25 +138,25 @@ public:
   //
   void Save(ChunkSaveClass &csave);
   void Load(ChunkLoadClass &cload);
-  void On_Post_Load(void);
+  void On_Post_Load();
 
   //
   // Distributed (multi-frame solve) methods
   //
-  void Process_Initial_Sector(void);
-  void Unlink_Pathfind_Hooks(void);
+  void Process_Initial_Sector();
+  void Unlink_Pathfind_Hooks();
 
 protected:
   /////////////////////////////////////////////////////////////////////////
   // Public data types
   /////////////////////////////////////////////////////////////////////////
-  typedef struct PathDataStruct {
-    PathDataStruct(void) : m_Portal(NULL), m_Point(0, 0, 0) {}
+  struct PathDataStruct {
+    PathDataStruct() : m_Portal(nullptr), m_Point(0, 0, 0) {}
 
     PathDataStruct(PathfindPortalClass *portal, const Vector3 &point) : m_Portal(portal), m_Point(point) {}
 
-    bool operator==(const PathDataStruct &src) { return false; }
-    bool operator!=(const PathDataStruct &src) { return true; }
+    bool operator==(const PathDataStruct &src) const { return false; }
+    bool operator!=(const PathDataStruct &src) const { return true; }
 
     PathfindPortalClass *m_Portal;
     Vector3 m_Point;
@@ -169,7 +170,7 @@ protected:
   //
   //	Raw path access
   //
-  PATHPOINT_LIST &Get_Raw_Path(void) { return m_Path; }
+  PATHPOINT_LIST &Get_Raw_Path() { return m_Path; }
 
   /////////////////////////////////////////////////////////////////////////
   // Protected methods
@@ -181,15 +182,15 @@ protected:
   void Submit_Node(float traversal_cost, PathNodeClass *current_node, PathfindPortalClass *portal,
                    PathfindSectorClass *dest_sector, const Matrix3D &current_tm, const Matrix3D &ending_tm);
 
-  void Reset_Lists(void);
+  void Reset_Lists();
 
   //
   //	Post process methods
   //
-  void Post_Process_Path(void);
+  void Post_Process_Path();
   bool Does_Line_Go_Through_Portal(const Vector3 &start, const Vector3 &end, const AABoxClass &box);
   Vector3 Relax_Line(const Vector3 &start, const Vector3 &end, const AABoxClass &box);
-  void Keep_Unit_Inside_Sectors(void);
+  void Keep_Unit_Inside_Sectors();
 
   //
   //	Portal access
@@ -201,8 +202,8 @@ protected:
   //
   // Distributed (multi-frame solve) methods
   //
-  // void		Begin_Distributed_Solve (void);
-  // void		End_Distributed_Solve (void);
+  // void		Begin_Distributed_Solve ();
+  // void		End_Distributed_Solve ();
 
   //
   //	Save/load methods
@@ -246,10 +247,10 @@ private:
 /////////////////////////////////////////////////////////////////////////
 //	Inlines
 /////////////////////////////////////////////////////////////////////////
-inline PathSolveClass::STATE_DESC PathSolveClass::Get_State(void) const { return m_State; }
+inline PathSolveClass::STATE_DESC PathSolveClass::Get_State() const { return m_State; }
 
-inline const Vector3 &PathSolveClass::Get_Start_Pos(void) const { return m_StartPos; }
+inline const Vector3 &PathSolveClass::Get_Start_Pos() const { return m_StartPos; }
 
-inline const Vector3 &PathSolveClass::Get_Dest_Pos(void) const { return m_DestPos; }
+inline const Vector3 &PathSolveClass::Get_Dest_Pos() const { return m_DestPos; }
 
 #endif //__PATH_SOLVE_H

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -42,16 +43,15 @@
 //	AudioCallbackClass
 //
 /////////////////////////////////////////////////////////////////////////////////
-AudioCallbackClass::AudioCallbackClass(void) { return; }
+AudioCallbackClass::AudioCallbackClass() = default;
 
 /////////////////////////////////////////////////////////////////////////////////
 //
 //	~AudioCallbackClass
 //
 /////////////////////////////////////////////////////////////////////////////////
-AudioCallbackClass::~AudioCallbackClass(void) {
+AudioCallbackClass::~AudioCallbackClass() {
   Remove_All_Callbacks();
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,6 @@ void AudioCallbackClass::On_Registered(SoundSceneObjClass *sound) {
     SoundList.Add(sound);
   }
 
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +77,6 @@ void AudioCallbackClass::On_UnRegistered(SoundSceneObjClass *sound) {
     SoundList.Delete(index);
   }
 
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +84,7 @@ void AudioCallbackClass::On_UnRegistered(SoundSceneObjClass *sound) {
 //	Remove_All_Callbacks
 //
 /////////////////////////////////////////////////////////////////////////////////
-void AudioCallbackClass::Remove_All_Callbacks(void) {
+void AudioCallbackClass::Remove_All_Callbacks() {
   //
   //	Simply remove ourselves from the sound object
   //
@@ -95,5 +93,4 @@ void AudioCallbackClass::Remove_All_Callbacks(void) {
   }
 
   SoundList.Delete_All();
-  return;
 }

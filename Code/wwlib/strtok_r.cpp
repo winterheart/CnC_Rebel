@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,9 @@
  *   strtok_r -- POSIX replacement for strtok (no internal static)         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "strtok_r.h"
-#include <string.h>
-#include <stdio.h>
 
 //
 // Replacement for strtok() that doesn't use a static to
@@ -55,7 +56,7 @@ char *strtok_r(char *strptr, const char *delimiters, char **lasts) {
     *lasts = strptr;
 
   if ((*lasts)[0] == 0) // 0 length string?
-    return (NULL);
+    return (nullptr);
 
   //
   // Note: strcspn & strspn are both called, they're opposites
@@ -68,7 +69,7 @@ char *strtok_r(char *strptr, const char *delimiters, char **lasts) {
     *lasts += dend;
 
     if ((*lasts)[0] == 0) // 0 length string?
-      return (NULL);
+      return (nullptr);
 
     dstart = strcspn(*lasts, delimiters);
   }

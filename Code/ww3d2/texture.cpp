@@ -67,17 +67,55 @@ unsigned _MipMapFilters[MAX_TEXTURE_STAGES][TextureClass::FILTER_TYPE_COUNT];
 
 // ----------------------------------------------------------------------------
 
-static int Calculate_Texture_Memory_Usage(const TextureClass *texture, int red_factor = 0) {
+// Returns BPP of format
+uint32_t DX_Get_Bytes_Per_Pixel(DX_D3DFORMAT format) {
+  switch (format) {
+  case D3DFMT_X8R8G8B8:
+  case D3DFMT_X8L8V8U8:
+  case D3DFMT_A8R8G8B8:
+    return 4;
+  case D3DFMT_R8G8B8:
+    return 3;
+  case D3DFMT_A1R5G5B5:
+  case D3DFMT_A4R4G4B4:
+  case D3DFMT_V8U8:
+  case D3DFMT_L6V5U5:
+  case D3DFMT_R5G6B5:
+    return 2;
+  case D3DFMT_R3G3B2:
+  case D3DFMT_L8:
+  case D3DFMT_A8:
+  case D3DFMT_P8:
+    return 1;
+
+  default:
+    // Defaulting to 0. Compressed formats should be handled separately
+    return 0;
+  }
+}
+
+
+static uint32_t Calculate_Texture_Memory_Usage(const TextureClass *texture, uint32_t red_factor = 0) {
   // Set performance statistics
 
-  int size = 0;
+  uint32_t size = 0;
   DX_IDirect3DTexture *d3d_texture = const_cast<TextureClass *>(texture)->Peek_DX8_Texture();
   if (!d3d_texture)
     return 0;
-  for (unsigned i = red_factor; i < d3d_texture->GetLevelCount(); ++i) {
+  for (uint32_t i = red_factor; i < d3d_texture->GetLevelCount(); ++i) {
     D3DSURFACE_DESC desc;
     DX8_ErrorCode(d3d_texture->GetLevelDesc(i, &desc));
-    size += desc.Width * desc.Height * DX_Get_Bytes_Per_Pixel(desc.Format);
+    uint32_t bpp = DX_Get_Bytes_Per_Pixel(desc.Format);
+    if (bpp > 0) {
+      size += desc.Width * desc.Height * DX_Get_Bytes_Per_Pixel(desc.Format);
+    } else {
+      // Compressed textures DXT1..DXT5
+      uint32_t block_size = 8;
+      if (desc.Format != D3DFMT_DXT1) {
+        block_size = 16;
+      }
+      size += std::max(1u, (desc.Width + 3) / 4) * block_size * desc.Height;
+    }
   }
   return size;
 }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -19,9 +20,7 @@
 #ifndef WWSAVELOADSTATUS_H
 #define WWSAVELOADSTATUS_H
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #include "always.h"
 #include "wwstring.h"
@@ -29,9 +28,9 @@
 namespace SaveLoadStatus {
 void Set_Status_Text(const char *text, int id);
 
-void Reset_Status_Count(void);
-void Inc_Status_Count(void);
-int Get_Status_Count(void);
+void Reset_Status_Count();
+void Inc_Status_Count();
+int Get_Status_Count();
 void Get_Status_Text(StringClass &text, int id);
 }; // namespace SaveLoadStatus
 

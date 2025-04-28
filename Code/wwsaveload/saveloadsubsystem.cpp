@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,13 +38,11 @@
 #include "saveloadsubsystem.h"
 #include "saveload.h"
 
-SaveLoadSubSystemClass::SaveLoadSubSystemClass(void) : NextSubSystem(NULL) {
+SaveLoadSubSystemClass::SaveLoadSubSystemClass() : NextSubSystem(nullptr) {
   // All Sub-Systems are automatically registered with the SaveLoadSystem
   SaveLoadSystemClass::Register_Sub_System(this);
-  return;
 }
 
-SaveLoadSubSystemClass::~SaveLoadSubSystemClass(void) {
+SaveLoadSubSystemClass::~SaveLoadSubSystemClass() {
   SaveLoadSystemClass::Unregister_Sub_System(this);
-  return;
 }

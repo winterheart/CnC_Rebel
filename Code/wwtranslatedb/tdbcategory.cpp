@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -65,24 +66,21 @@ enum {
 //	TDBCategoryClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBCategoryClass::TDBCategoryClass(void) : ID(CATEGORY_DEFAULT) { return; }
+TDBCategoryClass::TDBCategoryClass() : ID(CATEGORY_DEFAULT) {}
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	TDBCategoryClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBCategoryClass::TDBCategoryClass(const TDBCategoryClass &src) : ID(CATEGORY_DEFAULT) {
-  (*this) = src;
-  return;
-}
+TDBCategoryClass::TDBCategoryClass(const TDBCategoryClass &src) : ID(CATEGORY_DEFAULT) { (*this) = src; }
 
 ///////////////////////////////////////////////////////////////////////
 //
 //	~TDBCategoryClass
 //
 ///////////////////////////////////////////////////////////////////////
-TDBCategoryClass::~TDBCategoryClass(void) { return; }
+TDBCategoryClass::~TDBCategoryClass() = default;
 
 /////////////////////////////////////////////////////////////////
 //
@@ -101,7 +99,7 @@ const TDBCategoryClass &TDBCategoryClass::operator=(const TDBCategoryClass &src)
 //	Get_Factory
 //
 ///////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &TDBCategoryClass::Get_Factory(void) const { return _TDBCategoryPersistFactory; }
+const PersistFactoryClass &TDBCategoryClass::Get_Factory() const { return _TDBCategoryPersistFactory; }
 
 /////////////////////////////////////////////////////////////////
 //
@@ -154,7 +152,6 @@ void TDBCategoryClass::Save_Variables(ChunkSaveClass &csave) {
   //
   WRITE_MICRO_CHUNK(csave, VARID_ID, ID);
   WRITE_MICRO_CHUNK_WWSTRING(csave, VARID_NAME, Name);
-  return;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -172,6 +169,4 @@ void TDBCategoryClass::Load_Variables(ChunkLoadClass &cload) {
 
     cload.Close_Micro_Chunk();
   }
-
-  return;
 }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef CASTRES_H
 #define CASTRES_H
@@ -56,8 +55,8 @@
 ** The default state of ComputeContactPoint is *false*
 */
 struct CastResultStruct {
-  CastResultStruct(void) { Reset(); }
-  void Reset(void) {
+  CastResultStruct() { Reset(); }
+  void Reset() {
     StartBad = false;
     Fraction = 1.0f;
     Normal.Set(0, 0, 0);

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef PIPE_H
 #define PIPE_H
@@ -49,11 +48,11 @@
 */
 class Pipe {
 public:
-  Pipe(void) : ChainTo(0), ChainFrom(0) {}
-  virtual ~Pipe(void);
+  Pipe() : ChainTo(nullptr), ChainFrom(nullptr) {}
+  virtual ~Pipe();
 
-  virtual int Flush(void);
-  virtual int End(void) { return (Flush()); }
+  virtual int Flush();
+  virtual int End() { return (Flush()); }
   virtual void Put_To(Pipe *pipe);
   void Put_To(Pipe &pipe) { Put_To(&pipe); }
   virtual int Put(void const *source, int slen);

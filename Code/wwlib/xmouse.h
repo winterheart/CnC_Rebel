@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -75,8 +76,8 @@ public:
   /*
   **	Controls visibility of the game-drawn mouse.
   */
-  virtual void Hide_Mouse(void) = 0;
-  virtual void Show_Mouse(void) = 0;
+  virtual void Hide_Mouse() = 0;
+  virtual void Show_Mouse() = 0;
 
   /*
   **	Takes control of and releases control of the mouse with
@@ -85,23 +86,23 @@ public:
   **	relased, it may move outside of the confining rectangle and its
   **	shape is controlled by the operating sytem.
   */
-  virtual void Release_Mouse(void) = 0;
-  virtual void Capture_Mouse(void) = 0;
-  virtual bool Is_Captured(void) const = 0;
+  virtual void Release_Mouse() = 0;
+  virtual void Capture_Mouse() = 0;
+  virtual bool Is_Captured() const = 0;
 
   /*
   **	Hide the mouse if it falls within this game screen region.
   */
   virtual void Conditional_Hide_Mouse(Rect region) = 0;
-  virtual void Conditional_Show_Mouse(void) = 0;
+  virtual void Conditional_Show_Mouse() = 0;
 
   /*
   **	Query about the mouse visiblity state and location. If the mouse
   **	state is zero or greater, then the mouse is visible.
   */
-  virtual int Get_Mouse_State(void) const = 0;
-  virtual int Get_Mouse_X(void) const = 0;
-  virtual int Get_Mouse_Y(void) const = 0;
+  virtual int Get_Mouse_State() const = 0;
+  virtual int Get_Mouse_X() const = 0;
+  virtual int Get_Mouse_Y() const = 0;
 
   /*
   **	Set the mouse location.

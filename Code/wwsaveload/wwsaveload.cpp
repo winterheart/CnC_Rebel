@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,6 +40,6 @@
 #include "wwsaveload.h"
 #include "definitionmgr.h"
 
-void WWSaveLoad::Init(void) {}
+void WWSaveLoad::Init() {}
 
-void WWSaveLoad::Shutdown(void) { _TheDefinitionMgr.Free_Definitions(); }
+void WWSaveLoad::Shutdown() { _TheDefinitionMgr.Free_Definitions(); }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,9 +40,9 @@
 const float CollisionMath::COINCIDENCE_EPSILON = 0.000001f;
 CollisionMath::ColmathStatsStruct CollisionMath::Stats;
 
-CollisionMath::ColmathStatsStruct::ColmathStatsStruct(void) { Reset(); }
+CollisionMath::ColmathStatsStruct::ColmathStatsStruct() { Reset(); }
 
-void CollisionMath::ColmathStatsStruct::Reset(void) {
+void CollisionMath::ColmathStatsStruct::Reset() {
   TotalCollisionCount = 0;
   TotalCollisionHitCount = 0;
 

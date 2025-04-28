@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __TRANSLATE_DB_H
-#define __TRANSLATE_DB_H
 
 #include "saveloadsubsystem.h"
 #include "vector.h"
@@ -98,8 +94,8 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  TranslateDBClass(void) {}
-  virtual ~TranslateDBClass(void) {}
+  TranslateDBClass() = default;
+  virtual ~TranslateDBClass() = default;
 
   //////////////////////////////////////////////////////////////
   //	Public methods
@@ -108,17 +104,17 @@ public:
   //
   //	Initialization
   //
-  static void Initialize(void);
-  static void Shutdown(void);
-  static uint32 Get_Version_Number(void);
-  static void Update_Version(void);
+  static void Initialize();
+  static void Shutdown();
+  static uint32 Get_Version_Number();
+  static void Update_Version();
   static bool Is_Loaded() { return (m_ObjectList.Count() > 0); }
 
   //
   // From SaveLoadSubSystemClass
   //
-  virtual uint32 Chunk_ID(void) const;
-  virtual const char *Name(void) const { return "TranslateDBClass"; }
+  virtual uint32 Chunk_ID() const;
+  virtual const char *Name() const { return "TranslateDBClass"; }
 
   //
   //	C style header file support
@@ -142,12 +138,12 @@ public:
   //
   static bool Add_Object(TDBObjClass *new_obj);
   static bool Remove_Object(int index);
-  static void Remove_All(void);
+  static void Remove_All();
 
   //
   //	Enumeration
   //
-  static int Get_Object_Count(void);
+  static int Get_Object_Count();
   static TDBObjClass *Get_Object(int index);
   static TDBObjClass *Get_First_Object(uint32 category_id);
   static TDBObjClass *Get_Next_Object(uint32 category_id, TDBObjClass *curr_obj);
@@ -155,7 +151,7 @@ public:
   //
   //	Category support
   //
-  static int Get_Category_Count(void);
+  static int Get_Category_Count();
   static TDBCategoryClass *Get_Category(int index);
   static TDBCategoryClass *Find_Category(uint32 id);
   static TDBCategoryClass *Find_Category(const char *name);
@@ -167,12 +163,12 @@ public:
   //	Language support
   //
   static void Set_Current_Language(int lang_id) { m_LanguageID = lang_id; }
-  static uint32 Get_Current_Language(void) { return m_LanguageID; }
+  static uint32 Get_Current_Language() { return m_LanguageID; }
 
   //
   //	Save/load options
   //
-  static bool Is_Single_Language_Export_Enabled(void) { return IsSingleLanguageExport; }
+  static bool Is_Single_Language_Export_Enabled() { return IsSingleLanguageExport; }
   static void Enable_Single_Language_Export(bool onoff) { IsSingleLanguageExport = onoff; }
 
   static void Set_Export_Filter(FILTER_OPT filter, uint32 category_id);
@@ -185,7 +181,7 @@ protected:
   //
   //	Save/load stuff
   //
-  virtual bool Contains_Data(void) const;
+  virtual bool Contains_Data() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 
@@ -193,15 +189,15 @@ protected:
   bool Load_Objects(ChunkLoadClass &cload);
   bool Load_Categories(ChunkLoadClass &cload);
 
-  static void Validate_Data(void);
+  static void Validate_Data();
 
-  static void Free_Objects(void);
-  static void Free_Categories(void);
+  static void Free_Objects();
+  static void Free_Categories();
 
   //
   //	ID managment
   //
-  static uint32 Find_Unique_ID(void);
+  static uint32 Find_Unique_ID();
 
   //////////////////////////////////////////////////////////////
   //	Protected data types
@@ -229,7 +225,7 @@ private:
 inline const WCHAR *TranslateDBClass::Get_String(uint32 id) {
   // ID of 0 (zero) is a special case NULL string.
   if (id == 0) {
-    return NULL;
+    return nullptr;
   }
 
   const WCHAR *string = STRING_NOT_FOUND;
@@ -255,8 +251,8 @@ inline const WCHAR *TranslateDBClass::Get_String(uint32 id) {
     //	Get the translation object
     //
     TDBObjClass *trans_obj = m_ObjectList[index];
-    WWASSERT(trans_obj != NULL);
-    if (trans_obj != NULL) {
+    WWASSERT(trans_obj != nullptr);
+    if (trans_obj != nullptr) {
 
       //
       //	Get the string from the object and return it to the caller
@@ -273,8 +269,8 @@ inline const WCHAR *TranslateDBClass::Get_String(uint32 id) {
 //////////////////////////////////////////////////////////////
 inline const WCHAR *TranslateDBClass::Get_String(const char *id_desc) {
   // NULL description is a special case NULL string.
-  if (id_desc == NULL) {
-    return NULL;
+  if (id_desc == nullptr) {
+    return nullptr;
   }
 
   const WCHAR *string = STRING_NOT_FOUND;
@@ -283,7 +279,7 @@ inline const WCHAR *TranslateDBClass::Get_String(const char *id_desc) {
   //	Lookup the object based on its ID
   //
   TDBObjClass *translate_obj = Find_Object(id_desc);
-  if (translate_obj != NULL) {
+  if (translate_obj != nullptr) {
 
     //
     //	Get the string from the object and return it to the caller
@@ -298,9 +294,9 @@ inline const WCHAR *TranslateDBClass::Get_String(const char *id_desc) {
 //	Get_English_String
 //////////////////////////////////////////////////////////////
 inline const char *TranslateDBClass::Get_English_String(uint32 id) {
-  // ID of 0 (zero) is a special case NULL string.
+  // ID of 0 (zero) is a special case nullptr string.
   if (id == 0) {
-    return NULL;
+    return nullptr;
   }
 
   const char *string = ENGLISH_STRING_NOT_FOUND;
@@ -326,8 +322,8 @@ inline const char *TranslateDBClass::Get_English_String(uint32 id) {
     //	Get the translation object
     //
     TDBObjClass *trans_obj = m_ObjectList[index];
-    WWASSERT(trans_obj != NULL);
-    if (trans_obj != NULL) {
+    WWASSERT(trans_obj != nullptr);
+    if (trans_obj != nullptr) {
 
       //
       //	Get the string from the object and return it to the caller
@@ -354,7 +350,7 @@ WWINLINE TDBObjClass *TranslateDBClass::Find_Object(const char *id_desc) {
 //	Find_Object
 //////////////////////////////////////////////////////////////
 WWINLINE TDBObjClass *TranslateDBClass::Find_Object(uint32 id) {
-  TDBObjClass *object = NULL;
+  TDBObjClass *object = nullptr;
 
   //
   //	Calculate which index this ID refers to
@@ -370,13 +366,11 @@ WWINLINE TDBObjClass *TranslateDBClass::Find_Object(uint32 id) {
     //
     //	Make sure this is the object the caller requested
     //
-    WWASSERT(object != NULL && object->Get_ID() == id);
-    if (object != NULL && object->Get_ID() != id) {
-      object = NULL;
+    WWASSERT(object != nullptr && object->Get_ID() == id);
+    if (object != nullptr && object->Get_ID() != id) {
+      object = nullptr;
     }
   }
 
   return object;
 }
-
-#endif //__TRANSLATE_DB_H

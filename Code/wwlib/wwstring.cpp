@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,11 +35,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdio>
+
 #include "wwstring.h"
 #include "win.h"
 #include "wwmemlog.h"
 #include "mutex.h"
-#include <stdio.h>
 
 ///////////////////////////////////////////////////////////////////
 //	Static member initialzation
@@ -70,7 +72,7 @@ void StringClass::Get_String(int length, bool is_temp) {
     return;
   }
 
-  TCHAR *string = NULL;
+  TCHAR *string = nullptr;
 
   //
   //	Should we attempt to use a temp buffer for this string?
@@ -92,7 +94,7 @@ void StringClass::Get_String(int length, bool is_temp) {
     // TODO: Don't loop, there are better ways
     unsigned mask = 1;
     for (int index = 0; index < MAX_TEMP_STRING; index++, mask <<= 1) {
-      unsigned mask = 1 << index;
+      mask = 1 << index;
       if (!(ReservedMask & mask)) {
         ReservedMask |= mask;
 
@@ -112,7 +114,7 @@ void StringClass::Get_String(int length, bool is_temp) {
     }
   }
 
-  if (string == NULL) {
+  if (string == nullptr) {
 
     //
     //	Allocate a new string as necessary
@@ -149,7 +151,6 @@ void StringClass::Resize(int new_len) {
     Set_Buffer_And_Allocated_Length(new_buffer, new_len);
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -174,7 +175,6 @@ void StringClass::Uninitialised_Grow(int new_len) {
   // Whenever this function is called, clear the cached length
   //
   Store_Length(0);
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ void StringClass::Uninitialised_Grow(int new_len) {
 //	Uninitialised_Grow
 //
 ///////////////////////////////////////////////////////////////////
-void StringClass::Free_String(void) {
+void StringClass::Free_String() {
   if (m_Buffer != m_EmptyString) {
 
     unsigned buffer_base = reinterpret_cast<unsigned>(m_Buffer - sizeof(StringClass::_HEADER));
@@ -215,7 +215,6 @@ void StringClass::Free_String(void) {
     m_Buffer = m_EmptyString;
   }
 
-  return;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -285,23 +284,23 @@ int _cdecl StringClass::Format(const TCHAR *format, ...) {
 //	Release_Resources
 //
 ///////////////////////////////////////////////////////////////////
-void StringClass::Release_Resources(void) {}
+void StringClass::Release_Resources() {}
 
 ///////////////////////////////////////////////////////////////////
 // Copy_Wide
 //
 ///////////////////////////////////////////////////////////////////
 bool StringClass::Copy_Wide(const WCHAR *source) {
-  if (source != NULL) {
+  if (source != nullptr) {
 
     int length;
     BOOL unmapped;
 
-    length = WideCharToMultiByte(CP_ACP, 0, source, -1, NULL, 0, NULL, &unmapped);
+    length = WideCharToMultiByte(CP_ACP, 0, source, -1, nullptr, 0, nullptr, &unmapped);
     if (length > 0) {
 
       // Convert.
-      WideCharToMultiByte(CP_ACP, 0, source, -1, Get_Buffer(length), length, NULL, NULL);
+      WideCharToMultiByte(CP_ACP, 0, source, -1, Get_Buffer(length), length, nullptr, nullptr);
 
       // Update length.
       Store_Length(length - 1);

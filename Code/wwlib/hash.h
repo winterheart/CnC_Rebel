@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef HASH_H
 #define HASH_H
@@ -52,10 +51,10 @@ class HashTableIteratorClass;
 class HashableClass {
 
 public:
-  HashableClass(void) : NextHash(NULL) {}
-  virtual ~HashableClass(void) {}
+  HashableClass() : NextHash(nullptr) {}
+  virtual ~HashableClass() = default;
 
-  virtual const char *Get_Key(void) = 0;
+  virtual const char *Get_Key() = 0;
 
 private:
   HashableClass *NextHash;
@@ -70,9 +69,9 @@ class HashTableClass {
 
 public:
   HashTableClass(int size);
-  ~HashTableClass(void);
+  ~HashTableClass();
 
-  void Reset(void);
+  void Reset();
   void Add(HashableClass *entry);
   bool Remove(HashableClass *entry);
 
@@ -95,12 +94,12 @@ private:
 class HashTableIteratorClass {
 public:
   HashTableIteratorClass(HashTableClass &table) : Table(table) {}
-  virtual ~HashTableIteratorClass(void) {}
+  virtual ~HashTableIteratorClass() = default;
 
-  void First(void);
-  void Next(void);
-  bool Is_Done(void) { return CurrentEntry == NULL; }
-  HashableClass *Get_Current(void) { return CurrentEntry; }
+  void First();
+  void Next();
+  bool Is_Done() { return CurrentEntry == nullptr; }
+  HashableClass *Get_Current() { return CurrentEntry; }
 
 private:
   const HashTableClass &Table;
@@ -108,7 +107,7 @@ private:
   HashableClass *CurrentEntry;
   HashableClass *NextEntry;
 
-  void Advance_Next(void);
+  void Advance_Next();
 };
 
 #endif // HASH_H

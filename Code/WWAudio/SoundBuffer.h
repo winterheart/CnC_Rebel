@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __SOUNDBUFFER_H
-#define __SOUNDBUFFER_H
 
 #pragma warning(push, 3)
 #include "Mss.H"
@@ -62,13 +58,13 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
-  SoundBufferClass(void);
-  virtual ~SoundBufferClass(void);
+  SoundBufferClass();
+  virtual ~SoundBufferClass();
 
   //////////////////////////////////////////////////////////////////////
   //	Public operators
   //////////////////////////////////////////////////////////////////////
-  operator unsigned char *(void) { return Get_Raw_Buffer(); }
+  operator unsigned char *() { return Get_Raw_Buffer(); }
 
   //////////////////////////////////////////////////////////////////////
   //	File methods
@@ -84,30 +80,30 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Buffer access
   //////////////////////////////////////////////////////////////////////
-  virtual unsigned char *Get_Raw_Buffer(void) const { return m_Buffer; }
-  virtual unsigned long Get_Raw_Length(void) const { return m_Length; }
+  virtual unsigned char *Get_Raw_Buffer() const { return m_Buffer; }
+  virtual unsigned long Get_Raw_Length() const { return m_Length; }
 
   //////////////////////////////////////////////////////////////////////
   //	Information methods
   //////////////////////////////////////////////////////////////////////
-  virtual const char *Get_Filename(void) const { return m_Filename; }
+  virtual const char *Get_Filename() const { return m_Filename; }
   virtual void Set_Filename(const char *name);
-  virtual unsigned long Get_Duration(void) const { return m_Duration; }
-  virtual unsigned long Get_Rate(void) const { return m_Rate; }
-  virtual unsigned long Get_Bits(void) const { return m_Bits; }
-  virtual unsigned long Get_Channels(void) const { return m_Channels; }
-  virtual unsigned long Get_Type(void) const { return m_Type; }
+  virtual unsigned long Get_Duration() const { return m_Duration; }
+  virtual unsigned long Get_Rate() const { return m_Rate; }
+  virtual unsigned long Get_Bits() const { return m_Bits; }
+  virtual unsigned long Get_Channels() const { return m_Channels; }
+  virtual unsigned long Get_Type() const { return m_Type; }
 
   //////////////////////////////////////////////////////////////////////
   //	Type methods
   //////////////////////////////////////////////////////////////////////
-  virtual bool Is_Streaming(void) const { return false; }
+  virtual bool Is_Streaming() const { return false; }
 
 protected:
   //////////////////////////////////////////////////////////////////////
   //	Protected methods
   //////////////////////////////////////////////////////////////////////
-  virtual void Free_Buffer(void);
+  virtual void Free_Buffer();
   virtual void Determine_Stats(unsigned char *buffer);
 
   //////////////////////////////////////////////////////////////////////
@@ -135,8 +131,8 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
-  StreamSoundBufferClass(void);
-  virtual ~StreamSoundBufferClass(void);
+  StreamSoundBufferClass();
+  virtual ~StreamSoundBufferClass();
 
   //////////////////////////////////////////////////////////////////////
   //	File methods
@@ -152,18 +148,16 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Type methods
   //////////////////////////////////////////////////////////////////////
-  virtual bool Is_Streaming(void) const { return true; }
+  virtual bool Is_Streaming() const { return true; }
 
 protected:
   //////////////////////////////////////////////////////////////////////
   //	Protected methods
   //////////////////////////////////////////////////////////////////////
-  virtual void Free_Buffer(void);
+  virtual void Free_Buffer();
   virtual bool Load_From_File(HANDLE hfile, unsigned long size, unsigned long offset);
 
   //////////////////////////////////////////////////////////////////////
   //	Protected member data
   //////////////////////////////////////////////////////////////////////
 };
-
-#endif //__SOUNDBUFFER_H

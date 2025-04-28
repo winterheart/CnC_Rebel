@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __DEFINITION_CLASS_ID_H
-#define __DEFINITION_CLASS_ID_H
 
 #include "always.h"
 #include "bittype.h"
@@ -49,9 +45,9 @@
 //	Constants
 //
 //////////////////////////////////////////////////////////////////////////////////
-const int DEF_CLASSID_START = 0x00001000;
-const int DEF_CLASSID_RANGE = 0x00001000;
-#define NEXT_SUPER_CLASSID(n) DEF_CLASSID_START + (n * DEF_CLASSID_RANGE)
+constexpr int DEF_CLASSID_START = 0x00001000;
+constexpr int DEF_CLASSID_RANGE = 0x00001000;
+#define NEXT_SUPER_CLASSID(n) (DEF_CLASSID_START + ((n) * DEF_CLASSID_RANGE))
 
 //////////////////////////////////////////////////////////////////////////////////
 //
@@ -96,5 +92,3 @@ inline uint32 SuperClassID_From_ClassID(uint32 class_id) {
 
   return DEF_CLASSID_START + (num_ranges * DEF_CLASSID_RANGE);
 }
-
-#endif //__DEFINITION_CLASS_ID_H

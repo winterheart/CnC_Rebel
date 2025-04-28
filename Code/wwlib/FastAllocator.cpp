@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -32,8 +33,8 @@ FastAllocatorGeneral *FastAllocatorGeneral::Get_Allocator() {
 FastAllocatorGeneral::FastAllocatorGeneral()
     : MemoryLeakLogEnabled(false), AllocatedWithMalloc(0), AllocatedWithMallocCount(0), ActualMemoryUsage(0) {
   int alloc_size = ALLOC_STEP;
-  for (int i = 0; i < MAX_ALLOC_SIZE / ALLOC_STEP; ++i) {
-    allocators[i].Init(alloc_size);
+  for (auto & allocator : allocators) {
+    allocator.Init(alloc_size);
     alloc_size += ALLOC_STEP;
   }
 }

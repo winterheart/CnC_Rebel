@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -72,7 +73,7 @@ public:
   //	Filename access
   //
   bool Build_Filename_List(DynamicVectorClass<StringClass> &list);
-  bool Build_Internal_Filename_List(void) { return Build_Filename_List(FilenameList); }
+  bool Build_Internal_Filename_List() { return Build_Filename_List(FilenameList); }
   void Get_Filename_List(DynamicVectorClass<StringClass> **list) { *list = &FilenameList; }
   void Get_Filename_List(DynamicVectorClass<StringClass> &list) { list = FilenameList; }
 
@@ -81,12 +82,12 @@ public:
   //
   void Add_File(const char *full_path, const char *filename);
   void Delete_File(const char *filename);
-  void Flush_Changes(void);
+  void Flush_Changes();
 
   //
   //	Information
   //
-  bool Is_Valid(void) const { return IsValid; }
+  bool Is_Valid() const { return IsValid; }
 
 private:
   //
@@ -132,9 +133,9 @@ class MixFileCreator {
 
 public:
   MixFileCreator(const char *filename);
-  ~MixFileCreator(void);
+  ~MixFileCreator();
 
-  void Add_File(const char *source_filename, const char *saved_filename = NULL);
+  void Add_File(const char *source_filename, const char *saved_filename = nullptr);
   void Add_File(const char *filename, FileClass *file);
 
 private:
@@ -157,6 +158,6 @@ private:
 /*
 **
 */
-void Setup_Mix_File(void);
+void Setup_Mix_File();
 
 #endif

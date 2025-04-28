@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -1168,7 +1169,7 @@ bool AnimCollisionManagerClass::Check_Collision(CollideableObjClass &collisionob
       /*
       ** Otherwise, try to push the object out of our way.
       */
-      int collision_bits = collisionobj.Clear_Collision_Bits();
+      collision_bits = collisionobj.Clear_Collision_Bits();
       if (Push_Collided_Object(obj, delta_transform) == false) {
         VERBOSE_LOG(("SAPO %s Failed to push a rider\r\n", Parent.Peek_Model()->Get_Name()));
         revert = true;
@@ -1317,8 +1318,8 @@ bool AnimCollisionManagerClass::Load(ChunkLoadClass &cload) {
   if (!prev_anim_name.Is_Empty()) {
     HAnimClass *anim = WW3DAssetManager::Get_Instance()->Get_HAnim(prev_anim_name);
     if (anim == NULL) {
-      WWDEBUG_SAY(
-          ("FAILED TO FIND PREV ANIM IN AnimCollisionManagerClass::Internal_Set_Animation(\"%s\")\n", prev_anim_name));
+      WWDEBUG_SAY(("FAILED TO FIND PREV ANIM IN AnimCollisionManagerClass::Internal_Set_Animation(\"%s\")\n",
+            prev_anim_name.Peek_Buffer()));
     }
     REF_PTR_SET(PrevAnimation, anim);
   }

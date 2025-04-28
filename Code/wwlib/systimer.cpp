@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -52,7 +53,7 @@ SysTimeClass SystemTime;
  * HISTORY:                                                                                    *
  *   12/9/2001 5:51PM ST : Created                                                             *
  *=============================================================================================*/
-void SysTimeClass::Reset(void) {
+void SysTimeClass::Reset() {
   StartTime = timeGetTime();
   WrapAdd = 0 - StartTime;
 }
@@ -71,7 +72,7 @@ void SysTimeClass::Reset(void) {
  * HISTORY:                                                                                    *
  *   12/9/2001 6:04PM ST : Created                                                             *
  *=============================================================================================*/
-bool SysTimeClass::Is_Getting_Late(void) {
+bool SysTimeClass::Is_Getting_Late() {
   /*
   ** Even though the timers are all unsigned so we have a max time of 0xffffffff the game casts it to int in various
   *places

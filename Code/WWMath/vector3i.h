@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef VECTOR3I_H
 #define VECTOR3I_H
@@ -49,7 +48,7 @@ public:
   int J;
   int K;
 
-  WWINLINE Vector3i(void);
+  WWINLINE Vector3i();
   WWINLINE Vector3i(int i, int j, int k);
 
   WWINLINE bool operator==(const Vector3i &v) const;
@@ -58,7 +57,7 @@ public:
   WWINLINE int &operator[](int n);
 };
 
-WWINLINE Vector3i::Vector3i(void) {}
+WWINLINE Vector3i::Vector3i() {}
 
 WWINLINE Vector3i::Vector3i(int i, int j, int k) {
   I = i;
@@ -82,7 +81,7 @@ public:
   unsigned short J;
   unsigned short K;
 
-  WWINLINE Vector3i16(void);
+  WWINLINE Vector3i16();
   WWINLINE Vector3i16(unsigned short i, unsigned short j, unsigned short k);
 
   WWINLINE bool operator==(const Vector3i &v) const;
@@ -91,7 +90,7 @@ public:
   WWINLINE unsigned short &operator[](int n);
 };
 
-WWINLINE Vector3i16::Vector3i16(void) {}
+WWINLINE Vector3i16::Vector3i16() {}
 
 WWINLINE Vector3i16::Vector3i16(unsigned short i, unsigned short j, unsigned short k) {
   I = i;

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef MSGLOOP_H
 #define MSGLOOP_H
@@ -43,7 +42,7 @@
 #include <windows.h>
 
 // Main message handler.
-void Windows_Message_Handler(void);
+void Windows_Message_Handler();
 
 // Modeless dialog box support routines.
 void Remove_Modeless_Dialog(HWND dialog);

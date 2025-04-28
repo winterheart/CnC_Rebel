@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,10 @@
  *   CacheStraw::Get -- Fetch data from the data source.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "cstraw.h"
-#include <string.h>
 
 /***********************************************************************************************
  * CacheStraw::Get -- Fetch data from the data source.                                         *
@@ -63,7 +65,7 @@
 int CacheStraw::Get(void *source, int slen) {
   int total = 0;
 
-  if (Is_Valid() && source != NULL && slen > 0) {
+  if (Is_Valid() && source != nullptr && slen > 0) {
 
     /*
     **	Keep processing the data request until there is no more data to supply or the request

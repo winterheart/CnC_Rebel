@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -21,7 +22,7 @@
 #include "always.h"
 #include "regexpr.h"
 #include "wwstring.h"
-#include <assert.h>
+#include <cassert>
 
 // Pull in the gnu_regex library's definitions.
 #define __STDC__ 1
@@ -47,14 +48,14 @@ extern "C" {
 */
 
 struct RegularExpressionClass::DataStruct {
-  DataStruct(void) : IsValid(false) {
+  DataStruct() : IsValid(false) {
     // Blank out the expression structure.
     memset(&CompiledExpr, 0, sizeof(CompiledExpr));
   }
 
-  ~DataStruct(void) { ClearExpression(); }
+  ~DataStruct() { ClearExpression(); }
 
-  void ClearExpression(void) {
+  void ClearExpression() {
     // If the expression was valid, let the gnu_regex library
     // deallocate any memory it had allocated for it.
     if (IsValid)
@@ -107,7 +108,7 @@ RegularExpressionClass::RegularExpressionClass(const RegularExpressionClass &cop
   }
 }
 
-RegularExpressionClass::~RegularExpressionClass(void) {
+RegularExpressionClass::~RegularExpressionClass() {
   delete Data;
   Data = 0;
 }
@@ -131,7 +132,7 @@ bool RegularExpressionClass::Compile(const char *expression) {
   re_set_syntax(old_syntax);
 
   // If no error string was returned, the expression was good!
-  if (error_str == 0) {
+  if (error_str == nullptr) {
     Data->IsValid = true;
     Data->ExprString = expression;
     return true;
@@ -139,7 +140,7 @@ bool RegularExpressionClass::Compile(const char *expression) {
   return false;
 }
 
-bool RegularExpressionClass::Is_Valid(void) const {
+bool RegularExpressionClass::Is_Valid() const {
   assert(Data);
   return Data->IsValid;
 }
@@ -156,7 +157,7 @@ bool RegularExpressionClass::Match(const char *string) const {
   reg_syntax_t old_syntax = re_set_syntax(OUR_SYNTAX_OPTIONS);
 
   // Try to match the given string with our regular expression.
-  int retval = re_match(&Data->CompiledExpr, string, strlen(string), 0, 0);
+  int retval = re_match(&Data->CompiledExpr, string, strlen(string), 0, nullptr);
 
   // Restore the old syntax setting.
   re_set_syntax(old_syntax);

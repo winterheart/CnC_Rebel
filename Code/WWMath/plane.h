@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef PLANE_H
 #define PLANE_H
@@ -65,7 +64,7 @@ public:
   Vector3 N; // Normal of the plane
   float D;   // Distance along the normal from the origin
 
-  PlaneClass(void) : N(0.0f, 0.0f, 1.0f), D(0.0f) {}
+  PlaneClass() : N(0.0f, 0.0f, 1.0f), D(0.0f) {}
 
   /*
   ** Plane initialization:
@@ -133,8 +132,7 @@ inline void PlaneClass::Set(const Vector3 &point1, const Vector3 &point2, const 
 }
 
 inline bool PlaneClass::Compute_Intersection(const Vector3 &p0, const Vector3 &p1, float *set_t) const {
-  float num, den;
-  den = Vector3::Dot_Product(N, p1 - p0);
+  float den = Vector3::Dot_Product(N, p1 - p0);
 
   /*
   ** If the denominator is zero, the ray is parallel to the plane
@@ -143,7 +141,7 @@ inline bool PlaneClass::Compute_Intersection(const Vector3 &p0, const Vector3 &p
     return false;
   }
 
-  num = -(Vector3::Dot_Product(N, p0) - D);
+  float num = -(Vector3::Dot_Product(N, p0) - D);
 
   *set_t = num / den;
 

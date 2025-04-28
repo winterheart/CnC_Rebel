@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -63,10 +64,10 @@ public:
   WWKeyboardClass();
 
   /* Define the functions which work with the Keyboard Class				*/
-  unsigned short Check(void) const;
-  unsigned short Get(void);
+  unsigned short Check() const;
+  unsigned short Get();
   bool Put(unsigned short key);
-  void Clear(void);
+  void Clear();
   char To_ASCII(unsigned short num);
   bool Down(unsigned short key);
 
@@ -92,17 +93,17 @@ private:
   */
   unsigned short Buffer[256]; // buffer which holds actual keypresses
 
-  unsigned short Buff_Get(void);
-  unsigned short Fetch_Element(void);
-  unsigned short Peek_Element(void) const;
+  unsigned short Buff_Get();
+  unsigned short Fetch_Element();
+  unsigned short Peek_Element() const;
   bool Put_Element(unsigned short val);
-  bool Is_Buffer_Full(void) const;
-  bool Is_Buffer_Empty(void) const;
+  bool Is_Buffer_Full() const;
+  bool Is_Buffer_Empty() const;
   static bool Is_Mouse_Key(unsigned short key);
-  void Fill_Buffer_From_System(void);
+  void Fill_Buffer_From_System();
   bool Put_Key_Message(unsigned short vk_key, bool release = false);
   bool Put_Mouse_Message(unsigned short vk_key, int x, int y, bool release = false);
-  int Available_Buffer_Room(void) const;
+  int Available_Buffer_Room() const;
 
   /*
   **	These are the tracking pointers to maintain the
@@ -664,14 +665,14 @@ struct KeyboardClass : public WWKeyboardClass {
   unsigned IsLibrary;
 
   KeyboardClass() : IsLibrary(true) {}
-  KeyNumType Get(void) { return ((KeyNumType)WWKeyboardClass::Get()); };
-  KeyNumType Check(void) { return ((KeyNumType)WWKeyboardClass::Check()); };
+  KeyNumType Get() { return ((KeyNumType)WWKeyboardClass::Get()); };
+  KeyNumType Check() { return ((KeyNumType)WWKeyboardClass::Check()); };
   KeyASCIIType To_ASCII(KeyNumType key) { return ((KeyASCIIType)WWKeyboardClass::To_ASCII((unsigned short)key)); };
-  void Clear(void) { WWKeyboardClass::Clear(); };
+  void Clear() { WWKeyboardClass::Clear(); };
   int Down(KeyNumType key) { return (WWKeyboardClass::Down((unsigned short)key)); };
 
-  int Mouse_X(void) { return (Get_Mouse_X()); };
-  int Mouse_Y(void) { return (Get_Mouse_Y()); };
+  int Mouse_X() { return (Get_Mouse_X()); };
+  int Mouse_Y() { return (Get_Mouse_Y()); };
 };
 
 #endif

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __SOUND_PSEUDO_3DOBJ_H
-#define __SOUND_PSEUDO_3DOBJ_H
 
 #include "Sound3D.H"
 
@@ -58,8 +54,8 @@ public:
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
   SoundPseudo3DClass(const SoundPseudo3DClass &src);
-  SoundPseudo3DClass(void);
-  virtual ~SoundPseudo3DClass(void);
+  SoundPseudo3DClass();
+  virtual ~SoundPseudo3DClass();
 
   //////////////////////////////////////////////////////////////////////
   //	Public operators
@@ -69,17 +65,17 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Identification methods
   //////////////////////////////////////////////////////////////////////
-  virtual SOUND_CLASSID Get_Class_ID(void) const { return CLASSID_PSEUDO3D; }
+  virtual SOUND_CLASSID Get_Class_ID() const { return CLASSID_PSEUDO3D; }
 
   //////////////////////////////////////////////////////////////////////
   //	Conversion methods
   //////////////////////////////////////////////////////////////////////
-  virtual SoundPseudo3DClass *As_SoundPseudo3DClass(void) { return this; }
+  virtual SoundPseudo3DClass *As_SoundPseudo3DClass() { return this; }
 
   //////////////////////////////////////////////////////////////////////
   //	Volume control
   //////////////////////////////////////////////////////////////////////
-  virtual void Update_Volume(void) { Update_Pseudo_Volume(); }
+  virtual void Update_Volume() { Update_Pseudo_Volume(); }
 
   //////////////////////////////////////////////////////////////////////
   //	Position/direction methods
@@ -115,27 +111,27 @@ public:
   // not 0, but would be 100 or so meters away.
   //
   virtual void Set_Max_Vol_Radius(float radius = 0) { m_MaxVolRadius = radius; }
-  virtual float Get_Max_Vol_Radius(void) const { return m_MaxVolRadius; }
+  virtual float Get_Max_Vol_Radius() const { return m_MaxVolRadius; }
 
   //
   //	This is the distance where the sound can not be heard any longer.  (its vol is 0)
   //
   virtual void Set_DropOff_Radius(float radius = 1) { m_DropOffRadius = radius; }
-  virtual float Get_DropOff_Radius(void) const { return m_DropOffRadius; }
+  virtual float Get_DropOff_Radius() const { return m_DropOffRadius; }
 
   //////////////////////////////////////////////////////////////////////
   //	Volume control
   //////////////////////////////////////////////////////////////////////
-  virtual void Update_Pseudo_Volume(void);
+  virtual void Update_Pseudo_Volume();
   virtual void Update_Pseudo_Volume(float distance);
 
   //////////////////////////////////////////////////////////////////////
   //	Pan control
   //////////////////////////////////////////////////////////////////////
-  virtual void Update_Pseudo_Pan(void);
+  virtual void Update_Pseudo_Pan();
 
   // From PersistClass
-  const PersistFactoryClass &Get_Factory(void) const;
+  const PersistFactoryClass &Get_Factory() const;
 
 protected:
   //////////////////////////////////////////////////////////////////////
@@ -147,16 +143,14 @@ protected:
   //	Handle information
   //////////////////////////////////////////////////////////////////////
   virtual void Set_Miles_Handle(MILES_HANDLE handle);
-  virtual void Initialize_Miles_Handle(void);
-  virtual void Allocate_Miles_Handle(void);
-  virtual void Free_Miles_Handle(void);
+  virtual void Initialize_Miles_Handle();
+  virtual void Allocate_Miles_Handle();
+  virtual void Free_Miles_Handle();
 
-  virtual void On_Loop_End(void) { Sound3DClass::On_Loop_End(); }
+  virtual void On_Loop_End() { Sound3DClass::On_Loop_End(); }
 
 private:
   //////////////////////////////////////////////////////////////////////
   //	Private member data
   //////////////////////////////////////////////////////////////////////
 };
-
-#endif //__SOUND_PSEUDO_3DOBJ_H

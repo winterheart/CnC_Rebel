@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,31 +37,30 @@
 #include "always.h"
 #include "bufffile.h"
 #include "wwdebug.h"
-#include <string.h>
 
 int BufferedFileClass::_DesiredBufferSize = 1024 * 16;
 
 /***********************************************************************************************
  * BufferedFileClass::BufferedFileClass -- Default constructor for a file object.              *
  *=============================================================================================*/
-BufferedFileClass::BufferedFileClass(void)
-    : RawFileClass(), Buffer(NULL), BufferSize(0), BufferAvailable(0), BufferOffset(0) {}
+BufferedFileClass::BufferedFileClass()
+    : RawFileClass(), Buffer(nullptr), BufferSize(0), BufferAvailable(0), BufferOffset(0) {}
 
 /***********************************************************************************************
  * BufferedFileClass::BufferedFileClass -- Simple constructor for a file object.                         *
  *=============================================================================================*/
 BufferedFileClass::BufferedFileClass(char const *filename)
-    : RawFileClass(filename), Buffer(NULL), BufferSize(0), BufferAvailable(0), BufferOffset(0) {}
+    : RawFileClass(filename), Buffer(nullptr), BufferSize(0), BufferAvailable(0), BufferOffset(0) {}
 
 /***********************************************************************************************
  * BufferedFileClass::~BufferedFileClass -- Default deconstructor for a file object.                     *
  *=============================================================================================*/
-BufferedFileClass::~BufferedFileClass(void) { Reset_Buffer(); }
+BufferedFileClass::~BufferedFileClass() { Reset_Buffer(); }
 
 /***********************************************************************************************
  * BufferedFileClass::Close -- Perform a closure of the file.                                       *
  *=============================================================================================*/
-void BufferedFileClass::Close(void) {
+void BufferedFileClass::Close() {
   BASECLASS::Close();
 
   Reset_Buffer();
@@ -138,7 +138,7 @@ int BufferedFileClass::Read(void *buffer, int size) {
 
   // If there is anything in the buffer, copy it in.
   if (BufferAvailable > 0) {
-    int amount = min(size, BufferAvailable);
+    amount = min(size, BufferAvailable);
     ::memcpy(buffer, &Buffer[BufferOffset], amount);
     BufferAvailable -= amount;
     BufferOffset += amount;
@@ -217,10 +217,10 @@ int BufferedFileClass::Seek(int pos, int dir) {
 /*
 **
 */
-void BufferedFileClass::Reset_Buffer(void) {
-  if (Buffer != NULL) {
+void BufferedFileClass::Reset_Buffer() {
+  if (Buffer != nullptr) {
     delete[] Buffer;
-    Buffer = NULL;
+    Buffer = nullptr;
     BufferSize = 0;
     BufferAvailable = 0;
     BufferOffset = 0;

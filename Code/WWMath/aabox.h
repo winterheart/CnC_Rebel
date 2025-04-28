@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -51,9 +52,7 @@
  *   AABoxClass::Init -- Init from a line segment                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef AABOX_H
 #define AABOX_H
@@ -80,7 +79,7 @@ struct CastResultStruct;
 class AABoxClass {
 
 public:
-  WWINLINE AABoxClass(void) {}
+  WWINLINE AABoxClass() = default;
 
   WWINLINE AABoxClass(const Vector3 &center, const Vector3 &extent) : Center(center), Extent(extent) {}
 
@@ -88,8 +87,8 @@ public:
 
   AABoxClass(Vector3 *points, int num) { Init(points, num); }
 
-  bool operator==(const AABoxClass &src);
-  bool operator!=(const AABoxClass &src);
+  bool operator==(const AABoxClass &src) const;
+  bool operator!=(const AABoxClass &src) const;
 
   WWINLINE void Init(const Vector3 &center, const Vector3 &extent) {
     Center = center;
@@ -107,9 +106,9 @@ public:
   float Project_To_Axis(const Vector3 &axis) const;
 
   void Transform(const Matrix3D &tm);
-  void Translate(const Vector3 &pos);
+  void Translate(const Vector3 &trans);
 
-  WWINLINE float Volume(void) const { return 2.0 * Extent.X * 2.0 * Extent.Y * 2.0 * Extent.Z; }
+  WWINLINE float Volume() const { return 2.0f * Extent.X * 2.0f * Extent.Y * 2.0f * Extent.Z; }
   WWINLINE bool Contains(const Vector3 &point) const;
   WWINLINE bool Contains(const AABoxClass &other_box) const;
   WWINLINE bool Contains(const MinMaxAABoxClass &other_box) const;
@@ -128,7 +127,7 @@ public:
 */
 class MinMaxAABoxClass {
 public:
-  WWINLINE MinMaxAABoxClass(void) {}
+  WWINLINE MinMaxAABoxClass() = default;
 
   WWINLINE MinMaxAABoxClass(const Vector3 &min_corner, const Vector3 &max_corner)
       : MinCorner(min_corner), MaxCorner(max_corner) {}
@@ -139,7 +138,7 @@ public:
 
   WWINLINE void Init(Vector3 *points, int num);
   WWINLINE void Init(const AABoxClass &box);
-  void Init_Empty(void);
+  void Init_Empty();
 
   void Add_Point(const Vector3 &point);
   void Add_Box(const MinMaxAABoxClass &box);
@@ -149,7 +148,7 @@ public:
   void Transform(const Matrix3D &tm);
   void Translate(const Vector3 &pos);
 
-  WWINLINE float Volume(void) const {
+  WWINLINE float Volume() const {
     Vector3 size = MaxCorner - MinCorner;
     return size.X * size.Y * size.Z;
   }
@@ -204,7 +203,9 @@ WWINLINE void AABoxClass::Translate(const Vector3 &trans) { Center += trans; }
  * HISTORY:                                                                                    *
  *   6/21/00    PDS : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool AABoxClass::operator==(const AABoxClass &src) { return (Center == src.Center) && (Extent == src.Extent); }
+WWINLINE bool AABoxClass::operator==(const AABoxClass &src) const {
+  return (Center == src.Center) && (Extent == src.Extent);
+}
 
 /***********************************************************************************************
  * AABoxClass::operator!= -- Comparison operator                                               *
@@ -218,7 +219,9 @@ WWINLINE bool AABoxClass::operator==(const AABoxClass &src) { return (Center == 
  * HISTORY:                                                                                    *
  *   6/21/00    PDS : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool AABoxClass::operator!=(const AABoxClass &src) { return (Center != src.Center) || (Extent != src.Extent); }
+WWINLINE bool AABoxClass::operator!=(const AABoxClass &src) const {
+  return (Center != src.Center) || (Extent != src.Extent);
+}
 
 /***********************************************************************************************
  * AABoxClass::Init -- create a box which bounds the given points		                          *
@@ -506,7 +509,7 @@ WWINLINE bool AABoxClass::Contains(const Vector3 &point) const {
  *=============================================================================================*/
 WWINLINE void MinMaxAABoxClass::Init(Vector3 *points, int num) {
   assert(num > 0);
-  assert(points != NULL);
+  assert(points != nullptr);
   MinCorner = points[0];
   MaxCorner = points[0];
   for (int i = 0; i < num; i++) {

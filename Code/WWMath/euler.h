@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,9 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef EULER_H
 #define EULER_H
@@ -103,7 +102,7 @@ extern int EulerOrderZYZr;
 class EulerAnglesClass {
 
 public:
-  EulerAnglesClass(void) : Order(0) {
+  EulerAnglesClass() : Order(0) {
     Angle[0] = 0.0;
     Angle[1] = 0.0;
     Angle[2] = 0.0;

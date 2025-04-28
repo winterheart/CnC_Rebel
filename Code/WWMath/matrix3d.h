@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -73,9 +74,7 @@
  *   operator != -- Matrix inequality operator                                                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef MATRIX3D_H
 #define MATRIX3D_H
@@ -84,14 +83,12 @@
 #include "osdep.h"
 #endif
 
+#include <cassert>
+
 #include "always.h"
-#include <assert.h>
 #include "vector2.h"
 #include "vector3.h"
 #include "vector4.h"
-#ifdef _UNIX
-#include "osdep.h"
-#endif
 
 class Matrix3;
 class Matrix4;
@@ -126,7 +123,7 @@ class Quaternion;
 class Matrix3D {
 public:
   // Constructors
-  WWINLINE Matrix3D(void) {}
+  WWINLINE Matrix3D() = default;
 
   WWINLINE explicit Matrix3D(bool init) {
     if (init)
@@ -188,7 +185,7 @@ public:
   WWINLINE Vector4 &operator[](int i) { return Row[i]; }
   WWINLINE const Vector4 &operator[](int i) const { return Row[i]; }
 
-  WWINLINE Vector3 Get_Translation(void) const { return Vector3(Row[0][3], Row[1][3], Row[2][3]); }
+  WWINLINE Vector3 Get_Translation() const { return {Row[0][3], Row[1][3], Row[2][3]}; }
   WWINLINE void Get_Translation(Vector3 *set) const {
     set->X = Row[0][3];
     set->Y = Row[1][3];
@@ -203,9 +200,9 @@ public:
   void Set_Rotation(const Matrix3 &m);
   void Set_Rotation(const Quaternion &q);
 
-  WWINLINE float Get_X_Translation(void) const { return Row[0][3]; };
-  WWINLINE float Get_Y_Translation(void) const { return Row[1][3]; };
-  WWINLINE float Get_Z_Translation(void) const { return Row[2][3]; };
+  WWINLINE float Get_X_Translation() const { return Row[0][3]; };
+  WWINLINE float Get_Y_Translation() const { return Row[1][3]; };
+  WWINLINE float Get_Z_Translation() const { return Row[2][3]; };
 
   WWINLINE void Set_X_Translation(float x) { Row[0][3] = x; };
   WWINLINE void Set_Y_Translation(float y) { Row[1][3] = y; };
@@ -224,14 +221,14 @@ public:
   // matrix has been rotated about a given axis.  These functions
   // cannot be used to re-build a matrx.  Use the EulerAnglesClass
   // to convert a matrix into a set of three Euler angles.
-  float Get_X_Rotation(void) const;
-  float Get_Y_Rotation(void) const;
-  float Get_Z_Rotation(void) const;
+  float Get_X_Rotation() const;
+  float Get_Y_Rotation() const;
+  float Get_Z_Rotation() const;
 
   // Each of the transformation methods performs an
   // "optimized" post-multiplication with the current matrix.
   // All angles are assumed to be radians.
-  WWINLINE void Make_Identity(void);
+  WWINLINE void Make_Identity();
   void Translate(float x, float y, float z);
   void Translate(const Vector3 &t);
   void Translate_X(float x);
@@ -285,9 +282,9 @@ public:
   Vector3 Inverse_Rotate_Vector(const Vector3 &vect) const;
 
   // these get the a vector representing the direction an axis is pointing
-  WWINLINE Vector3 Get_X_Vector() const { return Vector3(Row[0][0], Row[1][0], Row[2][0]); }
-  WWINLINE Vector3 Get_Y_Vector() const { return Vector3(Row[0][1], Row[1][1], Row[2][1]); }
-  WWINLINE Vector3 Get_Z_Vector() const { return Vector3(Row[0][2], Row[1][2], Row[2][2]); }
+  WWINLINE Vector3 Get_X_Vector() const { return {Row[0][0], Row[1][0], Row[2][0]}; }
+  WWINLINE Vector3 Get_Y_Vector() const { return {Row[0][1], Row[1][1], Row[2][1]}; }
+  WWINLINE Vector3 Get_Z_Vector() const { return {Row[0][2], Row[1][2], Row[2][2]}; }
   WWINLINE void Get_X_Vector(Vector3 *set_x) const { set_x->Set(Row[0][0], Row[1][0], Row[2][0]); }
   WWINLINE void Get_Y_Vector(Vector3 *set_y) const { set_y->Set(Row[0][1], Row[1][1], Row[2][1]); }
   WWINLINE void Get_Z_Vector(Vector3 *set_z) const { set_z->Set(Row[0][2], Row[1][2], Row[2][2]); }
@@ -325,8 +322,8 @@ public:
   static bool Solve_Linear_System(Matrix3D &system);
 
   // Check whether a matrix is orthogonal or FORCE it to be :-)
-  int Is_Orthogonal(void) const;
-  void Re_Orthogonalize(void);
+  int Is_Orthogonal() const;
+  void Re_Orthogonalize();
 
   // some static matrices which are sometimes useful
   static const Matrix3D Identity;
@@ -557,7 +554,7 @@ WWINLINE void Matrix3D::Set(const Vector3 &position) {
  * HISTORY:                                                                                    *
  *   02/24/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE void Matrix3D::Make_Identity(void) {
+WWINLINE void Matrix3D::Make_Identity() {
   Row[0].Set(1.0f, 0.0f, 0.0f, 0.0f);
   Row[1].Set(0.0f, 1.0f, 0.0f, 0.0f);
   Row[2].Set(0.0f, 0.0f, 1.0f, 0.0f);
@@ -1458,9 +1455,9 @@ WWINLINE Vector3 operator*(const Matrix3D &A, const Vector3 &a) {
 		(A[2][0]*a[0] + A[2][1]*a[1] + A[2][2]*a[2] + A[2][3])
 	);
 #else
-  return Vector3((A.Row[0].X * a.X + A.Row[0].Y * a.Y + A.Row[0].Z * a.Z + A.Row[0].W),
-                 (A.Row[1].X * a.X + A.Row[1].Y * a.Y + A.Row[1].Z * a.Z + A.Row[1].W),
-                 (A.Row[2].X * a.X + A.Row[2].Y * a.Y + A.Row[2].Z * a.Z + A.Row[2].W));
+  return {(A.Row[0].X * a.X + A.Row[0].Y * a.Y + A.Row[0].Z * a.Z + A.Row[0].W),
+          (A.Row[1].X * a.X + A.Row[1].Y * a.Y + A.Row[1].Z * a.Z + A.Row[1].W),
+          (A.Row[2].X * a.X + A.Row[2].Y * a.Y + A.Row[2].Z * a.Z + A.Row[2].W)};
 #endif
 }
 

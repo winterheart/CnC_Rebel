@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -62,16 +63,14 @@ enum { XXXVARID_DROP_OFF_RADIUS = 0x01, VARID_TYPE_MASK, VARID_XXX1, VARID_POSIT
 //	LogicalListenerClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-LogicalListenerClass::LogicalListenerClass(void) : m_Scale(1), m_TypeMask(0), m_Position(0, 0, 0), m_Timestamp(0) {
-  return;
-}
+LogicalListenerClass::LogicalListenerClass() : m_Scale(1), m_TypeMask(0), m_Position(0, 0, 0), m_Timestamp(0) {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //	~LogicalListenerClass
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-LogicalListenerClass::~LogicalListenerClass(void) { return; }
+LogicalListenerClass::~LogicalListenerClass() = default;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -80,7 +79,7 @@ LogicalListenerClass::~LogicalListenerClass(void) { return; }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void LogicalListenerClass::Add_To_Scene(bool /*start_playing*/) {
   SoundSceneClass *scene = WWAudioClass::Get_Instance()->Get_Sound_Scene();
-  if ((scene != NULL) && (m_Scene == NULL)) {
+  if ((scene != nullptr) && (m_Scene == nullptr)) {
 
     //
     //	Add this listener to the culling system
@@ -88,8 +87,6 @@ void LogicalListenerClass::Add_To_Scene(bool /*start_playing*/) {
     m_Scene = scene;
     scene->Add_Logical_Listener(this);
   }
-
-  return;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,18 +94,16 @@ void LogicalListenerClass::Add_To_Scene(bool /*start_playing*/) {
 //	Remove_From_Scene
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void LogicalListenerClass::Remove_From_Scene(void) {
-  if (m_Scene != NULL) {
+void LogicalListenerClass::Remove_From_Scene() {
+  if (m_Scene != nullptr) {
 
     //
     //	Remove this listener from the culling system
     //
     m_Scene->Remove_Logical_Listener(this);
-    m_Scene = NULL;
-    m_PhysWrapper = NULL;
+    m_Scene = nullptr;
+    m_PhysWrapper = nullptr;
   }
-
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -116,7 +111,7 @@ void LogicalListenerClass::Remove_From_Scene(void) {
 //	Get_Factory
 //
 /////////////////////////////////////////////////////////////////////////////////
-const PersistFactoryClass &LogicalListenerClass::Get_Factory(void) const { return _LogicalListenerPersistFactory; }
+const PersistFactoryClass &LogicalListenerClass::Get_Factory() const { return _LogicalListenerPersistFactory; }
 
 //////////////////////////////////////////////////////////////////////////////////
 //

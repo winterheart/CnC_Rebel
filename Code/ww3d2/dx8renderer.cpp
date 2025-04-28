@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -1021,15 +1022,15 @@ void DX8FVFCategoryContainer::Insert_To_Texture_Category(Vertex_Split_Table &spl
     ** the list always having matching texture categories next to each other.
     */
     bool found_similar_category = false;
-    TextureCategoryListIterator it(&texture_category_list[pass]);
-    while (!it.Is_Done()) {
+    TextureCategoryListIterator tcl_it(&texture_category_list[pass]);
+    while (!tcl_it.Is_Done()) {
       // Categorize according to first stage's texture for now
-      if (it.Peek_Obj()->Peek_Texture(0) == texs[0]) {
-        texture_category_list[pass].Add_After(new_tex_category, it.Peek_Obj());
+      if (tcl_it.Peek_Obj()->Peek_Texture(0) == texs[0]) {
+        texture_category_list[pass].Add_After(new_tex_category, tcl_it.Peek_Obj());
         found_similar_category = true;
         break;
       }
-      it.Next();
+      tcl_it.Next();
     }
 
     if (!found_similar_category) {

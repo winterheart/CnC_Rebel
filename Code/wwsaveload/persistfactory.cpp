@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,8 +38,8 @@
 #include "persistfactory.h"
 #include "saveload.h"
 
-PersistFactoryClass::PersistFactoryClass(void) : NextFactory(NULL) {
+PersistFactoryClass::PersistFactoryClass() : NextFactory(nullptr) {
   SaveLoadSystemClass::Register_Persist_Factory(this);
 }
 
-PersistFactoryClass::~PersistFactoryClass(void) { SaveLoadSystemClass::Unregister_Persist_Factory(this); }
+PersistFactoryClass::~PersistFactoryClass() { SaveLoadSystemClass::Unregister_Persist_Factory(this); }

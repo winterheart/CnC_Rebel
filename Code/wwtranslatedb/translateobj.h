@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,14 +36,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __TRANSLATE_OBJ_H
-#define __TRANSLATE_OBJ_H
 
 #include "persist.h"
+#include "persistfactory.h"
 #include "bittype.h"
 #include "wwstring.h"
 #include "widestring.h"
@@ -65,9 +62,9 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  TDBObjClass(void);
+  TDBObjClass();
   TDBObjClass(const TDBObjClass &src);
-  virtual ~TDBObjClass(void);
+  virtual ~TDBObjClass();
 
   //////////////////////////////////////////////////////////////
   //	Public operators
@@ -81,31 +78,31 @@ public:
   //
   //	RTTI
   //
-  virtual StringTwiddlerClass *As_StringTwiddlerClass(void) { return NULL; }
+  virtual StringTwiddlerClass *As_StringTwiddlerClass() { return nullptr; }
 
   //
   // From PersistClass
   //
-  const PersistFactoryClass &Get_Factory(void) const;
+  const PersistFactoryClass &Get_Factory() const;
   bool Save(ChunkSaveClass &csave);
   bool Load(ChunkLoadClass &cload);
 
   //
   // Copy methods
   //
-  virtual TDBObjClass *Clone(void) const { return new TDBObjClass(*this); }
+  virtual TDBObjClass *Clone() const { return new TDBObjClass(*this); }
 
   //
   // TranslateObj specific
   //
   virtual const WideStringClass &Get_String(uint32 lang_id);
-  virtual const WideStringClass &Get_String(void);
-  virtual const StringClass &Get_English_String(void) { return EnglishString; }
-  virtual uint32 Get_ID(void) { return ID; }
-  virtual const StringClass &Get_ID_Desc(void) { return IDDesc; }
-  virtual uint32 Get_Sound_ID(void) { return SoundID; }
-  virtual const StringClass &Get_Animation_Name(void) { return AnimationName; }
-  virtual uint32 Get_Category_ID(void) { return CategoryID; }
+  virtual const WideStringClass &Get_String();
+  virtual const StringClass &Get_English_String() { return EnglishString; }
+  virtual uint32 Get_ID() { return ID; }
+  virtual const StringClass &Get_ID_Desc() { return IDDesc; }
+  virtual uint32 Get_Sound_ID() { return SoundID; }
+  virtual const StringClass &Get_Animation_Name() { return AnimationName; }
+  virtual uint32 Get_Category_ID() { return CategoryID; }
 
   virtual void Set_String(uint32 lang_id, const WCHAR *string);
   virtual void Set_English_String(const TCHAR *string);
@@ -138,5 +135,3 @@ protected:
   StringClass AnimationName;
   DynamicVectorClass<WideStringClass> TranslatedStrings;
 };
-
-#endif //__TRANSLATE_OBJ_H

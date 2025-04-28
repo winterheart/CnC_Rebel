@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -51,8 +52,8 @@ class WWFontClass : public FontClass {
 
 public:
   WWFontClass(void const *fontdata, bool isoutlined = false, int shadow = 0, ConvertClass *convert = 0,
-              unsigned char *remap = 0);
-  virtual ~WWFontClass(void) {}
+              unsigned char *remap = nullptr);
+  virtual ~WWFontClass() {}
 
   void *Set_Font_Data(void const *fontdata);
   void *Get_Font_Data() { return ((void *)FontData); }
@@ -76,8 +77,8 @@ public:
 
   virtual int Char_Pixel_Width(char c) const;
   virtual int String_Pixel_Width(char const *string) const;
-  virtual int Get_Width(void) const;
-  virtual int Get_Height(void) const;
+  virtual int Get_Width() const;
+  virtual int Get_Height() const;
   virtual Point2D Print(char const *string, Surface &surface, Rect const &cliprect, Point2D const &point,
                         ConvertClass const &converter, unsigned char const *remap = NULL) const;
 
@@ -128,8 +129,8 @@ private:
   // Pointer to a converter.
   ConvertClass *Converter;
 
-  int Raw_Width(void) const;
-  int Raw_Height(void) const;
+  int Raw_Width() const;
+  int Raw_Height() const;
 };
 
 #endif

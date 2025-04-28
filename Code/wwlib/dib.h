@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -45,12 +46,12 @@
 class DIB8Class {
 public:
   DIB8Class(HWND hwnd, int width, int height, PaletteClass &pal);
-  ~DIB8Class(void);
+  ~DIB8Class();
 
   HBITMAP Get_Handle() { return Handle; }
-  int Get_Width(void) { return Width; }
-  int Get_Height(void) { return Height; }
-  Surface &Get_Surface(void) { return *Surface; }
+  int Get_Width() { return Width; }
+  int Get_Height() { return Height; }
+  Surface &Get_Surface() { return *Surface; }
 
   void Clear(unsigned char color);
 

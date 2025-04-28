@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,10 +38,11 @@
 #ifndef PCX_H
 #define PCX_H
 
+#include <cstring>
+
 #include "bsurface.h"
 #include "palette.h"
 #include "wwfile.h"
-#include <string.h>
 
 struct RGB {
   unsigned char red;
@@ -67,7 +69,7 @@ struct PCX_HEADER {
   char filler[58];
 };
 
-Surface *Read_PCX_File(FileClass &file_handle, PaletteClass *palette = NULL, void *buff = NULL, long size = 0);
+Surface *Read_PCX_File(FileClass &file_handle, PaletteClass *palette = nullptr, void *buff = nullptr, long size = 0);
 // Surface * Read_PCX_File (char * name, Buffer & Buff, PaletteClass * palette= NULL) ;
 bool Write_PCX_File(FileClass &file, Surface &pic, PaletteClass *palette);
 

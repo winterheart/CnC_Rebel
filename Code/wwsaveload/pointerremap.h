@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,16 +35,10 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef POINTERREMAP_H
 #define POINTERREMAP_H
-
-#ifdef _UNIX
-#include "osdep/osdep.h"
-#endif
 
 #include "always.h"
 #include "vector.h"
@@ -52,11 +47,11 @@ class RefCountClass;
 
 class PointerRemapClass {
 public:
-  PointerRemapClass(void);
-  ~PointerRemapClass(void);
+  PointerRemapClass();
+  ~PointerRemapClass();
 
-  void Reset(void);
-  void Process(void);
+  void Reset();
+  void Process();
 
   void Register_Pointer(void *old_pointer, void *new_pointer);
 
@@ -70,21 +65,21 @@ public:
 
 private:
   struct PtrPairStruct {
-    PtrPairStruct(void) {}
+    PtrPairStruct() {}
     PtrPairStruct(void *oldptr, void *newptr) : OldPointer(oldptr), NewPointer(newptr) {}
-    bool operator==(const PtrPairStruct &that) {
+    bool operator==(const PtrPairStruct &that) const {
       return ((OldPointer == that.OldPointer) && (NewPointer == that.NewPointer));
     }
-    bool operator!=(const PtrPairStruct &that) { return !(*this == that); }
+    bool operator!=(const PtrPairStruct &that) const { return !(*this == that); }
 
     void *OldPointer;
     void *NewPointer;
   };
 
   struct PtrRemapStruct {
-    PtrRemapStruct(void) {}
-    bool operator==(const PtrRemapStruct &that) { return (PointerToRemap == that.PointerToRemap); }
-    bool operator!=(const PtrRemapStruct &that) { return !(*this == that); }
+    PtrRemapStruct() {}
+    bool operator==(const PtrRemapStruct &that) const { return (PointerToRemap == that.PointerToRemap); }
+    bool operator!=(const PtrRemapStruct &that) const { return !(*this == that); }
 
     void **PointerToRemap;
 #ifdef WWDEBUG

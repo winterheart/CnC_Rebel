@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -31,11 +32,12 @@
  *
  ******************************************************************************/
 
-#include "LaunchWeb.h"
+#include <cstdio>
+#include <cassert>
 #include <windows.h>
 #include <shellapi.h>
-#include <stdio.h>
-#include <assert.h>
+
+#include "LaunchWeb.h"
 
 /******************************************************************************
  *
@@ -71,7 +73,7 @@ bool LaunchWebBrowser(const char *url) {
   char *extPtr = strrchr(filename, '.');
   strcpy(extPtr, ".html");
 
-  HANDLE file = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+  HANDLE file = CreateFile(filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
   assert(INVALID_HANDLE_VALUE != file && "Failed to create temporary HTML file.");
 
@@ -82,12 +84,12 @@ bool LaunchWebBrowser(const char *url) {
   // Write generic contents
   const char *contents = "<title>ViewHTML</title>";
   DWORD written;
-  WriteFile(file, contents, strlen(contents), &written, NULL);
+  WriteFile(file, contents, strlen(contents), &written, nullptr);
   CloseHandle(file);
 
   // Find the executable that can launch this file
   char exeName[MAX_PATH];
-  HINSTANCE hInst = FindExecutable(filename, NULL, exeName);
+  HINSTANCE hInst = FindExecutable(filename, nullptr, exeName);
   assert(((int)hInst > 32) && "Unable to find executable that will display HTML files.");
 
   // Delete temporary file
@@ -107,7 +109,7 @@ bool LaunchWebBrowser(const char *url) {
 
   PROCESS_INFORMATION processInfo;
   BOOL createSuccess =
-      CreateProcess(exeName, commandLine, NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo);
+      CreateProcess(exeName, commandLine, nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startupInfo, &processInfo);
 
   assert(createSuccess && "Failed to launch default WebBrowser.");
 

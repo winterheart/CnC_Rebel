@@ -40,7 +40,6 @@
 #include "wwphystrig.h"
 #include "timemgr.h"
 #include "ww3d.h"
-#include "mono.h"
 #include "registry.h"
 #include <stdio.h>
 #include "wwaudio.h"
@@ -72,8 +71,6 @@ DebugDisplayHandlerClass *DebugManager::DisplayHandler = NULL;
 LPCSTR DebugManager::LOGFILE = DEFAULT_LOGFILE_NAME;
 char DebugManager::LogfileNameBuffer[256];
 
-MonoClass ScrollingScreen;
-
 /*
 ** local prototypes
 */
@@ -89,9 +86,6 @@ char DefaultRegistryModifier[1024] = {""};
 **
 */
 void DebugManager::Init(void) {
-  // Enable Mono Screen
-  ScrollingScreen.Enable();
-
   // Install message handler functions for the WWDebug messages
   // and assertion failures.
   WWDebug_Install_Message_Handler(wwdebug_message_handler);
@@ -135,8 +129,6 @@ void DebugManager::Shutdown(void) {
   WWDebug_Install_Profile_Start_Handler(NULL);
   WWDebug_Install_Profile_Stop_Handler(NULL);
 
-  // Disable mono screen
-  ScrollingScreen.Disable();
 }
 
 /*
@@ -202,10 +194,6 @@ void DebugManager::Display(char const *buffer) {
 
   if (EnabledDevices & DEBUG_DEVICE_SCREEN) {
     Display_Text(buffer);
-  }
-
-  if (EnabledDevices & DEBUG_DEVICE_MONO) {
-    ScrollingScreen.Printf(buffer);
   }
 
 #ifdef WWDEBUG

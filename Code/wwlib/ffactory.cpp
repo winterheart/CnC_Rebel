@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -32,15 +33,11 @@
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+#include <cassert>
 
 #include "ffactory.h"
 #include "rawfile.h"
 #include "bufffile.h"
-#include "realcrc.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
 
 /*
 ** Statics
@@ -57,10 +54,10 @@ FileFactoryClass *_TheWritingFileFactory = &_DefaultWritingFileFactory;
 /*
 **
 */
-file_auto_ptr::file_auto_ptr(FileFactoryClass *fac, const char *filename) : _Ptr(NULL), _Fac(fac) {
+file_auto_ptr::file_auto_ptr(FileFactoryClass *fac, const char *filename) : _Ptr(nullptr), _Fac(fac) {
   assert(_Fac);
   _Ptr = _Fac->Get_File(filename);
-  if (_Ptr == NULL) {
+  if (_Ptr == nullptr) {
     _Ptr = new BufferedFileClass();
   }
 }
@@ -78,7 +75,7 @@ void RawFileFactoryClass::Return_File(FileClass *file) { delete file; }
 ** SimpleFileFactoryClass implementation
 */
 
-SimpleFileFactoryClass::SimpleFileFactoryClass(void) : IsStripPath(false), Mutex() {}
+SimpleFileFactoryClass::SimpleFileFactoryClass() : IsStripPath(false), Mutex() {}
 
 void SimpleFileFactoryClass::Get_Sub_Directory(StringClass &new_dir) const {
   // BEGIN SERIALIZATION
@@ -112,7 +109,7 @@ void SimpleFileFactoryClass::Set_Sub_Directory(const char *sub_directory) {
 }
 
 void SimpleFileFactoryClass::Prepend_Sub_Directory(const char *sub_directory) {
-  int sub_len = strlen(sub_directory);
+  size_t sub_len = strlen(sub_directory);
   // Overflow prevention
   if (sub_len > 1021) {
     WWASSERT(0);
@@ -145,7 +142,7 @@ void SimpleFileFactoryClass::Prepend_Sub_Directory(const char *sub_directory) {
 }
 
 void SimpleFileFactoryClass::Append_Sub_Directory(const char *sub_directory) {
-  int sub_len = strlen(sub_directory);
+  size_t sub_len = strlen(sub_directory);
   // Overflow prevention
   if (sub_len > 1022) {
     WWASSERT(0);
@@ -187,7 +184,7 @@ void SimpleFileFactoryClass::Append_Sub_Directory(const char *sub_directory) {
 static bool Is_Full_Path(const char *path) {
   bool retval = false;
 
-  if (path != NULL && path[0] != 0) {
+  if (path != nullptr && path[0] != 0) {
 
     // Check for drive designation
     retval = bool(path[1] == ':');
@@ -210,7 +207,7 @@ FileClass *SimpleFileFactoryClass::Get_File(char const *filename) {
   if (IsStripPath) {
     const char *ptr = ::strrchr(filename, '\\');
 
-    if (ptr != 0) {
+    if (ptr != nullptr) {
       ptr++;
       stripped_name = ptr;
     } else {
@@ -251,8 +248,8 @@ FileClass *SimpleFileFactoryClass::Get_File(char const *filename) {
       if (strchr(subdir, ';')) {
         char *tokstart = subdir.Peek_Buffer();
         const char *tok;
-        while ((tok = strtok(tokstart, ";")) != NULL) {
-          tokstart = NULL;
+        while ((tok = strtok(tokstart, ";")) != nullptr) {
+          tokstart = nullptr;
           new_name.Format("%s%s", tok, stripped_name.Peek_Buffer());
           file->Set_Name(new_name); // Call Set_Name to force an allocated name
           if (file->Open()) {
@@ -261,7 +258,7 @@ FileClass *SimpleFileFactoryClass::Get_File(char const *filename) {
           }
         }
       } else {
-        new_name.Format("%s%s", SubDirectory, stripped_name);
+        new_name.Format("%s%s", SubDirectory.Peek_Buffer(), stripped_name.Peek_Buffer());
       }
     }
 

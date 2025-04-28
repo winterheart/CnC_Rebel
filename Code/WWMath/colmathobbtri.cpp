@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -137,7 +138,7 @@ struct BTCollisionStruct {
     Reset();
   }
 
-  void Reset(void) {
+  void Reset() {
     StartBad = true;       // true until an axis clears it
     MaxFrac = -1.0f;       // maximum move allowed so far (accept slightly negative but clamp to zero at end)
     AxisId = INTERSECTION; // axis that allowed the longest move

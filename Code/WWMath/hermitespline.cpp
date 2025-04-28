@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -178,7 +179,7 @@ void HermiteSpline3DClass::Remove_Key(int i) {
   TangentsDirty = true;
 }
 
-void HermiteSpline3DClass::Clear_Keys(void) {
+void HermiteSpline3DClass::Clear_Keys() {
   Tangents.Clear();
   Curve3DClass::Clear_Keys();
   TangentsDirty = true;
@@ -198,7 +199,7 @@ void HermiteSpline3DClass::Get_Tangents(int i, Vector3 *set_in, Vector3 *set_out
   *set_out = Tangents[i].OutTangent;
 }
 
-const PersistFactoryClass &HermiteSpline3DClass::Get_Factory(void) const { return _HermiteSpline3DFactory; }
+const PersistFactoryClass &HermiteSpline3DClass::Get_Factory() const { return _HermiteSpline3DFactory; }
 
 bool HermiteSpline3DClass::Save(ChunkSaveClass &csave) {
   csave.Begin_Chunk(HERMITE3D_CHUNK_CURVE3D);
@@ -320,7 +321,7 @@ void HermiteSpline1DClass::Remove_Key(int i) {
   TangentsDirty = true;
 }
 
-void HermiteSpline1DClass::Clear_Keys(void) {
+void HermiteSpline1DClass::Clear_Keys() {
   Tangents.Clear();
   Curve1DClass::Clear_Keys();
   TangentsDirty = true;
@@ -340,7 +341,7 @@ void HermiteSpline1DClass::Get_Tangents(int i, float *set_in, float *set_out) {
   *set_out = Tangents[i].OutTangent;
 }
 
-const PersistFactoryClass &HermiteSpline1DClass::Get_Factory(void) const { return _HermiteSpline1DFactory; }
+const PersistFactoryClass &HermiteSpline1DClass::Get_Factory() const { return _HermiteSpline1DFactory; }
 
 bool HermiteSpline1DClass::Save(ChunkSaveClass &csave) {
   if (TangentsDirty) {

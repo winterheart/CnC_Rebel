@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -92,8 +93,7 @@
 //
 ************************************************************************/
 
-#include <stddef.h> /* ptrdiff_t, size_t */
-#include <string.h> /* memcpy, memmove, memcmp, memset */
+#include <cstring> /* memcpy, memmove, memcmp, memset */
 
 #if 0 && !defined(assert)
 #error <assert.h> not included
@@ -265,7 +265,7 @@ typedef long lzo_ptrdiff_t;
 
 #else
 /* This is the safe (but slower) version */
-#define LZO_CHECK_MPOS_DET(m_pos, m_off, in, ip, max_offset) (m_pos == NULL || (m_off = ip - m_pos) > max_offset)
+#define LZO_CHECK_MPOS_DET(m_pos, m_off, in, ip, max_offset) (m_pos == nullptr || (m_off = ip - m_pos) > max_offset)
 #endif
 
 /* m_pos may point anywhere...

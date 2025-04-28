@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -98,7 +99,7 @@ int Read_Line(FileClass &file, char *buffer, int len, bool &eof) {
  *   02/06/1997 JLB : Created.                                                                 *
  *=============================================================================================*/
 int Read_Line(Straw &file, char *buffer, int len, bool &eof) {
-  if (len == 0 || buffer == NULL)
+  if (len == 0 || buffer == nullptr)
     return (0);
 
   int count = 0;
@@ -123,7 +124,7 @@ int Read_Line(Straw &file, char *buffer, int len, bool &eof) {
 }
 
 int Read_Line(Straw &file, wchar_t *buffer, int len, bool &eof) {
-  if (len == 0 || buffer == NULL)
+  if (len == 0 || buffer == nullptr)
     return (0);
 
   int count = 0;

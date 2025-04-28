@@ -24,9 +24,7 @@
 // Description:
 //
 //-----------------------------------------------------------------------------
-#if defined(_MSV_VER)
 #pragma once
-#endif
 
 #ifndef ENCODERTYPEENTRY_H
 #define ENCODERTYPEENTRY_H

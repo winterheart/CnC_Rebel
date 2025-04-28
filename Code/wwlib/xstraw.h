@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #ifndef XSTRAW_H
 #define XSTRAW_H
@@ -43,7 +42,6 @@
 #include "buff.h"
 #include "straw.h"
 #include "wwfile.h"
-#include <stddef.h>
 
 /*
 **	This class is used to manage a buffer as a data source. Data requests will draw from the
@@ -61,7 +59,7 @@ private:
   //		void const * BufferPtr;
   //		int Length;
 
-  bool Is_Valid(void) { return (BufferPtr.Is_Valid()); }
+  bool Is_Valid() { return (BufferPtr.Is_Valid()); }
   BufferStraw(BufferStraw &rvalue);
   BufferStraw &operator=(BufferStraw const &pipe);
 };
@@ -74,14 +72,14 @@ class FileStraw : public Straw {
 public:
   FileStraw(FileClass *file) : File(file), HasOpened(false) {}
   FileStraw(FileClass &file) : File(&file), HasOpened(false) {}
-  virtual ~FileStraw(void);
+  virtual ~FileStraw();
   virtual int Get(void *source, int slen);
 
 private:
   FileClass *File;
   bool HasOpened;
 
-  bool Valid_File(void) { return (File != NULL); }
+  bool Valid_File() { return (File != nullptr); }
   FileStraw(FileStraw &rvalue);
   FileStraw &operator=(FileStraw const &pipe);
 };

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -39,8 +40,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "lineseg.h"
-// #include <stdlib.h>
-
 #include "matrix3d.h"
 
 /***********************************************************************************************
@@ -186,11 +185,11 @@ bool LineSegClass::Find_Intersection(const LineSegClass &other_line, Vector3 *p1
     //
     //	Return the fractions if they caller wants them
     //
-    if (fraction1 != NULL) {
+    if (fraction1 != nullptr) {
       (*fraction1) = length1 / Length;
     }
 
-    if (fraction2 != NULL) {
+    if (fraction2 != nullptr) {
       (*fraction2) = length2 / Length;
     }
 

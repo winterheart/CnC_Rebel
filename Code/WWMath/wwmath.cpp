@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,10 +35,11 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdlib>
+
 #include "wwmath.h"
 #include "wwhack.h"
 #include "lookuptable.h"
-#include <stdlib.h>
 #include "wwdebug.h"
 #include "wwprofile.h"
 
@@ -47,7 +49,7 @@ float _FastAsinTable[ARC_TABLE_SIZE];
 float _FastSinTable[SIN_TABLE_SIZE];
 float _FastInvSinTable[SIN_TABLE_SIZE];
 
-void WWMath::Init(void) {
+void WWMath::Init() {
   LookupTableMgrClass::Init();
 
   for (int a = 0; a < ARC_TABLE_SIZE; ++a) {
@@ -68,14 +70,14 @@ void WWMath::Init(void) {
   }
 }
 
-void WWMath::Shutdown(void) { LookupTableMgrClass::Shutdown(); }
+void WWMath::Shutdown() { LookupTableMgrClass::Shutdown(); }
 
-float WWMath::Random_Float(void) { return ((float)(rand() & 0xFFF)) / (float)(0xFFF); }
+float WWMath::Random_Float() { return ((float)(rand() & 0xFFF)) / (float)(0xFFF); }
 
 /*
 ** Force link some modules from this library.
 */
-void Do_Force_Links(void) {
+void Do_Force_Links() {
   FORCE_LINK(curve);
   FORCE_LINK(hermitespline);
   FORCE_LINK(catmullromspline);

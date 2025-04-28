@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -83,7 +84,7 @@ enum {
  * HISTORY:                                                                                    *
  *   3/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void CatmullRomSpline3DClass::Update_Tangents(void) {
+void CatmullRomSpline3DClass::Update_Tangents() {
   if (Keys.Count() < 2) {
     for (int i = 0; i < Keys.Count(); i++) {
       Tangents[0].InTangent.Set(0, 0, 0);
@@ -129,8 +130,8 @@ void CatmullRomSpline3DClass::Update_Tangents(void) {
     Tangents[i].InTangent.Z = 0.5f * (Keys[i + 1].Point.Z - Keys[i - 1].Point.Z);
     Tangents[i].OutTangent = Tangents[i].InTangent;
 
-    float in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
-    float out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
     Tangents[i].InTangent *= in_factor; // compensating for the un-even keys
     Tangents[i].OutTangent *= out_factor;
   }
@@ -149,7 +150,7 @@ void CatmullRomSpline3DClass::Update_Tangents(void) {
  * HISTORY:                                                                                    *
  *   3/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-const PersistFactoryClass &CatmullRomSpline3DClass::Get_Factory(void) const { return _CatmullRomSpline3DFactory; }
+const PersistFactoryClass &CatmullRomSpline3DClass::Get_Factory() const { return _CatmullRomSpline3DFactory; }
 
 /***********************************************************************************************
  * CatmullRomSpline3DClass::Save -- save this curve                                            *
@@ -216,7 +217,7 @@ bool CatmullRomSpline3DClass::Load(ChunkLoadClass &cload) {
  * HISTORY:                                                                                    *
  *   3/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-void CatmullRomSpline1DClass::Update_Tangents(void) {
+void CatmullRomSpline1DClass::Update_Tangents() {
   if (Keys.Count() < 2) {
     for (int i = 0; i < Keys.Count(); i++) {
       Tangents[i].InTangent = 0.0f;
@@ -255,8 +256,8 @@ void CatmullRomSpline1DClass::Update_Tangents(void) {
     Tangents[i].InTangent = 0.5f * (Keys[i + 1].Point - Keys[i - 1].Point);
     Tangents[i].OutTangent = Tangents[i].InTangent;
 
-    float in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
-    float out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    in_factor = 2.0f * (Keys[i].Time - Keys[i - 1].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
+    out_factor = 2.0f * (Keys[i + 1].Time - Keys[i].Time) / (Keys[i + 1].Time - Keys[i - 1].Time);
     Tangents[i].InTangent *= in_factor; // compensating for the un-even keys
     Tangents[i].OutTangent *= out_factor;
   }
@@ -275,7 +276,7 @@ void CatmullRomSpline1DClass::Update_Tangents(void) {
  * HISTORY:                                                                                    *
  *   3/7/2000   gth : Created.                                                                 *
  *=============================================================================================*/
-const PersistFactoryClass &CatmullRomSpline1DClass::Get_Factory(void) const { return _CatmullRomSpline1DFactory; }
+const PersistFactoryClass &CatmullRomSpline1DClass::Get_Factory() const { return _CatmullRomSpline1DFactory; }
 
 /***********************************************************************************************
  * CatmullRomSpline1DClass::Save -- Save this curve                                            *

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -49,16 +50,13 @@
  *   Vector2::Lerp -- linearly interpolates two Vector2's                                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
 #include "always.h"
 #include "wwmath.h"
-#include <math.h>
 
 /*
 ** 2-Dimensional Vectors
@@ -78,7 +76,7 @@ public:
   };
 
   // Constructors
-  WWINLINE Vector2(void) {};
+  WWINLINE Vector2() {};
   WWINLINE Vector2(const Vector2 &v) {
     X = v.X;
     Y = v.Y;
@@ -112,9 +110,9 @@ public:
   WWINLINE const float &operator[](int i) const { return (&X)[i]; }
 
   // normalize, compute length
-  WWINLINE void Normalize(void);
-  WWINLINE float Length(void) const;
-  WWINLINE float Length2(void) const;
+  WWINLINE void Normalize();
+  WWINLINE float Length() const;
+  WWINLINE float Length2() const;
 
   // unary operators
   WWINLINE Vector2 operator-() const { return Vector2(-X, -Y); }
@@ -170,7 +168,7 @@ public:
   WWINLINE bool Rotate_Towards_Vector(Vector2 &target, float max_s, float max_c, bool &positive_turn);
 
   // verify that none of the members of this vector are invalid floats
-  WWINLINE bool Is_Valid(void) const;
+  WWINLINE bool Is_Valid() const;
 
   // make this vector the min or max of itself and the passed vector
   WWINLINE void Update_Min(const Vector2 &a);
@@ -200,13 +198,13 @@ public:
 WWINLINE Vector2 operator*(const Vector2 &a, float k) {
   float a0k(a[0] * k);
   float a1k(a[1] * k);
-  return Vector2(a0k, a1k);
+  return {a0k, a1k};
 }
 
 WWINLINE Vector2 operator*(float k, const Vector2 &a) {
   float a0k(a[0] * k);
   float a1k(a[1] * k);
-  return Vector2(a0k, a1k);
+  return {a0k, a1k};
 }
 
 /**************************************************************************
@@ -224,7 +222,7 @@ WWINLINE Vector2 operator/(const Vector2 &a, float k) {
   float ook = 1.0f / k;
   float a0ook(a[0] * ook);
   float a1ook(a[1] * ook);
-  return Vector2(a0ook, a1ook);
+  return {a0ook, a1ook};
 }
 
 /**************************************************************************
@@ -239,7 +237,7 @@ WWINLINE Vector2 operator/(const Vector2 &a, float k) {
  * HISTORY:                                                               *
  *   02/24/1997 GH  : Created.                                            *
  *========================================================================*/
-WWINLINE Vector2 operator+(const Vector2 &a, const Vector2 &b) { return Vector2(a.X + b.X, a.Y + b.Y); }
+WWINLINE Vector2 operator+(const Vector2 &a, const Vector2 &b) { return {a.X + b.X, a.Y + b.Y}; }
 
 /**************************************************************************
  * Vector Subtraction Operator -- Subract two vectors                     *
@@ -253,7 +251,7 @@ WWINLINE Vector2 operator+(const Vector2 &a, const Vector2 &b) { return Vector2(
  * HISTORY:                                                               *
  *   02/24/1997 GH  : Created.                                            *
  *========================================================================*/
-WWINLINE Vector2 operator-(const Vector2 &a, const Vector2 &b) { return Vector2(a.X - b.X, a.Y - b.Y); }
+WWINLINE Vector2 operator-(const Vector2 &a, const Vector2 &b) { return {a.X - b.X, a.Y - b.Y}; }
 
 /**************************************************************************
  * Vector Inner Product -- Compute the inner or dot product of two vector *
@@ -347,7 +345,7 @@ WWINLINE Vector2 Normalize(const Vector2 &vec) {
     float oolen = WWMath::Inv_Sqrt(len2);
     return vec / oolen;
   }
-  return Vector2(0.0f, 0.0f);
+  return {0.0f, 0.0f};
 }
 
 /**************************************************************************
@@ -493,7 +491,7 @@ WWINLINE void Swap(Vector2 &a, Vector2 &b) {
  * HISTORY:                                                                                    *
  *   10/18/99   gth : Created.                                                                 *
  *=============================================================================================*/
-WWINLINE bool Vector2::Is_Valid(void) const { return (WWMath::Is_Valid_Float(X) && WWMath::Is_Valid_Float(Y)); }
+WWINLINE bool Vector2::Is_Valid() const { return (WWMath::Is_Valid_Float(X) && WWMath::Is_Valid_Float(Y)); }
 
 /***********************************************************************************************
  * Vector2::Update_Min -- Set each component of the vector to the min of this and a.			  *
@@ -631,7 +629,7 @@ WWINLINE float Distance(float x1, float y1, float x2, float y2) {
  *   4/14/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 WWINLINE void Vector2::Lerp(const Vector2 &a, const Vector2 &b, float t, Vector2 *set_result) {
-  assert(set_result != NULL);
+  assert(set_result != nullptr);
   set_result->X = (a.X + (b.X - a.X) * t);
   set_result->Y = (a.Y + (b.Y - a.Y) * t);
 }

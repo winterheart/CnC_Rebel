@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,9 +41,10 @@
  *   PaletteClass::operator == -- Equality operator for palette objects.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstring>
+
 #include "always.h"
 #include "palette.h"
-#include <string.h>
 
 /***********************************************************************************************
  * PaletteClass::PaletteClass -- Constructor that fills palette with color specified.          *
@@ -59,8 +61,8 @@
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
 PaletteClass::PaletteClass(RGBClass const &rgb) {
-  for (int index = 0; index < COLOR_COUNT; index++) {
-    Palette[index] = rgb;
+  for (auto & index : Palette) {
+    index = rgb;
   }
 }
 
@@ -129,8 +131,8 @@ PaletteClass &PaletteClass::operator=(PaletteClass const &palette) {
  *   12/02/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
 void PaletteClass::Adjust(int ratio) {
-  for (int index = 0; index < COLOR_COUNT; index++) {
-    Palette[index].Adjust(ratio, BlackColor);
+  for (auto & index : Palette) {
+    index.Adjust(ratio, BlackColor);
   }
 }
 

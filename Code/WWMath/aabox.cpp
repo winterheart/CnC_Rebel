@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -37,10 +38,11 @@
  *   AABoxClass::Contains -- Test whether this box contains the given box                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cfloat>
+
 #include "aabox.h"
 #include "colmath.h"
 #include "colmathinlines.h"
-#include <float.h>
 
 /***********************************************************************************************
  * AABoxClass::Init_Random -- initializes this box to a random state                           *
@@ -68,7 +70,7 @@ void AABoxClass::Transform(const Matrix3D &tm, const AABoxClass &in, AABoxClass 
   tm.Transform_Center_Extent_AABox(in.Center, in.Extent, &(out->Center), &(out->Extent));
 }
 
-void MinMaxAABoxClass::Init_Empty(void) {
+void MinMaxAABoxClass::Init_Empty() {
   MinCorner.Set(FLT_MAX, FLT_MAX, FLT_MAX);
   MaxCorner.Set(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 }

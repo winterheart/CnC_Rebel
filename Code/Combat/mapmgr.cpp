@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -265,11 +266,11 @@ void MapMgrClass::Clear_Cloud_Cells(const Vector3 &pos, int pixel_radius) {
   //
   //	Determine what the min and max cells this region includes
   //
-  int min_cell_x = int(((map_x_pos - pixel_radius) / MapSize.X) * CLOUD_WIDTH);
-  int min_cell_y = int(((map_y_pos - pixel_radius) / MapSize.Y) * CLOUD_HEIGHT);
+  int min_cell_x = int(((map_x_pos - pixel_radius) / MapSize.X) * static_cast<int>(CLOUD_WIDTH));
+  int min_cell_y = int(((map_y_pos - pixel_radius) / MapSize.Y) * static_cast<int>(CLOUD_HEIGHT));
 
-  int max_cell_x = int(((map_x_pos + pixel_radius) / MapSize.X) * CLOUD_WIDTH);
-  int max_cell_y = int(((map_y_pos + pixel_radius) / MapSize.Y) * CLOUD_HEIGHT);
+  int max_cell_x = int(((map_x_pos + pixel_radius) / MapSize.X) * static_cast<int>(CLOUD_WIDTH));
+  int max_cell_y = int(((map_y_pos + pixel_radius) / MapSize.Y) * static_cast<int>(CLOUD_HEIGHT));
 
   //
   //	Clear all the cells in this region

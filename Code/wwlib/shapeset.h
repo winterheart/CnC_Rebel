@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,7 +41,6 @@
 #ifndef SHAPESET_H
 #define SHAPESET_H
 
-#include "bool.h"
 #include "trect.h"
 
 /*
@@ -74,17 +74,17 @@ public:
   /*
   **	Logical width of the shape set.
   */
-  int Get_Width(void) const { return (Width); }
+  int Get_Width() const { return (Width); }
 
   /*
   **	Logical height of the shape set.
   */
-  int Get_Height(void) const { return (Height); }
+  int Get_Height() const { return (Height); }
 
   /*
   **	Number of shapes in this shape set.
   */
-  int Get_Count(void) const { return (Count); }
+  int Get_Count() const { return (Count); }
 
   /*
   **	Gets the raw data size for a particular shape.
@@ -147,12 +147,12 @@ protected:
     */
     long Data;
 
-    bool Is_Transparent(void) const { return ((Flags & SFLAG_TRANSPARENT) != 0); }
-    bool Is_RLE_Compressed(void) const { return ((Flags & SFLAG_RLE) != 0); }
-    short Get_Size(void) const { return (Size); }
+    bool Is_Transparent() const { return ((Flags & SFLAG_TRANSPARENT) != 0); }
+    bool Is_RLE_Compressed() const { return ((Flags & SFLAG_RLE) != 0); }
+    short Get_Size() const { return (Size); }
 
-    void Flag_Transparent(void) { Flags |= SFLAG_TRANSPARENT; }
-    void Flag_RLE_Compressed(void) { Flags |= SFLAG_RLE; }
+    void Flag_Transparent() { Flags |= SFLAG_TRANSPARENT; }
+    void Flag_RLE_Compressed() { Flags |= SFLAG_RLE; }
     void Set_Size(short size) { Size = size; }
   };
 
@@ -162,13 +162,13 @@ protected:
     if (Is_Shape_Index_Valid(shape)) {
       return ((ShapeRecord const *)(((char *)this) + sizeof(ShapeSet) + sizeof(ShapeRecord) * shape));
     }
-    return (NULL);
+    return (nullptr);
   }
 
   /*
   **	Prevents a shape object from being constructed illegally.
   */
-  ShapeSet(void) {};
+  ShapeSet() {};
   ShapeSet(ShapeSet const &rvalue);
   ShapeSet const &operator=(ShapeSet const &rvalue);
 };
@@ -184,7 +184,7 @@ protected:
  * INPUT:   shape -- The shape number to extract the pointer for.                              *
  *                                                                                             *
  * OUTPUT:  Returns with a pointer to the raw shape data. If the shape does not exist in the   *
- *          data file, the returned value will be NULL. If the shape contains no pixels, then  *
+ *          data file, the returned value will be nullptr. If the shape contains no pixels, then  *
  *          NULL is also returned.                                                             *
  *                                                                                             *
  * WARNINGS:   none                                                                            *
@@ -194,9 +194,9 @@ protected:
  *=============================================================================================*/
 inline void *ShapeSet::Get_Data(int shape) const {
   ShapeRecord const *record = Fetch_Record_Pointer(shape);
-  if (record != NULL && record->Data != 0)
+  if (record != nullptr && record->Data != 0)
     return (((char *)this) + record->Data);
-  return (NULL);
+  return (nullptr);
 }
 
 /***********************************************************************************************
@@ -217,7 +217,7 @@ inline void *ShapeSet::Get_Data(int shape) const {
  *=============================================================================================*/
 inline Rect ShapeSet::Get_Rect(int shape) const {
   ShapeRecord const *record = Fetch_Record_Pointer(shape);
-  if (record != NULL) {
+  if (record != nullptr) {
     return (Rect(record->X, record->Y, record->Width, record->Height));
   }
   return (Rect(0, 0, 0, 0));
@@ -241,7 +241,7 @@ inline Rect ShapeSet::Get_Rect(int shape) const {
  *=============================================================================================*/
 inline bool ShapeSet::Is_Transparent(int shape) const {
   ShapeRecord const *record = Fetch_Record_Pointer(shape);
-  if (record != NULL) {
+  if (record != nullptr) {
     return (record->Is_Transparent());
   }
   return (false);
@@ -249,7 +249,7 @@ inline bool ShapeSet::Is_Transparent(int shape) const {
 
 inline bool ShapeSet::Is_RLE_Compressed(int shape) const {
   ShapeRecord const *record = Fetch_Record_Pointer(shape);
-  if (record != NULL) {
+  if (record != nullptr) {
     return (record->Is_RLE_Compressed());
   }
   return (false);

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,10 +37,11 @@
  *   BlowStraw::Key -- Submit a key to the Blowfish straw.                                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+#include <cstring>
+
 #include "always.h"
 #include "blwstraw.h"
-#include <string.h>
-#include <assert.h>
 
 /***********************************************************************************************
  * BlowStraw::Get -- Fetch a block of data from the straw.                                     *
@@ -65,7 +67,7 @@ int BlowStraw::Get(void *source, int slen) {
   /*
   **	Verify the parameter for legality.
   */
-  if (source == NULL || slen <= 0) {
+  if (source == nullptr || slen <= 0) {
     return (0);
   }
 
@@ -73,7 +75,7 @@ int BlowStraw::Get(void *source, int slen) {
   **	If there is no blowfish engine present, then merely pass the data through
   **	unchanged.
   */
-  if (BF == NULL) {
+  if (BF == nullptr) {
     return (Straw::Get(source, slen));
   }
 
@@ -146,13 +148,13 @@ void BlowStraw::Key(void const *key, int length) {
   /*
   **	Create the blowfish engine if one isn't already present.
   */
-  if (BF == NULL) {
+  if (BF == nullptr) {
     BF = new BlowfishEngine;
   }
 
-  assert(BF != NULL);
+  assert(BF != nullptr);
 
-  if (BF != NULL) {
+  if (BF != nullptr) {
     BF->Submit_Key(key, length);
   }
 }

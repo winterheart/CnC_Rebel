@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -54,19 +55,19 @@ public:
   /*
   ** Get. Use everywhere you would use timeGetTime
   */
-  __forceinline unsigned long Get(void);
-  __forceinline unsigned long operator()(void) { return (Get()); }
-  __forceinline operator unsigned long(void) { return (Get()); }
+  __forceinline unsigned long Get();
+  __forceinline unsigned long operator()() { return (Get()); }
+  __forceinline operator unsigned long() { return (Get()); }
 
   /*
   ** Use periodically (like every few days!) to make sure the timer doesn't wrap.
   */
-  void Reset(void);
+  void Reset();
 
   /*
   ** See if the timer is about to wrap.
   */
-  bool Is_Getting_Late(void);
+  bool Is_Getting_Late();
 
 private:
   /*
@@ -96,7 +97,7 @@ extern SysTimeClass SystemTime;
  * HISTORY:                                                                                    *
  *   10/25/2001 1:38PM ST : Created                                                            *
  *=============================================================================================*/
-__forceinline unsigned long SysTimeClass::Get(void) {
+__forceinline unsigned long SysTimeClass::Get() {
   /*
   ** This has to be static here since we don't know if we will get called in a global constructor of another object
   *before our

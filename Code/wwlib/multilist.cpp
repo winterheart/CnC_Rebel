@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -50,7 +51,7 @@ DEFINE_AUTO_POOL(MultiListNodeClass, 256);
 
 ***********************************************************************************************/
 
-MultiListObjectClass::~MultiListObjectClass(void) {
+MultiListObjectClass::~MultiListObjectClass() {
   while (ListNode) {
     ListNode->List->Internal_Remove(this);
   }
@@ -64,7 +65,7 @@ MultiListObjectClass::~MultiListObjectClass(void) {
 
 ***********************************************************************************************/
 
-GenericMultiListClass::~GenericMultiListClass(void) { assert(Is_Empty()); }
+GenericMultiListClass::~GenericMultiListClass() { assert(Is_Empty()); }
 
 bool GenericMultiListClass::Contains(MultiListObjectClass *obj) {
   assert(obj);
@@ -78,7 +79,7 @@ bool GenericMultiListClass::Contains(MultiListObjectClass *obj) {
   return false;
 }
 
-int GenericMultiListClass::Count(void) {
+int GenericMultiListClass::Count() {
   int counter = 0;
   GenericMultiListIterator it(this);
   for (it.First(); !it.Is_Done(); it.Next()) {
@@ -159,7 +160,7 @@ bool GenericMultiListClass::Internal_Add_After(MultiListObjectClass *obj,
     existing_node = existing_node->NextList;
   }
 
-  if (existing_node == NULL) {
+  if (existing_node == nullptr) {
     return false; // he's not in this list!
   }
 
@@ -191,7 +192,7 @@ bool GenericMultiListClass::Internal_Remove(MultiListObjectClass *obj) {
     lnode = lnode->NextList;
   }
 
-  if (lnode == 0) {
+  if (lnode == nullptr) {
     return false;
   }
 
@@ -214,7 +215,7 @@ bool GenericMultiListClass::Internal_Remove(MultiListObjectClass *obj) {
   return true;
 }
 
-MultiListObjectClass *GenericMultiListClass::Internal_Remove_List_Head(void) {
+MultiListObjectClass *GenericMultiListClass::Internal_Remove_List_Head() {
   if (Head.Next == &Head) {
     return 0; // no more objects
   }

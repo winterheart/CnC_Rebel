@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -35,13 +36,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
-#ifndef __STRING_TWIDDLER_H
-#define __STRING_TWIDDLER_H
-
+#include "persistfactory.h"
 #include "translateobj.h"
 #include "translatedb.h"
 #include "vector.h"
@@ -60,9 +57,9 @@ public:
   //////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////
-  StringTwiddlerClass(void);
+  StringTwiddlerClass();
   StringTwiddlerClass(const StringTwiddlerClass &src);
-  virtual ~StringTwiddlerClass(void);
+  virtual ~StringTwiddlerClass();
 
   //////////////////////////////////////////////////////////////
   //	Public operators
@@ -76,41 +73,41 @@ public:
   //
   //	RTTI
   //
-  StringTwiddlerClass *As_StringTwiddlerClass(void) { return this; }
+  StringTwiddlerClass *As_StringTwiddlerClass() { return this; }
 
   //
   // From PersistClass
   //
-  const PersistFactoryClass &Get_Factory(void) const;
+  const PersistFactoryClass &Get_Factory() const;
   bool Save(ChunkSaveClass &csave);
   bool Load(ChunkLoadClass &cload);
 
   //
   // Copy methods
   //
-  TDBObjClass *Clone(void) const { return new StringTwiddlerClass(*this); }
+  TDBObjClass *Clone() const { return new StringTwiddlerClass(*this); }
 
   //
   // Inherited
   //
   const WideStringClass &Get_String(uint32 lang_id);
-  const StringClass &Get_English_String(void) {
+  const StringClass &Get_English_String() {
     Randomize();
     return TDBObjClass::Get_English_String();
   }
-  const StringClass &Get_ID_Desc(void) {
+  const StringClass &Get_ID_Desc() {
     Randomize();
     return TDBObjClass::Get_ID_Desc();
   }
-  uint32 Get_Sound_ID(void) {
+  uint32 Get_Sound_ID() {
     Randomize();
     return TDBObjClass::Get_Sound_ID();
   }
-  const StringClass &Get_Animation_Name(void) {
+  const StringClass &Get_Animation_Name() {
     Randomize();
     return TDBObjClass::Get_Animation_Name();
   }
-  uint32 Get_Category_ID(void) {
+  uint32 Get_Category_ID() {
     Randomize();
     return TDBObjClass::Get_Category_ID();
   }
@@ -119,8 +116,8 @@ public:
   //	String list access
   //
   void Add_String(int string_id) { StringList.Add(string_id); }
-  void Reset_String_List(void) { StringList.Delete_All(); }
-  int Get_String_Count(void) const { return StringList.Count(); }
+  void Reset_String_List() { StringList.Delete_All(); }
+  int Get_String_Count() const { return StringList.Count(); }
   int Get_String_Id(int index) const { return StringList[index]; }
   TDBObjClass *Lookup_String(int index);
 
@@ -139,5 +136,3 @@ private:
   //////////////////////////////////////////////////////////////
   DynamicVectorClass<int> StringList;
 };
-
-#endif //__STRING_TWIDDLER_H

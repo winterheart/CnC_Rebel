@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -116,7 +117,7 @@ MixFileFactoryClass::MixFileFactoryClass(const char *mix_filename, FileFactoryCl
     if (IsValid) {
       BaseOffset = 0;
       NamesOffset = header.names_offset;
-      WWDEBUG_SAY(("MixFileFactory( %s ) loaded successfully  %d files\n", MixFilename, FileInfo.Length()));
+      WWDEBUG_SAY(("MixFileFactory( %s ) loaded successfully  %d files\n", MixFilename.Peek_Buffer(), FileInfo.Length()));
     } else {
       FileInfo.Resize(0);
     }
@@ -565,13 +566,12 @@ void Add_Files(const char *dir, MixFileCreator &mix) {
   WIN32_FIND_DATA find_info = {0};
   StringClass path;
   path.Format("data\\makemix\\%s*.*", dir);
-  WWDEBUG_SAY(("Adding files from %s\n", path));
+  WWDEBUG_SAY(("Adding files from %s\n", path.Peek_Buffer()));
 
   for (hfile_find = ::FindFirstFile(path, &find_info); (hfile_find != INVALID_HANDLE_VALUE) && bcontinue;
        bcontinue = ::FindNextFile(hfile_find, &find_info)) {
     if (find_info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
       if (find_info.cFileName[0] != '.') {
-        StringClass path;
         path.Format("%s%s\\", dir, find_info.cFileName);
         Add_Files(path, mix);
       }
@@ -579,8 +579,8 @@ void Add_Files(const char *dir, MixFileCreator &mix) {
       StringClass name;
       name.Format("%s%s", dir, find_info.cFileName);
       StringClass source;
-      source.Format("makemix\\%s", name);
-      mix.Add_File(source, name);
+      source.Format("makemix\\%s", name.Peek_Buffer());
+      mix.Add_File(source.Peek_Buffer(), name.Peek_Buffer());
       //			WWDEBUG_SAY(( "Adding file from %s %s\n", source, name ));
     }
   }

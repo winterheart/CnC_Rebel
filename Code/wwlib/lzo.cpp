@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -36,10 +37,11 @@
  *   LZOCompressor::Decompress -- decompress a buffer using LZO                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdlib>
+
 #include "lzo.h"
 #include "mutex.h"
 #include "wwdebug.h"
-#include <stdlib.h>
 
 /*
 ** Work Buffer for the LZOCompressor...
@@ -95,5 +97,5 @@ int LZOCompressor::Compress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, 
 int LZOCompressor::Decompress(const lzo_byte *in, lzo_uint in_len, lzo_byte *out, lzo_uint *out_len) {
   CriticalSectionClass::LockClass m(mutex);
 
-  return lzo1x_decompress(in, in_len, out, out_len, NULL);
+  return lzo1x_decompress(in, in_len, out, out_len, nullptr);
 }

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -81,11 +82,11 @@ enum {
 ** Curve3DCLass Implementation
 **
 ***********************************************************************************************/
-Curve3DClass::Curve3DClass(void) : IsLooping(false) {}
+Curve3DClass::Curve3DClass() : IsLooping(false) {}
 
 Curve3DClass::Curve3DClass(const Curve3DClass &that) { *this = that; }
 
-Curve3DClass::~Curve3DClass(void) {}
+Curve3DClass::~Curve3DClass() = default;
 
 Curve3DClass &Curve3DClass::operator=(const Curve3DClass &that) {
   IsLooping = that.IsLooping;
@@ -93,11 +94,11 @@ Curve3DClass &Curve3DClass::operator=(const Curve3DClass &that) {
   return *this;
 }
 
-bool Curve3DClass::Is_Looping(void) { return IsLooping; }
+bool Curve3DClass::Is_Looping() { return IsLooping; }
 
 void Curve3DClass::Set_Looping(bool onoff) { IsLooping = onoff; }
 
-float Curve3DClass::Get_Start_Time(void) {
+float Curve3DClass::Get_Start_Time() {
   if (Keys.Count() > 0) {
     return Keys[0].Time;
   } else {
@@ -105,7 +106,7 @@ float Curve3DClass::Get_Start_Time(void) {
   }
 }
 
-float Curve3DClass::Get_End_Time(void) {
+float Curve3DClass::Get_End_Time() {
   if (Keys.Count() > 0) {
     return Keys[Keys.Count() - 1].Time;
   } else {
@@ -113,15 +114,15 @@ float Curve3DClass::Get_End_Time(void) {
   }
 }
 
-int Curve3DClass::Key_Count(void) { return Keys.Count(); }
+int Curve3DClass::Key_Count() { return Keys.Count(); }
 
 void Curve3DClass::Get_Key(int i, Vector3 *set_point, float *set_t) {
   assert(i >= 0);
   assert(i < Keys.Count());
-  if (set_point != NULL) {
+  if (set_point != nullptr) {
     *set_point = Keys[i].Point;
   }
-  if (set_t != NULL) {
+  if (set_t != nullptr) {
     *set_t = Keys[i].Time;
   }
 }
@@ -152,7 +153,7 @@ void Curve3DClass::Remove_Key(int i) {
   Keys.Delete(i);
 }
 
-void Curve3DClass::Clear_Keys(void) { Keys.Clear(); }
+void Curve3DClass::Clear_Keys() { Keys.Clear(); }
 
 void Curve3DClass::Find_Interval(float time, int *i0, int *i1, float *t) {
   WWASSERT(time >= Keys[0].Time);
@@ -250,7 +251,7 @@ void LinearCurve3DClass::Evaluate(float time, Vector3 *set_val) {
   *set_val = Keys[i0].Point + t * (Keys[i1].Point - Keys[i0].Point);
 }
 
-const PersistFactoryClass &LinearCurve3DClass::Get_Factory(void) const { return _LinearCurve3DFactory; }
+const PersistFactoryClass &LinearCurve3DClass::Get_Factory() const { return _LinearCurve3DFactory; }
 
 bool LinearCurve3DClass::Save(ChunkSaveClass &csave) {
   csave.Begin_Chunk(LINEARCURVE3D_CHUNK_CURVE3D);
@@ -282,11 +283,11 @@ bool LinearCurve3DClass::Load(ChunkLoadClass &cload) {
 ** Curve1DClass
 **
 ***********************************************************************************************/
-Curve1DClass::Curve1DClass(void) : IsLooping(false) {}
+Curve1DClass::Curve1DClass() : IsLooping(false) {}
 
 Curve1DClass::Curve1DClass(const Curve1DClass &that) { *this = that; }
 
-Curve1DClass::~Curve1DClass(void) {}
+Curve1DClass::~Curve1DClass() {}
 
 Curve1DClass &Curve1DClass::operator=(const Curve1DClass &that) {
   IsLooping = that.IsLooping;
@@ -294,11 +295,11 @@ Curve1DClass &Curve1DClass::operator=(const Curve1DClass &that) {
   return *this;
 }
 
-bool Curve1DClass::Is_Looping(void) { return IsLooping; }
+bool Curve1DClass::Is_Looping() { return IsLooping; }
 
 void Curve1DClass::Set_Looping(bool onoff) { IsLooping = onoff; }
 
-float Curve1DClass::Get_Start_Time(void) {
+float Curve1DClass::Get_Start_Time() {
   if (Keys.Count() > 0) {
     return Keys[0].Time;
   } else {
@@ -306,7 +307,7 @@ float Curve1DClass::Get_Start_Time(void) {
   }
 }
 
-float Curve1DClass::Get_End_Time(void) {
+float Curve1DClass::Get_End_Time() {
   if (Keys.Count() > 0) {
     return Keys[Keys.Count() - 1].Time;
   } else {
@@ -314,18 +315,18 @@ float Curve1DClass::Get_End_Time(void) {
   }
 }
 
-int Curve1DClass::Key_Count(void) { return Keys.Count(); }
+int Curve1DClass::Key_Count() { return Keys.Count(); }
 
 void Curve1DClass::Get_Key(int i, float *set_point, float *set_t, unsigned int *extra) {
   assert(i >= 0);
   assert(i < Keys.Count());
-  if (set_point != NULL) {
+  if (set_point != nullptr) {
     *set_point = Keys[i].Point;
   }
-  if (set_t != NULL) {
+  if (set_t != nullptr) {
     *set_t = Keys[i].Time;
   }
-  if (extra != NULL) {
+  if (extra != nullptr) {
     *extra = Keys[i].Extra;
   }
 }
@@ -358,7 +359,7 @@ void Curve1DClass::Remove_Key(int i) {
   Keys.Delete(i);
 }
 
-void Curve1DClass::Clear_Keys(void) { Keys.Clear(); }
+void Curve1DClass::Clear_Keys() { Keys.Clear(); }
 
 void Curve1DClass::Find_Interval(float time, int *i0, int *i1, float *t) {
   if (IsLooping) {
@@ -475,7 +476,7 @@ void LinearCurve1DClass::Evaluate(float time, float *set_val) {
   *set_val = Keys[i0].Point + t * (Keys[i1].Point - Keys[i0].Point);
 }
 
-const PersistFactoryClass &LinearCurve1DClass::Get_Factory(void) const { return _LinearCurve1DFactory; }
+const PersistFactoryClass &LinearCurve1DClass::Get_Factory() const { return _LinearCurve1DFactory; }
 
 bool LinearCurve1DClass::Save(ChunkSaveClass &csave) {
   csave.Begin_Chunk(LINEARCURVE1D_CHUNK_CURVE1D);

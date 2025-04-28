@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -118,10 +119,10 @@ void ArmorWarheadManager::Init(void) {
 
     WWASSERT(armorINI && armorINI->Section_Count() > 0);
 
-    int count, entry;
+    int entry;
 
     // Load Armor Types
-    count = armorINI->Entry_Count(SECTION_ARMOR_TYPES);
+    int count = armorINI->Entry_Count(SECTION_ARMOR_TYPES);
     for (entry = 0; entry < count; entry++) {
       char entry_name[80];
       armorINI->Get_String(SECTION_ARMOR_TYPES, armorINI->Get_Entry(SECTION_ARMOR_TYPES, entry), "", entry_name,
@@ -147,7 +148,7 @@ void ArmorWarheadManager::Init(void) {
     for (armor_num = 0; armor_num < ArmorNames.Count(); armor_num++) {
       int id = armorINI->Get_Int(SECTION_ARMOR_SAVE_IDS, ArmorNames[armor_num], -100);
       if (id == -100) {
-        Debug_Say(("Missing Armor_Save_ID for %s\n", ArmorNames[armor_num]));
+        Debug_Say(("Missing Armor_Save_ID for %s\n", ArmorNames[armor_num].Peek_Buffer()));
       }
       ArmorSaveIDs[armor_num] = id;
     }
@@ -157,7 +158,7 @@ void ArmorWarheadManager::Init(void) {
     for (warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++) {
       int id = armorINI->Get_Int(SECTION_WARHEAD_SAVE_IDS, WarheadNames[warhead_num], -100);
       if (id == -100) {
-        Debug_Say(("Missing Warhead_Save_ID for %s\n", WarheadNames[warhead_num]));
+        Debug_Say(("Missing Warhead_Save_ID for %s\n", WarheadNames[warhead_num].Peek_Buffer()));
       }
       WarheadSaveIDs[warhead_num] = id;
     }
@@ -178,7 +179,7 @@ void ArmorWarheadManager::Init(void) {
     for (armor_num = 0; armor_num < ArmorNames.Count(); armor_num++) {
       char section_name[80];
       sprintf(section_name, SECTION_SCALE, ArmorNames[armor_num].Peek_Buffer());
-      for (int warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++) {
+      for (warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++) {
         Multipliers[armor_num * Get_Num_Warhead_Types() + warhead_num] =
             armorINI->Get_Float(section_name, WarheadNames[warhead_num], 1.0f);
       }
@@ -189,7 +190,7 @@ void ArmorWarheadManager::Init(void) {
     for (armor_num = 0; armor_num < ArmorNames.Count(); armor_num++) {
       char section_name[80];
       sprintf(section_name, SECTION_SHIELD, ArmorNames[armor_num].Peek_Buffer());
-      for (int warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++) {
+      for (warhead_num = 0; warhead_num < WarheadNames.Count(); warhead_num++) {
         Absorbsion[armor_num * Get_Num_Warhead_Types() + warhead_num] =
             armorINI->Get_Float(section_name, WarheadNames[warhead_num], 0.0f);
       }
@@ -269,7 +270,7 @@ void ArmorWarheadManager::Init(void) {
       };
       StringClass section = ImperviousSectionNames[damage];
 
-      int count = armorINI->Entry_Count(section);
+      count = armorINI->Entry_Count(section);
       for (entry = 0; entry < count; entry++) {
         StringClass entry_name = armorINI->Get_String(temp_string, section, armorINI->Get_Entry(section, entry));
         if (!entry_name.Is_Empty()) {
@@ -913,9 +914,9 @@ float DefenseObjectClass::Do_Damage(const OffenseObjectClass &offense, float sca
     }
     float points = damage;
     float armor = Get_Shield_Strength();
-    DIAG_LOG(("DEFC", "%1.2f; %1.2f; %1.2f; %s; %d; %d; %1.2f; %1.2f; %1.2f; %1.2f; %1.2f; %1.2f; %s ", pos.X, pos.Y,
-              pos.Z, weapon_name, ammo, hittee_id, points, armor, Health, victim_pos.X, victim_pos.Y, victim_pos.Z,
-              team_name));
+    DIAG_LOG(("DEFC", "%1.2f; %1.2f; %1.2f; %s; %d; %d; %1.2f; %1.2f; %1.2f; %1.2f; %1.2f; %1.2f; %s ",
+      pos.X, pos.Y, pos.Z, weapon_name, ammo, hittee_id, points, armor, Health,
+      victim_pos.X, victim_pos.Y, victim_pos.Z, team_name));
   }
 
   // Clamp Health to Max

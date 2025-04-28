@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -409,7 +410,7 @@ void ObjectiveManager::Add_Objective(int id, int type, int status, int short_des
   if (status != ObjectiveManager::STATUS_HIDDEN) {
     WideStringClass message;
     WideStringClass description = TranslateDBClass::Get_String(short_description_id);
-    message.Format(TRANSLATE(IDS_OBJ_NEW_OBJ), objective->Type_To_Name(), description);
+    message.Format(TRANSLATE(IDS_OBJ_NEW_OBJ), objective->Type_To_Name(), description.Peek_Buffer());
     CombatManager::Get_Message_Window()->Add_Message(message, objective->Type_To_Base_Color());
 
     HUDClass::Add_Objective(type);
@@ -489,7 +490,7 @@ void ObjectiveManager::Set_Objective_Status(int id, int status) {
     WideStringClass message;
     if (is_unhiding && (status != ObjectiveManager::STATUS_ACCOMPLISHED)) {
       WideStringClass description = TranslateDBClass::Get_String(objective->ShortDescriptionID);
-      message.Format(TRANSLATE(IDS_OBJ_NEW_OBJ), objective->Type_To_Name(), description);
+      message.Format(TRANSLATE(IDS_OBJ_NEW_OBJ), objective->Type_To_Name(), description.Peek_Buffer());
 
       HUDClass::Add_Objective(objective->Type);
     } else {

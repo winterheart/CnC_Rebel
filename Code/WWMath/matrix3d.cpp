@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -52,12 +53,9 @@
  *   Matrix3D::Solve_Linear_System -- 3x3 Gauss-Jordan elimination                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "matrix3d.h"
+#include <cassert>
 
-#include <math.h>
-#include <assert.h>
-#include <stdlib.h>
-// #include <stdio.h>
+#include "matrix3d.h"
 #include "vector3.h"
 #include "matrix3.h"
 #include "matrix4.h"
@@ -181,7 +179,7 @@ void Matrix3D::Set_Rotation(const Quaternion &q) {
  * HISTORY:                                                                                    *
  *   08/11/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-float Matrix3D::Get_X_Rotation(void) const { return WWMath::Atan2(Row[2][1], Row[1][1]); }
+float Matrix3D::Get_X_Rotation() const { return WWMath::Atan2(Row[2][1], Row[1][1]); }
 
 /***********************************************************************************************
  * Matrix3D::Get_Y_Rotation -- approximates the rotation about the Y axis                      *
@@ -195,7 +193,7 @@ float Matrix3D::Get_X_Rotation(void) const { return WWMath::Atan2(Row[2][1], Row
  * HISTORY:                                                                                    *
  *   08/11/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-float Matrix3D::Get_Y_Rotation(void) const { return WWMath::Atan2(Row[0][2], Row[2][2]); }
+float Matrix3D::Get_Y_Rotation() const { return WWMath::Atan2(Row[0][2], Row[2][2]); }
 
 /***********************************************************************************************
  * Matrix3D::Get_Z_Rotation -- approximates the rotation about the Z axis                      *
@@ -209,7 +207,7 @@ float Matrix3D::Get_Y_Rotation(void) const { return WWMath::Atan2(Row[0][2], Row
  * HISTORY:                                                                                    *
  *   08/11/1997 GH  : Created.                                                                 *
  *=============================================================================================*/
-float Matrix3D::Get_Z_Rotation(void) const { return WWMath::Atan2(Row[1][0], Row[0][0]); }
+float Matrix3D::Get_Z_Rotation() const { return WWMath::Atan2(Row[1][0], Row[0][0]); }
 
 /***********************************************************************************************
  * M3DC::Rotate_Vector -- Uses the 3x3 sub-matrix to rotate a vector                           *
@@ -223,9 +221,9 @@ float Matrix3D::Get_Z_Rotation(void) const { return WWMath::Atan2(Row[1][0], Row
  * HISTORY:                                                                                    *
  *=============================================================================================*/
 Vector3 Matrix3D::Rotate_Vector(const Vector3 &vect) const {
-  return Vector3((Row[0][0] * vect[0] + Row[0][1] * vect[1] + Row[0][2] * vect[2]),
+  return {(Row[0][0] * vect[0] + Row[0][1] * vect[1] + Row[0][2] * vect[2]),
                  (Row[1][0] * vect[0] + Row[1][1] * vect[1] + Row[1][2] * vect[2]),
-                 (Row[2][0] * vect[0] + Row[2][1] * vect[1] + Row[2][2] * vect[2]));
+                 (Row[2][0] * vect[0] + Row[2][1] * vect[1] + Row[2][2] * vect[2])};
 }
 
 /***********************************************************************************************
@@ -241,9 +239,9 @@ Vector3 Matrix3D::Rotate_Vector(const Vector3 &vect) const {
  *   4/27/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 Vector3 Matrix3D::Inverse_Rotate_Vector(const Vector3 &vect) const {
-  return Vector3((Row[0][0] * vect[0] + Row[1][0] * vect[1] + Row[2][0] * vect[2]),
+  return {(Row[0][0] * vect[0] + Row[1][0] * vect[1] + Row[2][0] * vect[2]),
                  (Row[0][1] * vect[0] + Row[1][1] * vect[1] + Row[2][1] * vect[2]),
-                 (Row[0][2] * vect[0] + Row[1][2] * vect[1] + Row[2][2] * vect[2]));
+                 (Row[0][2] * vect[0] + Row[1][2] * vect[1] + Row[2][2] * vect[2])};
 }
 
 /***********************************************************************************************
@@ -509,7 +507,7 @@ void Matrix3D::Copy_3x3_Matrix(float matrix[3][3]) {
 // void print_matrix(const Matrix3D & m);
 
 void Matrix3D::Multiply(const Matrix3D &A, const Matrix3D &B, Matrix3D *set_res) {
-  assert(set_res != NULL);
+  assert(set_res != nullptr);
 
   Matrix3D tmp;
   Matrix3D *Aptr;
@@ -560,7 +558,7 @@ void Matrix3D::Multiply(const Matrix3D &A, const Matrix3D &B, Matrix3D *set_res)
 #if 0
 void Matrix3D::Multiply(const Matrix3D & A,const Matrix3D & B,Matrix3D * set_res)
 {
-	assert(set_res != NULL);
+	assert(set_res != nullptr);
 
 	float tmp[12];
 // Check for aliased parameters, copy the 'A' matrix into a temporary if the
@@ -938,7 +936,7 @@ void Matrix3D::Transform_Center_Extent_AABox(const Vector3 &center, const Vector
  * HISTORY:                                                                                    *
  *   9/16/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-int Matrix3D::Is_Orthogonal(void) const {
+int Matrix3D::Is_Orthogonal() const {
   Vector3 x(Row[0].X, Row[0].Y, Row[0].Z);
   Vector3 y(Row[1].X, Row[1].Y, Row[1].Z);
   Vector3 z(Row[2].X, Row[2].Y, Row[2].Z);
@@ -974,7 +972,7 @@ int Matrix3D::Is_Orthogonal(void) const {
  * HISTORY:                                                                                    *
  *   9/16/98    GTH : Created.                                                                 *
  *=============================================================================================*/
-void Matrix3D::Re_Orthogonalize(void) {
+void Matrix3D::Re_Orthogonalize() {
   Vector3 x(Row[0][0], Row[0][1], Row[0][2]);
   Vector3 y(Row[1][0], Row[1][1], Row[1][2]);
   Vector3 z;

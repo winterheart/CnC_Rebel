@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -53,19 +54,15 @@
 
 #include "always.h"
 #include "rawfile.h"
+
 #include <direct.h>
-// #include	<share.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
 #include "win.h"
-#include <limits.h>
-#include <errno.h>
-#ifdef _UNIX
-#include <sys/types.h>
-#include <sys/stat.h>
-#endif
+#include <climits>
+#include <cerrno>
+
 
 #if 0 // #ifdef NEVER    (gth) the MAX sdk must #define NEVER! yikes :-)
 	/*
@@ -142,7 +139,7 @@
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-RawFileClass::RawFileClass(void)
+RawFileClass::RawFileClass()
     : Rights(READ), BiasStart(0), BiasLength(-1), Handle(NULL_HANDLE), Filename(""), Date(0), Time(0) {}
 
 /***********************************************************************************************
@@ -160,7 +157,7 @@ RawFileClass::RawFileClass(void)
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool RawFileClass::Is_Open(void) const { return (Handle != NULL_HANDLE); }
+bool RawFileClass::Is_Open() const { return (Handle != NULL_HANDLE); }
 
 /***********************************************************************************************
  * RawFileClass::Error -- Handles displaying a file error message.                             *
@@ -203,7 +200,7 @@ void RawFileClass::Error(int, int, char const *) {}
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RawFileClass::Transfer_Block_Size(void) { return (int)((unsigned)UINT_MAX) - 16L; }
+int RawFileClass::Transfer_Block_Size() { return (int)((unsigned)UINT_MAX) - 16L; }
 
 /***********************************************************************************************
  * RawFileClass::RawFileClass -- Simple constructor for a file object.                         *
@@ -241,7 +238,7 @@ RawFileClass::RawFileClass(char const *filename)
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-RawFileClass::~RawFileClass(void) { Reset(); }
+RawFileClass::~RawFileClass() { Reset(); }
 
 /***********************************************************************************************
  * RawFileClass::Reset -- Closes the file handle and resets the object's state.
@@ -255,7 +252,7 @@ RawFileClass::~RawFileClass(void) { Reset(); }
  * HISTORY:                                                                                    *
  *   06/10/1999 PDS : Created.                                                                 *
  *=============================================================================================*/
-void RawFileClass::Reset(void) {
+void RawFileClass::Reset() {
   Close();
   Filename = "";
 }
@@ -380,7 +377,7 @@ int RawFileClass::Open(int rights) {
 #ifdef _UNIX
       Handle = fopen(Filename, "r");
 #else
-      Handle = CreateFileA(Filename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+      Handle = CreateFileA(Filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 #endif
       break;
 
@@ -388,7 +385,7 @@ int RawFileClass::Open(int rights) {
 #ifdef _UNIX
       Handle = fopen(Filename, "w");
 #else
-      Handle = CreateFileA(Filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+      Handle = CreateFileA(Filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 #endif
       break;
 
@@ -398,7 +395,7 @@ int RawFileClass::Open(int rights) {
 #else
       // SKB 5/13/99 use OPEN_ALWAYS instead of CREATE_ALWAYS so that files
       //					does not get destroyed.
-      Handle = CreateFileA(Filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+      Handle = CreateFileA(Filename, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 #endif
       break;
     }
@@ -475,7 +472,7 @@ bool RawFileClass::Is_Available(int forced) {
 #ifdef _UNIX
     Handle = fopen(Filename, "r");
 #else
-    Handle = CreateFileA(Filename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    Handle = CreateFileA(Filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 #endif
 
     if (Handle == NULL_HANDLE) {
@@ -606,7 +603,7 @@ int RawFileClass::Read(void *buffer, int size) {
     if ((bytesread == 0) && (!feof(Handle)))
       readok = ferror(Handle);
 #else
-    readok = ReadFile(Handle, buffer, size, &(unsigned long &)bytesread, NULL);
+    readok = ReadFile(Handle, buffer, size, &(unsigned long &)bytesread, nullptr);
 #endif
 
     if (!readok) {
@@ -671,7 +668,7 @@ int RawFileClass::Write(void const *buffer, int size) {
   if (byteswritten != size)
     writeok = FALSE;
 #else
-  writeok = WriteFile(Handle, buffer, size, &(unsigned long &)byteswritten, NULL);
+  writeok = WriteFile(Handle, buffer, size, &(unsigned long &)byteswritten, nullptr);
 #endif
 
   if (!writeok) {
@@ -789,7 +786,7 @@ int RawFileClass::Seek(int pos, int dir) {
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RawFileClass::Size(void) {
+int RawFileClass::Size() {
   int size = 0;
 
   /*
@@ -817,7 +814,7 @@ int RawFileClass::Size(void) {
     size = endpos - startpos;
     fsetpos(Handle, &curpos);
 #else
-    size = GetFileSize(Handle, NULL);
+    size = GetFileSize(Handle, nullptr);
 #endif
 
     /*
@@ -864,7 +861,7 @@ int RawFileClass::Size(void) {
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RawFileClass::Create(void) {
+int RawFileClass::Create() {
   Close();
   if (Open(WRITE)) {
 
@@ -900,7 +897,7 @@ int RawFileClass::Create(void) {
  * HISTORY:                                                                                    *
  *   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-int RawFileClass::Delete(void) {
+int RawFileClass::Delete() {
   /*
   **	If the file was open, then it must be closed first.
   */
@@ -966,7 +963,7 @@ int RawFileClass::Delete(void) {
  *   11/14/1995 DRD : Created.                                                                 *
  *   07/13/1996 JLB : Handles win32 method.                                                    *
  *=============================================================================================*/
-unsigned long RawFileClass::Get_Date_Time(void) {
+unsigned long RawFileClass::Get_Date_Time() {
 #ifdef _UNIX
   struct stat statbuf;
   lstat(Filename, &statbuf);
@@ -1104,7 +1101,7 @@ int RawFileClass::Raw_Seek(int pos, int dir) {
     dir = FILE_END;
     break;
   }
-  pos = SetFilePointer(Handle, pos, NULL, dir);
+  pos = SetFilePointer(Handle, pos, nullptr, dir);
 #endif
 
   /*
@@ -1161,7 +1158,7 @@ void RawFileClass::Attach(void *handle, int rights) {
  * HISTORY:                                                                                    *
  *   06/10/1999 PDS : Created.                                                                 *
  *=============================================================================================*/
-void RawFileClass::Detach(void) {
+void RawFileClass::Detach() {
   Rights = 0;
   BiasStart = 0;
   BiasLength = -1;

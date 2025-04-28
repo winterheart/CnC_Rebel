@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -40,7 +41,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "ode.h"
-#include <assert.h>
 
 static StateVectorClass Y0;
 static StateVectorClass Y1;
@@ -70,7 +70,7 @@ static StateVectorClass _WorkVector7;
  *   6/25/99    GTH : Updated to the new integrator system                                     *
  *=============================================================================================*/
 void IntegrationSystem::Euler_Integrate(ODESystemClass *sys, float dt) {
-  WWASSERT(sys != NULL);
+  WWASSERT(sys != nullptr);
 
   /*
   ** Get the current state
@@ -89,7 +89,7 @@ void IntegrationSystem::Euler_Integrate(ODESystemClass *sys, float dt) {
   ** Euler method, just evaluate the derivative, multiply
   ** by the time-step and add to the current state vector.
   */
-  sys->Compute_Derivatives(0, NULL, &dydt);
+  sys->Compute_Derivatives(0, nullptr, &dydt);
 
   Y1.Resize(Y0.Count());
   for (int i = 0; i < Y0.Count(); i++) {
@@ -137,7 +137,7 @@ void IntegrationSystem::Midpoint_Integrate(ODESystemClass *sys, float dt) {
   ** MidPoint method, first evaluate the derivitives of the
   ** state vector just like the Euler method.
   */
-  sys->Compute_Derivatives(0.0f, NULL, &dydt);
+  sys->Compute_Derivatives(0.0f, nullptr, &dydt);
 
   /*
   ** Compute the midpoint between the Euler solution and
@@ -204,7 +204,7 @@ void IntegrationSystem::Runge_Kutta_Integrate(ODESystemClass *sys, float dt) {
   /*
   ** First Step
   */
-  sys->Compute_Derivatives(0.0f, NULL, &dydt);
+  sys->Compute_Derivatives(0.0f, nullptr, &dydt);
   for (i = 0; i < Y0.Count(); i++) {
     yt[i] = Y0[i] + dt2 * dydt[i];
   }
@@ -255,7 +255,6 @@ void IntegrationSystem::Runge_Kutta_Integrate(ODESystemClass *sys, float dt) {
  *=============================================================================================*/
 void IntegrationSystem::Runge_Kutta5_Integrate(ODESystemClass *odesys, float dt) {
   int i;
-  int veclen;
   static const float a2 = 0.2f;
   static const float a3 = 0.3f;
   static const float a4 = 0.6f;
@@ -291,7 +290,7 @@ void IntegrationSystem::Runge_Kutta5_Integrate(ODESystemClass *odesys, float dt)
   */
   Y0.Reset();
   odesys->Get_State(Y0);
-  veclen = Y0.Count();
+  int veclen = Y0.Count();
   Y1.Resize(veclen);
 
   /*
@@ -316,7 +315,7 @@ void IntegrationSystem::Runge_Kutta5_Integrate(ODESystemClass *odesys, float dt)
   yerr.Resize(veclen);
 
   // First step
-  odesys->Compute_Derivatives(0.0f, NULL, &dydt);
+  odesys->Compute_Derivatives(0.0f, nullptr, &dydt);
   for (i = 0; i < veclen; i++) {
     ytmp[i] = Y0[i] + b21 * dt * dydt[i];
   }

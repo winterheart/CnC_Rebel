@@ -38,8 +38,8 @@ cEncoderTypeEntry cEncoderList::EncoderTypes[];
 void cEncoderList::Clear_Entries() {
   WWDEBUG_SAY(("cEncoderList::Clear_Entries\n"));
 
-  for (int i = 0; i < MAX_ENCODERTYPES; i++) {
-    EncoderTypes[i].Invalidate();
+  for (auto & EncoderType : EncoderTypes) {
+    EncoderType.Invalidate();
   }
 }
 

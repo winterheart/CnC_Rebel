@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -3635,7 +3636,7 @@ void SoldierGameObj::Apply_Damage_Extended(const OffenseObjectClass &damager, fl
     if (FreeRandom.Get_Float() < probability) {
       // if skin is not impervious to the damage
       int skin = Get_Defense_Object()->Get_Skin();
-      ArmorWarheadManager::SpecialDamageType special_damage = ArmorWarheadManager::Get_Special_Damage_Type(warhead);
+      special_damage = ArmorWarheadManager::Get_Special_Damage_Type(warhead);
       if (!ArmorWarheadManager::Is_Skin_Impervious(special_damage, skin)) {
         Set_Special_Damage_Mode(special_damage, damager.Get_Owner());
       }
@@ -3669,7 +3670,7 @@ void SoldierGameObj::Apply_Damage_Extended(const OffenseObjectClass &damager, fl
 
     // Check for creating visceroids
     if (IS_MISSION) {
-      int warhead = damager.Get_Warhead();
+      warhead = damager.Get_Warhead();
       float visceroid_probability = ArmorWarheadManager::Get_Visceroid_Probability(warhead);
       if (!Is_Human_Controlled() && visceroid_probability != 0) {
         if (FreeRandom.Get_Float() < visceroid_probability) {
@@ -4207,7 +4208,7 @@ void SoldierGameObj::Get_Description(StringClass &description) {
   line += "\n";
   description += line;
 
-  line.Format("ANIM:  %s\n", AnimationName);
+  line.Format("ANIM:  %s\n", AnimationName.Peek_Buffer());
   description += line;
 
   if (Vehicle != NULL) {

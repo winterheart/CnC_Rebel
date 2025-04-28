@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -33,9 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 /*
 **	This header defines generally unused member structures used by the INI class.
@@ -52,11 +51,11 @@
 **	The entry identifier and value string are combined into this object.
 */
 struct INIEntry : public Node<INIEntry *> {
-  INIEntry(char *entry = NULL, char *value = NULL) : Entry(entry), Value(value) {}
-  ~INIEntry(void);
-  //	~INIEntry(void) {free(Entry);Entry = NULL;free(Value);Value = NULL;}
+  INIEntry(char *entry = nullptr, char *value = nullptr) : Entry(entry), Value(value) {}
+  ~INIEntry();
+  //	~INIEntry(void) {free(Entry);Entry = nullptr;free(Value);Value = nullptr;}
   //	int Index_ID(void) const {return(CRCEngine()(Entry, strlen(Entry)));};
-  int Index_ID(void) const { return CRC::String(Entry); };
+  int Index_ID() const { return CRC::String(Entry); };
 
   char *Entry;
   char *Value;
@@ -66,13 +65,13 @@ struct INIEntry : public Node<INIEntry *> {
 **	Each section (bracketed) is represented by an object of this type. All entries
 **	subordinate to this section are attached.
 */
-struct INISection : public Node<INISection *> {
+struct INISection : Node<INISection *> {
   INISection(char *section) : Section(section) {}
-  ~INISection(void);
+  ~INISection();
   //		~INISection(void) {free(Section);Section = 0;EntryList.Delete();}
   INIEntry *Find_Entry(char const *entry) const;
   //		int Index_ID(void) const {return(CRCEngine()(Section, strlen(Section)));};
-  int Index_ID(void) const { return CRC::String(Section); };
+  int Index_ID() const { return CRC::String(Section); };
 
   char *Section;
   List<INIEntry *> EntryList;

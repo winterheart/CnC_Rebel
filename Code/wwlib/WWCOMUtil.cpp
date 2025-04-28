@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -96,7 +97,7 @@ STDMETHODIMP Dispatch_PutProperty(IDispatch *object, const OLECHAR *propName, VA
 
   if (SUCCEEDED(hr)) {
     // Get the property
-    DISPPARAMS params = {NULL, NULL, 0, 0};
+    DISPPARAMS params = {nullptr, nullptr, 0, 0};
     params.cArgs = 1;
     params.rgvarg = propValue;
 
@@ -135,7 +136,7 @@ STDMETHODIMP Dispatch_InvokeMethod(IDispatch *object, const OLECHAR *methodName,
 
   if (SUCCEEDED(hr)) {
     UINT argErr = 0;
-    hr = object->Invoke(dispid, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, params, result, NULL, &argErr);
+    hr = object->Invoke(dispid, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, params, result, nullptr, &argErr);
   }
 
   return hr;
@@ -162,10 +163,10 @@ bool RegisterCOMServer(const char *dllName) {
 
   HINSTANCE hInst = LoadLibrary(dllName);
 
-  if (hInst != NULL) {
+  if (hInst != nullptr) {
     FARPROC regServerProc = GetProcAddress(hInst, "DllRegisterServer");
 
-    if (regServerProc != NULL) {
+    if (regServerProc != nullptr) {
       HRESULT hr = regServerProc();
       success = SUCCEEDED(hr);
     }
@@ -197,10 +198,10 @@ bool UnregisterCOMServer(const char *dllName) {
 
   HINSTANCE hInst = LoadLibrary(dllName);
 
-  if (hInst != NULL) {
+  if (hInst != nullptr) {
     FARPROC unregServerProc = GetProcAddress(hInst, "DllUnregisterServer");
 
-    if (unregServerProc != NULL) {
+    if (unregServerProc != nullptr) {
       HRESULT hr = unregServerProc();
       success = SUCCEEDED(hr);
     }

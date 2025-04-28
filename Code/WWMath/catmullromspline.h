@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,14 +35,13 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef CATMULLROMSPLINE_H
 #define CATMULLROMSPLINE_H
 
 #include "hermitespline.h"
+#include "persistfactory.h"
 
 /**
 ** CatmullRomSpline3DClass
@@ -49,10 +49,10 @@
 */
 class CatmullRomSpline3DClass : public HermiteSpline3DClass {
 public:
-  void Update_Tangents(void);
+  void Update_Tangents();
 
   // save-load support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 };
@@ -63,10 +63,10 @@ public:
 */
 class CatmullRomSpline1DClass : public HermiteSpline1DClass {
 public:
-  void Update_Tangents(void);
+  void Update_Tangents();
 
   // save-load support
-  virtual const PersistFactoryClass &Get_Factory(void) const;
+  virtual const PersistFactoryClass &Get_Factory() const;
   virtual bool Save(ChunkSaveClass &csave);
   virtual bool Load(ChunkLoadClass &cload);
 };

@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -48,23 +49,23 @@
 #include "dsurface.h"
 #include "data.h"
 #include "_timer.h"
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 
-LPDIRECTDRAW DirectDrawObject = NULL;      // Pointer to the direct draw object
-LPDIRECTDRAW2 DirectDraw2Interface = NULL; // Pointer to direct draw 2 interface
+LPDIRECTDRAW DirectDrawObject = nullptr;      // Pointer to the direct draw object
+LPDIRECTDRAW2 DirectDraw2Interface = nullptr; // Pointer to direct draw 2 interface
 
 static PALETTEENTRY PaletteEntries[256]; // 256 windows palette entries
 static LPDIRECTDRAWPALETTE PalettePtr;   // Pointer to direct draw palette object
 static bool FirstPaletteSet = false;     // Is this the first time 'Set_Palette' has been called?
-LPDIRECTDRAWSURFACE PaletteSurface = NULL;
+LPDIRECTDRAWSURFACE PaletteSurface = nullptr;
 bool SurfacesRestored = false;
 static bool CanVblankSync = true;
 
 unsigned char CurrentPalette[768];
 bool Debug_Windowed;
 
-int (*DirectDrawErrorHandler)(HRESULT error) = NULL;
+int (*DirectDrawErrorHandler)(HRESULT error) = nullptr;
 
 void Set_Palette(PaletteClass const &pal, int time, void (*callback)()) {
   CDTimerClass<SystemTimerClass> timer = time;
@@ -291,9 +292,9 @@ void Process_DD_Result(HRESULT result, int display_ok_msg) {
   /*
   **	Scan for a matching error code and display the appropriate message.
   */
-  for (int index = 0; index < ARRAY_SIZE(_errors); index++) {
-    if (_errors[index].Error == result) {
-      MessageBox(MainWindow, _errors[index].Message, "Westwood Library Direct Draw Error", MB_ICONEXCLAMATION | MB_OK);
+  for (auto & _error : _errors) {
+    if (_error.Error == result) {
+      MessageBox(MainWindow, _error.Message, "Westwood Library Direct Draw Error", MB_ICONEXCLAMATION | MB_OK);
       return;
     }
   }
@@ -322,7 +323,7 @@ void Process_DD_Result(HRESULT result, int display_ok_msg) {
  * HISTORY:                                                                                    *
  *    6/7/96 5:06PM ST : Created                                                               *
  *=============================================================================================*/
-void Check_Overlapped_Blit_Capability(void) {
+void Check_Overlapped_Blit_Capability() {
   //	OverlappedVideoBlits = false;
 
 #ifdef NEVER
@@ -333,7 +334,7 @@ void Check_Overlapped_Blit_Capability(void) {
 
   GraphicBufferClass test_buffer;
 
-  test_buffer.Init(64, 64, NULL, 0, (GBC_Enum)GBC_VIDEOMEM);
+  test_buffer.Init(64, 64, nullptr, 0, (GBC_Enum)GBC_VIDEOMEM);
 
   test_buffer.Clear();
 
@@ -354,12 +355,12 @@ void Check_Overlapped_Blit_Capability(void) {
 #endif
 }
 
-void Prep_Direct_Draw(void) {
+void Prep_Direct_Draw() {
   //
   // If there is not currently a direct draw object then we need to define one.
   //
-  if (DirectDrawObject == NULL) {
-    HRESULT result = DirectDrawCreate(NULL, &DirectDrawObject, NULL);
+  if (DirectDrawObject == nullptr) {
+    HRESULT result = DirectDrawCreate(nullptr, &DirectDrawObject, nullptr);
     Process_DD_Result(result, false);
     if (result == DD_OK) {
       if (Debug_Windowed) {
@@ -397,7 +398,7 @@ bool Set_Video_Mode(HWND, int w, int h, int bits_per_pixel) {
   if (result != DD_OK) {
     //		Process_DD_Result(result, false);
     DirectDrawObject->Release();
-    DirectDrawObject = NULL;
+    DirectDrawObject = nullptr;
     return (false);
   }
 
@@ -405,7 +406,7 @@ bool Set_Video_Mode(HWND, int w, int h, int bits_per_pixel) {
   // Create a direct draw palette object
   //
   // MessageBox(MainWindow, "In Set_Video_Mode. About to call CreatePalette.","Note", MB_ICONEXCLAMATION|MB_OK);
-  result = DirectDrawObject->CreatePalette(DDPCAPS_8BIT | DDPCAPS_ALLOW256, &PaletteEntries[0], &PalettePtr, NULL);
+  result = DirectDrawObject->CreatePalette(DDPCAPS_8BIT | DDPCAPS_ALLOW256, &PaletteEntries[0], &PalettePtr, nullptr);
   Process_DD_Result(result, false);
   if (result != DD_OK) {
     return (false);
@@ -423,7 +424,7 @@ bool Set_Video_Mode(HWND, int w, int h, int bits_per_pixel) {
   VideoToSystemBlits = false;
   SystemToSystemBlits = false;
   if (result != DD_OK) {
-    DirectDraw2Interface = NULL;
+    DirectDraw2Interface = nullptr;
   } else {
     DDCAPS capabilities;
     DDCAPS emulated_capabilities;
@@ -460,7 +461,7 @@ bool Set_Video_Mode(HWND, int w, int h, int bits_per_pixel) {
  * HISTORY:                                                                                    *
  *   09/26/1995 PWG : Created.                                                                 *
  *=============================================================================================*/
-void Reset_Video_Mode(void) {
+void Reset_Video_Mode() {
   HRESULT result;
 
   //
@@ -473,7 +474,7 @@ void Reset_Video_Mode(void) {
     result = DirectDrawObject->Release();
     Process_DD_Result(result, false);
 
-    DirectDrawObject = NULL;
+    DirectDrawObject = nullptr;
   }
 }
 
@@ -491,14 +492,14 @@ void Reset_Video_Mode(void) {
  * HISTORY:                                                                                    *
  *    11/29/95 12:52PM ST : Created                                                            *
  *=============================================================================================*/
-unsigned int Get_Free_Video_Memory(void) {
+unsigned int Get_Free_Video_Memory() {
   DDCAPS video_capabilities;
 
   if (DirectDrawObject) {
 
     video_capabilities.dwSize = sizeof(video_capabilities);
 
-    if (DD_OK == DirectDrawObject->GetCaps(&video_capabilities, NULL)) {
+    if (DD_OK == DirectDrawObject->GetCaps(&video_capabilities, nullptr)) {
       char string[256];
       wsprintf(string, "In Get_Free_Video_Memory. About to return %d bytes", video_capabilities.dwVidMemFree);
       return (video_capabilities.dwVidMemFree);
@@ -522,7 +523,7 @@ unsigned int Get_Free_Video_Memory(void) {
  * HISTORY:                                                                                    *
  *    1/12/96 9:14AM ST : Created                                                              *
  *=============================================================================================*/
-unsigned Get_Video_Hardware_Capabilities(void) {
+unsigned Get_Video_Hardware_Capabilities() {
   DDCAPS video_capabilities;
   unsigned video;
 
@@ -538,7 +539,7 @@ unsigned Get_Video_Hardware_Capabilities(void) {
   video_capabilities.dwSize = sizeof(video_capabilities);
   // MessageBox(MainWindow, "In Get_Video_Hardware_Capabilities. About to call GetCaps","Note",
   // MB_ICONEXCLAMATION|MB_OK);
-  HRESULT result = DirectDrawObject->GetCaps(&video_capabilities, NULL);
+  HRESULT result = DirectDrawObject->GetCaps(&video_capabilities, nullptr);
   if (result != DD_OK) {
     Process_DD_Result(result, false);
     return (0);
@@ -615,26 +616,26 @@ void Wait_Vert_Blank(void) {
  *    10/11/95 3:33PM ST : Created                                                             *
  *=============================================================================================*/
 void Set_Palette(void const *palette) {
-  assert(palette != NULL);
+  assert(palette != nullptr);
 
   if (&CurrentPalette[0] != palette) {
     memmove(CurrentPalette, palette, sizeof(CurrentPalette));
   }
 
-  if (DirectDrawObject != NULL && PaletteSurface != NULL) {
+  if (DirectDrawObject != nullptr && PaletteSurface != nullptr) {
     unsigned char *palette_get = (unsigned char *)palette;
-    for (int index = 0; index < 256; index++) {
+    for (auto & PaletteEntrie : PaletteEntries) {
 
       int red = *palette_get++;
       int green = *palette_get++;
       int blue = *palette_get++;
 
-      PaletteEntries[index].peRed = (unsigned char)red;
-      PaletteEntries[index].peGreen = (unsigned char)green;
-      PaletteEntries[index].peBlue = (unsigned char)blue;
+      PaletteEntrie.peRed = (unsigned char)red;
+      PaletteEntrie.peGreen = (unsigned char)green;
+      PaletteEntrie.peBlue = (unsigned char)blue;
     }
 
-    if (PalettePtr != NULL) {
+    if (PalettePtr != nullptr) {
       if (!FirstPaletteSet) {
         PaletteSurface->SetPalette(PalettePtr);
         FirstPaletteSet = true;
@@ -659,7 +660,7 @@ void Set_Palette(void const *palette) {
  * HISTORY:                                                                                    *
  *   07-25-95 03:53pm ST : Created                                                             *
  *=============================================================================================*/
-void Wait_Blit(void) {
+void Wait_Blit() {
   HRESULT return_code;
 
   do {

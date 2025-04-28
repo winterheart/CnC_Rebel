@@ -259,6 +259,12 @@ set(WWOnline_SOURCES
     ../WWOnline/WOLUser.cpp
     ../WWOnline/WaitCondition.cpp
 )
+set(WOLBrowser_SOURCES
+    ../WOLBrowser/WOLBrowser_i.c
+)
+set(WOLAPI_SOURCES
+    ../WOLAPI/WOLAPI_i.c
+)
 
 add_executable(Renegade WIN32
     ${Combat_SOURCES}
@@ -273,12 +279,16 @@ add_executable(Renegade WIN32
     ${Shell_SOURCES}
     ${Unclaimed_SOURCES}
     ${WOL_SOURCES}
+    ${WOLAPI_SOURCES}
+    ${WOLBrowser_SOURCES}
     ${WWOnline_SOURCES}
     chat.rc
 )
 target_include_directories(Renegade PUBLIC
     $<BUILD_INTERFACE:
         ${PROJECT_SOURCE_DIR}/Code/Commando
+        ${PROJECT_SOURCE_DIR}/Code/WOLAPI
+        ${PROJECT_SOURCE_DIR}/Code/WOLBrowser
         ${PROJECT_SOURCE_DIR}/Code
     >
     PRIVATE
@@ -290,8 +300,6 @@ target_link_libraries(Renegade PRIVATE
     BinkMovie
     Combat
     SControl
-    WOLAPI
-    WOLBrowser
     WW3D2
     WWDebug
     WWLib

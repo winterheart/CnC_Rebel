@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
-
-#ifndef WWDEBUG_H
-#define WWDEBUG_H
 
 // The macro MESSAGE allows user to put:
 // #pragma MESSAGE("Hello world")
@@ -159,6 +155,4 @@ void WWDebug_DBWin32_Message_Handler(const char *message);
 #else
 #define WWDEBUG_PROFILE_START(x)
 #define WWDEBUG_PROFILE_STOP(x)
-#endif
-
 #endif

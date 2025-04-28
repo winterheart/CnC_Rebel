@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef VECTOR2I_H
 #define VECTOR2I_H
@@ -48,7 +47,7 @@ public:
   int I;
   int J;
 
-  WWINLINE Vector2i(void);
+  WWINLINE Vector2i();
   WWINLINE Vector2i(int i, int j);
 
   WWINLINE void Set(int i, int j);
@@ -61,7 +60,7 @@ public:
   WWINLINE int &operator[](int n);
 };
 
-WWINLINE Vector2i::Vector2i(void) {}
+WWINLINE Vector2i::Vector2i() {}
 
 WWINLINE Vector2i::Vector2i(int i, int j) {
   I = i;

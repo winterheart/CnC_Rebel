@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -46,7 +47,7 @@ public:
   void Add_Seeds(unsigned char *values, int length);
 
 private:
-  void Generate_Seed(void); // Generate the inital seed
+  void Generate_Seed(); // Generate the inital seed
 
   enum {
     SeedLength = 16,    // bytes in random seed

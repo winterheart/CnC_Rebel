@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -43,6 +44,8 @@
  *   Oriented_Box_Intersects_Tri -- tests if the given box and tri intersect                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cassert>
+
 #include "obbox.h"
 #include "matrix3.h"
 #include "vector3.h"
@@ -50,8 +53,6 @@
 #include "tri.h"
 #include "plane.h"
 #include "quat.h"
-#include <assert.h>
-// #include <stdlib.h>
 
 /***********************************************************************************************
  * OBBoxClass::OBBoxClass -- Constructor that computes the box for a set of points             *

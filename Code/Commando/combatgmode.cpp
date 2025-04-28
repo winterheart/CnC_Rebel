@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -522,7 +523,7 @@ public:
 
         backdrop.Set_Model(desc);
         StringClass anim_name;
-        anim_name.Format("%s.%s", desc, desc);
+        anim_name.Format("%s.%s", desc.Peek_Buffer(), desc.Peek_Buffer());
         backdrop.Set_Animation(anim_name);
         backdrop.Set_Animation_Percentage(0);
       }
@@ -615,7 +616,7 @@ void CombatGameModeClass::Load_Level(void) {
   WWMEMLOG(MEM_GAMEDATA);
   Debug_Say(("CombatGameModeClass::Load_Level\n"));
 
-  ConsoleBox.Print("Loading level %s\n", The_Game()->Get_Map_Name());
+  ConsoleBox.Print("Loading level %s\n", The_Game()->Get_Map_Name().Peek_Buffer());
 
   CombatManager::Set_Load_Progress(0);
   LoadingScreenClass loading_screen; // Try moving this to very start of loading
@@ -675,7 +676,7 @@ void CombatGameModeClass::Load_Level(void) {
   preload_assets = cDevOptions::PreloadAssets.Get();
 #endif
 
-  DIAG_LOG(("LOAD", "%s", map_name));
+  DIAG_LOG(("LOAD", "%s", map_name.Peek_Buffer()));
 
   NetworkObjectMgrClass::Set_Is_Level_Loading(true);
 
@@ -1139,7 +1140,7 @@ void CombatGameModeClass::Core_Restart(void) {
           TimeManager::Reset();
           GenericDataSafeClass::Reset_Timers();
 
-          GameModeClass *game_mode = GameModeManager::Find("WOL");
+          game_mode = GameModeManager::Find("WOL");
 
           if (game_mode && game_mode->Is_Active()) {
             WolGameModeClass *wol_game = reinterpret_cast<WolGameModeClass *>(game_mode);

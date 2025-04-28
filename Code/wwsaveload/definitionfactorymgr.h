@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __DEFINITION_FACTORY_MGR_H
-#define __DEFINITION_FACTORY_MGR_H
 
 #include "always.h"
 #include "bittype.h"
@@ -67,8 +63,8 @@ public:
   static DefinitionFactoryClass *Get_Next(DefinitionFactoryClass *current, uint32 superclass_id);
 
   // Factory enumeration
-  static DefinitionFactoryClass *Get_First(void);
-  static DefinitionFactoryClass *Get_Next(DefinitionFactoryClass *current);
+  static DefinitionFactoryClass *Get_First();
+  static DefinitionFactoryClass *Get_Next(const DefinitionFactoryClass *current);
 
 private:
   /////////////////////////////////////////////////////////////////////
@@ -82,5 +78,3 @@ private:
   /////////////////////////////////////////////////////////////////////
   static DefinitionFactoryClass *_FactoryListHead;
 };
-
-#endif //__DEFINITION_FACTORY_MGR_H

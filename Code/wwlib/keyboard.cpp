@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -58,12 +59,11 @@
 #include "always.h"
 #include "_xmouse.h"
 #include "keyboard.h"
-// #include	"mono.h"
 #include "msgloop.h"
 
 #define ARRAY_SIZE(x) int(sizeof(x) / sizeof(x[0]))
 
-void Stop_Execution(void) {
+void Stop_Execution() {
   //	__asm nop			// Is this line needed?
 }
 
@@ -77,7 +77,7 @@ void Stop_Execution(void) {
  * HISTORY:                                                                                    *
  *   10/16/1995 PWG : Created.                                                                 *
  *=============================================================================================*/
-WWKeyboardClass::WWKeyboardClass(void) : MouseQX(0), MouseQY(0), Head(0), Tail(0) {
+WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0) {
   memset(KeyState, '\0', sizeof(KeyState));
 }
 
@@ -93,7 +93,7 @@ WWKeyboardClass::WWKeyboardClass(void) : MouseQX(0), MouseQY(0), Head(0), Tail(0
  * HISTORY:                                                                                    *
  *   10/17/1995 PWG : Created.                                                                 *
  *=============================================================================================*/
-unsigned short WWKeyboardClass::Buff_Get(void) {
+unsigned short WWKeyboardClass::Buff_Get() {
   while (!Check()) {
   } // wait for key in buffer
 
@@ -137,7 +137,7 @@ bool WWKeyboardClass::Is_Mouse_Key(unsigned short key) {
  *   10/16/1995 PWG : Created.                                                                 *
  *   09/24/1996 JLB : Converted to new style keyboard system.                                  *
  *=============================================================================================*/
-unsigned short WWKeyboardClass::Check(void) const {
+unsigned short WWKeyboardClass::Check() const {
   ((WWKeyboardClass *)this)->Fill_Buffer_From_System();
   if (Is_Buffer_Empty())
     return (false);
@@ -158,7 +158,7 @@ unsigned short WWKeyboardClass::Check(void) const {
  * HISTORY:                                                                                    *
  *   10/16/1995 PWG : Created.                                                                 *
  *=============================================================================================*/
-unsigned short WWKeyboardClass::Get(void) {
+unsigned short WWKeyboardClass::Get() {
   while (!Check()) {
   } // wait for key in buffer
   return (Buff_Get());
@@ -368,7 +368,7 @@ bool WWKeyboardClass::Down(unsigned short key) { return (GetAsyncKeyState(key & 
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-unsigned short WWKeyboardClass::Fetch_Element(void) {
+unsigned short WWKeyboardClass::Fetch_Element() {
   unsigned short val = 0;
   if (Head != Tail) {
     val = Buffer[Head];
@@ -395,7 +395,7 @@ unsigned short WWKeyboardClass::Fetch_Element(void) {
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-unsigned short WWKeyboardClass::Peek_Element(void) const {
+unsigned short WWKeyboardClass::Peek_Element() const {
   if (!Is_Buffer_Empty()) {
     return (Buffer[Head]);
   }
@@ -443,7 +443,7 @@ bool WWKeyboardClass::Put_Element(unsigned short val) {
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool WWKeyboardClass::Is_Buffer_Full(void) const {
+bool WWKeyboardClass::Is_Buffer_Full() const {
   if ((Tail + 1) % ARRAY_SIZE(Buffer) == Head) {
     return (true);
   }
@@ -464,7 +464,7 @@ bool WWKeyboardClass::Is_Buffer_Full(void) const {
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool WWKeyboardClass::Is_Buffer_Empty(void) const {
+bool WWKeyboardClass::Is_Buffer_Empty() const {
   if (Head == Tail) {
     return (true);
   }
@@ -487,7 +487,7 @@ bool WWKeyboardClass::Is_Buffer_Empty(void) const {
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void WWKeyboardClass::Fill_Buffer_From_System(void) {
+void WWKeyboardClass::Fill_Buffer_From_System() {
   if (!Is_Buffer_Full()) {
     Windows_Message_Handler();
     //		MSG	msg;
@@ -515,7 +515,7 @@ void WWKeyboardClass::Fill_Buffer_From_System(void) {
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void WWKeyboardClass::Clear(void) {
+void WWKeyboardClass::Clear() {
   /*
   **	Extract any windows pending keyboard message events and then clear out the keyboard
   **	buffer.
@@ -565,7 +565,7 @@ bool WWKeyboardClass::Message_Handler(HWND window, UINT message, UINT wParam, LO
   int y = point.y;
 
   // Special conversion to game coordinates is needed here.
-  if (MouseCursor != NULL)
+  if (MouseCursor != nullptr)
     MouseCursor->Convert_Coordinate(x, y);
 
   /*
@@ -717,7 +717,7 @@ bool WWKeyboardClass::Message_Handler(HWND window, UINT message, UINT wParam, LO
  * HISTORY:                                                                                    *
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-int WWKeyboardClass::Available_Buffer_Room(void) const {
+int WWKeyboardClass::Available_Buffer_Room() const {
   int avail = 0;
   if (Head == Tail) {
     avail = ARRAY_SIZE(Buffer);

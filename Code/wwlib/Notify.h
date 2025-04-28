@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -102,7 +103,7 @@ template <typename Event> class Notifier {
 public:
   typedef std::vector<Observer<Event> *> ObserverColl;
 
-  Notifier() {}
+  Notifier() = default;
 
   virtual ~Notifier() {
     for (int index = mObservers.size(); index--;) {
@@ -137,7 +138,7 @@ public:
     }
   }
 
-  virtual bool HasObservers(void) const { return !mObservers.empty(); }
+  virtual bool HasObservers() const { return !mObservers.empty(); }
 
 private:
   //! Observer collection
@@ -171,7 +172,7 @@ public:
 
   inline V &operator()() { return mValue; }
 
-  inline V &Subject(void) { return mValue; }
+  inline V &Subject() { return mValue; }
 
 protected:
   V &mValue;
@@ -181,9 +182,9 @@ template <typename T, typename O> class TypedEventPtr {
 public:
   TypedEventPtr(O *subject) : mSubject(subject) {}
 
-  inline O *Subject(void) { return mSubject; }
+  O *Subject() { return mSubject; }
 
-  inline O *operator()() { return mSubject; }
+  O *operator()() { return mSubject; }
 
 protected:
   O *mSubject;
@@ -191,11 +192,11 @@ protected:
 
 template <typename A, typename O> class TypedActionPtr : public TypedEventPtr<A, O> {
 public:
-  A GetAction(void) const { return mAction; }
+  A GetAction() const { return mAction; }
 
   TypedActionPtr(A action, O *data) : TypedEventPtr<A, O>(data), mAction(action) {}
 
-  ~TypedActionPtr() {}
+  ~TypedActionPtr() = default;
 
 protected:
   A mAction;
@@ -205,9 +206,9 @@ template <typename A, typename B> class TypedEventPair {
 public:
   TypedEventPair(A itemA, B itemB) : mItemA(itemA), mItemB(itemB) {}
 
-  inline A GetItemA(void) { return mItemA; }
+  A GetItemA() { return mItemA; }
 
-  inline B GetItemB(void) { return mItemB; }
+  B GetItemB() { return mItemB; }
 
 protected:
   A mItemA;

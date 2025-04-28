@@ -1,6 +1,7 @@
 /*
 **	Command & Conquer Renegade(tm)
 **	Copyright 2025 Electronic Arts Inc.
+**	Copyright 2025 CnC Rebel Developers.
 **
 **	This program is free software: you can redistribute it and/or modify
 **	it under the terms of the GNU General Public License as published by
@@ -34,9 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
 
 #ifndef LINESEG_H
 #define LINESEG_H
@@ -55,7 +54,7 @@ class Matrix3D;
 class LineSegClass {
 
 public:
-  LineSegClass(void) {}
+  LineSegClass() {}
   LineSegClass(const Vector3 &p0, const Vector3 &p1) : P0(p0), P1(p1) { recalculate(); }
   LineSegClass(const LineSegClass &that, const Matrix3D &tm) { Set(that, tm); }
 
@@ -80,7 +79,7 @@ public:
                          float *fraction2) const;
 
 protected:
-  void recalculate(void) {
+  void recalculate() {
     DP = P1 - P0;
     Dir = DP;
     Dir.Normalize();
