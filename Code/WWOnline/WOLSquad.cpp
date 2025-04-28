@@ -32,10 +32,10 @@
  *
  ******************************************************************************/
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <memory.h>
 #include "WOLSquad.h"
-#include <WWDebug\WWDebug.h>
+#include <WWDebug/WWDebug.h>
 
 namespace WWOnline {
 

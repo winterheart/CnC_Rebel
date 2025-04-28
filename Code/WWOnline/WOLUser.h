@@ -48,8 +48,8 @@
 #include "WOLLadder.h"
 
 namespace WOL {
-#include <wolapi\wolapi.h>
-#include <wolapi\chatdefs.h>
+#include <WOLAPI/wolapi.h>
+#include <WOLAPI/chatdefs.h>
 } // namespace WOL
 
 #if defined(_MSC_VER)
