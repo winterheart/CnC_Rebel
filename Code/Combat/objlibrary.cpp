@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -54,7 +55,7 @@ PhysicalGameObj *ObjectLibraryManager::Create_Object(int def_id) {
     if (def->Is_Valid_Config(error_message)) {
       return (PhysicalGameObj *)def->Create();
     } else {
-      WWDEBUG_SAY(("Could not create object %s!\n%s\n", def->Get_Name(), error_message));
+      WWDEBUG_SAY(("Could not create object %s!\n%s\n", def->Get_Name(), error_message.Peek_Buffer()));
       return NULL;
     }
   }
@@ -71,7 +72,7 @@ PhysicalGameObj *ObjectLibraryManager::Create_Object(const char *name) {
     if (def->Is_Valid_Config(error_message)) {
       return (PhysicalGameObj *)def->Create();
     } else {
-      WWDEBUG_SAY(("Could not create object %s!\n%s\n", def->Get_Name(), error_message));
+      WWDEBUG_SAY(("Could not create object %s!\n%s\n", def->Get_Name(), error_message.Peek_Buffer()));
       return NULL;
     }
   } else if (def) {

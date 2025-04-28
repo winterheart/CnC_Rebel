@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -471,7 +472,7 @@ void DoorNetworkObjectClass::Get_Description(StringClass &description) {
     DIE;
   }
 
-  line.Format("DoorState:  %d (%s)\n", DoorState, state_string);
+  line.Format("DoorState:  %d (%s)\n", DoorState, state_string.Peek_Buffer());
   description += line;
 
   if (PhysObj != NULL) {
@@ -657,7 +658,7 @@ void ElevatorNetworkObjectClass::Get_Description(StringClass &description) {
     DIE;
   }
 
-  line.Format("State:            %d (%s)\n", State, state_string);
+  line.Format("State:            %d (%s)\n", State, state_string.Peek_Buffer());
   description += line;
 
   //
@@ -677,7 +678,7 @@ void ElevatorNetworkObjectClass::Get_Description(StringClass &description) {
     DIE;
   }
 
-  line.Format("DoorStateTop:     %d (%s)\n", DoorStateTop, state_string);
+  line.Format("DoorStateTop:     %d (%s)\n", DoorStateTop, state_string.Peek_Buffer());
   description += line;
 
   //
@@ -697,7 +698,7 @@ void ElevatorNetworkObjectClass::Get_Description(StringClass &description) {
     DIE;
   }
 
-  line.Format("DoorStateBottom:  %d (%s)\n", DoorStateBottom, state_string);
+  line.Format("DoorStateBottom:  %d (%s)\n", DoorStateBottom, state_string.Peek_Buffer());
   description += line;
 
   if (PhysObj != NULL) {

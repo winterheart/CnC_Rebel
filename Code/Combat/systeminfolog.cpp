@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "systeminfolog.h"
 #include "registry.h"
@@ -133,8 +134,8 @@ void SystemInfoLog::Get_Final_String(StringClass &string) {
   vnum.Format("%d.%2.2d", DebugManager::Get_Version_Number() >> 16, DebugManager::Get_Version_Number() & 0xffff);
   ptime.Format("%2.2d:%2.2d", TotalPlayingTime / 60, TotalPlayingTime % 60);
   avgfps.Format("%d.%1.1d", AvgFPS / 10, AvgFPS % 10);
-  string.Format("%5s %16s %6s %6d %6d %6s %8d ", vnum, CurrentLevel, ptime, MinFPS != 1000 ? MinFPS : 0, MaxFPS, avgfps,
-                CurrentLoadingTime);
+  string.Format("%5s %16s %6s %6d %6d %6s %8d ", vnum.Peek_Buffer(), CurrentLevel.Peek_Buffer(), ptime.Peek_Buffer(),
+    MinFPS != 1000 ? MinFPS : 0, MaxFPS, avgfps.Peek_Buffer(), CurrentLoadingTime);
 }
 
 void SystemInfoLog::Set_State_Exiting() {
@@ -240,7 +241,7 @@ void PlayerInfoLog::Append_To_Log(PlayerDataClass *data) {
 #ifdef WWDEBUG
   StringClass tmp;
   StringClass work(0, true);
-  ADD_HISTORY(("Map name: %s\r\n", CurrentMapName));
+  ADD_HISTORY(("Map name: %s\r\n", CurrentMapName.Peek_Buffer()));
   ADD_HISTORY(("Game time: %2.2f\r\n", data->Get_Game_Time()));
   ADD_HISTORY(("Session time: %2.2f\r\n", data->Get_Session_Time()));
   ADD_HISTORY(("Enemies killed: %d\r\n", data->Get_Enemies_Killed()));
@@ -283,7 +284,8 @@ void PlayerInfoLog::Get_Compact_Log(StringClass &string) {
     team1size = 10 * Team1TotalSizes / Team1SizeReported;
   }
 
-  string.Format("%s\t%d.%d\t%d.%d\t", CurrentMapName, team0size / 10, team0size % 10, team1size / 10, team1size % 10);
+  string.Format("%s\t%d.%d\t%d.%d\t",
+    CurrentMapName.Peek_Buffer(), team0size / 10, team0size % 10, team1size / 10, team1size % 10);
 
   Team0SizeReported = 0;
   Team1SizeReported = 0;

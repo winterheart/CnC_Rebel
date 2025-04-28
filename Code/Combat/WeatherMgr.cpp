@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -633,9 +634,6 @@ bool WeatherSystemClass::Update(WindClass *wind, const Vector3 &cameraposition) 
 
     if ((Age > 0.0f) && (Can_Spawn(rayptr))) {
 
-      float s;
-      unsigned spawncount;
-
       // Spawn some particles along the ray.
       // NOTE: For accuracy, accumulate fractional spawncounts so that they can be used on a later ray.
       s = ParticlesPerUnitLength * (rayptr->EndPosition - raystartposition).Quick_Length();
@@ -798,7 +796,7 @@ bool WeatherSystemClass::Update(WindClass *wind, const Vector3 &cameraposition) 
 
   // Advance weather system age.
   // NOTE: To prevent floating point overflow, don't advance the age past some maximum.
-  if (Age < MAX_AGE)
+  if (Age < static_cast<float>(MAX_AGE))
     Age += time;
 
   // Is the weather still active (ie. it is contributing to the scene visually or audibly)?

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -447,14 +448,14 @@ bool SaveGameManager::Peek_Map_Name(const char *filename, StringClass &map_name)
 **
 */
 void SaveGameManager::Save_Level(void) {
-  Debug_Say(("Save Level %s\n", MapFilename));
+  Debug_Say(("Save Level %s\n", MapFilename.Peek_Buffer()));
   Save_Save_Load_System(MapFilename, &_PhysStaticDataSaveSystem, &_PhysStaticObjectsSaveSystem,
                         &_StaticAudioSaveLoadSubsystem, &_TheBackgroundMgr, &_TheWeatherMgr,
                         &_TheMapMgrSaveLoadSubsystem, NULL);
 }
 
 void SaveGameManager::Load_Level(void) {
-  Debug_Say(("Load Level %s\n", MapFilename));
+  Debug_Say(("Load Level %s\n", MapFilename.Peek_Buffer()));
   Load_Save_Load_System(MapFilename,
                         false); // false = no automatic post load processing (needs to be called explicitly)
 }
