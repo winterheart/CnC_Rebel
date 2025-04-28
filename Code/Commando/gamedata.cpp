@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -580,7 +581,7 @@ bool cGameData::Is_Map_Valid(char **out_filename) {
   return (map_exists);
 }
 
-#define PRINT_CONFIG_ERROR ConsoleBox.Print("File %s - Error:\r\n\t ", Get_Ini_Filename());
+#define PRINT_CONFIG_ERROR ConsoleBox.Print("File %s - Error:\r\n\t ", Get_Ini_Filename().Peek_Buffer());
 
 //-----------------------------------------------------------------------------
 bool cGameData::Is_Valid_Settings(WideStringClass &outMsg, bool check_as_server) {
@@ -1425,7 +1426,7 @@ unsigned long cGameData::Get_Config_File_Mod_Time(void) {
   RawFileClass file(full_filename);
 
   if (!file.Is_Available()) {
-    full_filename.Format("data\\%s", IniFilename);
+    full_filename.Format("data\\%s", IniFilename.Peek_Buffer());
     file.Set_Name(full_filename);
   }
 
@@ -1820,7 +1821,7 @@ void cGameData::Get_Time_Limit_Text(WideStringClass &text) {
     WideStringClass time_string(0, true);
     time_string.Format(L"%02d:%02d:%02d", hours, mins, seconds);
 
-    text.Format(L"%s: %s", TRANSLATION(IDS_MP_TIME_REMAINING), time_string);
+    text.Format(L"%s: %s", TRANSLATION(IDS_MP_TIME_REMAINING), time_string.Peek_Buffer());
   }
 }
 

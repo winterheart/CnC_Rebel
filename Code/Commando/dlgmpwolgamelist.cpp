@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -64,7 +65,7 @@
 using namespace WWOnline;
 
 // Game List columns
-static enum { COL_ICON = 0, COL_HOST_NAME, COL_GAME_TITLE, COL_GAME_MAP, COL_PLAYERS, COL_PING };
+enum { COL_ICON = 0, COL_HOST_NAME, COL_GAME_TITLE, COL_GAME_MAP, COL_PLAYERS, COL_PING };
 
 #define CLAN_ENTRY_MARKER 0x0C1A0C1A
 
@@ -209,17 +210,17 @@ void MPWolGameListMenuClass::On_Init_Dialog(void) {
   WOLLogonMgr::GetServerName(serverName);
 
   WideStringClass string(128, true);
-  string.Format(TRANSLATE(IDS_MENU_CONNECTED_TO_FORMAT), serverName);
+  string.Format(TRANSLATE(IDS_MENU_CONNECTED_TO_FORMAT), serverName.Peek_Buffer());
   Set_Dlg_Item_Text(IDC_SERVERNAME, string);
 
   WideStringClass loginName(64, true);
   WOLLogonMgr::GetLoginName(loginName);
 
-  string.Format(TRANSLATE(IDS_MENU_LOGIN_NAME_FORMAT), loginName);
+  string.Format(TRANSLATE(IDS_MENU_LOGIN_NAME_FORMAT), loginName.Peek_Buffer());
   Set_Dlg_Item_Text(IDC_LOGINNAME, string);
 
   WideStringClass conn(BandwidthCheckerClass::Get_Bandwidth_As_String(), true);
-  string.Format(TRANSLATE(IDS_MENU_SPEED_FORMAT), conn);
+  string.Format(TRANSLATE(IDS_MENU_SPEED_FORMAT), conn.Peek_Buffer());
   Set_Dlg_Item_Text(IDC_CONNECTIONSPEED, string);
 
   //---------------------------------------------------------------------------
