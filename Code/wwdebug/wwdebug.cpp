@@ -49,6 +49,7 @@
 #include <cassert>
 #include <cstring>
 #include <csignal>
+#include <utility>
 
 #include "except.h"
 #include "wwdebug.h"
@@ -83,9 +84,9 @@ int Get_Last_System_Error() { return GetLastError(); }
  *   2/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 PrintFunc WWDebug_Install_Message_Handler(PrintFunc func) {
-  PrintFunc tmp = _CurMessageHandler;
-  _CurMessageHandler = func;
-  return tmp;
+  std::swap(func, _CurMessageHandler);
+
+  return func;
 }
 
 /***********************************************************************************************
@@ -101,9 +102,9 @@ PrintFunc WWDebug_Install_Message_Handler(PrintFunc func) {
  *   2/19/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 AssertPrintFunc WWDebug_Install_Assert_Handler(AssertPrintFunc func) {
-  AssertPrintFunc tmp = _CurAssertHandler;
-  _CurAssertHandler = func;
-  return tmp;
+  std::swap(func, _CurAssertHandler);
+
+  return func;
 }
 
 /***********************************************************************************************
@@ -119,9 +120,9 @@ AssertPrintFunc WWDebug_Install_Assert_Handler(AssertPrintFunc func) {
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 TriggerFunc WWDebug_Install_Trigger_Handler(TriggerFunc func) {
-  TriggerFunc tmp = _CurTriggerHandler;
-  _CurTriggerHandler = func;
-  return tmp;
+  std::swap(func, _CurTriggerHandler);
+
+  return func;
 }
 
 /***********************************************************************************************
@@ -137,9 +138,9 @@ TriggerFunc WWDebug_Install_Trigger_Handler(TriggerFunc func) {
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 ProfileFunc WWDebug_Install_Profile_Start_Handler(ProfileFunc func) {
-  ProfileFunc tmp = _CurProfileStartHandler;
-  _CurProfileStartHandler = func;
-  return tmp;
+  std::swap(func, _CurProfileStartHandler);
+
+  return func;
 }
 
 /***********************************************************************************************
@@ -155,9 +156,9 @@ ProfileFunc WWDebug_Install_Profile_Start_Handler(ProfileFunc func) {
  *   2/24/98    GTH : Created.                                                                 *
  *=============================================================================================*/
 ProfileFunc WWDebug_Install_Profile_Stop_Handler(ProfileFunc func) {
-  ProfileFunc tmp = _CurProfileStopHandler;
-  _CurProfileStopHandler = func;
-  return tmp;
+  std::swap(func, _CurProfileStopHandler);
+
+  return func;
 }
 
 /***********************************************************************************************

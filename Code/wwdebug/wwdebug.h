@@ -58,10 +58,10 @@ int Get_Last_System_Error();
 */
 typedef enum { WWDEBUG_TYPE_INFORMATION, WWDEBUG_TYPE_WARNING, WWDEBUG_TYPE_ERROR, WWDEBUG_TYPE_USER } DebugType;
 
-typedef void (*PrintFunc)(DebugType type, const char *message);
-typedef void (*AssertPrintFunc)(const char *message);
-typedef bool (*TriggerFunc)(int trigger_num);
-typedef void (*ProfileFunc)(const char *title);
+using PrintFunc = void(*)(DebugType type, const char *message);
+using AssertPrintFunc = void (*)(const char *message);
+using TriggerFunc = bool(*)(int trigger_num);
+using ProfileFunc = void(*)(const char *title);
 
 PrintFunc WWDebug_Install_Message_Handler(PrintFunc func);
 AssertPrintFunc WWDebug_Install_Assert_Handler(AssertPrintFunc func);
