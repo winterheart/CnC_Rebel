@@ -410,7 +410,6 @@ void Game_Shutdown(void) {
   Debug_Refs();
 
   DebugManager::Save_Registry_Settings(APPLICATION_SUB_KEY_NAME_DEBUG);
-  DebugManager::Shutdown();
 
   WSA_CHECK(WSACleanup());
 
@@ -439,7 +438,7 @@ void Game_Shutdown(void) {
   Copy_Logs(DebugManager::Get_Version_Number());
 #endif // FREEDEDICATEDSERVER
 
-  return;
+  DebugManager::Shutdown();
 }
 
 /*
