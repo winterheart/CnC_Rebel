@@ -54,6 +54,7 @@
 #include "sctextobj.h"
 #include "consolemode.h"
 #include "gamesideservercontrol.h"
+#include "netutil.h"
 
 cGameSpyBanList GameSpyBanList;
 

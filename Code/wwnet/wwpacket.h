@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     wwpacket.h
@@ -24,22 +25,13 @@
 // Description:
 //
 //-----------------------------------------------------------------------------
-#if defined(_MSV_VER)
 #pragma once
-#endif
-
-#ifndef WWPACKET_H
-#define WWPACKET_H
 
 #include "bittype.h"
 #include "bitstream.h"
 #include "fromaddress.h"
 #include "packetmgr.h"
 #include "mempool.h"
-
-#ifndef NULL
-#define NULL 0L
-#endif
 
 class Vector3;
 class Quaternion;
@@ -48,6 +40,8 @@ class cFromAddress;
 //-----------------------------------------------------------------------------
 class cPacket : public BitStreamClass, public AutoPoolClass<cPacket, 256> {
 public:
+  cPacket(const cPacket &source) = delete; // Disallow
+
   cPacket();
   ~cPacket();
 
@@ -59,10 +53,10 @@ public:
 
   int Get_Max_Size() const { return BitStreamClass::Get_Buffer_Size(); }
   void Set_Bit_Length(UINT bit_position) { BitStreamClass::Set_Bit_Write_Position(bit_position); }
-  UINT Get_Bit_Length(void) { return BitStreamClass::Get_Bit_Write_Position(); }
-  void Add_Vector3(Vector3 &v);
+  UINT Get_Bit_Length() const { return BitStreamClass::Get_Bit_Write_Position(); }
+  void Add_Vector3(const Vector3 &v);
   void Get_Vector3(Vector3 &v);
-  void Add_Quaternion(Quaternion &q);
+  void Add_Quaternion(const Quaternion &q);
   void Get_Quaternion(Quaternion &q);
   const cFromAddress *Get_From_Address_Wrapper() const { return &PFromAddressWrapper; }
   cFromAddress *Get_From_Address_Wrapper() { return &PFromAddressWrapper; }
@@ -75,7 +69,7 @@ public:
   } // NEW
   void Set_Sender_Id(int sender_id);
   int Get_Sender_Id() const { return SenderId; }
-  void Set_Send_Time(void);
+  void Set_Send_Time();
   unsigned long Get_Send_Time() const { return SendTime; }
   void Clear_Resend_Count() { ResendCount = 0; }
   void Increment_Resend_Count() { ResendCount++; }
@@ -85,17 +79,16 @@ public:
 #endif // WRAPPER_CRC
   void Set_Num_Sends(int num_sends);
   int Get_Num_Sends() const { return NumSends; }
-  unsigned long Get_First_Send_Time(void) const { return FirstSendTime; }
-  static void Init_Encoder(void);
+  unsigned long Get_First_Send_Time() const { return FirstSendTime; }
+  static void Init_Encoder();
   static int Get_Ref_Count() { return RefCount; }
   static void Construct_Full_Packet(cPacket &full_packet, cPacket &src_packet);
   static void Construct_App_Packet(cPacket &packet, cPacket &full_packet);
-  static USHORT Get_Packet_Header_Size(void) { return (PACKET_HEADER_SIZE); }
+  static USHORT Get_Packet_Header_Size() { return (PACKET_HEADER_SIZE); }
   // BYTE				Peek_Message_Type() const;
-  static unsigned long Get_Default_Send_Time(void) { return (DefSendTime); }
+  static unsigned long Get_Default_Send_Time() { return (DefSendTime); }
 
 private:
-  cPacket(const cPacket &source); // Disallow
 
 #ifndef WRAPPER_CRC
   void Set_Is_Crc_Correct(bool flag) { IsCrcCorrect = flag; }
@@ -121,8 +114,6 @@ private:
 };
 
 //-----------------------------------------------------------------------------
-
-#endif // WWPACKET_H
 
 // int ExecuteTime;
 // int ReturnCode;

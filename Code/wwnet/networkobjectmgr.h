@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -34,12 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#if defined(_MSC_VER)
 #pragma once
-#endif
-
-#ifndef __NETWORKOBJECTMGR_H
-#define __NETWORKOBJECTMGR_H
 
 #include "vector.h"
 
@@ -83,7 +79,7 @@ public:
   //	Object registration
   //
   static void Register_Object(NetworkObjectClass *object);
-  static void Unregister_Object(NetworkObjectClass *object);
+  static void Unregister_Object(const NetworkObjectClass *object);
 
   //
   //	Delete registration support
@@ -94,22 +90,22 @@ public:
   //
   //	Timestep
   //
-  static void Think(void);
+  static void Think();
 
   //
   //	Deletion support
   //
-  static void Set_All_Delete_Pending(void); // TSS092301
-  static void Delete_Pending(void);
+  static void Set_All_Delete_Pending(); // TSS092301
+  static void Delete_Pending();
   static void Delete_Client_Objects(int client_id);
   static void Restore_Dirty_Bits(int client_id);
 
   //
   //	Object enumeration
   //
-  static int Get_Object_Count(void) { return _ObjectList.Count(); }
+  static int Get_Object_Count() { return _ObjectList.Count(); }
   static NetworkObjectClass *Get_Object(int index) { return _ObjectList[index]; }
-  static int Get_Pending_Object_Count(void) { return _DeletePendingList.Count(); }
+  static int Get_Pending_Object_Count() { return _DeletePendingList.Count(); }
 
   //
   //	Object lookup
@@ -119,14 +115,14 @@ public:
   //
   //	ID access
   //
-  static int Get_New_Dynamic_ID(void);
-  static int Get_Current_Dynamic_ID(void);
+  static int Get_New_Dynamic_ID();
+  static int Get_Current_Dynamic_ID();
   static void Set_New_Dynamic_ID(int id);
 
   static void Init_New_Client_ID(int client_id);
-  static int Get_New_Client_ID(void);
+  static int Get_New_Client_ID();
 
-  static void Reset_Import_State_Counts(void);
+  static void Reset_Import_State_Counts();
 
 private:
   ////////////////////////////////////////////////////////////////
@@ -148,5 +144,3 @@ private:
   static int _NewClientID;
   static bool _IsLevelLoading;
 };
-
-#endif // __NETWORKOBJECTMGR_H

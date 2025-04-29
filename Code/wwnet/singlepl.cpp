@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     singlepl.cpp
@@ -26,8 +27,6 @@
 //-----------------------------------------------------------------------------
 #include "singlepl.h" // I WANNA BE FIRST!
 
-#include "netutil.h"
-#include "miscutil.h"
 #include "wwdebug.h"
 #include "wwpacket.h"
 
@@ -48,15 +47,12 @@ void cSinglePlayerData::Init() {
 void cSinglePlayerData::Cleanup() {
   WWDEBUG_SAY(("cSinglePlayerData::~cSinglePlayerData\n"));
 
-  SLNode<cPacket> *objnode;
-  cPacket *p_packet;
-
-  for (int list_type = 0; list_type < 2; list_type++) {
-    for (objnode = InputPacketList[list_type].Head(); objnode != NULL;) {
-      p_packet = objnode->Data();
-      WWASSERT(p_packet != NULL);
+  for (auto & list_type : InputPacketList) {
+    for (SLNode<cPacket> *objnode = list_type.Head(); objnode != nullptr;) {
+      cPacket *p_packet = objnode->Data();
+      WWASSERT(p_packet != nullptr);
       objnode = objnode->Next();
-      InputPacketList[list_type].Remove(p_packet);
+      list_type.Remove(p_packet);
       delete p_packet;
     }
   }

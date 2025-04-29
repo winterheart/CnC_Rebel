@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     netutil.cpp
@@ -24,18 +25,14 @@
 // Description:
 //
 //-----------------------------------------------------------------------------
+#include <cstdio>
+
 #include "netutil.h" // I WANNA BE FIRST!
 
-#include <stdio.h>
-#include <string.h>
-
-#include "miscutil.h"
-#include "mathutil.h"
 #include "singlepl.h"
 #include "wwpacket.h"
 #include "wwdebug.h"
 #include "ffactory.h"
-#include "ini.h"
 #include "systimer.h"
 #include "fromaddress.h"
 
@@ -241,10 +238,10 @@ int cNetUtil::Get_Local_Tcpip_Addresses(SOCKADDR_IN ip_address[], USHORT max_add
 
   int num_adapters = 0;
 
-  if (p_hostent == NULL) {
+  if (p_hostent == nullptr) {
     num_adapters = 0;
   } else {
-    while (num_adapters < max_addresses && p_hostent->h_addr_list[num_adapters] != NULL) {
+    while (num_adapters < max_addresses && p_hostent->h_addr_list[num_adapters] != nullptr) {
 
       ZeroMemory(&ip_address[num_adapters], sizeof(SOCKADDR_IN));
       ip_address[num_adapters].sin_family = AF_INET;
@@ -264,16 +261,16 @@ bool cNetUtil::Is_Same_Address(LPSOCKADDR_IN p_address1, const SOCKADDR_IN *p_ad
   //
 
   WWASSERT(!cSinglePlayerData::Is_Single_Player());
-  WWASSERT(p_address1 != NULL);
-  WWASSERT(p_address2 != NULL);
+  WWASSERT(p_address1 != nullptr);
+  WWASSERT(p_address2 != nullptr);
 
   return p_address1->sin_addr.s_addr == p_address2->sin_addr.s_addr && p_address1->sin_port == p_address2->sin_port;
 }
 
 //-------------------------------------------------------------------------------
 void cNetUtil::Address_To_String(LPSOCKADDR_IN p_address, char *str, UINT len, USHORT &port) {
-  WWASSERT(p_address != NULL);
-  WWASSERT(str != NULL);
+  WWASSERT(p_address != nullptr);
+  WWASSERT(str != nullptr);
 
   char temp_str[1000];
 
@@ -289,7 +286,7 @@ LPCSTR cNetUtil::Address_To_String(ULONG ip) {
   IN_ADDR in_addr;
   in_addr.s_addr = ip;
   char *p = ::inet_ntoa(in_addr);
-  if (p == NULL) {
+  if (p == nullptr) {
     ::sprintf(WorkingAddressBuffer, "Invalid ip (%u)", ip);
   } else {
     ::strcpy(WorkingAddressBuffer, p);
@@ -300,7 +297,7 @@ LPCSTR cNetUtil::Address_To_String(ULONG ip) {
 
 //-------------------------------------------------------------------------------
 void cNetUtil::String_To_Address(LPSOCKADDR_IN p_address, LPCSTR str, USHORT port) {
-  WWASSERT(p_address != NULL);
+  WWASSERT(p_address != nullptr);
   ZeroMemory(p_address, sizeof(SOCKADDR_IN));
 
   p_address->sin_family = AF_INET;
@@ -311,7 +308,7 @@ void cNetUtil::String_To_Address(LPSOCKADDR_IN p_address, LPCSTR str, USHORT por
 }
 
 //-------------------------------------------------------------------------------
-bool cNetUtil::Is_Tcpip_Present(void) {
+bool cNetUtil::Is_Tcpip_Present() {
   //
   // N.B. I tested EnumProtocols and found it unreliable.
   //
@@ -426,7 +423,7 @@ void cNetUtil::Onetime_Init()
 {
         FileClass * p_ini_file = _TheFileFactory->Get_File("netparams.ini");
 
-        if (p_ini_file != NULL) {
+        if (p_ini_file != nullptr) {
 
                 INIClass netparams_ini(*p_ini_file);
 
@@ -556,24 +553,24 @@ bool cNetUtil::Create_Bound_Socket(SOCKET &sock, USHORT port, SOCKADDR_IN &local
 }
 
 //-------------------------------------------------------------------------------
-void cNetUtil::Close_Socket(SOCKET &sock) { ::closesocket(sock); }
+void cNetUtil::Close_Socket(const SOCKET &sock) { ::closesocket(sock); }
 
 //-----------------------------------------------------------------------------
 void cNetUtil::Broadcast(SOCKET &sock, USHORT port, cPacket &packet) {
   SOCKADDR_IN broadcast_address;
   Create_Broadcast_Address(&broadcast_address, port);
-  int bytes_sent;
+  // int bytes_sent;
   // WSA_CHECK(bytes_sent = sendto(sock, packet.Data, packet.SendLength,
   //   0, &broadcast_address, sizeof(SOCKADDR_IN)));
-  bytes_sent = sendto(sock, packet.Get_Data(), packet.Get_Compressed_Size_Bytes(), 0, (LPSOCKADDR)&broadcast_address,
-                      sizeof(SOCKADDR_IN));
-#pragma message("(TSS) WSAENOBUFS")
+  // bytes_sent = sendto(sock, packet.Get_Data(), packet.Get_Compressed_Size_Bytes(), 0, (LPSOCKADDR)&broadcast_address,
+  //                    sizeof(SOCKADDR_IN));
+//#pragma message("(TSS) WSAENOBUFS")
   // WWDEBUG_SAY(("Sent broadcast, length = %d bytes\n", bytes_sent));
 }
 
 //-------------------------------------------------------------------------------
 void cNetUtil::Create_Broadcast_Address(LPSOCKADDR_IN p_broadcast_address, USHORT port) {
-  WWASSERT(p_broadcast_address != NULL);
+  WWASSERT(p_broadcast_address != nullptr);
   ZeroMemory(p_broadcast_address, sizeof(SOCKADDR_IN));
 
   p_broadcast_address->sin_family = AF_INET;
@@ -583,7 +580,7 @@ void cNetUtil::Create_Broadcast_Address(LPSOCKADDR_IN p_broadcast_address, USHOR
 
 //-------------------------------------------------------------------------------
 void cNetUtil::Create_Local_Address(LPSOCKADDR_IN p_local_address, USHORT port) {
-  WWASSERT(p_local_address != NULL);
+  WWASSERT(p_local_address != nullptr);
   ZeroMemory(p_local_address, sizeof(SOCKADDR_IN));
 
   p_local_address->sin_family = AF_INET;
@@ -593,7 +590,7 @@ void cNetUtil::Create_Local_Address(LPSOCKADDR_IN p_local_address, USHORT port) 
 
 //-------------------------------------------------------------------------------
 bool cNetUtil::Get_Local_Address(LPSOCKADDR_IN p_local_address) {
-  WWASSERT(p_local_address != NULL);
+  WWASSERT(p_local_address != nullptr);
 
   /*
   const USHORT MAX_ADDRESSES = 1;
@@ -614,7 +611,7 @@ bool cNetUtil::Get_Local_Address(LPSOCKADDR_IN p_local_address) {
 }
 
 //-----------------------------------------------------------------------------
-void cNetUtil::Lan_Servicing(SOCKET &sock, LanPacketHandlerCallback p_callback) {
+void cNetUtil::Lan_Servicing(const SOCKET &sock, LanPacketHandlerCallback p_callback) {
   int retcode;
 
   unsigned long start_time = TIMEGETTIME();

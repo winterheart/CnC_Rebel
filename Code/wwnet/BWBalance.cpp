@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -34,7 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <always.h>
+#include <algorithm>
+
+#include "always.h"
 #include "bwbalance.h"
 #include "connect.h"
 #include "packetmgr.h"
@@ -61,13 +64,8 @@ BandwidthBalancerClass BandwidthBalancer;
  * HISTORY:                                                                                    *
  *   10/21/2001 8:47PM ST : Created                                                            *
  *=============================================================================================*/
-BandwidthBalancerClass::BandwidthBalancerClass(void) {
-  NumClientStructs = 0;
-  ClientInfo = NULL;
-
+BandwidthBalancerClass::BandwidthBalancerClass() : IsEnabled(true), ClientInfo(nullptr), NumClientStructs(0), NumClients(0) {
   Allocate_Client_Structs(8);
-
-  IsEnabled = true;
 }
 
 /***********************************************************************************************
@@ -84,11 +82,11 @@ BandwidthBalancerClass::BandwidthBalancerClass(void) {
  * HISTORY:                                                                                    *
  *   10/21/2001 8:47PM ST : Created                                                            *
  *=============================================================================================*/
-BandwidthBalancerClass::~BandwidthBalancerClass(void) {
+BandwidthBalancerClass::~BandwidthBalancerClass() {
   if (ClientInfo) {
     delete[] ClientInfo;
   }
-  ClientInfo = NULL;
+  ClientInfo = nullptr;
 }
 
 /***********************************************************************************************
@@ -147,7 +145,7 @@ void BandwidthBalancerClass::Adjust(cConnection *connection, bool is_dedicated) 
   ** Repeat until no bandwidth left.
   **
   */
-  if (connection != NULL) {
+  if (connection != nullptr) {
 
     bool need_update = false;
     for (int i = connection->Get_Min_RHost() + (is_dedicated ? 0 : 1); i <= connection->Get_Max_RHost(); i++) {
@@ -182,7 +180,7 @@ void BandwidthBalancerClass::Adjust(cConnection *connection, bool is_dedicated) 
 
         cRemoteHost *client = connection->Get_Remote_Host(i);
 
-        if (client != NULL) {
+        if (client != nullptr) {
 
           ClientInfo[NumClients].AveragePriority = client->Get_Average_Priority();
           ClientInfo[NumClients].MaxBpsDown = client->Get_Maximum_Bps();
@@ -205,7 +203,7 @@ void BandwidthBalancerClass::Adjust(cConnection *connection, bool is_dedicated) 
         /*
         ** Get the average object priority among all players.
         */
-        average_priority = average_priority / NumClients;
+        average_priority = average_priority / static_cast<float>(NumClients);
         int bw_adjust = 100;
 
         unsigned long total_bbo_allocated =
@@ -257,7 +255,7 @@ void BandwidthBalancerClass::Adjust(cConnection *connection, bool is_dedicated) 
           int index = 0;
           for (int i = connection->Get_Min_RHost() + (is_dedicated ? 0 : 1); i <= connection->Get_Max_RHost(); i++) {
             cRemoteHost *client = connection->Get_Remote_Host(i);
-            if (client != NULL) {
+            if (client != nullptr) {
               client->Set_Target_Bps(ClientInfo[index++].AllocatedBBO);
             }
           }
@@ -308,9 +306,9 @@ unsigned long BandwidthBalancerClass::Allocate_Bandwidth(float average_priority,
     */
     int client_bbo_adjust = (pri - average_priority) * bbo_per_client;
     if (client_bbo_adjust > 0) {
-      client_bbo_adjust = min(client_bbo_adjust, (int)bbo_per_client / 2);
+      client_bbo_adjust = std::min(client_bbo_adjust, static_cast<int>(bbo_per_client) / 2);
     } else {
-      client_bbo_adjust = max(client_bbo_adjust, -((int)bbo_per_client / 2));
+      client_bbo_adjust = std::max(client_bbo_adjust, -(static_cast<int>(bbo_per_client) / 2));
     }
     int new_client_bbo = bbo_per_client + client_bbo_adjust;
     WWASSERT(new_client_bbo > 0);
@@ -326,22 +324,22 @@ unsigned long BandwidthBalancerClass::Allocate_Bandwidth(float average_priority,
     /*
     ** Apply the overall percentage adjustment.
     */
-    double big_client_bbo = (double)new_client_bbo;
-    double big_bw_adjust = (double)bw_adjust;
+    double big_client_bbo = new_client_bbo;
+    double big_bw_adjust = bw_adjust;
     big_client_bbo = (big_client_bbo * big_bw_adjust) / 100.0;
-    big_client_bbo = min(big_client_bbo, (double)0x7fffffff);
+    big_client_bbo = std::min(big_client_bbo, static_cast<double>(0x7fffffff));
     // new_client_bbo = (new_client_bbo * bw_adjust) / 100;
-    new_client_bbo = (int)big_client_bbo;
+    new_client_bbo = static_cast<int>(big_client_bbo);
 
     /*
     ** OK, we have the bandwidth adjusted according to priority.
     ** Clamp it to the min allowed and the max the client can take.
     */
-    new_client_bbo = min(new_client_bbo, (int)client->MaxBpsDown);
-    new_client_bbo = max(new_client_bbo, MIN_ACCEPTABLE_BANDWIDTH);
+    new_client_bbo = std::min(new_client_bbo, static_cast<int>(client->MaxBpsDown));
+    new_client_bbo = std::max(new_client_bbo, MIN_ACCEPTABLE_BANDWIDTH);
 
-    client->AllocatedBBO = (unsigned long)new_client_bbo;
-    total_bbo_allocated += (unsigned long)new_client_bbo;
+    client->AllocatedBBO = static_cast<unsigned long>(new_client_bbo);
+    total_bbo_allocated += static_cast<unsigned long>(new_client_bbo);
   }
 
   return (total_bbo_allocated);

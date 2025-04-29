@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -68,7 +69,6 @@ void NetworkObjectMgrClass::Register_Object(NetworkObjectClass *object) {
     }
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ void NetworkObjectMgrClass::Register_Object(NetworkObjectClass *object) {
 //	Unregister_Object
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectMgrClass::Unregister_Object(NetworkObjectClass *object) {
+void NetworkObjectMgrClass::Unregister_Object(const NetworkObjectClass *object) {
   int object_id = object->Get_Network_ID();
   if (object_id != 0) {
 
@@ -93,7 +93,6 @@ void NetworkObjectMgrClass::Unregister_Object(NetworkObjectClass *object) {
     }
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -102,7 +101,7 @@ void NetworkObjectMgrClass::Unregister_Object(NetworkObjectClass *object) {
 //
 ////////////////////////////////////////////////////////////////
 NetworkObjectClass *NetworkObjectMgrClass::Find_Object(int object_id) {
-  NetworkObjectClass *object = NULL;
+  NetworkObjectClass *object = nullptr;
 
   //
   //	Lookup the object in the sorted list
@@ -131,14 +130,14 @@ void NetworkObjectMgrClass::Set_New_Dynamic_ID(int id) {
 //	Get_New_Dynamic_ID
 //
 ////////////////////////////////////////////////////////////////
-int NetworkObjectMgrClass::Get_New_Dynamic_ID(void) {
+int NetworkObjectMgrClass::Get_New_Dynamic_ID() {
   WWASSERT(_NewDynamicID >= NETID_DYNAMIC_OBJECT_MIN && _NewDynamicID < NETID_DYNAMIC_OBJECT_MAX);
 
   /*
   //TSS091001
   NetworkObjectClass * p_object = Find_Object(_NewDynamicID);
-  //WWASSERT(p_object == NULL);
-  if (p_object != NULL) {
+  //WWASSERT(p_object == nullptr);
+  if (p_object != nullptr) {
           int iii;
           iii = 111;
   }
@@ -146,7 +145,7 @@ int NetworkObjectMgrClass::Get_New_Dynamic_ID(void) {
 
   // TSS091201
   NetworkObjectClass *p_object = Find_Object(_NewDynamicID);
-  while (p_object != NULL) {
+  while (p_object != nullptr) {
     /*
     WWDEBUG_SAY(("NetworkObjectMgrClass::Get_New_Dynamic_ID :skipping id %d (already in use)\n",
             _NewDynamicID));
@@ -163,7 +162,7 @@ int NetworkObjectMgrClass::Get_New_Dynamic_ID(void) {
 //	Get_Current_Dynamic_ID
 //
 ////////////////////////////////////////////////////////////////
-int NetworkObjectMgrClass::Get_Current_Dynamic_ID(void) {
+int NetworkObjectMgrClass::Get_Current_Dynamic_ID() {
   WWASSERT(_NewDynamicID >= NETID_DYNAMIC_OBJECT_MIN && _NewDynamicID <= NETID_DYNAMIC_OBJECT_MAX);
 
   return _NewDynamicID;
@@ -185,7 +184,7 @@ void NetworkObjectMgrClass::Init_New_Client_ID(int client_id) {
 //	Get_New_Client_ID
 //
 ////////////////////////////////////////////////////////////////
-int NetworkObjectMgrClass::Get_New_Client_ID(void) {
+int NetworkObjectMgrClass::Get_New_Client_ID() {
   WWASSERT(_NewClientID >= NETID_CLIENT_OBJECT_MIN && _NewClientID < NETID_CLIENT_OBJECT_MAX);
 
   return _NewClientID++;
@@ -197,7 +196,7 @@ int NetworkObjectMgrClass::Get_New_Client_ID(void) {
 //
 ////////////////////////////////////////////////////////////////
 bool NetworkObjectMgrClass::Find_Object(int id_to_find, int *index) {
-  WWASSERT(index != NULL);
+  WWASSERT(index != nullptr);
 
   bool found = false;
   (*index) = 0;
@@ -252,16 +251,15 @@ bool NetworkObjectMgrClass::Find_Object(int id_to_find, int *index) {
 //	Think
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectMgrClass::Think(void) {
+void NetworkObjectMgrClass::Think() {
   //
   //	Simply let each object think
   //
   for (int index = 0; index < _ObjectList.Count(); index++) {
-    WWASSERT(_ObjectList[index] != NULL);
+    WWASSERT(_ObjectList[index] != nullptr);
     _ObjectList[index]->Network_Think();
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -271,7 +269,7 @@ void NetworkObjectMgrClass::Think(void) {
 // This is for cleanup only.
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectMgrClass::Set_All_Delete_Pending(void) {
+void NetworkObjectMgrClass::Set_All_Delete_Pending() {
   WWDEBUG_SAY(("NetworkObjectMgrClass::Set_All_Delete_Pending\n"));
 
   //
@@ -281,7 +279,6 @@ void NetworkObjectMgrClass::Set_All_Delete_Pending(void) {
     _ObjectList[index]->Set_Delete_Pending();
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -289,7 +286,7 @@ void NetworkObjectMgrClass::Set_All_Delete_Pending(void) {
 //	Delete_Pending
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectMgrClass::Delete_Pending(void) {
+void NetworkObjectMgrClass::Delete_Pending() {
   if (_IsLevelLoading) {
     return;
   }
@@ -300,7 +297,7 @@ void NetworkObjectMgrClass::Delete_Pending(void) {
   //	Delete each object that is pending...
   //
   for (int index = 0; index < _DeletePendingList.Count(); index++) {
-    WWASSERT(_DeletePendingList[index] != NULL);
+    WWASSERT(_DeletePendingList[index] != nullptr);
     if (_DeletePendingList[index]->Is_Delete_Pending()) {
       _DeletePendingList[index]->Delete();
     }
@@ -310,7 +307,6 @@ void NetworkObjectMgrClass::Delete_Pending(void) {
   //		_DeletePendingList.Delete_All ();
   //	}
   _DeletePendingList.Reset_Active(); // No need to resize the vector back to zero...
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -326,14 +322,13 @@ void NetworkObjectMgrClass::Delete_Client_Objects(int client_id) {
   //
 
   for (int index = 0; index < _ObjectList.Count(); index++) {
-    WWASSERT(_ObjectList[index] != NULL);
+    WWASSERT(_ObjectList[index] != nullptr);
     if (_ObjectList[index]->Belongs_To_Client(client_id)) {
       // TSS092301 _ObjectList[index]->Delete ();
       _ObjectList[index]->Set_Delete_Pending();
     }
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -352,12 +347,11 @@ void NetworkObjectMgrClass::Restore_Dirty_Bits(int client_id) {
 
   for (int index = 0; index < _ObjectList.Count(); index++) {
     NetworkObjectClass *p_object = _ObjectList[index];
-    WWASSERT(p_object != NULL);
+    WWASSERT(p_object != nullptr);
     BYTE generic_bits = p_object->Get_Object_Dirty_Bits(NetworkObjectClass::MAX_CLIENT_COUNT - 1); // TSS2001e
     p_object->Set_Object_Dirty_Bits(client_id, generic_bits);
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -370,7 +364,6 @@ void NetworkObjectMgrClass::Register_Object_For_Deletion(NetworkObjectClass *obj
     _DeletePendingList.Add(object);
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -378,11 +371,11 @@ void NetworkObjectMgrClass::Register_Object_For_Deletion(NetworkObjectClass *obj
 //	Reset_Import_State_Counts
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectMgrClass::Reset_Import_State_Counts(void) {
+void NetworkObjectMgrClass::Reset_Import_State_Counts() {
   for (int index = 0; index < _ObjectList.Count(); index++) {
 
     NetworkObjectClass *p_object = _ObjectList[index];
-    WWASSERT(p_object != NULL);
+    WWASSERT(p_object != nullptr);
 
     //
     //	Reset its import state count

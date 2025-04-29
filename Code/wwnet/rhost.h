@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     rhost.h
@@ -60,16 +61,16 @@ public:
   cRemoteHost();
   ~cRemoteHost();
 
-  void Add_Packet(cPacket &packet, BYTE list_type);
+  void Add_Packet(const cPacket &packet, BYTE list_type);
   void Remove_Packet(int reliable_packet_id, BYTE list_type);
   void Toggle_Flow_Control();
   void Init_Stats();
   int Get_Last_Service_Count() { return LastServiceCount; }
   void Set_Last_Service_Count(int service_count);
   void Compute_List_Max(int list_type);
-  int Get_List_Max(int list_type);
+  int Get_List_Max(int list_type) const;
   void Set_List_Processing_Time(int list_type, int processing_time_ms);
-  int Get_List_Processing_Time(int list_type);
+  int Get_List_Processing_Time(int list_type) const;
 
   int Get_Last_Contact_Time() { return LastContactTime; }
   void Set_Last_Contact_Time(int time) { LastContactTime = time; }
@@ -77,20 +78,20 @@ public:
   SOCKADDR_IN &Get_Address();
   void Set_Address(SOCKADDR_IN &address) { Address = address; }
 
-  int Get_Target_Bps(void) const { return TargetBps; }
+  int Get_Target_Bps() const { return TargetBps; }
   // void	Set_Target_Bps(int bps)						{WWASSERT(bps > 0); TargetBps = bps;}
   void Set_Target_Bps(int bps) { TargetBps = bps; }
 
-  int Get_Maximum_Bps(void) const { return MaximumBps; }
+  int Get_Maximum_Bps() const { return MaximumBps; }
   // void	Set_Maximum_Bps(int bps)					{WWASSERT(bps > 0); MaximumBps = bps;}
   void Set_Maximum_Bps(int bps) { MaximumBps = bps; }
 
   cNetStats &Get_Stats() { return Stats; }
 
   double Get_Threshold_Priority() const { return ThresholdPriority; }
-  float Get_Bandwidth_Multiplier(void) const { return BandwidthMultiplier; }
+  float Get_Bandwidth_Multiplier() const { return BandwidthMultiplier; }
   void Set_Average_Priority(float ave) { AverageObjectPriority = ave; }
-  float Get_Average_Priority(void) { return (AverageObjectPriority); }
+  float Get_Average_Priority() { return (AverageObjectPriority); }
 
   USHORT Get_Resend_Timeout_Ms() const { return ResendTimeoutMs; }
 
@@ -130,31 +131,31 @@ public:
   void Set_Must_Evict(bool flag) { MustEvict = flag; }
 
   void Adjust_Flow_If_Necessary(float sample_time_ms);
-  void Adjust_Resend_Timeout(void);
+  void Adjust_Resend_Timeout();
 
   void Set_Id(int id) {
     WWASSERT(id >= 0);
     Id = id;
   }
-  int Get_Id(void) {
+  int Get_Id() {
     WWASSERT(Id >= 0);
     return Id;
   }
 
   void Set_Is_Loading(bool state);
-  bool Get_Is_Loading(void) { return (IsLoading); }
-  bool Was_Recently_Loading(unsigned long time = 0);
+  bool Get_Is_Loading() { return (IsLoading); }
+  bool Was_Recently_Loading(unsigned long time = 0) const;
 
   void Set_Flood(bool state);
-  bool Get_Flood(void) { return (ExpectPacketFlood); }
+  bool Get_Flood() { return (ExpectPacketFlood); }
 
-  unsigned long Get_Creation_Time(void) { return (CreationTime); }
-  unsigned long Get_Total_Resends(void) { return (TotalResends); }
-  void Increment_Resends(void) { TotalResends++; }
+  unsigned long Get_Creation_Time() { return (CreationTime); }
+  unsigned long Get_Total_Resends() { return (TotalResends); }
+  void Increment_Resends() { TotalResends++; }
   void Set_Total_Resent_Packets_In_Queue(int resent_packets) { TotalResentPacketsInQueue = resent_packets; }
 
-  inline int Get_Priority_Update_Counter(void) { return (PriorityUpdateCounter); }
-  inline void Increment_Priority_Count(void) {
+  inline int Get_Priority_Update_Counter() { return (PriorityUpdateCounter); }
+  inline void Increment_Priority_Count() {
     PriorityUpdateCounter++;
     if (PriorityUpdateCounter > PriorityUpdateRate)
       PriorityUpdateCounter = 0;
@@ -166,8 +167,8 @@ public:
 private:
   cRemoteHost(const cRemoteHost &rhs);            // Disallow copy (compile/link time)
   cRemoteHost &operator=(const cRemoteHost &rhs); // Disallow assignment (compile/link time)
-  void Dam_The_Flood(void);
-  bool Is_Outgoing_Flooded(void);
+  void Dam_The_Flood();
+  bool Is_Outgoing_Flooded() const;
 
   cNetStats Stats;
   double ThresholdPriority;

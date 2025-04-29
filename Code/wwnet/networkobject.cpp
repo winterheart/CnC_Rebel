@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -37,8 +38,6 @@
 #include "networkobject.h"
 #include "networkobjectmgr.h"
 #include "wwmath.h"
-#include "vector3.h"
-#include "wwprofile.h"
 #include "systimer.h"
 
 #define CLIENT_SIDE_UPDATE_FREQUENCY_SAMPLE_PERIOD (1000 * 10)
@@ -53,7 +52,7 @@ bool NetworkObjectClass::IsServer = false;
 //	NetworkObjectClass
 //
 ////////////////////////////////////////////////////////////////
-NetworkObjectClass::NetworkObjectClass(void)
+NetworkObjectClass::NetworkObjectClass()
     : ImportStateCount(0), LastClientsideUpdateTime(0), NetworkID(0), IsDeletePending(false), CachedPriority(0),
       UnreliableOverride(false), AppPacketType(0), FrequentExportPacketSize(0),
       ClientsideUpdateFrequencySampleStartTime(TIMEGETTIME()), ClientsideUpdateFrequencySampleCount(0),
@@ -79,11 +78,10 @@ NetworkObjectClass::NetworkObjectClass(void)
   // Static objects therefore don't need to remember to set this in their constructor.
   // Game objects will set BIT_CREATION.
   //
-  Clear_Object_Dirty_Bits();
+  NetworkObjectClass::Clear_Object_Dirty_Bits();
 
   memset(CachedPriority_2, 0, sizeof(CachedPriority_2));
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -91,12 +89,11 @@ NetworkObjectClass::NetworkObjectClass(void)
 //	~NetworkObjectClass
 //
 ////////////////////////////////////////////////////////////////
-NetworkObjectClass::~NetworkObjectClass(void) {
+NetworkObjectClass::~NetworkObjectClass() {
   //
   //	Unregister this object from network updates
   //
   NetworkObjectMgrClass::Unregister_Object(this);
-  return;
 }
 
 extern bool SensibleUpdates;
@@ -116,7 +113,6 @@ void NetworkObjectClass::Set_Network_ID(int id) {
   NetworkObjectMgrClass::Unregister_Object(this);
   NetworkID = id;
   NetworkObjectMgrClass::Register_Object(this);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -147,7 +143,7 @@ bool NetworkObjectClass::Get_Object_Dirty_Bit(int client_id, DIRTY_BIT dirty_bit
 //	Clear_Object_Dirty_Bits
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectClass::Clear_Object_Dirty_Bits(void) {
+void NetworkObjectClass::Clear_Object_Dirty_Bits() {
   //
   //	Reset the status for each client
   //
@@ -158,7 +154,6 @@ void NetworkObjectClass::Clear_Object_Dirty_Bits(void) {
     UpdateInfo[index].ClientHintCount = 0;
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -173,7 +168,6 @@ void NetworkObjectClass::Set_Object_Dirty_Bit(int client_id, DIRTY_BIT dirty_bit
     ClientStatus[client_id] &= (~dirty_bit);
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -199,7 +193,6 @@ void NetworkObjectClass::Set_Object_Dirty_Bit(DIRTY_BIT dirty_bit, bool onoff) {
     }
   }
 
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -214,10 +207,9 @@ bool NetworkObjectClass::Is_Client_Dirty(int client_id) { return ClientStatus[cl
 //	Set_Delete_Pending
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectClass::Set_Delete_Pending(void) {
+void NetworkObjectClass::Set_Delete_Pending() {
   IsDeletePending = true;
   NetworkObjectMgrClass::Register_Object_For_Deletion(this);
-  return;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -249,7 +241,7 @@ void NetworkObjectClass::Increment_Client_Hint_Count(int client_id) {
 //	Hint_To_All_Clients
 //
 ////////////////////////////////////////////////////////////////
-void NetworkObjectClass::Hint_To_All_Clients(void) {
+void NetworkObjectClass::Hint_To_All_Clients() {
   //
   // Hint that an update should be sent to all clients
   //
@@ -263,7 +255,7 @@ void NetworkObjectClass::Hint_To_All_Clients(void) {
 //	Get_Client_Hint_Count
 //
 ////////////////////////////////////////////////////////////////
-BYTE NetworkObjectClass::Get_Client_Hint_Count(int client_id) {
+BYTE NetworkObjectClass::Get_Client_Hint_Count(int client_id) const {
   WWASSERT(client_id >= 0 && client_id < MAX_CLIENT_COUNT);
 
   return UpdateInfo[client_id].ClientHintCount;
@@ -274,7 +266,7 @@ BYTE NetworkObjectClass::Get_Client_Hint_Count(int client_id) {
 //	Belongs_To_Client
 //
 ////////////////////////////////////////////////////////////////
-bool NetworkObjectClass::Belongs_To_Client(int client_id) {
+bool NetworkObjectClass::Belongs_To_Client(int client_id) const {
   WWASSERT(client_id > 0);
 
   int id_min = NETID_CLIENT_OBJECT_MIN + (client_id - 1) * 100000;
@@ -292,7 +284,7 @@ bool NetworkObjectClass::Belongs_To_Client(int client_id) {
 //
 //	10/16/2001 2:45PM ST
 ////////////////////////////////////////////////////////////////
-unsigned long NetworkObjectClass::Get_Last_Update_Time(int client_id) {
+unsigned long NetworkObjectClass::Get_Last_Update_Time(int client_id) const {
   // Is this assert right? ST - 10/16/2001 2:44PM
   WWASSERT(client_id > 0 && client_id <= MAX_CLIENT_COUNT);
   return (UpdateInfo[client_id].LastUpdateTime);
@@ -307,7 +299,7 @@ unsigned long NetworkObjectClass::Get_Last_Update_Time(int client_id) {
 //
 //	10/16/2001 2:45PM ST
 ////////////////////////////////////////////////////////////////
-unsigned short NetworkObjectClass::Get_Update_Rate(int client_id) {
+unsigned short NetworkObjectClass::Get_Update_Rate(int client_id) const {
   // Is this assert right? ST - 10/16/2001 2:44PM
   WWASSERT(client_id > 0 && client_id <= MAX_CLIENT_COUNT);
   return (UpdateInfo[client_id].UpdateRate);
@@ -496,7 +488,7 @@ NetworkObjectClass::Get_Object_Distance (const Vector3 &client_pos)
 //
 //	10/19/2001 12:19PM ST
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NetworkObjectClass::Reset_Last_Clientside_Update_Time(void) {
+void NetworkObjectClass::Reset_Last_Clientside_Update_Time() {
   LastClientsideUpdateTime = 0;
   ClientsideUpdateFrequencySampleStartTime = TIMEGETTIME();
   ClientsideUpdateFrequencySampleCount = 0;
@@ -525,7 +517,7 @@ void NetworkObjectClass::Set_Last_Clientside_Update_Time(ULONG time) {
 //
 //	10/19/2001 12:19PM ST
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int NetworkObjectClass::Get_Clientside_Update_Frequency(void) {
+int NetworkObjectClass::Get_Clientside_Update_Frequency() {
   unsigned long time = TIMEGETTIME();
 
   if (time - ClientsideUpdateFrequencySampleStartTime > CLIENT_SIDE_UPDATE_FREQUENCY_SAMPLE_PERIOD) {

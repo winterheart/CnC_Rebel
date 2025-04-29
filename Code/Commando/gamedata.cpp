@@ -35,10 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "gamedata.h"
+#include <cstring>
 
-#include <stdio.h>
-#include <string.h>
+#include "gamedata.h"
 
 #include "win.h"
 #include "miscutil.h"
@@ -51,17 +50,11 @@
 #include "teammanager.h"
 #include "playermanager.h"
 #include "assets.h"
-#include "translatedb.h"
 #include "string_ids.h"
 #include "gamemode.h"
-#include "savegame.h"
-#include "bandwidth.h"
 #include "gametype.h"
 #include "systimer.h"
-#include "objlibrary.h"
 #include "scriptzone.h"
-#include "aabox.h"
-#include "rendobj.h"
 #include "weaponbag.h"
 #include "multihud.h"
 #include "wwaudio.h"
@@ -90,14 +83,13 @@
 #include "gamedataupdateevent.h"
 #include "stylemgr.h"
 #include "modpackagemgr.h"
-#include "modpackage.h"
 #include "bandwidthcheck.h"
 #include "serversettings.h"
 
 #include "gamespyadmin.h"
 #include "specialbuilds.h"
 #include "demosupport.h"
-#include "specialbuilds.h"
+#include "netutil.h"
 
 const int cGameData::MAX_TIME_LIMIT = 999;
 

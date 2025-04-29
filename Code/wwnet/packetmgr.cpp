@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -33,14 +34,13 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+#include <malloc.h>
 
 #include "packetmgr.h"
 
-#include <always.h>
-#include <memory.h>
-// #include <winsock.h>
+#include "always.h"
+
 #include "systimer.h"
-#include <malloc.h>
 
 #include "netutil.h"
 #include "wwmemlog.h"
@@ -133,7 +133,7 @@ inline unsigned char PacketManagerClass::Get_Bit(unsigned char *&bitstream, int 
  * HISTORY:                                                                                    *
  *   9/24/2001 1:36PM ST : Created                                                             *
  *=============================================================================================*/
-PacketManagerClass::PacketManagerClass(void) {
+PacketManagerClass::PacketManagerClass() {
   BandwidthList.Set_Growth_Step(128);
 
   // memset(PacketLengths, 0, sizeof(PacketLengths));
@@ -171,14 +171,14 @@ PacketManagerClass::PacketManagerClass(void) {
  * HISTORY:                                                                                    *
  *   10/15/2001 11:24AM ST : Created                                                           *
  *=============================================================================================*/
-PacketManagerClass::~PacketManagerClass(void) {
+PacketManagerClass::~PacketManagerClass() {
   if (SendBuffers) {
     delete[] SendBuffers;
-    SendBuffers = NULL;
+    SendBuffers = nullptr;
   }
   if (ReceiveBuffers) {
     delete[] ReceiveBuffers;
-    ReceiveBuffers = NULL;
+    ReceiveBuffers = nullptr;
   }
 }
 
@@ -250,7 +250,7 @@ void PacketManagerClass::Set_Is_Server(bool is_server) {
  * HISTORY:                                                                                    *
  *   9/24/2001 1:36PM ST : Created                                                             *
  *=============================================================================================*/
-int PacketManagerClass::Build_Delta_Packet_Patch(unsigned char *base_packet, unsigned char *add_packet,
+int PacketManagerClass::Build_Delta_Packet_Patch(const unsigned char *base_packet, const unsigned char *add_packet,
                                                  unsigned char *delta_packet, int base_packet_size,
                                                  int add_packet_size) {
 
@@ -267,17 +267,14 @@ int PacketManagerClass::Build_Delta_Packet_Patch(unsigned char *base_packet, uns
   /*
   ** Locals.
   */
-  int write_bit_pos = 0;
-  int read_bit_pos = 0;
-  int num_diff_bytes = 0;
   unsigned char diff_bytes[1024];
 
   /*
   ** Parameter asserts.
   */
-  pm_assert(base_packet != NULL);
-  pm_assert(add_packet != NULL);
-  pm_assert(delta_packet != NULL);
+  pm_assert(base_packet != nullptr);
+  pm_assert(add_packet != nullptr);
+  pm_assert(delta_packet != nullptr);
   pm_assert(base_packet_size == add_packet_size);
   pm_assert(base_packet_size < sizeof(diff_bytes));
 
@@ -293,6 +290,9 @@ int PacketManagerClass::Build_Delta_Packet_Patch(unsigned char *base_packet, uns
   header->BytePack = 0;
 
   if (base_packet_size == add_packet_size) {
+    int read_bit_pos = 0;
+    int num_diff_bytes = 0;
+    int write_bit_pos = 0;
 
     /*
     ** Break it up into 8 byte chunks and see whether any of the chunks are the same.
@@ -410,20 +410,20 @@ int PacketManagerClass::Build_Delta_Packet_Patch(unsigned char *base_packet, uns
  * HISTORY:                                                                                    *
  *   9/26/2001 2:14PM ST : Created                                                             *
  *=============================================================================================*/
-int PacketManagerClass::Reconstruct_From_Delta(unsigned char *base_packet, unsigned char *reconstructed_packet,
+int PacketManagerClass::Reconstruct_From_Delta(const unsigned char *base_packet, unsigned char *reconstructed_packet,
                                                unsigned char *delta_packet, int base_packet_size, int &delta_size) {
-  if (base_packet == NULL) {
+  if (base_packet == nullptr) {
     WWDEBUG_SAY(("*** WARNING: MALFORMED PACKET - PacketManagerClass::Reconstruct_From_Delta -- Bad base packet\n"));
     return (0);
   }
 
-  if (reconstructed_packet == NULL) {
+  if (reconstructed_packet == nullptr) {
     WWDEBUG_SAY(
         ("*** WARNING: MALFORMED PACKET - PacketManagerClass::Reconstruct_From_Delta -- Bad reconstructed packet\n"));
     return (0);
   }
 
-  if (delta_packet == NULL) {
+  if (delta_packet == nullptr) {
     WWDEBUG_SAY(("*** WARNING: MALFORMED PACKET - PacketManagerClass::Reconstruct_From_Delta -- Bad delta packet\n"));
     return (0);
   }
@@ -434,9 +434,9 @@ int PacketManagerClass::Reconstruct_From_Delta(unsigned char *base_packet, unsig
     return (0);
   }
 
-  pm_assert(base_packet != NULL);
-  pm_assert(reconstructed_packet != NULL);
-  pm_assert(delta_packet != NULL);
+  pm_assert(base_packet != nullptr);
+  pm_assert(reconstructed_packet != nullptr);
+  pm_assert(delta_packet != nullptr);
   int patch_list[1024];
   int num_patches = 0;
   int read_bit_pos = 0;
@@ -544,7 +544,7 @@ int PacketManagerClass::Reconstruct_From_Delta(unsigned char *base_packet, unsig
  * HISTORY:                                                                                    *
  *   9/26/2001 2:17PM ST : Created                                                             *
  *=============================================================================================*/
-int PacketManagerClass::Get_Next_Free_Buffer_Index(void) {
+int PacketManagerClass::Get_Next_Free_Buffer_Index() {
   int return_index = -1;
   for (int i = 0; i < NumSendBuffers; i++) {
     NextPacket++;
@@ -576,7 +576,7 @@ int PacketManagerClass::Get_Next_Free_Buffer_Index(void) {
  * HISTORY:                                                                                    *
  *   9/18/2001 4:24PM ST : Created                                                             *
  *=============================================================================================*/
-bool PacketManagerClass::Take_Packet(unsigned char *packet, int packet_len, unsigned char *dest_ip,
+bool PacketManagerClass::Take_Packet(const unsigned char *packet, int packet_len, unsigned char *dest_ip,
                                      unsigned short dest_port, SOCKET source_socket) {
   CriticalSectionClass::LockClass lock(CriticalSection);
 
@@ -627,10 +627,10 @@ void PacketManagerClass::Flush(bool forced) {
 
     int base_index = -1;
     int length = 0;
-    unsigned char *base_packet = NULL;
+    unsigned char *base_packet = nullptr;
     int new_length = 0;
     PacketPackHeaderStruct *header = (PacketPackHeaderStruct *)BuildPacket;
-    unsigned char *next_packet_pos = NULL;
+    unsigned char *next_packet_pos = nullptr;
     int index = 0;
     int i;
     SOCKET socket = INVALID_SOCKET;
@@ -954,7 +954,7 @@ void PacketManagerClass::Flush(bool forced) {
  * HISTORY:                                                                                    *
  *   9/26/2001 2:24PM TSS : Created                                                            *
  *=============================================================================================*/
-void PacketManagerClass::Disable_Optimizations(void) {
+void PacketManagerClass::Disable_Optimizations() {
   FlushFrequency = 0;
   AllowDeltas = false;
   AllowCombos = false;
@@ -1129,8 +1129,7 @@ int PacketManagerClass::Get_Packet(SOCKET socket, unsigned char *packet_buffer, 
 
     if (NumReceivePackets == 0) {
       int address_size = sizeof(sockaddr_in);
-      sockaddr_in addr;
-      memset(&addr, 0, sizeof(addr));
+      sockaddr_in addr = {};
       pm_assert(packet_buffer_size >= PACKET_MANAGER_MTU);
       int bytes;
       int result = ioctlsocket(socket, FIONREAD, (unsigned long *)&bytes);
@@ -1245,7 +1244,7 @@ int PacketManagerClass::Get_Packet(SOCKET socket, unsigned char *packet_buffer, 
  * HISTORY:                                                                                    *
  *   10/9/2001 8:54AM ST : Created                                                             *
  *=============================================================================================*/
-void PacketManagerClass::Reset_Stats(void) {
+void PacketManagerClass::Reset_Stats() {
   CriticalSectionClass::LockClass lock(CriticalSection);
   WWDEBUG_SAY(("PacketManagerClass Resetting stats\n"));
   BandwidthList.Delete_All();
@@ -1502,7 +1501,7 @@ void PacketManagerClass::Update_Stats(bool forced) {
  * HISTORY:                                                                                    *
  *   10/9/2001 8:59AM ST : Created                                                             *
  *=============================================================================================*/
-unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_In(void) { return (TotalUncompressedBandwidthIn); }
+unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_In() const { return (TotalUncompressedBandwidthIn); }
 
 /***********************************************************************************************
  * PacketManager::Get_Total_Raw_Bandwidth_Out -- Get total uncompressed bandwidth out          *
@@ -1518,7 +1517,7 @@ unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_In(void) { return (Tot
  * HISTORY:                                                                                    *
  *   10/9/2001 8:59AM ST : Created                                                             *
  *=============================================================================================*/
-unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_Out(void) { return (TotalUncompressedBandwidthOut); }
+unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_Out() const { return (TotalUncompressedBandwidthOut); }
 
 /***********************************************************************************************
  * PacketManager::Get_Total_Compressed_Bandwidth_In -- Get total compressed bandwidth in       *
@@ -1534,7 +1533,7 @@ unsigned long PacketManagerClass::Get_Total_Raw_Bandwidth_Out(void) { return (To
  * HISTORY:                                                                                    *
  *   10/9/2001 8:59AM ST : Created                                                             *
  *=============================================================================================*/
-unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_In(void) { return (TotalCompressedBandwidthIn); }
+unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_In() const { return (TotalCompressedBandwidthIn); }
 
 /***********************************************************************************************
  * PacketManager::Get_Total_Compressed_Bandwidth_Out -- Get total compressed bandwidth out     *
@@ -1550,7 +1549,7 @@ unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_In(void) { retu
  * HISTORY:                                                                                    *
  *   10/9/2001 8:59AM ST : Created                                                             *
  *=============================================================================================*/
-unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_Out(void) { return (TotalCompressedBandwidthOut); }
+unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_Out() const { return (TotalCompressedBandwidthOut); }
 
 /***********************************************************************************************
  * PacketManager::Get_Raw_Bandwidth_In -- Get uncompressed bandwidth in from given address     *
@@ -1721,7 +1720,7 @@ void PacketManagerClass::Set_Stats_Sampling_Frequency_Delay(unsigned long time_m
  * HISTORY:                                                                                    *
  *   10/24/2001 1:53PM ST : Created                                                            *
  *=============================================================================================*/
-PacketManagerClass::ErrorStateEnum PacketManagerClass::Get_Error_State(void) {
+PacketManagerClass::ErrorStateEnum PacketManagerClass::Get_Error_State() {
   ErrorStateEnum state = ErrorState;
   ErrorState = STATE_OK;
   return (state);
@@ -1730,10 +1729,10 @@ PacketManagerClass::ErrorStateEnum PacketManagerClass::Get_Error_State(void) {
 /*
 ** Operators required to allow us to add BandwidthStateStruct to a dynamic vector.
 */
-bool PacketManagerClass::BandwidthStatsStruct::operator==(BandwidthStatsStruct const &stats) {
-  return ((memcmp(this, &stats, sizeof(*this)) == 0) ? true : false);
+bool PacketManagerClass::BandwidthStatsStruct::operator==(BandwidthStatsStruct const &stats) const {
+  return (memcmp(this, &stats, sizeof(*this)) == 0);
 }
 
-bool PacketManagerClass::BandwidthStatsStruct::operator!=(BandwidthStatsStruct const &stats) {
-  return ((memcmp(this, &stats, sizeof(*this)) == 0) ? false : true);
+bool PacketManagerClass::BandwidthStatsStruct::operator!=(BandwidthStatsStruct const &stats) const {
+  return (memcmp(this, &stats, sizeof(*this)) != 0);
 }

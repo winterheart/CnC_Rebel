@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     wwpacket.cpp
@@ -93,7 +94,7 @@ cPacket &cPacket::operator=(const cPacket &source) {
 }
 
 //------------------------------------------------------------------------------------
-void cPacket::Add_Vector3(Vector3 &v) {
+void cPacket::Add_Vector3(const Vector3 &v) {
   WWASSERT(v.Is_Valid());
 
   Add(v.X);
@@ -111,7 +112,7 @@ void cPacket::Get_Vector3(Vector3 &v) {
 }
 
 //------------------------------------------------------------------------------------
-void cPacket::Add_Quaternion(Quaternion &q) {
+void cPacket::Add_Quaternion(const Quaternion &q) {
   WWASSERT(q.Is_Valid());
 
   Add(q.X);
@@ -180,7 +181,7 @@ BYTE cPacket::Peek_Message_Type() const
 }
 */
 
-void cPacket::Init_Encoder(void) {
+void cPacket::Init_Encoder() {
   EncoderInit = false;
   cEncoderList::Set_Precision(BITPACK_PACKET_ID, PACKET_ID_BITS);
   cEncoderList::Set_Precision(BITPACK_PACKET_TYPE, PACKET_TYPE_BITS);

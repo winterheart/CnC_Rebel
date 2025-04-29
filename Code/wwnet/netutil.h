@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     netutil.h
@@ -24,17 +25,14 @@
 // Description:
 //
 //-----------------------------------------------------------------------------
-#if defined(_MSV_VER)
 #pragma once
-#endif
 
 #ifndef NETUTIL_H
 #define NETUTIL_H
 
-#include "win.h"
 #include <winsock.h>
 
-#include "bittype.h"
+#include "win.h"
 
 class cPacket;
 
@@ -72,12 +70,12 @@ public:
   static void String_To_Address(LPSOCKADDR_IN p_address, LPCSTR str, USHORT port);
   static void Create_Unbound_Socket(SOCKET &sock);
   static bool Create_Bound_Socket(SOCKET &sock, USHORT port, SOCKADDR_IN &local_address);
-  static void Close_Socket(SOCKET &sock);
+  static void Close_Socket(const SOCKET &sock);
   static void Create_Broadcast_Address(LPSOCKADDR_IN p_broadcast_address, USHORT port);
   static void Create_Local_Address(LPSOCKADDR_IN p_local_address, USHORT port);
   static void Broadcast(SOCKET &sock, USHORT port, cPacket &packet);
   static bool Is_Tcpip_Present();
-  static void Lan_Servicing(SOCKET &sock, LanPacketHandlerCallback p_callback);
+  static void Lan_Servicing(const SOCKET &sock, LanPacketHandlerCallback p_callback);
   static bool Is_Internet() { return IsInternet; }
   static void Set_Socket_Buffer_Sizes(SOCKET sock, int new_size = 10000);
   static UINT Get_Default_Resend_Timeout_Ms() { return DefaultResendTimeoutMs; }

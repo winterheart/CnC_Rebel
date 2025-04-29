@@ -1,7 +1,7 @@
 set(SOURCES
     BWBalance.cpp
     connect.cpp
-    lan.cpp
+    #lan.cpp
     msgstat.cpp
     msgstatlist.cpp
     msgstatlistgroup.cpp

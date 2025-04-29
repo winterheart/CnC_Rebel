@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     netstats.cpp
@@ -26,7 +27,6 @@
 //------------------------------------------------------------------------------------
 #include "netstats.h" // I WANNA BE FIRST!
 
-#include "win.h"
 #include "systimer.h"
 #include "miscutil.h"
 #include "netutil.h"
@@ -70,7 +70,7 @@ double cNetStats::Get_Pc_Packetloss_Received() const {
     //
     // Must add 1 to PrevLastUnreliable because packet id starts at 0
     //
-    packetloss_pc = 100 * (1 - UnreliableCount / (double)packet_count);
+    packetloss_pc = 100 * (1 - UnreliableCount / static_cast<double>(packet_count));
   }
 
   return packetloss_pc;
@@ -85,13 +85,13 @@ void cNetStats::Set_Pc_Packetloss_Sent(double packetloss_pc) {
 }
 
 //------------------------------------------------------------------------------------
-void cNetStats::Set_Remote_Service_Count(int remote_service_count) {
+void cNetStats::Set_Remote_Service_Count(const int remote_service_count) {
   // WWASSERT(remote_service_count >= 0);
   RemoteServiceCount = remote_service_count;
 }
 
 //------------------------------------------------------------------------------------
-bool cNetStats::Update_If_Sample_Done(int this_frame_time, bool force_update) {
+bool cNetStats::Update_If_Sample_Done(const int this_frame_time, const bool force_update) {
   bool is_updated = false;
 
   static int update_count = 0;
@@ -108,7 +108,7 @@ bool cNetStats::Update_If_Sample_Done(int this_frame_time, bool force_update) {
 
     for (int statistic = 0; statistic < STAT_COUNT; statistic++) {
       StatTotal[statistic] += StatSample[statistic];
-      StatAverage[statistic] = (UINT)(StatTotal[statistic] / total_time);
+      StatAverage[statistic] = static_cast<UINT>(StatTotal[statistic] / total_time);
       StatSnapshot[statistic] = StatSample[statistic];
       StatMacroSample[statistic] += StatSample[statistic];
       StatSample[statistic] = 0;

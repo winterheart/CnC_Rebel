@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -35,9 +36,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #pragma once
-
-#ifndef _PACKETMGR_H
-#define _PACKETMGR_H
 
 #include "mutex.h"
 #include "wwdebug.h"
@@ -126,13 +124,13 @@ public:
   /*
   ** Constructor.
   */
-  PacketManagerClass(void);
-  ~PacketManagerClass(void);
+  PacketManagerClass();
+  ~PacketManagerClass();
 
   /*
   ** Application interface.
   */
-  bool Take_Packet(unsigned char *packet, int packet_len, unsigned char *dest_ip, unsigned short dest_port,
+  bool Take_Packet(const unsigned char *packet, int packet_len, unsigned char *dest_ip, unsigned short dest_port,
                    SOCKET socket);
   int Get_Packet(SOCKET socket, unsigned char *packet_buffer, int packet_buffer_size, unsigned char *ip_address,
                  unsigned short &port);
@@ -142,12 +140,12 @@ public:
   /*
   ** Bandwidth Management.
   */
-  void Reset_Stats(void);
+  void Reset_Stats();
   void Update_Stats(bool forced = false);
-  unsigned long Get_Total_Raw_Bandwidth_In(void);
-  unsigned long Get_Total_Raw_Bandwidth_Out(void);
-  unsigned long Get_Total_Compressed_Bandwidth_In(void);
-  unsigned long Get_Total_Compressed_Bandwidth_Out(void);
+  unsigned long Get_Total_Raw_Bandwidth_In() const;
+  unsigned long Get_Total_Raw_Bandwidth_Out() const;
+  unsigned long Get_Total_Compressed_Bandwidth_In() const;
+  unsigned long Get_Total_Compressed_Bandwidth_Out() const;
 
   unsigned long Get_Raw_Bandwidth_In(SOCKADDR_IN *address);
   unsigned long Get_Raw_Bandwidth_Out(SOCKADDR_IN *address);
@@ -157,43 +155,43 @@ public:
   unsigned long Get_Raw_Bytes_Out(SOCKADDR_IN *address);
 
   void Set_Stats_Sampling_Frequency_Delay(unsigned long time_ms);
-  unsigned long Get_Stats_Sampling_Frequency_Delay(void) { return (StatsFrequency); };
+  unsigned long Get_Stats_Sampling_Frequency_Delay() const { return (StatsFrequency); };
 
   /*
   ** Class configuration.
   */
   void Set_Flush_Frequency(unsigned long freq) { FlushFrequency = freq; };
-  bool Toggle_Allow_Deltas(void) {
-    AllowDeltas = AllowDeltas ? false : true;
+  bool Toggle_Allow_Deltas() {
+    AllowDeltas = !AllowDeltas;
     return (AllowDeltas);
   };
 
-  bool Toggle_Allow_Combos(void) {
-    AllowCombos = AllowCombos ? false : true;
+  bool Toggle_Allow_Combos() {
+    AllowCombos = !AllowCombos;
     return (AllowCombos);
   };
 
   //
   // TSS added 09/25/01
   //
-  unsigned long Get_Flush_Frequency(void) { return FlushFrequency; }
-  bool Get_Allow_Deltas(void) { return AllowDeltas; }
-  bool Get_Allow_Combos(void) { return AllowCombos; }
-  void Disable_Optimizations(void);
+  unsigned long Get_Flush_Frequency() const { return FlushFrequency; }
+  bool Get_Allow_Deltas() const { return AllowDeltas; }
+  bool Get_Allow_Combos() const { return AllowCombos; }
+  void Disable_Optimizations();
 
   enum ErrorStateEnum {
     STATE_OK,
     STATE_WS_BUFFERS_FULL,
   };
-  ErrorStateEnum Get_Error_State(void);
+  ErrorStateEnum Get_Error_State();
 
 private:
   /*
   ** Delta compression.
   */
-  static int Build_Delta_Packet_Patch(unsigned char *base_packet, unsigned char *add_packet,
+  static int Build_Delta_Packet_Patch(const unsigned char *base_packet, const unsigned char *add_packet,
                                       unsigned char *delta_packet, int base_packet_size, int add_packet_size);
-  static int Reconstruct_From_Delta(unsigned char *base_packet, unsigned char *reconstructed_packet,
+  static int Reconstruct_From_Delta(const unsigned char *base_packet, unsigned char *reconstructed_packet,
                                     unsigned char *delta_packet, int base_packet_size, int &delta_size);
   bool Break_Packet(unsigned char *packet, int packet_len, unsigned char *ip_address, unsigned short port);
 
@@ -206,12 +204,12 @@ private:
   /*
   ** Buffer allocation.
   */
-  int Get_Next_Free_Buffer_Index(void);
+  int Get_Next_Free_Buffer_Index();
 
   /*
   ** Error handling.
   */
-  void Clear_Socket_Error(SOCKET socket);
+  static void Clear_Socket_Error(SOCKET socket);
 
   /*
   ** Stats management.
@@ -228,8 +226,8 @@ private:
     unsigned long CompressedBandwidthIn;
     unsigned long CompressedBandwidthOut;
 
-    bool operator==(BandwidthStatsStruct const &stats);
-    bool operator!=(BandwidthStatsStruct const &stats);
+    bool operator==(BandwidthStatsStruct const &stats) const;
+    bool operator!=(BandwidthStatsStruct const &stats) const;
   };
   int Get_Stats_Index(unsigned long ip_address, unsigned short port, bool can_create = true);
   void Register_Packet_In(unsigned char *ip_address, unsigned short port, unsigned long compressed_size,
@@ -254,7 +252,7 @@ private:
     int PacketSendLength;
     SOCKET PacketSendSocket;
 
-    SendBufferClass(void) {
+    SendBufferClass() {
       PacketBuffer = new PacketBufferType;
       IPAddress[0] = 0;
       IPAddress[1] = 0;
@@ -267,9 +265,9 @@ private:
       PacketSendSocket = INVALID_SOCKET;
     };
 
-    ~SendBufferClass(void) {
+    ~SendBufferClass() {
       delete PacketBuffer;
-      PacketBuffer = NULL;
+      PacketBuffer = nullptr;
     };
   };
 
@@ -350,5 +348,3 @@ private:
 ** Single instance of the packet manager.
 */
 extern PacketManagerClass PacketManager;
-
-#endif //_PACKETMGR_H

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 //
 // Filename:     rhost.cpp
@@ -24,15 +25,14 @@
 // Description:  Data about a remote host
 //
 //-----------------------------------------------------------------------------
+#include <cstdlib>
+
 #include "rhost.h" // I WANNA BE FIRST!
 
-#include <stdlib.h>
-#include <math.h>
-
 #include "systimer.h"
-#include "miscutil.h"
 #include "mathutil.h"
 #include "connect.h"
+#include "netutil.h"
 #include "wwdebug.h"
 #include "packetmgr.h"
 
@@ -45,14 +45,14 @@ int cRemoteHost::PriorityUpdateRate = 15;
 
 //-----------------------------------------------------------------------------
 cRemoteHost::cRemoteHost()
-    : ReliablePacketSendId(0), UnreliablePacketSendId(0), ReliablePacketRcvId(0), UnreliablePacketRcvId(0),
-      LastKeepaliveTimeMs(TIMEGETTIME()), IsFlowControlEnabled(cConnection::Is_Flow_Control_Enabled()),
-      MustEvict(false), LastReliableSendId(-2), // dummy value
-      LastUnreliableSendId(-2),                 // dummy value
-      ResendTimeoutMs(cNetUtil::Get_Default_Resend_Timeout_Ms()), LastServiceCount(0), LastContactTime(0), TargetBps(0),
-      MaximumBps(0), MaxInternalPingtimeMs(0), AverageInternalPingtimeMs(0), BandwidthMultiplier(1.0f),
+    : LastReliableSendId(-2), LastUnreliableSendId(-2), ResendTimeoutMs(cNetUtil::Get_Default_Resend_Timeout_Ms()), AverageInternalPingtimeMs(0),
+      MaxInternalPingtimeMs(0), ReliablePacketSendId(0),
+      UnreliablePacketSendId(0), ReliablePacketRcvId(0), // dummy value
+      UnreliablePacketRcvId(0),                 // dummy value
+      LastKeepaliveTimeMs(TIMEGETTIME()), MustEvict(false), IsFlowControlEnabled(cConnection::Is_Flow_Control_Enabled()), LastServiceCount(0),
+      LastContactTime(0), TargetBps(0), MaximumBps(0), BandwidthMultiplier(1.0f),
       AverageObjectPriority(0.5f), IsLoading(false), ExpectPacketFlood(false), WasLoading(0),
-      CreationTime(TIMEGETTIME()), TotalResends(0), PriorityUpdateCounter(0), ExtendedAveragePingTime(0),
+      TotalResends(0), CreationTime(TIMEGETTIME()), PriorityUpdateCounter(0), ExtendedAveragePingTime(0),
       ExtendedAverageCount(0), LastAveragePingTime(0), IsOutgoingFlooded(false), TotalResentPacketsInQueue(0),
       NextOutgoingFloodActionTime(0), NumOutgoingFloods(0) {
   // WWDEBUG_SAY(("cRemoteHost::cRemoteHost\n"));
@@ -93,7 +93,7 @@ void cRemoteHost::Init_Stats() {
   // }
 
   // WWDEBUG_SAY(("ResendTimeoutMs for rhost %d = %d\n", Id, (unsigned long)ResendTimeoutMs));
-  WWDEBUG_SAY(("ResendTimeoutMs for rhost = %d\n", (unsigned long)ResendTimeoutMs));
+  WWDEBUG_SAY(("ResendTimeoutMs for rhost = %d\n", ResendTimeoutMs));
 
   TotalInternalPingtimeMs = 0;
   NumInternalPings = 0;
@@ -115,7 +115,7 @@ void cRemoteHost::Compute_List_Max(int list_type) {
 }
 
 //-----------------------------------------------------------------------------
-int cRemoteHost::Get_List_Max(int list_type) {
+int cRemoteHost::Get_List_Max(int list_type) const {
   WWASSERT(list_type >= 0 && list_type < 4);
   return ListMax[list_type];
 }
@@ -127,7 +127,7 @@ void cRemoteHost::Set_List_Processing_Time(int list_type, int processing_time_ms
 }
 
 //-----------------------------------------------------------------------------
-int cRemoteHost::Get_List_Processing_Time(int list_type) {
+int cRemoteHost::Get_List_Processing_Time(int list_type) const {
   WWASSERT(list_type >= 0 && list_type < 4);
   return ListProcessingTime[list_type];
 }
@@ -137,14 +137,12 @@ SOCKADDR_IN &cRemoteHost::Get_Address() { return Address; }
 
 //-----------------------------------------------------------------------------
 cRemoteHost::~cRemoteHost() {
-  SLNode<cPacket> *objnode;
-  cPacket *p_packet;
-  for (int list_type = 0; list_type < 4; list_type++) {
-    for (objnode = PacketList[list_type].Head(); objnode != NULL;) {
-      p_packet = objnode->Data();
-      WWASSERT(p_packet != NULL);
+  for (auto & list_type : PacketList) {
+    for (SLNode<cPacket> *objnode = list_type.Head(); objnode != nullptr;) {
+      cPacket *p_packet = objnode->Data();
+      WWASSERT(p_packet != nullptr);
       objnode = objnode->Next();
-      PacketList[list_type].Remove(p_packet);
+      list_type.Remove(p_packet);
       p_packet->Flush();
       delete p_packet;
     }
@@ -152,7 +150,7 @@ cRemoteHost::~cRemoteHost() {
 }
 
 //------------------------------------------------------------------------------------
-void cRemoteHost::Add_Packet(cPacket &packet, BYTE list_type) {
+void cRemoteHost::Add_Packet(const cPacket &packet, BYTE list_type) {
   WWASSERT(list_type == RELIABLE_SEND_LIST || list_type == RELIABLE_RCV_LIST || list_type == UNRELIABLE_SEND_LIST ||
            list_type == UNRELIABLE_RCV_LIST);
   WWASSERT(packet.Get_Id() >= 0);
@@ -174,7 +172,7 @@ void cRemoteHost::Add_Packet(cPacket &packet, BYTE list_type) {
   }
 
   cPacket *p_packet = new cPacket;
-  WWASSERT(p_packet != NULL);
+  WWASSERT(p_packet != nullptr);
   *p_packet = packet; // copy data
 
   if (list_type == RELIABLE_SEND_LIST || list_type == UNRELIABLE_SEND_LIST) {
@@ -185,10 +183,10 @@ void cRemoteHost::Add_Packet(cPacket &packet, BYTE list_type) {
     // Locate insertion point according to packet id
     //
     SLNode<cPacket> *objnode;
-    cPacket *obj = NULL;
+    cPacket *obj = nullptr;
     for (objnode = PacketList[list_type].Head(); objnode; objnode = objnode->Next()) {
       obj = objnode->Data();
-      WWASSERT(obj != NULL);
+      WWASSERT(obj != nullptr);
 
       if (obj->Get_Id() > packet.Get_Id()) {
         break;
@@ -200,7 +198,7 @@ void cRemoteHost::Add_Packet(cPacket &packet, BYTE list_type) {
     // TSS - this is inefficient: we have already parsed the
     // list once
     //
-    if (objnode == NULL) {
+    if (objnode == nullptr) {
       PacketList[list_type].Add_Tail(p_packet);
     } else {
       PacketList[list_type].Insert_Before(p_packet, obj);
@@ -214,11 +212,10 @@ void cRemoteHost::Remove_Packet(int packet_id, BYTE list_type) {
   WWASSERT(list_type == RELIABLE_SEND_LIST || list_type == RELIABLE_RCV_LIST || list_type == UNRELIABLE_SEND_LIST ||
            list_type == UNRELIABLE_RCV_LIST);
 
-  SLNode<cPacket> *objnode;
-  for (objnode = PacketList[list_type].Head(); objnode != NULL;) {
+  for (SLNode<cPacket> *objnode = PacketList[list_type].Head(); objnode != nullptr;) {
 
     cPacket *p_packet = objnode->Data();
-    WWASSERT(p_packet != NULL);
+    WWASSERT(p_packet != nullptr);
     objnode = objnode->Next();
 
     if (packet_id == p_packet->Get_Id()) {
@@ -436,7 +433,7 @@ void cRemoteHost::Adjust_Flow_If_Necessary(float sample_time_ms) {
 }
 
 //------------------------------------------------------------------------------------
-bool cRemoteHost::Is_Outgoing_Flooded(void) {
+bool cRemoteHost::Is_Outgoing_Flooded() const {
   //
   // Don't take action if the rhost is loading.
   //
@@ -498,7 +495,7 @@ bool cRemoteHost::Is_Outgoing_Flooded(void) {
 }
 
 //------------------------------------------------------------------------------------
-void cRemoteHost::Dam_The_Flood(void) {
+void cRemoteHost::Dam_The_Flood() {
   WWASSERT(IsOutgoingFlooded);
 
   //
@@ -585,7 +582,7 @@ void cRemoteHost::Set_Is_Loading(bool state) {
 }
 
 //------------------------------------------------------------------------------------
-bool cRemoteHost::Was_Recently_Loading(unsigned long time) {
+bool cRemoteHost::Was_Recently_Loading(unsigned long time) const {
   if (IsLoading) {
     return (true);
   }
@@ -600,7 +597,7 @@ bool cRemoteHost::Was_Recently_Loading(unsigned long time) {
 }
 
 //------------------------------------------------------------------------------------
-void cRemoteHost::Adjust_Resend_Timeout(void) {
+void cRemoteHost::Adjust_Resend_Timeout() {
   if (NumInternalPings > 0) {
 
     if (MaxInternalPingtimeMs && AverageInternalPingtimeMs) {
