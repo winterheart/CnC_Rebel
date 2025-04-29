@@ -35,19 +35,17 @@
  *   FileListTextureClass::Load_Frame_Surface -- Load source texture                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
+
 #include "texture.h"
 
-#include <stdio.h>
 #include "dx8wrapper.h"
 #include "dxdefs.h"
-#include "targa.h"
-#include <nstrdup.h>
 #include "w3d_file.h"
 #include "assetmgr.h"
 #include "formconv.h"
 #include "textureloader.h"
 #include "missingtexture.h"
-#include "ffactory.h"
 #include "dx8caps.h"
 #include "dx8texman.h"
 #include "meshmatdesc.h"
