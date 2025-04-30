@@ -113,7 +113,7 @@ target_include_directories(WWLib PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/wwlib
     >
     PRIVATE
-        ${PROJECT_SOURCE_DIR}/Code/wwdebug
+        ${PROJECT_SOURCE_DIR}/Code/WWDebug
 )
 target_compile_definitions(WWLib PRIVATE
     REGEX_MALLOC
