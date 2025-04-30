@@ -55,7 +55,7 @@
 #include <wwonline\wolsession.h>
 #include <wwonline\woluser.h>
 #include <combat\combat.h>
-#include <wwnet\wwpacket.h>
+#include <WWNet\wwpacket.h>
 
 /*
 ** Commonly available components.

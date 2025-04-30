@@ -20,7 +20,7 @@ set(SOURCES
 add_library(WWNet STATIC ${SOURCES})
 target_include_directories(WWNet PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwnet
+        ${PROJECT_SOURCE_DIR}/Code/WWNet
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code          # Requires commando/nat.h
