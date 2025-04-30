@@ -34,7 +34,7 @@
  ******************************************************************************/
 
 #include "Resource.h"
-#include <WWUI\PopupDialog.h>
+#include <WWUi\PopupDialog.h>
 #include <WWLib\Signaler.h>
 
 class DlgPasswordPrompt : public PopupDialogClass, public Signaler<DlgPasswordPrompt> {

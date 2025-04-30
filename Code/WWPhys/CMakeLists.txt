@@ -1,0 +1,130 @@
+set(SOURCES
+    Path.cpp
+    PathDebugPlotter.cpp
+    PathObject.cpp
+    Pathfind.cpp
+    PathfindPortal.cpp
+    PathfindSector.cpp
+    #PathfindSectorBuilder.cpp
+    accessiblephys.cpp
+    animcollisionmanager.cpp
+    bin_aabox.cpp
+    bin_axes.cpp
+    bin_obbox.cpp
+    bin_point.cpp
+    bin_vector.cpp
+    #bpt.cpp
+    camerashakesystem.cpp
+    decophys.cpp
+    dynamicaabtreecull.cpp
+    dynamicanimphys.cpp
+    dynamicphys.cpp
+    dynamicshadowmanager.cpp
+    dyntexproject.cpp
+    floodfillbox.cpp
+    floodfillgrid.cpp
+    grideffect.cpp
+    heightdb.cpp
+    humanphys.cpp
+    lightcull.cpp
+    lightphys.cpp
+    lightsolve.cpp
+    lightsolvecontext.cpp
+    materialeffect.cpp
+    motorcycle.cpp
+    motorvehicle.cpp
+    movephys.cpp
+    octbox.cpp
+    pathfindbox.cpp
+    pathmgr.cpp
+    pathnode.cpp
+    pathsolve.cpp
+    phys.cpp
+    phys3.cpp
+    physaabtreecull.cpp
+    physcon.cpp
+    physcontrol.cpp
+    physdecalsys.cpp
+    physdynamicsavesystem.cpp
+    physgridcull.cpp
+    physresourcemgr.cpp
+    physstaticsavesystem.cpp
+    phystexproject.cpp
+    progcall.cpp
+    projectile.cpp
+    projectormanager.cpp
+    pscene.cpp
+    pscene_collision.cpp
+    pscene_decal.cpp
+    pscene_lighting.cpp
+    pscene_projectors.cpp
+    pscene_saveload.cpp
+    pscene_vis.cpp
+    rbody.cpp
+    rbody_obsolete.cpp
+    renderobjphys.cpp
+    renegadeterrainmaterialpass.cpp
+    renegadeterrainpatch.cpp
+    ridermanager.cpp
+    shakeablestaticphys.cpp
+    staticaabtreecull.cpp
+    staticanimphys.cpp
+    staticphys.cpp
+    stealtheffect.cpp
+    terrainmaterial.cpp
+    timeddecophys.cpp
+    trackedvehicle.cpp
+    transitioneffect.cpp
+    umbrasupport.cpp
+    vehicledazzle.cpp
+    vehiclephys.cpp
+    visoptimizationcontext.cpp
+    visoptprogress.cpp
+    visrendercontext.cpp
+    vissample.cpp
+    vissectorstats.cpp
+    vistable.cpp
+    vistablemgr.cpp
+    vtolvehicle.cpp
+    waypath.cpp
+    waypoint.cpp
+    wheel.cpp
+    wheelvehicle.cpp
+    widgets.cpp
+    widgetuser.cpp
+    wwphys.cpp
+)
+
+add_library(WWPhys STATIC ${SOURCES})
+target_include_directories(WWPhys PUBLIC
+    $<BUILD_INTERFACE:
+        ${PROJECT_SOURCE_DIR}/Code/WWPhys
+    >
+)
+target_link_libraries(WWPhys PRIVATE
+    WW3D2
+    WWBitPack
+    WWDebug
+    WWLib
+    Microsoft::D3DX9
+)
+
+if(REBEL_ENABLE_EDITOR)
+    add_library(WWPhysE STATIC ${SOURCES})
+    target_include_directories(WWPhysE PUBLIC
+        $<BUILD_INTERFACE:
+            ${PROJECT_SOURCE_DIR}/Code/WWPhys
+        >
+    )
+    target_link_libraries(WWPhysE
+        PRIVATE
+            WW3D2
+            WWBitPack
+            WWDebugE
+            WWLib
+            Microsoft::D3DX9
+    )
+    target_compile_definitions(WWPhysE PRIVATE
+        PARAM_EDITING_ON
+    )
+endif()

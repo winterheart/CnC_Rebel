@@ -42,7 +42,7 @@ target_include_directories(WWMath PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/WWMath
     >
     PRIVATE
-        ${PROJECT_SOURCE_DIR}/Code/wwsaveload
+        ${PROJECT_SOURCE_DIR}/Code/WWSaveLoad
 )
 target_link_libraries(WWMath
     PRIVATE

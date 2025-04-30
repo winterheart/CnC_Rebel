@@ -38,7 +38,7 @@
 #define __DLGQUICKMATCH_H__
 
 #include "WOLQuickMatch.h"
-#include <WWUI\MenuDialog.h>
+#include <WWUi\MenuDialog.h>
 #include <WWLib\Notify.h>
 #include <WWOnline\RefPtr.h>
 

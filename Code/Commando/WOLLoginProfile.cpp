@@ -39,11 +39,11 @@
 #include "_globals.h"
 #include "Resource.h"
 #include <WWOnline\WOLLoginInfo.h>
-#include <WWUI\DialogBase.h>
-#include <WWUI\ListCtrl.h>
+#include <WWUi\DialogBase.h>
+#include <WWUi\ListCtrl.h>
 #include <WWLib\Registry.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <stdio.h>
 
 using namespace WWOnline;

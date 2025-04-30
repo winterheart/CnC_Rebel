@@ -36,8 +36,8 @@
 
 #include "DlgWebPage.h"
 #include "WebBrowser.h"
-#include <WWUI\PopupDialog.h>
-#include <WWUI\DialogControl.h>
+#include <WWUi\PopupDialog.h>
+#include <WWUi\DialogControl.h>
 #include <Combat\DirectInput.h>
 #include <WW3D2\WW3D.h>
 #include "DlgMessageBox.h"

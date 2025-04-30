@@ -37,7 +37,7 @@
 #ifndef __DLGMESSAGEBOX_H__
 #define __DLGMESSAGEBOX_H__
 
-#include <WWUI\PopupDialog.h>
+#include <WWUi\PopupDialog.h>
 #include <WWLib\Notify.h>
 
 class DlgMsgBox;

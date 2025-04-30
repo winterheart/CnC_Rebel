@@ -52,7 +52,7 @@
 #include <WWOnline\WaitCondition.h>
 #include <WWOnline\PingProfile.h>
 #include "string_ids.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>
 #include "UserOptions.h"
 #include "autostart.h"

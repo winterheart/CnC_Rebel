@@ -41,15 +41,15 @@
 #include "DlgMessageBox.h"
 #include <WOLAPI\ChatDefs.h>
 #include <WWOnline\WOLChannel.h>
-#include <WWUI\StyleMgr.h>
-#include <WWUI\DialogMgr.h>
-#include <WWUI\EditCtrl.h>
-#include <WWUI\Listctrl.h>
-#include <WWUI\MenuEntryCtrl.h>
-#include <WWUI\ShortcutBarCtrl.h>
+#include <WWUi\StyleMgr.h>
+#include <WWUi\DialogMgr.h>
+#include <WWUi\EditCtrl.h>
+#include <WWUi\Listctrl.h>
+#include <WWUi\MenuEntryCtrl.h>
+#include <WWUi\ShortcutBarCtrl.h>
 #include <WW3D2\Render2D.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 
 using namespace WWOnline;
 

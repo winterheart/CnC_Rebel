@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -39,9 +40,7 @@
 #include "gamedata.h"
 #include "gamemode.h"
 #include "cnetwork.h"
-#include "ww3d.h"
 #include "singlepl.h"
-#include "player.h"
 #include "renegadedialogmgr.h"
 #include "netinterface.h"
 #include "langmode.h"
@@ -52,8 +51,6 @@
 #include "combatgmode.h"
 #include "useroptions.h"
 #include "lanchat.h"
-#include "rendobj.h"
-#include "phys.h"
 #include "pscene.h"
 #include "dx8renderer.h"
 #include "gdsingleplayer.h"
@@ -78,17 +75,16 @@
 #ifdef ENABLE_GAMESPY
 #include "gamespy_qnr.h"
 #endif
-#include "specialbuilds.h"
 #include "modpackagemgr.h"
 
 #include "translatedb.h"
 #include "damage.h"
-#include "ccamera.h"
 #include "bones.h"
 #include "surfaceeffects.h"
 #include "ffactory.h"
 #include "ini.h"
 #include "dazzle.h"
+#include "netutil.h"
 #include "scripts.h"
 
 static void _reload_game_configuration_files(void);

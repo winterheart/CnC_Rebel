@@ -46,13 +46,13 @@
 #include <WWOnline\WOLServer.h>
 #include <WWOnline\WOLLoginInfo.h>
 #include <WWOnline\PingProfile.h>
-#include <WWUI\ComboBoxCtrl.h>
-#include <WWUI\ShortcutBarCtrl.h>
+#include <WWUi\ComboBoxCtrl.h>
+#include <WWUi\ShortcutBarCtrl.h>
 #include "bandwidthcheck.h"
 
 #include "Resource.h"
 #include "String_ids.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 
 using namespace WWOnline;
 

@@ -37,18 +37,13 @@
 
 #include "player.h"
 
-#include <string.h>
-#include <stdio.h>
-
 #include "playermanager.h"
 #include "teammanager.h"
 #include "wwdebug.h"
-#include "miscutil.h"
 #include "cnetwork.h"
 #include "textdisplay.h"
 #include "WWAudio.H"
 #include "gamedata.h"
-#include "wwdebug.h"
 #include "chunkio.h"
 #include "useroptions.h"
 #include "smartgameobj.h"
@@ -58,16 +53,14 @@
 #include "devoptions.h"
 #include "colors.h"
 #include "persistfactory.h"
-#include "combatchunkid.h"
 #include "networkobjectfactory.h"
-#include "gameobjmanager.h"
 #include "gametype.h"
 #include "multihud.h"
 #include "apppackettypes.h"
 #include "messagewindow.h"
 #include "playerkill.h"
-#include "consolemode.h"
 #include "gamespyadmin.h"
+#include "netutil.h"
 
 DECLARE_NETWORKOBJECT_FACTORY(cPlayer, NETCLASSID_PLAYER);
 
