@@ -24,7 +24,6 @@ target_include_directories(WWNet PUBLIC
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code          # Requires commando/nat.h
-        ${PROJECT_SOURCE_DIR}/Code/WOLAPI
 )
 target_link_libraries(WWNet
     PRIVATE
@@ -37,3 +36,6 @@ target_link_libraries(WWNet
     INTERFACE
         WWBitPack
 )
+# FIXME: Blast from the past: unresolved bug from 2002
+# With /Ob2 on Release Renegade.exe produces 0xc0000005 exception on exit
+target_compile_options(WWNet PRIVATE "$<$<CONFIG:Release>:/Ob1>")
