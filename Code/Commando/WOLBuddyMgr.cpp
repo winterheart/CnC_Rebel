@@ -51,7 +51,7 @@
 #include <WWLib\Registry.h>
 
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>
 
 using namespace WWOnline;

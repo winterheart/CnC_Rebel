@@ -52,7 +52,7 @@
 
 #include "Resource.h"
 #include "String_ids.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 
 using namespace WWOnline;
 

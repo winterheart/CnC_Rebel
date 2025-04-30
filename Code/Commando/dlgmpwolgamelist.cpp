@@ -57,7 +57,7 @@
 #include <WWUI\CheckBoxCtrl.h>
 #include <WWUI\ListCtrl.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include "dlgmplanhostoptions.h"
 #include "debug.h"
 #include "init.h"

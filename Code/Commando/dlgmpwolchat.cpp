@@ -49,7 +49,7 @@
 #include <WWUI\ShortcutBarCtrl.h>
 #include <WW3D2\Render2D.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 
 using namespace WWOnline;
 

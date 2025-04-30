@@ -80,7 +80,7 @@
 #include <WWAudio\WWAudio.h>
 #include <WWLib\RealCRC.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>
 #include <WWDebug\WWProfile.h>
 #include "specialbuilds.h"

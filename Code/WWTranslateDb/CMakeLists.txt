@@ -8,7 +8,7 @@ set(SOURCES
 add_library(WWTranslateDb STATIC ${SOURCES})
 target_include_directories(WWTranslateDb PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwtranslatedb
+        ${PROJECT_SOURCE_DIR}/Code/WWTranslateDb
     >
 )
 target_link_libraries(WWTranslateDb PRIVATE

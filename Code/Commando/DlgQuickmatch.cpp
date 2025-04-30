@@ -43,7 +43,7 @@
 #include "gameinitmgr.h"
 #include "WOLJoinGame.h"
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <WWOnline\WaitCondition.h>
 #include <WWUI\ListCtrl.h>
 #include <WWDebug\WWDebug.h>

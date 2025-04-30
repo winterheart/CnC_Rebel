@@ -40,7 +40,7 @@
 #include "Resource.h"
 #include <WWUI\ProgressCtrl.h>
 #include "String_IDs.h"
-#include <WWTranslateDB\TranslateDB.h>
+#include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>
 #include "mainloop.h"
 #include "consolemode.h"

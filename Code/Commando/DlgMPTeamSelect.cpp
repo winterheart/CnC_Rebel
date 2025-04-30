@@ -48,7 +48,7 @@
 #include <wwui\imagectrl.h>
 #include "resource.h"
 #include "string_ids.h"
-#include <wwtranslatedb\translatedb.h>
+#include <WWTranslateDb\translatedb.h>
 #include "modpackagemgr.h"
 #include "gameinitmgr.h"
 
