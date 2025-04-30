@@ -98,7 +98,7 @@ set(SOURCES
 add_library(WWPhys STATIC ${SOURCES})
 target_include_directories(WWPhys PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwphys
+        ${PROJECT_SOURCE_DIR}/Code/WWPhys
     >
 )
 target_link_libraries(WWPhys PRIVATE
@@ -113,7 +113,7 @@ if(REBEL_ENABLE_EDITOR)
     add_library(WWPhysE STATIC ${SOURCES})
     target_include_directories(WWPhysE PUBLIC
         $<BUILD_INTERFACE:
-            ${PROJECT_SOURCE_DIR}/Code/wwphys
+            ${PROJECT_SOURCE_DIR}/Code/WWPhys
         >
     )
     target_link_libraries(WWPhysE
