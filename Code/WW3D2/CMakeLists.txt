@@ -109,7 +109,7 @@ set(SOURCES
 add_library(WW3D2 STATIC ${SOURCES})
 target_include_directories(WW3D2 PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/ww3d2
+        ${PROJECT_SOURCE_DIR}/Code/WW3D2
     >
     PRIVATE
         ${MSS_INCLUDE_DIRS}
@@ -135,7 +135,7 @@ if(REBEL_ENABLE_EDITOR)
     add_library(WW3D2E STATIC ${SOURCES})
     target_include_directories(WW3D2E PUBLIC
         $<BUILD_INTERFACE:
-            ${PROJECT_SOURCE_DIR}/Code/ww3d2
+            ${PROJECT_SOURCE_DIR}/Code/WW3D2
         >
         PRIVATE
             ${MSS_INCLUDE_DIRS}

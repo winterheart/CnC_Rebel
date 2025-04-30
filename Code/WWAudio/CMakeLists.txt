@@ -27,7 +27,7 @@ target_include_directories(WWAudio PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/WWAudio
     >
     PRIVATE
-        ${PROJECT_SOURCE_DIR}/Code/ww3d2
+        ${PROJECT_SOURCE_DIR}/Code/WW3D2
         ${MSS_INCLUDE_DIRS}
 )
 target_link_libraries(WWAudio
@@ -51,7 +51,7 @@ if(REBEL_ENABLE_EDITOR)
             ${PROJECT_SOURCE_DIR}/Code/WWAudio
         >
         PRIVATE
-            ${PROJECT_SOURCE_DIR}/Code/ww3d2
+            ${PROJECT_SOURCE_DIR}/Code/WW3D2
             ${MSS_INCLUDE_DIRS}
     )
     target_link_libraries(WWAudioE
