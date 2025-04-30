@@ -16,7 +16,7 @@ set(SOURCES
 add_library(WWSaveLoad STATIC ${SOURCES})
 target_include_directories(WWSaveLoad PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwsaveload
+        ${PROJECT_SOURCE_DIR}/Code/WWSaveLoad
     >
 )
 target_link_libraries(WWSaveLoad PRIVATE
@@ -30,7 +30,7 @@ if(REBEL_ENABLE_EDITOR)
     add_library(WWSaveLoadE STATIC ${SOURCES})
     target_include_directories(WWSaveLoadE PUBLIC
         $<BUILD_INTERFACE:
-            ${PROJECT_SOURCE_DIR}/Code/wwsaveload
+            ${PROJECT_SOURCE_DIR}/Code/WWSaveLoad
         >
     )
     target_link_libraries(WWSaveLoadE PUBLIC
