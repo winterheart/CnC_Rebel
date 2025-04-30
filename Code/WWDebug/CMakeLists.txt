@@ -10,7 +10,7 @@ target_include_directories(WWDebug PUBLIC
         ${PROJECT_SOURCE_DIR}/Code/WWDebug
     >
     PRIVATE
-        ${PROJECT_SOURCE_DIR}/Code/wwlib
+        ${PROJECT_SOURCE_DIR}/Code/WWLib
 )
 target_link_libraries(WWDebug PRIVATE
     winmm   # timeGetTime()
@@ -23,7 +23,7 @@ if(REBEL_ENABLE_EDITOR)
             ${PROJECT_SOURCE_DIR}/Code/WWDebug
         >
         PRIVATE
-            ${PROJECT_SOURCE_DIR}/Code/wwlib
+            ${PROJECT_SOURCE_DIR}/Code/WWLib
     )
     target_link_libraries(WWDebugE PRIVATE
         winmm   # timeGetTime()

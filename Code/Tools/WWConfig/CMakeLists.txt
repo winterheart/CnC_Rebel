@@ -9,7 +9,7 @@ set(SOURCES
     VideoConfigDialog.cpp
     WWConfig.cpp
     WWConfigDlg.cpp
-    ../../wwlib/ramfile.cpp
+        ../../wwlib/ramfile.cpp
 )
 
 set(CMAKE_MFC_FLAG 1)

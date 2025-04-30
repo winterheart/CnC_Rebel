@@ -110,7 +110,7 @@ set(SOURCES
 add_library(WWLib STATIC ${SOURCES})
 target_include_directories(WWLib PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwlib
+        ${PROJECT_SOURCE_DIR}/Code/WWLib
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/WWDebug

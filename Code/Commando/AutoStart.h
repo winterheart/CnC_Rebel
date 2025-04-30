@@ -39,7 +39,7 @@
 #define _AUTOSTART_H
 
 #include "WOLLogonMgr.h"
-#include <wwlib\signaler.h>
+#include <WWLib\signaler.h>
 #include "wolgmode.h"
 #include "menudialog.h"
 #include "resource.h"

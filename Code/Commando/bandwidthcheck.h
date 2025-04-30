@@ -43,7 +43,7 @@
 #define _BANDWIDTHCHECK_H
 
 #include <WWOnline\WaitCondition.h>
-#include <wwlib\except.h>
+#include <WWLib\except.h>
 #include <windows.h>
 #include <BandTest\BandTest.h>
 

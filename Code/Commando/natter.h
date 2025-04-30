@@ -60,7 +60,7 @@
 /*
 ** Commonly available components.
 */
-#include <wwlib\vector.h>
+#include <WWLib\vector.h>
 
 #ifdef WWASSERT
 #ifndef fw_assert

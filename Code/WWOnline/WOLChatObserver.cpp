@@ -50,7 +50,7 @@
 #include "WOLGameOptions.h"
 #include "WOLGame.h"
 #include "WOLErrorUtil.h"
-#include <wwlib\registry.h>
+#include <WWLib\registry.h>
 #include <commando\_globals.h>
 #include "systimer.h"
 #include "specialbuilds.h"
