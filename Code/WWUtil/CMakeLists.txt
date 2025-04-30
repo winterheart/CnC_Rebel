@@ -7,7 +7,7 @@ set(SOURCES
 add_library(WWUtil STATIC ${SOURCES})
 target_include_directories(WWUtil PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwutil
+        ${PROJECT_SOURCE_DIR}/Code/WWUtil
     >
 )
 target_link_libraries(WWUtil
