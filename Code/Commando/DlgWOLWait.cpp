@@ -38,7 +38,7 @@
 #include "Resource.h"
 #include "String_ids.h"
 #include <WWOnline\WOLSession.h>
-#include <WWUI\MouseMgr.h>
+#include <WWUi\MouseMgr.h>
 #include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>
 #include "gamespyadmin.h"

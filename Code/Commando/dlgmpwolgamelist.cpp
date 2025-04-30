@@ -51,11 +51,11 @@
 #include "WOLLogonMgr.h"
 #include <WWOnline\WOLServer.h>
 #include <WWOnline\WOLChannel.h>
-#include <WWUI\DialogMgr.h>
-#include <WWUI\ShortcutBarCtrl.h>
-#include <WWUI\ButtonCtrl.h>
-#include <WWUI\CheckBoxCtrl.h>
-#include <WWUI\ListCtrl.h>
+#include <WWUi\DialogMgr.h>
+#include <WWUi\ShortcutBarCtrl.h>
+#include <WWUi\ButtonCtrl.h>
+#include <WWUi\CheckBoxCtrl.h>
+#include <WWUi\ListCtrl.h>
 #include "String_IDs.h"
 #include <WWTranslateDb\TranslateDB.h>
 #include "dlgmplanhostoptions.h"

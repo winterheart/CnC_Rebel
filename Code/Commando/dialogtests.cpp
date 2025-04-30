@@ -92,7 +92,7 @@
 #ifdef ENABLE_GAMESPY
 #include "gamespy_qnr.h"
 #endif
-#include <WWUI\ImageCtrl.h>
+#include <WWUi\ImageCtrl.h>
 #include "bandwidthcheck.h"
 
 ////////////////////////////////////////////////////////////////

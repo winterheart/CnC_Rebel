@@ -36,7 +36,7 @@
 #ifndef __DLGWOLWAIT_H__
 #define __DLGWOLWAIT_H__
 
-#include <WWUI\PopupDialog.h>
+#include <WWUi\PopupDialog.h>
 #include <WWLib\Notify.h>
 #include <WWOnline\RefPtr.h>
 #include <WWOnline\WaitCondition.h>

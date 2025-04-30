@@ -37,7 +37,7 @@
 #ifndef __DLGDOWNLOAD_H__
 #define __DLGDOWNLOAD_H__
 
-#include <WWUI\PopupDialog.h>
+#include <WWUi\PopupDialog.h>
 #include <WWOnline\WOLDownload.h>
 
 class DlgDownload : public PopupDialogClass {

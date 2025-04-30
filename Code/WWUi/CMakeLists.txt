@@ -46,7 +46,7 @@ set(SOURCES
 add_library(WWUi STATIC ${SOURCES})
 target_include_directories(WWUi PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwui
+        ${PROJECT_SOURCE_DIR}/Code/WWUi
     >
     PRIVATE
         ${MSS_INCLUDE_DIRS}

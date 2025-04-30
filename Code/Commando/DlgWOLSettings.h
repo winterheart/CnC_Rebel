@@ -38,7 +38,7 @@
 #define __DLGWOLSETTINGS_H__
 
 #include "DlgWOLWait.h"
-#include <WWUI\MenuDialog.h>
+#include <WWUi\MenuDialog.h>
 #include <WWLib\Notify.h>
 #include <WWOnline\RefPtr.h>
 #include <WWOnline\WOLSession.h>

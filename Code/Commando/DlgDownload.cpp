@@ -38,7 +38,7 @@
 #include "DlgMessageBox.h"
 #include "DlgRestart.h"
 #include "Resource.h"
-#include <WWUI\ProgressCtrl.h>
+#include <WWUi\ProgressCtrl.h>
 #include "String_IDs.h"
 #include <WWTranslateDb\TranslateDB.h>
 #include <WWDebug\WWDebug.h>

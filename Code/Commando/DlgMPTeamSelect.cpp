@@ -43,9 +43,9 @@
 #include "renegadedialogmgr.h"
 #include <combat\playertype.h>
 #include <wwonline\wolgameoptions.h>
-#include <wwui\listctrl.h>
-#include <wwui\comboboxctrl.h>
-#include <wwui\imagectrl.h>
+#include <WWUi\listctrl.h>
+#include <WWUi\comboboxctrl.h>
+#include <WWUi\imagectrl.h>
 #include "resource.h"
 #include "string_ids.h"
 #include <WWTranslateDb\translatedb.h>

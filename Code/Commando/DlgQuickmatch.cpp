@@ -45,7 +45,7 @@
 #include "String_IDs.h"
 #include <WWTranslateDb\TranslateDB.h>
 #include <WWOnline\WaitCondition.h>
-#include <WWUI\ListCtrl.h>
+#include <WWUi\ListCtrl.h>
 #include <WWDebug\WWDebug.h>
 
 #ifdef _MSC_VER
