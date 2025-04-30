@@ -8,7 +8,7 @@ set(SOURCES
 add_library(WWBitPack STATIC ${SOURCES})
 target_include_directories(WWBitPack PUBLIC
     $<BUILD_INTERFACE:
-        ${PROJECT_SOURCE_DIR}/Code/wwbitpack
+        ${PROJECT_SOURCE_DIR}/Code/WWBitPack
     >
 )
 target_link_libraries(WWBitPack PRIVATE
