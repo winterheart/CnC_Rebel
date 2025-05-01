@@ -648,7 +648,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
       if (ttl > max_ttl) {
         ttl = base_ttl;
       }
-      int result = setsockopt(test_socket, IPPROTO_IP, IP_TTL, (char *)&ttl, sizeof(ttl));
+      result = setsockopt(test_socket, IPPROTO_IP, IP_TTL, (char *)&ttl, sizeof(ttl));
       if (result == SOCKET_ERROR) {
         DebugString("setsockopt failed to set IP_TTL = %d on test socket - error code %d\n", ttl, WSAGetLastError());
         failure_code = BANDTEST_NO_TTL_SET;
@@ -905,7 +905,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
     ** Set the TTL back to max.
     */
     int new_ttl = 255;
-    int result = setsockopt(ICMPRawSocket, IPPROTO_IP, IP_TTL, (char *)&new_ttl, sizeof(new_ttl));
+    result = setsockopt(ICMPRawSocket, IPPROTO_IP, IP_TTL, (char *)&new_ttl, sizeof(new_ttl));
     if (result == SOCKET_ERROR) {
       DebugString("setsockopt failed to set IP_TTL = %d - error code %d\n", new_ttl, WSAGetLastError());
       failure_code = BANDTEST_NO_TTL_SET;
@@ -930,7 +930,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
       ** Do more pings if the ping time is low. User a smaller timeout too.
       */
       int num_pings = 15;
-      unsigned long timeout = ping_times[0] * 3;
+      timeout = ping_times[0] * 3;
       if (ping_times[0] < 100) {
         num_pings = 50;
         timeout = 200;
