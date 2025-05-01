@@ -538,7 +538,7 @@ void WOLLogonMgr::RememberLogin(void) {
     cNetInterface::Set_Nickname((WideStringClass &)nickname);
 
     // Set the name of the last successful login
-    StringClass lastname(64, true);
+    StringClass lastname(64u, true);
     nickname.Convert_To(lastname);
     MPSettingsMgrClass::Set_Last_Login((const char *)lastname);
 

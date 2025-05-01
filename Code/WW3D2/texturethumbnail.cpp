@@ -470,20 +470,20 @@ ThumbnailClass *ThumbnailManagerClass::Peek_Thumbnail_Instance(const StringClass
 
 void ThumbnailManagerClass::Insert_To_Hash(ThumbnailClass *thumb) {
   Changed = true;
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, thumb->Get_Name());
   ThumbnailHash.Insert(hash_name, thumb);
 }
 
 ThumbnailClass *ThumbnailManagerClass::Get_From_Hash(const StringClass &name) {
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, name);
   return ThumbnailHash.Get(hash_name);
 }
 
 void ThumbnailManagerClass::Remove_From_Hash(ThumbnailClass *thumb) {
   Changed = true;
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, thumb->Get_Name());
   ThumbnailHash.Remove(hash_name);
 }

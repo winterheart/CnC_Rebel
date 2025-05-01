@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -64,7 +64,7 @@ unsigned StringClass::ReservedMask = 0;
 //	Get_String
 //
 ///////////////////////////////////////////////////////////////////
-void StringClass::Get_String(int length, bool is_temp) {
+void StringClass::Get_String(const size_t length, const bool is_temp) {
   WWMEMLOG(MEM_STRINGS);
 
   if (!is_temp && length == 0) {
@@ -105,7 +105,7 @@ void StringClass::Get_String(int length, bool is_temp) {
         temp_string += MAX_TEMP_BYTES * MAX_TEMP_STRING;
         temp_string &= ~(MAX_TEMP_BYTES * MAX_TEMP_STRING - 1);
         temp_string += index * MAX_TEMP_BYTES;
-        temp_string += sizeof(_HEADER); // The buffer contains header as well, and it needs to be at the start
+        temp_string += sizeof(HEADER); // The buffer contains header as well, and it needs to be at the start
         string = reinterpret_cast<char *>(temp_string);
 
         Set_Buffer_And_Allocated_Length(string, MAX_TEMP_LEN);
@@ -132,23 +132,23 @@ void StringClass::Get_String(int length, bool is_temp) {
 //	Resize
 //
 ///////////////////////////////////////////////////////////////////
-void StringClass::Resize(int new_len) {
+void StringClass::Resize(size_t size) {
   WWMEMLOG(MEM_STRINGS);
 
-  int allocated_len = Get_Allocated_Length();
-  if (new_len > allocated_len) {
+  size_t allocated_len = Get_Allocated_Length();
+  if (size > allocated_len) {
 
     //
     //	Allocate the new buffer and copy the contents of our current
     // string.
     //
-    TCHAR *new_buffer = Allocate_Buffer(new_len);
+    TCHAR *new_buffer = Allocate_Buffer(size);
     _tcscpy(new_buffer, m_Buffer);
 
     //
     //	Switch to the new buffer
     //
-    Set_Buffer_And_Allocated_Length(new_buffer, new_len);
+    Set_Buffer_And_Allocated_Length(new_buffer, size);
   }
 
 }
@@ -158,17 +158,17 @@ void StringClass::Resize(int new_len) {
 //	Uninitialised_Grow
 //
 ///////////////////////////////////////////////////////////////////
-void StringClass::Uninitialised_Grow(int new_len) {
+void StringClass::Uninitialised_Grow(const size_t length) {
   WWMEMLOG(MEM_STRINGS);
 
-  int allocated_len = Get_Allocated_Length();
-  if (new_len > allocated_len) {
+  size_t allocated_len = Get_Allocated_Length();
+  if (length > allocated_len) {
 
     //
     //	Switch to a newly allocated buffer
     //
-    TCHAR *new_buffer = Allocate_Buffer(new_len);
-    Set_Buffer_And_Allocated_Length(new_buffer, new_len);
+    TCHAR *new_buffer = Allocate_Buffer(length);
+    Set_Buffer_And_Allocated_Length(new_buffer, length);
   }
 
   //
@@ -185,7 +185,7 @@ void StringClass::Uninitialised_Grow(int new_len) {
 void StringClass::Free_String() {
   if (m_Buffer != m_EmptyString) {
 
-    unsigned buffer_base = reinterpret_cast<unsigned>(m_Buffer - sizeof(StringClass::_HEADER));
+    unsigned buffer_base = reinterpret_cast<unsigned>(m_Buffer - sizeof(StringClass::HEADER));
     unsigned temp_base = reinterpret_cast<unsigned>(m_TempStrings + MAX_TEMP_BYTES * MAX_TEMP_STRING);
 
     if ((buffer_base >> 11) == (temp_base >> 11)) {
@@ -205,7 +205,7 @@ void StringClass::Free_String() {
       //
       //	String wasn't temporary, so free the memory
       //
-      char *buffer = ((char *)m_Buffer) - sizeof(StringClass::_HEADER);
+      char *buffer = ((char *)m_Buffer) - sizeof(StringClass::HEADER);
       delete[] buffer;
     }
 
@@ -293,10 +293,9 @@ void StringClass::Release_Resources() {}
 bool StringClass::Copy_Wide(const WCHAR *source) {
   if (source != nullptr) {
 
-    int length;
     BOOL unmapped;
 
-    length = WideCharToMultiByte(CP_ACP, 0, source, -1, nullptr, 0, nullptr, &unmapped);
+    int length = WideCharToMultiByte(CP_ACP, 0, source, -1, nullptr, 0, nullptr, &unmapped);
     if (length > 0) {
 
       // Convert.

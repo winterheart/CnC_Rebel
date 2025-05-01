@@ -70,13 +70,13 @@ static StringClass CurrentLevel;
 static StringClass CurrentString;
 
 static void Get_Latest_Game_String(RegistryClass &reg, int i, StringClass &string) {
-  StringClass keyname(0, true);
+  StringClass keyname(0u, true);
   keyname.Format("%s%d", SYSTEM_INFO_LOG_LATEST_GAME, i + 1);
   reg.Get_String(keyname, string);
 }
 
 static void Set_Latest_Game_String(RegistryClass &reg, int i, const StringClass &string) {
-  StringClass keyname(0, true);
+  StringClass keyname(0u, true);
   keyname.Format("%s%d", SYSTEM_INFO_LOG_LATEST_GAME, i + 1);
   reg.Set_String(keyname, string);
 }
@@ -93,7 +93,7 @@ void SystemInfoLog::Set_State_Loading() {
   RegistryClass registry(COMBAT_SUB_KEY_NAME_DEBUG);
   if (registry.Is_Valid()) {
     registry.Set_Int(SYSTEM_INFO_LOG_CURRENT_STATE, 1);
-    StringClass string(0, true);
+    StringClass string(0u, true);
     for (int i = NUM_GAMES_LOGGED - 1; i > 0; --i) {
       Get_Latest_Game_String(registry, i - 1, string);
       Set_Latest_Game_String(registry, i, string);
@@ -128,9 +128,9 @@ void SystemInfoLog::Set_State_Playing() {
 }
 
 void SystemInfoLog::Get_Final_String(StringClass &string) {
-  StringClass vnum(0, true);
-  StringClass ptime(0, true);
-  StringClass avgfps(0, true);
+  StringClass vnum(0u, true);
+  StringClass ptime(0u, true);
+  StringClass avgfps(0u, true);
   vnum.Format("%d.%2.2d", DebugManager::Get_Version_Number() >> 16, DebugManager::Get_Version_Number() & 0xffff);
   ptime.Format("%2.2d:%2.2d", TotalPlayingTime / 60, TotalPlayingTime % 60);
   avgfps.Format("%d.%1.1d", AvgFPS / 10, AvgFPS % 10);
@@ -197,11 +197,11 @@ void SystemInfoLog::Get_Log(StringClass &string) {
                   "%3s %5s %16s %6s %6s %6s %6s %8s %s\r\n",
                   "#", "Build", "Level", "Length", "MinFPS", "MaxFPS", "AvgFPS", "LoadTime", "Status");
 
-    StringClass tmp_string(0, true);
+    StringClass tmp_string(0u, true);
 
     for (int i = 0; i < NUM_GAMES_LOGGED; ++i) {
       Get_Latest_Game_String(registry, i, tmp_string);
-      StringClass tmp_string2(0, true);
+      StringClass tmp_string2(0u, true);
       tmp_string2.Format("%2d. ", i + 1);
       string += tmp_string2;
       string += tmp_string;
@@ -225,7 +225,7 @@ static StringClass CurrentMapName;
 
 void PlayerInfoLog::Set_Current_Map_Name(const char *map_name) {
   CurrentMapName = map_name;
-  StringClass tmp_name(0, true);
+  StringClass tmp_name(0u, true);
   if (SaveGameManager::Peek_Map_Name(CurrentMapName, tmp_name)) {
     CurrentMapName = tmp_name;
   }
@@ -240,7 +240,7 @@ void PlayerInfoLog::Append_To_Log(PlayerDataClass *data) {
     return;
 #ifdef WWDEBUG
   StringClass tmp;
-  StringClass work(0, true);
+  StringClass work(0u, true);
   ADD_HISTORY(("Map name: %s\r\n", CurrentMapName.Peek_Buffer()));
   ADD_HISTORY(("Game time: %2.2f\r\n", data->Get_Game_Time()));
   ADD_HISTORY(("Session time: %2.2f\r\n", data->Get_Session_Time()));

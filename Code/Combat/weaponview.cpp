@@ -807,7 +807,7 @@ static void Set_Bob(int bob_state) {
 
     if (!name.Is_Empty()) {
       BobHTree = WW3DAssetManager::Get_Instance()->Get_HTree(name);
-      StringClass anim(0, true);
+      StringClass anim(0u, true);
       anim.Format("%s.%s", name.Peek_Buffer(), name.Peek_Buffer());
       BobHAnim = WW3DAssetManager::Get_Instance()->Get_HAnim(anim);
     }

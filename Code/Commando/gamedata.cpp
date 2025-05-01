@@ -812,8 +812,8 @@ void cGameData::Import_Tier_1_Data(cPacket &packet) {
   //
   //	Determine what the name of the mod and the map are from their CRC's
   //
-  StringClass mod_name(0, true);
-  StringClass map_name(0, true);
+  StringClass mod_name(0u, true);
+  StringClass map_name(0u, true);
   if (ModPackageMgrClass::Get_Mod_Map_Name_From_CRC(mod_name_crc, map_name_crc, &mod_name, &map_name)) {
     Set_Mod_Name(mod_name);
     Set_Map_Name(map_name);
@@ -1048,7 +1048,7 @@ void cGameData::Load_From_Server_Config(LPCSTR config_file) {
   Set_Settings_Description(wide_string);
 
   for (int j = 0; j < MAX_MAPS; j++) {
-    StringClass item_name(0, true);
+    StringClass item_name(0u, true);
     item_name.Format("MapName%02d", j);
     p_ini->Get_String(INI_SECTION_NAME, item_name, "", map_name, sizeof(map_name));
     StringClass map(map_name, true);
@@ -1110,7 +1110,7 @@ void cGameData::Save_To_Server_Config(LPCSTR config_file) {
 #endif //(0)
 
   for (int j = 0; j < MAX_MAPS; j++) {
-    StringClass item_name(0, true);
+    StringClass item_name(0u, true);
     item_name.Format("MapName%02d", j);
     p_ini->Put_String(INI_SECTION_NAME, item_name, MapCycle[j]);
   }

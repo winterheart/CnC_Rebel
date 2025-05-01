@@ -193,7 +193,7 @@ void SaveGameManager::Pre_Load_Game(const char *filename, StringClass &filename_
     //
     //	Dig out the name of the map we'll use with this file
     //
-    StringClass map_name(0, true);
+    StringClass map_name(0u, true);
     if (Peek_Map_Name(filename, map_name)) {
 
       char mix_root_name[_MAX_FNAME] = {0};
@@ -202,7 +202,7 @@ void SaveGameManager::Pre_Load_Game(const char *filename, StringClass &filename_
       //
       //	Build the mix filename from the map name...
       //
-      StringClass mix_filename(0, true);
+      StringClass mix_filename(0u, true);
       lsd_filename.Format("%s.lsd", mix_root_name);
       mix_filename.Format("%s.mix", mix_root_name);
 
@@ -349,7 +349,7 @@ bool SaveGameManager::Peek_Description(const char *filename, WideStringClass &de
 
   bool retval = false;
   int mission_name_id = 0;
-  StringClass map_filename(0, true);
+  StringClass map_filename(0u, true);
 
   //
   //	Loop until we've found the header chunk

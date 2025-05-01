@@ -362,10 +362,10 @@ void LoginInfo::Remember(bool store) {
     int index = IndexOf();
 
     if (index == 0) {
-      StringClass name(64, true);
+      StringClass name(64u, true);
       mNickname.Convert_To(name);
 
-      StringClass pass(64, true);
+      StringClass pass(64u, true);
       mPassword.Convert_To(pass);
 
       // Store login information into the registry

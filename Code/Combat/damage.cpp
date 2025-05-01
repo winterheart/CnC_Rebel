@@ -203,7 +203,7 @@ void ArmorWarheadManager::Init(void) {
       SpecialDamageProbability.Add(0);
       VisceroidProbability.Add(0);
 
-      StringClass special_damage_type(0, true);
+      StringClass special_damage_type(0u, true);
       armorINI->Get_String(special_damage_type, SECTION_SPECIAL_DAMAGE_TYPE, WarheadNames[warhead_num]);
       if (!special_damage_type.Is_Empty()) {
         if (!stricmp(special_damage_type, "FIRE")) {
@@ -241,7 +241,7 @@ void ArmorWarheadManager::Init(void) {
       SpecialDamageExplosion[i] = "";
     }
 
-    StringClass temp_string(0, true);
+    StringClass temp_string(0u, true);
     for (i = SPECIAL_DAMAGE_TYPE_FIRE; i < NUM_SPECIAL_DAMAGE_TYPES; i++) {
       const char *SpecialDamageSectionNames[NUM_SPECIAL_DAMAGE_TYPES] = {
           "Special_Damage_None",     "Special_Damage_Fire",     "Special_Damage_Chem",

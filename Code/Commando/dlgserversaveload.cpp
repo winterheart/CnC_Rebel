@@ -627,7 +627,7 @@ void ServerSettingsManagerClass::Scan(void) {
   char whole_file_name[MAX_PATH];
   // char description[256];
   WideStringClass description(128u, true);
-  StringClass char_description(128, true);
+  StringClass char_description(128u, true);
 
   /*
   ** Clear out old configs.

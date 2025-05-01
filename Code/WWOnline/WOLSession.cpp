@@ -1842,7 +1842,7 @@ void Session::MakeSquadRequests(void) {
         WWDEBUG_SAY(("WOL: SquadInfo requested for ID %ld\n", squadID));
         hr = mChat->RequestSquadInfo(squadID);
       } else {
-        StringClass name(0, true);
+        StringClass name(0u, true);
         request.Convert_To(name);
 
         WWDEBUG_SAY(("WOL: SquadInfo requested for '%s'\n", (const char *)name));

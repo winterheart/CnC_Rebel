@@ -813,7 +813,7 @@ void IMEManager::InputLanguageChanged(HKL hkl) {
     UINT descSize = ImmGetDescription(hkl, NULL, 0);
     ++descSize;
 
-    StringClass desc((int)descSize, true);
+    StringClass desc(descSize, true);
     char *descPtr = desc.Get_Buffer(descSize);
 
     ImmGetDescription(hkl, descPtr, descSize);

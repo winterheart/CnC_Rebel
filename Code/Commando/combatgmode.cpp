@@ -839,7 +839,7 @@ void CombatGameModeClass::Load_Level(void) {
     unsigned ffuse = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
     unsigned actualuse = FastAllocatorGeneral::Get_Allocator()->Get_Total_Actual_Memory_Usage();
     unsigned count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
-    StringClass working_string(0, true);
+    StringClass working_string(0u, true);
     working_string.Format("\nMalloc count: %d\n"
                           "Free count: %d\n"
                           "FF Heap: %d.%3.3d.%3.3d (%d Mb)\n"

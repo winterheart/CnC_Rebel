@@ -322,7 +322,7 @@ void DlgWOLSettings::On_Command(int ctrl, int message, DWORD param) {
       name = Get_Dlg_Item_Text(IDC_PERSONA_COMBO);
 
       // Save preferred login
-      StringClass saveName(64, true);
+      StringClass saveName(64u, true);
       name.Convert_To(saveName);
       MPSettingsMgrClass::Set_Auto_Login(saveName);
     } else {
@@ -577,7 +577,7 @@ void DlgWOLSettings::UpdateForPersona(void) {
       Check_Dlg_Button(IDC_AUTOLOGIN_CHECK, autoLogin);
 
       // Set the selected login to the persona that is selected.
-      StringClass loginName(64, true);
+      StringClass loginName(64u, true);
       newLogin.Convert_To(loginName);
       MPSettingsMgrClass::Set_Last_Login(loginName);
     } else {
@@ -966,7 +966,7 @@ void DlgWOLSettings::On_ComboBoxCtrl_Sel_Change(ComboBoxCtrlClass *combo, int ct
       WideStringClass name(64u, true);
       combo->Get_String(newSel, name);
 
-      StringClass saveName(64, true);
+      StringClass saveName(64u, true);
       name.Convert_To(saveName);
       profile->SetPreferredServer(saveName);
     }

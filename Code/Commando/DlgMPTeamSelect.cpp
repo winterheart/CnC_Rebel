@@ -777,7 +777,7 @@ void DlgMPTeamSelect::ProcessWOLGameInfo(DlgMPTeamSelect &dialog, const char *da
     unsigned long mapCRC = 0;
     PARSE_HEXDWORD(info, " ", mapCRC);
 
-    StringClass mapname(64, true);
+    StringClass mapname(64u, true);
     ModPackageMgrClass::Find_Filename_From_CRC("*.mix", mapCRC, &mapname);
 
     WideStringClass text(255u, true);

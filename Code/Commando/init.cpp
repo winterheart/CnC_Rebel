@@ -515,7 +515,7 @@ public:
     reg.Get_String("LogPath", path, sizeof(path), "\\\\tanya\\game\\projects\\renegade\\_error_logs");
     strcat(path, "\\");
 
-    StringClass folder_name(0, true);
+    StringClass folder_name(0u, true);
     folder_name.Format("%s%d.%d", path, Version >> 16, Version & 0xffff);
     if (!Verify_Log_Directory(folder_name))
       return;

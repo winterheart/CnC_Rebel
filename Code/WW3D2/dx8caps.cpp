@@ -753,7 +753,7 @@ void DX8Caps::Check_Texture_Format_Support(WW3DFormat display_format, const DX_D
           SUCCEEDED(Direct3D->CheckDeviceFormat(caps.AdapterOrdinal, caps.DeviceType, d3d_display_format, 0,
                                                 D3DRTYPE_TEXTURE, WW3DFormat_To_D3DFormat(format)));
       if (SupportTextureFormat[i]) {
-        StringClass name(0, true);
+        StringClass name(0u, true);
         Get_WW3D_Format_Name(format, name);
         DXLOG(("Supports texture format: %s\r\n", name.Peek_Buffer()));
       }
@@ -778,7 +778,7 @@ void DX8Caps::Check_Render_To_Texture_Support(WW3DFormat display_format, const D
           Direct3D->CheckDeviceFormat(caps.AdapterOrdinal, caps.DeviceType, d3d_display_format, D3DUSAGE_RENDERTARGET,
                                       D3DRTYPE_TEXTURE, WW3DFormat_To_D3DFormat(format)));
       if (SupportRenderToTextureFormat[i]) {
-        StringClass name(0, true);
+        StringClass name(0u, true);
         Get_WW3D_Format_Name(format, name);
         DXLOG(("Supports render-to-texture format: %s\r\n", name.Peek_Buffer()));
       }

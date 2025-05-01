@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -652,7 +653,7 @@ WWINLINE void DX8Wrapper::Set_DX8_Render_State(DX_D3DRENDERSTATETYPE state, unsi
 
 #ifdef MESH_RENDER_SNAPSHOT_ENABLED
   if (WW3D::Is_Snapshot_Activated()) {
-    StringClass value_name(0, true);
+    StringClass value_name(0u, true);
     Get_DX8_Render_State_Value_Name(value_name, state, value);
     SNAPSHOT_SAY(("DX8 - SetRenderState(state: %s, value: %s)\n",
       Get_DX8_Render_State_Name(state), value_name.Peek_Buffer()));
@@ -671,7 +672,7 @@ WWINLINE void DX8Wrapper::Set_DX8_Texture_Stage_State(unsigned stage, DX_D3DTEXT
     return;
 #ifdef MESH_RENDER_SNAPSHOT_ENABLED
   if (WW3D::Is_Snapshot_Activated()) {
-    StringClass value_name(0, true);
+    StringClass value_name(0u, true);
     Get_DX8_Texture_Stage_State_Value_Name(value_name, state, value);
     SNAPSHOT_SAY(("DX8 - SetTextureStageState(stage: %d, state: %s, value: %s)\n", stage,
                   Get_DX8_Texture_Stage_State_Name(state), value_name.Peek_Buffer()));

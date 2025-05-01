@@ -1641,7 +1641,7 @@ static void Target_Update(void) {
     }
 
     if (InfoDebug) {
-      StringClass info(0, true);
+      StringClass info(0u, true);
       obj->Get_Information(info);
 
       WideStringClass str(0u, true);

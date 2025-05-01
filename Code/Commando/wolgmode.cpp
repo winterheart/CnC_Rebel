@@ -99,7 +99,7 @@ const wchar_t *RENEGADE_LOBBY_PASSWORD =
 
 const wchar_t *_cdecl Translate_WOLString(const char *token) {
   if (token) {
-    StringClass desc(80, true);
+    StringClass desc(80u, true);
     desc.Format("IDS_%s", token);
     const WCHAR *text = TRANSLATE_BY_DESC(desc);
 
@@ -1574,7 +1574,7 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage &message) {
       float seconds = mTheGame->Get_Time_Remaining_Seconds();
 
       // Game info sent as: MapCRC Seconds remaining
-      StringClass info(0, true);
+      StringClass info(0u, true);
       info.Format("GINFO:%08lx %.4f", mapCRC, seconds);
 
       WWDEBUG_SAY(("%S\n", info));
@@ -1651,9 +1651,9 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage &message) {
           int datalen = strlen(data);
           if (!datalen)
             return;
-          StringClass tmp(0, true);
+          StringClass tmp(0u, true);
 
-          StringClass requestor(0, true);
+          StringClass requestor(0u, true);
           requestor = message.GetSendersName();
 
           StringClass datastring;
@@ -1673,7 +1673,7 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage &message) {
           datastring += "\r\n";
 
           // Verify the sysinfo folder
-          StringClass dirname(0, true);
+          StringClass dirname(0u, true);
           dirname.Format("sysinfo_%d", DebugManager::Get_Version_Number());
           if (GetFileAttributes(dirname) == 0xffffffff) {
             if (!CreateDirectory(dirname, NULL)) {
@@ -1681,7 +1681,7 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage &message) {
             }
           }
 
-          StringClass filename(0, true);
+          StringClass filename(0u, true);
           filename = dirname;
           filename += "\\";
           tmp = requestor;

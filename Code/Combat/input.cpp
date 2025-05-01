@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -1407,9 +1408,9 @@ void Input::Load_Configuration(const char *filename) {
     //
     //	Read the primary and secondary keys for this function
     //
-    StringClass pri_key(0, true);
+    StringClass pri_key(0u, true);
     input_ini->Get_String(pri_key, "Generic Key Mappings", pri_name);
-    StringClass sec_key(0, true);
+    StringClass sec_key(0u, true);
     input_ini->Get_String(sec_key, "Generic Key Mappings", sec_name);
 
     //
@@ -1456,7 +1457,7 @@ void Input::Load_Accelerated_Keys(INIClass *input_ini) {
   //
   for (int index = 0; index < count; index++) {
     StringClass entry_name(input_ini->Get_Entry("Accelerated Keys", index), true);
-    StringClass section_name(0, true);
+    StringClass section_name(0u, true);
     input_ini->Get_String(section_name, "Accelerated Keys", entry_name);
     Load_Accelerated_Key(input_ini, section_name);
   }
@@ -1468,7 +1469,7 @@ void Input::Load_Accelerated_Keys(INIClass *input_ini) {
 **
 */
 void Input::Load_Accelerated_Key(INIClass *input_ini, const char *section_name) {
-  StringClass function_name(0, true);
+  StringClass function_name(0u, true);
   input_ini->Get_String(function_name, section_name, ENTRY_FUNCTION);
 
   //

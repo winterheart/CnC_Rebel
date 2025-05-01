@@ -1323,7 +1323,7 @@ BuildingGameObj::Get_Description(StringClass &description) {
   // Construct a diagnostic string
   //
 
-  StringClass line(0, true);
+  StringClass line(0u, true);
 
   line.Format("ID:    %d\n", Get_ID());
   description += line;

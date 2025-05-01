@@ -141,7 +141,7 @@ LoginProfile *LoginProfile::Get(const wchar_t *loginName, bool createOK) {
       }
     }
 
-    StringClass regKey(255, true);
+    StringClass regKey(255u, true);
     regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, loginName);
 
     if (RegistryClass::Exists(regKey) || createOK) {
@@ -443,7 +443,7 @@ void LoginProfile::LoadSettings(void) {
   }
 
   // Get login preferences
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey, false);
@@ -488,7 +488,7 @@ void LoginProfile::SaveSettings(void) {
   // If we are allowed to
   if (_mSaveAllowed && isStored) {
     // Save login preferences
-    StringClass regKey(255, true);
+    StringClass regKey(255u, true);
     regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
     RegistryClass registry(regKey);
@@ -524,7 +524,7 @@ void LoginProfile::SaveSettings(void) {
 void LoginProfile::LoadRank(const char *valueName, LoginProfile::Ranking &rank) {
   WWASSERT(valueName);
 
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey, false);
@@ -565,7 +565,7 @@ void LoginProfile::LoadRank(const char *valueName, LoginProfile::Ranking &rank) 
 void LoginProfile::SaveRank(const char *valueName, const LoginProfile::Ranking &rank) {
   WWASSERT(valueName);
 
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey);
