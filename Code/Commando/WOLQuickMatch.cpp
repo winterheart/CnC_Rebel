@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -298,7 +299,7 @@ bool WOLQuickMatch::SendClientInfo(void) {
   //-------------------------------------------------------------------------
   // Generate client information message
   //-------------------------------------------------------------------------
-  WideStringClass clientMsg(256, true);
+  WideStringClass clientMsg(256u, true);
   clientMsg.Format(L"CINFO VER=%lu CPU=%lu MEM=%lu TPOINTS=%ld PLAYED=%lu PINGS=%S", ver, speed, memory, tpoints,
                    played, pseudoPings);
 
@@ -329,7 +330,7 @@ void WOLQuickMatch::SendServerInfo(const char *exInfo, const char *topic) {
     //
     // The SINFO message sent to the matching bot is assembled in such
     // a way as to imitate the IRC topic string that WOLAPI produces.
-    WideStringClass botMsg(0, true);
+    WideStringClass botMsg(0u, true);
     botMsg.Format(L"SINFO %S%S", exInfo, topic);
     WWDEBUG_SAY(("WOLQuickMatch: '%S'\n", (const WCHAR *)botMsg));
 
@@ -354,7 +355,7 @@ void WOLQuickMatch::SendServerInfo(const char *exInfo, const char *topic) {
 void WOLQuickMatch::SendStatus(const wchar_t *statusMsg) {
   WWDEBUG_SAY(("WOLQuickMatch: Status '%S'\n", statusMsg));
 
-  WideStringClass msg(256, true);
+  WideStringClass msg(256u, true);
   msg = statusMsg;
   QuickMatchEvent status(QuickMatchEvent::QMMSG, msg);
   NotifyObservers(status);
@@ -420,7 +421,7 @@ void WOLQuickMatch::ParseResponse(const wchar_t *message) {
  ******************************************************************************/
 
 void WOLQuickMatch::ProcessInfo(WOLQuickMatch *quickmatch, const wchar_t *data) {
-  WideStringClass msg(255, true);
+  WideStringClass msg(255u, true);
   msg = data;
 
   QuickMatchEvent status(QuickMatchEvent::QMINFO, msg);
@@ -444,7 +445,7 @@ void WOLQuickMatch::ProcessInfo(WOLQuickMatch *quickmatch, const wchar_t *data) 
  ******************************************************************************/
 
 void WOLQuickMatch::ProcessError(WOLQuickMatch *quickmatch, const wchar_t *data) {
-  WideStringClass msg(255, true);
+  WideStringClass msg(255u, true);
   msg = data;
 
   QuickMatchEvent status(QuickMatchEvent::QMERROR, msg);
@@ -469,7 +470,7 @@ void WOLQuickMatch::ProcessError(WOLQuickMatch *quickmatch, const wchar_t *data)
 
 void WOLQuickMatch::ProcessStart(WOLQuickMatch *quickmatch, const wchar_t *data) {
   // Send message indicating successful match
-  WideStringClass msg(255, true);
+  WideStringClass msg(255u, true);
   msg.Format(TRANSLATE(IDS_MENU_QM_MATCHED_WITH), data);
 
   QuickMatchEvent status(QuickMatchEvent::QMMSG, msg);
@@ -498,7 +499,7 @@ void WOLQuickMatch::ProcessStart(WOLQuickMatch *quickmatch, const wchar_t *data)
  ******************************************************************************/
 
 void WOLQuickMatch::ProcessUnknown(WOLQuickMatch *quickmatch, const wchar_t *data) {
-  WideStringClass msg(255, true);
+  WideStringClass msg(255u, true);
   msg = data;
 
   QuickMatchEvent status(QuickMatchEvent::QMUNKNOWN, msg);

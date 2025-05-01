@@ -137,14 +137,14 @@ bool MPWolMainMenuClass::CheckWOLVersion(void) {
   unsigned long wolBuild = 0;
   wolSession->GetChatObject()->GetVersion(&wolVersion);
 
-  WideStringClass wolText(255, true);
+  WideStringClass wolText(255u, true);
 
   if (BandwidthCheckerClass::Get_Reported_Upstream_Bandwidth()) {
     WideStringClass conn(BandwidthCheckerClass::Get_Bandwidth_As_String(), true);
     wolText.Format(TRANSLATE(IDS_MENU_CONNECTION_SPEED_FORMAT), conn.Peek_Buffer());
   }
 
-  WideStringClass string(0, true);
+  WideStringClass string(0u, true);
   string.Format(L"WOLAPI V%u.%u", HIWORD(wolVersion), LOWORD(wolVersion));
   wolText += string;
 
@@ -303,7 +303,7 @@ void MPWolMainMenuClass::On_Last_Menu_Ending(void) {
 //
 ////////////////////////////////////////////////////////////////
 void MPWolMainMenuClass::Update_Login_Profile(void) {
-  WideStringClass lastlogin(64, true);
+  WideStringClass lastlogin(64u, true);
   lastlogin = MPSettingsMgrClass::Get_Last_Login();
 
   LoginProfile *profile = LoginProfile::Get(lastlogin);

@@ -332,7 +332,7 @@ int TextMarqueeCtrlClass::Read_Tag(const WCHAR *text, CREDIT_LINE &line) {
   const WCHAR *TAG_COLOR = L"color=";
 
   if (text[0] == L'<') {
-    for (int index = 1; text[index] != 0; index++) {
+    for (unsigned int index = 1; text[index] != 0; index++) {
 
       //
       //	Is this the 'end-tag' bracket?

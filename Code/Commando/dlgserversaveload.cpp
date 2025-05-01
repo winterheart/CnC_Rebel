@@ -289,7 +289,7 @@ void ServerSaveLoadMenuClass::Save_Config(bool prompt) {
         //
           RenegadeDialogMgrClass::Do_Simple_Dialog(IDD_MP_INVALID_SERVER_CONFIG);
 #else
-          WideStringClass errorMsg(0, true);
+          WideStringClass errorMsg(0u, true);
           errorMsg.Format(L"%s\n\n%s", TRANSLATE(IDS_MENU_TEXT330), (const WCHAR *)outMsg);
           DlgMsgBox::DoDialog(TRANSLATE(IDS_MENU_TEXT329), errorMsg);
 #endif
@@ -626,7 +626,7 @@ void ServerSettingsManagerClass::Scan(void) {
   char file_name[MAX_PATH];
   char whole_file_name[MAX_PATH];
   // char description[256];
-  WideStringClass description(128, true);
+  WideStringClass description(128u, true);
   StringClass char_description(128, true);
 
   /*

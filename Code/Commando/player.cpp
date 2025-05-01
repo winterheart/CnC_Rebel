@@ -397,7 +397,7 @@ void cPlayer::Get_Player_String(int rank, WideStringClass &string, bool force_ve
                     // MultiHUDClass::Get_Verbose_Lists();
                     (MultiHUDClass::Get_Playerlist_Format() == PLAYERLIST_FORMAT_FULL);
 
-  WideStringClass substring(0, true);
+  WideStringClass substring(0u, true);
 
   //
   // Standing

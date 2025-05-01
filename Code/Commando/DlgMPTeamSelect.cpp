@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -548,10 +549,10 @@ void DlgMPTeamSelect::ShowTimeRemaining(float remainingSeconds) {
 
   cMiscUtil::Seconds_To_Hms(remainingSeconds, hours, mins, seconds);
 
-  WideStringClass timeString(0, true);
+  WideStringClass timeString(0u, true);
   timeString.Format(L"%02d:%02d:%02d", hours, mins, seconds);
 
-  WideStringClass text(0, true);
+  WideStringClass text(0u, true);
   text.Format(L"%s: %s", TRANSLATION(IDS_MP_TIME_REMAINING), (const WCHAR *)timeString);
   Set_Dlg_Item_Text(IDC_TIME_REMAINING_TEXT, (const WCHAR *)text);
 }
@@ -717,7 +718,7 @@ void DlgMPTeamSelect::HandleNotification(GameOptionsMessage &message) {
   }
 
   const WideStringClass &hostName = channel->GetName();
-  WideStringClass sender(0, true);
+  WideStringClass sender(0u, true);
   sender = message.GetSendersName();
 
   if (hostName.Compare_No_Case(sender) == 0) {
@@ -779,7 +780,7 @@ void DlgMPTeamSelect::ProcessWOLGameInfo(DlgMPTeamSelect &dialog, const char *da
     StringClass mapname(64, true);
     ModPackageMgrClass::Find_Filename_From_CRC("*.mix", mapCRC, &mapname);
 
-    WideStringClass text(255, true);
+    WideStringClass text(255u, true);
     text.Format(TRANSLATE(IDS_MENU_MAP_NAME_FORMAT), (const char *)mapname);
     dialog.Set_Dlg_Item_Text(IDC_MAPNAME_TEXT, text);
 
@@ -841,7 +842,7 @@ void DlgMPTeamSelect::ProcessWOLTeamInfo(DlgMPTeamSelect &dialog, const char *da
     PARSE_INT(NULL, " ", score);
 
     // Output info
-    WideStringClass text(0, true);
+    WideStringClass text(0u, true);
     text.Format(TRANSLATE(IDS_MENU_SCORE_NAME_FORMAT), score);
 
     int ctrlID = ((teamID == PLAYERTYPE_GDI) ? IDC_GDI_SCORE : IDC_NOD_SCORE);
@@ -897,7 +898,7 @@ void DlgMPTeamSelect::ProcessWOLPlayerInfo(DlgMPTeamSelect &dialog, const char *
     ListCtrlClass *list = (ListCtrlClass *)dialog.Get_Dlg_Item(listID);
 
     if (list) {
-      WideStringClass playerName(64, true);
+      WideStringClass playerName(64u, true);
       playerName = name;
 
       int itemIndex = list->Find_Entry(COL_NAME, playerName);
@@ -907,7 +908,7 @@ void DlgMPTeamSelect::ProcessWOLPlayerInfo(DlgMPTeamSelect &dialog, const char *
       }
 
       if (itemIndex != -1) {
-        WideStringClass text(255, true);
+        WideStringClass text(255u, true);
 
         // Set the players name and clan affiliation
         list->Set_Entry_Text(itemIndex, COL_NAME, playerName);
@@ -1021,7 +1022,7 @@ void DlgMPTeamSelect::AddLANPlayerInfo(cPlayer *player) {
     list->Set_Entry_Int(itemIndex, COL_RANK, player->Get_Rung());
     list->Set_Entry_Int(itemIndex, COL_SCORE, player->Get_Score());
 
-    WideStringClass text(0, true);
+    WideStringClass text(0u, true);
     text.Format(L"%d/%d", player->Get_Kills(), player->Get_Deaths());
     list->Set_Entry_Text(itemIndex, COL_KD, text);
 

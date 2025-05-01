@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -89,7 +90,7 @@ void WOLJoinGame::JoinTheGame(const wchar_t *gameName, const wchar_t *password, 
 
     // If we got here then the join failed. Show a dialog telling the user
     // that we were unable to join the requested game.
-    WideStringClass message(255, true);
+    WideStringClass message(255u, true);
     message.Format(TRANSLATE(IDS_GAME_JOINCHANNEL), gameName);
     DlgMsgBox::DoDialog(TRANSLATE(IDS_WOL_ERROR), message);
   }
@@ -258,7 +259,7 @@ bool WOLJoinGame::Join(const wchar_t *gameName, const wchar_t *password, bool al
   Observer<ChannelEvent>::NotifyMe(*mWOLSession);
 
   // Generate message for user to see while we are attempting to join the channel.
-  WideStringClass message(255, true);
+  WideStringClass message(255u, true);
   message.Format(TRANSLATE(IDS_GAME_JOINCHANNEL), gameName);
 
   mJoinState = JOINING_STATE;

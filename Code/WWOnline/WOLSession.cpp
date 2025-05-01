@@ -1963,7 +1963,7 @@ void Session::MakeTeamRequests(void) {
 
 void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
   if (name && (wcslen(name) > 0) && (type & LADDERTYPE_MASK)) {
-    WideStringClass request(64, true);
+    WideStringClass request(64u, true);
     request = L"itc:";
 
     // Clan ladder requests are mutually exclusive to other ladder requests

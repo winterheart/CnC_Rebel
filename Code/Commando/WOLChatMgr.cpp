@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -319,7 +320,7 @@ void WOLChatMgr::CreateLobby(const wchar_t *name, const wchar_t *password) {
   RefPtr<WaitCondition> wait = mWOLSession->CreateChannel(name, password, 0);
 
   if (wait.IsValid()) {
-    WideStringClass message(255, true);
+    WideStringClass message(255u, true);
     message.Format(TRANSLATE(IDS_CHAT_LOBBYCREATE), name);
     DlgWOLWait::DoDialog((const wchar_t *)message, wait);
   }
@@ -349,10 +350,10 @@ void WOLChatMgr::JoinLobby(const RefPtr<ChannelData> &channel) {
     RefPtr<WaitCondition> wait = mWOLSession->JoinChannel(channel, product->GetChannelPassword());
 
     if (wait.IsValid()) {
-      WideStringClass displayName(0, true);
+      WideStringClass displayName(0u, true);
       GetLobbyDisplayName(channel, displayName);
 
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_CHAT_LOBBYJOIN), displayName);
       DlgWOLWait::DoDialog((const wchar_t *)message, wait);
     }
@@ -380,10 +381,10 @@ void WOLChatMgr::LeaveLobby(void) {
 
   if (wait.IsValid()) {
     const RefPtr<ChannelData> &channel = GetCurrentLobby();
-    WideStringClass lobbyName(0, true);
+    WideStringClass lobbyName(0u, true);
     GetLobbyDisplayName(channel, lobbyName);
 
-    WideStringClass title(0, true);
+    WideStringClass title(0u, true);
     title.Format(TRANSLATE(IDS_CHAT_LOBBYLEAVE), lobbyName);
     DlgWOLWait::DoDialog(title, wait);
   }
@@ -556,7 +557,7 @@ bool WOLChatMgr::SquelchUser(const RefPtr<UserData> &user, bool onoff) {
     int stringID = (onoff ? IDS_CHAT_SQUELCH_ON : IDS_CHAT_SQUELCH_OFF);
     const wchar_t *text = TRANSLATE(stringID);
 
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(text, user->GetName());
     AddMessage(NULL, message, true, true);
   }
@@ -933,10 +934,10 @@ void WOLChatMgr::HandleNotification(ChannelEvent &event) {
   case ChannelLeft: {
     const RefPtr<ChannelData> &channel = event.Subject();
 
-    WideStringClass displayName(0, true);
+    WideStringClass displayName(0u, true);
     GetLobbyDisplayName(channel, displayName);
 
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
 
     if (status == ChannelJoined) {
       message.Format(TRANSLATE(IDS_CHAT_LOBBYJOINED), displayName);
@@ -1007,7 +1008,7 @@ void WOLChatMgr::HandleNotification(UserEvent &userEvent) {
     const RefPtr<UserData> &user = userEvent.Subject();
     mUserOutList.push_back(user);
 
-    WideStringClass kickMsg(0, true);
+    WideStringClass kickMsg(0u, true);
     kickMsg.Format(TRANSLATE(IDS_CHAT_USERKICKED), user->GetName());
     AddMessage(NULL, kickMsg, true, true);
 
@@ -1027,7 +1028,7 @@ void WOLChatMgr::HandleNotification(UserEvent &userEvent) {
   } break;
 
   case UserEvent::Banned: {
-    WideStringClass banMsg(0, true);
+    WideStringClass banMsg(0u, true);
     banMsg.Format(TRANSLATE(IDS_CHAT_USERBANNED), userEvent.Subject()->GetName());
     AddMessage(NULL, banMsg, true, true);
   } break;
@@ -1039,11 +1040,11 @@ void WOLChatMgr::HandleNotification(UserEvent &userEvent) {
     // Is this the user we were looking for?
     if (mLocatingUserName.Compare_No_Case(user->GetName()) == 0) {
       // Build a string containing the user's name
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_CHAT_LOCATEDUSER), user->GetName());
 
       // Append the description of the user's location
-      WideStringClass location(64, true);
+      WideStringClass location(64u, true);
       WOLBuddyMgr::GetLocationDescription(user, location);
       message += L" - ";
       message += location;
@@ -1130,7 +1131,7 @@ bool WOLChatMgr::ProcessCommand(const wchar_t *message) {
   // Does this look like a command?
   if (message && message[0] == L'/') {
     // Separate the parameters into individual strings
-    WideStringClass command(255, true);
+    WideStringClass command(255u, true);
     const wchar_t *params = Get_Parameter_From_String(&message[1], command);
 
     if (command.Get_Length() > 0) {
@@ -1163,8 +1164,8 @@ bool WOLChatMgr::ProcessCommand(const wchar_t *message) {
 // Page a user
 void SlashCmdPage(const wchar_t *param) {
   // Get the name parameter from the string
-  WideStringClass name(64, true);
-  WideStringClass pageMsg(0, true);
+  WideStringClass name(64u, true);
+  WideStringClass pageMsg(0u, true);
   pageMsg = Get_Parameter_From_String(param, name);
   pageMsg.Trim();
 
@@ -1181,7 +1182,7 @@ void SlashCmdPage(const wchar_t *param) {
 
 // Send a page reply
 void SlashCmdR(const wchar_t *param) {
-  WideStringClass reply(0, true);
+  WideStringClass reply(0u, true);
   reply = param;
   reply.Trim();
 
@@ -1204,7 +1205,7 @@ void SlashCmdR(const wchar_t *param) {
 // Locate a user
 void SlashCmdLocate(const wchar_t *param) {
   // Try to find the specified user
-  WideStringClass name(64, true);
+  WideStringClass name(64u, true);
   Get_Parameter_From_String(param, name);
 
   if (name.Is_Empty() == false) {
@@ -1220,8 +1221,8 @@ void SlashCmdLocate(const wchar_t *param) {
 // Send private message
 void SlashCmdMsg(const wchar_t *param) {
   // Get the name parameter from the string
-  WideStringClass name(64, true);
-  WideStringClass message(0, true);
+  WideStringClass name(64u, true);
+  WideStringClass message(0u, true);
   message = Get_Parameter_From_String(param, name);
   message.Trim();
 
@@ -1243,7 +1244,7 @@ void SlashCmdMsg(const wchar_t *param) {
 // Invite a user to our location
 void SlashCmdInvite(const wchar_t *param) {
   // Get the name parameter from the string
-  WideStringClass name(64, true);
+  WideStringClass name(64u, true);
   const wchar_t *msg = Get_Parameter_From_String(param, name);
 
   if (name.Is_Empty() == false) {
@@ -1259,7 +1260,7 @@ void SlashCmdInvite(const wchar_t *param) {
 // Kick a user
 void SlashCmdKick(const wchar_t *param) {
   // Get the name parameter from the string
-  WideStringClass name(64, true);
+  WideStringClass name(64u, true);
   Get_Parameter_From_String(param, name);
 
   if (name.Is_Empty() == false) {
@@ -1274,7 +1275,7 @@ void SlashCmdKick(const wchar_t *param) {
 // Join a user
 void SlashCmdJoin(const wchar_t *param) {
   // Get the name parameter from the string
-  WideStringClass name(64, true);
+  WideStringClass name(64u, true);
   Get_Parameter_From_String(param, name);
 
   if (name.Is_Empty() == false) {

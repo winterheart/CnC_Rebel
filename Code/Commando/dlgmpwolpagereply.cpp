@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -270,7 +271,7 @@ void DlgWOLPageReply::Send_Reply(void) {
   const WCHAR *pagersName = mBuddyMgr->GetLastPagersName();
 
   if (pagersName && (wcslen(pagersName) > 0)) {
-    WideStringClass reply(0, true);
+    WideStringClass reply(0u, true);
     reply = Get_Dlg_Item_Text(IDC_REPLY_EDIT);
     reply.Trim();
 
@@ -279,7 +280,7 @@ void DlgWOLPageReply::Send_Reply(void) {
       mBuddyMgr->PageUser(pagersName, reply);
 
       // Add this message to the list
-      WideStringClass name(0, true);
+      WideStringClass name(0u, true);
       WOLLogonMgr::GetLoginName(name);
       Add_Message(name, reply);
     }
@@ -311,7 +312,7 @@ void DlgWOLPageReply::Add_Message(const WCHAR *username, const WCHAR *message) {
   if (list) {
     // Build the message
     if (username) {
-      WideStringClass text(255, true);
+      WideStringClass text(255u, true);
       text.Format(L"%s: %s", username, message);
       list->Insert_Entry(list->Get_Entry_Count(), text);
     } else {

@@ -179,7 +179,7 @@ void RadioCommandDisplayClass::Update(DISPLAY_TYPE type) {
       key_id -= 10;
     }
 
-    WideStringClass command_key(0, true);
+    WideStringClass command_key(0u, true);
     command_key.Format(L"%s + %d", access_key.Peek_Buffer(), key_id);
 
     //

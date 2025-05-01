@@ -206,14 +206,14 @@ void MPWolGameListMenuClass::On_Init_Dialog(void) {
   //---------------------------------------------------------------------------
   // Show the current login and server
   //---------------------------------------------------------------------------
-  WideStringClass serverName(64, true);
+  WideStringClass serverName(64u, true);
   WOLLogonMgr::GetServerName(serverName);
 
-  WideStringClass string(128, true);
+  WideStringClass string(128u, true);
   string.Format(TRANSLATE(IDS_MENU_CONNECTED_TO_FORMAT), serverName.Peek_Buffer());
   Set_Dlg_Item_Text(IDC_SERVERNAME, string);
 
-  WideStringClass loginName(64, true);
+  WideStringClass loginName(64u, true);
   WOLLogonMgr::GetLoginName(loginName);
 
   string.Format(TRANSLATE(IDS_MENU_LOGIN_NAME_FORMAT), loginName.Peek_Buffer());
@@ -524,7 +524,7 @@ void MPWolGameListMenuClass::RequestGameList(void) {
 
 void MPWolGameListMenuClass::UpdateChannels(ListCtrlClass *list, const ChannelList &chanList) {
   // Get current selection so we can reselect it.
-  WideStringClass selectedGameName(64, true);
+  WideStringClass selectedGameName(64u, true);
   int selIndex = list->Get_Curr_Sel();
 
   if (selIndex >= 0) {
@@ -567,7 +567,7 @@ void MPWolGameListMenuClass::UpdateChannels(ListCtrlClass *list, const ChannelLi
             list->Set_Entry_Text(itemIndex, COL_HOST_NAME, channel->GetName());
           }
 
-          WideStringClass title(0, true);
+          WideStringClass title(0u, true);
           title.Convert_From(gameInfo.Title());
           list->Set_Entry_Text(itemIndex, COL_GAME_TITLE, title);
 
@@ -575,7 +575,7 @@ void MPWolGameListMenuClass::UpdateChannels(ListCtrlClass *list, const ChannelLi
           SetGameTypeFlags(list, itemIndex, gameInfo);
 
           // Show the map name
-          WideStringClass mapName(64, true);
+          WideStringClass mapName(64u, true);
 
           //
           //	If this is a mod'd game, then display the mod_name\map_name...
@@ -605,7 +605,7 @@ void MPWolGameListMenuClass::UpdateChannels(ListCtrlClass *list, const ChannelLi
           // Show the number of current / max players
           list->Set_Entry_Data(itemIndex, COL_PLAYERS, MAKELONG(gameInfo.NumPlayers(), gameInfo.MaxPlayers()));
 
-          WideStringClass playersString(64, true);
+          WideStringClass playersString(64u, true);
           playersString.Format(L"%u/%u", gameInfo.NumPlayers(), gameInfo.MaxPlayers());
           list->Set_Entry_Text(itemIndex, COL_PLAYERS, playersString);
 
@@ -802,7 +802,7 @@ void MPWolGameListMenuClass::On_ListCtrl_Sel_Change(ListCtrlClass *list, int id,
         mSelectedGame.ImportFromChannel(channel);
 
         if (mSelectedGame.IsDataValid()) {
-          WideStringClass text(255, true);
+          WideStringClass text(255u, true);
 
           // Show host name and exe version
 // Denzil 02/14/02 The version encoded in the channel is NOT the printable version.
@@ -1028,7 +1028,7 @@ void MPWolGameListMenuClass::HandleNotification(WWOnline::SquadEvent &event) {
           int marker = detailsList->Get_Entry_Data(index, 0);
 
           if (CLAN_ENTRY_MARKER == marker) {
-            WideStringClass text(0, true);
+            WideStringClass text(0u, true);
             GetClanVSClanString(mSelectedGame, text);
             detailsList->Set_Entry_Text(index, 0, text);
             break;
@@ -1122,7 +1122,7 @@ void SetPingTimeIcon(ListCtrlClass *list, int itemIndex, long pingTime) {
   unsigned long displayPing = (unsigned long)((1000.0 / 256.0) * (sqrt(double(pingTime))));
   list->Set_Entry_Data(itemIndex, COL_PING, displayPing);
 
-  WideStringClass text(32, true);
+  WideStringClass text(32u, true);
   text.Format(L" (%lu)", displayPing);
   list->Set_Entry_Text(itemIndex, COL_PING, text);
 }

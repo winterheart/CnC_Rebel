@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -392,7 +393,7 @@ void WOLBuddyMgr::RefreshBuddyInfo(void) {
     RefPtr<SquadData> squad = buddy->GetSquad();
 
     if (squad.IsValid()) {
-      WideStringClass abbr(0, true);
+      WideStringClass abbr(0u, true);
       abbr = squad->GetAbbr();
       mWOLSession->RequestLadderInfo((const WCHAR *)abbr, LadderType_Clan);
     }
@@ -443,8 +444,8 @@ void WOLBuddyMgr::GetLocationDescription(const RefPtr<UserData> &user, WideStrin
       const RefPtr<ChannelData> &channel = user->GetChannel();
 
       if (channel.IsValid()) {
-        WideStringClass format(0, true);
-        WideStringClass channelName(0, true);
+        WideStringClass format(0u, true);
+        WideStringClass channelName(0u, true);
 
         // Check to see what type of channel this is, chat or game.
         if (channel->GetType() == 0) {
@@ -486,7 +487,7 @@ void WOLBuddyMgr::GetLocationDescription(const RefPtr<UserData> &user, WideStrin
 
 void WOLBuddyMgr::AddIgnore(const WCHAR *name) {
   if (!IsIgnored(name)) {
-    WideStringClass ignore(0, true);
+    WideStringClass ignore(0u, true);
     ignore = name;
     ignore.Trim();
 
@@ -814,13 +815,13 @@ bool WOLBuddyMgr::CanInviteUsers(void) const { return (ChannelJoined == mWOLSess
  ******************************************************************************/
 
 void WOLBuddyMgr::InviteUser(const WCHAR *username, const WCHAR *message) {
-  WideStringClass name(0, true);
+  WideStringClass name(0u, true);
   name = username;
   name.Trim();
 
   if (name.Get_Length() > 0) {
     if (message && (wcslen(message) > 0)) {
-      WideStringClass invitation(0, true);
+      WideStringClass invitation(0u, true);
       invitation.Format(L"%s%s", INVITE_CMD, message);
       PageUser(name, invitation);
     } else {
@@ -848,7 +849,7 @@ void WOLBuddyMgr::InviteUser(const WCHAR *username, const WCHAR *message) {
 void WOLBuddyMgr::DeclineInvitation(const WCHAR *username, DECLINE_REASON reason) {
   if (username && (wcslen(username) > 0)) {
     // Build a decline "page"
-    WideStringClass response(0, true);
+    WideStringClass response(0u, true);
     response.Format(L"%s%d", DECLINE_CMD, reason);
 
     // Send the response
@@ -966,11 +967,11 @@ void WOLBuddyMgr::DisplayInvitation(const RefPtr<UserData> &user, const WCHAR *m
     const WideStringClass &name = user->GetName();
 
     // Build a textual description of the user's location
-    WideStringClass location(0, true);
+    WideStringClass location(0u, true);
     GetLocationDescription(user, location);
 
     // Format the invitation message
-    WideStringClass inviteMsg(0, true);
+    WideStringClass inviteMsg(0u, true);
     inviteMsg.Format(TRANSLATE(IDS_MP_WOL_INVITATION_FORMAT), (const WCHAR *)name, (const WCHAR *)location);
     inviteMsg += L"\n";
     inviteMsg += message;
@@ -1032,7 +1033,7 @@ bool WOLBuddyMgr::IsInvitationDeclined(const WCHAR *message) {
  ******************************************************************************/
 
 void WOLBuddyMgr::InvitationDeclined(const WCHAR *username, DECLINE_REASON reason) {
-  WideStringClass message(0, true);
+  WideStringClass message(0u, true);
 
   // Build an appropriate message based on the reason
   switch (reason) {

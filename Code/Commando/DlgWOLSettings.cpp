@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -317,7 +318,7 @@ void DlgWOLSettings::On_Command(int ctrl, int message, DWORD param) {
   case IDC_AUTOLOGIN_CHECK:
     if (param && mWOLSession->IsAutoLoginAllowed()) {
       // Get preferred login
-      WideStringClass name(64, true);
+      WideStringClass name(64u, true);
       name = Get_Dlg_Item_Text(IDC_PERSONA_COMBO);
 
       // Save preferred login
@@ -432,7 +433,7 @@ void DlgWOLSettings::InitPersonaCombo(void) {
     combo->Set_Curr_Sel(0);
 
     // Select the last login
-    WideStringClass loginName(64, true);
+    WideStringClass loginName(64u, true);
     loginName = MPSettingsMgrClass::Get_Last_Login();
     combo->Select_String(loginName);
   }
@@ -550,7 +551,7 @@ void DlgWOLSettings::UpdateForPersona(void) {
 
     if (sel >= 0) {
       // Update the dialog with settings from the persona's profile.
-      WideStringClass newLogin(64, true);
+      WideStringClass newLogin(64u, true);
       combo->Get_String(sel, newLogin);
 
       LoginProfile *profile = (LoginProfile *)combo->Get_Item_Data(sel);
@@ -569,7 +570,7 @@ void DlgWOLSettings::UpdateForPersona(void) {
       ShowProfileRanking(this, profile);
 
       // Set the autologin checkbox appropriately for this persona.
-      WideStringClass preferred(64, true);
+      WideStringClass preferred(64u, true);
       preferred = MPSettingsMgrClass::Get_Auto_Login();
 
       bool autoLogin = (mWOLSession->IsAutoLoginAllowed() && (newLogin.Compare_No_Case(preferred) == 0));
@@ -618,7 +619,7 @@ void DlgWOLSettings::InitServersCombo(const IRCServerList &servers) {
 
   if (gameCombo) {
     // Remember current chat selection
-    WideStringClass gameSelName(0, true);
+    WideStringClass gameSelName(0u, true);
 
     LoginProfile *profile = GetLoginProfile();
 
@@ -643,7 +644,7 @@ void DlgWOLSettings::InitServersCombo(const IRCServerList &servers) {
 
       // Filter out servers that do not have a set of supported languages.
       if (server->HasLanguageCode()) {
-        WideStringClass serverName(0, true);
+        WideStringClass serverName(0u, true);
         serverName = server->GetName();
 
         int pos = gameCombo->Add_String(serverName);
@@ -724,7 +725,7 @@ void DlgWOLSettings::SetServerCombo(const char *serverName) {
 
   if (combo) {
     WWDEBUG_SAY(("ServerCombo = %s\n", serverName));
-    WideStringClass name(64, true);
+    WideStringClass name(64u, true);
     name = serverName;
 
     int sel = combo->Select_String(name);
@@ -921,7 +922,7 @@ void DlgWOLSettings::InitConnectionSpeedCombo(void) {
     connectCombo->Add_String(TRANSLATE(IDS_MP_CONNECTION_CABLE));
     connectCombo->Add_String(TRANSLATE(IDS_MP_CONNECTION_T1));
 
-    WideStringClass auto_set_str(256, true);
+    WideStringClass auto_set_str(256u, true);
 
     if (BandwidthCheckerClass::Get_Reported_Upstream_Bandwidth()) {
       auto_set_str.Format(TRANSLATE(IDS_MENU_AUTO_FORMAT), BandwidthCheckerClass::Get_Bandwidth_As_String());
@@ -962,7 +963,7 @@ void DlgWOLSettings::On_ComboBoxCtrl_Sel_Change(ComboBoxCtrlClass *combo, int ct
 
     if (profile) {
       // Save selected game server
-      WideStringClass name(64, true);
+      WideStringClass name(64u, true);
       combo->Get_String(newSel, name);
 
       StringClass saveName(64, true);

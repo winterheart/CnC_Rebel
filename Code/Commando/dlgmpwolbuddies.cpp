@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -200,7 +201,7 @@ void MPWolBuddiesMenuClass::On_Command(int ctrl_id, int message_id, DWORD param)
   case IDC_MP_WOL_BUDDIES_DELETE_BUTTON: {
     // Get the name of the currently selected user so we can
     // pass it to the "Delete User" dialog
-    WideStringClass buddy_name(0, true);
+    WideStringClass buddy_name(0u, true);
     Get_Selected_Buddy(buddy_name);
 
     //	Display the dialog
@@ -223,7 +224,7 @@ void MPWolBuddiesMenuClass::On_Command(int ctrl_id, int message_id, DWORD param)
   case IDC_MP_WOL_BUDDIES_JOIN_BUTTON: {
     // Get the name of the currently selected user so we can
     // pass it to the "Delete User" dialog
-    WideStringClass buddy_name(0, true);
+    WideStringClass buddy_name(0u, true);
     Get_Selected_Buddy(buddy_name);
 
     // Try to join them
@@ -259,7 +260,7 @@ void MPWolBuddiesMenuClass::Update_Buddy_Info(int index, const RefPtr<WWOnline::
   RefPtr<WWOnline::SquadData> clan = user->GetSquad();
 
   if (clan.IsValid()) {
-    WideStringClass clanName(0, true);
+    WideStringClass clanName(0u, true);
     clanName = clan->GetAbbr();
     list_ctrl->Set_Entry_Text(index, COL_CLAN, clanName);
   } else {
@@ -267,7 +268,7 @@ void MPWolBuddiesMenuClass::Update_Buddy_Info(int index, const RefPtr<WWOnline::
   }
 
   //	Build a textual description of the user's location
-  WideStringClass location_text(0, true);
+  WideStringClass location_text(0u, true);
   WOLBuddyMgr::GetLocationDescription(user, location_text);
 
   //	Update the location column for this entry
@@ -329,7 +330,7 @@ void MPWolBuddiesMenuClass::Refresh_Buddy_List(void) {
   }
 
   //	Get the name of the currently selected user
-  WideStringClass selected_user(0, true);
+  WideStringClass selected_user(0u, true);
   int curr_sel = list_ctrl->Get_Curr_Sel();
 
   if (curr_sel != -1) {
@@ -509,14 +510,14 @@ void MPWolBuddiesMenuClass::On_ListCtrl_DblClk(ListCtrlClass *list_ctrl, int ctr
       // Join our buddy in the channel he is in.
       case WWOnline::USERLOCATION_IN_CHANNEL: {
         // Get the name of the selected user
-        WideStringClass buddyName(64, true);
+        WideStringClass buddyName(64u, true);
         Get_Selected_Buddy(buddyName);
 
         mPendingJoin = mBuddyMgr->FindBuddy(buddyName);
 
         if (mPendingJoin.IsValid()) {
           // Ask the user if they want to join this buddy
-          WideStringClass message(0, true);
+          WideStringClass message(0u, true);
           message.Format(TRANSLATE(IDS_MENU_JOIN_REQUEST_MESSAGE), (const WCHAR *)buddyName);
           DlgMsgBox::DoDialog(0, message, DlgMsgBox::YesNo, this);
         }
@@ -576,7 +577,7 @@ void MPWolBuddiesMenuClass::HandleNotification(DlgMsgBoxEvent &event) {
 void MPWolBuddiesMenuClass::Page_Selected_User(void) {
   //	Get the name of the currently selected user so we can
   // pass it to the page dialog
-  WideStringClass buddy_name(64, true);
+  WideStringClass buddy_name(64u, true);
   Get_Selected_Buddy(buddy_name);
 
   // Show the dialog

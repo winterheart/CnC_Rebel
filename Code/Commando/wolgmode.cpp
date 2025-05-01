@@ -985,7 +985,7 @@ void WolGameModeClass::Page_WOL_User(const wchar_t *name, const wchar_t *msg) {
   if (name && (wcslen(name) > 0) && msg && (wcslen(msg) > 0)) {
     mWOLSession->PageUser(name, msg);
 
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(TRANSLATE(IDS_GAME_PAGING), name, msg);
     CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
   }
@@ -1013,7 +1013,7 @@ void WolGameModeClass::Reply_Last_Page(const wchar_t *msg) {
     if (pager && (wcslen(pager) > 0)) {
       mWOLBuddyMgr->PageUser(pager, msg);
 
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_GAME_PAGE_REPLYING), pager, msg);
       CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
     } else {
@@ -1041,7 +1041,7 @@ void WolGameModeClass::Locate_WOL_User(const wchar_t *name) {
   if (name && wcslen(name) > 0) {
     mWOLSession->RequestLocateUser(name);
 
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(TRANSLATE(IDS_GAME_LOCATING_USER), name);
     CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
   }
@@ -1067,14 +1067,14 @@ void WolGameModeClass::Invite_WOL_User(const wchar_t *name, const wchar_t *msg) 
     cPlayer *player = cPlayerManager::Find_Player(name);
 
     if (player) {
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_MENU_ALREADY_IN_GAME), name);
       CombatManager::Get_Message_Window()->Add_Message(message, COLOR_INVITE_TEXT);
       WWAudioClass::Get_Instance()->Create_Instant_Sound("Private_Message", Matrix3D(1));
     } else {
       mWOLBuddyMgr->InviteUser(name, msg);
 
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_GAME_INVITING_USER), name);
       CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
     }
@@ -1102,7 +1102,7 @@ void WolGameModeClass::Join_WOL_User(const wchar_t *name) {
     cPlayer *player = cPlayerManager::Find_Player(name);
 
     if (player) {
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_MENU_YOURE_ALREADY_IN_GAME), name);
       CombatManager::Get_Message_Window()->Add_Message(message, COLOR_INVITE_TEXT);
       WWAudioClass::Get_Instance()->Create_Instant_Sound("Private_Message", Matrix3D(1));
@@ -1110,7 +1110,7 @@ void WolGameModeClass::Join_WOL_User(const wchar_t *name) {
       RefPtr<UserData> user = UserData::Create(name);
       mWOLBuddyMgr->JoinUser(user);
 
-      WideStringClass message(0, true);
+      WideStringClass message(0u, true);
       message.Format(TRANSLATE(IDS_GAME_JOINING_USER), name);
       CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
     }
@@ -1143,13 +1143,13 @@ bool WolGameModeClass::Kick_Player(const wchar_t *name) {
       mWOLSession->BanUser(name, true);
 
       // Disconnect the player from the server
-      WideStringClass playername(0, true);
+      WideStringClass playername(0u, true);
       playername = name;
 
       cPlayer *player = cPlayerManager::Find_Player(playername);
 
       if (player && player->Is_Human()) {
-        WideStringClass message(0, true);
+        WideStringClass message(0u, true);
         message.Format(TRANSLATE(IDS_GAME_KICKING_USER), name);
         CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
 
@@ -1160,7 +1160,7 @@ bool WolGameModeClass::Kick_Player(const wchar_t *name) {
       }
     }
 
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(TRANSLATE(IDS_GAME_KICKING_NOT_ALLOWED), name);
     CombatManager::Get_Message_Window()->Add_Message(message, COLOR_CONSOLE_TEXT);
   }
@@ -1187,7 +1187,7 @@ void WolGameModeClass::Ban_Player(const wchar_t *name, unsigned long ip) {
   if (name && cNetwork::I_Am_Server() && !mWOLSession->IsCurrentUser(name)) {
 
     Kick_Player(name);
-    WideStringClass playername(0, true);
+    WideStringClass playername(0u, true);
     playername = name;
     StringClass pn;
     playername.Convert_To(pn);
@@ -1377,7 +1377,7 @@ void WolGameModeClass::HandleNotification(UserEvent &event) {
   switch (event.GetEvent()) {
   // A user has been kicked from the game.
   case UserEvent::Kicked: {
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(TRANSLATE(IDS_MENU_PLAYER_KICKED_MESSAGE), event.Subject()->GetName());
     CombatManager::Get_Message_Window()->Add_Message(message, COLOR_PUBLIC_TEXT);
     WWAudioClass::Get_Instance()->Create_Instant_Sound("Public_Message", Matrix3D(1));
@@ -1387,11 +1387,11 @@ void WolGameModeClass::HandleNotification(UserEvent &event) {
     const RefPtr<UserData> &user = event.Subject();
 
     // Get the description of the user's location
-    WideStringClass location(64, true);
+    WideStringClass location(64u, true);
     WOLBuddyMgr::GetLocationDescription(user, location);
 
     // Build a string containing the user's name
-    WideStringClass message(0, true);
+    WideStringClass message(0u, true);
     message.Format(TRANSLATE(IDS_CHAT_LOCATEDUSER), user->GetName());
     message += L" - ";
     message += location;
@@ -1564,7 +1564,7 @@ void WolGameModeClass::HandleNotification(GameOptionsMessage &message) {
 
     // Request for game information?
     if (strcmp("RGINFO", request) == 0) {
-      WideStringClass requestor(0, true);
+      WideStringClass requestor(0u, true);
       requestor = message.GetSendersName();
 
       //-----------------------------------------------------------------------
@@ -1723,7 +1723,7 @@ void WolGameModeClass::HandleNotification(LadderInfoEvent &ladderEvent) {
     // If this is for the locale user and the ladder information is cached
     // then update there profile with the latest ladder information.
     if (LadderType_Team == type) {
-      WideStringClass name(64, true);
+      WideStringClass name(64u, true);
       name = ladderEvent.GetReceivedName();
 
       if (mWOLSession->IsCurrentUser(name)) {
@@ -1966,7 +1966,7 @@ void WolGameModeClass::HandleNotification(WOLPagedEvent &event) {
 
   switch (event.GetAction()) {
   case PAGE_RECEIVED: {
-    WideStringClass message(255, true);
+    WideStringClass message(255u, true);
     message.Format(L"%s: %s", page->GetPagersName(), page->GetPageMessage());
     CombatManager::Get_Message_Window()->Add_Message(message, COLOR_PAGED_TEXT);
     WWAudioClass::Get_Instance()->Create_Instant_Sound("Private_Message", Matrix3D(1));
@@ -1982,7 +1982,7 @@ void WolGameModeClass::HandleNotification(WOLPagedEvent &event) {
   case PAGE_ERROR:
   case PAGE_NOT_THERE:
   case PAGE_TURNED_OFF: {
-    WideStringClass message(255, true);
+    WideStringClass message(255u, true);
     message.Format(L"%s %s", TRANSLATE(IDS_WOL_PAGEUSERERROR), page->GetPageMessage());
     CombatManager::Get_Message_Window()->Add_Message(page->GetPageMessage(), COLOR_CONSOLE_TEXT);
     break;

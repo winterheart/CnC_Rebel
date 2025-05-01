@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -903,7 +904,7 @@ void cPlayerManager::Construct_Heading(WideStringClass &string, bool force_verbo
                     // MultiHUDClass::Get_Verbose_Lists();
                     (MultiHUDClass::Get_Playerlist_Format() == PLAYERLIST_FORMAT_FULL);
 
-  WideStringClass substring(0, true);
+  WideStringClass substring(0u, true);
 
   //
   // Standing
@@ -1120,7 +1121,7 @@ void cPlayerManager::Render_Player_List(void) {
   //
   // Build heading
   //
-  WideStringClass heading(0, true);
+  WideStringClass heading(0u, true);
   Construct_Heading(heading);
   if (heading != renderer_player_heading) {
     renderer_player_heading = heading;
@@ -1180,7 +1181,7 @@ void cPlayerManager::Render_Player_List(void) {
       p_player->Get_Player_String(j + 1, renderer_player_strings[displayed_player_count]);
       renderer_player_colors[displayed_player_count] = p_player->Get_Color();
     } else {
-      WideStringClass player_string(0, true);
+      WideStringClass player_string(0u, true);
       p_player->Get_Player_String(j + 1, player_string);
       if (player_string != renderer_player_strings[displayed_player_count]) {
         renderer_player_strings[displayed_player_count] = player_string;
@@ -1321,7 +1322,7 @@ void cPlayerManager::Log_Player_List(void) {
 
     char line[2000] = "";
 
-    WideStringClass wide_text(0, true);
+    WideStringClass wide_text(0u, true);
     Construct_Heading(wide_text, true);
 
     StringClass text;

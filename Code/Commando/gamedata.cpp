@@ -847,7 +847,7 @@ void cGameData::Import_Tier_1_Data(const WOLGameInfo &gameInfo) {
   Set_Map_Name(gameInfo.MapName());
   Set_Mod_Name(gameInfo.ModName());
 
-  WideStringClass title(0, true);
+  WideStringClass title(0u, true);
   title.Convert_From(gameInfo.Title());
   Set_Game_Title(title);
 
@@ -1648,7 +1648,7 @@ void cGameData::Show_Game_Settings_Limits(void) {
 
   bool changed = false;
 
-  WideStringClass text(0, true);
+  WideStringClass text(0u, true);
   unsigned color;
 
   Get_Time_Limit_Text(text);
@@ -1810,7 +1810,7 @@ void cGameData::Get_Time_Limit_Text(WideStringClass &text) {
 
     cMiscUtil::Seconds_To_Hms(TimeRemainingSeconds, hours, mins, seconds);
 
-    WideStringClass time_string(0, true);
+    WideStringClass time_string(0u, true);
     time_string.Format(L"%02d:%02d:%02d", hours, mins, seconds);
 
     text.Format(L"%s: %s", TRANSLATION(IDS_MP_TIME_REMAINING), time_string.Peek_Buffer());
@@ -2097,8 +2097,8 @@ void cGameData::Get_Description(WideStringClass &description) {
   const WideStringClass yes = TRANSLATE(IDS_YES);
   const WideStringClass no = TRANSLATE(IDS_NO);
 
-  WideStringClass attribute(0, true);
-  WideStringClass value(0, true);
+  WideStringClass attribute(0u, true);
+  WideStringClass value(0u, true);
 
   //
   // Host

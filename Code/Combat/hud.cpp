@@ -514,7 +514,7 @@ static void Powerup_Update(void) {
 
     // Draw powerup count
     if (RightPowerupIconList[i]->Number != 0) {
-      WideStringClass num(0, true);
+      WideStringClass num(0u, true);
       num.Format(L"%d", RightPowerupIconList[i]->Number);
       PowerupTextRenderer->Build_Sentence(num);
       PowerupTextRenderer->Set_Location(Vector2(draw_box.Right - 12, draw_box.Top + 1));
@@ -911,7 +911,7 @@ static void Weapon_Update(void) {
 
       // Right justify Name
 
-      WideStringClass name(0, true); // = L"Rocket Launcher";
+      WideStringClass name(0u, true); // = L"Rocket Launcher";
       name = TranslateDBClass::Get_String(def->IconNameID);
       WeaponNameRenderer->Build_Sentence(name);
       Vector2 text_size = WeaponNameRenderer->Get_Text_Extents(name) + Vector2(1, 0);
@@ -991,7 +991,7 @@ static void Build_Weapon_Chart_Icons(void) {
 
     // Add column header
     int key = Input::Get_Primary_Key_For_Function(INPUT_FUNCTION_SELECT_WEAPON_0 + (column % 10));
-    WideStringClass name(0, true);
+    WideStringClass name(0u, true);
     Input::Get_Translated_Key_Name(key, name);
     WeaponChartKeynameRenderer->Build_Sentence(name);
     Vector2 text_size = WeaponChartKeynameRenderer->Get_Text_Extents(name);
@@ -1644,7 +1644,7 @@ static void Target_Update(void) {
       StringClass info(0, true);
       obj->Get_Information(info);
 
-      WideStringClass str(0, true);
+      WideStringClass str(0u, true);
       str.Convert_From(info);
       InfoDebugRenderer->Build_Sentence(str);
       InfoDebugRenderer->Set_Location(Vector2(520, 240));

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -98,7 +99,7 @@ void EditCtrlClass::Create_Text_Renderers(void) {
   //
   //	Get the string we'll be displaying
   //
-  WideStringClass display_string(0, true);
+  WideStringClass display_string(0u, true);
   Get_Display_Text(display_string);
 
   //
@@ -295,7 +296,7 @@ void EditCtrlClass::Render(void) {
 ////////////////////////////////////////////////////////////////
 void EditCtrlClass::Get_Display_Text(WideStringClass &text) {
   // Resize to accomodate entire string
-  int length = Title.Get_Length();
+  size_t length = Title.Get_Length();
 
   if (mIME && mInComposition) {
     const wchar_t *compString = mIME->GetCompositionString();
@@ -461,7 +462,7 @@ void EditCtrlClass::Create_Caret_Renderer(void) {
   //
   //	Determine how many characters we should render the caret after
   //
-  WideStringClass temp_copy(0, true);
+  WideStringClass temp_copy(0u, true);
   Get_Display_Text(temp_copy);
 
   WCHAR *text = temp_copy.Peek_Buffer();
@@ -499,7 +500,7 @@ int EditCtrlClass::Character_From_Pos(const Vector2 &mouse_pos) {
   //
   //	Get the text we will be displaying
   //
-  WideStringClass display_text(0, true);
+  WideStringClass display_text(0u, true);
   Get_Display_Text(display_text);
 
   //
@@ -558,7 +559,7 @@ float EditCtrlClass::Pos_From_Character(int char_index) {
   //
   //	Get the width of the string up to this character index
   //
-  WideStringClass temp_copy(0, true);
+  WideStringClass temp_copy(0u, true);
   Get_Display_Text(temp_copy);
   WCHAR *text = temp_copy.Peek_Buffer();
   text[char_index] = 0;
@@ -725,7 +726,7 @@ bool EditCtrlClass::On_Key_Down(uint32 key_id, uint32 key_data) {
     if (DialogMgrClass::Get_VKey_State(VK_CONTROL) & VKEY_PRESSED) {
       Set_Caret_Pos(Find_Word_Start(CaretPos, 1));
     } else {
-      Set_Caret_Pos(min(Title.Get_Length(), CaretPos + 1));
+      Set_Caret_Pos(std::min(Title.Get_Length(), static_cast<size_t>(CaretPos + 1)));
     }
     break;
 
@@ -815,7 +816,7 @@ void EditCtrlClass::On_Unicode_Char(WCHAR unicode) {
 }
 
 void EditCtrlClass::Insert_String(const WCHAR *string) {
-  int count = wcslen(string);
+  size_t count = wcslen(string);
 
   if (count > 0) {
     //	Delete the old selection
@@ -1012,7 +1013,7 @@ void EditCtrlClass::Update_Scroll_Pos(void) {
     // Make a temporary copy of the text so we can
     // modify it
     //
-    WideStringClass temp_string(0, true);
+    WideStringClass temp_string(0u, true);
     Get_Display_Text(temp_string);
     WCHAR *text = temp_string.Peek_Buffer();
     text[caretPos] = 0;
@@ -1034,8 +1035,8 @@ void EditCtrlClass::Update_Scroll_Pos(void) {
   //
   //	Adjust the scroll range to stay within our boundaries
   //
-  ScrollPos = min(ScrollPos, Title.Get_Length() - 1);
-  ScrollPos = max(ScrollPos, 0);
+  ScrollPos = std::min(static_cast<size_t>(ScrollPos), Title.Get_Length() - 1);
+  ScrollPos = std::max(ScrollPos, 0);
 
   //
   //	Repaint if necessary
@@ -1060,7 +1061,7 @@ int EditCtrlClass::Get_Int(void) { return _wtoi(Get_Text()); }
 //
 ////////////////////////////////////////////////////////////////
 void EditCtrlClass::Set_Int(int value) {
-  WideStringClass text(64, true);
+  WideStringClass text(64u, true);
   text.Format(L"%d", value);
   Set_Text(text);
   return;
@@ -1072,7 +1073,7 @@ void EditCtrlClass::Set_Int(int value) {
 //
 ////////////////////////////////////////////////////////////////
 void EditCtrlClass::Set_Text(const WCHAR *title) {
-  int count = wcslen(title);
+  size_t count = wcslen(title);
 
   // If the string is too long then truncate it so that it will fit.
   if (count > TextLimit) {

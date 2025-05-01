@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -34,8 +34,6 @@
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-#pragma warning(disable : 4514)
 
 #include <cstdio>
 
@@ -62,10 +60,10 @@ char WideStringClass::m_TempString3[WideStringClass::MAX_TEMP_BYTES];
 char WideStringClass::m_TempString4[WideStringClass::MAX_TEMP_BYTES];
 
 WCHAR *WideStringClass::m_FreeTempPtr[MAX_TEMP_STRING] = {
-    reinterpret_cast<WCHAR *>(m_TempString1 + sizeof(WideStringClass::_HEADER)),
-    reinterpret_cast<WCHAR *>(m_TempString2 + sizeof(WideStringClass::_HEADER)),
-    reinterpret_cast<WCHAR *>(m_TempString3 + sizeof(WideStringClass::_HEADER)),
-    reinterpret_cast<WCHAR *>(m_TempString4 + sizeof(WideStringClass::_HEADER))};
+    reinterpret_cast<WCHAR *>(m_TempString1 + sizeof(WideStringClass::HEADER)),
+    reinterpret_cast<WCHAR *>(m_TempString2 + sizeof(WideStringClass::HEADER)),
+    reinterpret_cast<WCHAR *>(m_TempString3 + sizeof(WideStringClass::HEADER)),
+    reinterpret_cast<WCHAR *>(m_TempString4 + sizeof(WideStringClass::HEADER))};
 
 WCHAR *WideStringClass::m_ResTempPtr[MAX_TEMP_STRING] = {nullptr, nullptr, nullptr, nullptr};
 
@@ -74,7 +72,7 @@ WCHAR *WideStringClass::m_ResTempPtr[MAX_TEMP_STRING] = {nullptr, nullptr, nullp
 //	Get_String
 //
 ///////////////////////////////////////////////////////////////////
-void WideStringClass::Get_String(int length, bool is_temp) {
+void WideStringClass::Get_String(const size_t length, const bool is_temp) {
   if (!is_temp && length <= 1) {
     m_Buffer = m_EmptyString;
   } else {
@@ -127,8 +125,8 @@ void WideStringClass::Get_String(int length, bool is_temp) {
 //	Resize
 //
 ///////////////////////////////////////////////////////////////////
-void WideStringClass::Resize(int new_len) {
-  int allocated_len = Get_Allocated_Length();
+void WideStringClass::Resize(size_t new_len) {
+  size_t allocated_len = Get_Allocated_Length();
   if (new_len > allocated_len) {
 
     //
@@ -151,8 +149,8 @@ void WideStringClass::Resize(int new_len) {
 //	Uninitialised_Grow
 //
 ///////////////////////////////////////////////////////////////////
-void WideStringClass::Uninitialised_Grow(int new_len) {
-  int allocated_len = Get_Allocated_Length();
+void WideStringClass::Uninitialised_Grow(size_t new_len) {
+  size_t allocated_len = Get_Allocated_Length();
   if (new_len > allocated_len) {
 
     //
@@ -193,7 +191,7 @@ void WideStringClass::Free_String() {
         //
         m_Buffer[0] = 0;
         m_FreeTempPtr[index] = m_Buffer;
-        m_ResTempPtr[index] = 0;
+        m_ResTempPtr[index] = nullptr;
         m_UsedTempStringCount--;
         found = true;
         break;
@@ -204,7 +202,7 @@ void WideStringClass::Free_String() {
     //	String wasn't temporary, so free the memory
     //
     if (found == false) {
-      char *buffer = ((char *)m_Buffer) - sizeof(WideStringClass::_HEADER);
+      char *buffer = ((char *)m_Buffer) - sizeof(WideStringClass::HEADER);
       delete[] buffer;
     }
 
@@ -260,7 +258,7 @@ int _cdecl WideStringClass::Format(const WCHAR *format, ...) {
   //
   // Make a guess at the maximum length of the resulting string
   //
-  WCHAR temp_buffer[512] = {0};
+  WCHAR temp_buffer[512] = {};
 
   //
   //	Format the string
@@ -289,9 +287,7 @@ void WideStringClass::Release_Resources() {}
 bool WideStringClass::Convert_From(const char *text) {
   if (text != nullptr) {
 
-    int length;
-
-    length = MultiByteToWideChar(CP_ACP, 0, text, -1, nullptr, 0);
+    int length = MultiByteToWideChar(CP_ACP, 0, text, -1, nullptr, 0);
     if (length > 0) {
 
       Uninitialised_Grow(length);
@@ -301,18 +297,18 @@ bool WideStringClass::Convert_From(const char *text) {
       MultiByteToWideChar(CP_ACP, 0, text, -1, m_Buffer, length);
 
       // Success.
-      return (true);
+      return true;
     }
   }
 
   // Failure.
-  return (false);
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////
 // Test if a Unicode string is within the ANSI range. (0 - 255)
 ///////////////////////////////////////////////////////////////////
-bool WideStringClass::Is_ANSI() {
+bool WideStringClass::Is_ANSI() const {
   if (m_Buffer) {
     for (int index = 0; m_Buffer[index] != 0; index++) {
       unsigned short value = m_Buffer[index];

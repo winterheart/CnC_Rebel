@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -176,7 +177,7 @@ bool DlgDownload::FinalizeCreate(const DownloadList &files) {
 
 void DlgDownload::On_Init_Dialog(void) {
   // Set estimated time and read / total
-  WideStringClass text(0, true);
+  WideStringClass text(0u, true);
   text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_TIME), 0, 0, 0);
   Set_Dlg_Item_Text(IDC_PROGRESSTEXT, text);
 
@@ -331,10 +332,10 @@ void DlgDownload::UpdateProgress(DownloadEvent &event) {
       }
 
       // Update transfer rate.
-      WideStringClass sizetext(64, true);
+      WideStringClass sizetext(64u, true);
       PrintableSize(transferRate, sizetext);
 
-      WideStringClass text(0, true);
+      WideStringClass text(0u, true);
       text.Format(TRANSLATE(IDS_MENU_TRANSFER_RATE_PER_SEC), (const WCHAR *)sizetext);
       Set_Dlg_Item_Text(IDC_TRANSFERTEXT, text);
 
@@ -346,10 +347,10 @@ void DlgDownload::UpdateProgress(DownloadEvent &event) {
       }
 
       // Update estimated time and read / total
-      WideStringClass timetext(64, true);
+      WideStringClass timetext(64u, true);
       PrintableTime(estimatedTime, timetext);
 
-      WideStringClass readtext(64, true);
+      WideStringClass readtext(64u, true);
       PrintableSize(read, readtext);
 
       PrintableSize(size, sizetext);
