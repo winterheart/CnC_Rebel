@@ -46,7 +46,6 @@
 #include "wwsaveload.h"
 #include "input.h"
 #include "inputconfigmgr.h"
-// #include "gamesettings.h"
 #include "ffactory.h"
 #include "assets.h"
 #include "_globals.h"
@@ -61,13 +60,10 @@
 #include "textdisplay.h" // gamemode
 #include "scorescreen.h" // gamemode
 #include "msgloop.h"
-#include "Resource.H"
 #include "miscutil.h"
 #include "cnetwork.h"
-#include "mathutil.h"
 #include "win.h"
 #include "Part_Ldr.H"
-#include "savegame.H"
 #include "systemsettings.h"
 #include "gamedata.h"
 #include "sphereobj.h"
@@ -87,21 +83,17 @@
 #include "mpsettingsmgr.h"
 #include "mixfile.h"
 #include "ffactorylist.h"
-#include "gameinitmgr.h"
 #include "serverfps.h"
 #include "nicenum.h"
 #include "encyclopediamgr.h"
-#include "texturethumbnail.h"
 #include "playermanager.h"
 #include "teammanager.h"
-#include "stackdump.h"
 #include "registry.h"
 #include "bandwidthgraph.h"
 #include "dx8wrapper.h"
 #include "autostart.h"
 #include "except.h"
 #include "wwmemlog.h"
-#include "except.h"
 #include "consolemode.h"
 #include "serversettings.h"
 #include "pscene.h"
@@ -270,9 +262,6 @@ void Commando_Assert_Handler(const char *message) {
   //    THE REGISTRY SWITCHES!!!!!!!!!!!!!
   //
   //
-#ifdef WWDEBUG
-  Copy_Logs(DebugManager::Get_Version_Number());
-#endif // WWDEBUG
   RegistryClass registry(APPLICATION_SUB_KEY_NAME_DEBUG);
   if (registry.Is_Valid()) {
     registry.Set_Int(VALUE_NAME_APPLICATION_CRASH_VERSION, 0);
@@ -436,126 +425,7 @@ void Construct_Directory_Structure(void) {
   return;
 }
 
-static bool Verify_Log_Directory(const StringClass &folder) {
-  if (GetFileAttributes(folder) != 0xffffffff)
-    return true;
-  // HANDLE file;
-  // file = CreateFile(folder, 0, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-  // if (file!=INVALID_HANDLE_VALUE) {
-  //	CloseHandle(file);
-  //	return true;
-  // }
-
-  if (CreateDirectory(folder, NULL)) {
-    return true;
-  }
-  if (GetLastError() == ERROR_ALREADY_EXISTS) {
-    return (true);
-  }
-  return false;
-}
-
-static bool Create_Log_File_Name(const StringClass &folder, StringClass &filename, bool use_numbering) {
-  StringClass original(filename);
-  if (!use_numbering) {
-    filename.Format("%s\\%s", folder.Peek_Buffer(), original.Peek_Buffer());
-    return true;
-  }
-  for (int i = 0; i < 999; ++i) {
-    HANDLE file;
-    filename.Format("%s\\%3.3d%s", folder.Peek_Buffer(), i, original.Peek_Buffer());
-    file = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (file != INVALID_HANDLE_VALUE) {
-      CloseHandle(file);
-      return true;
-    }
-  }
-  return false;
-}
-
-static void Copy_Log(const StringClass &folder, const char *filename, bool use_numbering) {
-  RawFileClass raw_log_file(filename);
-  if (raw_log_file.Is_Available()) {
-    int size = raw_log_file.Size();
-    if (size) {
-      StringClass log_file_name(filename);
-      if (Create_Log_File_Name(folder, log_file_name, use_numbering)) {
-        DWORD written;
-        HANDLE file;
-        file = CreateFile(log_file_name, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-        if (INVALID_HANDLE_VALUE != file) {
-          raw_log_file.Open();
-          unsigned char *memory = new unsigned char[size];
-          raw_log_file.Read(memory, size);
-          raw_log_file.Close();
-          WriteFile(file, memory, size, &written, NULL);
-          delete[] memory;
-          CloseHandle(file);
-        }
-      }
-    }
-  }
-}
-
-static class CopyThreadClass : public ThreadClass {
-public:
-  unsigned Version;
-
-  CopyThreadClass() : Version(0), ThreadClass("LogCopyThread", &Exception_Handler) {}
-
-  void Thread_Function() {
-    // Write log to network folder
-
-    char computer_name[MAX_COMPUTERNAME_LENGTH + 1];
-    DWORD size = sizeof(computer_name);
-    ::GetComputerName(computer_name, &size);
-
-    RegistryClass reg(APPLICATION_SUB_KEY_NAME_DEBUG);
-    char path[MAX_PATH];
-    reg.Get_String("LogPath", path, sizeof(path), "\\\\tanya\\game\\projects\\renegade\\_error_logs");
-    strcat(path, "\\");
-
-    StringClass folder_name(0u, true);
-    folder_name.Format("%s%d.%d", path, Version >> 16, Version & 0xffff);
-    if (!Verify_Log_Directory(folder_name))
-      return;
-    folder_name += "\\";
-    folder_name += computer_name;
-    if (!Verify_Log_Directory(folder_name))
-      return;
-
-    Copy_Log(folder_name, DebugManager::Logfile_Name(), true); //"_logfile.txt",true);
-    Copy_Log(folder_name, "_asserts.txt", true);
-    Copy_Log(folder_name, "_except.txt", true);
-    Copy_Log(folder_name, "sysinfo.txt", false);
-  }
-} CopyThread;
-
-void Copy_Logs(unsigned version) {
-  RegistryClass registry(APPLICATION_SUB_KEY_NAME_DEBUG);
-  if (registry.Is_Valid()) {
-    if (registry.Get_Int(VALUE_NAME_DISABLE_LOG_COPYING, 0))
-      return;
-  }
-
-  if (CopyThread.Is_Running())
-    return;
-  CopyThread.Version = version;
-  CopyThread.Execute();
-
-  int time = TIMEGETTIME();
-  while (TIMEGETTIME() - time < 5000) {
-    if (!CopyThread.Is_Running()) {
-      break;
-    }
-    Sleep(100);
-  }
-}
-
-void Application_Exception_Callback(void) {
-#ifdef WWDEBUG
-  Copy_Logs(DebugManager::Get_Version_Number());
-#endif // WWDEBUG
+void Application_Exception_Callback() {
   RegistryClass registry(APPLICATION_SUB_KEY_NAME_DEBUG);
   if (registry.Is_Valid()) {
     registry.Set_Int(VALUE_NAME_APPLICATION_CRASH_VERSION, 0);
@@ -633,18 +503,13 @@ Debug_Say(( "End length %d (count %d) at %d\n", length, count, timeGetTime()-sta
 /*
 **
 */
-bool Game_Init(void) {
+bool Game_Init() {
   WWMEMLOG(MEM_GAMEINIT);
 
   // Set registry key to 1 for the duration of the init. This way we know if the program crashed while the init.
   RegistryClass registry(APPLICATION_SUB_KEY_NAME_DEBUG);
   if (registry.Is_Valid()) {
     registry.Set_Int(VALUE_NAME_GAME_INITIALIZATION_IN_PROGRESS, 1);
-    unsigned crash_version = registry.Get_Int(VALUE_NAME_APPLICATION_CRASH_VERSION, 0);
-#ifdef WWDEBUG
-    if (crash_version)
-      Copy_Logs(crash_version);
-#endif // WWDEBUG
     registry.Set_Int(VALUE_NAME_APPLICATION_CRASH_VERSION, 0);
   }
 

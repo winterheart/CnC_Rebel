@@ -47,7 +47,6 @@
 #include "input.h"
 #include "inputconfigmgr.h"
 #include "gamemode.h"
-// #include "gamesettings.h"
 #include "miscutil.h"
 #include "refcount.h"
 #include "cnetwork.h"
@@ -60,14 +59,12 @@
 #include "campaign.h"
 #include "diaglog.h"
 #include "binkmovie.h"
-// #include "helptext.h"
 #include "init.h"
 #include "serverfps.h"
 #include "encyclopediamgr.h"
 #include "playermanager.h"
 #include "teammanager.h"
 #include "bandwidthgraph.h"
-#include "except.h"
 #include "skinpackagemgr.h"
 #include "modpackagemgr.h"
 
@@ -435,10 +432,6 @@ void Game_Shutdown(void) {
   if (registry.Is_Valid()) {
     registry.Set_Int(VALUE_NAME_APPLICATION_CRASH_VERSION, 0);
   }
-
-#ifdef FREEDEDICATEDSERVER
-  Copy_Logs(DebugManager::Get_Version_Number());
-#endif // FREEDEDICATEDSERVER
 
   DebugManager::Shutdown();
 }
