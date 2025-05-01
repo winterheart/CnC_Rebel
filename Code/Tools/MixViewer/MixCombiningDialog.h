@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #if !defined(AFX_MIXCOMBININGDIALOG_H__F9BADF1D_9DAA_423E_BB9B_85765370E37E__INCLUDED_)
 #define AFX_MIXCOMBININGDIALOG_H__F9BADF1D_9DAA_423E_BB9B_85765370E37E__INCLUDED_
@@ -30,43 +31,39 @@
 /////////////////////////////////////////////////////////////////////////////
 // MixCombiningDialogClass dialog
 
-class MixCombiningDialogClass : public CDialog
-{
-// Construction
+class MixCombiningDialogClass : public CDialog {
+  // Construction
 public:
-	MixCombiningDialogClass(CWnd* pParent = NULL);   // standard constructor
+  MixCombiningDialogClass(CWnd *pParent = NULL); // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(MixCombiningDialogClass)
-	enum { IDD = IDD_COMBINING_DIALOG };
-	CProgressCtrl	ProgressCtrl;
-	//}}AFX_DATA
+  // Dialog Data
+  //{{AFX_DATA(MixCombiningDialogClass)
+  enum { IDD = IDD_COMBINING_DIALOG };
+  CProgressCtrl ProgressCtrl;
+  //}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(MixCombiningDialogClass)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(MixCombiningDialogClass)
 protected:
+  virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV support
+                                                   //}}AFX_VIRTUAL
 
-	// Generated message map functions
-	//{{AFX_MSG(MixCombiningDialogClass)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Implementation
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(MixCombiningDialogClass)
+  virtual BOOL OnInitDialog();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	////////////////////////////////////////////////////////////////////////
-	//	Public methods
-	////////////////////////////////////////////////////////////////////////
-	void			Set_Status_Text (const char *text);
-	void			Set_Progress_Percent (float percent);
-	void			Set_Title(const char *text);
+  ////////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ////////////////////////////////////////////////////////////////////////
+  void Set_Status_Text(const char *text);
+  void Set_Progress_Percent(float percent);
+  void Set_Title(const char *text);
 };
 
 //{{AFX_INSERT_LOCATION}}

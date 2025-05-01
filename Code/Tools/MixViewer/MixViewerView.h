@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // MixViewerView.h : interface of the CMixViewerView class
 //
@@ -27,81 +28,73 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 #include "resource.h"
 #include "vector.h"
 #include "wwstring.h"
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //
 //	CMixViewerView
 //
 //////////////////////////////////////////////////////////////////////////////////
-class CMixViewerView : public CListView
-{
+class CMixViewerView : public CListView {
 protected: // create from serialization only
-	CMixViewerView();
-	DECLARE_DYNCREATE(CMixViewerView)
+  CMixViewerView();
+  DECLARE_DYNCREATE(CMixViewerView)
 
-// Attributes
+  // Attributes
 public:
-	CMixViewerDoc* GetDocument();
+  CMixViewerDoc *GetDocument();
 
-// Operations
+  // Operations
 public:
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMixViewerView)
-	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
-	virtual void OnInitialUpdate(); // called first time after construct
-	//}}AFX_VIRTUAL
-
-// Implementation
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CMixViewerView)
 public:
-	virtual ~CMixViewerView();
+  virtual void OnDraw(CDC *pDC); // overridden to draw this view
+  virtual BOOL PreCreateWindow(CREATESTRUCT &cs);
+
+protected:
+  virtual void OnInitialUpdate(); // called first time after construct
+                                  //}}AFX_VIRTUAL
+
+  // Implementation
+public:
+  virtual ~CMixViewerView();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
 protected:
-
-// Generated message map functions
+  // Generated message map functions
 protected:
-	//{{AFX_MSG(CMixViewerView)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnDeleteitem(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnWindowPosChanging(WINDOWPOS FAR* lpwndpos);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CMixViewerView)
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg void OnDeleteitem(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnWindowPosChanging(WINDOWPOS FAR *lpwndpos);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
 public:
-
-	///////////////////////////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////////////////////////
-	void				Reload (const char *filename);
-	void				Reset (void);
+  ///////////////////////////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////////////////////////
+  void Reload(const char *filename);
+  void Reset(void);
 
 private:
+  ///////////////////////////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////////////////////////
+  DynamicVectorClass<StringClass> FilenameList;
 
-	///////////////////////////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////////////////////////
-	DynamicVectorClass<StringClass>	FilenameList;
-
-	StringClass								CurrentFilename;
+  StringClass CurrentFilename;
 };
 
-
-#ifndef _DEBUG  // debug version in MixViewerView.cpp
-inline CMixViewerDoc* CMixViewerView::GetDocument()
-   { return (CMixViewerDoc*)m_pDocument; }
+#ifndef _DEBUG // debug version in MixViewerView.cpp
+inline CMixViewerDoc *CMixViewerView::GetDocument() { return (CMixViewerDoc *)m_pDocument; }
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
