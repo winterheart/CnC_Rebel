@@ -954,7 +954,7 @@ void EditCtrlClass::Update_Hilight(int new_pos, int anchor_pos) {
 //
 ////////////////////////////////////////////////////////////////
 int EditCtrlClass::Find_Word_Start(int pos, int increment) {
-  int count = Title.Get_Length();
+  size_t count = Title.Get_Length();
 
   //
   //	Determine what the extreme end posiiton should be
@@ -968,7 +968,7 @@ int EditCtrlClass::Find_Word_Start(int pos, int increment) {
   //
   //	Loop over all the  characters until we've found the word break
   //
-  for (int index = pos + increment; index < count && index >= 0; index += increment) {
+  for (size_t index = pos + increment; index < count; index += increment) {
 
     //
     //	Is this a space character?

@@ -404,7 +404,7 @@ void CGameSpyQnR::info_callback(char *outbuf, int maxlen) {
 
     WideStringClass(The_Game()->Get_Game_Title()).Convert_To(value);
     if (value.Get_Length() > 25) {
-      value[25] = 0;
+      value[25u] = 0;
     }
     if (!Append_InfoKey_Pair(outbuf, maxlen, "hostname", value))
       break;

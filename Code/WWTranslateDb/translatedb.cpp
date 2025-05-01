@@ -369,8 +369,8 @@ void TranslateDBClass::Export_Table(const char *filename) {
 
         StringClass english_string = object->Get_English_String();
 
-        int length = english_string.Get_Length();
-        for (int j = 0; j < length; j++) {
+        size_t length = english_string.Get_Length();
+        for (size_t j = 0; j < length; j++) {
           if (english_string[j] == '\n') {
             english_string[j] = ' ';
           }
@@ -528,8 +528,8 @@ void TranslateDBClass::Import_C_Header(const char *filename) {
           //
           //	Find out where each word begins and ends
           //
-          int count = line.Get_Length();
-          for (int index = 8; curr_break < 4 && index < count; index++) {
+          size_t count = line.Get_Length();
+          for (size_t index = 8; curr_break < 4 && index < count; index++) {
 
             bool is_whitespace = (line[index] == ' ' || line[index] == '\t');
 
@@ -979,12 +979,12 @@ TDBObjClass *TranslateDBClass::Get_Next_Object(uint32 category_id, TDBObjClass *
 void Convert_Chars_To_Newline(StringClass &string) {
   StringClass retval;
 
-  int count = string.Get_Length();
+  size_t count = string.Get_Length();
 
   //
   //	Copy characters between the strings
   //
-  for (int index = 0; index < count; index++) {
+  for (size_t index = 0; index < count; index++) {
 
     if (index + 1 < count && string[index] == '\\' && string[index + 1] == 'n') {
       retval += '\n';

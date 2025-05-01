@@ -632,12 +632,12 @@ void StringsMgrClass::Convert_Newline_To_Chars(WideStringClass &string) {
   //
   //	Take a guess as to how large to make the final string
   //
-  int count = string.Get_Length();
+  size_t count = string.Get_Length();
 
   //
   //	Copy characters between the strings
   //
-  for (int index = 0; index < count; index++) {
+  for (size_t index = 0; index < count; index++) {
 
     if (string[index] == L'\n') {
       retval += L"\\n";
@@ -663,12 +663,12 @@ void StringsMgrClass::Convert_Chars_To_Newline(WideStringClass &string) {
   //
   //	Take a guess as to how large to make the final string
   //
-  int count = string.Get_Length();
+  size_t count = string.Get_Length();
 
   //
   //	Copy characters between the strings
   //
-  for (int index = 0; index < count; index++) {
+  for (size_t index = 0; index < count; index++) {
 
     if (index + 1 < count && string[index] == L'\\' && string[index + 1] == L'n') {
       retval += L'\n';

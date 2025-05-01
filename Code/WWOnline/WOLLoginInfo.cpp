@@ -225,7 +225,7 @@ LoginInfo::LoginInfo(const wchar_t *nickname, const wchar_t *password, bool isEn
   WWDEBUG_SAY(("WOL: Instantiating LoginInfo %S\n", (const WCHAR *)mNickname));
 
   if (mNickname.Get_Length() > 9) {
-    mNickname[9] = 0;
+    mNickname[9u] = 0;
   }
 }
 

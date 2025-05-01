@@ -554,8 +554,8 @@ void MixFileDatabaseClass::Get_Filename(LPCTSTR path, StringClass &filename) {
     //
     //	Try to find the preceeding directory delimiter
     //
-    int index = (subdir_token - filename.Peek_Buffer());
-    for (; index >= 0; index--) {
+    size_t index = (subdir_token - filename.Peek_Buffer());
+    for (; index > 0; index--) {
       if (filename[index] == '\\') {
         StringClass temp_str = filename;
         filename = (temp_str.Peek_Buffer() + index + 1);

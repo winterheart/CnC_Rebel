@@ -607,7 +607,7 @@ void DX8Caps::Compute_Caps(WW3DFormat display_format, const DX_D3DADAPTER_IDENTI
   VendorId = Define_Vendor(adapter_id.VendorId);
   // Make a guess - if driver doesn't intruduce itself and the name starts with 3, what could it possibly be?
   if (VendorId == VENDOR_UNKNOWN) {
-    if (DriverDLL[0] == '3')
+    if (DriverDLL[0u] == '3')
       VendorId = VENDOR_3DFX;
   }
   COMPACTLOG(("%s\t", VendorNames[VendorId]));

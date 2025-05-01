@@ -654,8 +654,8 @@ static void Aquire_Weapon_Assets(const WeaponClass *weapon) {
       StringClass clip_name;
       clip_name = WeaponModel->Get_Name();
       if (clip_name.Get_Length() > 4) {
-        clip_name[2] = 'C';
-        clip_name[3] = 'M';
+        clip_name[2u] = 'C';
+        clip_name[3u] = 'M';
       }
       ClipModel = WW3DAssetManager::Get_Instance()->Create_Render_Obj(clip_name);
       if (ClipModel != NULL) {

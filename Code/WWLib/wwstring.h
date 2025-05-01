@@ -94,8 +94,8 @@ public:
   bool operator>(const TCHAR *string) const;
   bool operator>=(const TCHAR *string) const;
 
-  const TCHAR &operator[](int index) const;
-  TCHAR &operator[](int index);
+  const TCHAR &operator[](unsigned int index) const;
+  TCHAR &operator[](unsigned int index);
   inline operator const TCHAR *() const;
 
   ////////////////////////////////////////////////////////////
@@ -316,16 +316,16 @@ inline int StringClass::Compare_No_Case(const TCHAR *string) const { return _tcs
 ///////////////////////////////////////////////////////////////////
 //	operator[]
 ///////////////////////////////////////////////////////////////////
-inline const TCHAR &StringClass::operator[](const int index) const {
-  WWASSERT(index >= 0 && index < Get_Length());
+inline const TCHAR &StringClass::operator[](const unsigned int index) const {
+  WWASSERT(index < Get_Length());
   return m_Buffer[index];
 }
 
 ///////////////////////////////////////////////////////////////////
 //	operator[]
 ///////////////////////////////////////////////////////////////////
-inline TCHAR &StringClass::operator[](const int index) {
-  WWASSERT(index >= 0 && index < Get_Length());
+inline TCHAR &StringClass::operator[](const unsigned int index) {
+  WWASSERT(index < Get_Length());
   return m_Buffer[index];
 }
 

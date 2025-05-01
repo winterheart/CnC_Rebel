@@ -413,7 +413,7 @@ public:
       const char *read = CampaignManager::Get_Backdrop_Description(i);
       //			Debug_Say(( "Parse %s\n", read ));
       StringClass desc = read;
-      while (desc.Get_Length() && desc[0] <= ' ')
+      while (desc.Get_Length() && desc[0u] <= ' ')
         desc.Erase(0, 1);
       while (desc.Get_Length() && desc[desc.Get_Length() - 1] <= ' ')
         desc.Erase(desc.Get_Length() - 1, 1);
@@ -421,7 +421,7 @@ public:
       // Parse Big Translated Text
       if (::strnicmp("Text2", desc, 5) == 0) {
         desc.Erase(0, 5);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float x, y;
         ::sscanf(desc, "%f,%f,", &x, &y);
@@ -445,7 +445,7 @@ public:
       // Parse Translated Text
       if (::strnicmp("Text", desc, 4) == 0) {
         desc.Erase(0, 4);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float x, y;
         ::sscanf(desc, "%f,%f,", &x, &y);
@@ -469,7 +469,7 @@ public:
       // Set Big Wrapping Width
       if (::strnicmp("Wrap2", desc, 5) == 0) {
         desc.Erase(0, 5);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float w;
         ::sscanf(desc, "%f,", &w);
@@ -481,7 +481,7 @@ public:
       // Set Wrapping Width
       if (::strnicmp("Wrap", desc, 4) == 0) {
         desc.Erase(0, 4);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float w;
         ::sscanf(desc, "%f,", &w);
@@ -493,7 +493,7 @@ public:
       // Parse test Text
       if (::strnicmp("Test", desc, 4) == 0) {
         desc.Erase(0, 4);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float x, y;
         ::sscanf(desc, "%f,%f,", &x, &y);
@@ -518,7 +518,7 @@ public:
       // Parse back model
       if (::strnicmp("Model", desc, 5) == 0) {
         desc.Erase(0, 5);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
 
         backdrop.Set_Model(desc);
@@ -530,7 +530,7 @@ public:
 
       if (::strnicmp("Color", desc, 5) == 0) {
         desc.Erase(0, 5);
-        while (desc.Get_Length() && desc[0] <= ' ')
+        while (desc.Get_Length() && desc[0u] <= ' ')
           desc.Erase(0, 1);
         float r, g, b;
         ::sscanf(desc, "%f,%f,%f", &r, &g, &b);

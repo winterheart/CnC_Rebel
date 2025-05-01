@@ -73,7 +73,7 @@ void cNetInterface::Set_Nickname(WideStringClass &name) {
   if (cGameSpyAdmin::Is_Gamespy_Game()) {
     WideStringClass wide_name = name;
     if (wide_name.Get_Length() > 30) {
-      wide_name[30] = 0;
+      wide_name[30u] = 0;
     }
     StringClass name;
     wide_name.Convert_To(name);
@@ -85,7 +85,7 @@ void cNetInterface::Set_Nickname(WideStringClass &name) {
     // Abbreviate to 9 chars
     //
     if (Nickname.Get_Length() > 9) {
-      Nickname[9] = 0;
+      Nickname[9u] = 0;
     }
   }
 }

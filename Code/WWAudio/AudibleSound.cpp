@@ -1535,7 +1535,7 @@ AudibleSoundClass *AudibleSoundDefinitionClass::Create_Sound(int classid_hint) c
   //
   StringClass real_filename(m_Filename, true);
   const char *dir_delimiter = ::strrchr(m_Filename, '\\');
-  if (dir_delimiter != nullptr && m_Filename.Get_Length() > 2 && m_Filename[1] != ':') {
+  if (dir_delimiter != nullptr && m_Filename.Get_Length() > 2 && m_Filename[1u] != ':') {
     real_filename = (dir_delimiter + 1);
   }
 

@@ -699,8 +699,8 @@ void HumanAnimControlClass::Build_Skeleton_Anim_Name(StringClass &new_name, cons
   // the other skeleton anim, if found
   if (new_name.Get_Length() > 14 && Skeleton != 'A' && ::strnicmp(new_name, "S_A_HUMAN.H_A_", 14) == 0) {
     StringClass mod_name(new_name, true);
-    mod_name[2] = Skeleton;
-    mod_name[12] = Skeleton;
+    mod_name[2u] = Skeleton;
+    mod_name[12u] = Skeleton;
 
     // can we find the anim name?
     HAnimClass *anim = WW3DAssetManager::Get_Instance()->Get_HAnim(mod_name);

@@ -461,7 +461,7 @@ int cNetwork::Get_Data_Files_CRC(void) {
     for (int i = 0; i < NUM_CRC_FILES; i++) {
       StringClass name = filelist[i];
       // Obfuscate name
-      char *n = &name[0];
+      char *n = &name[0u];
       while (*n)
         *n++ ^= 0x5;
       //			Debug_Say(( "		\"%s\",\n", name ));

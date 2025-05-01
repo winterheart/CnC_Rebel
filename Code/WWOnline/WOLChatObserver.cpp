@@ -2337,7 +2337,7 @@ void ChatObserver::ProcessSquadRequest(const RefPtr<SquadData> &squad) {
 
       // First character of user names cannot be numbers. Therefore if it is a number
       // then process the request by ID. Otherwise process the request by name.
-      wchar_t firstChar = pending[0];
+      wchar_t firstChar = pending[0u];
 
       if (iswdigit(firstChar)) {
         unsigned int pendingID = _wtoi(pending);

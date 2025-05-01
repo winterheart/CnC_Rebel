@@ -89,8 +89,8 @@ public:
   bool operator>(const WCHAR *string) const;
   bool operator>=(const WCHAR *string) const;
 
-  WCHAR operator[](int index) const;
-  WCHAR &operator[](int index);
+  WCHAR operator[](unsigned int index) const;
+  WCHAR &operator[](unsigned int index);
   operator const WCHAR *() const;
 
   ////////////////////////////////////////////////////////////
@@ -267,13 +267,13 @@ inline int WideStringClass::Compare_No_Case(const WCHAR *string) const {
 ///////////////////////////////////////////////////////////////////
 //	operator[]
 ///////////////////////////////////////////////////////////////////
-inline WCHAR WideStringClass::operator[](const int index) const {
-  WWASSERT(index >= 0 && index < Get_Length());
+inline WCHAR WideStringClass::operator[](const unsigned int index) const {
+  WWASSERT(index < Get_Length());
   return m_Buffer[index];
 }
 
-inline WCHAR &WideStringClass::operator[](const int index) {
-  WWASSERT(index >= 0 && index < Get_Length());
+inline WCHAR &WideStringClass::operator[](const unsigned int index) {
+  WWASSERT(index < Get_Length());
   return m_Buffer[index];
 }
 

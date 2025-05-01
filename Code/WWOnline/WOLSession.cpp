@@ -1835,7 +1835,7 @@ void Session::MakeSquadRequests(void) {
 
       // Check to see if this is an ID or a name
       // - names can't have the first character be a number so this works.
-      wchar_t firstChar = request[0];
+      wchar_t firstChar = request[0u];
 
       if (iswdigit(firstChar)) {
         unsigned int squadID = _wtoi(request);
@@ -1971,14 +1971,14 @@ void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
     // the users login name.
     if (type & LadderType_Clan) {
       WWASSERT((type & (LadderType_Individual | LadderType_Team)) == 0);
-      request[2] = L'C';
+      request[2u] = L'C';
     } else {
       if (type & LadderType_Individual) {
-        request[0] = L'I';
+        request[0u] = L'I';
       }
 
       if (type & LadderType_Team) {
-        request[1] = L'T';
+        request[1u] = L'T';
       }
     }
 
@@ -2065,7 +2065,7 @@ void Session::MakeLadderRequests(void) {
       unsigned long sku = product->GetLadderSKU();
 
       // Request individual ladder
-      if (firstRequest[0] == L'I') {
+      if (firstRequest[0u] == L'I') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, sku, -1, 0, 0);
 
         if (FAILED(hr)) {
@@ -2077,7 +2077,7 @@ void Session::MakeLadderRequests(void) {
       }
 
       // Request team ladder
-      if (firstRequest[1] == L'T') {
+      if (firstRequest[1u] == L'T') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, (sku | LadderType_Team), -1, 0, 0);
 
         if (FAILED(hr)) {
@@ -2089,7 +2089,7 @@ void Session::MakeLadderRequests(void) {
       }
 
       // Request clan ladder
-      if (firstRequest[2] == L'C') {
+      if (firstRequest[2u] == L'C') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, (sku | LadderType_Clan), -1, 0, 0);
 
         if (FAILED(hr)) {

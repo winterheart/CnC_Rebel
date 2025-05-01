@@ -1309,7 +1309,7 @@ int SoldierGameObj::Check(void) {
     for (int i = 0; i < NUM_CRC_FILES; i++) {
       StringClass name = filelist[i];
       // Obfuscate name
-      char *n = &name[0];
+      char *n = &name[0u];
       while (*n)
         *n++ ^= 0x3;
       tm.Rotate_Z(3.6f);
