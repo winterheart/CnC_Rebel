@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -100,9 +101,9 @@ void cWinEvent::Act(void) {
   // if (The_Game()->Is_Team_Game()) {
 
   WideStringClass champ_text;
-  champ_text.Format(L"%s %s", The_Game()->Get_Team_Word(), cTeamManager::Get_Team_Name(Winner));
+  champ_text.Format(L"%s %s", The_Game()->Get_Team_Word().Peek_Buffer(), cTeamManager::Get_Team_Name(Winner).Peek_Buffer());
 
-  win_text.Format(L"%s %s", champ_text, TRANSLATION(IDS_MP_WIN_FORMATTING));
+  win_text.Format(L"%s %s", champ_text.Peek_Buffer(), TRANSLATION(IDS_MP_WIN_FORMATTING));
 
   /*
   } else {
@@ -208,8 +209,8 @@ void cWinEvent::Import_Creation(BitStreamClass &packet) {
   //
   //	Try to find the map from its CRC
   //
-  StringClass mod_name(0, true);
-  StringClass map_name(0, true);
+  StringClass mod_name(0u, true);
+  StringClass map_name(0u, true);
   ModPackageMgrClass::Get_Mod_Map_Name_From_CRC(mod_name_crc, map_name_crc, &mod_name, &map_name);
   The_Game()->Set_Mod_Name(mod_name);
   The_Game()->Set_Map_Name(map_name);

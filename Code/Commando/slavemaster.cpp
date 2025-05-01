@@ -790,11 +790,11 @@ void SlaveMasterClass::Shutdown_Slaves(void) {
         /*
         ** Remember that we shut this guy down.
         */
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_NET_SLAVE);
-        if (reg.Is_Valid()) {
+        RegistryClass reg_net_slave(APPLICATION_SUB_KEY_NAME_NET_SLAVE);
+        if (reg_net_slave.Is_Valid()) {
           char entry[128];
           sprintf(entry, "%s%d", KEY_SLAVE_RUNNING_ID, i);
-          reg.Set_Int(entry, 0);
+          reg_net_slave.Set_Int(entry, 0);
         }
       }
     }
@@ -849,7 +849,7 @@ bool SlaveMasterClass::Shutdown_Slave(char *slave_login) {
         /*
         ** Remember that we shut this guy down.
         */
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_NET_SLAVE);
+        reg = {APPLICATION_SUB_KEY_NAME_NET_SLAVE};
         if (reg.Is_Valid()) {
           char entry[128];
           sprintf(entry, "%s%d", KEY_SLAVE_RUNNING_ID, i);
@@ -948,7 +948,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_NET_FIREWALL);
+        reg = {APPLICATION_SUB_KEY_NAME_NET_FIREWALL};
         DefaultRegistryModifier[0] = 0;
         RegistryClass my_reg(APPLICATION_SUB_KEY_NAME_NET_FIREWALL);
 
@@ -978,7 +978,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_NET_SERVER_CONTROL);
+        reg = {APPLICATION_SUB_KEY_NAME_NET_SERVER_CONTROL};
         DefaultRegistryModifier[0] = 0;
         RegistryClass my_reg(APPLICATION_SUB_KEY_NAME_NET_SERVER_CONTROL);
 
@@ -1013,7 +1013,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_WOLSETTINGS);
+        reg = {APPLICATION_SUB_KEY_NAME_WOLSETTINGS};
         DefaultRegistryModifier[0] = 0;
 
         reg.Set_String("AutoLogin", SlaveServers[i].NickName);
@@ -1025,7 +1025,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_WOLSETTINGS);
+        reg = {APPLICATION_SUB_KEY_NAME_WOLSETTINGS};
         DefaultRegistryModifier[0] = 0;
 
         reg.Set_String("AutoPassword", SlaveServers[i].Password);
@@ -1036,7 +1036,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME);
+        reg = {APPLICATION_SUB_KEY_NAME};
         DefaultRegistryModifier[0] = 0;
 
         StringClass serial(SlaveServers[i].Serial, true);
@@ -1052,7 +1052,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_WOLSETTINGS);
+        reg = {APPLICATION_SUB_KEY_NAME_WOLSETTINGS};
         DefaultRegistryModifier[0] = 0;
 
         if (reg.Is_Valid()) {
@@ -1072,7 +1072,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME_OPTIONS);
+        reg = {APPLICATION_SUB_KEY_NAME_OPTIONS};
         DefaultRegistryModifier[0] = 0;
         reg.Set_String("MultiplayerSettings", SlaveServers[i].SettingsFileName);
       }
@@ -1082,7 +1082,7 @@ void SlaveMasterClass::Create_Registry_Copies(void) {
       */
       {
         strcpy(DefaultRegistryModifier, slave_name + 1);
-        RegistryClass reg(APPLICATION_SUB_KEY_NAME);
+        reg = {APPLICATION_SUB_KEY_NAME};
         DefaultRegistryModifier[0] = 0;
         reg.Set_Int("SKU", RENEGADE_FDS_SKU);
       }

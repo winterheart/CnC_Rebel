@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "cpudetect.h"
 #include "wwstring.h"
@@ -756,7 +756,7 @@ void CPUDetectClass::Init_Processor_String() {
   }
   // If no extended cpuid available (Intel processors prior to P4), compose the string
   else {
-    StringClass str(0, true);
+    StringClass str(0u, true);
     str = Get_Processor_Manufacturer_Name();
     if (ProcessorManufacturer == MANUFACTURER_INTEL) {
       str += " ";
@@ -976,7 +976,7 @@ bool CPUDetectClass::CPUID(unsigned &u_eax_, unsigned &u_ebx_, unsigned &u_ecx_,
   CPUDetectClass::ProcessorLog += work;
 
 void CPUDetectClass::Init_Processor_Log() {
-  StringClass work(0, true);
+  StringClass work(0u, true);
 
   SYSLOG(("Operating System: "));
   switch (OSVersionPlatformId) {
@@ -999,7 +999,7 @@ void CPUDetectClass::Init_Processor_Log() {
 
   SYSLOG(("Processor: %s\r\n", CPUDetectClass::Get_Processor_String()));
   SYSLOG(("Clock speed: ~%dMHz\r\n", CPUDetectClass::Get_Processor_Speed()));
-  StringClass cpu_type(0, true);
+  StringClass cpu_type(0u, true);
   switch (CPUDetectClass::Get_Processor_Type()) {
   case 0:
     cpu_type = "Original OEM";
@@ -1080,7 +1080,7 @@ void CPUDetectClass::Init_Processor_Log() {
   CPUDetectClass::CompactLog += work;
 
 void CPUDetectClass::Init_Compact_Log() {
-  StringClass work(0, true);
+  StringClass work(0u, true);
 
   TIME_ZONE_INFORMATION time_zone;
   GetTimeZoneInformation(&time_zone);

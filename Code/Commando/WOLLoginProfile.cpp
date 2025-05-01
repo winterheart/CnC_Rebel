@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -140,7 +141,7 @@ LoginProfile *LoginProfile::Get(const wchar_t *loginName, bool createOK) {
       }
     }
 
-    StringClass regKey(255, true);
+    StringClass regKey(255u, true);
     regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, loginName);
 
     if (RegistryClass::Exists(regKey) || createOK) {
@@ -442,7 +443,7 @@ void LoginProfile::LoadSettings(void) {
   }
 
   // Get login preferences
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey, false);
@@ -487,7 +488,7 @@ void LoginProfile::SaveSettings(void) {
   // If we are allowed to
   if (_mSaveAllowed && isStored) {
     // Save login preferences
-    StringClass regKey(255, true);
+    StringClass regKey(255u, true);
     regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
     RegistryClass registry(regKey);
@@ -523,7 +524,7 @@ void LoginProfile::SaveSettings(void) {
 void LoginProfile::LoadRank(const char *valueName, LoginProfile::Ranking &rank) {
   WWASSERT(valueName);
 
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey, false);
@@ -564,7 +565,7 @@ void LoginProfile::LoadRank(const char *valueName, LoginProfile::Ranking &rank) 
 void LoginProfile::SaveRank(const char *valueName, const LoginProfile::Ranking &rank) {
   WWASSERT(valueName);
 
-  StringClass regKey(255, true);
+  StringClass regKey(255u, true);
   regKey.Format("%s\\%S", APPLICATION_SUB_KEY_NAME_LOGINS, GetName());
 
   RegistryClass registry(regKey);
@@ -637,7 +638,7 @@ void ShowProfileRanking(DialogBaseClass *dialog, const LoginProfile *profile) {
 
     // Show the profile's ranking
     if (profile) {
-      WideStringClass profileName(128, true);
+      WideStringClass profileName(128u, true);
       profileName.Format(TRANSLATE(IDS_MENU_RANKING_PROFILE), profile->GetName());
       dialog->Set_Dlg_Item_Text(IDC_PROFILENAME, profileName);
 
@@ -672,7 +673,7 @@ void ShowRanking(ListCtrlClass *list, WWOnline::LadderType type, const LoginProf
 
   for (int index = 0; index < count; index++) {
     if ((WWOnline::LadderType)list->Get_Entry_Data(index, COL_LADDERNAME) == type) {
-      WideStringClass text(64, true);
+      WideStringClass text(64u, true);
 
       if (rank->Wins != (unsigned)-1) {
         text.Format(L"%u / %u", rank->Wins, rank->Losses);

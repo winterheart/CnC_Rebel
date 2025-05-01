@@ -43,7 +43,7 @@ AssetStatusClass::~AssetStatusClass() {
         report += ite.Peek_Key();
         int count = ite.Peek_Value();
         if (count > 1) {
-          StringClass tmp(0, true);
+          StringClass tmp(0u, true);
           tmp.Format("\t(reported %d times)", count);
           report += tmp;
         }

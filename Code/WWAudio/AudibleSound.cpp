@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -1323,7 +1323,7 @@ AudibleSoundDefinitionClass::AudibleSoundDefinitionClass()
   param->Set_Name("Logical Type");
   int count = WWAudioClass::Get_Instance()->Get_Logical_Type_Count();
   for (int index = 0; index < count; index++) {
-    StringClass display_name(0, true);
+    StringClass display_name(0u, true);
     int id = WWAudioClass::Get_Instance()->Get_Logical_Type(index, display_name);
     param->Add_Value(display_name, id);
   }
@@ -1535,7 +1535,7 @@ AudibleSoundClass *AudibleSoundDefinitionClass::Create_Sound(int classid_hint) c
   //
   StringClass real_filename(m_Filename, true);
   const char *dir_delimiter = ::strrchr(m_Filename, '\\');
-  if (dir_delimiter != nullptr && m_Filename.Get_Length() > 2 && m_Filename[1] != ':') {
+  if (dir_delimiter != nullptr && m_Filename.Get_Length() > 2 && m_Filename[1u] != ':') {
     real_filename = (dir_delimiter + 1);
   }
 
@@ -1677,7 +1677,7 @@ bool AudibleSoundClass::Save(ChunkSaveClass &csave) {
 bool AudibleSoundClass::Load(ChunkLoadClass &cload) {
   using namespace AUDIBLE_SOUND_SAVELOAD;
 
-  StringClass filename(0, true);
+  StringClass filename(0u, true);
   while (cload.Open_Chunk()) {
     switch (cload.Cur_Chunk_ID()) {
 

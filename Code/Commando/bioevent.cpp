@@ -143,7 +143,7 @@ void cBioEvent::Act(void) {
       cGameDataUpdateEvent *p_event = new cGameDataUpdateEvent();
       p_event->Init(p_player->Get_Id());
 
-      StringClass str(128, true);
+      StringClass str(128u, true);
       Nickname.Convert_To(str);
       ConsoleBox.Print_Maybe("Player %s joined the game\n", str.Peek_Buffer());
 

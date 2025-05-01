@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -662,7 +662,7 @@ WWMemoryAndTimeLog::WWMemoryAndTimeLog(const char *name)
   IntermediateTimeStart = TimeStart;
   IntermediateAllocCountStart = AllocCountStart;
   IntermediateAllocSizeStart = AllocSizeStart;
-  StringClass tmp(0, true);
+  StringClass tmp(0u, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
   WWRELEASE_SAY(("%s%s {\n", tmp.Peek_Buffer(), name));
@@ -672,7 +672,7 @@ WWMemoryAndTimeLog::WWMemoryAndTimeLog(const char *name)
 WWMemoryAndTimeLog::~WWMemoryAndTimeLog() {
   if (TabCount > 0)
     TabCount--;
-  StringClass tmp(0, true);
+  StringClass tmp(0u, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
   WWRELEASE_SAY(("%s} ", tmp.Peek_Buffer()));
@@ -690,7 +690,7 @@ void WWMemoryAndTimeLog::Log_Intermediate(const char *text) {
   unsigned current_time = WWProfile_Get_System_Time();
   unsigned int current_alloc_count = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocation_Count();
   unsigned int current_alloc_size = FastAllocatorGeneral::Get_Allocator()->Get_Total_Allocated_Size();
-  StringClass tmp(0, true);
+  StringClass tmp(0u, true);
   for (unsigned i = 0; i < TabCount; ++i)
     tmp += "\t";
   WWRELEASE_SAY(("%s%s took %d.%3.3d s, did %d memory allocations of %d bytes\n", tmp.Peek_Buffer(), text,

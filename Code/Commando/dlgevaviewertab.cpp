@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -174,13 +175,13 @@ void EvaViewerTabClass::Build_Object_List(void) {
       //
       //	Read this object's data from the INI file
       //
-      StringClass name_id(0, true);
-      StringClass description_id(0, true);
-      StringClass affiliation_id(0, true);
-      StringClass model_name(0, true);
-      StringClass anim_name(0, true);
-      StringClass definition_name(0, true);
-      StringClass player_type_str(0, true);
+      StringClass name_id(0u, true);
+      StringClass description_id(0u, true);
+      StringClass affiliation_id(0u, true);
+      StringClass model_name(0u, true);
+      StringClass anim_name(0u, true);
+      StringClass definition_name(0u, true);
+      StringClass player_type_str(0u, true);
       ini_file->Get_String(name_id, section->Section, "NameID");
       ini_file->Get_String(description_id, section->Section, "DescriptionID");
       ini_file->Get_String(affiliation_id, section->Section, "AffiliationID");

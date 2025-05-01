@@ -37,7 +37,7 @@ const char *ThumbFileHeader = "THU4";
 
 static void Create_Hash_Name(StringClass &name, const StringClass &thumb_name) {
   name = thumb_name;
-  int len = name.Get_Length();
+  size_t len = name.Get_Length();
   WWASSERT(!stricmp(&name[len - 4], ".tga") || !stricmp(&name[len - 4], ".dds"));
   name[len - 4] = '\0';
 }
@@ -91,7 +91,7 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass *manager, const StringClass
   if (dds_file.Is_Available() && dds_file.Load()) {
     DateTime = dds_file.Get_Date_Time();
 
-    int len = Name.Get_Length();
+    size_t len = Name.Get_Length();
     WWASSERT(len > 4);
     Name[len - 3] = 'd';
     Name[len - 2] = 'd';
@@ -187,7 +187,7 @@ ThumbnailClass::ThumbnailClass(ThumbnailManagerClass *manager, const StringClass
 
     unsigned char *src_surface = (unsigned char *)targa.GetImage();
 
-    int len = Name.Get_Length();
+    size_t len = Name.Get_Length();
     WWASSERT(len > 4);
     Name[len - 3] = 't';
     Name[len - 2] = 'g';
@@ -223,7 +223,7 @@ void ThumbnailManagerClass::Create_Thumbnails() {
     list.Set_Growth_Step(1000);
     mix.Build_Filename_List(list);
     for (int i = 0; i < list.Count(); ++i) {
-      int len = list[i].Get_Length();
+      size_t len = list[i].Get_Length();
       if (!stricmp(&list[i][len - 4], ".tga") || !stricmp(&list[i][len - 4], ".dds")) {
         if (!Peek_Thumbnail_Instance(list[i])) {
           new ThumbnailClass(this, list[i]);
@@ -470,20 +470,20 @@ ThumbnailClass *ThumbnailManagerClass::Peek_Thumbnail_Instance(const StringClass
 
 void ThumbnailManagerClass::Insert_To_Hash(ThumbnailClass *thumb) {
   Changed = true;
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, thumb->Get_Name());
   ThumbnailHash.Insert(hash_name, thumb);
 }
 
 ThumbnailClass *ThumbnailManagerClass::Get_From_Hash(const StringClass &name) {
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, name);
   return ThumbnailHash.Get(hash_name);
 }
 
 void ThumbnailManagerClass::Remove_From_Hash(ThumbnailClass *thumb) {
   Changed = true;
-  StringClass hash_name(0, true);
+  StringClass hash_name(0u, true);
   Create_Hash_Name(hash_name, thumb->Get_Name());
   ThumbnailHash.Remove(hash_name);
 }
@@ -493,7 +493,7 @@ void ThumbnailManagerClass::Update_Thumbnail_File(const char *mix_file_name, boo
   ff.Set_Sub_Directory("Data\\");
 
   StringClass thumb_file_name(mix_file_name, true);
-  int len = thumb_file_name.Get_Length();
+  size_t len = thumb_file_name.Get_Length();
   WWASSERT(len > 4);
   thumb_file_name[len - 3] = 't';
   thumb_file_name[len - 2] = 'h';

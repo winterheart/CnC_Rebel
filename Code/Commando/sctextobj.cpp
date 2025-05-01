@@ -250,9 +250,10 @@ void cScTextObj::Act(void) {
 
       WideStringClass formatted_text;
       if (Type == TEXT_MESSAGE_PRIVATE) {
-        formatted_text.Format(L"%s (%s %s): ", sender_name, TRANSLATION(IDS_MP_TO), recipient_name);
+        formatted_text.Format(L"%s (%s %s): ", sender_name.Peek_Buffer(), TRANSLATION(IDS_MP_TO),
+          recipient_name.Peek_Buffer());
       } else {
-        formatted_text.Format(L"%s: ", sender_name);
+        formatted_text.Format(L"%s: ", sender_name.Peek_Buffer());
       }
 
       //
@@ -281,7 +282,7 @@ void cScTextObj::Act(void) {
         DlgMsgBox::DoDialog(TRANSLATE(IDS_MENU_ADMIN_MESSAGE), Text);
       } else {
         WideStringClass message;
-        message.Format(L"%s\n", Text);
+        message.Format(L"%s\n", Text.Peek_Buffer());
         formatted_text += message;
         if (CombatManager::Get_Message_Window() != NULL) {
           CombatManager::Get_Message_Window()->Add_Message(formatted_text, text_color);

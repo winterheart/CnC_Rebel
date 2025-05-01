@@ -66,10 +66,10 @@ void cAppPacketStats::Dump_Diagnostics(void) {
   WWDEBUG_SAY(("\n"));
   WWDEBUG_SAY(("---------------------------------------------------------\n"));
   WWDEBUG_SAY(("cAppPacketStats::Dump_Diagnostics:\n"));
-  WWDEBUG_SAY(("%s\n", Get_Heading()));
+  WWDEBUG_SAY(("%s\n", Get_Heading().Peek_Buffer()));
 
   for (BYTE i = 0; i < APPPACKETTYPE_COUNT; i++) {
-    WWDEBUG_SAY(("%s\n", Get_Description(i)));
+    WWDEBUG_SAY(("%s\n", Get_Description(i).Peek_Buffer()));
   }
 
   WWDEBUG_SAY(("\n"));
@@ -309,7 +309,7 @@ StringClass &cAppPacketStats::Get_Description(BYTE type) {
   char last = ' ';
   char next = ' ';
   char *p = WorkingString.Peek_Buffer();
-  for (int i = 0; i < WorkingString.Get_Length(); i++) {
+  for (size_t i = 0; i < WorkingString.Get_Length(); i++) {
     if (i == 0) {
       last = ' ';
     } else {

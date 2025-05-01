@@ -77,8 +77,8 @@ void CreditsMenuClass::On_Init_Dialog(void) {
       WCHAR *buffer = wide_text.Get_Buffer(size + 1);
       int dest_index = 0;
 
-      int len = ascii_text.Get_Length();
-      for (int index = 0; index < len; index++) {
+      size_t len = ascii_text.Get_Length();
+      for (size_t index = 0; index < len; index++) {
         if (ascii_text[index] != '\r') {
           buffer[dest_index++] = (unsigned char)ascii_text[index];
         }

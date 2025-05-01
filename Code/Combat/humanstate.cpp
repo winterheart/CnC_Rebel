@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -708,9 +709,9 @@ void HumanStateClass::Update_Animation(void) {
 
     if (torso_anim_name[1] == '2') {
       // Lets try aiming
-      StringClass anim1_name(0, true);
-      StringClass anim2_name(0, true);
-      StringClass anim3_name(0, true);
+      StringClass anim1_name(0u, true);
+      StringClass anim2_name(0u, true);
+      StringClass anim3_name(0u, true);
       anim1_name.Format("S_A_HUMAN.H_A_%c1%s", 'A' + hold_style, leg_anim_name);
       anim2_name.Format("S_A_HUMAN.H_A_%c2%s", 'A' + hold_style, leg_anim_name);
       anim3_name.Format("S_A_HUMAN.H_A_%c3%s", 'A' + hold_style, leg_anim_name);
@@ -735,7 +736,7 @@ void HumanStateClass::Update_Animation(void) {
 
     if (single_anim) {
 
-      StringClass anim_name(0, true);
+      StringClass anim_name(0u, true);
       anim_name.Format("S_A_HUMAN.H_A_%s%s", torso_anim_name, leg_anim_name);
 
       // Human Anim Override
@@ -816,7 +817,7 @@ void HumanStateClass::Update_Animation(void) {
     if (SubState & SUB_STATE_BACKWARD)
       dir = 2;
 
-    StringClass anim_name(0, true);
+    StringClass anim_name(0u, true);
     anim_name.Format("S_A_HUMAN.H_A_A0L%d", dir);
     AnimControl->Set_Animation(anim_name, 0.2f);
     AnimControl->Set_Mode(ANIM_MODE_ONCE);
@@ -1355,7 +1356,7 @@ void HumanStateClass::Set_Precision(void) {
 **
 */
 void HumanStateClass::Get_Information(StringClass &string) {
-  StringClass temp(0, true);
+  StringClass temp(0u, true);
   temp.Format("%s\n", Get_State_Name());
   string += temp;
 

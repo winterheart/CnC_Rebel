@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // PerformanceConfigDialog.cpp : implementation file
 //
@@ -28,16 +29,15 @@
 #include "rendobj.h"
 #include "phys.h"
 #include "videoconfigdialog.h"
+#include "cpudetect.h"
 #include "dx8caps.h"
 #include "dxdefs.h"
-#include "cpudetect.h"
 #include "formconv.h"
 
-#include "dxdefs.h"
 #include "dx8wrapper.h"
 #include "locale_api.h"
 #include "wwconfig_ids.h"
-#include "..\..\combat\specialbuilds.h"
+#include "../../combat/specialbuilds.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -126,9 +126,6 @@ const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelFDS\\Options";
 #elif defined(MULTIPLAYERDEMO)
 const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\RebelMPDemo\\System Settings";
 const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelMPDemo\\Options";
-#elif defined(BETACLIENT)
-const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\RebelBeta\\System Settings";
-const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelBeta\\Options";
 #else
 const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\Rebel\\System Settings";
 const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\Rebel\\Options";

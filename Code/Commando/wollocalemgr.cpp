@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -100,7 +101,7 @@ void WolLocaleMgrClass::Set_Locale(const WCHAR *login_name, WOL::Locale locale) 
 //
 //////////////////////////////////////////////////////////////////////
 WOL::Locale WolLocaleMgrClass::Get_Current_Locale(void) {
-  WideStringClass loginName(0, true);
+  WideStringClass loginName(0u, true);
   WOLLogonMgr::GetLoginName(loginName);
   return Get_Locale(loginName);
 }
@@ -111,7 +112,7 @@ WOL::Locale WolLocaleMgrClass::Get_Current_Locale(void) {
 //
 //////////////////////////////////////////////////////////////////////
 void WolLocaleMgrClass::Set_Current_Locale(WOL::Locale locale) {
-  WideStringClass loginName(0, true);
+  WideStringClass loginName(0u, true);
   WOLLogonMgr::GetLoginName(loginName);
   Set_Locale(loginName, locale);
 }
@@ -141,7 +142,7 @@ void WolLocaleMgrClass::Configure_Locale_Combobox(ComboBoxCtrlClass *ctrl) {
     }
 
     // Get the last login
-    WideStringClass wide_nickname(64, true);
+    WideStringClass wide_nickname(64u, true);
     const char *nickname = MPSettingsMgrClass::Get_Last_Login();
     wide_nickname.Convert_From(nickname);
 

@@ -1040,7 +1040,7 @@ FirewallHelperClass::FirewallBehaviorType FirewallHelperClass::Detect_Firewall_B
     timeout = TIMEGETTIME() + (TIMER_SECOND * 12);
 
     while (TIMEGETTIME() < timeout && num_responses < NUM_TEST_PORTS) {
-      for (int i = 0; i < NUM_TEST_PORTS; i++) {
+      for (i = 0; i < NUM_TEST_PORTS; i++) {
         if (mangled_ports[i] == 0) {
           Send_To_Mangler(&manglers[mangler_index_offset], port_sockets[i], packet_id + i);
           mangled_ports[i] = Get_Mangler_Response(packet_id + i, port_sockets[i], 0, true);

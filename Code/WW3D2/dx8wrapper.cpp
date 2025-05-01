@@ -2144,7 +2144,7 @@ DX_IDirect3DTexture *DX8Wrapper::_Create_DX8_Texture(unsigned int width, unsigne
     if (SUCCEEDED(ret)) {
       WWDEBUG_SAY(("...Texture creation succesful.\n"));
     } else {
-      StringClass format_name(0, true);
+      StringClass format_name(0u, true);
       Get_WW3D_Format_Name(format, format_name);
       WWDEBUG_SAY(("...Texture creation failed. (%d x %d, format: %s, mips: %d\n", width, height,
         format_name.Peek_Buffer(), mip_level_count));

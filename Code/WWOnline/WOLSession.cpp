@@ -1438,7 +1438,7 @@ bool Session::ChangeCurrentUserLocale(WOL::Locale locale) {
 
 bool Session::SquelchUser(const RefPtr<UserData> &user, bool onoff) {
   if (user.IsValid()) {
-    WWDEBUG_SAY(("WOL: SquelchUser '%S'\n", user->GetName()));
+    WWDEBUG_SAY(("WOL: SquelchUser '%S'\n", user->GetName().Peek_Buffer()));
     HRESULT hr = mChat->SetSquelch(&user->GetData(), onoff);
 
     if (SUCCEEDED(hr)) {
@@ -1474,7 +1474,7 @@ bool Session::KickUser(const wchar_t *username) {
     RefPtr<UserData> user = FindUserInList(username, mUsers);
 
     if (user.IsValid()) {
-      WWDEBUG_SAY(("WOL: KickUser '%S'\n", user->GetName()));
+      WWDEBUG_SAY(("WOL: KickUser '%S'\n", user->GetName().Peek_Buffer()));
       HRESULT hr = mChat->RequestUserKick(&user->GetData());
 
       if (SUCCEEDED(hr)) {
@@ -1835,14 +1835,14 @@ void Session::MakeSquadRequests(void) {
 
       // Check to see if this is an ID or a name
       // - names can't have the first character be a number so this works.
-      wchar_t firstChar = request[0];
+      wchar_t firstChar = request[0u];
 
       if (iswdigit(firstChar)) {
         unsigned int squadID = _wtoi(request);
         WWDEBUG_SAY(("WOL: SquadInfo requested for ID %ld\n", squadID));
         hr = mChat->RequestSquadInfo(squadID);
       } else {
-        StringClass name(0, true);
+        StringClass name(0u, true);
         request.Convert_To(name);
 
         WWDEBUG_SAY(("WOL: SquadInfo requested for '%s'\n", (const char *)name));
@@ -1963,7 +1963,7 @@ void Session::MakeTeamRequests(void) {
 
 void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
   if (name && (wcslen(name) > 0) && (type & LADDERTYPE_MASK)) {
-    WideStringClass request(64, true);
+    WideStringClass request(64u, true);
     request = L"itc:";
 
     // Clan ladder requests are mutually exclusive to other ladder requests
@@ -1971,14 +1971,14 @@ void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
     // the users login name.
     if (type & LadderType_Clan) {
       WWASSERT((type & (LadderType_Individual | LadderType_Team)) == 0);
-      request[2] = L'C';
+      request[2u] = L'C';
     } else {
       if (type & LadderType_Individual) {
-        request[0] = L'I';
+        request[0u] = L'I';
       }
 
       if (type & LadderType_Team) {
-        request[1] = L'T';
+        request[1u] = L'T';
       }
     }
 
@@ -1996,7 +1996,7 @@ void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
       pending++;
     }
 
-    WWDEBUG_SAY(("WOL: LadderInfo request added '%S'.\n", request));
+    WWDEBUG_SAY(("WOL: LadderInfo request added '%S'.\n", request.Peek_Buffer()));
     mLadderRequests.push_back(request);
   }
 }
@@ -2065,7 +2065,7 @@ void Session::MakeLadderRequests(void) {
       unsigned long sku = product->GetLadderSKU();
 
       // Request individual ladder
-      if (firstRequest[0] == L'I') {
+      if (firstRequest[0u] == L'I') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, sku, -1, 0, 0);
 
         if (FAILED(hr)) {
@@ -2077,7 +2077,7 @@ void Session::MakeLadderRequests(void) {
       }
 
       // Request team ladder
-      if (firstRequest[1] == L'T') {
+      if (firstRequest[1u] == L'T') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, (sku | LadderType_Team), -1, 0, 0);
 
         if (FAILED(hr)) {
@@ -2089,7 +2089,7 @@ void Session::MakeLadderRequests(void) {
       }
 
       // Request clan ladder
-      if (firstRequest[2] == L'C') {
+      if (firstRequest[2u] == L'C') {
         HRESULT hr = mNetUtil->RequestLadderList(hostAddr, port, keys, (sku | LadderType_Clan), -1, 0, 0);
 
         if (FAILED(hr)) {

@@ -88,7 +88,7 @@ void cEvictionEvent::Act(void) {
   }
 
   WideStringClass widestring;
-  widestring.Format(L"%s: %s", TRANSLATION(IDS_MP_YOU_ARE_EVICTED), code_string);
+  widestring.Format(L"%s: %s", TRANSLATION(IDS_MP_YOU_ARE_EVICTED), code_string.Peek_Buffer());
   WWASSERT(CombatManager::Get_Message_Window() != NULL);
 
   //

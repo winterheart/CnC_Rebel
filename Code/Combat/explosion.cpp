@@ -305,10 +305,10 @@ void ExplosionManager::Create_Explosion_At(int explosion_def_id, const Matrix3D 
 #ifdef WWDEBUG
             if (!WWMath::Is_Valid_Float(dist)) {
               WWDEBUG_SAY(("Explosion Distance Bug!\r\n"));
-              Vector3 obj_pos;
-              obj->Get_Position(&obj_pos);
-              WWDEBUG_SAY(("  explosion pos: %f, %f, %f  object pos: %f, %f, %f\r\n", pos.X, pos.Y, pos.Z, obj_pos.X,
-                           obj_pos.Y, obj_pos.Z));
+              Vector3 cur_obj_pos;
+              obj->Get_Position(&cur_obj_pos);
+              WWDEBUG_SAY(("  explosion pos: %f, %f, %f  object pos: %f, %f, %f\r\n", pos.X, pos.Y, pos.Z,
+                cur_obj_pos.X, cur_obj_pos.Y, cur_obj_pos.Z));
               WWDEBUG_SAY(("  object definition name: %s\r\n", obj->Get_Definition().Get_Name()));
               WWDEBUG_SAY(("  explosion definition name; %s\r\n", explosion_def->Get_Name()));
             }
@@ -318,7 +318,7 @@ void ExplosionManager::Create_Explosion_At(int explosion_def_id, const Matrix3D 
               float scale = 1.0f;
               if (explosion_def->DamageIsScaled) {
                 WWASSERT(radius > WWMATH_EPSILON);
-                scale = 1.0 - (dist / radius);
+                scale = 1.0f - (dist / radius);
                 WWASSERT(WWMath::Is_Valid_Float(scale));
               }
 

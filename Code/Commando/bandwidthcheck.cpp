@@ -358,7 +358,7 @@ void BandwidthCheckerClass::Check(void) {
     if (UpstreamBandwidth == 0) {
       if (failure_code == BANDTEST_NO_FINAL_PING_TIME ||
           (cGameSpyAdmin::Is_Gamespy_Game() && failure_code == BANDTEST_NO_EXTERNAL_ROUTER)) {
-        BandtestSettingsStruct settings = {
+        settings = {
             0,  // AlwaysICMP
             0,  // TTLScatter
             25, // FastPingPackets
@@ -784,7 +784,7 @@ BandwidthDetectWait::BandwidthDetectWait(void)
  *   11/21/2001 3:22PM ST : Created                                                            *
  *=============================================================================================*/
 BandwidthDetectWait::~BandwidthDetectWait() {
-  WWDEBUG_SAY(("BandwidthDetectWait: End - %S\n", mEndText));
+  WWDEBUG_SAY(("BandwidthDetectWait: End - %S\n", mEndText.Peek_Buffer()));
 
   if (WOLSession.IsValid())
     WOLSession->EnablePinging(true);

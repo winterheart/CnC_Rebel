@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -452,7 +453,7 @@ bool WOLLogonMgr::IsUserLoggedIn(const wchar_t *login) {
 
 bool WOLLogonMgr::IsAutoLogin(const wchar_t *login) {
   if (mWOLSession->IsAutoLoginAllowed()) {
-    WideStringClass autoName(64, true);
+    WideStringClass autoName(64u, true);
     autoName = MPSettingsMgrClass::Get_Auto_Login();
     return (autoName.Compare_No_Case(login) == 0);
   }
@@ -537,7 +538,7 @@ void WOLLogonMgr::RememberLogin(void) {
     cNetInterface::Set_Nickname((WideStringClass &)nickname);
 
     // Set the name of the last successful login
-    StringClass lastname(64, true);
+    StringClass lastname(64u, true);
     nickname.Convert_To(lastname);
     MPSettingsMgrClass::Set_Last_Login((const char *)lastname);
 
@@ -981,7 +982,7 @@ void WOLLogonMgr::HandleNotification(DlgWOLWaitEvent &waitEvent) {
         // Show reason we could not connect.
         RefPtr<WaitCondition> wait = waitEvent.Subject();
 
-        WideStringClass errorMsg(255, true);
+        WideStringClass errorMsg(255u, true);
         errorMsg.Format(TRANSLATE(IDS_MENU_UNABLE_TO_CONNECT_TO_SERVER), wait->GetResultText());
         DlgMsgBox::DoDialog(TRANSLATE(IDS_WOL_LOGONFAILED), errorMsg);
 
@@ -1153,7 +1154,7 @@ void WOLLogonMgr::HandleNotification(MessageOfTheDayEvent &event) {
 
   if (news) {
     // Get the text of the news section
-    WideStringClass news_body(0, true);
+    WideStringClass news_body(0u, true);
     news_body = news + TAG_NEWS_START_LEN;
     WCHAR *news_end = (WCHAR *)::wcsstr(news_body, TAG_NEWS_END);
 

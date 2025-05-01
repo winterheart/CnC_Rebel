@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -121,12 +122,12 @@ void MPWolAddBuddyPopupClass::On_Command(int ctrl_id, int message_id, DWORD para
 //
 ////////////////////////////////////////////////////////////////
 void MPWolAddBuddyPopupClass::Add_Buddy(void) {
-  WideStringClass buddy_name(0, true);
+  WideStringClass buddy_name(0u, true);
   buddy_name = Get_Dlg_Item_Text(IDC_BUDDY_NAME_EDIT);
   buddy_name.Trim();
 
   if (buddy_name.Is_Empty() == false) {
-    WideStringClass loginName(0, true);
+    WideStringClass loginName(0u, true);
     WOLLogonMgr::GetLoginName(loginName);
 
     if (buddy_name.Compare_No_Case(loginName) != 0) {
@@ -146,7 +147,7 @@ void MPWolAddBuddyPopupClass::Add_Buddy(void) {
 void MPWolAddBuddyPopupClass::On_EditCtrl_Change(EditCtrlClass *edit, int id) {
   if (IDC_BUDDY_NAME_EDIT == id) {
     // Do not allow leading or trailing whitespace
-    WideStringClass text(0, true);
+    WideStringClass text(0u, true);
     text = edit->Get_Text();
     text.Trim();
     edit->Set_Text(text);

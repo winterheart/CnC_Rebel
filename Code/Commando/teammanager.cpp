@@ -232,7 +232,7 @@ void cTeamManager::Log_Team_List(void) {
 
     char line[2000] = "";
 
-    WideStringClass wide_text(0, true);
+    WideStringClass wide_text(0u, true);
     Construct_Heading(wide_text); //, true);
 
     StringClass text;
@@ -412,7 +412,7 @@ void cTeamManager::Construct_Heading(WideStringClass &string) {
       // MultiHUDClass::Get_Verbose_Lists();
       (MultiHUDClass::Get_Playerlist_Format() == PLAYERLIST_FORMAT_FULL);
 
-  WideStringClass substring(0, true);
+  WideStringClass substring(0u, true);
 
   //
   // Num Players
@@ -529,7 +529,7 @@ void cTeamManager::Render_Team_List(void) {
   //
   // Build heading
   //
-  WideStringClass heading(0, true);
+  WideStringClass heading(0u, true);
   Construct_Heading(heading);
   if (heading != renderer_team_heading) {
     renderer_team_heading = heading;
@@ -550,7 +550,7 @@ void cTeamManager::Render_Team_List(void) {
     if (changed) {
       p_team->Get_Team_String(j + 1, renderer_team_strings[j]);
     } else {
-      WideStringClass team_string(0, true);
+      WideStringClass team_string(0u, true);
       p_team->Get_Team_String(j + 1, team_string);
       if (team_string != renderer_team_strings[j]) {
         changed = true;

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /******************************************************************************
  *
@@ -2336,7 +2337,7 @@ void ChatObserver::ProcessSquadRequest(const RefPtr<SquadData> &squad) {
 
       // First character of user names cannot be numbers. Therefore if it is a number
       // then process the request by ID. Otherwise process the request by name.
-      wchar_t firstChar = pending[0];
+      wchar_t firstChar = pending[0u];
 
       if (iswdigit(firstChar)) {
         unsigned int pendingID = _wtoi(pending);
@@ -2614,7 +2615,7 @@ STDMETHODIMP ChatObserver::OnBuddyList(HRESULT result, WOL::User *inUsers) {
   WOL::User *wolUser = inUsers;
 
   while (wolUser) {
-    WideStringClass name(64, true);
+    WideStringClass name(64u, true);
     name = (char *)wolUser->name;
 
     // First look for buddy in our old list.
@@ -2675,7 +2676,7 @@ STDMETHODIMP ChatObserver::OnBuddyAdd(HRESULT result, WOL::User *inUsers) {
   WOL::User *wolUser = inUsers;
 
   while (wolUser) {
-    WideStringClass name(64, true);
+    WideStringClass name(64u, true);
     name = (char *)wolUser->name;
 
     // First look for buddy in our old list.
@@ -2736,7 +2737,7 @@ STDMETHODIMP ChatObserver::OnBuddyDelete(HRESULT result, WOL::User *inUsers) {
   WOL::User *wolUser = inUsers;
 
   while (wolUser) {
-    WideStringClass name(64, true);
+    WideStringClass name(64u, true);
     name = (char *)wolUser->name;
 
     RefPtr<UserData> buddy = RemoveUserInList(name, mOuter->mBuddies);
@@ -2986,7 +2987,7 @@ STDMETHODIMP ChatObserver::OnInsiderStatus(HRESULT result, WOL::User *wolUsers) 
     RefPtr<UserData> curr_user = mOuter->GetCurrentUser();
 
     // Convert the WOL user's name to a wide character string
-    WideStringClass wide_name(0, true);
+    WideStringClass wide_name(0u, true);
     wide_name.Convert_From((const char *)wolUsers[0].name);
 
     //	Check to see if we got information back about the current user
@@ -3126,7 +3127,7 @@ STDMETHODIMP ChatObserver::OnChannelListEntry(HRESULT result, WOL::Channel *wolC
       ChannelList::iterator remIter = list->begin();
 
       while (remIter != iter) {
-        WWDEBUG_SAY(("WOL: Removing Channel '%S'\n", (*remIter)->GetName()));
+        WWDEBUG_SAY(("WOL: Removing Channel '%S'\n", (*remIter)->GetName().Peek_Buffer()));
         remIter++;
       }
 #endif

@@ -654,8 +654,8 @@ static void Aquire_Weapon_Assets(const WeaponClass *weapon) {
       StringClass clip_name;
       clip_name = WeaponModel->Get_Name();
       if (clip_name.Get_Length() > 4) {
-        clip_name[2] = 'C';
-        clip_name[3] = 'M';
+        clip_name[2u] = 'C';
+        clip_name[3u] = 'M';
       }
       ClipModel = WW3DAssetManager::Get_Instance()->Create_Render_Obj(clip_name);
       if (ClipModel != NULL) {
@@ -807,7 +807,7 @@ static void Set_Bob(int bob_state) {
 
     if (!name.Is_Empty()) {
       BobHTree = WW3DAssetManager::Get_Instance()->Get_HTree(name);
-      StringClass anim(0, true);
+      StringClass anim(0u, true);
       anim.Format("%s.%s", name.Peek_Buffer(), name.Peek_Buffer());
       BobHAnim = WW3DAssetManager::Get_Instance()->Get_HAnim(anim);
     }

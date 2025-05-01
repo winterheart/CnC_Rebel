@@ -93,7 +93,7 @@ void CampaignManager::Init(void) {
     WWASSERT(campaignINI && campaignINI->Section_Count() > 0);
     int count = campaignINI->Entry_Count(SECTION_CAMPAIGN);
     for (int entry = 0; entry < count; entry++) {
-      StringClass description(0, true);
+      StringClass description(0u, true);
       campaignINI->Get_String(description, SECTION_CAMPAIGN, campaignINI->Get_Entry(SECTION_CAMPAIGN, entry));
       CampaignFlowDescriptions.Add(description);
     }
@@ -109,7 +109,7 @@ void CampaignManager::Init(void) {
         BackdropDescriptions.Uninitialized_Add();
         BackdropDescriptions[index].State = state;
         for (int entry = 0; entry < count; entry++) {
-          StringClass description(0, true);
+          StringClass description(0u, true);
           campaignINI->Get_String(description, section_name, campaignINI->Get_Entry(section_name, entry));
           BackdropDescriptions[index].Lines.Add(description);
         }
@@ -303,7 +303,7 @@ void CampaignManager::Continue(bool success) {
     //
     //	Parse the parameters
     //
-    int len = ::strlen(state_description);
+    size_t len = ::strlen(state_description);
     StringClass foo(len + 1, true);
     StringClass filename(len + 1, true);
     StringClass description(len + 1, true);

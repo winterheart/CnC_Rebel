@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -292,7 +293,7 @@ void SurfaceEffectsManager::Init(void) {
 
     // Read Surface Damage Data
     for (surface = 0; surface < SURFACE_TYPE_MAX; surface++) {
-      StringClass warhead(0, true);
+      StringClass warhead(0u, true);
       ini->Get_String(warhead, SECTION_DAMAGE_WARHEAD, SURFACE_TYPE_STRINGS[surface]);
       if (!warhead.Is_Empty()) {
         SurfaceDamageWarhead[surface] = ArmorWarheadManager::Get_Warhead_Type(warhead);
@@ -323,9 +324,9 @@ void SurfaceEffectsManager::Init(void) {
 
         // Read sounds
         for (int sound = 0;; sound++) {
-          StringClass sound_entry(0, true);
+          StringClass sound_entry(0u, true);
           sound_entry.Format("Sound%d", sound);
-          StringClass sound_name(0, true);
+          StringClass sound_name(0u, true);
           ini->Get_String(sound_name, section_name, sound_entry);
           if (sound_name.Is_Empty()) {
             break;
@@ -336,9 +337,9 @@ void SurfaceEffectsManager::Init(void) {
 
         // Read emitters
         for (int emitter = 0;; emitter++) {
-          StringClass emitter_entry(0, true);
+          StringClass emitter_entry(0u, true);
           emitter_entry.Format("Emitter%d", emitter);
-          StringClass emitter_name(0, true);
+          StringClass emitter_name(0u, true);
           ini->Get_String(emitter_name, section_name, emitter_entry);
           if (emitter_name.Is_Empty()) {
             break;
@@ -349,9 +350,9 @@ void SurfaceEffectsManager::Init(void) {
 
         // Read decals
         for (int decal = 0;; decal++) {
-          StringClass decal_entry(0, true);
+          StringClass decal_entry(0u, true);
           decal_entry.Format("Decal%d", decal);
-          StringClass decal_name(0, true);
+          StringClass decal_name(0u, true);
           ini->Get_String(decal_name, section_name, decal_entry);
           if (decal_name.Is_Empty()) {
             break;

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -99,8 +100,6 @@ static const unsigned short infinity_update_rate = 0xffff; // Lowest update rate
 // This is the most crucial place for server filtering
 //
 void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_pos) {
-#ifndef BETACLIENT
-
   if (cDevOptions::UseNewTCADO.Is_False()) {
 
     WWPROFILE("TCADO");
@@ -818,8 +817,6 @@ void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_po
       REF_PTR_RELEASE(pvs);
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -858,8 +855,6 @@ void cNetwork::Tell_Server_About_Dynamic_Objects(void) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::Tell_Client_About_Delete_Notifications(int client_id) {
-#ifndef BETACLIENT
-
   WWASSERT(client_id >= 0);
   WWASSERT(cNetwork::I_Am_Server());
 
@@ -895,10 +890,6 @@ void cNetwork::Tell_Client_About_Delete_Notifications(int client_id) {
       }
     }
   }
-
-  return;
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -1142,8 +1133,6 @@ void cNetwork::Intermission_Over_Processing(void) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::End_Game_Test(void) {
-#ifndef BETACLIENT
-
   WWASSERT(cNetwork::I_Am_Server());
 
   if (IS_MISSION || !GameModeManager::Find("Combat")->Is_Active()) {
@@ -1182,8 +1171,6 @@ void cNetwork::End_Game_Test(void) {
       The_Game()->Game_Over_Processing();
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -1508,7 +1495,7 @@ void cNetwork::Remove_Player(int player_id) {
     p_player->Increment_Total_Time();
     p_player->Set_Is_Active(false);
 
-    StringClass str(128, true);
+    StringClass str(128u, true);
     p_player->Get_Name().Convert_To(str);
     ConsoleBox.Print_Maybe("Player %s left the game\n", str.Peek_Buffer());
   }

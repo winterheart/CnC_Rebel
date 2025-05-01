@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -151,8 +152,6 @@ static HKEY RegistryKey;
 static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelFDS\\BandTest\\"};
 #elif defined(MULTIPLAYERDEMO)
 static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelMPDemo\\BandTest\\"};
-#elif defined(BETACLIENT)
-static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\RebelBeta\\BandTest\\"};
 #else
 static char BandTestRegistryLocation[64] = {"Software\\CnC_Rebel\\Rebel\\BandTest\\"};
 #endif
@@ -648,7 +647,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
       if (ttl > max_ttl) {
         ttl = base_ttl;
       }
-      int result = setsockopt(test_socket, IPPROTO_IP, IP_TTL, (char *)&ttl, sizeof(ttl));
+      result = setsockopt(test_socket, IPPROTO_IP, IP_TTL, (char *)&ttl, sizeof(ttl));
       if (result == SOCKET_ERROR) {
         DebugString("setsockopt failed to set IP_TTL = %d on test socket - error code %d\n", ttl, WSAGetLastError());
         failure_code = BANDTEST_NO_TTL_SET;
@@ -905,7 +904,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
     ** Set the TTL back to max.
     */
     int new_ttl = 255;
-    int result = setsockopt(ICMPRawSocket, IPPROTO_IP, IP_TTL, (char *)&new_ttl, sizeof(new_ttl));
+    result = setsockopt(ICMPRawSocket, IPPROTO_IP, IP_TTL, (char *)&new_ttl, sizeof(new_ttl));
     if (result == SOCKET_ERROR) {
       DebugString("setsockopt failed to set IP_TTL = %d - error code %d\n", new_ttl, WSAGetLastError());
       failure_code = BANDTEST_NO_TTL_SET;
@@ -930,7 +929,7 @@ unsigned long Upstream_Detect(unsigned long server_ip, unsigned long my_ip, int 
       ** Do more pings if the ping time is low. User a smaller timeout too.
       */
       int num_pings = 15;
-      unsigned long timeout = ping_times[0] * 3;
+      timeout = ping_times[0] * 3;
       if (ping_times[0] < 100) {
         num_pings = 50;
         timeout = 200;

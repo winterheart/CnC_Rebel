@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -698,8 +699,8 @@ void HumanAnimControlClass::Build_Skeleton_Anim_Name(StringClass &new_name, cons
   // the other skeleton anim, if found
   if (new_name.Get_Length() > 14 && Skeleton != 'A' && ::strnicmp(new_name, "S_A_HUMAN.H_A_", 14) == 0) {
     StringClass mod_name(new_name, true);
-    mod_name[2] = Skeleton;
-    mod_name[12] = Skeleton;
+    mod_name[2u] = Skeleton;
+    mod_name[12u] = Skeleton;
 
     // can we find the anim name?
     HAnimClass *anim = WW3DAssetManager::Get_Instance()->Get_HAnim(mod_name);
@@ -711,7 +712,7 @@ void HumanAnimControlClass::Build_Skeleton_Anim_Name(StringClass &new_name, cons
 }
 
 void HumanAnimControlClass::Set_Animation(const char *name, float blendtime, float start_frame) {
-  StringClass new_name(0, true);
+  StringClass new_name(0u, true);
   Build_Skeleton_Anim_Name(new_name, name);
 
   Channel1.Set_Animation(new_name, blendtime, start_frame);
@@ -728,9 +729,9 @@ void HumanAnimControlClass::Set_Animation(const HAnimClass *anim, float blendtim
 }
 
 void HumanAnimControlClass::Set_Animation(const char *name1, const char *name2, float ratio, float blendtime) {
-  StringClass new_name1(0, true);
+  StringClass new_name1(0u, true);
   Build_Skeleton_Anim_Name(new_name1, name1);
-  StringClass new_name2(0, true);
+  StringClass new_name2(0u, true);
   Build_Skeleton_Anim_Name(new_name2, name2);
 
   if (ratio == 0) {
@@ -823,7 +824,7 @@ void HumanAnimControlClass::Update(float dtime) {
         if (i == 0) {
           _MonitorAnimDescription = "";
         }
-        StringClass a(0, true);
+        StringClass a(0u, true);
         a.Format("%s %1.0f%% %1.0f\n", DataList[i].Animation->Get_Name() + 10, DataList[i].Weight * 100,
                  DataList[i].Frame);
         _MonitorAnimDescription += a;

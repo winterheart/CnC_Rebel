@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -91,11 +92,6 @@ const char *CGameSpyQnR::bname = "FDS";
 const char *CGameSpyQnR::gamename = "ccrenegade";
 const int CGameSpyQnR::prodid = 10064;
 const int CGameSpyQnR::cdkey_id = 577;
-#elif defined(BETACLIENT)
-const char *CGameSpyQnR::bname = "Beta";
-const char *CGameSpyQnR::gamename = "ccrenegade";
-const int CGameSpyQnR::prodid = 10064;
-const int CGameSpyQnR::cdkey_id = 0;
 #else
 const char *CGameSpyQnR::bname = "Retail";
 const char *CGameSpyQnR::gamename = "ccrenegade";
@@ -234,7 +230,7 @@ void CGameSpyQnR::LaunchArcade(void) {
 }
 void CGameSpyQnR::Shutdown(void) {
 
-#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
+#if defined(ENABLE_GAMESPY)
   if (m_GSInit) {
     /*
     We don't really need to set the mode to exiting here, since we immediately
@@ -270,7 +266,7 @@ void CGameSpyQnR::TrackUsage(void) {
 
 void CGameSpyQnR::Init(void) {
 
-#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
+#if defined(ENABLE_GAMESPY)
 
   if (m_GSEnabled && !m_GSInit && The_Game() && The_Game()->Get_Game_Type() == cGameData::GAME_TYPE_CNC) {
 
@@ -334,7 +330,7 @@ void CGameSpyQnR::Think() {
     ttime = TIMEGETTIME();
   }
 
-#if !defined(BETACLIENT) && defined(ENABLE_GAMESPY)
+#if defined(ENABLE_GAMESPY)
   //	DoGameStuff();
   if (m_GSInit && m_GSEnabled && GameInitMgrClass::Is_LAN_Initialized() && !CombatManager::Is_Loading_Level()) {
     qr_process_queries(query_reporting_rec);
@@ -404,7 +400,7 @@ void CGameSpyQnR::info_callback(char *outbuf, int maxlen) {
 
     WideStringClass(The_Game()->Get_Game_Title()).Convert_To(value);
     if (value.Get_Length() > 25) {
-      value[25] = 0;
+      value[25u] = 0;
     }
     if (!Append_InfoKey_Pair(outbuf, maxlen, "hostname", value))
       break;

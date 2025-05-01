@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -313,7 +314,7 @@ void cGameDataSkirmish::Show_My_Money(void) {
   if (cNetwork::I_Am_Client()) {
     cPlayer *p_player = cNetwork::Get_My_Player_Object();
     if (p_player != NULL) {
-      WideStringClass text(0, true);
+      WideStringClass text(0u, true);
       text.Format(L"%s: %d", TRANSLATION(IDS_MP_MONEY), (int)p_player->Get_Money());
       Add_Bottom_Text(text);
     }
@@ -398,8 +399,8 @@ void cGameDataSkirmish::Get_Description(WideStringClass &description) {
   const WideStringClass yes = TRANSLATE(IDS_YES);
   const WideStringClass no = TRANSLATE(IDS_NO);
 
-  WideStringClass attribute(0, true);
-  WideStringClass value(0, true);
+  WideStringClass attribute(0u, true);
+  WideStringClass value(0u, true);
 
   //
   // Starting Credits

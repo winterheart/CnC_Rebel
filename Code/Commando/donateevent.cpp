@@ -103,7 +103,7 @@ void cDonateEvent::Act(void) {
     WideStringClass text;
 
     text.Format(L"%s (%d %s, %s).", TRANSLATE(IDS_MP_DONATION_RECEIVED), Amount, TRANSLATE(IDS_MP_MONEY),
-                p_donor->Get_Name());
+                p_donor->Get_Name().Peek_Buffer());
 
     cScTextObj *p_message = new cScTextObj;
     p_message->Init(text, TEXT_MESSAGE_PRIVATE, false, HOST_TEXT_SENDER, p_recipient->Get_Id());

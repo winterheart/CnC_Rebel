@@ -1678,7 +1678,7 @@ void ConsoleGameModeClass::Update_Memory_Log(void) {
   const float MEGABYTE = 1048576.0f;
   const float OOMEGABYTE = 1.0f / MEGABYTE;
 
-  StringClass memory_string(2048);
+  StringClass memory_string(2048u);
   StringClass working_string(true);
 
   memory_string.Format("Memory Category     Current(Mb)    Peak(Mb)\n");

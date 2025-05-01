@@ -68,7 +68,7 @@ FirewallDetectWait::FirewallDetectWait(void)
 }
 
 FirewallDetectWait::~FirewallDetectWait() {
-  WWDEBUG_SAY(("FirewallDetectWait: End - %S\n", mEndText));
+  WWDEBUG_SAY(("FirewallDetectWait: End - %S\n", mEndText.Peek_Buffer()));
 
   mWOLSession->EnablePinging(true);
 
@@ -138,7 +138,7 @@ FirewallConnectWait::FirewallConnectWait(void)
 }
 
 FirewallConnectWait::~FirewallConnectWait() {
-  WWDEBUG_SAY(("FirewallConnectWait: End - %S\n", mEndText));
+  WWDEBUG_SAY(("FirewallConnectWait: End - %S\n", mEndText.Peek_Buffer()));
 
   mWOLSession->EnablePinging(true);
 

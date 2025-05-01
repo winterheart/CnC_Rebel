@@ -153,14 +153,6 @@ void cDiagnostics::Render(void) {
     return;
   }
 
-#ifdef BETACLIENT
-  PRenderer->Reset();
-  RectClass rect = Render2DClass::Get_Screen_Resolution();
-  PRenderer->Set_Location(Vector2(rect.Left + 5, rect.Bottom - 10));
-  PRenderer->Draw_Text("BETACLIENT");
-  PRenderer->Render();
-#endif // BETACLIENT
-
 #ifdef FREEDEDICATEDSERVER
   PRenderer->Reset();
   RectClass rect = Render2DClass::Get_Screen_Resolution();
@@ -376,7 +368,7 @@ void cDiagnostics::Render(void) {
       Add_Diagnostic("ip addy:            %s:%u", cNetUtil::Address_To_String(PTheGameData->Get_Ip_Address()),
                      PTheGameData->Get_Port());
 
-      Add_Diagnostic("mapname:            %s", PTheGameData->Get_Map_Name());
+      Add_Diagnostic("mapname:            %s", PTheGameData->Get_Map_Name().Peek_Buffer());
       Add_Diagnostic("HostedGameNumber:   %d", cGameData::Get_Hosted_Game_Number());
     }
 
@@ -740,16 +732,6 @@ else
 }
 
 Add_Diagnostic(line);
-*/
-
-/*
-#ifdef BETASERVER
-        PRenderer->Reset();
-        RectClass rect = Render2DClass::Get_Screen_Resolution();
-        PRenderer->Set_Location(Vector2(rect.Left + 5, rect.Bottom - 10));
-        PRenderer->Draw_Text("BETASERVER");
-        PRenderer->Render();
-#endif // BETASERVER
 */
 
 // Add_Diagnostic("Is_Single_Player:   %d",		cSinglePlayerData::Is_Single_Player());

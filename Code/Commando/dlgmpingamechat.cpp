@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -102,7 +103,7 @@ void MPChatChildDialogClass::On_Init_Dialog(void) {
 ////////////////////////////////////////////////////////////////
 void MPChatChildDialogClass::Process_Message(void) {
   //	Get the text to send...
-  WideStringClass message(0, true);
+  WideStringClass message(0u, true);
   message = Get_Dlg_Item_Text(IDC_MESSAGE_EDIT);
   message.Trim();
 
@@ -169,7 +170,7 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
   // Does this look like a command?
   if (message && message[0] == L'/') {
     // Separate the parameters into individual strings
-    WideStringClass command(255, true);
+    WideStringClass command(255u, true);
     const WCHAR *curr_pos = Get_Parameter_From_String(&message[1], command);
 
     if (command.Get_Length() > 0 && curr_pos[0] != 0) {
@@ -180,7 +181,7 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
 
         if (gameMode && gameMode->Is_Active()) {
           // Get the name parameter from the string
-          WideStringClass user_name(64, true);
+          WideStringClass user_name(64u, true);
           curr_pos = Get_Parameter_From_String(curr_pos, user_name);
 
           if (user_name.Get_Length() > 0) {
@@ -198,11 +199,11 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
 
         if (gameMode && gameMode->Is_Active()) {
           // Get the name parameter from the string
-          WideStringClass user_name(64, true);
+          WideStringClass user_name(64u, true);
           curr_pos = Get_Parameter_From_String(curr_pos, user_name);
 
           if (user_name.Get_Length() > 0) {
-            WideStringClass message(0, true);
+            WideStringClass message(0u, true);
             message = curr_pos;
             message.Trim();
 
@@ -230,7 +231,7 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
         if (gameMode && gameMode->Is_Active()) {
           WolGameModeClass *wolGame = reinterpret_cast<WolGameModeClass *>(gameMode);
 
-          WideStringClass message(0, true);
+          WideStringClass message(0u, true);
           message = curr_pos;
           message.Trim();
 
@@ -246,7 +247,7 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
 
         if (gameMode && gameMode->Is_Active()) {
           // Get the name parameter from the string
-          WideStringClass user_name(64, true);
+          WideStringClass user_name(64u, true);
           curr_pos = Get_Parameter_From_String(curr_pos, user_name);
 
           if (user_name.Get_Length() > 0) {
@@ -264,13 +265,13 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
 
         if (gameMode && gameMode->Is_Active()) {
           // Get the name parameter from the string
-          WideStringClass user_name(64, true);
+          WideStringClass user_name(64u, true);
           curr_pos = Get_Parameter_From_String(curr_pos, user_name);
 
           if (user_name.Get_Length() > 0) {
             WolGameModeClass *wolGame = reinterpret_cast<WolGameModeClass *>(gameMode);
 
-            WideStringClass message(0, true);
+            WideStringClass message(0u, true);
             message = curr_pos;
             message.Trim();
 
@@ -287,7 +288,7 @@ bool MPChatChildDialogClass::Process_Commands(const WCHAR *message) {
 
         if (gameMode && gameMode->Is_Active()) {
           // Get the name parameter from the string
-          WideStringClass user_name(64, true);
+          WideStringClass user_name(64u, true);
           curr_pos = Get_Parameter_From_String(curr_pos, user_name);
 
           if (user_name.Get_Length() > 0) {
@@ -381,20 +382,20 @@ void MPChatChildDialogClass::Auto_Complete_Name(void) {
         //
         //	Make a copy of the first part of the message before the command
         //
-        WideStringClass first_part(cmd_start_index + 1, true);
+        WideStringClass first_part(static_cast<unsigned int>(cmd_start_index + 1), true);
         ::wcsncpy(first_part.Peek_Buffer(), message, cmd_start_index);
         first_part.Peek_Buffer()[cmd_start_index] = 0;
 
         //
         //	Make a copy of the remainder of the message after the command
         //
-        WideStringClass last_part(message_len - cmd_end_index, true);
+        WideStringClass last_part(static_cast<unsigned int>(message_len - cmd_end_index), true);
         ::wcscpy(last_part.Peek_Buffer(), message.Peek_Buffer() + cmd_end_index);
 
         //
         //	Copy the typed characters into their own buffer
         //
-        int typed_len = caret_pos - cmd_start_index;
+        size_t typed_len = caret_pos - cmd_start_index;
         WideStringClass typed_name(typed_len + 1, true);
         ::wcsncpy(typed_name.Peek_Buffer(), name_start, typed_len);
         typed_name.Peek_Buffer()[typed_len] = 0;
@@ -402,13 +403,13 @@ void MPChatChildDialogClass::Auto_Complete_Name(void) {
         //
         //	Try to complete the name that the user typed in
         //
-        WideStringClass completed_name(0, true);
+        WideStringClass completed_name(0u, true);
         Complete_Player_Name(typed_name, completed_name);
 
         //
         //	Did we find a valid completed name?
         //
-        int completed_name_len = completed_name.Get_Length();
+        size_t completed_name_len = completed_name.Get_Length();
         if (completed_name_len >= typed_len) {
           CurrRecipientName = completed_name;
 
@@ -634,7 +635,7 @@ bool MPChatChildDialogClass::On_EditCtrl_Key_Down(EditCtrlClass *edit_ctrl, uint
           //
           //	Update the dialog with the user's name...
           //
-          WideStringClass heading_text(0, true);
+          WideStringClass heading_text(0u, true);
           heading_text.Format(L"%s:", CurrRecipientName.Peek_Buffer());
           Set_Dlg_Item_Text(IDC_TYPE_STATIC, heading_text);
 

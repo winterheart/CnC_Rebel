@@ -627,7 +627,7 @@ void C4GameObj::Get_Information(StringClass &string) {
 
   int type = AmmoDefinition->AmmoType;
   if (type == AmmoDefinitionClass::AMMO_TYPE_C4_TIMED) {
-    StringClass temp(0, true);
+    StringClass temp(0u, true);
     temp.Format("Timer: %1.1f\n", Timer);
     string += temp;
   }

@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -460,7 +461,7 @@ int cNetwork::Get_Data_Files_CRC(void) {
     for (int i = 0; i < NUM_CRC_FILES; i++) {
       StringClass name = filelist[i];
       // Obfuscate name
-      char *n = &name[0];
+      char *n = &name[0u];
       while (*n)
         *n++ ^= 0x5;
       //			Debug_Say(( "		\"%s\",\n", name ));
@@ -503,7 +504,7 @@ void cNetwork::Compute_Exe_Key(void) {
   //
   string.Format("RENEGADE %s", REBEL::BuildInfo::Get_Hash());
 
-  WWDEBUG_SAY(("File id string: %s\n", string));
+  WWDEBUG_SAY(("File id string: %s\n", string.Peek_Buffer()));
   key_string += string;
   key_string += " ";
   ExeCRC = CRCEngine()(string, strlen(string));
@@ -522,7 +523,7 @@ void cNetwork::Compute_Exe_Key(void) {
   //
   // cMiscUtil::Get_File_Id_String("Data\\strings.tdb", string);
   string.Format("strings.tdb %u", TranslateDBClass::Get_Version_Number());
-  WWDEBUG_SAY(("File id string: %s\n", string));
+  WWDEBUG_SAY(("File id string: %s\n", string.Peek_Buffer()));
   key_string += string;
   key_string += " ";
   StringsCRC = CRCEngine()(string, strlen(string));
@@ -595,8 +596,6 @@ void cNetwork::Onetime_Shutdown(void) {
 void cNetwork::Init_Server(void) {
   WWMEMLOG(MEM_NETWORK);
   WWDEBUG_SAY(("cNetwork::Init_Server\n"));
-
-#ifndef BETACLIENT
 
   NetworkObjectClass::Set_Is_Server(true);
 
@@ -684,8 +683,6 @@ void cNetwork::Init_Server(void) {
   cSbboManager::Reset();
 
   cAppPacketStats::Reset();
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -973,8 +970,6 @@ void cNetwork::Client_Send_Packet(cPacket &packet, int mode) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::Server_Send_Packet(cPacket &packet, int mode, int recipient) {
-#ifndef BETACLIENT
-
   WWASSERT(I_Am_Server());
   WWASSERT(PServerConnection->Is_Established());
 
@@ -1016,14 +1011,10 @@ void cNetwork::Server_Send_Packet(cPacket &packet, int mode, int recipient) {
     PServerStatListGroup->Increment_Num_Byte_Sent(recipient - 1, message_type, packet.Get_Compressed_Size_Bytes());
     */
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
 void cNetwork::Server_Send_Packet_To_All_Connected(cPacket &packet, int mode) {
-#ifndef BETACLIENT
-
   //
   // Traverse the rhost list here in the application level, so that
   // we can record message stats.
@@ -1044,8 +1035,6 @@ void cNetwork::Server_Send_Packet_To_All_Connected(cPacket &packet, int mode) {
       */
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -1335,8 +1324,6 @@ void cNetwork::Shell_Command(LPCSTR command) {
 
 //-----------------------------------------------------------------------------
 REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
-#ifndef BETACLIENT
-
   WWDEBUG_SAY(("cNetwork::Application_Acceptance_Handler\n"));
 
   WWASSERT(I_Am_Server());
@@ -1346,7 +1333,7 @@ REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
   // This is not supposed to be empty, but if for whatever reason it it, we should
   // just refuse, rather than crash.
   //
-  WideStringClass player_name(0, true);
+  WideStringClass player_name(0u, true);
   // packet.Get_Wide_Terminated_String(player_name.Get_Buffer(256), 256);
   packet.Get_Wide_Terminated_String(player_name.Get_Buffer(256), 256, true);
   if (player_name.Get_Length() == 0) {
@@ -1354,7 +1341,7 @@ REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
   }
 
   // Get the clients password
-  WideStringClass password(0, true);
+  WideStringClass password(0u, true);
   packet.Get_Wide_Terminated_String(password.Get_Buffer(256), 256, true);
 
   // Get clients exe version
@@ -1386,16 +1373,12 @@ REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
     return REFUSAL_PLAYER_EXISTS;
   }
 
-#endif // not BETACLIENT
-
   return REFUSAL_CLIENT_ACCEPTED;
 }
 
 //-----------------------------------------------------------------------------
 void cNetwork::Connection_Handler(int new_rhost_id) {
   WWMEMLOG(MEM_NETWORK);
-#ifndef BETACLIENT
-
   WWDEBUG_SAY(("cNetwork::Connection_Handler\n"));
 
   WWASSERT(new_rhost_id >= 0);
@@ -1429,7 +1412,7 @@ void cNetwork::Connection_Handler(int new_rhost_id) {
       WWASSERT(p_team != NULL);
 
       Send_Object_Update(p_team, new_rhost_id);
-    }
+         }
   }
 
   //
@@ -1440,8 +1423,6 @@ void cNetwork::Connection_Handler(int new_rhost_id) {
   cGameOptionsEvent *p_event = new cGameOptionsEvent;
   p_event->Init(new_rhost_id);
   Send_Object_Update(p_event, new_rhost_id);
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------

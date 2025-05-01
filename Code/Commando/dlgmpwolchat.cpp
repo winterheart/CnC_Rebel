@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -284,7 +285,7 @@ void MPWolChatMenuClass::Refresh_Lobby_List(void) {
     while (iter != lobbyList.end()) {
       const RefPtr<ChannelData> &lobby = (*iter);
 
-      WideStringClass lobbyName(64, true);
+      WideStringClass lobbyName(64u, true);
       mChatMgr->GetLobbyDisplayName(lobby, lobbyName);
 
       int listIndex = list->Insert_Entry(list->Get_Entry_Count(), lobbyName);
@@ -318,7 +319,7 @@ void MPWolChatMenuClass::UpdateLobbyUserCount(ListCtrlClass *list, int listIndex
     const ChannelData *channel = (const ChannelData *)list->Get_Entry_Data(listIndex, 0);
 
     if (channel) {
-      WideStringClass countText(0, true);
+      WideStringClass countText(0u, true);
       countText.Format(L"(%u)", channel->GetCurrentUsers());
       list->Set_Entry_Text(listIndex, 1, countText);
     }
@@ -351,7 +352,7 @@ void MPWolChatMenuClass::SelectLobbyFromChannel(const RefPtr<ChannelData> &chann
 
   if (list) {
     if (channel.IsValid()) {
-      WideStringClass displayName(0, true);
+      WideStringClass displayName(0u, true);
       mChatMgr->GetLobbyDisplayName(channel, displayName);
 
       int index = list->Find_Entry(0, displayName);
@@ -458,7 +459,7 @@ void MPWolChatMenuClass::Refresh_Message_List(void) {
       const ChatMessage &message = messageList[index];
 
       // Build the string
-      WideStringClass text(255, true);
+      WideStringClass text(255u, true);
 
       const WideStringClass &sender = message.GetSendersName();
       const WCHAR *msg = message.GetMessage();
@@ -570,7 +571,7 @@ void MPWolChatMenuClass::On_ListCtrl_Sel_Change(ListCtrlClass *list, int id, int
 ////////////////////////////////////////////////////////////////
 void MPWolChatMenuClass::On_ListCtrl_Mouse_Over(ListCtrlClass *list, int id, int index) {
   if (IDC_PLAYERS_LIST_CTRL == id) {
-    WideStringClass userinfo(0, true);
+    WideStringClass userinfo(0u, true);
 
     if (index >= 0) {
       const WCHAR *name = list->Get_Entry_Text(index, 1);
@@ -643,7 +644,7 @@ void MPWolChatMenuClass::Update_Message_Color(void) {
 ////////////////////////////////////////////////////////////////
 void MPWolChatMenuClass::Send_Message(bool is_emot) {
   // Get the message text
-  WideStringClass message(0, true);
+  WideStringClass message(0u, true);
   message = Get_Dlg_Item_Text(IDC_CHAT_EDIT);
   message.Trim();
 
@@ -738,7 +739,7 @@ void MPWolChatMenuClass::Update_User_Status(ListCtrlClass *list, int index, cons
   RefPtr<SquadData> clan = user->GetSquad();
 
   if (clan.IsValid()) {
-    WideStringClass clanAbbr(0, true);
+    WideStringClass clanAbbr(0u, true);
     clanAbbr.Format(L"[%S]", clan->GetAbbr());
     list->Set_Entry_Text(index, 2, clanAbbr);
   } else {
