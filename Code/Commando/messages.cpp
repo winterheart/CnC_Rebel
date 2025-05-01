@@ -100,8 +100,6 @@ static const unsigned short infinity_update_rate = 0xffff; // Lowest update rate
 // This is the most crucial place for server filtering
 //
 void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_pos) {
-#ifndef BETACLIENT
-
   if (cDevOptions::UseNewTCADO.Is_False()) {
 
     WWPROFILE("TCADO");
@@ -819,8 +817,6 @@ void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_po
       REF_PTR_RELEASE(pvs);
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -859,8 +855,6 @@ void cNetwork::Tell_Server_About_Dynamic_Objects(void) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::Tell_Client_About_Delete_Notifications(int client_id) {
-#ifndef BETACLIENT
-
   WWASSERT(client_id >= 0);
   WWASSERT(cNetwork::I_Am_Server());
 
@@ -896,10 +890,6 @@ void cNetwork::Tell_Client_About_Delete_Notifications(int client_id) {
       }
     }
   }
-
-  return;
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -1143,8 +1133,6 @@ void cNetwork::Intermission_Over_Processing(void) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::End_Game_Test(void) {
-#ifndef BETACLIENT
-
   WWASSERT(cNetwork::I_Am_Server());
 
   if (IS_MISSION || !GameModeManager::Find("Combat")->Is_Active()) {
@@ -1183,8 +1171,6 @@ void cNetwork::End_Game_Test(void) {
       The_Game()->Game_Over_Processing();
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------

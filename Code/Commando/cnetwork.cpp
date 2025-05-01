@@ -597,8 +597,6 @@ void cNetwork::Init_Server(void) {
   WWMEMLOG(MEM_NETWORK);
   WWDEBUG_SAY(("cNetwork::Init_Server\n"));
 
-#ifndef BETACLIENT
-
   NetworkObjectClass::Set_Is_Server(true);
 
   PServerStatListGroup = new cMsgStatListGroup;
@@ -685,8 +683,6 @@ void cNetwork::Init_Server(void) {
   cSbboManager::Reset();
 
   cAppPacketStats::Reset();
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -974,8 +970,6 @@ void cNetwork::Client_Send_Packet(cPacket &packet, int mode) {
 
 //-----------------------------------------------------------------------------
 void cNetwork::Server_Send_Packet(cPacket &packet, int mode, int recipient) {
-#ifndef BETACLIENT
-
   WWASSERT(I_Am_Server());
   WWASSERT(PServerConnection->Is_Established());
 
@@ -1017,14 +1011,10 @@ void cNetwork::Server_Send_Packet(cPacket &packet, int mode, int recipient) {
     PServerStatListGroup->Increment_Num_Byte_Sent(recipient - 1, message_type, packet.Get_Compressed_Size_Bytes());
     */
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
 void cNetwork::Server_Send_Packet_To_All_Connected(cPacket &packet, int mode) {
-#ifndef BETACLIENT
-
   //
   // Traverse the rhost list here in the application level, so that
   // we can record message stats.
@@ -1045,8 +1035,6 @@ void cNetwork::Server_Send_Packet_To_All_Connected(cPacket &packet, int mode) {
       */
     }
   }
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------
@@ -1336,8 +1324,6 @@ void cNetwork::Shell_Command(LPCSTR command) {
 
 //-----------------------------------------------------------------------------
 REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
-#ifndef BETACLIENT
-
   WWDEBUG_SAY(("cNetwork::Application_Acceptance_Handler\n"));
 
   WWASSERT(I_Am_Server());
@@ -1387,16 +1373,12 @@ REFUSAL_CODE cNetwork::Application_Acceptance_Handler(cPacket &packet) {
     return REFUSAL_PLAYER_EXISTS;
   }
 
-#endif // not BETACLIENT
-
   return REFUSAL_CLIENT_ACCEPTED;
 }
 
 //-----------------------------------------------------------------------------
 void cNetwork::Connection_Handler(int new_rhost_id) {
   WWMEMLOG(MEM_NETWORK);
-#ifndef BETACLIENT
-
   WWDEBUG_SAY(("cNetwork::Connection_Handler\n"));
 
   WWASSERT(new_rhost_id >= 0);
@@ -1430,7 +1412,7 @@ void cNetwork::Connection_Handler(int new_rhost_id) {
       WWASSERT(p_team != NULL);
 
       Send_Object_Update(p_team, new_rhost_id);
-    }
+         }
   }
 
   //
@@ -1441,8 +1423,6 @@ void cNetwork::Connection_Handler(int new_rhost_id) {
   cGameOptionsEvent *p_event = new cGameOptionsEvent;
   p_event->Init(new_rhost_id);
   Send_Object_Update(p_event, new_rhost_id);
-
-#endif // not BETACLIENT
 }
 
 //-----------------------------------------------------------------------------

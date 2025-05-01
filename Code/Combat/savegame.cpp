@@ -75,17 +75,7 @@ const char *SaveGameManager::DefaultDefinitionFilename = "Objects.DDB";
 **
 */
 enum {
-
-#ifdef BETACLIENT
-  //
-  // This CHUNKID_LEVEL_INFO tweaking is temporary, to disallow the aircraft maps
-  // to be used outside of the beta. The maps distributed with the Beta client must have
-  // 1011991648 replaced with 1011991650 and 1011991649 replaced with 1011991651.
-  //
-  CHUNKID_LEVEL_INFO = 1011991650,
-#else
   CHUNKID_LEVEL_INFO = 1011991648,
-#endif
 
   CHUNKID_LEVEL_DATA,
 

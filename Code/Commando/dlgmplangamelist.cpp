@@ -88,11 +88,6 @@ MPLanGameListMenuClass::~MPLanGameListMenuClass() { WWDEBUG_SAY(("MPLanGameListM
 //
 ////////////////////////////////////////////////////////////////
 void MPLanGameListMenuClass::On_Init_Dialog(void) {
-  /*
-  #ifdef BETACLIENT
-          Get_Dlg_Item(IDC_MENU_MP_LAN_HOST_BUTTON)->Enable(false);
-  #endif // BETACLIENT
-  */
 
 #ifdef FREEDEDICATEDSERVER
   Get_Dlg_Item(IDC_JOIN_GAME_BUTTON)->Enable(false);

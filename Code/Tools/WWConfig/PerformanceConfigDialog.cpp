@@ -126,9 +126,6 @@ const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelFDS\\Options";
 #elif defined(MULTIPLAYERDEMO)
 const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\RebelMPDemo\\System Settings";
 const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelMPDemo\\Options";
-#elif defined(BETACLIENT)
-const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\RebelBeta\\System Settings";
-const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\RebelBeta\\Options";
 #else
 const char *KEY_NAME_SETTINGS = "Software\\CnC_Rebel\\Rebel\\System Settings";
 const char *KEY_NAME_OPTIONS = "Software\\CnC_Rebel\\Rebel\\Options";

@@ -89,10 +89,6 @@ MPLanHostOptionsMenuClass::~MPLanHostOptionsMenuClass(void) {
 //
 ////////////////////////////////////////////////////////////////
 void MPLanHostOptionsMenuClass::On_Init_Dialog(void) {
-#ifdef BETACLIENT
-  Get_Dlg_Item(IDC_MENU_MP_LAN_START_BUTTON)->Enable(false);
-#endif // BETACLIENT
-
   WWASSERT(PTheGameData != NULL);
   WWASSERT(The_Game()->Is_Cnc());
   Set_Dlg_Item_Text(IDC_GAME_TYPE_TITLE, TRANSLATE(IDS_MP_GAME_CNC));

@@ -153,14 +153,6 @@ void cDiagnostics::Render(void) {
     return;
   }
 
-#ifdef BETACLIENT
-  PRenderer->Reset();
-  RectClass rect = Render2DClass::Get_Screen_Resolution();
-  PRenderer->Set_Location(Vector2(rect.Left + 5, rect.Bottom - 10));
-  PRenderer->Draw_Text("BETACLIENT");
-  PRenderer->Render();
-#endif // BETACLIENT
-
 #ifdef FREEDEDICATEDSERVER
   PRenderer->Reset();
   RectClass rect = Render2DClass::Get_Screen_Resolution();
@@ -740,16 +732,6 @@ else
 }
 
 Add_Diagnostic(line);
-*/
-
-/*
-#ifdef BETASERVER
-        PRenderer->Reset();
-        RectClass rect = Render2DClass::Get_Screen_Resolution();
-        PRenderer->Set_Location(Vector2(rect.Left + 5, rect.Bottom - 10));
-        PRenderer->Draw_Text("BETASERVER");
-        PRenderer->Render();
-#endif // BETASERVER
 */
 
 // Add_Diagnostic("Is_Single_Player:   %d",		cSinglePlayerData::Is_Single_Player());
