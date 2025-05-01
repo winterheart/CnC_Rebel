@@ -53,7 +53,6 @@
 #include "lightenvironment.h"
 #include "shader.h"
 #include "vector4.h"
-#include "cpudetect.h"
 #include "dx8caps.h"
 
 #include "texture.h"

@@ -34,14 +34,14 @@
  ******************************************************************************/
 
 #include "WOLQuickMatch.h"
-#include <WWOnline\PingProfile.h>
-#include <WWOnline\WaitCondition.h>
-#include <WWOnline\WOLProduct.h>
-#include <WWOnline\WOLConnect.h>
-#include <WWOnline\WOLServer.h>
-#include <WWOnline\WOLLadder.h>
-#include <WWLib\CPUDetect.h>
-#include <WWDebug\WWDebug.h>
+#include "WWOnline/PingProfile.h"
+#include "WWOnline/WaitCondition.h"
+#include "WWOnline/WOLProduct.h"
+#include "WWOnline/WOLConnect.h"
+#include "WWOnline/WOLServer.h"
+#include "WWOnline/WOLLadder.h"
+#include "cpudetect.h"
+#include "wwdebug.h"
 #include "cnetwork.h"
 #include "translatedb.h"
 #include "string_ids.h"
