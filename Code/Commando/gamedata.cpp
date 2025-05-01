@@ -1051,8 +1051,8 @@ void cGameData::Load_From_Server_Config(LPCSTR config_file) {
     StringClass item_name(0u, true);
     item_name.Format("MapName%02d", j);
     p_ini->Get_String(INI_SECTION_NAME, item_name, "", map_name, sizeof(map_name));
-    StringClass map(map_name, true);
-    MapCycle[j] = map;
+    StringClass next_map(map_name, true);
+    MapCycle[j] = next_map;
   }
 
   // char motd[2 * MAX_MOTD_LENGTH];

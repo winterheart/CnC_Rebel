@@ -106,9 +106,9 @@ void cPurchaseRequestEvent::Act(void) {
   //
   if (cNetwork::I_Am_Only_Server()) {
     if (result == VendorClass::PERR_SUCCESS && (VendorClass::PURCHASE_TYPE)PurchaseType == VendorClass::TYPE_VEHICLE) {
-      cPlayer *player = cPlayerManager::Find_Player(SenderId);
+      cPlayer *buyer = cPlayerManager::Find_Player(SenderId);
       StringClass short_name(true);
-      player->Get_Name().Convert_To(short_name);
+      buyer->Get_Name().Convert_To(short_name);
       ConsoleBox.Print_Maybe("%s purchased a vehicle\n", short_name.Peek_Buffer());
     }
   }

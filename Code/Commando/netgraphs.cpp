@@ -418,7 +418,7 @@ BandwidthScaler *= 2;
   //
   if (cNetwork::I_Am_Server()) {
     int top = (int)(0.2 * screen_height);
-    int count = NetworkObjectMgrClass::Get_Object_Count();
+    int obj_count = NetworkObjectMgrClass::Get_Object_Count();
 
     int x_pos = screen_width - 75;
 
@@ -446,7 +446,7 @@ BandwidthScaler *= 2;
     renderer->Set_Location(Vector2(x_pos, 370));
     renderer->Draw_Text("OTHER", COLOR_WHITE);
 
-    for (int index = 0; index < count; index++) {
+    for (int index = 0; index < obj_count; index++) {
 
       NetworkObjectClass *p_object = NetworkObjectMgrClass::Get_Object(index);
       WWASSERT(p_object != NULL);
@@ -597,7 +597,7 @@ char text[200];
                     PServerConnection->Get_Combined_Stats().StatMacroSnapshot[STAT_BitsRcv], -1, 0, COLOR_BLUE, false,
                     -1);
 
-    for (int i = PServerConnection->Get_Min_RHost(); i <= PServerConnection->Get_Max_RHost(); i++) {
+    for (i = PServerConnection->Get_Min_RHost(); i <= PServerConnection->Get_Max_RHost(); i++) {
 
       WWASSERT(i >= cNetwork::PServerConnection->Get_Min_RHost() && i <= cNetwork::PServerConnection->Get_Max_RHost());
 

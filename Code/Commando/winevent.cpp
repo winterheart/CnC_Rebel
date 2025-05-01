@@ -101,9 +101,9 @@ void cWinEvent::Act(void) {
   // if (The_Game()->Is_Team_Game()) {
 
   WideStringClass champ_text;
-  champ_text.Format(L"%s %s", The_Game()->Get_Team_Word(), cTeamManager::Get_Team_Name(Winner));
+  champ_text.Format(L"%s %s", The_Game()->Get_Team_Word().Peek_Buffer(), cTeamManager::Get_Team_Name(Winner).Peek_Buffer());
 
-  win_text.Format(L"%s %s", champ_text, TRANSLATION(IDS_MP_WIN_FORMATTING));
+  win_text.Format(L"%s %s", champ_text.Peek_Buffer(), TRANSLATION(IDS_MP_WIN_FORMATTING));
 
   /*
   } else {

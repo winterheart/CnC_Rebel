@@ -377,9 +377,9 @@ CollisionReactionType BulletDataClass::Bullet_Collision_Occurred(const Collision
           //					&& CombatManager::I_Am_Server()
       ) {
         DamageableStaticPhysClass *damphys = (DamageableStaticPhysClass *)event.OtherObj;
-        OffenseObjectClass offense(AmmoDefinition->Damage, (int)AmmoDefinition->Warhead, Get_Owner());
-        offense.EnableClientDamage = true; // Only bullets apply to client damage;
-        damphys->Apply_Damage_Static(offense);
+        OffenseObjectClass offense_local(AmmoDefinition->Damage, (int)AmmoDefinition->Warhead, Get_Owner());
+        offense_local.EnableClientDamage = true; // Only bullets apply to client damage;
+        damphys->Apply_Damage_Static(offense_local);
       }
 
       // check for a non-stopping surface
@@ -780,7 +780,6 @@ void BulletClass::Think(void) {
 
         cross.Normalize();
         Matrix3D tm(cross, angle);
-        Vector3 current_vector;
         Projectile->Get_Velocity(&current_vector);
         WWASSERT(current_vector.Is_Valid());
         current_vector = tm.Rotate_Vector(current_vector);

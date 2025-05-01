@@ -549,7 +549,7 @@ void WOLQuickMatch::HandleNotification(ChatMessage &message) {
   const WideStringClass &sender = message.GetSendersName();
 
   if (sender.Compare_No_Case(QUICKMATCH_BOTNAME) == 0) {
-    WWDEBUG_SAY(("WOLQuickMatch: BotMsg - '%S'\n", message.GetMessage()));
+    WWDEBUG_SAY(("WOLQuickMatch: BotMsg - '%S'\n", message.GetMessage().Peek_Buffer()));
     ParseResponse(message.GetMessage());
   }
 }

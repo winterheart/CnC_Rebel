@@ -1438,7 +1438,7 @@ bool Session::ChangeCurrentUserLocale(WOL::Locale locale) {
 
 bool Session::SquelchUser(const RefPtr<UserData> &user, bool onoff) {
   if (user.IsValid()) {
-    WWDEBUG_SAY(("WOL: SquelchUser '%S'\n", user->GetName()));
+    WWDEBUG_SAY(("WOL: SquelchUser '%S'\n", user->GetName().Peek_Buffer()));
     HRESULT hr = mChat->SetSquelch(&user->GetData(), onoff);
 
     if (SUCCEEDED(hr)) {
@@ -1474,7 +1474,7 @@ bool Session::KickUser(const wchar_t *username) {
     RefPtr<UserData> user = FindUserInList(username, mUsers);
 
     if (user.IsValid()) {
-      WWDEBUG_SAY(("WOL: KickUser '%S'\n", user->GetName()));
+      WWDEBUG_SAY(("WOL: KickUser '%S'\n", user->GetName().Peek_Buffer()));
       HRESULT hr = mChat->RequestUserKick(&user->GetData());
 
       if (SUCCEEDED(hr)) {
@@ -1996,7 +1996,7 @@ void Session::RequestLadderInfo(const wchar_t *name, unsigned long type) {
       pending++;
     }
 
-    WWDEBUG_SAY(("WOL: LadderInfo request added '%S'.\n", request));
+    WWDEBUG_SAY(("WOL: LadderInfo request added '%S'.\n", request.Peek_Buffer()));
     mLadderRequests.push_back(request);
   }
 }

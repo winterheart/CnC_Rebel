@@ -1243,7 +1243,6 @@ void CombatManager::Update_Combat_Mode(void) {
     }
 #endif
 
-    Vector3 pos;
     vehicle->Get_Position(&pos);
     COMBAT_CAMERA->Set_Anchor_Position(pos);
 

@@ -109,7 +109,7 @@ ServerListWait::ServerListWait(const RefPtr<Session> &session)
  *
  ******************************************************************************/
 
-ServerListWait::~ServerListWait() { WWDEBUG_SAY(("WOL: ServerListWait End '%S'\n", mEndText)); }
+ServerListWait::~ServerListWait() { WWDEBUG_SAY(("WOL: ServerListWait End '%S'\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -261,7 +261,7 @@ DisconnectWait::DisconnectWait(const RefPtr<Session> &session)
  *
  ******************************************************************************/
 
-DisconnectWait::~DisconnectWait() { WWDEBUG_SAY(("WOL: DisconnectWait End '%S'\n", mEndText)); }
+DisconnectWait::~DisconnectWait() { WWDEBUG_SAY(("WOL: DisconnectWait End '%S'\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -437,7 +437,7 @@ ConnectWait::ConnectWait(const RefPtr<Session> &session, const RefPtr<ServerData
  *
  ******************************************************************************/
 
-ConnectWait::~ConnectWait() { WWDEBUG_SAY(("WOL: ConnectWait End %S\n", mEndText)); }
+ConnectWait::~ConnectWait() { WWDEBUG_SAY(("WOL: ConnectWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -613,7 +613,7 @@ ChannelListWait::ChannelListWait(const RefPtr<Session> &session, int type)
  *
  ******************************************************************************/
 
-ChannelListWait::~ChannelListWait() { WWDEBUG_SAY(("WOL: ChannelListWait End %S\n", mEndText)); }
+ChannelListWait::~ChannelListWait() { WWDEBUG_SAY(("WOL: ChannelListWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -775,7 +775,7 @@ LeaveChannelWait::LeaveChannelWait(const RefPtr<Session> &session)
  *
  ******************************************************************************/
 
-LeaveChannelWait::~LeaveChannelWait() { WWDEBUG_SAY(("WOL: LeaveChannelWait End %S\n", mEndText)); }
+LeaveChannelWait::~LeaveChannelWait() { WWDEBUG_SAY(("WOL: LeaveChannelWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1006,7 +1006,7 @@ JoinChannelWait::JoinChannelWait(const RefPtr<Session> &session, const wchar_t *
  *
  ******************************************************************************/
 
-JoinChannelWait::~JoinChannelWait() { WWDEBUG_SAY(("WOL: JoinChannelWait End %S\n", mEndText)); }
+JoinChannelWait::~JoinChannelWait() { WWDEBUG_SAY(("WOL: JoinChannelWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1193,7 +1193,7 @@ CreateChannelWait::CreateChannelWait(const RefPtr<Session> &session, const RefPt
  *
  ******************************************************************************/
 
-CreateChannelWait::~CreateChannelWait() { WWDEBUG_SAY(("WOL: CreateChannelWait End %S\n", mEndText)); }
+CreateChannelWait::~CreateChannelWait() { WWDEBUG_SAY(("WOL: CreateChannelWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1386,7 +1386,7 @@ UserListWait::UserListWait(const RefPtr<Session> &session) : mSession(session) {
  *
  ******************************************************************************/
 
-UserListWait::~UserListWait() { WWDEBUG_SAY(("WOL: UserListWait End %S\n", mEndText)); }
+UserListWait::~UserListWait() { WWDEBUG_SAY(("WOL: UserListWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1493,7 +1493,7 @@ GetUserWait::GetUserWait(const RefPtr<Session> &session, const wchar_t *userName
  *
  ******************************************************************************/
 
-GetUserWait::~GetUserWait() { WWDEBUG_SAY(("WOL: GetUserWait End %S\n", mEndText)); }
+GetUserWait::~GetUserWait() { WWDEBUG_SAY(("WOL: GetUserWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1619,7 +1619,7 @@ LocateUserWait::LocateUserWait(const RefPtr<Session> &session, const wchar_t *us
  *
  ******************************************************************************/
 
-LocateUserWait::~LocateUserWait() { WWDEBUG_SAY(("WOL: LocateUserWait End '%S'\n", mEndText)); }
+LocateUserWait::~LocateUserWait() { WWDEBUG_SAY(("WOL: LocateUserWait End '%S'\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *
@@ -1760,7 +1760,7 @@ SendMsgWait::SendMsgWait(const RefPtr<Session> &session, ChatMessage &message)
  *
  ******************************************************************************/
 
-SendMsgWait::~SendMsgWait() { WWDEBUG_SAY(("WOL: SendMsgWait End %S\n", mEndText)); }
+SendMsgWait::~SendMsgWait() { WWDEBUG_SAY(("WOL: SendMsgWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *

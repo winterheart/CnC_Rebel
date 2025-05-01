@@ -3127,7 +3127,7 @@ STDMETHODIMP ChatObserver::OnChannelListEntry(HRESULT result, WOL::Channel *wolC
       ChannelList::iterator remIter = list->begin();
 
       while (remIter != iter) {
-        WWDEBUG_SAY(("WOL: Removing Channel '%S'\n", (*remIter)->GetName()));
+        WWDEBUG_SAY(("WOL: Removing Channel '%S'\n", (*remIter)->GetName().Peek_Buffer()));
         remIter++;
       }
 #endif

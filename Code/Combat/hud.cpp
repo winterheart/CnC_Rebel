@@ -2437,7 +2437,6 @@ static void Info_Update_Health_Shield(void) {
     //		StringClass	text;
     //		text.Format( "%03d", (int)shield );
     long lshield = WWMath::Float_To_Long(shield);
-    WCHAR tmp_text[5];
     Generate_WChar_Text_From_Number(tmp_text, 4, 3, lshield);
     InfoShieldCountRenderer->Set_Location(draw.Upper_Left() + Vector2(4, 4));
     InfoShieldCountRenderer->Draw_Text(tmp_text);

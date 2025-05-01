@@ -142,7 +142,7 @@ GameStartWait::GameStartWait(const UserList &players, void (*timeout_callback)(v
  *
  ******************************************************************************/
 
-GameStartWait::~GameStartWait() { WWDEBUG_SAY(("WOL: GameStartWait End %S\n", mEndText)); }
+GameStartWait::~GameStartWait() { WWDEBUG_SAY(("WOL: GameStartWait End %S\n", mEndText.Peek_Buffer())); }
 
 /******************************************************************************
  *

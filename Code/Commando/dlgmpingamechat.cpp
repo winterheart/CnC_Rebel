@@ -409,7 +409,7 @@ void MPChatChildDialogClass::Auto_Complete_Name(void) {
         //
         //	Did we find a valid completed name?
         //
-        int completed_name_len = completed_name.Get_Length();
+        size_t completed_name_len = completed_name.Get_Length();
         if (completed_name_len >= typed_len) {
           CurrRecipientName = completed_name;
 

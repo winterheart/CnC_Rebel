@@ -458,12 +458,12 @@ static bool Verify_Log_Directory(const StringClass &folder) {
 static bool Create_Log_File_Name(const StringClass &folder, StringClass &filename, bool use_numbering) {
   StringClass original(filename);
   if (!use_numbering) {
-    filename.Format("%s\\%s", folder, original);
+    filename.Format("%s\\%s", folder.Peek_Buffer(), original.Peek_Buffer());
     return true;
   }
   for (int i = 0; i < 999; ++i) {
     HANDLE file;
-    filename.Format("%s\\%3.3d%s", folder, i, original);
+    filename.Format("%s\\%3.3d%s", folder.Peek_Buffer(), i, original.Peek_Buffer());
     file = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
     if (file != INVALID_HANDLE_VALUE) {
       CloseHandle(file);
