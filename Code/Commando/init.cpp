@@ -36,6 +36,8 @@
  *   Commando_Assert_Handler -- Commando callback function for WWASSERT's                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <intrin.h>
+
 #include "buildinfo.h"
 #include "init.h"
 #include "debug.h"
@@ -296,25 +298,24 @@ void Commando_Assert_Handler(const char *message) {
       //
       Input::Shutdown();
     }
-    /*
-
-m
-$m                mm            m
-"$mmmmm        m$"    mmmmmmm$"
-"""$m   m$    m$""""""
-mmmmmmm$$$$$$$$$"mmmm
-mmm$$$$$$$$$$$$$$$$$$ m$$$$m  "    m  "
-$$$$$$$$$$$$$$$$$$$$$$  $$$$$$"$$$
-mmmmmmmmmmmmmmmmmmmmm  $$$$$$$$$$
-$$$$$$$$$$$$$$$$$$$$$  $$$$$$$"""  m
-"$$$$$$$$$$$$$$$$$$$$$ $$$$$$  "      "
-"""""""$$$$$$$$$$$m """"
-mmmmmmmm"  m$   "$mmmmm
-$$""""""      "$     """"""$$
-m$"               "m           "
+/*
+                                          m
+                $m                mm            m
+                 "$mmmmm        m$"    mmmmmmm$"
+                         """$m   m$    m$""""""
+                mmmmmmm$$$$$$$$$"mmmm
+              mmm$$$$$$$$$$$$$$$$$$ m$$$$m  "    m  "
+            $$$$$$$$$$$$$$$$$$$$$$  $$$$$$"$$$
+             mmmmmmmmmmmmmmmmmmmmm  $$$$$$$$$$
+             $$$$$$$$$$$$$$$$$$$$$  $$$$$$$"""  m
+             "$$$$$$$$$$$$$$$$$$$$$ $$$$$$  "      "
+                  """""""$$$$$$$$$$$m """"
+                     mmmmmmmm"  m$   "$mmmmm
+                  $$""""""      "$     """"""$$
+                m$"               "m           "
 */
 
-    _asm int 0x03;
+    __debugbreak();
   }
 
   if (cDevOptions::ExitThreadOnAssert.Is_True()) {
