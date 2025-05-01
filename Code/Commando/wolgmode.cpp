@@ -575,8 +575,6 @@ void WolGameModeClass::Leave_Game(void) {
  *
  ******************************************************************************/
 
-void Get_Compact_Detail_String(StringClass &tmp);
-
 void WolGameModeClass::Start_Game(cGameData *theGame) {
   WWDEBUG_SAY(("WolGameModeClass::Start_Game\n"));
 
@@ -679,35 +677,6 @@ void WolGameModeClass::End_Game(void) {
         KickNameList.Delete_All();
         KickIPList.Delete_All();
         Read_Kick_List();
-
-      } else {
-#ifdef BETACLIENT
-        // Jani do stuff here (send client system information string)
-        StringClass info(255, true);
-        info = "SYSINFO:";
-        info += CPUDetectClass::Get_Compact_Log();
-        info += DX8Wrapper::Get_Current_Caps()->Get_Compact_Log();
-
-        StringClass tmp(255, true);
-        Get_Compact_Detail_String(tmp);
-        info += tmp;
-
-        PlayerInfoLog::Get_Compact_Log(tmp);
-        info += tmp;
-
-        SystemInfoLog::Get_Compact_Log(tmp);
-        info += tmp;
-
-        BandwidthCheckerClass::Get_Compact_Log(tmp);
-        info += tmp;
-
-        WOLNATInterface.Get_Compact_Log(tmp);
-        info += tmp;
-
-        WWDEBUG_SAY(("Sending compact log: %s\n", info.Peek_Buffer()));
-
-        mWOLSession->SendPrivateGameOptions(mTheGame->Get_Owner(), info);
-#endif // BETACLIENT
       }
     }
 
