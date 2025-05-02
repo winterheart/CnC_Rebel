@@ -37,10 +37,7 @@
 #ifndef TGATODXT_H
 #define TGATODXT_H
 
-// Includes.
-#include <winbase.h>
-
-// Class declerations.
+// Class declarations.
 class TGAToDXTClass {
 public:
   TGAToDXTClass();
