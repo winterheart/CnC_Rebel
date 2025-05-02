@@ -13,6 +13,7 @@ See [CHANGES.md](CHANGES.md) for full changelog.
 * Microsoft Visual C++ 2022
 * Microsoft Platform SDK 10.0
 * CMake 3.20
+* GoogleTest (vcpkg package, optional)
 * Microsoft.DXSDK.D3DX 9.29.952.8 (vcpkg package)
 * RAD Miles Sound System 6 SDK (`Code/third_party/miles6`)
 * RAD Bink SDK (`Code/third_party/bink`)

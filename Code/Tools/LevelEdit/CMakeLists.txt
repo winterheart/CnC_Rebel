@@ -265,3 +265,8 @@ add_custom_command(
     VERBATIM
 )
 target_sources(LevelEdit PRIVATE ${MIDL_FILE} ${MIDL_OUTPUT})
+
+# Tests
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
