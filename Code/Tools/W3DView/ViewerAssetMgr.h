@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -43,52 +44,47 @@
 
 #include "AssetMgr.H"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // ViewerAssetMgrClass
 //
 /////////////////////////////////////////////////////////////////////////////
-class ViewerAssetMgrClass : public WW3DAssetManager
-{
+class ViewerAssetMgrClass : public WW3DAssetManager {
 public:
+  ///////////////////////////////////////////////////
+  //	Public constructors/destructors
+  ///////////////////////////////////////////////////
+  ViewerAssetMgrClass(void) {}
+  virtual ~ViewerAssetMgrClass(void) {}
 
-	///////////////////////////////////////////////////
-	//	Public constructors/destructors
-	///////////////////////////////////////////////////
-	ViewerAssetMgrClass (void) {}
-	virtual ~ViewerAssetMgrClass (void) {}
-	
-	///////////////////////////////////////////////////
-	//	Public methods
-	///////////////////////////////////////////////////
+  ///////////////////////////////////////////////////
+  //	Public methods
+  ///////////////////////////////////////////////////
 
-	//
-	// Base class overrides
-	//
-	virtual bool						Load_3D_Assets (FileClass &w3dfile);
-	virtual TextureClass *			Get_Texture(const char * filename, TextureClass::MipCountType mip_level_count=TextureClass::MIP_LEVELS_ALL);
+  //
+  // Base class overrides
+  //
+  virtual bool Load_3D_Assets(FileClass &w3dfile);
+  virtual TextureClass *Get_Texture(const char *filename,
+                                    TextureClass::MipCountType mip_level_count = TextureClass::MIP_LEVELS_ALL);
 
-	//
-	//	Missing texture methods
-	//
-	void									Start_Tracking_Textures (void)	{ m_MissingTextureList.Delete_All (); }
-	DynamicVectorClass<CString> &	Get_Missing_Texture_List (void)	{ return m_MissingTextureList; }
+  //
+  //	Missing texture methods
+  //
+  void Start_Tracking_Textures(void) { m_MissingTextureList.Delete_All(); }
+  DynamicVectorClass<CString> &Get_Missing_Texture_List(void) { return m_MissingTextureList; }
 
-	//
-	//	Texture caching overrides
-	//
-	virtual void						Open_Texture_File_Cache(const char * /*prefix*/);
-	virtual void						Close_Texture_File_Cache();
-
+  //
+  //	Texture caching overrides
+  //
+  virtual void Open_Texture_File_Cache(const char * /*prefix*/);
+  virtual void Close_Texture_File_Cache();
 
 private:
-
-	///////////////////////////////////////////////////
-	//	Private member data
-	///////////////////////////////////////////////////
-	DynamicVectorClass<CString>	m_MissingTextureList;
+  ///////////////////////////////////////////////////
+  //	Private member data
+  ///////////////////////////////////////////////////
+  DynamicVectorClass<CString> m_MissingTextureList;
 };
-
 
 #endif //__VIEWER_ASSETMGR_H
