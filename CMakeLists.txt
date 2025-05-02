@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(REBEL_ENABLE_DEBUG_MESSAGES "Enable debug messages (WWDEBUG)" ON)
 option(REBEL_ENABLE_EDITOR "Enable editor building" ON)
+option(REBEL_ENABLE_TOOLS "Enable tools building" ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
