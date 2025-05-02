@@ -82,8 +82,6 @@ set(SOURCES
         W3DViewView.cpp
 )
 
-set(CMAKE_MFC_FLAG 1)
-
 add_executable(W3DView WIN32 ${SOURCES} W3DView.rc)
 target_include_directories(W3DView
         PRIVATE
@@ -98,4 +96,7 @@ target_link_libraries(W3DView
         Microsoft::D3DX9
         ${MSS_LIBRARIES}
         version
+)
+set_target_properties(W3DView PROPERTIES
+    MFC_FLAG 1
 )

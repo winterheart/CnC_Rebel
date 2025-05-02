@@ -11,11 +11,13 @@ set(SOURCES
     StdAfx.cpp
 )
 
-set(CMAKE_MFC_FLAG 1)
-
 add_executable(MixViewer WIN32 ${SOURCES} MixViewer.rc)
 target_link_libraries(MixViewer
     PRIVATE
         WWDebug
         WWLib
+)
+
+set_target_properties(MixViewer PROPERTIES
+    MFC_FLAG 1
 )

@@ -205,7 +205,6 @@ set(SOURCES
     test.cpp
 )
 
-set(CMAKE_MFC_FLAG 1)
 add_executable(LevelEdit WIN32 ${SOURCES} LevelEdit.rc)
 target_include_directories(LevelEdit PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -245,6 +244,7 @@ target_compile_definitions(LevelEdit PRIVATE
 set_target_properties(LevelEdit PROPERTIES
     OUTPUT_NAME_DEBUG "LevelEditD"
     OUTPUT_NAME_RELWITHDEBINFO "LevelEditP"
+    MFC_FLAG 1
 )
 
 # IDL file generation
