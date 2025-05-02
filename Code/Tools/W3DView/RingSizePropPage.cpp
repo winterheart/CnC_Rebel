@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // RingSizePropPage.cpp : implementation file
 //
@@ -253,7 +254,7 @@ RingSizePropPageClass::OnInitDialog (void)
 	//
 	x_index = 1;
 	y_index = 1;
-	for (index = 1; index < m_OrigOuterScaleChannel.Get_Key_Count (); index ++) {
+	for (int index = 1; index < m_OrigOuterScaleChannel.Get_Key_Count (); index ++) {
 		const LERPAnimationChannelClass<Vector2>::KeyClass &prev_value = m_OrigOuterScaleChannel.Get_Key (index - 1);
 		const LERPAnimationChannelClass<Vector2>::KeyClass &curr_value = m_OrigOuterScaleChannel.Get_Key (index);
 		
@@ -561,7 +562,7 @@ RingSizePropPageClass::Update_Inner_Scale_Array (void)
 	//
 	//	Build the Y-axis timline
 	//
-	for (index = 0; index < max_y; index++) {		
+	for (int index = 0; index < max_y; index++) {
 		m_InnerScaleYBar->Get_Point (index, &position, &red, &green, &blue);		
 		y_values.Add_Key (m_InnerScaleYBar->Get_Graph_Percent (index), position);
 	}
@@ -659,7 +660,7 @@ RingSizePropPageClass::Update_Outer_Scale_Array (void)
 	//
 	//	Build the Y-axis timline
 	//
-	for (index = 0; index < max_y; index++) {		
+	for (int index = 0; index < max_y; index++) {
 		m_OuterScaleYBar->Get_Point (index, &position, &red, &green, &blue);		
 		y_values.Add_Key (m_OuterScaleYBar->Get_Graph_Percent (index), position);
 	}

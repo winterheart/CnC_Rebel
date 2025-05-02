@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -37,6 +38,9 @@ static char THIS_FILE[] = __FILE__;
 
 //extern HINSTANCE _hinstance;
 
+// Forward declarations
+
+LRESULT WINAPI fnColorBarProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1066,9 +1070,9 @@ ColorBarClass::Update_Point_Info (void)
 
 	LONG style = GetWindowLong (m_hWnd, GWL_STYLE);
 	if (style & CBRS_HORZ) {
-
+                int index;
 		// Loop through all the color points
-		for (int index = 0; index < m_iColorPoints; index ++) {
+		for (index = 0; index < m_iColorPoints; index ++) {
 
 			// Update the absolute starting position for this point
 			m_ColorPoints[index].StartPos = m_ColorArea.left + int(m_ColorPoints[index].PosPercent * width);
@@ -1097,9 +1101,9 @@ ColorBarClass::Update_Point_Info (void)
 		m_ColorPoints[index-1].EndPos				= m_ColorArea.right;
 
 	} else {
-
+                int index;
 		// Loop through all the color points
-		for (int index = 0; index < m_iColorPoints; index ++) {
+		for (index = 0; index < m_iColorPoints; index ++) {
 
 			// Update the absolute starting position for this point
 			m_ColorPoints[index].StartPos = m_ColorArea.top + int(m_ColorPoints[index].PosPercent * height);

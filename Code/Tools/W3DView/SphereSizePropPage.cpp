@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // SphereSizePropPage.cpp : implementation file
 //
@@ -458,7 +459,7 @@ SphereSizePropPageClass::Update_Scale_Array (void)
 	//
 	//	Build the Y-axis timline
 	//
-	for (index = 0; index < max_y; index++) {		
+	for (int index = 0; index < max_y; index++) {
 		m_ScaleYBar->Get_Point (index, &position, &red, &green, &blue);		
 		y_values.Add_Key (m_ScaleYBar->Get_Graph_Percent (index), position);
 	}
@@ -466,7 +467,7 @@ SphereSizePropPageClass::Update_Scale_Array (void)
 	//
 	//	Build the Z-axis timline
 	//	
-	for (index = 0; index < max_z; index++) {		
+	for (int index = 0; index < max_z; index++) {
 		m_ScaleZBar->Get_Point (index, &position, &red, &green, &blue);		
 		z_values.Add_Key (m_ScaleZBar->Get_Graph_Percent (index), position);
 	}

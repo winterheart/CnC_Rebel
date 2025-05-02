@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // BoneMgrDialog.cpp : implementation file
 //
@@ -149,7 +150,7 @@ BoneMgrDialogClass::OnInitDialog (void)
 	pdata_tree->Build_Render_Object_List (asset_list);
 
 	// Add this render object list to the combobox
-	for (index = 0; index < asset_list.Count (); index ++) {
+	for (int index = 0; index < asset_list.Count (); index ++) {
 		m_ObjectCombo.AddString (asset_list[index]);
 	}
 
@@ -194,7 +195,7 @@ BoneMgrDialogClass::Fill_Bone_Item
 
 	// Build a list of nodes that are contained in this bone
 	DynamicVectorClass <RenderObjClass *> node_list;
-	for (index = 0;
+	for (int index = 0;
 		  index < m_pBaseModel->Get_Num_Sub_Objects_On_Bone (bone_index);
 		  index ++) {
 		RenderObjClass *psubobj = m_pBaseModel->Get_Sub_Object_On_Bone (index, bone_index);
@@ -219,12 +220,12 @@ BoneMgrDialogClass::Fill_Bone_Item
 	}
 
 	// Free our hold on the render objs in the original node list
-	for (index = 0; index < orig_node_list.Count (); index ++) {
+	for (int index = 0; index < orig_node_list.Count (); index ++) {
 		MEMBER_RELEASE (orig_node_list[index]);
 	}
 
 	// Free our hold on the render objs in the node list
-	for (index = 0; index < node_list.Count (); index ++) {
+	for (int index = 0; index < node_list.Count (); index ++) {
 		MEMBER_RELEASE (node_list[index]);
 	}
 	

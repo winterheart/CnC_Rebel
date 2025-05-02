@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 // AnimatedSoundOptionsDialog.cpp : implementation file
 //
@@ -165,9 +166,9 @@ AnimatedSoundOptionsDialogClass::OnInitDialog (void)
 {
 	CDialog::OnInitDialog ();
 
-	StringClass sound_def_lib_path	= theApp.GetProfileString ("Config", "SoundDefLibPath");
-	StringClass sound_ini_path			= theApp.GetProfileString ("Config", "AnimSoundINIPath");
-	StringClass sound_data_path		= theApp.GetProfileString ("Config", "AnimSoundDataPath");
+	StringClass sound_def_lib_path{theApp.GetProfileString("Config", "SoundDefLibPath")};
+	StringClass sound_ini_path{theApp.GetProfileString("Config", "AnimSoundINIPath")};
+	StringClass sound_data_path{theApp.GetProfileString("Config", "AnimSoundDataPath")};
 
 	//
 	//	Fill in the default values
@@ -196,9 +197,9 @@ AnimatedSoundOptionsDialogClass::Load_Animated_Sound_Settings (void)
 	//
 	//	Get the data from the registry
 	//
-	StringClass sound_def_lib_path	= theApp.GetProfileString ("Config", "SoundDefLibPath");
-	StringClass sound_ini_path			= theApp.GetProfileString ("Config", "AnimSoundINIPath");
-	StringClass sound_data_path		= theApp.GetProfileString ("Config", "AnimSoundDataPath");
+	StringClass sound_def_lib_path{theApp.GetProfileString("Config", "SoundDefLibPath")};
+	StringClass sound_ini_path{theApp.GetProfileString("Config", "AnimSoundINIPath")};
+	StringClass sound_data_path{theApp.GetProfileString("Config", "AnimSoundDataPath")};
 
 	//
 	//	Try to load the definitions into the definition mgr
