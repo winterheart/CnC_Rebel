@@ -37,6 +37,8 @@
 #ifndef TGATODXT_H
 #define TGATODXT_H
 
+#include <windows.h>
+
 // Class declarations.
 class TGAToDXTClass {
 public:
