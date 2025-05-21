@@ -39,6 +39,7 @@
 
 #include "texture.h"
 
+#include "ddsfile.h"
 #include "dx8wrapper.h"
 #include "dxdefs.h"
 #include "w3d_file.h"
@@ -103,16 +104,16 @@ static uint32_t Calculate_Texture_Memory_Usage(const TextureClass *texture, uint
   for (uint32_t i = red_factor; i < d3d_texture->GetLevelCount(); ++i) {
     D3DSURFACE_DESC desc;
     DX8_ErrorCode(d3d_texture->GetLevelDesc(i, &desc));
-    uint32_t bpp = DX_Get_Bytes_Per_Pixel(desc.Format);
-    if (bpp > 0) {
-      size += desc.Width * desc.Height * DX_Get_Bytes_Per_Pixel(desc.Format);
-    } else {
-      // Compressed textures DXT1..DXT5
-      uint32_t block_size = 8;
-      if (desc.Format != D3DFMT_DXT1) {
-        block_size = 16;
+    switch (desc.Format) {
+      case D3DFMT_DXT1:
+      case D3DFMT_DXT2:
+      case D3DFMT_DXT3:
+      case D3DFMT_DXT4:
+      case D3DFMT_DXT5: {
+        size += DDSFileClass::Calculate_DXTC_Surface_Size(desc.Width, desc.Height, D3DFormat_To_WW3DFormat(desc.Format));
       }
-      size += std::max(1u, (desc.Width + 3) / 4) * block_size * desc.Height;
+      default:
+        size += desc.Width * desc.Height * DX_Get_Bytes_Per_Pixel(desc.Format);
     }
   }
   return size;

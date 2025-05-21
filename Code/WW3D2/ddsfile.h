@@ -163,8 +163,6 @@ class DDSFileClass {
   LegacyDDSURFACEDESC2 SurfaceDesc;
   char Name[256];
 
-  static unsigned Calculate_DXTC_Surface_Size(unsigned width, unsigned height, WW3DFormat format);
-
 public:
   // You can pass the name in .tga or .dds format, the class will automatically try and load .dds file.
   // Note that creating the object will only give you image info - call Load() to load the surfaces.
@@ -202,6 +200,8 @@ public:
 
   bool Load();
   bool Is_Available() const { return !!LevelSizes; }
+
+  static unsigned Calculate_DXTC_Surface_Size(unsigned width, unsigned height, WW3DFormat format);
 };
 
 // ----------------------------------------------------------------------------

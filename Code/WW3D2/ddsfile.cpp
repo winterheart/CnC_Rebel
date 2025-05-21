@@ -151,6 +151,9 @@ unsigned DDSFileClass::Calculate_DXTC_Surface_Size(unsigned width, unsigned heig
   case WW3D_FORMAT_DXT5:
     level_size *= 16;
     break;
+  default:
+    WWASSERT_PRINT(0, "Unknown compressed file format!\n");
+    break;
   }
   return level_size;
 }
