@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -48,50 +49,41 @@
 //	SphereKeysClass
 //
 /////////////////////////////////////////////////////////////
-class SphereKeysClass
-{
+class SphereKeysClass {
 public:
+  /////////////////////////////////////////////////////////////
+  //	Public constructors/destructors
+  /////////////////////////////////////////////////////////////
+  SphereKeysClass(void) : m_Keys(NULL), m_KeyCount(0), m_MaxKeys(0) {}
 
-	/////////////////////////////////////////////////////////////
-	//	Public constructors/destructors
-	/////////////////////////////////////////////////////////////
-	SphereKeysClass (void)
-		:	m_Keys (NULL),
-			m_KeyCount (0),
-			m_MaxKeys (0)		{ }
+  virtual ~SphereKeysClass(void) { Free_Keys(); }
 
-	virtual ~SphereKeysClass (void)	{ Free_Keys (); }
-	
-	/////////////////////////////////////////////////////////////
-	//	Public methods
-	/////////////////////////////////////////////////////////////
-	W3dSphereKeyFrameStruct *	Detach (void);
+  /////////////////////////////////////////////////////////////
+  //	Public methods
+  /////////////////////////////////////////////////////////////
+  W3dSphereKeyFrameStruct *Detach(void);
 
-	int								Get_Key_Count (void) const { return m_KeyCount; }
-	W3dSphereKeyFrameStruct *	Get_Keys (void)				{ return m_Keys; }
+  int Get_Key_Count(void) const { return m_KeyCount; }
+  W3dSphereKeyFrameStruct *Get_Keys(void) { return m_Keys; }
 
-	void								Add_Keys (W3dSphereKeyFrameStruct *keys, int key_count);
-	void								Add_Key (W3dSphereKeyFrameStruct &key);
+  void Add_Keys(W3dSphereKeyFrameStruct *keys, int key_count);
+  void Add_Key(W3dSphereKeyFrameStruct &key);
 
-	void								Free_Keys (void);
+  void Free_Keys(void);
 
 protected:
-
-	/////////////////////////////////////////////////////////////
-	//	Protected methods
-	/////////////////////////////////////////////////////////////
-	void								Resize (int max_keys);
+  /////////////////////////////////////////////////////////////
+  //	Protected methods
+  /////////////////////////////////////////////////////////////
+  void Resize(int max_keys);
 
 private:
-
-	/////////////////////////////////////////////////////////////
-	//	Private member data
-	/////////////////////////////////////////////////////////////
-	W3dSphereKeyFrameStruct *	m_Keys;
-	int								m_KeyCount;
-	int								m_MaxKeys;
+  /////////////////////////////////////////////////////////////
+  //	Private member data
+  /////////////////////////////////////////////////////////////
+  W3dSphereKeyFrameStruct *m_Keys;
+  int m_KeyCount;
+  int m_MaxKeys;
 };
 
-
 #endif //__SPHERE_UTILS
-

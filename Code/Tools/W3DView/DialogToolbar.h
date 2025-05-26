@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -34,11 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-
 #if defined(_MSC_VER)
 #pragma once
 #endif
-
 
 #ifndef __DIALOGTOOLBAR_H
 #define __DIALOGTOOLBAR_H
@@ -49,57 +48,49 @@
 //
 //	DialogToolbarClass
 //
-class DialogToolbarClass : public CToolBar
-{
-	public:
-		DialogToolbarClass (void);
-		virtual ~DialogToolbarClass (void) {}
-
-// Form Data
+class DialogToolbarClass : public CToolBar {
 public:
-	//{{AFX_DATA(DialogToolbarClass)
-	//}}AFX_DATA
+  DialogToolbarClass(void);
+  virtual ~DialogToolbarClass(void) {}
 
-// Attributes
+  // Form Data
 public:
+  //{{AFX_DATA(DialogToolbarClass)
+  //}}AFX_DATA
 
-// Operations
+  // Attributes
 public:
+  // Operations
+public:
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(DialogToolbarClass)
+protected:
+  //}}AFX_VIRTUAL
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(DialogToolbarClass)
-	protected:
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:	
+  // Implementation
+protected:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext &dc) const;
 #endif
 
-	// Generated message map functions
-	//{{AFX_MSG(DialogToolbarClass)
-	afx_msg LRESULT OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnInitialUpdate();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  // Generated message map functions
+  //{{AFX_MSG(DialogToolbarClass)
+  afx_msg LRESULT OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam);
+  afx_msg void OnInitialUpdate();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 
-	//virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	BOOL OnNeedToolTipText (UINT id, NMHDR *pTTTStruct, LRESULT *pResult);
+  // virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+  BOOL OnNeedToolTipText(UINT id, NMHDR *pTTTStruct, LRESULT *pResult);
 
-
-
-	public:
-		
-		///////////////////////////////////////////////////////
-		//
-		//	Public methods
-		//
-		void						Enable_Button (int id, bool benable = true);
+public:
+  ///////////////////////////////////////////////////////
+  //
+  //	Public methods
+  //
+  void Enable_Button(int id, bool benable = true);
 };
 
-
 #endif //__DIALOGTOOLBAR_H
-

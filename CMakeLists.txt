@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(REBEL_ENABLE_DEBUG_MESSAGES "Enable debug messages (WWDEBUG)" ON)
 option(REBEL_ENABLE_EDITOR "Enable editor building" ON)
+option(REBEL_ENABLE_TOOLS "Enable tools building" ON)
+option(BUILD_TESTING "Enable unit-tests" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -17,6 +19,12 @@ find_package(BINK REQUIRED)
 if(REBEL_ENABLE_EDITOR)
     find_package(NVDXTLIB REQUIRED)
 endif()
+if(BUILD_TESTING)
+    find_package(GTest CONFIG REQUIRED)
+    enable_testing()
+    include(GoogleTest)
+endif()
+
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Globally set Mt(d) since whole project depends on it

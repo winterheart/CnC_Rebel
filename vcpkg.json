@@ -6,6 +6,10 @@
     {
       "name": "dxsdk-d3dx",
       "version>=": "9.29.952.8"
+    },
+    {
+      "name": "gtest",
+      "version>=": "1.14.0"
     }
   ]
 }

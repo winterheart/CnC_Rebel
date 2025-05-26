@@ -20,25 +20,20 @@
 #include "ddsfile.h"
 #include "dxdefs.h"
 #include "ffactory.h"
-#include "bufffile.h"
 #include "formconv.h"
 #include "dx8wrapper.h"
 #include "bitmaphandler.h"
-#include <string.h>
 
 // ----------------------------------------------------------------------------
 
 DDSFileClass::DDSFileClass(const char *name, unsigned reduction_factor)
-    : DDSMemory(NULL), Width(0), Height(0), FullWidth(0), FullHeight(0), LevelSizes(NULL), LevelOffsets(NULL),
-      MipLevels(0), ReductionFactor(reduction_factor), Format(WW3D_FORMAT_UNKNOWN), DateTime(0) {
-  strncpy(Name, name, sizeof(Name));
+    : Width(0), Height(0), FullWidth(0), FullHeight(0), MipLevels(0), DateTime(0), ReductionFactor(reduction_factor),
+      DDSMemory(nullptr), Format(WW3D_FORMAT_UNKNOWN) {
+  Name = name;
   // The name could be given in .tga or .dds format, so ensure we're opening .dds...
-  int len = strlen(Name);
-  Name[len - 3] = 'd';
-  Name[len - 2] = 'd';
-  Name[len - 1] = 's';
+  Name.replace_extension("dds");
 
-  file_auto_ptr file(_TheFileFactory, Name);
+  file_auto_ptr file(_TheFileFactory, Name.string().c_str());
   if (!file->Is_Available()) {
     return;
   }
@@ -47,22 +42,22 @@ DDSFileClass::DDSFileClass(const char *name, unsigned reduction_factor)
   DateTime = file->Get_Date_Time();
   char header[4];
   file->Read(header, 4);
-  // Now, we read DDSURFACEDESC2 defining the compressed data
-  unsigned read_bytes = file->Read(&SurfaceDesc, sizeof(LegacyDDSURFACEDESC2));
+  // Now, we read DDS_HEADER defining the compressed data
+  unsigned read_bytes = file->Read(&SurfaceDesc, sizeof(DDS_HEADER));
   // Verify the structure size matches the read size
-  if (read_bytes != SurfaceDesc.Size) {
+  if (read_bytes != SurfaceDesc.dwSize) {
     StringClass tmp(0u, true);
     tmp.Format("File %s loading failed.\nTried to read %d bytes, got %d. (SurfDesc.size=%d)\n", name,
-               sizeof(LegacyDDSURFACEDESC2), read_bytes, SurfaceDesc.Size);
+               sizeof(DDS_HEADER), read_bytes, SurfaceDesc.dwSize);
     WWASSERT_PRINT(0, tmp);
     return;
   }
 
-  Format = D3DFormat_To_WW3DFormat((DX_D3DFORMAT)SurfaceDesc.PixelFormat.FourCC);
+  Format = D3DFormat_To_WW3DFormat((DX_D3DFORMAT)SurfaceDesc.ddspf.dwFourCC);
   WWASSERT(Format == WW3D_FORMAT_DXT1 || Format == WW3D_FORMAT_DXT2 || Format == WW3D_FORMAT_DXT3 ||
            Format == WW3D_FORMAT_DXT4 || Format == WW3D_FORMAT_DXT5);
 
-  MipLevels = SurfaceDesc.MipMapCount;
+  MipLevels = SurfaceDesc.dwMipMapCount;
   if (MipLevels == 0)
     MipLevels = 1;
   if (MipLevels > ReductionFactor)
@@ -78,22 +73,22 @@ DDSFileClass::DDSFileClass(const char *name, unsigned reduction_factor)
   else
     MipLevels = 1;
 
-  FullWidth = SurfaceDesc.Width;
-  FullHeight = SurfaceDesc.Height;
-  Width = SurfaceDesc.Width >> ReductionFactor;
-  Height = SurfaceDesc.Height >> ReductionFactor;
+  FullWidth = SurfaceDesc.dwWidth;
+  FullHeight = SurfaceDesc.dwHeight;
+  Width = SurfaceDesc.dwWidth >> ReductionFactor;
+  Height = SurfaceDesc.dwHeight >> ReductionFactor;
 
-  unsigned level_size = Calculate_DXTC_Surface_Size(SurfaceDesc.Width, SurfaceDesc.Height, Format);
-  unsigned level_offset = 0;
+  uint32_t level_size = Calculate_DXTC_Surface_Size(SurfaceDesc.dwWidth, SurfaceDesc.dwHeight, Format);
+  uint32_t level_offset = 0;
 
-  LevelSizes = new unsigned[MipLevels];
-  LevelOffsets = new unsigned[MipLevels];
-  for (unsigned level = 0; level < ReductionFactor; ++level) {
+  LevelSizes = std::vector<uint32_t>(MipLevels);
+  LevelOffsets = std::vector<uint32_t>(MipLevels);
+  for (uint32_t level = 0; level < ReductionFactor; ++level) {
     if (level_size > 16) { // If surface is bigger than one block (8 or 16 bytes)...
       level_size /= 4;
     }
   }
-  for (unsigned level = 0; level < MipLevels; ++level) {
+  for (uint32_t level = 0; level < MipLevels; ++level) {
     LevelSizes[level] = level_size;
     LevelOffsets[level] = level_offset;
     level_offset += level_size;
@@ -108,11 +103,9 @@ DDSFileClass::DDSFileClass(const char *name, unsigned reduction_factor)
 
 DDSFileClass::~DDSFileClass() {
   delete[] DDSMemory;
-  delete[] LevelSizes;
-  delete[] LevelOffsets;
 }
 
-unsigned DDSFileClass::Get_Width(unsigned level) const {
+uint32_t DDSFileClass::Get_Width(unsigned level) const {
   WWASSERT(level < MipLevels);
   unsigned width = Width >> level;
   if (width < 4)
@@ -120,7 +113,7 @@ unsigned DDSFileClass::Get_Width(unsigned level) const {
   return width;
 }
 
-unsigned DDSFileClass::Get_Height(unsigned level) const {
+uint32_t DDSFileClass::Get_Height(unsigned level) const {
   WWASSERT(level < MipLevels);
   unsigned height = Height >> level;
   if (height < 4)
@@ -133,13 +126,13 @@ const unsigned char *DDSFileClass::Get_Memory_Pointer(unsigned level) const {
   return DDSMemory + LevelOffsets[level];
 }
 
-unsigned DDSFileClass::Get_Level_Size(unsigned level) const {
+uint32_t DDSFileClass::Get_Level_Size(unsigned level) const {
   WWASSERT(level < MipLevels);
   return LevelSizes[level];
 }
 
 // For some reason DX-Tex tool doesn't fill the surface size field, so we need to calculate it...
-unsigned DDSFileClass::Calculate_DXTC_Surface_Size(unsigned width, unsigned height, WW3DFormat format) {
+uint32_t DDSFileClass::Calculate_DXTC_Surface_Size(unsigned width, unsigned height, WW3DFormat format) {
   unsigned level_size = (width / 4) * (height / 4);
   switch (format) {
   case WW3D_FORMAT_DXT1:
@@ -151,6 +144,9 @@ unsigned DDSFileClass::Calculate_DXTC_Surface_Size(unsigned width, unsigned heig
   case WW3D_FORMAT_DXT5:
     level_size *= 16;
     break;
+  default:
+    WWASSERT_PRINT(0, "Unknown compressed file format!\n");
+    break;
   }
   return level_size;
 }
@@ -160,21 +156,19 @@ unsigned DDSFileClass::Calculate_DXTC_Surface_Size(unsigned width, unsigned heig
 bool DDSFileClass::Load() {
   if (DDSMemory)
     return false;
-  if (!LevelSizes || !LevelOffsets)
-    return false;
 
-  file_auto_ptr file(_TheFileFactory, Name);
+  file_auto_ptr file(_TheFileFactory, Name.string().c_str());
   if (!file->Is_Available()) {
     return false;
   }
 
   file->Open();
   // Data size is file size minus the header and info block
-  unsigned size = file->Size() - SurfaceDesc.Size - 4;
+  unsigned size = file->Size() - SurfaceDesc.dwSize - 4;
   // Skip mip levels if reduction factor is not zero
-  unsigned level_size = Calculate_DXTC_Surface_Size(SurfaceDesc.Width, SurfaceDesc.Height, Format);
+  unsigned level_size = Calculate_DXTC_Surface_Size(SurfaceDesc.dwWidth, SurfaceDesc.dwHeight, Format);
   unsigned skipped_offset = 0;
-  for (unsigned i = 0; i < ReductionFactor; ++i) {
+  for (uint32_t i = 0; i < ReductionFactor; ++i) {
     skipped_offset += level_size;
     size -= level_size;
     if (level_size > 16) { // If surface is bigger than one block (8 or 16 bytes)...
@@ -183,8 +177,8 @@ bool DDSFileClass::Load() {
   }
 
   // Skip the header and info block and possible unused mip levels
-  unsigned seek_size = file->Seek(SurfaceDesc.Size + 4 + skipped_offset);
-  WWASSERT(seek_size == (SurfaceDesc.Size + 4 + skipped_offset));
+  unsigned seek_size = file->Seek(SurfaceDesc.dwSize + 4 + skipped_offset);
+  WWASSERT(seek_size == (SurfaceDesc.dwSize + 4 + skipped_offset));
 
   if (size) {
     // Allocate memory for the data excluding the headers
@@ -213,7 +207,7 @@ void DDSFileClass::Copy_Level_To_Surface(unsigned level, DX_IDirect3DSurface *d3
 
   // First lock the surface
   D3DLOCKED_RECT locked_rect;
-  DX8_ErrorCode(d3d_surface->LockRect(&locked_rect, NULL, 0));
+  DX8_ErrorCode(d3d_surface->LockRect(&locked_rect, nullptr, 0));
 
   Copy_Level_To_Surface(level, D3DFormat_To_WW3DFormat(surface_desc.Format), surface_desc.Width, surface_desc.Height,
                         reinterpret_cast<unsigned char *>(locked_rect.pBits), locked_rect.Pitch);
@@ -271,7 +265,7 @@ void DDSFileClass::Copy_Level_To_Surface(unsigned level, WW3DFormat dest_format,
           }
         }
         if (Format == WW3D_FORMAT_DXT1 && contains_alpha) {
-          WWDEBUG_SAY(("Warning: DXT1 format should not contain alpha information - file %s\n", Name));
+          WWDEBUG_SAY(("Warning: DXT1 format should not contain alpha information - file %s\n", Name.string().c_str()));
         }
       }
     }
@@ -331,7 +325,7 @@ WWINLINE static unsigned Combine_Colors(unsigned col1, unsigned col2, unsigned r
 //
 // ----------------------------------------------------------------------------
 
-unsigned DDSFileClass::Get_Pixel(unsigned level, unsigned x, unsigned y) const {
+uint32_t DDSFileClass::Get_Pixel(unsigned level, unsigned x, unsigned y) const {
   WWASSERT(level < MipLevels);
   WWASSERT(x < Get_Width(level));
   WWASSERT(y < Get_Height(level));
@@ -376,9 +370,7 @@ unsigned DDSFileClass::Get_Pixel(unsigned level, unsigned x, unsigned y) const {
     }
   } break;
   case WW3D_FORMAT_DXT2:
-    return 0xffffffff;
   case WW3D_FORMAT_DXT3:
-    return 0xffffffff;
   case WW3D_FORMAT_DXT4:
     return 0xffffffff;
   case WW3D_FORMAT_DXT5: {
@@ -589,11 +581,9 @@ bool DDSFileClass::Get_4x4_Block(unsigned char *dest_ptr, // Destination surface
       }
       return contains_alpha; // Alpha block...?
     }
-  } break;
+  }
   case WW3D_FORMAT_DXT2:
-    return false;
   case WW3D_FORMAT_DXT3:
-    return false;
   case WW3D_FORMAT_DXT4:
     return false;
   case WW3D_FORMAT_DXT5: {
