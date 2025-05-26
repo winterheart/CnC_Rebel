@@ -9,13 +9,11 @@ target_link_libraries(tgatodxt_tests
         GTest::gtest_main
         WWDebug
         WWLib
-        ${NVDXTLIB_LIBRARIES}
-        legacy_stdio_definitions
-        version
+        crnlib
+        stb
 )
 target_include_directories(tgatodxt_tests
     PRIVATE
-        ${NVDXTLIB_INCLUDE_DIRS}
         ..
 )
 gtest_discover_tests(tgatodxt_tests

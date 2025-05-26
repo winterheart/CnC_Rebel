@@ -1,0 +1,6 @@
+[submodule "Code/third_party/crunch"]
+	path = Code/third_party/crunch
+	url = https://github.com/BinomialLLC/crunch.git
+[submodule "Code/third_party/stb"]
+	path = Code/third_party/stb
+	url = https://github.com/nothings/stb.git

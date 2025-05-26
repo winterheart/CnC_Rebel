@@ -17,7 +17,6 @@ See [CHANGES.md](CHANGES.md) for full changelog.
 * Microsoft.DXSDK.D3DX 9.29.952.8 (vcpkg package)
 * RAD Miles Sound System 6 SDK (`Code/third_party/miles6`)
 * RAD Bink SDK (`Code/third_party/bink`)
-* NvDXTLib SDK (`Code/third_party/nvDXTLib`)
 
 ## Runtime Dependencies
 
@@ -34,3 +33,17 @@ Minimal requirements for system:
 
 This repository and its contents are licensed under the GPL v3 license, with additional terms applied.
 Please see [LICENSE.md](LICENSE.md) for details.
+
+CnC: Rebel uses third party libraries, described below.
+
+### crnlib
+
+Crunch - advanced DXTc texture compression and transcoding library.
+
+License: Public Domain
+
+### stb
+
+stb -  single-file public domain libraries for C/C++.
+
+License: Public Domain / MIT

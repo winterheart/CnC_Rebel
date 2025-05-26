@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -35,13 +36,14 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <cstdlib>
-#include <io.h>
+#include <algorithm>
 
 #include "StdAfx.h"
-#include "NvDXTLib.h"
-#include "targa.h"
+#include "crnlib.h"
 #include "TGAToDXT.H"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 // Singletons.
 TGAToDXTClass _TGAToDXTConverter;
@@ -73,147 +75,74 @@ TGAToDXTClass::~TGAToDXTClass() {
 ///////////////////////////////////////////////////////////////////////////////
 bool TGAToDXTClass::Convert(const char *inputpathname, const char *outputpathname, FILETIME *writetimeptr,
                             bool &redundantalpha) {
-  Targa targa;
-
   WriteTimePtr = writetimeptr;
   redundantalpha = false;
 
   bool success = false;
-  long error = targa.Load(inputpathname, TGAF_IMAGE, false);
-  if (error == 0) {
 
+  int width, height, channels;
+  unsigned char *buffer = stbi_load(inputpathname, &width, &height, &channels, STBI_rgb_alpha);
+  if (buffer) {
     // Check that the targa is in the right format.
     // In order to be valid it must adhere to the following:
     // 1. Pixel depth must be 24 or 32 (compressor has no support for lower bit depths).
+    // (N.B.: WH: Actually, crunch/stb_image may support other TGA formats)
     // 2. Dimensions >= 4 (DDS block size is 4x4).
     // 3. Aspect ratio <= 1:8 (some H/W will not render textures above this ratio).
     // 4. Dimensions must be power of 2 (see below).
-    bool validbitdepth = ((targa.Header.PixelDepth == 24) || (targa.Header.PixelDepth == 32));
-    bool validsize = (targa.Header.Width >= 4) && (targa.Header.Height >= 4);
-    bool validaspect =
-        ((float)MAX(targa.Header.Width, targa.Header.Height)) / ((float)MIN(targa.Header.Width, targa.Header.Height)) <=
-        8.0f;
+    bool validbitdepth = (channels == 3) || (channels == 4);
+    bool validsize = (width >= 4) && (height >= 4);
+    bool validaspect = static_cast<float>(std::max(width, width)) / static_cast<float>(std::min(width, height)) <= 8.0f;
+
+    // Analyse the alpha channel and ignore it if it contains redundant data (ie. is either all black or all white).
+    /*
+    unsigned char *byte = buffer;
+    if ((*(byte + 3) == 0x00) || (*(byte + 3) == 0xff)) {
+      channels = 3;
+    }
+    */
+
     if (validbitdepth && validsize && validaspect) {
+      crn_comp_params comp_params;
+      comp_params.m_width = width;
+      comp_params.m_height = width;
+      comp_params.set_flag(cCRNCompFlagHierarchical, false);
+      comp_params.m_file_type = cCRNFileTypeDDS;
+      comp_params.m_format = channels == 3 ? cCRNFmtDXT1 : cCRNFmtDXT5;
+      comp_params.m_pImages[0][0] = reinterpret_cast<crn_uint32 *>(buffer);
 
-      HRESULT errorcode;
+      crn_mipmap_params mip_params;
+      // mip_params.m_gamma_filtering = true;
+      mip_params.m_mode = cCRNMipModeGenerateMips;
+      mip_params.m_min_mip_size = 4;
 
-      targa.YFlip();
+      uint32_t output_file_size;
+      void *output_file_data = crn_compress(comp_params, mip_params, output_file_size);
+      stbi_image_free(buffer);
 
-      // If TGA has an alpha channel...
-      if (targa.Header.PixelDepth == 32) {
+      if (output_file_data) {
+        DWORD bytecountwritten;
 
-        // Analyse the alpha channel and ignore it if it contains redundant data (ie. is either all black or all white).
-        unsigned char *byte = (unsigned char *)targa.GetImage();
-        if ((*(byte + 3) == 0x00) || (*(byte + 3) == 0xff)) {
+        HANDLE hfile =
+            ::CreateFile(outputpathname, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, 0L, nullptr);
+        if (hfile != INVALID_HANDLE_VALUE) {
+          LockFile(hfile, 0, 0, output_file_size, 0);
+          WriteFile(hfile, output_file_data, output_file_size, &bytecountwritten, nullptr);
+          UnlockFile(hfile, 0, 0, output_file_size, 0);
 
-          const unsigned char alpha = *(byte + 3);
-
-          redundantalpha = true;
-          for (unsigned p = 0; p < ((unsigned)targa.Header.Width) * ((unsigned)targa.Header.Height); p++) {
-            redundantalpha &= (*(byte + 3) == alpha);
-            byte += 4;
-          }
-        }
-
-        if (!redundantalpha) {
-
-          errorcode = ::nvDXTcompress((unsigned char *)targa.GetImage(), targa.Header.Width, targa.Header.Height,
-                                      TF_DXT5, true, false, 4);
-
-        } else {
-
-          // Remove the alpha channel and swizel the pixel data.
-          unsigned char *nonalphaimage =
-              new unsigned char[3 * ((unsigned)targa.Header.Width) * ((unsigned)targa.Header.Height)];
-          unsigned char *nonalphabyte = nonalphaimage;
-
-          byte = (unsigned char *)targa.GetImage();
-          for (unsigned p = 0; p < ((unsigned)targa.Header.Width) * ((unsigned)targa.Header.Height); p++) {
-
-            *(nonalphabyte + 0) = *(byte + 0);
-            *(nonalphabyte + 1) = *(byte + 1);
-            *(nonalphabyte + 2) = *(byte + 2);
-            nonalphabyte += 3;
-            byte += 4;
+          // Stamp the write time (if one has been supplied).
+          if (WriteTimePtr != nullptr) {
+            SetFileTime(hfile, nullptr, nullptr, WriteTimePtr);
           }
 
-          errorcode = ::nvDXTcompress(nonalphaimage, targa.Header.Width, targa.Header.Height, TF_DXT1, true, false, 3);
-          delete[] nonalphaimage;
+          CloseHandle(hfile);
         }
 
-      } else {
-
-        errorcode = ::nvDXTcompress((unsigned char *)targa.GetImage(), targa.Header.Width, targa.Header.Height, TF_DXT1,
-                                    true, false, 3);
-      }
-
-      // Was the image compressed successfully?
-      // NOTE: Any image that does not have power of 2 dimensions will not be compressed.
-      if (errorcode >= 0) {
-        Write(outputpathname);
+        crn_free_block(output_file_data);
         success = true;
       }
     }
   }
 
-  return (success);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//	Write
-//
-///////////////////////////////////////////////////////////////////////////////
-void TGAToDXTClass::Write(const char *outputpathname) {
-  DWORD bytecountwritten;
-
-  HANDLE hfile = ::CreateFile(outputpathname, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, 0L, nullptr);
-  if (hfile != INVALID_HANDLE_VALUE) {
-    LockFile(hfile, 0, 0, BufferCount, 0);
-    WriteFile(hfile, Buffer, BufferCount, &bytecountwritten, nullptr);
-    UnlockFile(hfile, 0, 0, BufferCount, 0);
-
-    // Stamp the write time (if one has been supplied).
-    if (WriteTimePtr != nullptr) {
-      SetFileTime(hfile, nullptr, nullptr, WriteTimePtr);
-    }
-
-    CloseHandle(hfile);
-  }
-
-  // Reset buffer.
-  BufferCount = 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//	ReadDTXnFile
-//
-///////////////////////////////////////////////////////////////////////////////
-void ReadDTXnFile(DWORD datacount, void *data) {
-  // Not implemented.
-  ASSERT(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//	WriteDTXnFile
-//
-///////////////////////////////////////////////////////////////////////////////
-void WriteDTXnFile(DWORD datacount, void *data) {
-  // Ensure that the buffer is large enough.
-  if (_TGAToDXTConverter.BufferSize < _TGAToDXTConverter.BufferCount + datacount) {
-
-    unsigned newbuffersize = MAX(_TGAToDXTConverter.BufferSize * 2, _TGAToDXTConverter.BufferCount + datacount);
-    unsigned char *newbuffer = new unsigned char[newbuffersize];
-    ASSERT(newbuffer != nullptr);
-    memcpy(newbuffer, _TGAToDXTConverter.Buffer, _TGAToDXTConverter.BufferCount);
-    delete[] _TGAToDXTConverter.Buffer;
-    _TGAToDXTConverter.Buffer = newbuffer;
-    _TGAToDXTConverter.BufferSize = newbuffersize;
-  }
-
-  // Write new data to buffer.
-  memcpy(_TGAToDXTConverter.Buffer + _TGAToDXTConverter.BufferCount, data, datacount);
-  _TGAToDXTConverter.BufferCount += datacount;
+  return success;
 }

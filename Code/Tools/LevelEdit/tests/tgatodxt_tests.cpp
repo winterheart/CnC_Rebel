@@ -26,8 +26,8 @@
 TEST(REBEL, TGAToDXT_Convert) {
 
   std::vector<std::pair<std::filesystem::path, uint32_t>> files = {
-    {"vga-rgb.tga", 0x1A1645CD},  // RGB 512 x 512 x 24 -> DXT1
-    {"vga-rgba.tga", 0x47DE9A22}  // RGBA 512 x 512 x 32 - 8-bit alpha -> DXT5
+    {"vga-rgb.tga", 0x9A677204},  // RGB 512 x 512 x 24 -> DXT1
+    {"vga-rgba.tga", 0x9F04507E}  // RGBA 512 x 512 x 32 - 8-bit alpha -> DXT5
   };
   std::filesystem::path temp = std::filesystem::temp_directory_path();
 

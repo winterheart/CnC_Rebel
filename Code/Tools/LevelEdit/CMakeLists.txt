@@ -223,13 +223,13 @@ target_link_libraries(LevelEdit PRIVATE
     WWTranslateDb
     WWUi
     ${MSS_LIBRARIES}
-    ${NVDXTLIB_LIBRARIES}
+    crnlib
+    stb
     dinput8
-    legacy_stdio_definitions
     version
 
     # probably redundant
-    imagehlp.lib
+    imagehlp
     shlwapi
     imagehlp
     ws2_32
