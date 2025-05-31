@@ -20,13 +20,14 @@
 // AudioConfigDialog.cpp : implementation file
 //
 
+#include <string>
+
 #include "stdafx.h"
 #include "wwconfig.h"
 #include "audioconfigdialog.h"
 #include "wwaudio.h"
 #include "locale_api.h"
 #include "wwconfig_ids.h"
-#include "..\..\combat\specialbuilds.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -159,7 +160,7 @@ BOOL AudioConfigDialogClass::OnInitDialog(void) {
   //
   //	Read the audio library's settings from the registry
   //
-  StringClass device_name;
+  std::string device_name;
   bool is_stereo = true;
   int bits = 16;
   int hertz = 44100;
@@ -287,20 +288,20 @@ BOOL AudioConfigDialogClass::OnInitDialog(void) {
     //
     //	Get information about this sound driver
     //
-    WWAudioClass::DRIVER_INFO_STRUCT *driver_info = NULL;
-    if (WWAudioClass::Get_Instance()->Get_3D_Device(index, &driver_info)) {
+    std::shared_ptr<WWAudioClass::DRIVER_INFO_STRUCT> driver_info = nullptr;
+    if (WWAudioClass::Get_Instance()->Get_3D_Device(index, driver_info)) {
 
       //
       //	Add an entry to the list for this driver
       //
-      int item_index = m_ListCtrl.InsertItem(0xFF, driver_info->name);
+      int item_index = m_ListCtrl.InsertItem(0xFF, driver_info->name.c_str());
       if (item_index >= 0) {
         m_ListCtrl.SetItemData(item_index, (DWORD)driver_info->driver);
 
         //
         //	Select this entry if its the default
         //
-        if (::lstrcmpi(device_name, driver_info->name) == 0) {
+        if (device_name == driver_info->name) {
           m_ListCtrl.SetItemState(item_index, LVIS_SELECTED, LVIS_SELECTED);
           selected_default = true;
         }
@@ -345,7 +346,7 @@ void AudioConfigDialogClass::OnDestroy(void) {
 //
 /////////////////////////////////////////////////////////////////////////////
 void AudioConfigDialogClass::Apply_Changes(void) {
-  StringClass device_name;
+  std::string device_name;
   int hertz = 44100;
   int bits = 16;
   int speaker_type = 0;

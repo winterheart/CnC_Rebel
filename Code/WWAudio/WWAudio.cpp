@@ -126,17 +126,17 @@ __inline bool WWAudioClass::Is_OK_To_Give_Handle(const AudibleSoundClass &sound_
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 WWAudioClass::WWAudioClass(bool lite)
-    : m_Driver2D(nullptr), m_Driver3D(0), m_PlaybackRate(44100), m_PlaybackBits(16), m_PlaybackStereo(true),
-      m_SpeakerType(0), m_ReverbFilter(INVALID_MILES_HANDLE), m_UpdateTimer(-1), m_Driver3DPseudo(0),
-      m_MusicVolume(DEF_MUSIC_VOL), m_SoundVolume(DEF_SFX_VOL), m_RealMusicVolume(DEF_MUSIC_VOL),
-      m_RealSoundVolume(DEF_SFX_VOL), m_MaxCacheSize(DEF_CACHE_SIZE * 1024), m_CurrentCacheSize(0),
-      m_Max2DSamples(DEF_2D_SAMPLE_COUNT), m_Max3DSamples(DEF_3D_SAMPLE_COUNT),
-      m_Max2DBufferSize(DEF_MAX_2D_BUFFER_SIZE), m_Max3DBufferSize(DEF_MAX_3D_BUFFER_SIZE), m_SoundScene(nullptr),
-      m_IsMusicEnabled(true), m_IsDialogEnabled(true), m_IsCinematicSoundEnabled(true), m_AreSoundEffectsEnabled(true),
-      m_FileFactory(nullptr), m_EffectsLevel(0), m_CurrPage(PAGE_PRIMARY), m_AreNewSoundsEnabled(true),
-      m_BackgroundMusic(nullptr), m_ReverbRoomType(ENVIRONMENT_GENERIC), m_NonDialogFadeTime(DEF_FADE_TIME),
-      m_FadeType(FADE_NONE), m_FadeTimer(0), m_CachedIsMusicEnabled(true), m_CachedIsDialogEnabled(true),
-      m_CachedIsCinematicSoundEnabled(true), m_CachedAreSoundEffectsEnabled(true), AudioIni(nullptr) {
+    : m_PlaybackRate(44100), m_PlaybackBits(16), m_PlaybackStereo(true), m_MusicVolume(DEF_MUSIC_VOL), m_SoundVolume(DEF_SFX_VOL),
+      m_RealMusicVolume(DEF_MUSIC_VOL), m_RealSoundVolume(DEF_SFX_VOL), m_Max2DSamples(DEF_2D_SAMPLE_COUNT), m_Max3DSamples(DEF_3D_SAMPLE_COUNT),
+      m_Max2DBufferSize(DEF_MAX_2D_BUFFER_SIZE), m_Max3DBufferSize(DEF_MAX_3D_BUFFER_SIZE), m_UpdateTimer(-1),
+      m_IsMusicEnabled(true), m_IsDialogEnabled(true), m_IsCinematicSoundEnabled(true),
+      m_AreSoundEffectsEnabled(true), m_AreNewSoundsEnabled(true),
+      m_FileFactory(nullptr), m_BackgroundMusic(nullptr), m_CachedIsMusicEnabled(true),
+      m_CachedIsDialogEnabled(true), m_CachedIsCinematicSoundEnabled(true), m_CachedAreSoundEffectsEnabled(true), m_SoundScene(nullptr),
+      m_CurrPage(PAGE_PRIMARY), m_Driver2D(nullptr), m_Driver3D(0), m_Driver3DPseudo(0),
+      m_ReverbFilter(INVALID_MILES_HANDLE), m_SpeakerType(0), m_MaxCacheSize(DEF_CACHE_SIZE * 1024),
+      m_CurrentCacheSize(0), m_EffectsLevel(0), m_ReverbRoomType(ENVIRONMENT_GENERIC), m_NonDialogFadeTime(DEF_FADE_TIME),
+      m_FadeType(FADE_NONE), m_FadeTimer(0), AudioIni(nullptr) {
   ::InitializeCriticalSection(&MMSLockClass::_MSSLockCriticalSection);
 
   m_ForceDisable = lite;
@@ -160,7 +160,7 @@ WWAudioClass::WWAudioClass(bool lite)
   //	Allocate the virtual channels
   //
   for (int index = 0; index < MAX_VIRTUAL_CHANNELS; index++) {
-    m_VirtualChannels.Add(nullptr);
+    m_VirtualChannels.push_back(nullptr);
   }
 
   // Create a new sound scene to manage our 3D sounds...
@@ -1077,18 +1077,16 @@ void WWAudioClass::Flush_Playlist() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Free_Completed_Sounds() {
-  if (m_CompletedSounds.Count() > 0) {
+  if (!m_CompletedSounds.empty()) {
 
     //
     // Loop through all the entries in the completed sounds list
     //
-    for (int index = 0; index < m_CompletedSounds.Count(); index++) {
-      AudibleSoundClass *sound_obj = m_CompletedSounds[index];
+    for (auto sound_obj : m_CompletedSounds) {
       WWASSERT(sound_obj != nullptr); // TSS 05/24/99
 
       //
-      //	Be careful not to remove the sound from the playlist unless
-      // its really done playing
+      // Be careful not to remove the sound from the playlist unless it's really done playing
       //
       if (sound_obj->Get_State() == AudibleSoundClass::STATE_STOPPED) {
 
@@ -1115,7 +1113,7 @@ void WWAudioClass::Free_Completed_Sounds() {
     //
     // Free the list structure
     //
-    m_CompletedSounds.Delete_All();
+    m_CompletedSounds.clear();
 
     //
     // Try to give a play-handle back to a sound that was priority-bumped.
@@ -1136,7 +1134,6 @@ AudibleSoundClass *WWAudioClass::Get_Playlist_Entry(int index) const {
   WWASSERT(index >= 0 && index < m_Playlist[m_CurrPage].Count());
   if ((index >= 0) && (index < m_Playlist[m_CurrPage].Count())) {
     m_Playlist[m_CurrPage][index]->Add_Ref();
-    m_Playlist[m_CurrPage][index];
   }
 
   // Return a pointer to the sound object
@@ -1199,7 +1196,7 @@ bool WWAudioClass::Remove_From_Playlist(AudibleSoundClass *sound_obj) {
           //
           // Add this sound to the 'completed' list
           //
-          m_CompletedSounds.Add(sound_obj);
+          m_CompletedSounds.push_back(sound_obj);
           retval = true;
         }
       }
@@ -1354,14 +1351,13 @@ void WWAudioClass::Release_2D_Handles() {
   MMSLockClass lock;
 
   // Release our hold on all the samples we've allocated
-  for (int index = 0; index < m_2DSampleHandles.Count(); index++) {
-    HSAMPLE sample = m_2DSampleHandles[index];
+  for (const auto sample : m_2DSampleHandles) {
     if (sample != nullptr) {
       ::AIL_release_sample_handle(sample);
     }
   }
 
-  m_2DSampleHandles.Delete_All();
+  m_2DSampleHandles.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1382,12 +1378,12 @@ void WWAudioClass::Allocate_2D_Handles() {
       HSAMPLE sample = ::AIL_allocate_sample_handle(m_Driver2D);
       if (sample != nullptr) {
         ::AIL_set_sample_user_data(sample, INFO_OBJECT_PTR, 0);
-        m_2DSampleHandles.Add(sample);
+        m_2DSampleHandles.push_back(sample);
       }
     }
 
     // Record our actual number of available 2D sample handles
-    m_Max2DSamples = m_2DSampleHandles.Count();
+    m_Max2DSamples = m_2DSampleHandles.size();
   }
 }
 
@@ -1413,7 +1409,7 @@ WWAudioClass::Get_2D_Sample(const AudibleSoundClass &sound_obj) {
   // Loop through all the available sample handles and try to find
   // one that isn't being used to play a sound.
   bool found = false;
-  for (int index = 0; (index < m_2DSampleHandles.Count()) && !found; index++) {
+  for (int index = 0; (static_cast<size_t>(index) < m_2DSampleHandles.size()) && !found; index++) {
 
     HSAMPLE sample = m_2DSampleHandles[index];
     if (sample != nullptr) {
@@ -1478,7 +1474,7 @@ WWAudioClass::Get_3D_Sample(const Sound3DClass &sound_obj) {
   // Loop through all the available sample handles and try to find
   // one that isn't being used to play a sound.
   bool found = false;
-  for (int index = 0; (index < m_3DSampleHandles.Count()) && !found; index++) {
+  for (int index = 0; (static_cast<size_t>(index) < m_3DSampleHandles.size()) && !found; index++) {
 
     H3DSAMPLE sample = m_3DSampleHandles[index];
     if (sample != nullptr) {
@@ -1547,10 +1543,10 @@ void WWAudioClass::Build_3D_Driver_List() {
 
     // Can we successfully open this provider?
     if (::AIL_open_3D_provider(provider) == M3D_NOERR) {
-      DRIVER_INFO_STRUCT *info = new DRIVER_INFO_STRUCT;
+      std::shared_ptr<DRIVER_INFO_STRUCT> info = std::make_shared<DRIVER_INFO_STRUCT>();
       info->driver = provider;
-      info->name = ::strdup(name);
-      m_Driver3DList.Add(info);
+      info->name = name;
+      m_Driver3DList.push_back(info);
       ::AIL_close_3D_provider(provider);
     } else {
       char *error_info = ::AIL_last_error();
@@ -1568,8 +1564,8 @@ void WWAudioClass::Build_3D_Driver_List() {
     //
     // Couldn't select a known driver, so just use the first possible.
     //
-    if (m_Driver3DList.Count() > 0) {
-      Select_3D_Device((int)0);
+    if (!m_Driver3DList.empty()) {
+      Select_3D_Device(0);
     }
   }
 }
@@ -1588,23 +1584,6 @@ void WWAudioClass::Free_3D_Driver_List() {
   Remove_3D_Sound_Handles();
   Release_3D_Handles();
 
-  //
-  // Loop through all the driver entries and free them all
-  //
-  for (int index = 0; index < m_Driver3DList.Count(); index++) {
-    DRIVER_INFO_STRUCT *info = m_Driver3DList[index];
-    if (info != nullptr) {
-
-      //
-      // Free the information we have stored with this driver
-      //
-      if (info->name != nullptr) {
-        ::free(info->name);
-      }
-      delete info;
-    }
-  }
-
   if (m_Driver3D != 0) {
     ::AIL_close_3D_provider(m_Driver3D);
     m_Driver3D = 0;
@@ -1613,7 +1592,7 @@ void WWAudioClass::Free_3D_Driver_List() {
   //
   // Clear the list
   //
-  m_Driver3DList.Delete_All();
+  m_Driver3DList.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1621,23 +1600,17 @@ void WWAudioClass::Free_3D_Driver_List() {
 //	Select_3D_Device
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Select_3D_Device(const char *device_name) {
+bool WWAudioClass::Select_3D_Device(const std::string& device_name) {
   bool retval = false;
 
   //
   // Loop through all the drivers until we've found the one we want
   //
-  for (int index = 0; index < m_Driver3DList.Count(); index++) {
-    DRIVER_INFO_STRUCT *info = m_Driver3DList[index];
-    if (info != nullptr) {
-
-      //
-      //	Is this the device we were looking for?
-      //
-      if (::lstrcmpi(info->name, device_name) == 0) {
-        retval = Select_3D_Device(device_name, info->driver);
-        break;
-      }
+  for (auto const &entry : m_Driver3DList) {
+    //	Is this the device we were looking for?
+    if (entry->name == device_name) {
+      retval = Select_3D_Device(device_name, entry->driver);
+      break;
     }
   }
 
@@ -1649,7 +1622,7 @@ bool WWAudioClass::Select_3D_Device(const char *device_name) {
 //	Select_3D_Device
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Select_3D_Device(const char *device_name, HPROVIDER provider) {
+bool WWAudioClass::Select_3D_Device(const std::string& device_name, HPROVIDER provider) {
   bool retval = false;
   if ((provider != 0) && (provider != m_Driver3D)) {
 
@@ -1667,9 +1640,9 @@ bool WWAudioClass::Select_3D_Device(const char *device_name, HPROVIDER provider)
       //
       //	Adjust the effects level to 1.0 if this is an EAX based driver
       //
-      StringClass lower_name = device_name;
+      StringClass lower_name = device_name.c_str();
       ::strlwr(lower_name.Peek_Buffer());
-      if (::strstr(device_name, "eax") != nullptr) {
+      if (::strstr(device_name.c_str(), "eax") != nullptr) {
         m_EffectsLevel = 1.0F;
       } else {
         m_EffectsLevel = 0.0F;
@@ -1696,9 +1669,9 @@ bool WWAudioClass::Select_3D_Device(int index) {
   //
   // Index valid?
   //
-  if ((index >= 0) && (index < m_Driver3DList.Count())) {
+  if ((index >= 0) && (static_cast<size_t>(index) < m_Driver3DList.size())) {
     Select_3D_Device(m_Driver3DList[index]->name, m_Driver3DList[index]->driver);
-    WWDEBUG_SAY(("WWAudio: Selecting 3D sound device: %s.\r\n", m_Driver3DList[index]->name));
+    WWDEBUG_SAY(("WWAudio: Selecting 3D sound device: %s.\r\n", m_Driver3DList[index]->name.c_str()));
     retval = true;
   }
 
@@ -1751,12 +1724,12 @@ int WWAudioClass::Find_3D_Device(DRIVER_TYPE_3D type) {
 
   // Loop through all the driver entries and free them all
   int driver_index = -1;
-  for (int index = 0; (index < m_Driver3DList.Count()) && (driver_index == -1); index++) {
-    DRIVER_INFO_STRUCT *info = m_Driver3DList[index];
-    if ((info != nullptr) && (info->name != nullptr)) {
+  for (size_t index = 0; index < m_Driver3DList.size() && (driver_index == -1); index++) {
+    auto info = m_Driver3DList[index];
+    if (info != nullptr) {
 
       // Is this the driver we were looking for?
-      if (::strstr(info->name, sub_string) != nullptr) {
+      if (::strstr(info->name.c_str(), sub_string) != nullptr) {
         driver_index = index;
       }
     }
@@ -1784,7 +1757,7 @@ void WWAudioClass::Allocate_3D_Handles() {
       H3DSAMPLE sample = ::AIL_allocate_3D_sample_handle(m_Driver3D);
       if (sample != nullptr) {
         ::AIL_set_3D_object_user_data(sample, INFO_OBJECT_PTR, 0);
-        m_3DSampleHandles.Add(sample);
+        m_3DSampleHandles.push_back(sample);
       }
     }
   }
@@ -1801,14 +1774,13 @@ void WWAudioClass::Release_3D_Handles() {
   //
   // Release our hold on all the samples we've allocated
   //
-  for (int index = 0; index < m_3DSampleHandles.Count(); index++) {
-    H3DSAMPLE sample = m_3DSampleHandles[index];
+  for (const auto sample : m_3DSampleHandles) {
     if (sample != nullptr) {
       ::AIL_release_3D_sample_handle(sample);
     }
   }
 
-  m_3DSampleHandles.Delete_All();
+  m_3DSampleHandles.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1879,8 +1851,7 @@ void WWAudioClass::Remove_2D_Sound_Handles() {
   //
   //	Loop over all the 2D handles
   //
-  for (int index = 0; index < m_2DSampleHandles.Count(); index++) {
-    HSAMPLE sample = m_2DSampleHandles[index];
+  for (const auto sample : m_2DSampleHandles) {
     if (sample != nullptr) {
 
       //
@@ -1903,8 +1874,7 @@ void WWAudioClass::Remove_3D_Sound_Handles() {
   //
   //	Loop over all the 3D handles
   //
-  for (int index = 0; index < m_3DSampleHandles.Count(); index++) {
-    H3DSAMPLE sample = m_3DSampleHandles[index];
+  for (auto const sample : m_3DSampleHandles) {
     if (sample != nullptr) {
 
       //
@@ -2488,7 +2458,7 @@ LogicalListenerClass *WWAudioClass::Create_Logical_Listener() { return new Logic
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Add_Logical_Type(int id, LPCTSTR display_name) {
-  m_LogicalTypes.Add(LOGICAL_TYPE_STRUCT(id, display_name));
+  m_LogicalTypes.emplace_back(id, display_name);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2496,7 +2466,7 @@ void WWAudioClass::Add_Logical_Type(int id, LPCTSTR display_name) {
 //	Reset_Logical_Types
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-void WWAudioClass::Reset_Logical_Types() { m_LogicalTypes.Delete_All(); }
+void WWAudioClass::Reset_Logical_Types() { m_LogicalTypes.clear(); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2506,8 +2476,8 @@ void WWAudioClass::Reset_Logical_Types() { m_LogicalTypes.Delete_All(); }
 int WWAudioClass::Get_Logical_Type(int index, StringClass &name) {
   int type_id = 0;
 
-  WWASSERT(index >= 0 && index < m_LogicalTypes.Count());
-  if (index >= 0 && index < m_LogicalTypes.Count()) {
+  WWASSERT(index >= 0 && static_cast<size_t>(index) < m_LogicalTypes.size());
+  if (index >= 0 && static_cast<size_t>(index) < m_LogicalTypes.size()) {
     type_id = m_LogicalTypes[index].id;
     name = m_LogicalTypes[index].display_name;
   }
@@ -2542,7 +2512,7 @@ SoundSceneObjClass *WWAudioClass::Find_Sound_Object(uint32 sound_obj_id) {
 bool WWAudioClass::Load_From_Registry(const char *subkey_name) {
   bool retval = true;
 
-  StringClass device_name;
+  std::string device_name;
   bool is_stereo = true;
   int bits = 16;
   int hertz = 44100;
@@ -2587,7 +2557,7 @@ bool WWAudioClass::Load_From_Registry(const char *subkey_name) {
 //	Load_From_Registry
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Load_From_Registry(const char *subkey_name, StringClass &device_name, bool &is_stereo, int &bits,
+bool WWAudioClass::Load_From_Registry(const char *subkey_name, std::string &device_name, bool &is_stereo, int &bits,
                                       int &hertz, bool &sound_enabled, bool &music_enabled, bool &dialog_enabled,
                                       bool &cinematic_enabled, float &sound_volume, float &music_volume,
                                       float &dialog_volume, float &cinematic_volume, int &speaker_type) {
@@ -2654,14 +2624,12 @@ bool WWAudioClass::Load_From_Registry(const char *subkey_name, StringClass &devi
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool WWAudioClass::Save_To_Registry(const char *subkey_name) {
-  StringClass device_name;
+  std::string device_name;
 
   //
   // Get the name of the current 3D driver
   //
-  for (int index = 0; index < m_Driver3DList.Count(); index++) {
-    DRIVER_INFO_STRUCT *info = m_Driver3DList[index];
-
+  for (const auto& info : m_Driver3DList) {
     //
     //	Is this the device we were looking for?
     //
@@ -2684,7 +2652,7 @@ bool WWAudioClass::Save_To_Registry(const char *subkey_name) {
 //	Save_To_Registry
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Save_To_Registry(const char *subkey_name, const StringClass &device_name, bool is_stereo, int bits,
+bool WWAudioClass::Save_To_Registry(const char *subkey_name, const std::string &device_name, bool is_stereo, int bits,
                                     int hertz, bool sound_enabled, bool music_enabled, bool dialog_enabled,
                                     bool cinematic_enabled, float sound_volume, float music_volume, float dialog_volume,
                                     float cinematic_volume, int speaker_type) {
@@ -2699,7 +2667,7 @@ bool WWAudioClass::Save_To_Registry(const char *subkey_name, const StringClass &
     //
     //	Save the settings to the registry
     //
-    registry.Set_String(VALUE_NAME_DEVICE_NAME, device_name);
+    registry.Set_String(VALUE_NAME_DEVICE_NAME, device_name.c_str());
     registry.Set_Int(VALUE_NAME_IS_STEREO, is_stereo);
     registry.Set_Int(VALUE_NAME_BITS, bits);
     registry.Set_Int(VALUE_NAME_HERTZ, hertz);
@@ -3007,7 +2975,7 @@ void WWAudioClass::Update_Fade() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 AudibleSoundClass *WWAudioClass::Peek_2D_Sample(int index) {
-  if (index < 0 || index > m_2DSampleHandles.Count()) {
+  if (index < 0 || static_cast<size_t>(index) > m_2DSampleHandles.size()) {
     return nullptr;
   }
 
@@ -3031,7 +2999,7 @@ AudibleSoundClass *WWAudioClass::Peek_2D_Sample(int index) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 AudibleSoundClass *WWAudioClass::Peek_3D_Sample(int index) {
-  if (index < 0 || index > m_3DSampleHandles.Count()) {
+  if (index < 0 || static_cast<size_t>(index) > m_3DSampleHandles.size()) {
     return nullptr;
   }
 
@@ -3150,7 +3118,7 @@ int WWAudioClass::Get_Speaker_Type() const { return m_SpeakerType; }
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Push_Active_Sound_Page(SOUND_PAGE page) {
-  m_PageStack.Add(m_CurrPage);
+  m_PageStack.push_back(m_CurrPage);
   Set_Active_Sound_Page(page);
 }
 
@@ -3160,9 +3128,9 @@ void WWAudioClass::Push_Active_Sound_Page(SOUND_PAGE page) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::Pop_Active_Sound_Page() {
-  if (m_PageStack.Count() > 0) {
-    SOUND_PAGE new_page = m_PageStack[m_PageStack.Count() - 1];
-    m_PageStack.Delete(m_PageStack.Count() - 1);
+  if (!m_PageStack.empty()) {
+    SOUND_PAGE new_page = m_PageStack.back();
+    m_PageStack.pop_back();
     Set_Active_Sound_Page(new_page);
   }
 }

@@ -37,6 +37,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "always.h"
 #pragma warning(push, 3)
 #include "Mss.H"
@@ -135,7 +139,7 @@ public:
 
   typedef struct _DRIVER_INFO_STRUCT {
     HPROVIDER driver;
-    char *name;
+    std::string name;
   } DRIVER_INFO_STRUCT;
 
   //////////////////////////////////////////////////////////////////////
@@ -178,7 +182,7 @@ public:
   //////////////////////////////////////////////////////////////////////
   HDIGDRIVER Get_2D_Driver() const { return m_Driver2D; }
   HPROVIDER Get_3D_Driver() const { return m_Driver3D; }
-  const StringClass &Get_3D_Driver_Name() const { return m_Driver3DName; }
+  const std::string &Get_3D_Driver_Name() const { return m_Driver3DName; }
   HPROVIDER Get_Reverb_Filter() const { return m_ReverbFilter; }
 
   //////////////////////////////////////////////////////////////////////
@@ -196,19 +200,22 @@ public:
   //////////////////////////////////////////////////////////////////////
 
   // Device information
-  int Get_3D_Device_Count() const { return m_Driver3DList.Count(); }
-  bool Get_3D_Device(int index, DRIVER_INFO_STRUCT **info) {
-    (*info) = m_Driver3DList[index];
-    return true;
+  int Get_3D_Device_Count() const { return m_Driver3DList.size(); }
+  bool Get_3D_Device(int index, std::shared_ptr<DRIVER_INFO_STRUCT> &info) const {
+    if (index >= 0 && static_cast<size_t>(index) < m_Driver3DList.size()) {
+      info = m_Driver3DList[index];
+      return true;
+    }
+    return false;
   }
   bool Is_3D_Device_Available(DRIVER_TYPE_3D type) { return Find_3D_Device(type) >= 0; }
   int Find_3D_Device(DRIVER_TYPE_3D type);
 
   // Device selection
   bool Select_3D_Device(int index);
-  bool Select_3D_Device(const char *device_name, HPROVIDER provider);
+  bool Select_3D_Device(const std::string& device_name, HPROVIDER provider);
   bool Select_3D_Device(DRIVER_TYPE_3D type);
-  bool Select_3D_Device(const char *device_name);
+  bool Select_3D_Device(const std::string& device_name);
   bool Close_3D_Device();
 
   //////////////////////////////////////////////////////////////////////
@@ -231,12 +238,12 @@ public:
   //	Registry settings
   //////////////////////////////////////////////////////////////////////
   bool Load_From_Registry(const char *subkey_name);
-  bool Load_From_Registry(const char *subkey_name, StringClass &device_name, bool &is_stereo, int &bits, int &hertz,
+  bool Load_From_Registry(const char *subkey_name, std::string &device_name, bool &is_stereo, int &bits, int &hertz,
                           bool &sound_enabled, bool &music_enabled, bool &dialog_enabled, bool &cinematic_sound_enabled,
                           float &sound_volume, float &music_volume, float &dialog_volume, float &cinematic_volume,
                           int &speaker_types);
   bool Save_To_Registry(const char *subkey_name);
-  bool Save_To_Registry(const char *subkey_name, const StringClass &device_name, bool is_stereo, int bits, int hertz,
+  bool Save_To_Registry(const char *subkey_name, const std::string &device_name, bool is_stereo, int bits, int hertz,
                         bool sound_enabled, bool music_enabled, bool dialog_enabled, bool cinematic_sound_enabled,
                         float sound_volume, float music_volume, float dialog_volume, float cinematic_volume,
                         int speaker_type);
@@ -392,7 +399,7 @@ public:
   //
   void Add_Logical_Type(int id, LPCTSTR display_name);
   void Reset_Logical_Types();
-  int Get_Logical_Type_Count() const { return m_LogicalTypes.Count(); }
+  int Get_Logical_Type_Count() const { return m_LogicalTypes.size(); }
   int Get_Logical_Type(int index, StringClass &name);
 
   //////////////////////////////////////////////////////////////////////
@@ -518,8 +525,8 @@ public:
   //
   //	Debug support for determine what sounds are playing on which "channels"
   //
-  int Get_2D_Sample_Count() const { return m_2DSampleHandles.Count(); }
-  int Get_3D_Sample_Count() const { return m_3DSampleHandles.Count(); }
+  int Get_2D_Sample_Count() const { return m_2DSampleHandles.size(); }
+  int Get_3D_Sample_Count() const { return m_3DSampleHandles.size(); }
   AudibleSoundClass *Peek_2D_Sample(int index);
   AudibleSoundClass *Peek_3D_Sample(int index);
 
@@ -608,16 +615,16 @@ private:
     bool operator!=(const _CACHE_ENTRY_STRUCT &src) { return true; }
   } CACHE_ENTRY_STRUCT;
 
-  typedef struct _LOGICAL_TYPE_STRUCT {
+  typedef struct LOGICAL_TYPE_STRUCT {
     StringClass display_name;
     int id;
 
-    _LOGICAL_TYPE_STRUCT() : id(0) {}
+    LOGICAL_TYPE_STRUCT() : id(0) {}
 
-    _LOGICAL_TYPE_STRUCT(int _id, LPCTSTR name) : display_name(name), id(_id) {}
+    LOGICAL_TYPE_STRUCT(int _id, LPCTSTR name) : display_name(name), id(_id) {}
 
-    bool operator==(const _LOGICAL_TYPE_STRUCT &src) { return false; }
-    bool operator!=(const _LOGICAL_TYPE_STRUCT &src) { return true; }
+    bool operator==(const LOGICAL_TYPE_STRUCT &src) const { return false; }
+    bool operator!=(const LOGICAL_TYPE_STRUCT &src) const { return true; }
   } LOGICAL_TYPE_STRUCT;
 
   //////////////////////////////////////////////////////////////////////
@@ -668,27 +675,27 @@ private:
   // Sound scene management
   SoundSceneClass *m_SoundScene;
   SOUND_PAGE m_CurrPage;
-  DynamicVectorClass<SOUND_PAGE> m_PageStack;
+  std::vector<SOUND_PAGE> m_PageStack;
 
   //	Driver information
   HDIGDRIVER m_Driver2D;
   HPROVIDER m_Driver3D;
   HPROVIDER m_Driver3DPseudo;
   HPROVIDER m_ReverbFilter;
-  DynamicVectorClass<DRIVER_INFO_STRUCT *> m_Driver3DList;
-  StringClass m_Driver3DName;
+  std::vector<std::shared_ptr<DRIVER_INFO_STRUCT>> m_Driver3DList;
+  std::string m_Driver3DName;
   int m_SpeakerType;
 
   // Available sample handles
-  DynamicVectorClass<HSAMPLE> m_2DSampleHandles;
-  DynamicVectorClass<H3DSAMPLE> m_3DSampleHandles;
+  std::vector<HSAMPLE> m_2DSampleHandles;
+  std::vector<H3DSAMPLE> m_3DSampleHandles;
 
-  // Playlist managment
+  // Playlist management
   DynamicVectorClass<AudibleSoundClass *> m_Playlist[PAGE_COUNT];
-  DynamicVectorClass<AudibleSoundClass *> m_CompletedSounds;
+  std::vector<AudibleSoundClass *> m_CompletedSounds;
 
-  //	Virtual channel support
-  DynamicVectorClass<AudibleSoundClass *> m_VirtualChannels;
+  // Virtual channel support
+  std::vector<AudibleSoundClass *> m_VirtualChannels;
 
   // Buffer caching
   DynamicVectorClass<CACHE_ENTRY_STRUCT> m_CachedBuffers[MAX_CACHE_HASH];
@@ -696,7 +703,7 @@ private:
   int m_CurrentCacheSize;
 
   // Logical type management
-  DynamicVectorClass<LOGICAL_TYPE_STRUCT> m_LogicalTypes;
+  std::vector<LOGICAL_TYPE_STRUCT> m_LogicalTypes;
 
   //	Reverb support
   float m_EffectsLevel;
