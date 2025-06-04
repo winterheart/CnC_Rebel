@@ -34,15 +34,14 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdio>
+
 #include "debug.h"
 #include "input.h"
 #include "ww3dtrig.h"
 #include "wwphystrig.h"
-#include "timemgr.h"
 #include "ww3d.h"
 #include "registry.h"
-#include <stdio.h>
-#include "wwaudio.h"
 #include "combat.h"
 #include "wwmemlog.h"
 #include "fastallocator.h"

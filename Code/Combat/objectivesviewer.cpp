@@ -38,7 +38,6 @@
 #include "objectivesviewer.h"
 #include "assetmgr.h"
 #include "texture.h"
-#include "font3d.h"
 #include "objectives.h"
 #include "translatedb.h"
 #include "wwaudio.h"

@@ -41,19 +41,15 @@
 #include "debug.h"
 #include "crandom.h"
 #include "cover.h"
-#include "wwaudio.h"
 #include "persistfactory.h"
 #include "combatchunkid.h"
 #include "combat.h"
 #include "gameobjobserver.h"
 #include "gameobjmanager.h"
 #include "weapons.h"
-#include "conversationmgr.h"
 #include "pathfind.h"
-#include "timemgr.h"
 #include "weaponbag.h"
 #include "wwprofile.h"
-#include "playertype.h"
 
 #define THINK_RATE 1
 #define THINK_ID 100123

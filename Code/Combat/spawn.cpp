@@ -47,7 +47,6 @@
 #include "gameobjmanager.h"
 #include "soldierobserver.h"
 #include "crandom.h"
-#include "wwaudio.h"
 #include "assets.h"
 #include "objlibrary.h"
 #include "movephys.h"

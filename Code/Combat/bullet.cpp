@@ -46,7 +46,6 @@
 #include "crandom.h"
 #include "surfaceeffects.h"
 #include "mesh.h"
-#include "wwaudio.h"
 #include "explosion.h"
 #include "building.h"
 #include "persistfactory.h"

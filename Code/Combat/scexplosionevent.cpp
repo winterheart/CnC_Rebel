@@ -35,15 +35,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "scexplosionevent.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "networkobjectfactory.h"
-#include "wwaudio.h"
 #include "matrix3d.h"
 #include "translatedb.h"
-#include "string_ids.h"
 #include "apppackettypes.h"
 #include "bitpackids.h"
 #include "explosion.h"

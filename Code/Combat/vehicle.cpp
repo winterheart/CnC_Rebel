@@ -42,7 +42,6 @@
 #include "debug.h"
 #include "combat.h"
 #include "pscene.h"
-#include "assets.h"
 #include "rendobj.h"
 #include "soldier.h"
 #include "weapons.h"
@@ -50,16 +49,13 @@
 #include "wwpacket.h"
 #include "gameobjmanager.h"
 #include <stdio.h>
-#include "WWAudio.H"
 #include "Sound3D.H"
 #include "vehiclephys.h"
-#include "motorcycle.h"
 #include "trackedvehicle.h"
 #include "vtolvehicle.h"
 #include "wheelvehicle.h"
 #include "wheel.h"
 #include "phys3.h"
-#include "humanphys.h"
 #include "persistfactory.h"
 #include "combatchunkid.h"
 #include "simpledefinitionfactory.h"
@@ -77,7 +73,6 @@
 #include "globalsettings.h"
 #include "basecontroller.h"
 #include "string_ids.h"
-#include "specialbuilds.h"
 
 /*
 ** Local prototypes

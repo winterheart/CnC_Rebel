@@ -48,10 +48,7 @@
 #include "input.h"
 #include "useroptions.h"
 
-#include "WWAudio.H"
-
 #include "buildinfo.h"
-#include "debug.h"
 #include "dxdefs.h"
 #include "verchk.h"
 #include "devoptions.h"
@@ -71,10 +68,7 @@
 #include "formconv.h"
 #include "autostart.h"
 #include "consolemode.h"
-#include "specialbuilds.h"
 #include "slavemaster.h"
-
-#include "serversettings.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
