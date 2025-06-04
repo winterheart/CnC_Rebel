@@ -217,7 +217,6 @@ void WWAudioClass::Flush_Cache() {
       CACHE_ENTRY_STRUCT &info = m_CachedBuffer[index];
 
       // Free the buffer data
-      SAFE_FREE(info.string_id);
       REF_PTR_RELEASE(info.buffer);
     }
 
@@ -465,7 +464,7 @@ SoundBufferClass *WWAudioClass::Find_Cached_Buffer(const char *string_id) {
       // Is this the sound buffer we were looking for?
       //
       CACHE_ENTRY_STRUCT &info = m_CachedBuffers[hash_index][index];
-      if (::lstrcmpi(info.string_id, string_id) == 0) {
+      if (info.string_id == string_id) {
         sound_buffer = info.buffer;
         sound_buffer->Add_Ref();
         break;
@@ -501,7 +500,6 @@ bool WWAudioClass::Free_Cache_Space(int bytes) {
         bytes_freed += info.buffer->Get_Raw_Length();
 
         // Free the buffer data
-        SAFE_FREE(info.string_id);
         REF_PTR_RELEASE(info.buffer);
 
         // Remove this entry from the hash table
@@ -1094,7 +1092,7 @@ void WWAudioClass::Free_Completed_Sounds() {
         //
         bool found = false;
         for (int page = 0; page < PAGE_COUNT && !found; page++) {
-          for (int play_index = 0; (play_index < m_Playlist[page].size()) && !found; play_index++) {
+          for (int play_index = 0; (static_cast<size_t>(play_index) < m_Playlist[page].size()) && !found; play_index++) {
             if (m_Playlist[page][play_index] == sound_obj) {
 
               //
@@ -1130,8 +1128,8 @@ AudibleSoundClass *WWAudioClass::Get_Playlist_Entry(int index) const {
   AudibleSoundClass *sound_obj = nullptr;
 
   // Params OK?
-  WWASSERT(index >= 0 && index < m_Playlist[m_CurrPage].size());
-  if ((index >= 0) && (index < m_Playlist[m_CurrPage].size())) {
+  WWASSERT(index >= 0 && static_cast<size_t>(index) < m_Playlist[m_CurrPage].size());
+  if ((index >= 0) && (static_cast<size_t>(index) < m_Playlist[m_CurrPage].size())) {
     m_Playlist[m_CurrPage][index]->Add_Ref();
   }
 
@@ -1154,7 +1152,7 @@ bool WWAudioClass::Add_To_Playlist(AudibleSoundClass *sound) {
     // Loop through all the entries in the playlist
     //
     bool already_added = false;
-    for (int index = 0; (index < m_Playlist[m_CurrPage].size()) && (already_added == false); index++) {
+    for (size_t index = 0; (index < m_Playlist[m_CurrPage].size()) && (already_added == false); index++) {
       already_added = (sound == m_Playlist[m_CurrPage][index]);
     }
 
@@ -1185,7 +1183,7 @@ bool WWAudioClass::Remove_From_Playlist(AudibleSoundClass *sound_obj) {
     // Loop through all the entries in the playlist
     //
     for (int page = 0; page < PAGE_COUNT && !retval; page++) {
-      for (int index = 0; (index < m_Playlist[page].size()) && !retval; index++) {
+      for (size_t index = 0; (index < m_Playlist[page].size()) && !retval; index++) {
 
         //
         // Is this the entry we are looking for?
@@ -1228,7 +1226,7 @@ bool WWAudioClass::Is_Sound_In_Playlist(AudibleSoundClass *sound_obj) {
   bool retval = false;
 
   // Loop through all the entries in the playlist
-  for (int index = 0; (index < m_Playlist[m_CurrPage].size()) && (retval == false); index++) {
+  for (size_t index = 0; (index < m_Playlist[m_CurrPage].size()) && (retval == false); index++) {
     if (sound_obj == m_Playlist[m_CurrPage][index]) {
       retval = true;
     }

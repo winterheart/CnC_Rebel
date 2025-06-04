@@ -600,19 +600,19 @@ private:
   //////////////////////////////////////////////////////////////////////
   //	Private data types
   //////////////////////////////////////////////////////////////////////
-  typedef struct _CACHE_ENTRY_STRUCT {
-    char *string_id;
+  typedef struct CACHE_ENTRY_STRUCT {
+    std::string string_id;
     SoundBufferClass *buffer;
 
-    _CACHE_ENTRY_STRUCT() : string_id(nullptr), buffer(nullptr) {}
+    CACHE_ENTRY_STRUCT() : buffer(nullptr) {}
 
-    _CACHE_ENTRY_STRUCT &operator=(const _CACHE_ENTRY_STRUCT &src) {
-      string_id = ::strdup(src.string_id);
+    CACHE_ENTRY_STRUCT &operator=(const CACHE_ENTRY_STRUCT &src) {
+      string_id = src.string_id;
       REF_PTR_SET(buffer, src.buffer);
       return *this;
     }
-    bool operator==(const _CACHE_ENTRY_STRUCT &src) { return false; }
-    bool operator!=(const _CACHE_ENTRY_STRUCT &src) { return true; }
+    bool operator==(const CACHE_ENTRY_STRUCT &src) const { return false; }
+    bool operator!=(const CACHE_ENTRY_STRUCT &src) const { return true; }
   } CACHE_ENTRY_STRUCT;
 
   typedef struct LOGICAL_TYPE_STRUCT {
