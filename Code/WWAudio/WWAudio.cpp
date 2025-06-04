@@ -130,7 +130,7 @@ WWAudioClass::WWAudioClass(bool lite)
       m_RealMusicVolume(DEF_MUSIC_VOL), m_RealSoundVolume(DEF_SFX_VOL), m_Max2DSamples(DEF_2D_SAMPLE_COUNT), m_Max3DSamples(DEF_3D_SAMPLE_COUNT),
       m_Max2DBufferSize(DEF_MAX_2D_BUFFER_SIZE), m_Max3DBufferSize(DEF_MAX_3D_BUFFER_SIZE), m_UpdateTimer(-1),
       m_IsMusicEnabled(true), m_IsDialogEnabled(true), m_IsCinematicSoundEnabled(true),
-      m_AreSoundEffectsEnabled(true), m_AreNewSoundsEnabled(true),
+      m_AreSoundEffectsEnabled(true), m_AreNewSoundsEnabled(true), m_Playlist(PAGE_COUNT),
       m_FileFactory(nullptr), m_BackgroundMusic(nullptr), m_CachedIsMusicEnabled(true),
       m_CachedIsDialogEnabled(true), m_CachedIsCinematicSoundEnabled(true), m_CachedAreSoundEffectsEnabled(true), m_SoundScene(nullptr),
       m_CurrPage(PAGE_PRIMARY), m_Driver2D(nullptr), m_Driver3D(0), m_Driver3DPseudo(0),
@@ -1041,8 +1041,7 @@ void WWAudioClass::Flush_Playlist(SOUND_PAGE page) {
   //
   // Loop through all the entries in this playlist
   //
-  for (int index = 0; index < m_Playlist[page].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[page][index];
+  for (auto sound_obj : m_Playlist[page]) {
     if (sound_obj != nullptr) {
       sound_obj->Stop();
       sound_obj->Remove_From_Scene();
@@ -1058,7 +1057,7 @@ void WWAudioClass::Flush_Playlist(SOUND_PAGE page) {
   //
   // Free the list structure
   //
-  m_Playlist[page].Delete_All();
+  m_Playlist[page].clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1095,13 +1094,13 @@ void WWAudioClass::Free_Completed_Sounds() {
         //
         bool found = false;
         for (int page = 0; page < PAGE_COUNT && !found; page++) {
-          for (int play_index = 0; (play_index < m_Playlist[page].Count()) && !found; play_index++) {
+          for (int play_index = 0; (play_index < m_Playlist[page].size()) && !found; play_index++) {
             if (m_Playlist[page][play_index] == sound_obj) {
 
               //
               // Free our hold on this sound object
               //
-              m_Playlist[page].Delete(play_index);
+              m_Playlist[page].erase(m_Playlist[page].begin() + play_index);
               REF_PTR_RELEASE(sound_obj);
               found = true;
             }
@@ -1131,8 +1130,8 @@ AudibleSoundClass *WWAudioClass::Get_Playlist_Entry(int index) const {
   AudibleSoundClass *sound_obj = nullptr;
 
   // Params OK?
-  WWASSERT(index >= 0 && index < m_Playlist[m_CurrPage].Count());
-  if ((index >= 0) && (index < m_Playlist[m_CurrPage].Count())) {
+  WWASSERT(index >= 0 && index < m_Playlist[m_CurrPage].size());
+  if ((index >= 0) && (index < m_Playlist[m_CurrPage].size())) {
     m_Playlist[m_CurrPage][index]->Add_Ref();
   }
 
@@ -1155,7 +1154,7 @@ bool WWAudioClass::Add_To_Playlist(AudibleSoundClass *sound) {
     // Loop through all the entries in the playlist
     //
     bool already_added = false;
-    for (int index = 0; (index < m_Playlist[m_CurrPage].Count()) && (already_added == false); index++) {
+    for (int index = 0; (index < m_Playlist[m_CurrPage].size()) && (already_added == false); index++) {
       already_added = (sound == m_Playlist[m_CurrPage][index]);
     }
 
@@ -1164,7 +1163,7 @@ bool WWAudioClass::Add_To_Playlist(AudibleSoundClass *sound) {
     //
     if (already_added == false) {
       sound->Add_Ref();
-      m_Playlist[m_CurrPage].Add(sound);
+      m_Playlist[m_CurrPage].push_back(sound);
     }
   }
 
@@ -1186,7 +1185,7 @@ bool WWAudioClass::Remove_From_Playlist(AudibleSoundClass *sound_obj) {
     // Loop through all the entries in the playlist
     //
     for (int page = 0; page < PAGE_COUNT && !retval; page++) {
-      for (int index = 0; (index < m_Playlist[page].Count()) && !retval; index++) {
+      for (int index = 0; (index < m_Playlist[page].size()) && !retval; index++) {
 
         //
         // Is this the entry we are looking for?
@@ -1229,7 +1228,7 @@ bool WWAudioClass::Is_Sound_In_Playlist(AudibleSoundClass *sound_obj) {
   bool retval = false;
 
   // Loop through all the entries in the playlist
-  for (int index = 0; (index < m_Playlist[m_CurrPage].Count()) && (retval == false); index++) {
+  for (int index = 0; (index < m_Playlist[m_CurrPage].size()) && (retval == false); index++) {
     if (sound_obj == m_Playlist[m_CurrPage][index]) {
       retval = true;
     }
@@ -1251,12 +1250,11 @@ void WWAudioClass::Reprioritize_Playlist() {
   //
   // Loop through all the entries in the playlist
   //
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
 
     //
     // Is this the highest priority without a miles handle?
     //
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
     if ((sound_obj->Get_Miles_Handle() == nullptr) && (sound_obj->Is_Sound_Culled() == false) &&
         (sound_obj->Get_Priority() > hightest_priority)) {
       //
@@ -1308,12 +1306,11 @@ void WWAudioClass::On_Frame_Update(unsigned int milliseconds) {
   //
   // Loop through all the entries in the playlist
   //
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
 
     //
     // Update this sound object
     //
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
     sound_obj->On_Frame_Update(time_delta);
 
     //
@@ -1810,9 +1807,7 @@ bool WWAudioClass::Validate_3D_Sound_Buffer(SoundBufferClass *buffer) {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::ReAssign_2D_Handles() {
   // Loop through all the entries in the playlist
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
-
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     // If this is a 2D sound effect, then force it to 'get' a new
     // sound handle.
     if ((sound_obj->Get_Class_ID() == CLASSID_2D) || (sound_obj->Get_Class_ID() == CLASSID_PSEUDO3D) ||
@@ -1830,9 +1825,7 @@ void WWAudioClass::ReAssign_2D_Handles() {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioClass::ReAssign_3D_Handles() {
   // Loop through all the entries in the playlist
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
-
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     // If this is a 3D sound effect, then force it to 'get' a new
     // sound handle.
     if (sound_obj->Get_Class_ID() == CLASSID_3D) {
@@ -1898,8 +1891,7 @@ void WWAudioClass::Set_Dialog_Volume(float volume) {
 
   // Update all the currently playing 'Dialog' to
   // reflect this new volume
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_DIALOG) {
       sound_obj->Update_Volume();
     }
@@ -1918,8 +1910,7 @@ void WWAudioClass::Set_Cinematic_Volume(float volume) {
   // Update all the currently playing cinematic-counds to
   // reflect this new volume
   //
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_CINEMATIC) {
       sound_obj->Update_Volume();
     }
@@ -1958,8 +1949,7 @@ void WWAudioClass::Internal_Set_Sound_Effects_Volume(float volume) {
 
   // Update all the currently playing 'Sound Effects' to
   // reflect this new volume
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_SOUND_EFFECT) {
       sound_obj->Update_Volume();
     }
@@ -1976,8 +1966,7 @@ void WWAudioClass::Internal_Set_Music_Volume(float volume) {
 
   // Update all currently playing music to
   // reflect this new volume
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    AudibleSoundClass *sound_obj = m_Playlist[m_CurrPage][index];
+  for (auto sound_obj : m_Playlist[m_CurrPage]) {
     if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_MUSIC) {
       sound_obj->Update_Volume();
     }
@@ -2218,8 +2207,7 @@ void WWAudioClass::Allow_Sound_Effects(bool onoff) {
 
       for (int page = 0; page < PAGE_COUNT; page++) {
         Push_Active_Sound_Page((WWAudioClass::SOUND_PAGE)page);
-        for (int index = 0; index < m_Playlist[page].Count(); index++) {
-          AudibleSoundClass *sound_obj = m_Playlist[page][index];
+        for (auto sound_obj : m_Playlist[page]) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_SOUND_EFFECT) {
             sound_obj->Allocate_Miles_Handle();
           }
@@ -2229,8 +2217,7 @@ void WWAudioClass::Allow_Sound_Effects(bool onoff) {
     } else {
 
       for (auto &page : m_Playlist) {
-        for (int index = 0; index < page.Count(); index++) {
-          AudibleSoundClass *sound_obj = page[index];
+        for (auto sound_obj : page) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_SOUND_EFFECT) {
             sound_obj->Free_Miles_Handle();
           }
@@ -2258,8 +2245,7 @@ void WWAudioClass::Allow_Music(bool onoff) {
 
       for (int page = 0; page < PAGE_COUNT; page++) {
         Push_Active_Sound_Page((WWAudioClass::SOUND_PAGE)page);
-        for (int index = 0; index < m_Playlist[page].Count(); index++) {
-          AudibleSoundClass *sound_obj = m_Playlist[page][index];
+        for (auto sound_obj : m_Playlist[page]) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_MUSIC) {
             sound_obj->Stop(false);
             sound_obj->Play();
@@ -2271,8 +2257,7 @@ void WWAudioClass::Allow_Music(bool onoff) {
     } else {
 
       for (auto &page : m_Playlist) {
-        for (int index = 0; index < page.Count(); index++) {
-          AudibleSoundClass *sound_obj = page[index];
+        for (auto sound_obj : page) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_MUSIC) {
             sound_obj->Free_Miles_Handle();
           }
@@ -2300,8 +2285,7 @@ void WWAudioClass::Allow_Dialog(bool onoff) {
 
       for (int page = 0; page < PAGE_COUNT; page++) {
         Push_Active_Sound_Page((WWAudioClass::SOUND_PAGE)page);
-        for (int index = 0; index < m_Playlist[page].Count(); index++) {
-          AudibleSoundClass *sound_obj = m_Playlist[page][index];
+        for (auto sound_obj : m_Playlist[page]) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_DIALOG) {
             sound_obj->Stop(false);
             sound_obj->Play();
@@ -2313,8 +2297,7 @@ void WWAudioClass::Allow_Dialog(bool onoff) {
     } else {
 
       for (auto &page : m_Playlist) {
-        for (int index = 0; index < page.Count(); index++) {
-          AudibleSoundClass *sound_obj = page[index];
+        for (auto sound_obj : page) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_DIALOG) {
             sound_obj->Free_Miles_Handle();
           }
@@ -2342,8 +2325,7 @@ void WWAudioClass::Allow_Cinematic_Sound(bool onoff) {
 
       for (int page = 0; page < PAGE_COUNT; page++) {
         Push_Active_Sound_Page((WWAudioClass::SOUND_PAGE)page);
-        for (int index = 0; index < m_Playlist[page].Count(); index++) {
-          AudibleSoundClass *sound_obj = m_Playlist[page][index];
+        for (auto sound_obj : m_Playlist[page]) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_CINEMATIC) {
             sound_obj->Stop(false);
             sound_obj->Play();
@@ -2355,8 +2337,7 @@ void WWAudioClass::Allow_Cinematic_Sound(bool onoff) {
     } else {
 
       for (auto &page : m_Playlist) {
-        for (int index = 0; index < page.Count(); index++) {
-          AudibleSoundClass *sound_obj = page[index];
+        for (auto sound_obj : page) {
           if (sound_obj->Get_Type() == AudibleSoundClass::TYPE_CINEMATIC) {
             sound_obj->Free_Miles_Handle();
           }
@@ -2877,15 +2858,15 @@ void WWAudioClass::Set_Active_Sound_Page(SOUND_PAGE page) {
   //
   //	Pause any sounds that are playing in the old page
   //
-  for (int index = 0; index < m_Playlist[m_CurrPage].Count(); index++) {
-    m_Playlist[m_CurrPage][index]->Pause();
+  for (const auto & index : m_Playlist[m_CurrPage]) {
+    index->Pause();
   }
 
   //
   //	Resume any sounds that are playing in the new page
   //
-  for (int index = 0; index < m_Playlist[page].Count(); index++) {
-    m_Playlist[page][index]->Resume();
+  for (auto & index : m_Playlist[page]) {
+    index->Resume();
   }
 
   m_CurrPage = page;

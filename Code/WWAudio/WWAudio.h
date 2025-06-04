@@ -467,7 +467,7 @@ public:
   //////////////////////////////////////////////////////////////////////
   bool Add_To_Playlist(AudibleSoundClass *sound);
   bool Remove_From_Playlist(AudibleSoundClass *sound);
-  int Get_Playlist_Count() const { return m_Playlist[m_CurrPage].Count(); }
+  int Get_Playlist_Count() const { return m_Playlist[m_CurrPage].size(); }
   AudibleSoundClass *Get_Playlist_Entry(int index) const;
   AudibleSoundClass *Peek_Playlist_Entry(int index) const { return m_Playlist[m_CurrPage][index]; }
   void Flush_Playlist();
@@ -691,7 +691,7 @@ private:
   std::vector<H3DSAMPLE> m_3DSampleHandles;
 
   // Playlist management
-  DynamicVectorClass<AudibleSoundClass *> m_Playlist[PAGE_COUNT];
+  std::vector<std::vector<AudibleSoundClass *>> m_Playlist;
   std::vector<AudibleSoundClass *> m_CompletedSounds;
 
   // Virtual channel support
