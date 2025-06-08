@@ -40,8 +40,8 @@
 #include "aabtreecull.h"
 #include "gridcull.h"
 #include "listener.h"
-#include "soundcullobj.h"
-#include "logicallistener.h"
+#include "SoundCullObj.h"
+#include "LogicalListener.h"
 #include "multilist.h"
 
 // Forward declarations

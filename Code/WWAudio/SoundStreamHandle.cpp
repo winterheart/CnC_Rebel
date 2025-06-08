@@ -35,8 +35,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "soundstreamhandle.h"
-#include "audiblesound.h"
+#include "SoundStreamHandle.h"
+#include "AudibleSound.h"
 
 //////////////////////////////////////////////////////////////////////
 //

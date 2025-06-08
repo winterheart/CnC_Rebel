@@ -35,9 +35,9 @@
 
 #pragma once
 
-#include "Refcount.H"
-#include "WWAudio.H"
-#include "BitType.H"
+#include "Refcount.h"
+#include "WWAudio.h"
+#include "BitType.h"
 #include "persist.h"
 #include "persistfactory.h"
 #include "multilist.h"

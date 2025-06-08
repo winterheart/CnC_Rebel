@@ -37,14 +37,14 @@
 
 #include <algorithm>
 
-#include "sound3d.h"
-#include "wwaudio.h"
-#include "soundscene.h"
+#include "Sound3D.h"
+#include "WWAudio.h"
+#include "SoundScene.h"
 #include "utils.h"
-#include "soundchunkids.h"
+#include "SoundChunkIDs.h"
 #include "persistfactory.h"
 #include "chunkio.h"
-#include "sound3dhandle.h"
+#include "Sound3DHandle.h"
 #include "systimer.h"
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -37,6 +37,6 @@
 
 #pragma warning(disable : 4514)
 
-#include "Utils.H"
+#include "Utils.h"
 
 CRITICAL_SECTION MMSLockClass::_MSSLockCriticalSection;

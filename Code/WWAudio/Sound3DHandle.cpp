@@ -23,11 +23,11 @@
  *                                                                                             *
  *                 Project Name : wwaudio                                                      *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/WWAudio/sound2dhandle.cpp        $*
+ *                     $Archive:: /Commando/Code/WWAudio/sound3dhandle.cpp                    $*
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
- *                     $Modtime:: 10/31/01 3:02p                                              $*
+ *                     $Modtime:: 10/31/01 3:00p                                              $*
  *                                                                                             *
  *                    $Revision:: 3                                                           $*
  *                                                                                             *
@@ -35,47 +35,51 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "sound2dhandle.h"
-#include "audiblesound.h"
+#include "Sound3DHandle.h"
+#include "AudibleSound.h"
 #include "wwprofile.h"
 
 //////////////////////////////////////////////////////////////////////
 //
-//	Sound2DHandleClass
+//	Sound3DHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-Sound2DHandleClass::Sound2DHandleClass() : SampleHandle((HSAMPLE)INVALID_MILES_HANDLE) {}
+Sound3DHandleClass::Sound3DHandleClass() : SampleHandle((H3DSAMPLE)INVALID_MILES_HANDLE) {}
 
 //////////////////////////////////////////////////////////////////////
 //
-//	~Sound2DHandleClass
+//	~Sound3DHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-Sound2DHandleClass::~Sound2DHandleClass() = default;
+Sound3DHandleClass::~Sound3DHandleClass() = default;
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Initialize
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Initialize(SoundBufferClass *buffer) {
-  WWPROFILE("Sound2DHandleClass::Initialize");
+void Sound3DHandleClass::Initialize(SoundBufferClass *buffer) {
+  WWPROFILE("Sound3DHandleClass::Initialize");
 
   SoundHandleClass::Initialize(buffer);
 
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE && Buffer != nullptr) {
 
     //
-    // Make sure this handle is fresh
+    //	Configure the 3D sample
     //
-    ::AIL_init_sample(SampleHandle);
+    U32 success = ::AIL_set_3D_sample_file(SampleHandle, Buffer->Get_Raw_Buffer());
+
+    S32 test1 = 0;
+    S32 test2 = 0;
+    Get_Sample_MS_Position(&test1, &test2);
 
     //
-    // Pass the actual sound data onto the sample
+    //	Check for success
     //
-    if (Buffer != nullptr) {
-      ::AIL_set_named_sample_file(SampleHandle, (char *)Buffer->Get_Filename(), Buffer->Get_Raw_Buffer(),
-                                  Buffer->Get_Raw_Length(), 0);
+    WWASSERT(success != 0);
+    if (success == 0) {
+      WWDEBUG_SAY(("WWAudio: Couldn't set 3d sample file.  Reason %s\r\n", ::AIL_last_error()));
     }
   }
 }
@@ -85,9 +89,9 @@ void Sound2DHandleClass::Initialize(SoundBufferClass *buffer) {
 //	Start_Sample
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Start_Sample() {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_start_sample(SampleHandle);
+void Sound3DHandleClass::Start_Sample() {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_start_3D_sample(SampleHandle);
   }
 }
 
@@ -96,9 +100,9 @@ void Sound2DHandleClass::Start_Sample() {
 //	Stop_Sample
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Stop_Sample() {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_stop_sample(SampleHandle);
+void Sound3DHandleClass::Stop_Sample() {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_stop_3D_sample(SampleHandle);
   }
 }
 
@@ -107,9 +111,9 @@ void Sound2DHandleClass::Stop_Sample() {
 //	Resume_Sample
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Resume_Sample() {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_resume_sample(SampleHandle);
+void Sound3DHandleClass::Resume_Sample() {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_resume_3D_sample(SampleHandle);
   }
 }
 
@@ -118,9 +122,9 @@ void Sound2DHandleClass::Resume_Sample() {
 //	End_Sample
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::End_Sample() {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_end_sample(SampleHandle);
+void Sound3DHandleClass::End_Sample() {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_end_3D_sample(SampleHandle);
   }
 }
 
@@ -129,35 +133,23 @@ void Sound2DHandleClass::End_Sample() {
 //	Set_Sample_Pan
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_Pan(S32 pan) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_pan(SampleHandle, pan);
-  }
-}
+void Sound3DHandleClass::Set_Sample_Pan(S32 /*pan*/) {}
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Get_Sample_Pan
 //
 //////////////////////////////////////////////////////////////////////
-S32 Sound2DHandleClass::Get_Sample_Pan() {
-  S32 retval = 0;
-
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    retval = ::AIL_sample_pan(SampleHandle);
-  }
-
-  return retval;
-}
+S32 Sound3DHandleClass::Get_Sample_Pan() { return 64; }
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Set_Sample_Volume
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_Volume(S32 volume) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_volume(SampleHandle, volume);
+void Sound3DHandleClass::Set_Sample_Volume(S32 volume) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_set_3D_sample_volume(SampleHandle, volume);
   }
 }
 
@@ -166,11 +158,11 @@ void Sound2DHandleClass::Set_Sample_Volume(S32 volume) {
 //	Get_Sample_Volume
 //
 //////////////////////////////////////////////////////////////////////
-S32 Sound2DHandleClass::Get_Sample_Volume() {
+S32 Sound3DHandleClass::Get_Sample_Volume() {
   S32 retval = 0;
 
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    retval = ::AIL_sample_volume(SampleHandle);
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    retval = ::AIL_3D_sample_volume(SampleHandle);
   }
 
   return retval;
@@ -181,9 +173,9 @@ S32 Sound2DHandleClass::Get_Sample_Volume() {
 //	Set_Sample_Loop_Count
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_Loop_Count(U32 count) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_loop_count(SampleHandle, count);
+void Sound3DHandleClass::Set_Sample_Loop_Count(U32 count) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_set_3D_sample_loop_count(SampleHandle, count);
   }
 }
 
@@ -192,11 +184,11 @@ void Sound2DHandleClass::Set_Sample_Loop_Count(U32 count) {
 //	Get_Sample_Loop_Count
 //
 //////////////////////////////////////////////////////////////////////
-U32 Sound2DHandleClass::Get_Sample_Loop_Count() {
+U32 Sound3DHandleClass::Get_Sample_Loop_Count() {
   U32 retval = 0;
 
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    retval = ::AIL_sample_loop_count(SampleHandle);
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    retval = ::AIL_3D_sample_loop_count(SampleHandle);
   }
 
   return retval;
@@ -207,9 +199,14 @@ U32 Sound2DHandleClass::Get_Sample_Loop_Count() {
 //	Set_Sample_MS_Position
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_MS_Position(U32 ms) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_ms_position(SampleHandle, ms);
+void Sound3DHandleClass::Set_Sample_MS_Position(U32 ms) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+
+    WWASSERT(Buffer != nullptr);
+    U32 bytes_per_sec = (Buffer->Get_Rate() * Buffer->Get_Bits()) >> 3;
+    U32 bytes = (ms * bytes_per_sec) / 1000;
+    bytes += (bytes & 1);
+    ::AIL_set_3D_sample_offset(SampleHandle, bytes);
   }
 }
 
@@ -218,9 +215,23 @@ void Sound2DHandleClass::Set_Sample_MS_Position(U32 ms) {
 //	Get_Sample_MS_Position
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Get_Sample_MS_Position(S32 *len, S32 *pos) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_sample_ms_position(SampleHandle, len, pos);
+void Sound3DHandleClass::Get_Sample_MS_Position(S32 *len, S32 *pos) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+
+    WWASSERT(Buffer != nullptr);
+    if (pos != nullptr) {
+      U32 bytes = ::AIL_3D_sample_offset(SampleHandle);
+      U32 bytes_per_sec = (Buffer->Get_Rate() * Buffer->Get_Bits()) >> 3;
+      U32 ms = (bytes * 1000) / bytes_per_sec;
+      (*pos) = ms;
+    }
+
+    if (len != nullptr) {
+      U32 bytes = ::AIL_3D_sample_length(SampleHandle);
+      U32 bytes_per_sec = (Buffer->Get_Rate() * Buffer->Get_Bits()) >> 3;
+      U32 ms = (bytes * 1000) / bytes_per_sec;
+      (*len) = ms;
+    }
   }
 }
 
@@ -229,9 +240,9 @@ void Sound2DHandleClass::Get_Sample_MS_Position(S32 *len, S32 *pos) {
 //	Set_Sample_User_Data
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_User_Data(S32 i, U32 val) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_user_data(SampleHandle, i, val);
+void Sound3DHandleClass::Set_Sample_User_Data(S32 i, U32 val) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_set_3D_object_user_data(SampleHandle, i, val);
   }
 }
 
@@ -240,11 +251,11 @@ void Sound2DHandleClass::Set_Sample_User_Data(S32 i, U32 val) {
 //	Get_Sample_User_Data
 //
 //////////////////////////////////////////////////////////////////////
-U32 Sound2DHandleClass::Get_Sample_User_Data(S32 i) {
+U32 Sound3DHandleClass::Get_Sample_User_Data(S32 i) {
   U32 retval = 0;
 
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    retval = ::AIL_sample_user_data(SampleHandle, i);
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    retval = AIL_3D_object_user_data(SampleHandle, i);
   }
 
   return retval;
@@ -255,11 +266,11 @@ U32 Sound2DHandleClass::Get_Sample_User_Data(S32 i) {
 //	Get_Sample_Playback_Rate
 //
 //////////////////////////////////////////////////////////////////////
-S32 Sound2DHandleClass::Get_Sample_Playback_Rate() {
+S32 Sound3DHandleClass::Get_Sample_Playback_Rate() {
   S32 retval = 0;
 
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    retval = ::AIL_sample_playback_rate(SampleHandle);
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    retval = ::AIL_3D_sample_playback_rate(SampleHandle);
   }
 
   return retval;
@@ -270,9 +281,9 @@ S32 Sound2DHandleClass::Get_Sample_Playback_Rate() {
 //	Set_Sample_Playback_Rate
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Sample_Playback_Rate(S32 rate) {
-  if (SampleHandle != (HSAMPLE)INVALID_MILES_HANDLE) {
-    ::AIL_set_sample_playback_rate(SampleHandle, rate);
+void Sound3DHandleClass::Set_Sample_Playback_Rate(S32 rate) {
+  if (SampleHandle != (H3DSAMPLE)INVALID_MILES_HANDLE) {
+    ::AIL_set_3D_sample_playback_rate(SampleHandle, rate);
   }
 }
 
@@ -281,4 +292,8 @@ void Sound2DHandleClass::Set_Sample_Playback_Rate(S32 rate) {
 //	Set_Miles_Handle
 //
 //////////////////////////////////////////////////////////////////////
-void Sound2DHandleClass::Set_Miles_Handle(uint32 handle) { SampleHandle = (HSAMPLE)handle; }
+void Sound3DHandleClass::Set_Miles_Handle(uint32 handle) {
+  WWASSERT(SampleHandle == (H3DSAMPLE)INVALID_MILES_HANDLE);
+
+  SampleHandle = (H3DSAMPLE)handle;
+}

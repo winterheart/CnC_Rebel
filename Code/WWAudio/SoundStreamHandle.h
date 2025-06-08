@@ -23,11 +23,11 @@
  *                                                                                             *
  *                 Project Name : wwaudio                                                      *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/WWAudio/soundhandle.h           $*
+ *                     $Archive:: /Commando/Code/WWAudio/soundstreamhandle.h                  $*
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
- *                     $Modtime:: 8/13/01 3:11p                                               $*
+ *                     $Modtime:: 8/13/01 3:10p                                               $*
  *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
@@ -37,29 +37,20 @@
 
 #pragma once
 
-#include "wwaudio.h"
-
-//////////////////////////////////////////////////////////////////////
-//	Forward declarations
-//////////////////////////////////////////////////////////////////////
-class Sound3DHandleClass;
-class Sound2DHandleClass;
-class SoundStreamHandleClass;
-class SoundBufferClass;
-class ListenerHandleClass;
+#include "SoundHandle.h"
 
 //////////////////////////////////////////////////////////////////////
 //
-//	SoundHandleClass
+//	SoundStreamHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-class SoundHandleClass {
+class SoundStreamHandleClass : public SoundHandleClass {
 public:
   ///////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   ///////////////////////////////////////////////////////////////////
-  SoundHandleClass();
-  virtual ~SoundHandleClass();
+  SoundStreamHandleClass();
+  ~SoundStreamHandleClass();
 
   ///////////////////////////////////////////////////////////////////
   //	Public methods
@@ -68,43 +59,35 @@ public:
   //
   //	RTTI
   //
-  virtual Sound3DHandleClass *As_Sound3DHandleClass() { return nullptr; }
-  virtual Sound2DHandleClass *As_Sound2DHandleClass() { return nullptr; }
-  virtual SoundStreamHandleClass *As_SoundStreamHandleClass() { return nullptr; }
-  virtual ListenerHandleClass *As_ListenerHandleClass() { return nullptr; }
+  SoundStreamHandleClass *As_SoundStreamHandleClass() { return this; }
 
   //
   //	Handle access
   //
-  virtual H3DSAMPLE Get_H3DSAMPLE() { return nullptr; }
-  virtual HSAMPLE Get_HSAMPLE() { return nullptr; }
-  virtual HSTREAM Get_HSTREAM() { return nullptr; }
+  HSAMPLE Get_HSAMPLE() { return SampleHandle; }
+  HSTREAM Get_HSTREAM() { return StreamHandle; }
 
   //
-  //	Initialization
+  //	Inherited
   //
-  virtual void Set_Miles_Handle(uint32 handle) = 0;
-  virtual void Initialize(SoundBufferClass *buffer);
-
-  //
-  //	Sample control
-  //
-  virtual void Start_Sample() = 0;
-  virtual void Stop_Sample() = 0;
-  virtual void Resume_Sample() = 0;
-  virtual void End_Sample() = 0;
-  virtual void Set_Sample_Pan(S32 pan) = 0;
-  virtual S32 Get_Sample_Pan() = 0;
-  virtual void Set_Sample_Volume(S32 volume) = 0;
-  virtual S32 Get_Sample_Volume() = 0;
-  virtual void Set_Sample_Loop_Count(U32 count) = 0;
-  virtual U32 Get_Sample_Loop_Count() = 0;
-  virtual void Set_Sample_MS_Position(U32 ms) = 0;
-  virtual void Get_Sample_MS_Position(S32 *len, S32 *pos) = 0;
-  virtual void Set_Sample_User_Data(S32 i, U32 val) = 0;
-  virtual U32 Get_Sample_User_Data(S32 i) = 0;
-  virtual S32 Get_Sample_Playback_Rate() = 0;
-  virtual void Set_Sample_Playback_Rate(S32 rate) = 0;
+  void Set_Miles_Handle(uint32 handle);
+  void Initialize(SoundBufferClass *buffer);
+  void Start_Sample();
+  void Stop_Sample();
+  void Resume_Sample();
+  void End_Sample();
+  void Set_Sample_Pan(S32 pan);
+  S32 Get_Sample_Pan();
+  void Set_Sample_Volume(S32 volume);
+  S32 Get_Sample_Volume();
+  void Set_Sample_Loop_Count(U32 count);
+  U32 Get_Sample_Loop_Count();
+  void Set_Sample_MS_Position(U32 ms);
+  void Get_Sample_MS_Position(S32 *len, S32 *pos);
+  void Set_Sample_User_Data(S32 i, U32 val);
+  U32 Get_Sample_User_Data(S32 i);
+  S32 Get_Sample_Playback_Rate();
+  void Set_Sample_Playback_Rate(S32 rate);
 
 protected:
   ///////////////////////////////////////////////////////////////////
@@ -114,5 +97,6 @@ protected:
   ///////////////////////////////////////////////////////////////////
   //	Protected member data
   ///////////////////////////////////////////////////////////////////
-  SoundBufferClass *Buffer;
+  HSAMPLE SampleHandle;
+  HSTREAM StreamHandle;
 };

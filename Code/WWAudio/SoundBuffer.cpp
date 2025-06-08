@@ -35,7 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "soundbuffer.h"
+#include "SoundBuffer.h"
 #include "rawfile.h"
 #include "wwdebug.h"
 #include "utils.h"
