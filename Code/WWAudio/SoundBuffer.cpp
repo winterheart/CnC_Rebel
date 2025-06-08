@@ -44,21 +44,6 @@
 #include "wwprofile.h"
 
 /////////////////////////////////////////////////////////////////////////////////
-//	FileMappingClass
-/////////////////////////////////////////////////////////////////////////////////
-class FileMappingClass {
-public:
-  StringClass Filename;
-  HANDLE FileMapping;
-  int RefCount;
-
-  bool operator==(const FileMappingClass &src) { return false; }
-  bool operator!=(const FileMappingClass &src) { return false; }
-};
-
-static DynamicVectorClass<FileMappingClass> MappingList;
-
-/////////////////////////////////////////////////////////////////////////////////
 //
 //	SoundBufferClass
 //
@@ -72,7 +57,7 @@ SoundBufferClass::SoundBufferClass()
 //
 SoundBufferClass::~SoundBufferClass() {
   SAFE_FREE(m_Filename);
-  Free_Buffer();
+  SoundBufferClass::Free_Buffer();
 }
 
 /////////////////////////////////////////////////////////////////////////////////
