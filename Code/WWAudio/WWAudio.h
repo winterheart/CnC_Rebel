@@ -137,7 +137,7 @@ public:
 
   typedef enum { PAGE_PRIMARY = 0, PAGE_SECONDARY, PAGE_TERTIARY, PAGE_COUNT } SOUND_PAGE;
 
-  typedef struct _DRIVER_INFO_STRUCT {
+  typedef struct DRIVER_INFO_STRUCT {
     HPROVIDER driver;
     std::string name;
   } DRIVER_INFO_STRUCT;
@@ -152,7 +152,7 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   //////////////////////////////////////////////////////////////////////
-  WWAudioClass(bool lite = false);
+  explicit WWAudioClass(bool lite = false);
   virtual ~WWAudioClass();
 
   //////////////////////////////////////////////////////////////////////
@@ -180,10 +180,10 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Driver methods
   //////////////////////////////////////////////////////////////////////
-  HDIGDRIVER Get_2D_Driver() const { return m_Driver2D; }
-  HPROVIDER Get_3D_Driver() const { return m_Driver3D; }
-  const std::string &Get_3D_Driver_Name() const { return m_Driver3DName; }
-  HPROVIDER Get_Reverb_Filter() const { return m_ReverbFilter; }
+  [[nodiscard]] HDIGDRIVER Get_2D_Driver() const { return m_Driver2D; }
+  [[nodiscard]] HPROVIDER Get_3D_Driver() const { return m_Driver3D; }
+  [[nodiscard]] const std::string &Get_3D_Driver_Name() const { return m_Driver3DName; }
+  [[nodiscard]] HPROVIDER Get_Reverb_Filter() const { return m_ReverbFilter; }
 
   //////////////////////////////////////////////////////////////////////
   //	2D Hardware/driver selection methods
@@ -191,25 +191,25 @@ public:
   DRIVER_TYPE_2D Open_2D_Device(LPWAVEFORMAT format = nullptr);
   DRIVER_TYPE_2D Open_2D_Device(bool stereo, int bits, int hertz);
   bool Close_2D_Device();
-  int Get_Playback_Rate() const { return m_PlaybackRate; }
-  int Get_Playback_Bits() const { return m_PlaybackBits; }
-  bool Get_Playback_Stereo() const { return m_PlaybackStereo; }
+  [[nodiscard]] int Get_Playback_Rate() const { return m_PlaybackRate; }
+  [[nodiscard]] int Get_Playback_Bits() const { return m_PlaybackBits; }
+  [[nodiscard]] bool Get_Playback_Stereo() const { return m_PlaybackStereo; }
 
   //////////////////////////////////////////////////////////////////////
   //	3D Hardware/driver selection methods
   //////////////////////////////////////////////////////////////////////
 
   // Device information
-  int Get_3D_Device_Count() const { return m_Driver3DList.size(); }
-  bool Get_3D_Device(int index, std::shared_ptr<DRIVER_INFO_STRUCT> &info) const {
-    if (index >= 0 && static_cast<size_t>(index) < m_Driver3DList.size()) {
+  [[nodiscard]] size_t Get_3D_Device_Count() const { return m_Driver3DList.size(); }
+  bool Get_3D_Device(size_t index, std::shared_ptr<DRIVER_INFO_STRUCT> &info) const {
+    if (index < m_Driver3DList.size()) {
       info = m_Driver3DList[index];
       return true;
     }
     return false;
   }
   bool Is_3D_Device_Available(DRIVER_TYPE_3D type) { return Find_3D_Device(type) >= 0; }
-  int Find_3D_Device(DRIVER_TYPE_3D type);
+  int Find_3D_Device(DRIVER_TYPE_3D type) const;
 
   // Device selection
   bool Select_3D_Device(int index);
@@ -232,7 +232,7 @@ public:
   //		#define AIL_3D_4_SPEAKER  3
   //
   void Set_Speaker_Type(int speaker_type);
-  int Get_Speaker_Type() const;
+  [[nodiscard]] int Get_Speaker_Type() const;
 
   //////////////////////////////////////////////////////////////////////
   //	Registry settings
@@ -264,55 +264,44 @@ public:
   //
   void Set_File_Factory(FileFactoryClass *ffactory) { m_FileFactory = ffactory; }
 
-  //////////////////////////////////////////////////////////////////////
-  //	Preference settings methods
-  //////////////////////////////////////////////////////////////////////
-  bool Set_Max_2D_Sample_Count(int count = DEF_2D_SAMPLE_COUNT);
-  int Get_Max_2D_Sample_Count() const;
-  int Get_Avail_2D_Sample_Count() const;
-
-  bool Set_Max_3D_Sample_Count(int count = DEF_3D_SAMPLE_COUNT);
-  int Get_Max_3D_Sample_Count() const;
-  int Get_Avail_3D_Sample_Count() const;
-
   //
   //	Reverb Support:  Only works with Create Labs EAX chipset.
   //
-  float Get_Effects_Level() { return m_EffectsLevel; }
+  [[nodiscard]] float Get_Effects_Level() const { return m_EffectsLevel; }
 
   //	See ENVIRONMENT_ defines in MSS.H for a list of possible values.
-  int Get_Reverb_Room_Type() { return m_ReverbRoomType; }
-  void Set_Reverb_Room_Type(int type);
+  [[nodiscard]] int Get_Reverb_Room_Type() const { return m_ReverbRoomType; }
+  void Set_Reverb_Room_Type(int type) { m_ReverbRoomType = type; };
 
   //////////////////////////////////////////////////////////////////////
   //	Volume methods
   //////////////////////////////////////////////////////////////////////
   void Set_Sound_Effects_Volume(float volume = DEF_SFX_VOL);
-  float Get_Sound_Effects_Volume() const { return m_SoundVolume; }
+  [[nodiscard]] float Get_Sound_Effects_Volume() const { return m_SoundVolume; }
 
   void Set_Music_Volume(float volume = DEF_MUSIC_VOL);
-  float Get_Music_Volume() const { return m_MusicVolume; }
+  [[nodiscard]] float Get_Music_Volume() const { return m_MusicVolume; }
 
   void Set_Dialog_Volume(float volume = DEF_DIALOG_VOL);
-  float Get_Dialog_Volume() const { return m_DialogVolume; }
+  [[nodiscard]] float Get_Dialog_Volume() const { return m_DialogVolume; }
 
   void Set_Cinematic_Volume(float volume = DEF_CINEMATIC_VOL);
-  float Get_Cinematic_Volume() const { return m_CinematicVolume; }
+  [[nodiscard]] float Get_Cinematic_Volume() const { return m_CinematicVolume; }
 
   void Allow_Sound_Effects(bool onoff = true);
-  bool Are_Sound_Effects_On() const { return m_AreSoundEffectsEnabled; }
+  [[nodiscard]] bool Are_Sound_Effects_On() const { return m_AreSoundEffectsEnabled; }
 
   void Allow_Music(bool onoff = true);
-  bool Is_Music_On() const { return m_IsMusicEnabled; }
+  [[nodiscard]] bool Is_Music_On() const { return m_IsMusicEnabled; }
 
   void Allow_Dialog(bool onoff = true);
-  bool Is_Dialog_On() const { return m_IsDialogEnabled; }
+  [[nodiscard]] bool Is_Dialog_On() const { return m_IsDialogEnabled; }
 
   void Allow_Cinematic_Sound(bool onoff = true);
-  bool Is_Cinematic_Sound_On() const { return m_IsCinematicSoundEnabled; }
+  [[nodiscard]] bool Is_Cinematic_Sound_On() const { return m_IsCinematicSoundEnabled; }
 
   void Enable_New_Sounds(bool onoff) { m_AreNewSoundsEnabled = onoff; }
-  bool Are_New_Sounds_Enabled() const { return m_AreNewSoundsEnabled; }
+  [[nodiscard]] bool Are_New_Sounds_Enabled() const { return m_AreNewSoundsEnabled; }
 
   void Temp_Disable_Audio(bool onoff);
 
@@ -335,23 +324,6 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Sound allocation methods
   //////////////////////////////////////////////////////////////////////
-
-  //
-  //	Note:  The string_id is either the filename (for file-based sounds)
-  // or the string_id passed into the create-from-memory methods.
-  // It is important to note that the AudibleSoundClass object is not cached, but
-  // the raw sound data the AudibleSoundClass object plays.
-  //
-  bool Is_Sound_Cached(const char *string_id);
-
-  //
-  //	Note:  We differentiate between a 'music' object and
-  // a 'sound effect' for volume control.  A music object
-  // is simply a sound effect with a 'SOUND_TYPE' of TYPE_MUSIC.
-  // When the user adjusts the 'music' volume, we loop through
-  // the sound effects marked 'music' and update their volume.
-  // Same for 'sound effect' volume.
-  //
 
   //
   //	Note:  The sound data these objects support can be PCM WAV,
@@ -386,7 +358,7 @@ public:
   void Fade_Background_Music(const char *filename, int fade_out_time, int fade_in_time);
 
   const char *Get_Background_Music_Name() { return m_BackgroundMusicName; }
-  AudibleSoundClass *Peek_Background_Music() { return m_BackgroundMusic; }
+  [[nodiscard]] AudibleSoundClass *Peek_Background_Music() const { return m_BackgroundMusic; }
 
   //////////////////////////////////////////////////////////////////////
   //	Logical-sound related methods
@@ -399,8 +371,8 @@ public:
   //
   void Add_Logical_Type(int id, LPCTSTR display_name);
   void Reset_Logical_Types();
-  int Get_Logical_Type_Count() const { return m_LogicalTypes.size(); }
-  int Get_Logical_Type(int index, StringClass &name);
+  [[nodiscard]] size_t Get_Logical_Type_Count() const { return m_LogicalTypes.size(); }
+  int Get_Logical_Type(size_t index, StringClass &name);
 
   //////////////////////////////////////////////////////////////////////
   //	Definition related methods
@@ -430,7 +402,7 @@ public:
   //////////////////////////////////////////////////////////////////////
   //	Sound scene methods (for 3D sounds)
   //////////////////////////////////////////////////////////////////////
-  SoundSceneClass *Get_Sound_Scene() const { return m_SoundScene; }
+  [[nodiscard]] SoundSceneClass *Get_Sound_Scene() const { return m_SoundScene; }
 
   //////////////////////////////////////////////////////////////////////
   //	Cache methods
@@ -441,16 +413,16 @@ public:
   // is currently set to 1MB.
   //
   void Set_Cache_Size(int kbytes = DEF_CACHE_SIZE) { m_MaxCacheSize = (kbytes * 1024); }
-  int Get_Cache_Size() const { return m_MaxCacheSize / 1024; }
-  int Get_Current_Cache_Size() const { return m_CurrentCacheSize; }
+  [[nodiscard]] int Get_Cache_Size() const { return m_MaxCacheSize / 1024; }
+  [[nodiscard]] int Get_Current_Cache_Size() const { return m_CurrentCacheSize; }
   void Flush_Cache();
 
   //
-  // This settings determines whether a sound buffer is loaded
+  // These settings determine whether a sound buffer is loaded
   // into memory or streamed from file.
   //
   //	Note:  True 3D sounds can't be streamed, so if the buffer size
-  // is larger then the following setting, the sound is created as
+  // is larger than the following setting, the sound is created as
   // a pseudo-3d sound effect and streamed.
   //
   void Set_Max_2D_Sound_Buffer(int bytes = DEF_MAX_2D_BUFFER_SIZE) { m_Max2DBufferSize = bytes; }
@@ -467,9 +439,9 @@ public:
   //////////////////////////////////////////////////////////////////////
   bool Add_To_Playlist(AudibleSoundClass *sound);
   bool Remove_From_Playlist(AudibleSoundClass *sound);
-  int Get_Playlist_Count() const { return m_Playlist[m_CurrPage].size(); }
-  AudibleSoundClass *Get_Playlist_Entry(int index) const;
-  AudibleSoundClass *Peek_Playlist_Entry(int index) const { return m_Playlist[m_CurrPage][index]; }
+  [[nodiscard]] size_t Get_Playlist_Count() const { return m_Playlist[m_CurrPage].size(); }
+  [[nodiscard]] AudibleSoundClass *Get_Playlist_Entry(int index) const;
+  [[nodiscard]] AudibleSoundClass *Peek_Playlist_Entry(int index) const { return m_Playlist[m_CurrPage][index]; }
   void Flush_Playlist();
   void Flush_Playlist(SOUND_PAGE page);
   bool Is_Sound_In_Playlist(AudibleSoundClass *sound_obj);
@@ -492,7 +464,7 @@ public:
   // when the secondary page is active.
   //
   void Set_Active_Sound_Page(SOUND_PAGE page);
-  SOUND_PAGE Get_Active_Sound_Page() { return m_CurrPage; }
+  [[nodiscard]] SOUND_PAGE Get_Active_Sound_Page() const { return m_CurrPage; }
 
   void Push_Active_Sound_Page(SOUND_PAGE page);
   void Pop_Active_Sound_Page();
@@ -505,34 +477,21 @@ public:
   void Set_Non_Dialog_Fade_Time(float fade_time) { m_NonDialogFadeTime = fade_time; }
 
   //////////////////////////////////////////////////////////////////////
-  //	Statistics methods
-  //////////////////////////////////////////////////////////////////////
-
-  //
-  //	This CPU percent includes total CPU being used for:
-  //		Mixing
-  //		Format conversions
-  //		ADPCM or MP3 decompression
-  //		System buffer fills
-  //
-  float Get_Digital_CPU_Percent() const;
-
-  //////////////////////////////////////////////////////////////////////
   //	Debug methods
   //////////////////////////////////////////////////////////////////////
-  bool Is_Disabled() const;
+  [[nodiscard]] bool Is_Disabled() const;
 
   //
   //	Debug support for determine what sounds are playing on which "channels"
   //
-  int Get_2D_Sample_Count() const { return m_2DSampleHandles.size(); }
-  int Get_3D_Sample_Count() const { return m_3DSampleHandles.size(); }
-  AudibleSoundClass *Peek_2D_Sample(int index);
-  AudibleSoundClass *Peek_3D_Sample(int index);
+  [[nodiscard]] size_t Get_2D_Sample_Count() const { return m_2DSampleHandles.size(); }
+  [[nodiscard]] size_t Get_3D_Sample_Count() const { return m_3DSampleHandles.size(); }
+  AudibleSoundClass *Peek_2D_Sample(size_t index) const;
+  AudibleSoundClass *Peek_3D_Sample(size_t index) const;
 
   // Um somtimes you need to get rid of all the completed sounds without
   // being in the update render function and without totally shutting down
-  // the sound system.  This is primarily because completed (non static) sounds
+  // the sound system.  This is primarily because completed (non-static) sounds
   // still may have a reference to the object they're attached to.
   void Free_Completed_Sounds();
 

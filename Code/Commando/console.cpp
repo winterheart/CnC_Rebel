@@ -651,15 +651,15 @@ void ConsoleGameModeClass::Think() {
 
       StringClass message(true);
       StringClass temp_string(true);
-      int count_2d = WWAudioClass::Get_Instance()->Get_2D_Sample_Count();
-      int count_3d = WWAudioClass::Get_Instance()->Get_3D_Sample_Count();
+      size_t count_2d = WWAudioClass::Get_Instance()->Get_2D_Sample_Count();
+      size_t count_3d = WWAudioClass::Get_Instance()->Get_3D_Sample_Count();
 
       message = "2D or Pseudo-3D Sounds:\n";
 
       //
       //	Add all the 2D sounds to the message
       //
-      for (int sample_index = 0; sample_index < count_2d; sample_index++) {
+      for (size_t sample_index = 0; sample_index < count_2d; sample_index++) {
         temp_string.Format(" %d.", sample_index + 1);
         message += temp_string;
 
@@ -692,7 +692,7 @@ void ConsoleGameModeClass::Think() {
       //
       //	Add all the 2D sounds to the message
       //
-      for (int sample_index = 0; sample_index < count_3d; sample_index++) {
+      for (size_t sample_index = 0; sample_index < count_3d; sample_index++) {
         temp_string.Format(" %d.", sample_index + 1);
         message += temp_string;
 

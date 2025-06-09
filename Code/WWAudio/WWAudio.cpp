@@ -126,17 +126,19 @@ __inline bool WWAudioClass::Is_OK_To_Give_Handle(const AudibleSoundClass &sound_
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 WWAudioClass::WWAudioClass(bool lite)
-    : m_PlaybackRate(44100), m_PlaybackBits(16), m_PlaybackStereo(true), m_MusicVolume(DEF_MUSIC_VOL), m_SoundVolume(DEF_SFX_VOL),
-      m_RealMusicVolume(DEF_MUSIC_VOL), m_RealSoundVolume(DEF_SFX_VOL), m_Max2DSamples(DEF_2D_SAMPLE_COUNT), m_Max3DSamples(DEF_3D_SAMPLE_COUNT),
-      m_Max2DBufferSize(DEF_MAX_2D_BUFFER_SIZE), m_Max3DBufferSize(DEF_MAX_3D_BUFFER_SIZE), m_UpdateTimer(-1),
-      m_IsMusicEnabled(true), m_IsDialogEnabled(true), m_IsCinematicSoundEnabled(true),
-      m_AreSoundEffectsEnabled(true), m_AreNewSoundsEnabled(true), m_Playlist(PAGE_COUNT),
-      m_FileFactory(nullptr), m_BackgroundMusic(nullptr), m_CachedIsMusicEnabled(true),
-      m_CachedIsDialogEnabled(true), m_CachedIsCinematicSoundEnabled(true), m_CachedAreSoundEffectsEnabled(true), m_SoundScene(nullptr),
+    : m_PlaybackRate(44100), m_PlaybackBits(16), m_PlaybackStereo(true), m_MusicVolume(DEF_MUSIC_VOL),
+      m_SoundVolume(DEF_SFX_VOL), m_RealMusicVolume(DEF_MUSIC_VOL), m_RealSoundVolume(DEF_SFX_VOL),
+      m_DialogVolume(DEF_DIALOG_VOL), m_CinematicVolume(DEF_CINEMATIC_VOL), m_Max2DSamples(DEF_2D_SAMPLE_COUNT),
+      m_Max3DSamples(DEF_3D_SAMPLE_COUNT), m_Max2DBufferSize(DEF_MAX_2D_BUFFER_SIZE),
+      m_Max3DBufferSize(DEF_MAX_3D_BUFFER_SIZE), m_UpdateTimer(-1), m_IsMusicEnabled(true), m_IsDialogEnabled(true),
+      m_IsCinematicSoundEnabled(true), m_AreSoundEffectsEnabled(true), m_AreNewSoundsEnabled(true),
+      m_FileFactory(nullptr), m_BackgroundMusic(nullptr), m_CachedIsMusicEnabled(true), m_CachedIsDialogEnabled(true),
+      m_CachedIsCinematicSoundEnabled(true), m_CachedAreSoundEffectsEnabled(true), m_SoundScene(nullptr),
       m_CurrPage(PAGE_PRIMARY), m_Driver2D(nullptr), m_Driver3D(0), m_Driver3DPseudo(0),
-      m_ReverbFilter(INVALID_MILES_HANDLE), m_SpeakerType(0), m_MaxCacheSize(DEF_CACHE_SIZE * 1024),
-      m_CurrentCacheSize(0), m_EffectsLevel(0), m_ReverbRoomType(ENVIRONMENT_GENERIC), m_NonDialogFadeTime(DEF_FADE_TIME),
-      m_FadeType(FADE_NONE), m_FadeTimer(0), AudioIni(nullptr) {
+      m_ReverbFilter(INVALID_MILES_HANDLE), m_SpeakerType(0), m_Playlist(PAGE_COUNT),
+      m_MaxCacheSize(DEF_CACHE_SIZE * 1024), m_CurrentCacheSize(0), m_EffectsLevel(0),
+      m_ReverbRoomType(ENVIRONMENT_GENERIC), m_NonDialogFadeTime(DEF_FADE_TIME), m_FadeType(FADE_NONE), m_FadeTimer(0),
+      AudioIni(nullptr) {
   ::InitializeCriticalSection(&MMSLockClass::_MSSLockCriticalSection);
 
   m_ForceDisable = lite;
@@ -1092,7 +1094,8 @@ void WWAudioClass::Free_Completed_Sounds() {
         //
         bool found = false;
         for (int page = 0; page < PAGE_COUNT && !found; page++) {
-          for (int play_index = 0; (static_cast<size_t>(play_index) < m_Playlist[page].size()) && !found; play_index++) {
+          for (int play_index = 0; (static_cast<size_t>(play_index) < m_Playlist[page].size()) && !found;
+               play_index++) {
             if (m_Playlist[page][play_index] == sound_obj) {
 
               //
@@ -1545,17 +1548,16 @@ void WWAudioClass::Build_3D_Driver_List() {
       ::AIL_close_3D_provider(provider);
     } else {
       char *error_info = ::AIL_last_error();
-      WWDEBUG_SAY(("WWAudio: Unable to open %s.\r\n", name));
-      WWDEBUG_SAY(("WWAudio: Reason %s.\r\n", error_info));
+      WWDEBUG_SAY(("WWAudio: Unable to open %s: error %s.\r\n", name, error_info));
     }
   }
 
   //
   // Attempt to select one of the known drivers (in the following order).
   //
-  if ((Select_3D_Device(DRIVER3D_PSEUDO) == false) && (Select_3D_Device(DRIVER3D_EAX) == false) &&
-      (Select_3D_Device(DRIVER3D_A3D) == false) && (Select_3D_Device(DRIVER3D_D3DSOUND) == false) &&
-      (Select_3D_Device(DRIVER3D_DOLBY) == false)) {
+  if (!Select_3D_Device(DRIVER3D_PSEUDO) && !Select_3D_Device(DRIVER3D_EAX) &&
+      !Select_3D_Device(DRIVER3D_A3D) && !Select_3D_Device(DRIVER3D_D3DSOUND) &&
+      !Select_3D_Device(DRIVER3D_DOLBY)) {
     //
     // Couldn't select a known driver, so just use the first possible.
     //
@@ -1595,7 +1597,7 @@ void WWAudioClass::Free_3D_Driver_List() {
 //	Select_3D_Device
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Select_3D_Device(const std::string& device_name) {
+bool WWAudioClass::Select_3D_Device(const std::string &device_name) {
   bool retval = false;
 
   //
@@ -1617,7 +1619,7 @@ bool WWAudioClass::Select_3D_Device(const std::string& device_name) {
 //	Select_3D_Device
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-bool WWAudioClass::Select_3D_Device(const std::string& device_name, HPROVIDER provider) {
+bool WWAudioClass::Select_3D_Device(const std::string &device_name, HPROVIDER provider) {
   bool retval = false;
   if ((provider != 0) && (provider != m_Driver3D)) {
 
@@ -1691,7 +1693,7 @@ bool WWAudioClass::Select_3D_Device(DRIVER_TYPE_3D type) {
 //	Find_3D_Device
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-int WWAudioClass::Find_3D_Device(DRIVER_TYPE_3D type) {
+int WWAudioClass::Find_3D_Device(DRIVER_TYPE_3D type) const {
   // Determine which substring to search for in the
   // name of the driver.
   const char *sub_string = "RSX";
@@ -1715,23 +1717,24 @@ int WWAudioClass::Find_3D_Device(DRIVER_TYPE_3D type) {
   case DRIVER3D_DOLBY:
     sub_string = "Dolby";
     break;
+  default:
+    break;
   }
 
   // Loop through all the driver entries and free them all
-  int driver_index = -1;
-  for (size_t index = 0; index < m_Driver3DList.size() && (driver_index == -1); index++) {
+  for (size_t index = 0; index < m_Driver3DList.size(); index++) {
     auto info = m_Driver3DList[index];
     if (info != nullptr) {
 
       // Is this the driver we were looking for?
       if (::strstr(info->name.c_str(), sub_string) != nullptr) {
-        driver_index = index;
+        return static_cast<int>(index);
       }
     }
   }
 
   // Return -1 if not found, otherwise the 0 based index
-  return driver_index;
+  return -1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2436,9 +2439,7 @@ LogicalListenerClass *WWAudioClass::Create_Logical_Listener() { return new Logic
 //	Add_Logical_Type
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-void WWAudioClass::Add_Logical_Type(int id, LPCTSTR display_name) {
-  m_LogicalTypes.emplace_back(id, display_name);
-}
+void WWAudioClass::Add_Logical_Type(int id, LPCTSTR display_name) { m_LogicalTypes.emplace_back(id, display_name); }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2452,11 +2453,11 @@ void WWAudioClass::Reset_Logical_Types() { m_LogicalTypes.clear(); }
 //	Get_Logical_Type
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-int WWAudioClass::Get_Logical_Type(int index, StringClass &name) {
+int WWAudioClass::Get_Logical_Type(size_t index, StringClass &name) {
   int type_id = 0;
 
-  WWASSERT(index >= 0 && static_cast<size_t>(index) < m_LogicalTypes.size());
-  if (index >= 0 && static_cast<size_t>(index) < m_LogicalTypes.size()) {
+  WWASSERT(index < m_LogicalTypes.size());
+  if (index < m_LogicalTypes.size()) {
     type_id = m_LogicalTypes[index].id;
     name = m_LogicalTypes[index].display_name;
   }
@@ -2608,7 +2609,7 @@ bool WWAudioClass::Save_To_Registry(const char *subkey_name) {
   //
   // Get the name of the current 3D driver
   //
-  for (const auto& info : m_Driver3DList) {
+  for (const auto &info : m_Driver3DList) {
     //
     //	Is this the device we were looking for?
     //
@@ -2856,14 +2857,14 @@ void WWAudioClass::Set_Active_Sound_Page(SOUND_PAGE page) {
   //
   //	Pause any sounds that are playing in the old page
   //
-  for (const auto & index : m_Playlist[m_CurrPage]) {
+  for (const auto &index : m_Playlist[m_CurrPage]) {
     index->Pause();
   }
 
   //
   //	Resume any sounds that are playing in the new page
   //
-  for (auto & index : m_Playlist[page]) {
+  for (auto &index : m_Playlist[page]) {
     index->Resume();
   }
 
@@ -2953,8 +2954,8 @@ void WWAudioClass::Update_Fade() {
 //	Peek_2D_Sample
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-AudibleSoundClass *WWAudioClass::Peek_2D_Sample(int index) {
-  if (index < 0 || static_cast<size_t>(index) > m_2DSampleHandles.size()) {
+AudibleSoundClass *WWAudioClass::Peek_2D_Sample(size_t index) const {
+  if (index > m_2DSampleHandles.size()) {
     return nullptr;
   }
 
@@ -2977,8 +2978,8 @@ AudibleSoundClass *WWAudioClass::Peek_2D_Sample(int index) {
 //	Peek_3D_Sample
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
-AudibleSoundClass *WWAudioClass::Peek_3D_Sample(int index) {
-  if (index < 0 || static_cast<size_t>(index) > m_3DSampleHandles.size()) {
+AudibleSoundClass *WWAudioClass::Peek_3D_Sample(size_t index) const {
+  if (index > m_3DSampleHandles.size()) {
     return nullptr;
   }
 
@@ -3161,6 +3162,6 @@ void WWAudioClass::Load_Default_Volume(int &defaultmusicvolume, int &defaultsoun
       std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_SOUND_VOLUME_ENTRY, 43), minsetting, maxsetting);
   defaultdialogvolume =
       std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_DIALOG_VOLUME_ENTRY, 50), minsetting, maxsetting);
-  defaultcinematicvolume =
-      std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_CINEMATIC_VOLUME_ENTRY, 100), minsetting, maxsetting);
+  defaultcinematicvolume = std::clamp(AudioIni->Get_Int(INI_DEFAULT_VOLUME_SECTION, INI_CINEMATIC_VOLUME_ENTRY, 100),
+                                      minsetting, maxsetting);
 }

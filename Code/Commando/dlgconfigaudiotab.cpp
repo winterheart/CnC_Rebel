@@ -391,7 +391,7 @@ void DlgConfigAudioTabClass::Configure_Driver_List() {
   //	Loop over all the drivers
   //
   bool selected_default = false;
-  int driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
+  size_t driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
   for (int index = 0; index < driver_count; index++) {
 
     //

@@ -282,8 +282,8 @@ BOOL AudioConfigDialogClass::OnInitDialog(void) {
   //	Loop over all the drivers
   //
   bool selected_default = false;
-  int driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
-  for (int index = 0; index < driver_count; index++) {
+  size_t driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
+  for (size_t index = 0; index < driver_count; index++) {
 
     //
     //	Get information about this sound driver
