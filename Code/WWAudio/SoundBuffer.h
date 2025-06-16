@@ -37,10 +37,6 @@
 
 #pragma once
 
-#pragma warning(push, 3)
-#include "Mss.h"
-#pragma warning(pop)
-
 #include "RefCount.h"
 
 // Forward declarations
@@ -155,7 +151,6 @@ protected:
   //	Protected methods
   //////////////////////////////////////////////////////////////////////
   virtual void Free_Buffer();
-  virtual bool Load_From_File(HANDLE hfile, unsigned long size, unsigned long offset);
 
   //////////////////////////////////////////////////////////////////////
   //	Protected member data

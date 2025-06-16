@@ -253,17 +253,6 @@ void StreamSoundBufferClass::Free_Buffer() {}
 //	Load_From_File
 //
 /////////////////////////////////////////////////////////////////////////////////
-bool StreamSoundBufferClass::Load_From_File(HANDLE /*hfile*/, unsigned long /*size*/, unsigned long /*offset*/
-) {
-  WWPROFILE("StreamSoundBufferClass::Load_From_File");
-  return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-//	Load_From_File
-//
-/////////////////////////////////////////////////////////////////////////////////
 bool StreamSoundBufferClass::Load_From_File(const char *filename) {
   WWPROFILE("StreamSoundBufferClass::Load_From_File");
   return true;
