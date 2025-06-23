@@ -23,11 +23,11 @@
  *                                                                                             *
  *                 Project Name : wwaudio                                                      *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/WWAudio/sound3dhandle.h                      $*
+ *                     $Archive:: /Commando/Code/WWAudio/listenerhandle.cpp                   $*
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
- *                     $Modtime:: 8/13/01 3:11p                                               $*
+ *                     $Modtime:: 8/13/01 11:54a                                              $*
  *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
@@ -35,66 +35,18 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#pragma once
-
-#include "soundhandle.h"
+#include "ListenerHandle.h"
 
 //////////////////////////////////////////////////////////////////////
 //
 //	Sound3DHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-class Sound3DHandleClass : public SoundHandleClass {
-public:
-  ///////////////////////////////////////////////////////////////////
-  //	Public constructors/destructors
-  ///////////////////////////////////////////////////////////////////
-  Sound3DHandleClass();
-  ~Sound3DHandleClass();
+ListenerHandleClass::ListenerHandleClass() = default;
 
-  ///////////////////////////////////////////////////////////////////
-  //	Public methods
-  ///////////////////////////////////////////////////////////////////
-
-  //
-  //	RTTI
-  //
-  Sound3DHandleClass *As_Sound3DHandleClass() { return this; }
-
-  //
-  //	Handle access
-  //
-  H3DSAMPLE Get_H3DSAMPLE() { return SampleHandle; }
-
-  //
-  //	Inherited
-  //
-  void Set_Miles_Handle(uint32 handle);
-  void Initialize(SoundBufferClass *buffer);
-  void Start_Sample();
-  void Stop_Sample();
-  void Resume_Sample();
-  void End_Sample();
-  void Set_Sample_Pan(S32 pan);
-  S32 Get_Sample_Pan();
-  void Set_Sample_Volume(S32 volume);
-  S32 Get_Sample_Volume();
-  void Set_Sample_Loop_Count(U32 count);
-  U32 Get_Sample_Loop_Count();
-  void Set_Sample_MS_Position(U32 ms);
-  void Get_Sample_MS_Position(S32 *len, S32 *pos);
-  void Set_Sample_User_Data(S32 i, U32 val);
-  U32 Get_Sample_User_Data(S32 i);
-  S32 Get_Sample_Playback_Rate();
-  void Set_Sample_Playback_Rate(S32 rate);
-
-protected:
-  ///////////////////////////////////////////////////////////////////
-  //	Protected methods
-  ///////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////
-  //	Protected member data
-  ///////////////////////////////////////////////////////////////////
-  H3DSAMPLE SampleHandle;
-};
+//////////////////////////////////////////////////////////////////////
+//
+//	~ListenerHandleClass
+//
+//////////////////////////////////////////////////////////////////////
+ListenerHandleClass::~ListenerHandleClass() = default;

@@ -57,6 +57,9 @@
 #include "persist.h"
 #endif
 
+#include "postloadable.h"
+#include "refcount.h"
+
 /*
 ** Forward declarations
 */

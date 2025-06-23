@@ -37,16 +37,9 @@
 
 #pragma once
 
-#pragma warning(push, 3)
-#include "mss.h"
-#pragma warning(pop)
-
 #include "vector3.h"
 #include "matrix3d.h"
-#include "refcount.h"
-#include "rawfile.h"
-#include "soundsceneobj.h"
-#include "vector.h"
+#include "SoundSceneObj.h"
 #include "wwstring.h"
 #include "definition.h"
 

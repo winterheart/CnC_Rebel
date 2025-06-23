@@ -14,11 +14,11 @@ set(SOURCES
     Threads.cpp
     Utils.cpp
     WWAudio.cpp
-    listenerhandle.cpp
-    sound2dhandle.cpp
-    sound3dhandle.cpp
-    soundhandle.cpp
-    soundstreamhandle.cpp
+    ListenerHandle.cpp
+    Sound2DHandle.cpp
+    Sound3DHandle.cpp
+    SoundHandle.cpp
+    SoundStreamHandle.cpp
 )
 
 add_library(WWAudio STATIC ${SOURCES})

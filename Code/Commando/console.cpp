@@ -35,57 +35,42 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <cstdio>
+
 #include "console.h"
 #include "consolefunction.h"
 #include "textdisplay.h"
-#include "assets.h"
 #include "font3d.h"
-#include "debug.h"
 #include "timemgr.h"
 #include "input.h"
 #include "miscutil.h"
 #include "cnetwork.h"
 #include "teammanager.h"
-#include "scene.h"
 #include "ww3d.h"
-#include <stdio.h>
 #include "wwaudio.h"
 #include "audiblesound.H"
-// #include "gamesettings.h"
-#include "gamedata.h"
-#include "overlay.h"
 #include "combat.h"
 #include "camera.h"
 #include "ccamera.h"
 #include "gameobjmanager.h"
 #include "smartgameobj.h"
-#include "playermanager.h"
 #include "_globals.h"
 #include "registry.h"
 #include "phys3.h"
 #include "wolgmode.h"
-#include "devoptions.h"
-#include "playertype.h"
 #include "pscene.h"
 #include "translatedb.h"
-#include "string_ids.h"
 #include "vehicle.h"
 #include "wheelvehicle.h"
 #include "wwprofile.h"
 #include "wwmemlog.h"
-#include "wheel.h"
 #include "statistics.h"
 #include "meshmdl.h"
 #include "w3d_file.h" // for SURFACE_TYPE_STRINGS
 #include "colors.h"
-#include "chatshre.h"
-#include "dx8renderer.h"
 #include "dx8wrapper.h"
 #include "umbrasupport.h"
 #include "render2d.h"
-#include "sortingrenderer.h"
-#include "sctextobj.h"
-#include "textdisplay.h"
 #include "trackedvehicle.h"
 #include "dx8rendererdebugger.h"
 #include "fastallocator.h"
@@ -666,15 +651,15 @@ void ConsoleGameModeClass::Think() {
 
       StringClass message(true);
       StringClass temp_string(true);
-      int count_2d = WWAudioClass::Get_Instance()->Get_2D_Sample_Count();
-      int count_3d = WWAudioClass::Get_Instance()->Get_3D_Sample_Count();
+      size_t count_2d = WWAudioClass::Get_Instance()->Get_2D_Sample_Count();
+      size_t count_3d = WWAudioClass::Get_Instance()->Get_3D_Sample_Count();
 
       message = "2D or Pseudo-3D Sounds:\n";
 
       //
       //	Add all the 2D sounds to the message
       //
-      for (int sample_index = 0; sample_index < count_2d; sample_index++) {
+      for (size_t sample_index = 0; sample_index < count_2d; sample_index++) {
         temp_string.Format(" %d.", sample_index + 1);
         message += temp_string;
 
@@ -707,7 +692,7 @@ void ConsoleGameModeClass::Think() {
       //
       //	Add all the 2D sounds to the message
       //
-      for (int sample_index = 0; sample_index < count_3d; sample_index++) {
+      for (size_t sample_index = 0; sample_index < count_3d; sample_index++) {
         temp_string.Format(" %d.", sample_index + 1);
         message += temp_string;
 

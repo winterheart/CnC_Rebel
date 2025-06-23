@@ -35,9 +35,9 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "listener.h"
+#include "Listener.h"
 #include "utils.h"
-#include "soundhandle.h"
+#include "SoundHandle.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //

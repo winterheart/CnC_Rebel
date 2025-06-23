@@ -35,28 +35,13 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "soundbuffer.h"
+#include "SoundBuffer.h"
 #include "rawfile.h"
 #include "wwdebug.h"
 #include "utils.h"
 #include "ffactory.h"
 #include "win.h"
 #include "wwprofile.h"
-
-/////////////////////////////////////////////////////////////////////////////////
-//	FileMappingClass
-/////////////////////////////////////////////////////////////////////////////////
-class FileMappingClass {
-public:
-  StringClass Filename;
-  HANDLE FileMapping;
-  int RefCount;
-
-  bool operator==(const FileMappingClass &src) { return false; }
-  bool operator!=(const FileMappingClass &src) { return false; }
-};
-
-static DynamicVectorClass<FileMappingClass> MappingList;
 
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -72,7 +57,7 @@ SoundBufferClass::SoundBufferClass()
 //
 SoundBufferClass::~SoundBufferClass() {
   SAFE_FREE(m_Filename);
-  Free_Buffer();
+  SoundBufferClass::Free_Buffer();
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -262,17 +247,6 @@ StreamSoundBufferClass::~StreamSoundBufferClass() = default;
 //	Free_Buffer
 //
 void StreamSoundBufferClass::Free_Buffer() {}
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-//	Load_From_File
-//
-/////////////////////////////////////////////////////////////////////////////////
-bool StreamSoundBufferClass::Load_From_File(HANDLE /*hfile*/, unsigned long /*size*/, unsigned long /*offset*/
-) {
-  WWPROFILE("StreamSoundBufferClass::Load_From_File");
-  return true;
-}
 
 /////////////////////////////////////////////////////////////////////////////////
 //

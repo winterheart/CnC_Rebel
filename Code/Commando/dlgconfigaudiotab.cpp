@@ -34,6 +34,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <string>
+
 #include "dlgconfigaudiotab.h"
 #include "resource.h"
 #include "sliderctrl.h"
@@ -369,16 +371,16 @@ void DlgConfigAudioTabClass::On_Command(int ctrl_id, int message_id, DWORD param
 //	Configure_Driver_List
 //
 //////////////////////////////////////////////////////////////////////
-void DlgConfigAudioTabClass::Configure_Driver_List(void) {
+void DlgConfigAudioTabClass::Configure_Driver_List() {
   ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item(IDC_DRIVER_LIST);
-  if (list_ctrl == NULL) {
+  if (list_ctrl == nullptr) {
     return;
   }
 
   //
   //	Get the name of the current 3D driver
   //
-  StringClass device_name = WWAudioClass::Get_Instance()->Get_3D_Driver_Name();
+  std::string device_name = WWAudioClass::Get_Instance()->Get_3D_Driver_Name();
 
   //
   //	Configure the column
@@ -389,29 +391,26 @@ void DlgConfigAudioTabClass::Configure_Driver_List(void) {
   //	Loop over all the drivers
   //
   bool selected_default = false;
-  int driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
+  size_t driver_count = WWAudioClass::Get_Instance()->Get_3D_Device_Count();
   for (int index = 0; index < driver_count; index++) {
 
     //
     //	Get information about this sound driver
     //
-    WWAudioClass::DRIVER_INFO_STRUCT *driver_info = NULL;
-    if (WWAudioClass::Get_Instance()->Get_3D_Device(index, &driver_info)) {
-
-      WideStringClass wide_driver_name;
-      wide_driver_name.Convert_From(driver_info->name);
-
+    std::shared_ptr<WWAudioClass::DRIVER_INFO_STRUCT> driver_info = nullptr;
+    if (WWAudioClass::Get_Instance()->Get_3D_Device(index, driver_info)) {
+      std::wstring wide_driver_name(driver_info->name.begin(), driver_info->name.end());
       //
       //	Add an entry to the list for this driver
       //
-      int item_index = list_ctrl->Insert_Entry(index, wide_driver_name);
+      int item_index = list_ctrl->Insert_Entry(index, wide_driver_name.c_str());
       if (item_index >= 0) {
         list_ctrl->Set_Entry_Data(item_index, 0, (DWORD)driver_info->driver);
 
         //
         //	Select this entry if its the default
         //
-        if (::lstrcmpi(device_name, driver_info->name) == 0) {
+        if (device_name == driver_info->name) {
           list_ctrl->Set_Curr_Sel(item_index);
           selected_default = true;
         }
@@ -431,7 +430,6 @@ void DlgConfigAudioTabClass::Configure_Driver_List(void) {
   // to recreate the device if its not necessary
   //
   InitialDeviceIndex = list_ctrl->Get_Curr_Sel();
-  return;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -439,8 +437,8 @@ void DlgConfigAudioTabClass::Configure_Driver_List(void) {
 // On_Apply
 //
 /////////////////////////////////////////////////////////////////////////////
-bool DlgConfigAudioTabClass::On_Apply(void) {
-  StringClass device_name;
+bool DlgConfigAudioTabClass::On_Apply() {
+  std::string device_name;
   int hertz = 44100;
   int bits = 16;
   int speaker_type = 0;
@@ -481,8 +479,8 @@ bool DlgConfigAudioTabClass::On_Apply(void) {
   ListCtrlClass *list_ctrl = (ListCtrlClass *)Get_Dlg_Item(IDC_DRIVER_LIST);
   int device_index = list_ctrl->Get_Curr_Sel();
   if (device_index >= 0) {
-    WideStringClass wide_device_name = list_ctrl->Get_Entry_Text(device_index, 0);
-    wide_device_name.Convert_To(device_name);
+    std::wstring wide_device_name = list_ctrl->Get_Entry_Text(device_index, 0);
+    device_name = std::string(wide_device_name.begin(), wide_device_name.end());
   }
 
   //

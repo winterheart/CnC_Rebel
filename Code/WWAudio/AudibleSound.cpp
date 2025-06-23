@@ -37,22 +37,22 @@
 
 #include <algorithm>
 
-#include "audiblesound.h"
-#include "wwaudio.h"
+#include "AudibleSound.h"
+#include "WWAudio.h"
 #include "ww3d.h"
 #include "wwdebug.h"
-#include "soundbuffer.h"
+#include "SoundBuffer.h"
 #include "utils.h"
-#include "soundscene.h"
-#include "filteredsound.h"
+#include "SoundScene.h"
+#include "FilteredSound.h"
 #include "threads.h"
-#include "soundchunkids.h"
+#include "SoundChunkIDs.h"
 #include "simpledefinitionfactory.h"
 #include "persistfactory.h"
-#include "logicalsound.h"
+#include "LogicalSound.h"
 #include "definitionclassids.h"
-#include "soundstreamhandle.h"
-#include "sound2dhandle.h"
+#include "SoundStreamHandle.h"
+#include "Sound2DHandle.h"
 #include "systimer.h"
 
 //////////////////////////////////////////////////////////////////////////////////

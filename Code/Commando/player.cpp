@@ -42,7 +42,6 @@
 #include "wwdebug.h"
 #include "cnetwork.h"
 #include "textdisplay.h"
-#include "WWAudio.H"
 #include "gamedata.h"
 #include "chunkio.h"
 #include "useroptions.h"

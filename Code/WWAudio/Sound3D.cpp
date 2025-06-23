@@ -37,14 +37,14 @@
 
 #include <algorithm>
 
-#include "sound3d.h"
-#include "wwaudio.h"
-#include "soundscene.h"
+#include "Sound3D.h"
+#include "WWAudio.h"
+#include "SoundScene.h"
 #include "utils.h"
-#include "soundchunkids.h"
+#include "SoundChunkIDs.h"
 #include "persistfactory.h"
 #include "chunkio.h"
-#include "sound3dhandle.h"
+#include "Sound3DHandle.h"
 #include "systimer.h"
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -80,9 +80,9 @@ Sound3DClass::Sound3DClass()
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 Sound3DClass::Sound3DClass(const Sound3DClass &src)
-    : m_bAutoCalcVel(true), m_CurrentVelocity(0, 0, 0), m_MaxVolRadius(0), m_LastUpdate(0), m_IsStatic(false),
-      m_IsTransformInitted(false), AudibleSoundClass(src) {
-  (*this) = src;
+    : AudibleSoundClass(src), m_IsTransformInitted(false), m_bAutoCalcVel(true), m_CurrentVelocity(0, 0, 0),
+      m_MaxVolRadius(0), m_IsStatic(false), m_LastUpdate(0) {
+  *this = src;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

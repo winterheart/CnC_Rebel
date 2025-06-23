@@ -35,12 +35,12 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "filteredsound.h"
-#include "wwaudio.h"
-#include "soundscene.h"
-#include "soundchunkids.h"
+#include "FilteredSound.h"
+#include "WWAudio.h"
+#include "SoundScene.h"
+#include "SoundChunkIDs.h"
 #include "persistfactory.h"
-#include "soundhandle.h"
+#include "SoundHandle.h"
 
 //////////////////////////////////////////////////////////////////////////////////
 //

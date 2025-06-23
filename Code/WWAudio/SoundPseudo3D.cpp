@@ -37,12 +37,12 @@
 
 #include <algorithm>
 
-#include "soundpseudo3d.h"
-#include "soundscene.h"
+#include "SoundPseudo3D.h"
+#include "SoundScene.h"
 #include "utils.h"
-#include "soundchunkids.h"
+#include "SoundChunkIDs.h"
 #include "persistfactory.h"
-#include "soundhandle.h"
+#include "SoundHandle.h"
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Static factories

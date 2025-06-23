@@ -46,8 +46,6 @@
 #include "weaponmanager.h"
 #include "simpledefinitionfactory.h"
 #include "wwhack.h"
-#include "decophys.h"
-#include "assets.h"
 #include "gameobjmanager.h"
 #include "wwaudio.h"
 #include "wwprofile.h"

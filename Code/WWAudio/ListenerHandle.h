@@ -23,11 +23,11 @@
  *                                                                                             *
  *                 Project Name : wwaudio                                                      *
  *                                                                                             *
- *                     $Archive:: /Commando/Code/WWAudio/soundstreamhandle.h                  $*
+ *                     $Archive:: /Commando/Code/WWAudio/listenerhandle.h                     $*
  *                                                                                             *
  *                       Author:: Patrick Smith                                                *
  *                                                                                             *
- *                     $Modtime:: 8/13/01 3:10p                                               $*
+ *                     $Modtime:: 8/13/01 11:54a                                              $*
  *                                                                                             *
  *                    $Revision:: 1                                                           $*
  *                                                                                             *
@@ -37,20 +37,20 @@
 
 #pragma once
 
-#include "soundhandle.h"
+#include "Sound3DHandle.h"
 
 //////////////////////////////////////////////////////////////////////
 //
-//	SoundStreamHandleClass
+//	ListenerHandleClass
 //
 //////////////////////////////////////////////////////////////////////
-class SoundStreamHandleClass : public SoundHandleClass {
+class ListenerHandleClass : public Sound3DHandleClass {
 public:
   ///////////////////////////////////////////////////////////////////
   //	Public constructors/destructors
   ///////////////////////////////////////////////////////////////////
-  SoundStreamHandleClass();
-  ~SoundStreamHandleClass();
+  ListenerHandleClass();
+  ~ListenerHandleClass();
 
   ///////////////////////////////////////////////////////////////////
   //	Public methods
@@ -59,35 +59,26 @@ public:
   //
   //	RTTI
   //
-  SoundStreamHandleClass *As_SoundStreamHandleClass() { return this; }
-
-  //
-  //	Handle access
-  //
-  HSAMPLE Get_HSAMPLE() { return SampleHandle; }
-  HSTREAM Get_HSTREAM() { return StreamHandle; }
+  ListenerHandleClass *As_ListenerHandleClass() { return this; }
 
   //
   //	Inherited
   //
-  void Set_Miles_Handle(uint32 handle);
   void Initialize(SoundBufferClass *buffer);
-  void Start_Sample();
-  void Stop_Sample();
-  void Resume_Sample();
-  void End_Sample();
-  void Set_Sample_Pan(S32 pan);
-  S32 Get_Sample_Pan();
-  void Set_Sample_Volume(S32 volume);
-  S32 Get_Sample_Volume();
-  void Set_Sample_Loop_Count(U32 count);
-  U32 Get_Sample_Loop_Count();
-  void Set_Sample_MS_Position(U32 ms);
-  void Get_Sample_MS_Position(S32 *len, S32 *pos);
-  void Set_Sample_User_Data(S32 i, U32 val);
-  U32 Get_Sample_User_Data(S32 i);
-  S32 Get_Sample_Playback_Rate();
-  void Set_Sample_Playback_Rate(S32 rate);
+  void Start_Sample() {}
+  void Stop_Sample() {}
+  void Resume_Sample() {}
+  void End_Sample() {}
+  void Set_Sample_Volume(S32 volume) {}
+  S32 Get_Sample_Volume() { return 0; }
+  void Set_Sample_Pan(S32 pan) {}
+  S32 Get_Sample_Pan() { return 64; }
+  void Set_Sample_Loop_Count(U32 count) {}
+  U32 Get_Sample_Loop_Count() { return 0; }
+  void Set_Sample_MS_Position(U32 ms) {}
+  void Get_Sample_MS_Position(S32 *len, S32 *pos) {}
+  S32 Get_Sample_Playback_Rate() { return 0; }
+  void Set_Sample_Playback_Rate(S32 rate) {}
 
 protected:
   ///////////////////////////////////////////////////////////////////
@@ -97,6 +88,4 @@ protected:
   ///////////////////////////////////////////////////////////////////
   //	Protected member data
   ///////////////////////////////////////////////////////////////////
-  HSAMPLE SampleHandle;
-  HSTREAM StreamHandle;
 };
