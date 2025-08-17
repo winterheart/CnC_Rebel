@@ -38,3 +38,11 @@ FastAllocatorGeneral::FastAllocatorGeneral()
     alloc_size += ALLOC_STEP;
   }
 }
+
+template <class T>
+T *FastSTLAllocator<T>::allocate(size_type n, const void *) {
+  return n != 0 ? static_cast<T *>(generalAllocator->Alloc(n * sizeof(T))) : nullptr;
+}
+
+template <class T>
+void FastSTLAllocator<T>::deallocate(pointer p, size_type /* n */) { generalAllocator->Free(p); }
