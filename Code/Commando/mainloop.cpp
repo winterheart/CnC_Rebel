@@ -80,7 +80,7 @@ void Stop_Main_Loop(int exitCode) {
 }
 
 void _Game_Main_Loop_Loop(void) {
-  WWPROFILE("Main Loop");
+  WWPROFILENAMED(main_loop, "Main Loop");
 
   unsigned long time1 = TIMEGETTIME();
 

@@ -616,7 +616,7 @@ void WheelClass::Init(VehiclePhysClass *obj, int position_bone, int rotation_bon
  *   12/18/2000 gth : Created.                                                                 *
  *=============================================================================================*/
 void WheelClass::Compute_Force_And_Torque(Vector3 *force, Vector3 *torque) {
-  WWPROFILE("WheelClass::Compute_Force_And_Torque");
+  WWPROFILENAMED(wheelclass, "WheelClass::Compute_Force_And_Torque");
 
   if (Get_Flag(FAKE))
     return;

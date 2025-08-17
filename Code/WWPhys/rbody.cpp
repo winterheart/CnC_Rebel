@@ -1498,7 +1498,7 @@ inline void RigidBodyClass::Dump_State(void) const {
 }
 
 void RigidBodyClass::Timestep(float dt) {
-  WWPROFILE("RigidBody::Timestep");
+  WWPROFILENAMED(rigidbody, "RigidBody::Timestep");
   LastTimestep = dt;
 
   // DEBUG DEBUG
@@ -1577,7 +1577,7 @@ void RigidBodyClass::Timestep(float dt) {
   while ((remaining_time > 0.0f) && (collisions < MAX_COLLISIONS)) {
 
     Assert_State_Valid();
-    WWPROFILE("RigidBodyClass integration loop");
+    WWPROFILENAMED(rigidbodyclass, "RigidBodyClass integration loop");
     timestep = remaining_time;
 
     /*

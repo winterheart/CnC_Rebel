@@ -372,7 +372,7 @@ float RadarManager::Add_Blip(const Vector3 &pos, int shape_type, int color_type,
 #define RADAR_Z_RANGE 3
 
 void RadarManager::Update(const Matrix3D &player_tm, const Vector2 &center) {
-  WWPROFILE("Radar Update");
+  WWPROFILENAMED(radar_update, "Radar Update");
 
   OldRadarCenter = RadarCenter;
   RadarCenter = center;

@@ -52,7 +52,7 @@
 ** Release all objects and resources loaded for this level
 */
 void LevelManager::Release_Level(void) {
-  WWPROFILE("Release Level");
+  WWPROFILENAMED(release_level, "Release Level");
   SaveGameManager::Set_Map_Filename(NULL);
   ConversationMgrClass::Reset_Active_Conversations();
 

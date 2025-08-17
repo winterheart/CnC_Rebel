@@ -636,7 +636,7 @@ void WeaponClass::Do_Fire(bool primary) {
 **	Fire_Bullet
 */
 void WeaponClass::Fire_Bullet(const AmmoDefinitionClass *ammo_def, bool primary) {
-  WWPROFILE("Fire Bullet");
+  WWPROFILENAMED(fire_bullet, "Fire Bullet");
 
   if (Get_Owner() == COMBAT_STAR) {
     Vector3 pos;
@@ -934,7 +934,7 @@ void WeaponClass::Do_Firing_Effects(void) {
     return; // No sounds when time stops
   }
 
-  WWPROFILE("Firing Effects");
+  WWPROFILENAMED(firing_effects, "Firing Effects");
 
   Matrix3D muzzle = Get_Muzzle();
 
@@ -1192,7 +1192,6 @@ void WeaponClass::Do_Continuous_Effects(bool enable) {
       ammo_def = SecondaryAmmoDefinition;
     }
 
-    int i;
 
     if (ContinuousEmitters.Length() == 0) {
 
@@ -1207,7 +1206,7 @@ void WeaponClass::Do_Continuous_Effects(bool enable) {
       }
     }
 
-    for (i = 0; i < ContinuousEmitters.Length(); i++) {
+    for (int i = 0; i < ContinuousEmitters.Length(); i++) {
       if (ContinuousEmitters[i] == NULL && !ammo_def->ContinuousEmitterName.Is_Empty()) {
         RenderObjClass *renderobj = Create_Render_Obj_From_Filename(ammo_def->ContinuousEmitterName);
         if (renderobj) {
@@ -1237,7 +1236,7 @@ void WeaponClass::Do_Continuous_Effects(bool enable) {
       Matrix3D muzzle;
       muzzle.Obj_Look_At(fp_muzzle_pos, Get_Owner()->Get_Targeting_Pos(), 0);
 
-      for (i = 0; i < ContinuousEmitters.Length(); i++) {
+      for (int i = 0; i < ContinuousEmitters.Length(); i++) {
         if (ContinuousEmitters[i] != NULL) {
           ContinuousEmitters[i]->Set_Transform(muzzle);
         }
@@ -1246,7 +1245,7 @@ void WeaponClass::Do_Continuous_Effects(bool enable) {
         ContinuousSound->Set_Transform(muzzle);
       }
     } else {
-      for (i = 0; i < ContinuousEmitters.Length(); i++) {
+      for (int i = 0; i < ContinuousEmitters.Length(); i++) {
         if (ContinuousEmitters[i] != NULL) {
           ContinuousEmitters[i]->Set_Transform(Get_Muzzle(i));
         }
@@ -1626,7 +1625,7 @@ void WeaponClass::Stop_Firing_Sound(void) {
 // The goal is to find the HitPosition, and HitPositionHot
 
 void WeaponClass::Display_Targeting(void) {
-  WWPROFILE("Cast_Star_Weapon");
+  WWPROFILENAMED(cast_star_weapon, "Cast_Star_Weapon");
   int muzzle_index = Get_Total_Rounds_Fired() & 1;
 
   // vehicles that don't have a turret bone and do have homing weapons target from the camera

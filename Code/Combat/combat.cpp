@@ -90,7 +90,6 @@
 #include "assetstatus.h"
 #include "wwmemlog.h"
 #include "unitcoordinationzonemgr.h"
-#include "fastallocator.h"
 #include "screenfademanager.h"
 #include "animatedsoundmgr.h"
 #include "render2dsentence.h"
@@ -643,7 +642,7 @@ void CombatManager::Handle_Input() {
 void CombatManager::Think() {
   SyncTime += (int)((TimeManager::Get_Frame_Seconds() * 1000.0f) + 0.5f);
 
-  WWPROFILE("CombatManager Think");
+  WWPROFILENAMED(think, "CombatManager Think");
 
   IsGameplayPermitted = NetworkHandler->Is_Gameplay_Permitted();
 
@@ -1033,7 +1032,7 @@ void CombatManager::Update_Star(void) {
 }
 
 void CombatManager::Update_Star_Targeting(void) {
-  WWPROFILE("Targeting");
+  WWPROFILENAMED(targeting, "Targeting");
   SmartGameObj *star = NULL;
 
   if (COMBAT_STAR != NULL) {

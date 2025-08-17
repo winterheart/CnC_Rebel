@@ -179,7 +179,7 @@ void ConsoleGameModeClass::Save_Registry_Keys(void) {
 **	called each time through the main loop
 */
 void ConsoleGameModeClass::Think() {
-  WWPROFILE("Console Think");
+  WWPROFILENAMED(console_think, "Console Think");
 
   /*
        //

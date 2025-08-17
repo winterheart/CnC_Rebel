@@ -206,9 +206,11 @@ public:
 };
 
 #ifdef ENABLE_WWPROFILE
+#define WWPROFILENAMED(id, name) WWProfileSampleClass _wwprofile_##id(name, false)
 #define WWPROFILE(name) WWProfileSampleClass _wwprofile(name, false)
 #define WWROOTPROFILE(name) WWProfileSampleClass _wwprofile(name, true)
 #else
+#define WWPROFILENAMED(id, name)
 #define WWPROFILE(name)
 #define WWROOTPROFILE(name)
 #endif

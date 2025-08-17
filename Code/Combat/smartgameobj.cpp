@@ -644,7 +644,7 @@ void SmartGameObj::Apply_Control(void) {
 
 void SmartGameObj::Think() {
   {
-    WWPROFILE("Smart Think");
+    WWPROFILENAMED(smart_think, "Smart Think");
 
     // React to the controls
     {

@@ -190,7 +190,7 @@ void GameModeManager::Safely_Deactivate(void) {
 ** let all non inactive game modes draw
 */
 void GameModeManager::Render(void) {
-  WWPROFILE("Render");
+  WWPROFILENAMED(render, "Render");
 
   if (!ConsoleBox.Is_Exclusive()) {
 
