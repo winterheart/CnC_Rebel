@@ -1,5 +1,10 @@
 # Major changes for CnC: Rebel
 
+## XXXXXX - SANDWORM
+
+* Replace non-public Bink and MSS SDKs with open-source stub implementations.
+* Replace non-public nvDTLib with crunch
+
 ## 1.34.2 - TECHNICIAN
 
 This release aimed to be intermediate stable base for new features and enhancements. Codebase migrated to recent

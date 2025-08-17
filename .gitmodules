@@ -4,3 +4,9 @@
 [submodule "Code/third_party/stb"]
 	path = Code/third_party/stb
 	url = https://github.com/nothings/stb.git
+[submodule "Code/third_party/bink-sdk-stub"]
+	path = Code/third_party/bink-sdk-stub
+	url = https://github.com/TheSuperHackers/bink-sdk-stub.git
+[submodule "Code/third_party/miles-sdk-stub"]
+	path = Code/third_party/miles-sdk-stub
+	url = https://github.com/TheSuperHackers/miles-sdk-stub.git

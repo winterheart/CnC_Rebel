@@ -28,7 +28,6 @@ target_include_directories(WWAudio PUBLIC
     >
     PRIVATE
         ${PROJECT_SOURCE_DIR}/Code/WW3D2
-        ${MSS_INCLUDE_DIRS}
 )
 target_link_libraries(WWAudio
     PRIVATE
@@ -36,8 +35,9 @@ target_link_libraries(WWAudio
         WWLib
         WWMath
         WWSaveLoad
-        ${MSS_LIBRARIES}
         winmm   # timeGetTime()
+    PUBLIC
+        milesstub
 )
 target_compile_definitions(WWAudio PRIVATE
     WINDOWS_IGNORE_PACKING_MISMATCH
@@ -60,8 +60,9 @@ if(REBEL_ENABLE_EDITOR)
             WWLib
             WWMath
             WWSaveLoadE
-            ${MSS_LIBRARIES}
             winmm   # timeGetTime()
+        PUBLIC
+            milesstub
     )
     target_compile_definitions(WWAudioE PRIVATE
         WINDOWS_IGNORE_PACKING_MISMATCH
