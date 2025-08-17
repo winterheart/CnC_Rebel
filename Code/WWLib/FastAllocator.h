@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 // FastAllocator.h
@@ -39,11 +39,11 @@
 // Include files
 //
 #include <cstring>
+#include <mutex>
 #include <malloc.h>
 
 #include "always.h"
 #include "wwdebug.h"
-#include "mutex.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Forward Declarations
@@ -347,7 +347,7 @@ public:
 
 protected:
   FastFixedAllocator allocators[MAX_ALLOC_SIZE / ALLOC_STEP];
-  FastCriticalSectionClass CriticalSections[MAX_ALLOC_SIZE / ALLOC_STEP];
+  std::recursive_mutex CriticalSections[MAX_ALLOC_SIZE / ALLOC_STEP];
   bool MemoryLeakLogEnabled;
 
   unsigned AllocatedWithMalloc;
@@ -359,7 +359,7 @@ protected:
 WWINLINE unsigned FastAllocatorGeneral::Get_Total_Heap_Size() {
   int size = AllocatedWithMalloc;
   for (int i = 0; i < MAX_ALLOC_SIZE / ALLOC_STEP; ++i) {
-    FastCriticalSectionClass::LockClass lock(CriticalSections[i]);
+    std::lock_guard lock(CriticalSections[i]);
     size += allocators[i].Get_Heap_Size();
   }
   return size;
@@ -368,7 +368,7 @@ WWINLINE unsigned FastAllocatorGeneral::Get_Total_Heap_Size() {
 WWINLINE unsigned FastAllocatorGeneral::Get_Total_Allocated_Size() {
   int size = AllocatedWithMalloc;
   for (int i = 0; i < MAX_ALLOC_SIZE / ALLOC_STEP; ++i) {
-    FastCriticalSectionClass::LockClass lock(CriticalSections[i]);
+    std::lock_guard lock(CriticalSections[i]);
     size += allocators[i].Get_Allocated_Size();
   }
   return size;
@@ -377,7 +377,7 @@ WWINLINE unsigned FastAllocatorGeneral::Get_Total_Allocated_Size() {
 WWINLINE unsigned FastAllocatorGeneral::Get_Total_Allocation_Count() {
   int count = AllocatedWithMallocCount;
   for (int i = 0; i < MAX_ALLOC_SIZE / ALLOC_STEP; ++i) {
-    FastCriticalSectionClass::LockClass lock(CriticalSections[i]);
+    std::lock_guard lock(CriticalSections[i]);
     count += allocators[i].Get_Allocation_Count();
   }
   return count;
@@ -408,7 +408,7 @@ WWINLINE void *FastAllocatorGeneral::Alloc(unsigned int n) {
   if (n < MAX_ALLOC_SIZE) {
     int index = (n) / ALLOC_STEP;
     {
-      FastCriticalSectionClass::LockClass lock(CriticalSections[index]);
+      std::lock_guard lock(CriticalSections[index]);
       pMemory = allocators[index].Alloc();
     }
   } else {
@@ -446,7 +446,7 @@ WWINLINE void FastAllocatorGeneral::Free(void *pAlloc) {
 
     if (size < MAX_ALLOC_SIZE) {
       int index = size / ALLOC_STEP;
-      FastCriticalSectionClass::LockClass lock(CriticalSections[index]);
+      std::lock_guard lock(CriticalSections[index]);
       allocators[index].Free(n);
     } else {
       AllocatedWithMallocCount--;

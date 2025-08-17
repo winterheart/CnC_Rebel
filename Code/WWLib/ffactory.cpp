@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -91,7 +91,7 @@ void SimpleFileFactoryClass::Get_Sub_Directory(StringClass &new_dir) const {
   // and release so it is better to take a reference to the
   // destination StringClass object and modify that.
 
-  CriticalSectionClass::LockClass lock(Mutex);
+  std::lock_guard lock(Mutex);
   new_dir = SubDirectory;
   // END SERIALIZATION
 }
@@ -103,7 +103,7 @@ void SimpleFileFactoryClass::Set_Sub_Directory(const char *sub_directory) {
   // Just to be safe, we lock before executing the assignment code.
   // (DRM, 04/19/01)
 
-  CriticalSectionClass::LockClass lock(Mutex);
+  std::lock_guard lock(Mutex);
   SubDirectory = sub_directory;
   // END SERIALIZATION
 }
@@ -135,7 +135,7 @@ void SimpleFileFactoryClass::Prepend_Sub_Directory(const char *sub_directory) {
   // Just to be safe, we lock before executing the concatenation code.
   // (NH, 04/23/01)
 
-  CriticalSectionClass::LockClass lock(Mutex);
+  std::lock_guard lock(Mutex);
   SubDirectory = temp_sub_dir + SubDirectory;
 
   // END SERIALIZATION
@@ -166,7 +166,7 @@ void SimpleFileFactoryClass::Append_Sub_Directory(const char *sub_directory) {
   // Just to be safe, we lock before this section.
   // (NH, 04/23/01)
 
-  CriticalSectionClass::LockClass lock(Mutex);
+  std::lock_guard lock(Mutex);
 
   // Ensure a trailing semicolon is present, unless the directory list is empty
   size_t len = SubDirectory.Get_Length();
@@ -233,7 +233,7 @@ FileClass *SimpleFileFactoryClass::Get_File(char const *filename) {
     // of StringClass and wrap all calls to it. We can optimize later if this
     // proves too slow. (DRM, 04/19/01)
 
-    CriticalSectionClass::LockClass lock(Mutex);
+    std::lock_guard lock(Mutex);
 
     if (!SubDirectory.Is_Empty()) {
 

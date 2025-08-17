@@ -37,6 +37,8 @@
 
 #pragma once
 
+#include <mutex>
+
 #include <cwchar>
 
 #include "always.h"
@@ -173,7 +175,7 @@ private:
   static WCHAR *m_ResTempPtr[MAX_TEMP_STRING];
 
   static int m_UsedTempStringCount;
-  static FastCriticalSectionClass m_TempMutex;
+  static std::recursive_mutex m_TempMutex;
 
   static WCHAR m_NullChar;
   static WCHAR *m_EmptyString;

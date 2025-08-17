@@ -107,6 +107,7 @@
 #include "heightfieldeditor.h"
 #include "heightfieldmgr.h"
 #include "pathmgr.h"
+#include "rawfile.h"
 
 //////////////////////////////////////////////////////////////////////
 //

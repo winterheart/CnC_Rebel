@@ -197,7 +197,7 @@ PacketManagerClass::~PacketManagerClass() {
  *   10/15/2001 11:29AM ST : Created                                                           *
  *=============================================================================================*/
 void PacketManagerClass::Set_Is_Server(bool is_server) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   WWMEMLOG(MEM_NETWORK);
   bool reset = false;
 
@@ -578,7 +578,7 @@ int PacketManagerClass::Get_Next_Free_Buffer_Index() {
  *=============================================================================================*/
 bool PacketManagerClass::Take_Packet(const unsigned char *packet, int packet_len, unsigned char *dest_ip,
                                      unsigned short dest_port, SOCKET source_socket) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
 
   if (NumPackets < NumSendBuffers) {
     if (packet_len > 0 && packet_len < (PACKET_MANAGER_MTU - sizeof(PacketPackHeaderStruct))) {
@@ -623,7 +623,7 @@ void PacketManagerClass::Flush(bool forced) {
   {
     WWPROFILE("PMgr Flush");
 
-    CriticalSectionClass::LockClass lock(CriticalSection);
+    std::lock_guard lock(CriticalSection);
 
     int base_index = -1;
     int length = 0;
@@ -1125,7 +1125,7 @@ int PacketManagerClass::Get_Packet(SOCKET socket, unsigned char *packet_buffer, 
                                    unsigned char *ip_address, unsigned short &port) {
   {
     WWPROFILE("Pmgr Get");
-    CriticalSectionClass::LockClass lock(CriticalSection);
+    std::lock_guard lock(CriticalSection);
 
     if (NumReceivePackets == 0) {
       int address_size = sizeof(sockaddr_in);
@@ -1245,7 +1245,7 @@ int PacketManagerClass::Get_Packet(SOCKET socket, unsigned char *packet_buffer, 
  *   10/9/2001 8:54AM ST : Created                                                             *
  *=============================================================================================*/
 void PacketManagerClass::Reset_Stats() {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   WWDEBUG_SAY(("PacketManagerClass Resetting stats\n"));
   BandwidthList.Delete_All();
   LastStatsUpdate = TIMEGETTIME();
@@ -1413,7 +1413,7 @@ void PacketManagerClass::Register_Packet_Out(unsigned char *ip_address, unsigned
  *   10/9/2001 8:57AM ST : Created                                                             *
  *=============================================================================================*/
 void PacketManagerClass::Update_Stats(bool forced) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long time = TIMEGETTIME();
 
   /*
@@ -1566,7 +1566,7 @@ unsigned long PacketManagerClass::Get_Total_Compressed_Bandwidth_Out() const { r
  *   10/9/2001 9:01AM ST : Created                                                             *
  *=============================================================================================*/
 unsigned long PacketManagerClass::Get_Raw_Bandwidth_In(SOCKADDR_IN *address) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long ip = *((unsigned long *)&address->sin_addr.s_addr);
   unsigned short port = address->sin_port;
   int stats = Get_Stats_Index(ip, port, false);
@@ -1593,7 +1593,7 @@ unsigned long PacketManagerClass::Get_Raw_Bandwidth_In(SOCKADDR_IN *address) {
  *   10/9/2001 9:01AM ST : Created                                                             *
  *=============================================================================================*/
 unsigned long PacketManagerClass::Get_Raw_Bandwidth_Out(SOCKADDR_IN *address) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long ip = *((unsigned long *)&address->sin_addr.s_addr);
   unsigned short port = address->sin_port;
   int stats = Get_Stats_Index(ip, port, false);
@@ -1620,7 +1620,7 @@ unsigned long PacketManagerClass::Get_Raw_Bandwidth_Out(SOCKADDR_IN *address) {
  *   10/9/2001 9:01AM ST : Created                                                             *
  *=============================================================================================*/
 unsigned long PacketManagerClass::Get_Raw_Bytes_Out(SOCKADDR_IN *address) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long ip = *((unsigned long *)&address->sin_addr.s_addr);
   unsigned short port = address->sin_port;
   int stats = Get_Stats_Index(ip, port, false);
@@ -1647,7 +1647,7 @@ unsigned long PacketManagerClass::Get_Raw_Bytes_Out(SOCKADDR_IN *address) {
  *   10/9/2001 9:01AM ST : Created                                                             *
  *=============================================================================================*/
 unsigned long PacketManagerClass::Get_Compressed_Bandwidth_In(SOCKADDR_IN *address) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long ip = *((unsigned long *)&address->sin_addr.s_addr);
   unsigned short port = address->sin_port;
   int stats = Get_Stats_Index(ip, port, false);
@@ -1674,7 +1674,7 @@ unsigned long PacketManagerClass::Get_Compressed_Bandwidth_In(SOCKADDR_IN *addre
  *   10/9/2001 9:01AM ST : Created                                                             *
  *=============================================================================================*/
 unsigned long PacketManagerClass::Get_Compressed_Bandwidth_Out(SOCKADDR_IN *address) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
   unsigned long ip = *((unsigned long *)&address->sin_addr.s_addr);
   unsigned short port = address->sin_port;
   int stats = Get_Stats_Index(ip, port, false);

@@ -34,7 +34,6 @@
 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "render2d.h"
-#include "mutex.h"
 #include "ww3d.h"
 #include "refcount.h"
 #include "font3d.h"

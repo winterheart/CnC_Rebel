@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -42,10 +42,10 @@
 //	Static member initialization
 ///////////////////////////////////////////////////////////////////////////////////////////
 WWAudioThreadsClass::DELAYED_RELEASE_INFO *WWAudioThreadsClass::m_ReleaseListHead = nullptr;
-CriticalSectionClass WWAudioThreadsClass::m_ListMutex;
+std::recursive_mutex WWAudioThreadsClass::m_ListMutex;
 HANDLE WWAudioThreadsClass::m_hDelayedReleaseThread = (HANDLE)-1;
 HANDLE WWAudioThreadsClass::m_hDelayedReleaseEvent = (HANDLE)-1;
-CriticalSectionClass WWAudioThreadsClass::m_CriticalSection;
+std::recursive_mutex WWAudioThreadsClass::m_CriticalSection;
 bool WWAudioThreadsClass::m_IsFlushing = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ void WWAudioThreadsClass::Add_Delayed_Release_Object(RefCountClass *object, DWOR
     // list pointer
     //
     {
-      CriticalSectionClass::LockClass lock(m_ListMutex);
+      std::lock_guard lock(m_ListMutex);
 
       //
       //	Create a new delay-information structure and
@@ -147,7 +147,7 @@ void WWAudioThreadsClass::Add_Delayed_Release_Object(RefCountClass *object, DWOR
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 void WWAudioThreadsClass::Flush_Delayed_Release_Objects() {
-  CriticalSectionClass::LockClass lock(m_ListMutex);
+  std::lock_guard lock(m_ListMutex);
   m_IsFlushing = true;
 
   //
@@ -184,7 +184,7 @@ void __cdecl WWAudioThreadsClass::Delayed_Release_Thread_Proc(LPVOID /*param*/) 
   while (::WaitForSingleObject(m_hDelayedReleaseEvent, timeout) == WAIT_TIMEOUT) {
 
     {
-      CriticalSectionClass::LockClass lock(m_ListMutex);
+      std::lock_guard lock(m_ListMutex);
 
       //
       //	Loop through all the objects in our delay list, and
