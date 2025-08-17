@@ -10,13 +10,13 @@ target_include_directories(BinkMovie PUBLIC
     $<BUILD_INTERFACE:
         ${PROJECT_SOURCE_DIR}/Code/BinkMovie
     >
-    PRIVATE
-        ${BINK_INCLUDE_DIRS}
 )
-target_link_libraries(BinkMovie PRIVATE
-    WW3D2
-    WWDebug
-    WWLib
-    ${BINK_LIBRARIES}
-    Microsoft::D3DX9
+target_link_libraries(BinkMovie
+    PRIVATE
+        WW3D2
+        WWDebug
+        WWLib
+        Microsoft::D3DX9
+    PUBLIC
+        binkstub
 )

@@ -15,8 +15,8 @@ See [CHANGES.md](CHANGES.md) for full changelog.
 * CMake 3.20
 * GoogleTest (vcpkg package, optional)
 * Microsoft.DXSDK.D3DX 9.29.952.8 (vcpkg package)
-* RAD Miles Sound System 6 SDK (`Code/third_party/miles6`)
-* RAD Bink SDK (`Code/third_party/bink`)
+* RAD Miles Sound System 6 (runtime dependency)
+* RAD Bink (runtime dependency)
 
 ## Runtime Dependencies
 
@@ -36,11 +36,25 @@ Please see [LICENSE.md](LICENSE.md) for details.
 
 CnC: Rebel uses third party libraries, described below.
 
+### bink-sdk-stub
+
+A null implementation of part of the binkw32.dll API as used by Command & Conquer Renegade and
+Command and Conquer Generals/Zero Hour.
+
+License: GPL-3-or-later
+
 ### crnlib
 
 Crunch - advanced DXTc texture compression and transcoding library.
 
 License: Public Domain
+
+### miles-sdk-stub
+
+A null implementation of part of the mss32.dll API as used by Command & Conquer Renegade and
+Command and Conquer Generals/Zero Hour.
+
+License: GPL-3-or-later
 
 ### stb
 
