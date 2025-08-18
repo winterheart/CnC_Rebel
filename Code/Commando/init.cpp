@@ -36,6 +36,7 @@
  *   Commando_Assert_Handler -- Commando callback function for WWASSERT's                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <filesystem>
 #include <intrin.h>
 
 #include "buildinfo.h"
@@ -381,49 +382,25 @@ LoggingFileFactoryClass LoggingFileFactory;
 /*
 **
 */
-void Construct_Directory_Structure(void) {
-  //
-  //	Lookup the path of the executable
-  //
-  char path[MAX_PATH] = {0};
-  ::GetModuleFileName(NULL, path, sizeof(path));
+void Construct_Directory_Structure() {
+  // Lookup the path of the executable
+  char exe_path[MAX_PATH] = {};
+  GetModuleFileName(NULL, exe_path, sizeof(exe_path));
 
-  //
-  //	Strip off the filename
-  //
-  char *filename = ::strrchr(path, '\\');
-  if (filename != NULL) {
-    filename[1] = 0;
+  // Strip off the filename
+  std::filesystem::path path = std::filesystem::path(exe_path).parent_path();
+
+  std::vector<std::filesystem::path> dirs = {
+    "data",
+    "save",
+    "config",
+  };
+
+  // Create directories
+  for (auto const &itm : dirs) {
+    std::error_code ec;
+    std::filesystem::create_directories(path / itm, ec);
   }
-
-  StringClass data_dir(path, true);
-  data_dir += "data";
-
-  StringClass save_dir(data_dir + "\\save", true);
-  StringClass config_dir(data_dir + "\\config", true);
-
-  //
-  //	Create the data directory if necessary
-  //
-  if (GetFileAttributes(data_dir) == 0xFFFFFFFF) {
-    ::CreateDirectory(data_dir, NULL);
-  }
-
-  //
-  //	Create the save directory if necessary
-  //
-  if (GetFileAttributes(save_dir) == 0xFFFFFFFF) {
-    ::CreateDirectory(save_dir, NULL);
-  }
-
-  //
-  //	Create the config directory if necessary
-  //
-  if (GetFileAttributes(config_dir) == 0xFFFFFFFF) {
-    ::CreateDirectory(config_dir, NULL);
-  }
-
-  return;
 }
 
 void Application_Exception_Callback() {
