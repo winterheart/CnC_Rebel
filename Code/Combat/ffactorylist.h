@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -34,8 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef FFACTORYLIST_H
-#define FFACTORYLIST_H
+#pragma once
 
 #ifndef ALWAYS_H
 #include "always.h"
@@ -55,26 +55,26 @@
 class FileFactoryListClass : public FileFactoryClass {
 
 public:
-  FileFactoryListClass(void);
-  ~FileFactoryListClass(void);
+  FileFactoryListClass();
+  ~FileFactoryListClass();
 
   void Add_FileFactory(FileFactoryClass *factory, const char *name);
   void Remove_FileFactory(FileFactoryClass *factory);
-  FileFactoryClass *Remove_FileFactory(void);
+  FileFactoryClass *Remove_FileFactory();
 
   void Set_Search_Start(const char *name);
-  void Reset_Search_Start(void) { SearchStartIndex = 0; }
+  void Reset_Search_Start() { SearchStartIndex = 0; }
 
   void Add_Temp_FileFactory(FileFactoryClass *factory);
-  FileFactoryClass *Remove_Temp_FileFactory(void);
-  FileFactoryClass *Peek_Temp_FileFactory(void) { return TempFactory; }
+  FileFactoryClass *Remove_Temp_FileFactory();
+  FileFactoryClass *Peek_Temp_FileFactory() { return TempFactory; }
 
   virtual FileClass *Get_File(char const *filename);
   virtual void Return_File(FileClass *file);
 
-  static FileFactoryListClass *Get_Instance(void) { return Instance; }
+  static FileFactoryListClass *Get_Instance() { return Instance; }
 
-  int Get_Factory_Count(void) const { return FactoryList.Count(); }
+  int Get_Factory_Count() const { return FactoryList.Count(); }
   FileFactoryClass *Get_Factory(int index) { return FactoryList[index]; }
 
 private:
@@ -85,5 +85,3 @@ private:
 
   static FileFactoryListClass *Instance;
 };
-
-#endif
