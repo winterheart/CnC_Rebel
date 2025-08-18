@@ -89,7 +89,7 @@
 #include "serverfps.h"
 #include "nicenum.h"
 #include "encyclopediamgr.h"
-#include "playermanager.h"
+#include "PlayerManager.h"
 #include "teammanager.h"
 #include "registry.h"
 #include "bandwidthgraph.h"
@@ -109,7 +109,6 @@
 #include "gamespyadmin.h"
 #include "netutil.h"
 #include "shutdown.h"
-#include "specialbuilds.h"
 
 extern const char *VALUE_NAME_TEXTURE_FILTER_MODE;
 
@@ -168,7 +167,7 @@ static const float _ParticleLODScreenSizes[17] = {0.0025f, 0.0050f, 0.0075f, 0.0
  *   9/26/2001  tss : Created.                                                                 *
  *=============================================================================================*/
 void Append_To_Assert_History(const char *message) {
-  if (message == NULL) {
+  if (message == nullptr) {
     //
     // bail
     //
@@ -176,7 +175,7 @@ void Append_To_Assert_History(const char *message) {
   }
 
   FILE *file = ::fopen("_asserts.txt", "at");
-  if (file == NULL) {
+  if (file == nullptr) {
     return;
   }
 
@@ -198,16 +197,16 @@ void Append_To_Assert_History(const char *message) {
   // Full filename
   //
   char full_filename[MAX_PATH];
-  ::GetModuleFileName(NULL, full_filename, sizeof(full_filename));
+  ::GetModuleFileName(nullptr, full_filename, sizeof(full_filename));
   ::sprintf(line, "Filename:   %s\n", full_filename);
   ::fwrite(line, 1, ::strlen(line), file);
 
   //
   // File size
   //
-  HANDLE hfile = ::CreateFile(full_filename, 0, 0, NULL, OPEN_EXISTING, 0L, NULL);
+  HANDLE hfile = ::CreateFile(full_filename, 0, 0, nullptr, OPEN_EXISTING, 0L, nullptr);
   if (hfile != INVALID_HANDLE_VALUE) {
-    DWORD file_size = ::GetFileSize(hfile, NULL);
+    DWORD file_size = ::GetFileSize(hfile, nullptr);
     ::CloseHandle(hfile);
     ::sprintf(line, "Filesize:   %d\n", file_size);
     ::fwrite(line, 1, ::strlen(line), file);
@@ -235,7 +234,7 @@ void Append_To_Assert_History(const char *message) {
  *   3/28/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 void Commando_Assert_Handler(const char *message) {
-  if (message == NULL) {
+  if (message == nullptr) {
     //
     // bail
     //
@@ -272,7 +271,7 @@ void Commando_Assert_Handler(const char *message) {
 
 #ifdef WWDEBUG
 
-  if (cDevOptions::SoundEffectOnAssert.Is_True() && WWAudioClass::Get_Instance() != NULL) {
+  if (cDevOptions::SoundEffectOnAssert.Is_True() && WWAudioClass::Get_Instance() != nullptr) {
     //
     // Sound effect
     //
@@ -343,7 +342,7 @@ class LoggingFileFactoryClass : public SimpleFileFactoryClass {
 public:
   virtual FileClass *Get_File(const char *filename) {
     FileClass *file = BaseFactory->Get_File(filename);
-    Debug_Say(("FILE_LOG : %s %s\n", filename, ((file == NULL || !file->Is_Available()) ? "MISSING" : "")));
+    Debug_Say(("FILE_LOG : %s %s\n", filename, ((file == nullptr || !file->Is_Available()) ? "MISSING" : "")));
     return file;
   }
   void Set_Base_Factory(FileFactoryClass *factory) { BaseFactory = factory; }
@@ -385,7 +384,7 @@ LoggingFileFactoryClass LoggingFileFactory;
 void Construct_Directory_Structure() {
   // Lookup the path of the executable
   char exe_path[MAX_PATH] = {};
-  GetModuleFileName(NULL, exe_path, sizeof(exe_path));
+  GetModuleFileName(nullptr, exe_path, sizeof(exe_path));
 
   // Strip off the filename
   std::filesystem::path path = std::filesystem::path(exe_path).parent_path();
@@ -412,72 +411,6 @@ void Application_Exception_Callback() {
 
 bool RestartNeeded = true;
 
-/*
-**
-*/
-#if 0
-#define FIRST_CHAR 'a'
-#define LAST_CHAR 'z'
-
-#include "realcrc.h"
-int	CRC_Next( unsigned char ** p, int length )
-{
-	int ret = 0;
-	if ( length == -1 ) {
-		return 1;
-	}
-	if ( **p == LAST_CHAR ) {
-		*p = *p-1;
-		ret |= CRC_Next( p, length-1 );
-		*p = *p+1;
-		**p = FIRST_CHAR;
-	} else {
-		**p = **p+1;
-	}
-	return ret;
-
-}
-
-void CRC_Check( void )
-{
-	Debug_Say(( "CRC_Check\n" ));
-	int count = 0;
-
-#define MAX_STRING 10
-#define GOAL_CRC 65729409
-
-	int start = timeGetTime();
-
-	unsigned char string[MAX_STRING+1];
-	for ( int length = 1; length <= MAX_STRING; length++ )
-	{
-		unsigned char * p = &string[length-1];
-		string[length] = 0;
-		for ( int i = 0; i < length; i++ ) {
-			string[i] = FIRST_CHAR;
-		}
-
-		while ( 1 ) {
-/*			if ( (count & 0x0FFFF) == 0 ) {
-				Debug_Say(( "Checking %d \"%s\"\n", count, string ));
-			}*/
-			int crc = CRC_String( (char *)string );
-			if ( crc == GOAL_CRC ) {
-				Debug_Say(( "CRC MATCH \"%s\" (count %d) at %d\n\n", string, count, timeGetTime()-start ));
-			}
-			count++;
-			if ( CRC_Next( &p, length-1 ) != 0 ) {
-				break;
-			}
-		}
-Debug_Say(( "End length %d (count %d) at %d\n", length, count, timeGetTime()-start ));
-	}
-
-//	strcpy( string, "miketheheadlesschickenisgod" );
-//	Debug_Say(( "CRC %d\n", crc ));
-	return;
-}
-#endif
 /*
 **
 */
@@ -533,7 +466,7 @@ bool Game_Init() {
   //
   WIN32_FIND_DATA find_info = {0};
   BOOL keep_going = TRUE;
-  HANDLE file_find = NULL;
+  HANDLE file_find = nullptr;
   for (file_find = ::FindFirstFile("data\\*.mix", &find_info); (file_find != INVALID_HANDLE_VALUE) && keep_going;
        keep_going = ::FindNextFile(file_find, &find_info)) {
     //
@@ -611,13 +544,13 @@ bool Game_Init() {
   PathMgrClass::Initialize();
 
   // Initialize WW3D
-  switch (WW3D::Init(MainWindow, NULL, ConsoleBox.Is_Exclusive() ? true : false)) {
+  switch (WW3D::Init(MainWindow, nullptr, ConsoleBox.Is_Exclusive())) {
   case WW3D_ERROR_OK: // Success!
     break;
   case WW3D_ERROR_DIRECTX8_INITIALIZATION_FAILED:
   default:
     WWDEBUG_SAY(("WW3D::Init Failed!\r\n"));
-    ::MessageBox(NULL, "DirectX 8.0 or later is required to play C&C:Renegade.",
+    ::MessageBox(nullptr, "DirectX 8.0 or later is required to play C&C:Renegade.",
                  "Renegade Graphics Initialization Error.", MB_OK);
     return false;
   }
@@ -674,7 +607,7 @@ bool Game_Init() {
   //
   TranslateDBClass::Initialize();
   FileClass *file = _TheFileFactory->Get_File(STRINGS_FILENAME);
-  if (file != NULL) {
+  if (file != nullptr) {
     file->Open(FileClass::READ); //	Open or the file
     if (file->Is_Available()) {
       ChunkLoadClass cload(file); // Load the database
@@ -688,7 +621,7 @@ bool Game_Init() {
   //
   //	Initialize the input control system
   //
-  bool dinput_avail = (ConsoleBox.Is_Exclusive()) ? false : true;
+  bool dinput_avail = !ConsoleBox.Is_Exclusive();
 
   Input::Init(dinput_avail);
   Input::Load_Registry(APPLICATION_SUB_KEY_NAME_CONTROLS);
@@ -705,7 +638,7 @@ bool Game_Init() {
   //	Load the conversation database
   //
   file = _TheFileFactory->Get_File(CONV_DB_FILENAME);
-  if (file != NULL) {
+  if (file != nullptr) {
     file->Open(FileClass::READ); //	Open or the file
     if (file->Is_Available()) {
       ChunkLoadClass cload(file); // Load the database
@@ -752,7 +685,7 @@ bool Game_Init() {
 
   cNetUtil::Wsa_Init();
 
-  CombatManager::Init(ConsoleBox.Is_Exclusive() ? false : true);
+  CombatManager::Init(!ConsoleBox.Is_Exclusive());
 
   CampaignManager::Init();
 
@@ -784,7 +717,7 @@ bool Game_Init() {
   // Note:  Accelerator tables that are loaded from resources (like
   // we are doing here) do not need to be manually freed.  Windows
   // will cleanup for us when the process terminates.
-  HACCEL haccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR));
+  HACCEL haccel = ::LoadAccelerators(::GetModuleHandle(nullptr), MAKEINTRESOURCE(IDR_ACCELERATOR));
   if (haccel) {
     ::Add_Accelerator(MainWindow, haccel);
   }
@@ -817,13 +750,6 @@ bool Game_Init() {
 
 #if (IMMEDIATE_LOAD == 0)
 
-#if 0 // Not anymore
-      //
-      //	Start the main menu
-      //
-	RenegadeDialogMgrClass::Goto_Location (RenegadeDialogMgrClass::LOC_MAIN_MENU);
-#else
-
   //
   // Parse the server settings files if they will be used soon to make sure there are no errors.
   //
@@ -851,8 +777,6 @@ bool Game_Init() {
       mode->Startup_Movies();
     }
   }
-
-#endif
 
 #endif
 
@@ -885,10 +809,10 @@ bool Game_Init() {
 char *Build_Registry_Location_String(const char *base, const char *modifier, const char *sub) {
   static char _whole_registry_string[1024];
 
-  WWASSERT(base != NULL);
-  WWASSERT(sub != NULL);
+  WWASSERT(base != nullptr);
+  WWASSERT(sub != nullptr);
 
-  if (modifier == NULL) {
+  if (modifier == nullptr) {
     modifier = DefaultRegistryModifier;
   }
 
