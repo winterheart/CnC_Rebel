@@ -214,7 +214,7 @@ void WeaponViewClass::Enable(bool enable) { WeaponViewEnabled = enable; }
 **	called each time through the main loop
 */
 void WeaponViewClass::Think() {
-  WWPROFILE("WeaponView Think");
+  WWPROFILENAMED(weaponview_think, "WeaponView Think");
 
   bool bail = false;
 

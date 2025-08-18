@@ -1200,7 +1200,7 @@ void CombatGameModeClass::Save_Registry_Keys(void) {
 ** called each time through the main loop when active
 */
 void CombatGameModeClass::Think() {
-  WWPROFILE("Combat Think");
+  WWPROFILENAMED(combat_think, "Combat Think");
 
   if (!Is_Active()) {
     return;

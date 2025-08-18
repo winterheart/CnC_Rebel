@@ -1,21 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**	Copyright 2025 CnC Rebel Developers.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
@@ -50,7 +50,7 @@ enum { VARID_ATTACHED_OBJ = 0x01, VARID_ATTACHED_BONE, VARID_USER_DATA, VARID_US
 //////////////////////////////////////////////////////////////////////////////////
 DynamicVectorClass<SoundSceneObjClass *> SoundSceneObjClass::m_GlobalSoundList;
 uint32 SoundSceneObjClass::m_NextAvailableID = SOUND_OBJ_START_ID;
-CriticalSectionClass SoundSceneObjClass::m_IDListMutex;
+std::recursive_mutex SoundSceneObjClass::m_IDListMutex;
 
 //////////////////////////////////////////////////////////////////////////////////
 //	Mutex managment
@@ -309,7 +309,7 @@ void SoundSceneObjClass::Set_ID(uint32 id) {
 //////////////////////////////////////////////////////////////////////////////////
 void SoundSceneObjClass::Register_Sound_Object(SoundSceneObjClass *sound_obj) {
   int sound_id = sound_obj->Get_ID();
-  CriticalSectionClass::LockClass lock(m_IDListMutex);
+  std::lock_guard lock(m_IDListMutex);
 
   //
   //	Special case a non-ID
@@ -338,7 +338,7 @@ void SoundSceneObjClass::Register_Sound_Object(SoundSceneObjClass *sound_obj) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 void SoundSceneObjClass::Unregister_Sound_Object(SoundSceneObjClass *sound_obj) {
-  CriticalSectionClass::LockClass lock(m_IDListMutex);
+  std::lock_guard lock(m_IDListMutex);
 
   //
   //	Try to find the object in the list
@@ -359,7 +359,7 @@ void SoundSceneObjClass::Unregister_Sound_Object(SoundSceneObjClass *sound_obj) 
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool SoundSceneObjClass::Find_Sound_Object(uint32 id_to_find, int *index) {
-  CriticalSectionClass::LockClass lock(m_IDListMutex);
+  std::lock_guard lock(m_IDListMutex);
 
   bool found = false;
   (*index) = 0;

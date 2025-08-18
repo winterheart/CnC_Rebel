@@ -411,7 +411,7 @@ const char *SurfaceEffectsManager::Hitter_Type_Name(int hitter) { return _Hitter
 
 void SurfaceEffectsManager::Apply_Effect(int surface_type, int hitter_type, const Matrix3D &tm, PhysClass *hit_obj,
                                          PhysicalGameObj *creator, bool allow_decals, bool allow_emitters) {
-  WWPROFILE("Apply Surface Effect");
+  WWPROFILENAMED(apply_surface_effect, "Apply Surface Effect");
 
   bool ok = ((surface_type >= 0) && (surface_type < SURFACE_TYPE_MAX) && (hitter_type >= 0) &&
              (hitter_type < NUM_HITTER_TYPES));

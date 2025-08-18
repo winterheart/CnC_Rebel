@@ -895,7 +895,7 @@ WW3DErrorType WW3D::Render(RenderObjClass &obj, RenderInfoClass &rinfo) {
     return (WW3D_ERROR_OK);
   }
 
-  WWPROFILE("WW3D::Render");
+  WWPROFILENAMED(ww3d_render, "WW3D::Render");
   WWASSERT(IsInitted);
   WWASSERT(IsRendering);
 
@@ -967,7 +967,7 @@ WW3DErrorType WW3D::End_Render(bool flip_frame) {
     return (WW3D_ERROR_OK);
   }
 
-  WWPROFILE("WW3D::End_Render");
+  WWPROFILENAMED(ww3d_end_render, "WW3D::End_Render");
 
   assert(IsRendering);
   assert(IsInitted);

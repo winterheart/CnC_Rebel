@@ -201,7 +201,7 @@ void MultiHUDClass::Show_Player_Names(void) {
     return;
   }
 
-  WWPROFILE("Show_Player_Name");
+  WWPROFILENAMED(show_player_name, "Show_Player_Name");
   if (GameModeManager::Find("Menu")->Is_Active() || COMBAT_CAMERA == NULL || !cNetwork::I_Am_Client() ||
       cUserOptions::ShowNamesOnSoldier.Is_False()) {
 
@@ -869,7 +869,7 @@ void MultiHUDClass::Think(void) {
   }
 
   {
-    int count = StaticNetworkObjectClass::Get_Static_Network_Object_Count();
+    count = StaticNetworkObjectClass::Get_Static_Network_Object_Count();
     for (int index = 0; index < count; index++) {
 
       StaticNetworkObjectClass *p_object =

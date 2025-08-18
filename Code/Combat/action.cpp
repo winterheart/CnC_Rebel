@@ -1725,7 +1725,7 @@ public:
 
   // Attack the given absolute position, return nothing
   void Attack_Absolute(Vector3 &abs_pos) {
-    WWPROFILE("Attack Absolute");
+    WWPROFILENAMED(attack_absolute, "Attack Absolute");
     IsAttacking = true;
 
     float range = Action->Get_Parameters().AttackRange;

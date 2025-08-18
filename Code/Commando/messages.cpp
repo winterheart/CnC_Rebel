@@ -91,7 +91,7 @@ static const unsigned short infinity_update_rate = 0xffff; // Lowest update rate
 void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_pos) {
   if (cDevOptions::UseNewTCADO.Is_False()) {
 
-    WWPROFILE("TCADO");
+    WWPROFILENAMED(TCADO, "TCADO");
 
     WWASSERT(client_id >= 0);
     WWASSERT(cNetwork::I_Am_Server());
@@ -424,7 +424,7 @@ void cNetwork::Tell_Client_About_Dynamic_Objects(int client_id, Vector3 &dest_po
         (NetworkObjectClass::BIT_FREQUENT ^ 0xffffffff) &
         (NetworkObjectClass::BIT_CREATION | NetworkObjectClass::BIT_RARE | NetworkObjectClass::BIT_OCCASIONAL);
 
-    WWPROFILE("TCADO");
+    WWPROFILENAMED(TCADO, "TCADO");
 
     WWASSERT(client_id >= 0);
     WWASSERT(cNetwork::I_Am_Server());

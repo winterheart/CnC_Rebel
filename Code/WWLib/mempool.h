@@ -48,9 +48,10 @@
 #ifndef MEMPOOL_H
 #define MEMPOOL_H
 
+#include <mutex>
+
 #include "bittype.h"
 #include "wwdebug.h"
-#include "mutex.h"
 #include <new.h>
 
 /**********************************************************************************************
@@ -84,7 +85,7 @@ protected:
   uint32 *BlockListHead;
   int FreeObjectCount;
   int TotalObjectCount;
-  FastCriticalSectionClass ObjectPoolCS;
+  std::recursive_mutex ObjectPoolCS;
 };
 
 /**********************************************************************************************
@@ -241,7 +242,7 @@ template <class T, int BLOCK_SIZE> void ObjectPoolClass<T, BLOCK_SIZE>::Free_Obj
  *   7/29/99    GTH : Created.                                                                 *
  *=============================================================================================*/
 template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_Object_Memory() {
-  FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
+  std::lock_guard lock(ObjectPoolCS);
 
   if (FreeListHead == 0) {
 
@@ -282,7 +283,7 @@ template <class T, int BLOCK_SIZE> T *ObjectPoolClass<T, BLOCK_SIZE>::Allocate_O
  *   7/29/99    GTH : Created.                                                                 *
  *=============================================================================================*/
 template <class T, int BLOCK_SIZE> void ObjectPoolClass<T, BLOCK_SIZE>::Free_Object_Memory(T *obj) {
-  FastCriticalSectionClass::LockClass lock(ObjectPoolCS);
+  std::lock_guard lock(ObjectPoolCS);
 
   WWASSERT(obj != nullptr);
   *(T **)(obj) = FreeListHead; // Link to the Head

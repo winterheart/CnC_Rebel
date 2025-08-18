@@ -2163,7 +2163,7 @@ static const char *_profile_name = "Soldier Think";
 //------------------------------------------------------------------------------------
 void SoldierGameObj::Think(void) {
   {
-    WWPROFILE(_profile_name);
+    WWPROFILENAMED(soldiergameobj_think, _profile_name);
 
     if (this == COMBAT_STAR) {
       _shake_delay -= TimeManager::Get_Frame_Seconds();
@@ -2249,7 +2249,7 @@ void SoldierGameObj::Think(void) {
   }
 
   {
-    WWPROFILE(_profile_name);
+    WWPROFILENAMED(soldiernameobj_think, _profile_name);
 
     if (CombatManager::I_Am_Server()) {
       WWPROFILE("Handle C4");
@@ -2988,7 +2988,7 @@ float SoldierGameObj::Get_Weapon_Length(void) {
 
 //------------------------------------------------------------------------------------
 bool SoldierGameObj::Internal_Set_Targeting(const Vector3 &target_pos, bool do_tilt) {
-  WWPROFILE("Soldier Set Targeting");
+  WWPROFILENAMED(soldiergameobj_internal_set_targeting, "Soldier Set Targeting");
 
   if (CombatManager::Is_Skeleton_Slider_Demo_Enabled()) {
     return false;

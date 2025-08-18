@@ -793,7 +793,7 @@ void BulletClass::Think(void) {
 ** Instant Bullet Code
 */
 void Simulate_Instant_Bullet(BulletDataClass &data, float progress_time) {
-  WWPROFILE("Simulate_Instant_Bullet");
+  WWPROFILENAMED(simulate_instant_bullet, "Simulate_Instant_Bullet");
   //	WWASSERT(data.Position.Is_Valid());
   //	WWASSERT(data.Velocity.Is_Valid());
 

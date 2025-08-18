@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -37,19 +38,19 @@
 #include "ffactorylist.h"
 #include "wwfile.h"
 
-FileFactoryListClass *FileFactoryListClass::Instance = NULL;
+FileFactoryListClass *FileFactoryListClass::Instance = nullptr;
 
 /*
 **
 */
-FileFactoryListClass::FileFactoryListClass(void) : SearchStartIndex(0), TempFactory(NULL) {
-  WWASSERT(Instance == NULL);
+FileFactoryListClass::FileFactoryListClass() : TempFactory(nullptr), SearchStartIndex(0) {
+  WWASSERT(Instance == nullptr);
   Instance = this;
 }
 
-FileFactoryListClass::~FileFactoryListClass(void) {
+FileFactoryListClass::~FileFactoryListClass() {
   WWASSERT(Instance == this);
-  Instance = NULL;
+  Instance = nullptr;
 }
 
 /*
@@ -78,8 +79,6 @@ void FileFactoryListClass::Remove_FileFactory(FileFactoryClass *factory) {
       break;
     }
   }
-
-  return;
 }
 
 /***********************************************************************************************
@@ -96,8 +95,8 @@ void FileFactoryListClass::Remove_FileFactory(FileFactoryClass *factory) {
  * HISTORY:                                                                                    *
  *   9/7/2001 4:40PM ST : Created                                                              *
  *=============================================================================================*/
-FileFactoryClass *FileFactoryListClass::Remove_FileFactory(void) {
-  FileFactoryClass *factory = NULL;
+FileFactoryClass *FileFactoryListClass::Remove_FileFactory() {
+  FileFactoryClass *factory = nullptr;
 
   if (FactoryList.Count()) {
     factory = FactoryList[0];
@@ -106,17 +105,17 @@ FileFactoryClass *FileFactoryListClass::Remove_FileFactory(void) {
   }
 
   Reset_Search_Start();
-  return (factory);
+  return factory;
 }
 
 void FileFactoryListClass::Add_Temp_FileFactory(FileFactoryClass *factory) {
-  WWASSERT(TempFactory == NULL);
+  WWASSERT(TempFactory == nullptr);
   TempFactory = factory;
 }
 
-FileFactoryClass *FileFactoryListClass::Remove_Temp_FileFactory(void) {
+FileFactoryClass *FileFactoryListClass::Remove_Temp_FileFactory() {
   FileFactoryClass *factory = TempFactory;
-  TempFactory = NULL;
+  TempFactory = nullptr;
   return factory;
 }
 
@@ -126,7 +125,7 @@ FileClass *FileFactoryListClass::Get_File(char const *filename) {
   // Then the temp factory
   if (TempFactory) {
     FileClass *file = TempFactory->Get_File(filename);
-    if (file != NULL) {
+    if (file != nullptr) {
       if (file->Is_Available()) {
         return file;
       } else {
@@ -138,7 +137,7 @@ FileClass *FileFactoryListClass::Get_File(char const *filename) {
   // Try the first in the list...
   if (SearchStartIndex < FactoryList.Count()) {
     FileClass *file = FactoryList[SearchStartIndex]->Get_File(filename);
-    if (file != NULL) {
+    if (file != nullptr) {
       if (file->Is_Available()) {
         return file;
       } else {
@@ -151,7 +150,7 @@ FileClass *FileFactoryListClass::Get_File(char const *filename) {
   for (int i = 0; i < FactoryList.Count(); i++) {
     if (i != SearchStartIndex) {
       FileClass *file = FactoryList[i]->Get_File(filename);
-      if (file != NULL) {
+      if (file != nullptr) {
         if (file->Is_Available()) {
           return file;
         } else {
@@ -166,12 +165,12 @@ FileClass *FileFactoryListClass::Get_File(char const *filename) {
   // Just use the first and don't check for available
   if (FactoryList.Count() > 0) {
     FileClass *file = FactoryList[0]->Get_File(filename);
-    if (file != NULL) {
+    if (file != nullptr) {
       return file;
     }
   }
 
-  return NULL;
+  return nullptr;
 }
 
 void FileFactoryListClass::Return_File(FileClass *file) {
@@ -191,5 +190,4 @@ void FileFactoryListClass::Set_Search_Start(const char *name) {
       break;
     }
   }
-  return;
 }

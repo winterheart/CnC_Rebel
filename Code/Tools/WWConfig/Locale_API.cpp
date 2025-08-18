@@ -34,6 +34,7 @@
  *
  *****************************************************************************/
 
+#include <cassert>
 #include <Windows.h>
 #include <wtypes.h>
 #include "locale.h"

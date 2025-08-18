@@ -37,7 +37,7 @@
 
 #pragma once
 
-#include "mutex.h"
+#include <mutex>
 #include "wwdebug.h"
 #include "vector.h"
 
@@ -341,7 +341,7 @@ private:
   /*
   ** Thread safety
   */
-  CriticalSectionClass CriticalSection;
+  std::recursive_mutex CriticalSection;
 };
 
 /*

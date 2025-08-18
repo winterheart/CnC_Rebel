@@ -178,7 +178,7 @@ void ProjectileClass::Integrate(float dt) {
 }
 
 void ProjectileClass::Timestep(float dt) {
-  WWPROFILE("Projectile::Timestep");
+  WWPROFILENAMED(projectile, "Projectile::Timestep");
   const int MAX_BUMPS = 5;
 
   if (Is_User_Control_Enabled()) {
@@ -194,7 +194,7 @@ void ProjectileClass::Timestep(float dt) {
 
   if (CollidesOnMove) {
 
-    WWPROFILE("Move and Collide");
+    WWPROFILENAMED(move_and_collide, "Move and Collide");
 
     /*
     ** Repeat until we eat all of the time

@@ -37,8 +37,9 @@
 
 #pragma once
 
+#include <mutex>
+
 #include "always.h"
-#include "mutex.h"
 #include "win.h"
 #include <tchar.h>
 #include "trim.h"
@@ -172,7 +173,7 @@ private:
   static unsigned ReservedMask;
   static char m_TempStrings[];
 
-  static FastCriticalSectionClass m_Mutex;
+  static std::recursive_mutex m_Mutex;
 
   static TCHAR m_NullChar;
   static TCHAR *m_EmptyString;

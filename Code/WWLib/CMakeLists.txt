@@ -54,7 +54,7 @@ set(SOURCES
     mpu.cpp
     msgloop.cpp
     multilist.cpp
-    mutex.cpp
+    #mutex.cpp
     nstrdup.cpp
     #obscure.cpp
     #palette.cpp

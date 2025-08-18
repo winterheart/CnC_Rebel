@@ -2809,7 +2809,7 @@ static bool Is_HUD_Displayed(void) {
 **	called each time through the main loop
 */
 void HUDClass::Think() {
-  WWPROFILE("HUD Think");
+  WWPROFILENAMED(hud_think, "HUD Think");
 
 #ifndef ATI_DEMO_HACK
   if (COMBAT_CAMERA && COMBAT_CAMERA->Draw_Sniper()) {

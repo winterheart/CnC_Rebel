@@ -901,7 +901,7 @@ void CCameraClass::Update() {
 ** The details get stored in HUDInfo
 */
 bool CCameraClass::Determine_Targeting_Position(void) {
-  WWPROFILE("Determining Targeting");
+  WWPROFILENAMED(determining_targeting, "Determining Targeting");
   bool looking_at_object = false;
 
   Matrix3D tm = Get_Transform();
@@ -1047,7 +1047,7 @@ bool CCameraClass::Determine_Targeting_Position(void) {
 #define WEAPON_HELP_CHEAT 0
 
 void CCameraClass::Apply_Weapon_Help(void) {
-  WWPROFILE("Weapon Help");
+  WWPROFILENAMED(weapon_help, "Weapon Help");
   WeaponHelpTimer -= TimeManager::Get_Frame_Seconds();
   if (WeaponHelpTimer <= 0) {
 

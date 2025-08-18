@@ -1,20 +1,21 @@
 /*
-**	Command & Conquer Renegade(tm)
-**	Copyright 2025 Electronic Arts Inc.
-**
-**	This program is free software: you can redistribute it and/or modify
-**	it under the terms of the GNU General Public License as published by
-**	the Free Software Foundation, either version 3 of the License, or
-**	(at your option) any later version.
-**
-**	This program is distributed in the hope that it will be useful,
-**	but WITHOUT ANY WARRANTY; without even the implied warranty of
-**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**	GNU General Public License for more details.
-**
-**	You should have received a copy of the GNU General Public License
-**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * 	Command & Conquer Renegade(tm)
+ * 	Copyright 2025 Electronic Arts Inc.
+ * 	Copyright 2025 CnC: Rebel Developers.
+ *
+ * 	This program is free software: you can redistribute it and/or modify
+ * 	it under the terms of the GNU General Public License as published by
+ * 	the Free Software Foundation, either version 3 of the License, or
+ * 	(at your option) any later version.
+ *
+ * 	This program is distributed in the hope that it will be useful,
+ * 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * 	GNU General Public License for more details.
+ *
+ * 	You should have received a copy of the GNU General Public License
+ * 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /***********************************************************************************************
  ***                            Confidential - Westwood Studios                              ***
@@ -63,7 +64,7 @@ int DebugManager::VersionNumber = 0;
 bool DebugManager::IsSlave = false;
 bool DebugManager::AllowCinematicKeys = false;
 
-CriticalSectionClass DebugManager::CriticalSection;
+std::recursive_mutex DebugManager::CriticalSection;
 
 DebugDisplayHandlerClass *DebugManager::DisplayHandler = NULL;
 #define DEFAULT_LOGFILE_NAME "_logfile.txt"
@@ -189,7 +190,7 @@ void DebugManager::Save_Registry_Settings(const char *sub_key) {
 **
 */
 void DebugManager::Display(char const *buffer) {
-  CriticalSectionClass::LockClass lock(CriticalSection);
+  std::lock_guard lock(CriticalSection);
 
   if (EnabledDevices & DEBUG_DEVICE_SCREEN) {
     Display_Text(buffer);

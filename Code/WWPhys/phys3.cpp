@@ -1007,7 +1007,7 @@ bool Phys3Class::Intersection_Test(PhysMeshIntersectionTestClass &test) {
  *   9/16/2000  gth : Created.                                                                 *
  *=============================================================================================*/
 void Phys3Class::Timestep(float dt) {
-  WWPROFILE("Phys3::Timestep");
+  WWPROFILENAMED(phys3_timestep, "Phys3::Timestep");
   VERBOSE_LOG(("\r\n***** Phys3::Timestep. %s position: %f %f %f\r\n", Model->Get_Name(), State.Position.X,
                State.Position.Y, State.Position.Z));
 
