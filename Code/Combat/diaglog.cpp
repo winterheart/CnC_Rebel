@@ -38,6 +38,7 @@
 #include "ffactory.h"
 #include "wwfile.h"
 #include "timemgr.h"
+#include "wwstring.h"
 
 #include <WTYPES.H> // for SYSTEMTIME
 

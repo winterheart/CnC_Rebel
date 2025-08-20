@@ -75,59 +75,21 @@ void RawFileFactoryClass::Return_File(FileClass *file) { delete file; }
 ** SimpleFileFactoryClass implementation
 */
 
-SimpleFileFactoryClass::SimpleFileFactoryClass() : IsStripPath(false), Mutex() {}
-
-void SimpleFileFactoryClass::Get_Sub_Directory(StringClass &new_dir) const {
+void SimpleFileFactoryClass::Get_Sub_Directory(std::vector<std::filesystem::path> &new_dir) const {
   // BEGIN SERIALIZATION
 
-  // We cannot return a const char * here because the StringClass
-  // may reallocate its buffer during a call to Set_Sub_Directory.
-  // I opted to return a StringClass instead of a reference to
-  // StringClass because it seems like that would behave more
-  // reasonably. (no sudden changes from or to empty string in
-  // the middle of a calling function.) (DRM, 04/19/01)
-
-  // Jani: Returning a StringClass object causes a memory allocation
-  // and release so it is better to take a reference to the
-  // destination StringClass object and modify that.
-
-  std::lock_guard lock(Mutex);
   new_dir = SubDirectory;
   // END SERIALIZATION
 }
 
-void SimpleFileFactoryClass::Set_Sub_Directory(const char *sub_directory) {
+void SimpleFileFactoryClass::Set_Sub_Directory(const std::vector<std::filesystem::path> &sub_directory) {
   // BEGIN SERIALIZATION
 
-  // StringClass makes no guarantees on the atomicity of assignment.
-  // Just to be safe, we lock before executing the assignment code.
-  // (DRM, 04/19/01)
-
-  std::lock_guard lock(Mutex);
   SubDirectory = sub_directory;
   // END SERIALIZATION
 }
 
-void SimpleFileFactoryClass::Prepend_Sub_Directory(const char *sub_directory) {
-  size_t sub_len = strlen(sub_directory);
-  // Overflow prevention
-  if (sub_len > 1021) {
-    WWASSERT(0);
-    return;
-  } else if (sub_len < 1) {
-    return;
-  }
-
-  // Ensure sub_directory ends with a slash, and append a semicolon
-  char temp_sub_dir[1024];
-  strcpy(temp_sub_dir, sub_directory);
-  if (temp_sub_dir[sub_len - 1] != '\\') {
-    temp_sub_dir[sub_len] = '\\';
-    temp_sub_dir[sub_len + 1] = 0;
-    sub_len++;
-  }
-  temp_sub_dir[sub_len] = ';';
-  temp_sub_dir[sub_len + 1] = 0;
+void SimpleFileFactoryClass::Prepend_Sub_Directory(const std::filesystem::path &sub_directory) {
 
   // BEGIN SERIALIZATION
 
@@ -136,30 +98,12 @@ void SimpleFileFactoryClass::Prepend_Sub_Directory(const char *sub_directory) {
   // (NH, 04/23/01)
 
   std::lock_guard lock(Mutex);
-  SubDirectory = temp_sub_dir + SubDirectory;
+  SubDirectory.insert(SubDirectory.begin(), sub_directory);
 
   // END SERIALIZATION
 }
 
-void SimpleFileFactoryClass::Append_Sub_Directory(const char *sub_directory) {
-  size_t sub_len = strlen(sub_directory);
-  // Overflow prevention
-  if (sub_len > 1022) {
-    WWASSERT(0);
-    return;
-  } else if (sub_len < 1) {
-    return;
-  }
-
-  // Ensure sub_directory ends with a slash
-  char temp_sub_dir[1024];
-  strcpy(temp_sub_dir, sub_directory);
-  if (temp_sub_dir[sub_len - 1] != '\\') {
-    temp_sub_dir[sub_len] = '\\';
-    temp_sub_dir[sub_len + 1] = 0;
-    sub_len++;
-  }
-
+void SimpleFileFactoryClass::Append_Sub_Directory(const std::filesystem::path& sub_directory) {
   // BEGIN SERIALIZATION
 
   // We are doing various dependent operations on SubDirectory.
@@ -168,104 +112,48 @@ void SimpleFileFactoryClass::Append_Sub_Directory(const char *sub_directory) {
 
   std::lock_guard lock(Mutex);
 
-  // Ensure a trailing semicolon is present, unless the directory list is empty
-  size_t len = SubDirectory.Get_Length();
-  if (len && SubDirectory[len - 1] != ';') {
-    SubDirectory += ';';
-  }
-
-  SubDirectory += temp_sub_dir;
+  SubDirectory.push_back(sub_directory);
   // END SERIALIZATION
-}
-
-/*
-**	Is_Full_Path
-*/
-static bool Is_Full_Path(const char *path) {
-  bool retval = false;
-
-  if (path != nullptr && path[0] != 0) {
-
-    // Check for drive designation
-    retval = bool(path[1] == ':');
-
-    // Check for network path
-    retval |= bool((path[0] == '\\') && (path[1] == '\\'));
-  }
-
-  return retval;
 }
 
 /*
 **
 */
 FileClass *SimpleFileFactoryClass::Get_File(char const *filename) {
-  // strip off the path (if needed). Note that if path stripping is off, and the requested file
-  // has a path in its name, and the current subdirectory is not empty, the paths will just be
-  // concatenated which may not produce reasonable results.
-  StringClass stripped_name(true);
-  if (IsStripPath) {
-    const char *ptr = ::strrchr(filename, '\\');
-
-    if (ptr != nullptr) {
-      ptr++;
-      stripped_name = ptr;
-    } else {
-      stripped_name = filename;
-    }
-  } else {
-    stripped_name = filename;
-  }
-
+  std::filesystem::path new_name;
   RawFileClass *file = new BufferedFileClass(); // new RawWritingFileClass();
   assert(file);
 
   //
   //	Do we need to find the path for this file request?
   //
-  StringClass new_name(stripped_name, true);
-  if (Is_Full_Path(new_name) == false) {
+  if (std::filesystem::path(filename).is_relative()) {
 
     // BEGIN SERIALIZATION
 
-    // We need to lock here because we are using the contents of SubDirectory
-    // in two places. I'd rather be overly cautious about the implementation
-    // of StringClass and wrap all calls to it. We can optimize later if this
-    // proves too slow. (DRM, 04/19/01)
-
-    std::lock_guard lock(Mutex);
-
-    if (!SubDirectory.Is_Empty()) {
+    if (!SubDirectory.empty()) {
 
       //
       // SubDirectory may contain a semicolon seperated search path...
       // If the file doesn't exist, we'll set the path to the last dir in
-      // the search path.  Therefore newly created files will always go in the
+      // the search path.  Therefore, newly created files will always go in the
       // last dir in the search path.
       //
-      StringClass subdir(SubDirectory, true);
 
-      if (strchr(subdir, ';')) {
-        char *tokstart = subdir.Peek_Buffer();
-        const char *tok;
-        while ((tok = strtok(tokstart, ";")) != nullptr) {
-          tokstart = nullptr;
-          new_name.Format("%s%s", tok, stripped_name.Peek_Buffer());
-          file->Set_Name(new_name); // Call Set_Name to force an allocated name
-          if (file->Open()) {
-            file->Close();
-            break;
-          }
+      for (const auto& itm : SubDirectory) {
+        new_name = itm / filename;
+        file->Set_Name(new_name.string().c_str());
+        if (file->Open()) {
+          file->Close();
+          break;
         }
-      } else {
-        new_name.Format("%s%s", SubDirectory.Peek_Buffer(), stripped_name.Peek_Buffer());
       }
     }
 
     // END SERIALIZATION
   }
 
-  file->Set_Name(new_name); // Call Set_Name to force an allocated name
+  file->Set_Name(new_name.string().c_str()); // Call Set_Name to force an allocated name
   return file;
 }
 
