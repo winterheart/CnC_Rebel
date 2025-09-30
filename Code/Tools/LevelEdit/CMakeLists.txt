@@ -209,7 +209,6 @@ add_executable(LevelEdit WIN32 ${SOURCES} LevelEdit.rc)
 target_include_directories(LevelEdit PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     ${MSS_INCLUDE_DIRS}
-    ${NVDXTLIB_INCLUDE_DIRS}
 )
 target_link_libraries(LevelEdit PRIVATE
     Microsoft::D3DX9

@@ -481,7 +481,7 @@ void CW3DViewDoc::LoadAssetsFromFile(LPCTSTR lpszPathName) {
     CString stringTemp = lpszPathName;
     stringTemp = stringTemp.Left((long)::strrchr(lpszPathName, '\\') - (long)lpszPathName);
     ::SetCurrentDirectory(stringTemp);
-    _TheSimpleFileFactory->Append_Sub_Directory(stringTemp);
+    _TheSimpleFileFactory->Append_Sub_Directory(stringTemp.GetString());
   }
 
   LPCTSTR extension = ::strrchr(lpszPathName, '.');
