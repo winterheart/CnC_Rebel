@@ -37,17 +37,9 @@
 
 #pragma once
 
-#ifndef FFACTORY_H
-#define FFACTORY_H
-
-#ifndef ALWAYS_H
-#include "always.h"
-#endif
-
+#include <filesystem>
 #include <mutex>
-
-#include "vector.h"
-#include "wwstring.h"
+#include <vector>
 
 /*
 **
@@ -111,24 +103,20 @@ public:
 class SimpleFileFactoryClass : public FileFactoryClass {
 
 public:
-  SimpleFileFactoryClass();
-  ~SimpleFileFactoryClass() {}
+  SimpleFileFactoryClass() = default;
+  ~SimpleFileFactoryClass() = default;
 
-  virtual FileClass *Get_File(char const *filename);
-  virtual void Return_File(FileClass *file);
+  FileClass *Get_File(char const *filename) override;
+  void Return_File(FileClass *file) override;
 
-  // sub_directory may be a semicolon seperated search path.  New files will always
-  //   go in the last dir in the path.
-  void Get_Sub_Directory(StringClass &new_dir) const;
-  void Set_Sub_Directory(const char *sub_directory);
-  void Prepend_Sub_Directory(const char *sub_directory);
-  void Append_Sub_Directory(const char *sub_directory);
-  bool Get_Strip_Path() const { return IsStripPath; }
-  void Set_Strip_Path(bool set) { IsStripPath = set; }
+  void Get_Sub_Directory(std::vector<std::filesystem::path> &new_dir) const;
+  void Set_Sub_Directory(const std::vector<std::filesystem::path> &sub_directory);
+  void Prepend_Sub_Directory(const std::filesystem::path& sub_directory);
+  void Append_Sub_Directory(const std::filesystem::path& sub_directory);
 
 protected:
-  StringClass SubDirectory;
-  bool IsStripPath;
+  /// List of search paths. New files will always go in the last dir in list.
+  std::vector<std::filesystem::path> SubDirectory;
 
   // Mutex must be mutable because const functions lock on it.
   mutable std::recursive_mutex Mutex;
@@ -146,5 +134,3 @@ protected:
 extern FileFactoryClass *_TheFileFactory;
 extern FileFactoryClass *_TheWritingFileFactory;
 extern SimpleFileFactoryClass *_TheSimpleFileFactory;
-
-#endif

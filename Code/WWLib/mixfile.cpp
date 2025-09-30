@@ -587,7 +587,7 @@ void Add_Files(const char *dir, MixFileCreator &mix) {
 }
 
 void Setup_Mix_File(void) {
-  _SimpleFileFactory.Set_Sub_Directory("DATA\\");
+  _SimpleFileFactory.Append_Sub_Directory("DATA\\");
   //	_SimpleFileFactory.Set_Strip_Path( true );
 
   WWDEBUG_SAY(("Mix File Create .....\n"));

@@ -62,6 +62,8 @@
  ****************************************************************************/
 
 #include "targa.h"
+#include "wwdebug.h"
+
 #ifndef TGA_USES_WWLIB_FILE_CLASSES
 #include <stdio.h>
 #endif

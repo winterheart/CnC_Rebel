@@ -49,6 +49,9 @@
 #include "ffactory.h"
 #endif
 
+#include "vector.h"
+#include "wwstring.h"
+
 /*
 **
 */

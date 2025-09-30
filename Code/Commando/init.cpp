@@ -387,19 +387,11 @@ void Construct_Directory_Structure() {
   GetModuleFileName(nullptr, exe_path, sizeof(exe_path));
 
   // Strip off the filename
-  std::filesystem::path path = std::filesystem::path(exe_path).parent_path();
-
-  std::vector<std::filesystem::path> dirs = {
-    "data",
-    "save",
-    "config",
-  };
-
-  // Create directories
-  for (auto const &itm : dirs) {
-    std::error_code ec;
-    std::filesystem::create_directories(path / itm, ec);
-  }
+  const std::filesystem::path path = std::filesystem::path(exe_path).parent_path();
+  std::error_code ec;
+  std::filesystem::create_directories(path / DATA_SUBDIRECTORY, ec);
+  std::filesystem::create_directories(path / SAVE_SUBDIRECTORY, ec);
+  std::filesystem::create_directories(path / CONFIG_SUBDIRECTORY, ec);
 }
 
 void Application_Exception_Callback() {
@@ -443,18 +435,16 @@ bool Game_Init() {
   // Get_Version_Number(NULL, NULL);
 
   // setup Writing Factory
-  RenegadeWritingFileFactory.Set_Sub_Directory(DATA_SUBDIRECTORY);
+  RenegadeWritingFileFactory.Append_Sub_Directory(DATA_SUBDIRECTORY);
   _TheWritingFileFactory = &RenegadeWritingFileFactory;
 
-  RenegadeBaseFileFactory.Set_Sub_Directory(DATA_SUBDIRECTORY);
+  RenegadeBaseFileFactory.Append_Sub_Directory(DATA_SUBDIRECTORY);
   RenegadeBaseFileFactory.Append_Sub_Directory(SAVE_SUBDIRECTORY);
   RenegadeBaseFileFactory.Append_Sub_Directory(CONFIG_SUBDIRECTORY);
 
-  _TheSimpleFileFactory->Set_Sub_Directory(DATA_SUBDIRECTORY);
+  _TheSimpleFileFactory->Append_Sub_Directory(DATA_SUBDIRECTORY);
   _TheSimpleFileFactory->Append_Sub_Directory(SAVE_SUBDIRECTORY);
   _TheSimpleFileFactory->Append_Sub_Directory(CONFIG_SUBDIRECTORY);
-
-  _TheSimpleFileFactory->Set_Strip_Path(true);
 
   _RenegadeFileFactory.Add_FileFactory(&RenegadeBaseFileFactory, "");
   _RenegadeFileFactory.Add_FileFactory(new MixFileFactoryClass("Always2.dat", &RenegadeBaseFileFactory), "Always2.dat");
