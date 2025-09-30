@@ -195,7 +195,7 @@ void AnimatedSoundOptionsDialogClass::Load_Animated_Sound_Settings(void) {
   //
   //	Add a sub-directory to the file factory for audio use
   //
-  _TheSimpleFileFactory->Append_Sub_Directory(sound_data_path);
+  _TheSimpleFileFactory->Append_Sub_Directory(sound_data_path.Peek_Buffer());
   return;
 }
 
